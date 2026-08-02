@@ -3,38 +3,14 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayMCPServerListenerType string
-
-const (
-	AIGatewayMCPServerListenerTypeListener AIGatewayMCPServerListenerType = "listener"
-)
-
-func (e AIGatewayMCPServerListenerType) ToPointer() *AIGatewayMCPServerListenerType {
-	return &e
-}
-func (e *AIGatewayMCPServerListenerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "listener":
-		*e = AIGatewayMCPServerListenerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayMCPServerListenerType: %v", v)
-	}
-}
 
 // AIGatewayMCPServerListener - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerListener struct {
-	Type AIGatewayMCPServerListenerType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"listener" json:"type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -67,8 +43,7 @@ type AIGatewayMCPServerListener struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy            map[string]string `json:"managed_by,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (a AIGatewayMCPServerListener) MarshalJSON() ([]byte, error) {
@@ -82,11 +57,8 @@ func (a *AIGatewayMCPServerListener) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AIGatewayMCPServerListener) GetType() AIGatewayMCPServerListenerType {
-	if a == nil {
-		return AIGatewayMCPServerListenerType("")
-	}
-	return a.Type
+func (a *AIGatewayMCPServerListener) GetType() string {
+	return "listener"
 }
 
 func (a *AIGatewayMCPServerListener) GetConfig() AIGatewayMCPServerNoUpstreamConfig {
@@ -164,11 +136,4 @@ func (a *AIGatewayMCPServerListener) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
-}
-
-func (a *AIGatewayMCPServerListener) GetAdditionalProperties() any {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalProperties
 }

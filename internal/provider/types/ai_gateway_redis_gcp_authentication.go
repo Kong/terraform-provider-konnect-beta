@@ -8,5 +8,4 @@ import (
 
 type AIGatewayRedisGCPAuthentication struct {
 	ServiceAccountJSON types.String `tfsdk:"service_account_json"`
-	Type               types.String `tfsdk:"type"`
 }

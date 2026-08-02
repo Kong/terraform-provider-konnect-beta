@@ -60,8 +60,7 @@ type AIGateway struct {
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt            time.Time `json:"updated_at"`
-	AdditionalProperties any       `additionalProperties:"true" json:"-"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (a AIGateway) MarshalJSON() ([]byte, error) {
@@ -143,11 +142,4 @@ func (a *AIGateway) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
-}
-
-func (a *AIGateway) GetAdditionalProperties() any {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalProperties
 }

@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // UpdateAIGatewayConsumerRequestType - The type of the consumer.
 type UpdateAIGatewayConsumerRequestType string
 
@@ -58,19 +54,7 @@ type UpdateAIGatewayConsumerRequest struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy            map[string]string `json:"managed_by,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
-}
-
-func (u UpdateAIGatewayConsumerRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
-}
-
-func (u *UpdateAIGatewayConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
-		return err
-	}
-	return nil
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (u *UpdateAIGatewayConsumerRequest) GetDisplayName() string {
@@ -120,11 +104,4 @@ func (u *UpdateAIGatewayConsumerRequest) GetManagedBy() map[string]string {
 		return nil
 	}
 	return u.ManagedBy
-}
-
-func (u *UpdateAIGatewayConsumerRequest) GetAdditionalProperties() any {
-	if u == nil {
-		return nil
-	}
-	return u.AdditionalProperties
 }

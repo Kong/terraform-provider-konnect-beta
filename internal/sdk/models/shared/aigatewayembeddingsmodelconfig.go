@@ -42,9 +42,6 @@ type AIGatewayEmbeddingsModelConfig struct {
 func CreateAIGatewayEmbeddingsModelConfigAzure(azure AIGatewayAzureEmbeddingsModelConfig) AIGatewayEmbeddingsModelConfig {
 	typ := AIGatewayEmbeddingsModelConfigTypeAzure
 
-	typStr := AIGatewayAzureEmbeddingsModelConfigType(typ)
-	azure.Type = typStr
-
 	return AIGatewayEmbeddingsModelConfig{
 		AIGatewayAzureEmbeddingsModelConfig: &azure,
 		Type:                                typ,
@@ -53,9 +50,6 @@ func CreateAIGatewayEmbeddingsModelConfigAzure(azure AIGatewayAzureEmbeddingsMod
 
 func CreateAIGatewayEmbeddingsModelConfigBedrock(bedrock AIGatewayBedrockEmbeddingsModelConfig) AIGatewayEmbeddingsModelConfig {
 	typ := AIGatewayEmbeddingsModelConfigTypeBedrock
-
-	typStr := AIGatewayBedrockEmbeddingsModelConfigType(typ)
-	bedrock.Type = typStr
 
 	return AIGatewayEmbeddingsModelConfig{
 		AIGatewayBedrockEmbeddingsModelConfig: &bedrock,
@@ -66,9 +60,6 @@ func CreateAIGatewayEmbeddingsModelConfigBedrock(bedrock AIGatewayBedrockEmbeddi
 func CreateAIGatewayEmbeddingsModelConfigGemini(gemini AIGatewayGeminiEmbeddingsModelConfig) AIGatewayEmbeddingsModelConfig {
 	typ := AIGatewayEmbeddingsModelConfigTypeGemini
 
-	typStr := AIGatewayGeminiEmbeddingsModelConfigType(typ)
-	gemini.Type = typStr
-
 	return AIGatewayEmbeddingsModelConfig{
 		AIGatewayGeminiEmbeddingsModelConfig: &gemini,
 		Type:                                 typ,
@@ -77,9 +68,6 @@ func CreateAIGatewayEmbeddingsModelConfigGemini(gemini AIGatewayGeminiEmbeddings
 
 func CreateAIGatewayEmbeddingsModelConfigHuggingface(huggingface AIGatewayHuggingfaceEmbeddingsModelConfig) AIGatewayEmbeddingsModelConfig {
 	typ := AIGatewayEmbeddingsModelConfigTypeHuggingface
-
-	typStr := AIGatewayHuggingfaceEmbeddingsModelConfigType(typ)
-	huggingface.Type = typStr
 
 	return AIGatewayEmbeddingsModelConfig{
 		AIGatewayHuggingfaceEmbeddingsModelConfig: &huggingface,
@@ -102,9 +90,6 @@ func CreateAIGatewayEmbeddingsModelConfigMistral(mistral AIGatewayMistralEmbeddi
 func CreateAIGatewayEmbeddingsModelConfigOllama(ollama AIGatewayOllamaEmbeddingsModelConfig) AIGatewayEmbeddingsModelConfig {
 	typ := AIGatewayEmbeddingsModelConfigTypeOllama
 
-	typStr := AIGatewayOllamaEmbeddingsModelConfigType(typ)
-	ollama.Type = typStr
-
 	return AIGatewayEmbeddingsModelConfig{
 		AIGatewayOllamaEmbeddingsModelConfig: &ollama,
 		Type:                                 typ,
@@ -114,9 +99,6 @@ func CreateAIGatewayEmbeddingsModelConfigOllama(ollama AIGatewayOllamaEmbeddings
 func CreateAIGatewayEmbeddingsModelConfigOpenai(openai AIGatewayOpenaiEmbeddingsModelConfig) AIGatewayEmbeddingsModelConfig {
 	typ := AIGatewayEmbeddingsModelConfigTypeOpenai
 
-	typStr := AIGatewayOpenaiEmbeddingsModelConfigType(typ)
-	openai.Type = typStr
-
 	return AIGatewayEmbeddingsModelConfig{
 		AIGatewayOpenaiEmbeddingsModelConfig: &openai,
 		Type:                                 typ,
@@ -125,9 +107,6 @@ func CreateAIGatewayEmbeddingsModelConfigOpenai(openai AIGatewayOpenaiEmbeddings
 
 func CreateAIGatewayEmbeddingsModelConfigVertex(vertex AIGatewayVertexEmbeddingsModelConfig) AIGatewayEmbeddingsModelConfig {
 	typ := AIGatewayEmbeddingsModelConfigTypeVertex
-
-	typStr := AIGatewayVertexEmbeddingsModelConfigType(typ)
-	vertex.Type = typStr
 
 	return AIGatewayEmbeddingsModelConfig{
 		AIGatewayVertexEmbeddingsModelConfig: &vertex,

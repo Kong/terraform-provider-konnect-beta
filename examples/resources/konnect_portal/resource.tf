@@ -1,5 +1,13 @@
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
+  ai = {
+    enabled = true
+    features = {
+      mcp_server = {
+        enabled = false
+      }
+    }
+  }
   authentication_enabled               = true
   auto_approve_applications            = false
   auto_approve_developers              = false

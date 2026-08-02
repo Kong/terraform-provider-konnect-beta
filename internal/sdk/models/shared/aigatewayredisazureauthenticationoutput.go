@@ -3,40 +3,16 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayRedisAzureAuthenticationType string
-
-const (
-	AIGatewayRedisAzureAuthenticationTypeAzure AIGatewayRedisAzureAuthenticationType = "azure"
-)
-
-func (e AIGatewayRedisAzureAuthenticationType) ToPointer() *AIGatewayRedisAzureAuthenticationType {
-	return &e
-}
-func (e *AIGatewayRedisAzureAuthenticationType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "azure":
-		*e = AIGatewayRedisAzureAuthenticationType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayRedisAzureAuthenticationType: %v", v)
-	}
-}
 
 // AIGatewayRedisAzureAuthenticationOutput - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
 // Azure specific configs for connecting to a Cloud Provider's redis instance.
 type AIGatewayRedisAzureAuthenticationOutput struct {
-	Type AIGatewayRedisAzureAuthenticationType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"azure" json:"type"`
 	// Azure Client ID.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
@@ -58,11 +34,8 @@ func (a *AIGatewayRedisAzureAuthenticationOutput) UnmarshalJSON(data []byte) err
 	return nil
 }
 
-func (a *AIGatewayRedisAzureAuthenticationOutput) GetType() AIGatewayRedisAzureAuthenticationType {
-	if a == nil {
-		return AIGatewayRedisAzureAuthenticationType("")
-	}
-	return a.Type
+func (a *AIGatewayRedisAzureAuthenticationOutput) GetType() string {
+	return "azure"
 }
 
 func (a *AIGatewayRedisAzureAuthenticationOutput) GetClientID() *string {
@@ -73,65 +46,6 @@ func (a *AIGatewayRedisAzureAuthenticationOutput) GetClientID() *string {
 }
 
 func (a *AIGatewayRedisAzureAuthenticationOutput) GetTenantID() *string {
-	if a == nil {
-		return nil
-	}
-	return a.TenantID
-}
-
-// AIGatewayRedisAzureAuthentication - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Azure specific configs for connecting to a Cloud Provider's redis instance.
-type AIGatewayRedisAzureAuthentication struct {
-	Type AIGatewayRedisAzureAuthenticationType `json:"type"`
-	// Azure Client ID.
-	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	//
-	ClientID *string `default:"null" json:"client_id"`
-	// Azure Client Secret.
-	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	//
-	ClientSecret *string `default:"null" json:"client_secret"`
-	// Azure Tenant ID.
-	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	//
-	TenantID *string `default:"null" json:"tenant_id"`
-}
-
-func (a AIGatewayRedisAzureAuthentication) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayRedisAzureAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AIGatewayRedisAzureAuthentication) GetType() AIGatewayRedisAzureAuthenticationType {
-	if a == nil {
-		return AIGatewayRedisAzureAuthenticationType("")
-	}
-	return a.Type
-}
-
-func (a *AIGatewayRedisAzureAuthentication) GetClientID() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ClientID
-}
-
-func (a *AIGatewayRedisAzureAuthentication) GetClientSecret() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ClientSecret
-}
-
-func (a *AIGatewayRedisAzureAuthentication) GetTenantID() *string {
 	if a == nil {
 		return nil
 	}

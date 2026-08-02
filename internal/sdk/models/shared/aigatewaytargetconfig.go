@@ -31,6 +31,7 @@ const (
 	AIGatewayTargetConfigTypeVertex      AIGatewayTargetConfigType = "vertex"
 	AIGatewayTargetConfigTypeVllm        AIGatewayTargetConfigType = "vllm"
 	AIGatewayTargetConfigTypeXai         AIGatewayTargetConfigType = "xai"
+	AIGatewayTargetConfigTypeSagemaker   AIGatewayTargetConfigType = "sagemaker"
 )
 
 // AIGatewayTargetConfig - **Pre-release Feature**
@@ -57,15 +58,13 @@ type AIGatewayTargetConfig struct {
 	AIGatewayTargetVertexConfig      *AIGatewayTargetVertexConfig      `queryParam:"inline" union:"member"`
 	AIGatewayTargetVllmConfig        *AIGatewayTargetVllmConfig        `queryParam:"inline" union:"member"`
 	AIGatewayTargetXaiConfig         *AIGatewayTargetXaiConfig         `queryParam:"inline" union:"member"`
+	AIGatewayTargetSagemakerConfig   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" union:"member"`
 
 	Type AIGatewayTargetConfigType
 }
 
 func CreateAIGatewayTargetConfigAnthropic(anthropic AIGatewayTargetAnthropicConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeAnthropic
-
-	typStr := AIGatewayTargetAnthropicConfigType(typ)
-	anthropic.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetAnthropicConfig: &anthropic,
@@ -76,9 +75,6 @@ func CreateAIGatewayTargetConfigAnthropic(anthropic AIGatewayTargetAnthropicConf
 func CreateAIGatewayTargetConfigAzure(azure AIGatewayTargetAzureConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeAzure
 
-	typStr := AIGatewayTargetAzureConfigType(typ)
-	azure.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetAzureConfig: &azure,
 		Type:                       typ,
@@ -87,9 +83,6 @@ func CreateAIGatewayTargetConfigAzure(azure AIGatewayTargetAzureConfig) AIGatewa
 
 func CreateAIGatewayTargetConfigBedrock(bedrock AIGatewayTargetBedrockConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeBedrock
-
-	typStr := AIGatewayTargetBedrockConfigType(typ)
-	bedrock.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetBedrockConfig: &bedrock,
@@ -100,9 +93,6 @@ func CreateAIGatewayTargetConfigBedrock(bedrock AIGatewayTargetBedrockConfig) AI
 func CreateAIGatewayTargetConfigCerebras(cerebras AIGatewayTargetCerebrasConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeCerebras
 
-	typStr := AIGatewayTargetCerebrasConfigType(typ)
-	cerebras.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetCerebrasConfig: &cerebras,
 		Type:                          typ,
@@ -111,9 +101,6 @@ func CreateAIGatewayTargetConfigCerebras(cerebras AIGatewayTargetCerebrasConfig)
 
 func CreateAIGatewayTargetConfigCohere(cohere AIGatewayTargetCohereConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeCohere
-
-	typStr := AIGatewayTargetCohereConfigType(typ)
-	cohere.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetCohereConfig: &cohere,
@@ -124,9 +111,6 @@ func CreateAIGatewayTargetConfigCohere(cohere AIGatewayTargetCohereConfig) AIGat
 func CreateAIGatewayTargetConfigDashscope(dashscope AIGatewayTargetDashscopeConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeDashscope
 
-	typStr := AIGatewayTargetDashscopeConfigType(typ)
-	dashscope.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetDashscopeConfig: &dashscope,
 		Type:                           typ,
@@ -135,9 +119,6 @@ func CreateAIGatewayTargetConfigDashscope(dashscope AIGatewayTargetDashscopeConf
 
 func CreateAIGatewayTargetConfigDatabricks(databricks AIGatewayTargetDatabricksConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeDatabricks
-
-	typStr := AIGatewayTargetDatabricksConfigType(typ)
-	databricks.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetDatabricksConfig: &databricks,
@@ -148,9 +129,6 @@ func CreateAIGatewayTargetConfigDatabricks(databricks AIGatewayTargetDatabricksC
 func CreateAIGatewayTargetConfigDeepseek(deepseek AIGatewayTargetDeepseekConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeDeepseek
 
-	typStr := AIGatewayTargetDeepseekConfigType(typ)
-	deepseek.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetDeepseekConfig: &deepseek,
 		Type:                          typ,
@@ -159,9 +137,6 @@ func CreateAIGatewayTargetConfigDeepseek(deepseek AIGatewayTargetDeepseekConfig)
 
 func CreateAIGatewayTargetConfigGemini(gemini AIGatewayTargetGeminiConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeGemini
-
-	typStr := AIGatewayTargetGeminiConfigType(typ)
-	gemini.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetGeminiConfig: &gemini,
@@ -172,9 +147,6 @@ func CreateAIGatewayTargetConfigGemini(gemini AIGatewayTargetGeminiConfig) AIGat
 func CreateAIGatewayTargetConfigHuggingface(huggingface AIGatewayTargetHuggingfaceConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeHuggingface
 
-	typStr := AIGatewayTargetHuggingfaceConfigType(typ)
-	huggingface.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetHuggingfaceConfig: &huggingface,
 		Type:                             typ,
@@ -183,9 +155,6 @@ func CreateAIGatewayTargetConfigHuggingface(huggingface AIGatewayTargetHuggingfa
 
 func CreateAIGatewayTargetConfigKimi(kimi AIGatewayTargetKimiConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeKimi
-
-	typStr := AIGatewayTargetKimiConfigType(typ)
-	kimi.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetKimiConfig: &kimi,
@@ -196,9 +165,6 @@ func CreateAIGatewayTargetConfigKimi(kimi AIGatewayTargetKimiConfig) AIGatewayTa
 func CreateAIGatewayTargetConfigLlama2(llama2 AIGatewayTargetLlama2Config) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeLlama2
 
-	typStr := AIGatewayTargetLlama2ConfigType(typ)
-	llama2.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetLlama2Config: &llama2,
 		Type:                        typ,
@@ -207,9 +173,6 @@ func CreateAIGatewayTargetConfigLlama2(llama2 AIGatewayTargetLlama2Config) AIGat
 
 func CreateAIGatewayTargetConfigMistral(mistral AIGatewayTargetMistralConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeMistral
-
-	typStr := AIGatewayTargetMistralConfigType(typ)
-	mistral.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetMistralConfig: &mistral,
@@ -220,9 +183,6 @@ func CreateAIGatewayTargetConfigMistral(mistral AIGatewayTargetMistralConfig) AI
 func CreateAIGatewayTargetConfigOllama(ollama AIGatewayTargetOllamaConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeOllama
 
-	typStr := AIGatewayTargetOllamaConfigType(typ)
-	ollama.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetOllamaConfig: &ollama,
 		Type:                        typ,
@@ -231,9 +191,6 @@ func CreateAIGatewayTargetConfigOllama(ollama AIGatewayTargetOllamaConfig) AIGat
 
 func CreateAIGatewayTargetConfigOpenai(openai AIGatewayTargetOpenaiConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeOpenai
-
-	typStr := AIGatewayTargetOpenaiConfigType(typ)
-	openai.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetOpenaiConfig: &openai,
@@ -244,9 +201,6 @@ func CreateAIGatewayTargetConfigOpenai(openai AIGatewayTargetOpenaiConfig) AIGat
 func CreateAIGatewayTargetConfigVercel(vercel AIGatewayTargetVercelConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeVercel
 
-	typStr := AIGatewayTargetVercelConfigType(typ)
-	vercel.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetVercelConfig: &vercel,
 		Type:                        typ,
@@ -255,9 +209,6 @@ func CreateAIGatewayTargetConfigVercel(vercel AIGatewayTargetVercelConfig) AIGat
 
 func CreateAIGatewayTargetConfigVertex(vertex AIGatewayTargetVertexConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeVertex
-
-	typStr := AIGatewayTargetVertexConfigType(typ)
-	vertex.Type = typStr
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetVertexConfig: &vertex,
@@ -268,9 +219,6 @@ func CreateAIGatewayTargetConfigVertex(vertex AIGatewayTargetVertexConfig) AIGat
 func CreateAIGatewayTargetConfigVllm(vllm AIGatewayTargetVllmConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeVllm
 
-	typStr := AIGatewayTargetVllmConfigType(typ)
-	vllm.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetVllmConfig: &vllm,
 		Type:                      typ,
@@ -280,12 +228,18 @@ func CreateAIGatewayTargetConfigVllm(vllm AIGatewayTargetVllmConfig) AIGatewayTa
 func CreateAIGatewayTargetConfigXai(xai AIGatewayTargetXaiConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeXai
 
-	typStr := AIGatewayTargetXaiConfigType(typ)
-	xai.Type = typStr
-
 	return AIGatewayTargetConfig{
 		AIGatewayTargetXaiConfig: &xai,
 		Type:                     typ,
+	}
+}
+
+func CreateAIGatewayTargetConfigSagemaker(sagemaker AIGatewayTargetSagemakerConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeSagemaker
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetSagemakerConfig: &sagemaker,
+		Type:                           typ,
 	}
 }
 
@@ -472,6 +426,15 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 		u.AIGatewayTargetXaiConfig = aiGatewayTargetXaiConfig
 		u.Type = AIGatewayTargetConfigTypeXai
 		return nil
+	case "sagemaker":
+		aiGatewayTargetSagemakerConfig := new(AIGatewayTargetSagemakerConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetSagemakerConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sagemaker) type AIGatewayTargetSagemakerConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetSagemakerConfig = aiGatewayTargetSagemakerConfig
+		u.Type = AIGatewayTargetConfigTypeSagemaker
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayTargetConfig", string(data))
@@ -552,6 +515,10 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetXaiConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetXaiConfig, "", true)
+	}
+
+	if u.AIGatewayTargetSagemakerConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetSagemakerConfig, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AIGatewayTargetConfig: all fields are null")

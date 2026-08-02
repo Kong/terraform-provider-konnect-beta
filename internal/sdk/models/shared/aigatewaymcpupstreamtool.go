@@ -96,13 +96,13 @@ type AIGatewayMCPUpstreamTool struct {
 	// The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
 	Headers any `json:"headers,omitempty"`
 	// The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
-	Host *string `default:"null" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present).
 	Name string `json:"name"`
 	// When provided, the method of the exported API, which must match the route's methods.
 	Method *AIGatewayMCPUpstreamToolMethod `json:"method,omitempty"`
 	// The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.
-	Path *string `default:"null" json:"path"`
+	Path *string `json:"path,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//

@@ -809,15 +809,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 							"approle": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "approle"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("approle"),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
@@ -943,15 +934,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 							"aws_ec2": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "aws_ec2"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("aws_ec2"),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
@@ -1079,15 +1061,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional: true,
 										MarkdownDescription: `The ARN of the role to assume for AWS IAM authentication.` + "\n" +
 											`If set, ` + "`" + `role_session_name` + "`" + ` must also be set.`,
-									},
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "aws_iam"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("aws_iam"),
-										},
 									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
@@ -1224,15 +1197,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 							"azure": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "azure"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("azure"),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
@@ -1343,15 +1307,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 							"cert": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "cert"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("cert"),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
@@ -1464,15 +1419,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 							"gcp_gce": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "gcp_gce"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("gcp_gce"),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
@@ -1583,15 +1529,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 							"gcp_iam": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "gcp_iam"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("gcp_iam"),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
@@ -1716,15 +1653,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									"audiences": schema.StringAttribute{
 										Optional:    true,
 										Description: `Comma-separated list of OAuth2 audiences.`,
-									},
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "jwt"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("jwt"),
-										},
 									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
@@ -1859,17 +1787,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Default:     stringdefault.StaticString(`/run/secrets/kubernetes.io/serviceaccount/token`),
 										Description: `Path to the Kubernetes service account token file. Default: "/run/secrets/kubernetes.io/serviceaccount/token"`,
 									},
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "kubernetes"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"kubernetes",
-											),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
@@ -1976,15 +1893,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 							"token": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"auth_method": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "token"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("token"),
-										},
-									},
 									"base64_decode": schema.BoolAttribute{
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +

@@ -15,9 +15,8 @@ AIGatewayConsumerGroup Resource
 ```terraform
 resource "konnect_ai_gateway_consumer_group" "my_aigatewayconsumergroup" {
   provider = konnect-beta
-  additional_properties = "{ \"see\": \"documentation\" }"
-  display_name          = "Dev Users Group"
-  gateway_id            = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+  display_name = "Dev Users Group"
+  gateway_id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   labels = {
     key = "value"
   }
@@ -45,7 +44,6 @@ A user-defined unique identifier for this consumer group, used as a stable human
 
 ### Optional
 
-- `additional_properties` (String) Parsed as JSON.
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
 Public labels are intended to store **PUBLIC** metadata. 

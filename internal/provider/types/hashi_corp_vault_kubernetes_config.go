@@ -8,7 +8,6 @@ import (
 
 type HashiCorpVaultKubernetesConfig struct {
 	APITokenFile types.String `tfsdk:"api_token_file"`
-	AuthMethod   types.String `tfsdk:"auth_method"`
 	Base64Decode types.Bool   `tfsdk:"base64_decode"`
 	Host         types.String `tfsdk:"host"`
 	Kv           types.String `tfsdk:"kv"`

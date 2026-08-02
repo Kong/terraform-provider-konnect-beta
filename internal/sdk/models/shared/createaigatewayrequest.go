@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // CreateAIGatewayRequest - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type CreateAIGatewayRequest struct {
@@ -23,19 +19,7 @@ type CreateAIGatewayRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels               map[string]string `json:"labels,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
-}
-
-func (c CreateAIGatewayRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateAIGatewayRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (c *CreateAIGatewayRequest) GetDisplayName() string {
@@ -71,11 +55,4 @@ func (c *CreateAIGatewayRequest) GetLabels() map[string]string {
 		return nil
 	}
 	return c.Labels
-}
-
-func (c *CreateAIGatewayRequest) GetAdditionalProperties() any {
-	if c == nil {
-		return nil
-	}
-	return c.AdditionalProperties
 }

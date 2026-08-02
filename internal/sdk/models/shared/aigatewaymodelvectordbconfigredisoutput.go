@@ -9,29 +9,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type AIGatewayModelVectorDBConfigRedisType string
-
-const (
-	AIGatewayModelVectorDBConfigRedisTypeRedis AIGatewayModelVectorDBConfigRedisType = "redis"
-)
-
-func (e AIGatewayModelVectorDBConfigRedisType) ToPointer() *AIGatewayModelVectorDBConfigRedisType {
-	return &e
-}
-func (e *AIGatewayModelVectorDBConfigRedisType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "redis":
-		*e = AIGatewayModelVectorDBConfigRedisType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayModelVectorDBConfigRedisType: %v", v)
-	}
-}
-
 // AIGatewayModelVectorDBConfigRedisDistanceMetric - the distance metric to use for vector searches
 type AIGatewayModelVectorDBConfigRedisDistanceMetric string
 
@@ -75,9 +52,6 @@ type AIGatewayModelVectorDBConfigRedisCloudAuthentication struct {
 func CreateAIGatewayModelVectorDBConfigRedisCloudAuthenticationAws(aws AIGatewayRedisAWSAuthenticationOutput) AIGatewayModelVectorDBConfigRedisCloudAuthentication {
 	typ := AIGatewayModelVectorDBConfigRedisCloudAuthenticationTypeAws
 
-	typStr := AIGatewayRedisAWSAuthenticationType(typ)
-	aws.Type = typStr
-
 	return AIGatewayModelVectorDBConfigRedisCloudAuthentication{
 		AIGatewayRedisAWSAuthenticationOutput: &aws,
 		Type:                                  typ,
@@ -87,9 +61,6 @@ func CreateAIGatewayModelVectorDBConfigRedisCloudAuthenticationAws(aws AIGateway
 func CreateAIGatewayModelVectorDBConfigRedisCloudAuthenticationAzure(azure AIGatewayRedisAzureAuthenticationOutput) AIGatewayModelVectorDBConfigRedisCloudAuthentication {
 	typ := AIGatewayModelVectorDBConfigRedisCloudAuthenticationTypeAzure
 
-	typStr := AIGatewayRedisAzureAuthenticationType(typ)
-	azure.Type = typStr
-
 	return AIGatewayModelVectorDBConfigRedisCloudAuthentication{
 		AIGatewayRedisAzureAuthenticationOutput: &azure,
 		Type:                                    typ,
@@ -98,9 +69,6 @@ func CreateAIGatewayModelVectorDBConfigRedisCloudAuthenticationAzure(azure AIGat
 
 func CreateAIGatewayModelVectorDBConfigRedisCloudAuthenticationGcp(gcp AIGatewayRedisGCPAuthenticationOutput) AIGatewayModelVectorDBConfigRedisCloudAuthentication {
 	typ := AIGatewayModelVectorDBConfigRedisCloudAuthenticationTypeGcp
-
-	typStr := AIGatewayRedisGCPAuthenticationType(typ)
-	gcp.Type = typStr
 
 	return AIGatewayModelVectorDBConfigRedisCloudAuthentication{
 		AIGatewayRedisGCPAuthenticationOutput: &gcp,
@@ -266,97 +234,6 @@ func (k *Keepalive) GetPoolSize() *int64 {
 	return k.PoolSize
 }
 
-type PortType string
-
-const (
-	PortTypeInteger PortType = "integer"
-	PortTypeStr     PortType = "str"
-)
-
-// Port - An integer representing a port number between 0 and 65535, inclusive.
-// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-type Port struct {
-	Integer *int64  `queryParam:"inline" union:"member"`
-	Str     *string `queryParam:"inline" union:"member"`
-
-	Type PortType
-}
-
-func CreatePortInteger(integer int64) Port {
-	typ := PortTypeInteger
-
-	return Port{
-		Integer: &integer,
-		Type:    typ,
-	}
-}
-
-func CreatePortStr(str string) Port {
-	typ := PortTypeStr
-
-	return Port{
-		Str:  &str,
-		Type: typ,
-	}
-}
-
-func (u *Port) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Port", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Port", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(PortType)
-	switch best.Type {
-	case PortTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case PortTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Port", string(data))
-}
-
-func (u Port) MarshalJSON() ([]byte, error) {
-	if u.Integer != nil {
-		return utils.MarshalJSON(u.Integer, "", true)
-	}
-
-	if u.Str != nil {
-		return utils.MarshalJSON(u.Str, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type Port: all fields are null")
-}
-
 type AIGatewayModelVectorDBConfigRedisNodes struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"127.0.0.1" json:"host"`
@@ -482,7 +359,8 @@ func (s *Sentinel) GetUsername() *string {
 //
 // Config for connecting to a Cloud Provider's Redis instance.
 type AIGatewayModelVectorDBConfigRedisOutput struct {
-	Type AIGatewayModelVectorDBConfigRedisType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"redis" json:"type"`
 	// the desired dimensionality for the vectors
 	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
@@ -512,7 +390,7 @@ type AIGatewayModelVectorDBConfigRedisOutput struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Port *Port `json:"port,omitempty"`
+	Port *string `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -534,21 +412,31 @@ type AIGatewayModelVectorDBConfigRedisOutput struct {
 }
 
 func (a AIGatewayModelVectorDBConfigRedisOutput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AIGatewayModelVectorDBConfigRedisOutput) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayModelVectorDBConfigRedisOutput) GetType() AIGatewayModelVectorDBConfigRedisType {
-	if a == nil {
-		return AIGatewayModelVectorDBConfigRedisType("")
-	}
-	return a.Type
+func (a *AIGatewayModelVectorDBConfigRedisOutput) GetType() string {
+	return "redis"
 }
 
 func (a *AIGatewayModelVectorDBConfigRedisOutput) GetDimensions() int64 {
@@ -649,7 +537,7 @@ func (a *AIGatewayModelVectorDBConfigRedisOutput) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AIGatewayModelVectorDBConfigRedisOutput) GetPort() *Port {
+func (a *AIGatewayModelVectorDBConfigRedisOutput) GetPort() *string {
 	if a == nil {
 		return nil
 	}
@@ -725,9 +613,6 @@ type CloudAuthentication struct {
 func CreateCloudAuthenticationAws(aws AIGatewayRedisAWSAuthentication) CloudAuthentication {
 	typ := CloudAuthenticationTypeAws
 
-	typStr := AIGatewayRedisAWSAuthenticationType(typ)
-	aws.Type = typStr
-
 	return CloudAuthentication{
 		AIGatewayRedisAWSAuthentication: &aws,
 		Type:                            typ,
@@ -737,9 +622,6 @@ func CreateCloudAuthenticationAws(aws AIGatewayRedisAWSAuthentication) CloudAuth
 func CreateCloudAuthenticationAzure(azure AIGatewayRedisAzureAuthentication) CloudAuthentication {
 	typ := CloudAuthenticationTypeAzure
 
-	typStr := AIGatewayRedisAzureAuthenticationType(typ)
-	azure.Type = typStr
-
 	return CloudAuthentication{
 		AIGatewayRedisAzureAuthentication: &azure,
 		Type:                              typ,
@@ -748,9 +630,6 @@ func CreateCloudAuthenticationAzure(azure AIGatewayRedisAzureAuthentication) Clo
 
 func CreateCloudAuthenticationGcp(gcp AIGatewayRedisGCPAuthentication) CloudAuthentication {
 	typ := CloudAuthenticationTypeGcp
-
-	typStr := AIGatewayRedisGCPAuthenticationType(typ)
-	gcp.Type = typStr
 
 	return CloudAuthentication{
 		AIGatewayRedisGCPAuthentication: &gcp,
@@ -823,7 +702,8 @@ func (u CloudAuthentication) MarshalJSON() ([]byte, error) {
 //
 // Config for connecting to a Cloud Provider's Redis instance.
 type AIGatewayModelVectorDBConfigRedis struct {
-	Type AIGatewayModelVectorDBConfigRedisType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"redis" json:"type"`
 	// the desired dimensionality for the vectors
 	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
@@ -853,7 +733,7 @@ type AIGatewayModelVectorDBConfigRedis struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Port *Port `json:"port,omitempty"`
+	Port *string `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -875,21 +755,31 @@ type AIGatewayModelVectorDBConfigRedis struct {
 }
 
 func (a AIGatewayModelVectorDBConfigRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AIGatewayModelVectorDBConfigRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayModelVectorDBConfigRedis) GetType() AIGatewayModelVectorDBConfigRedisType {
-	if a == nil {
-		return AIGatewayModelVectorDBConfigRedisType("")
-	}
-	return a.Type
+func (a *AIGatewayModelVectorDBConfigRedis) GetType() string {
+	return "redis"
 }
 
 func (a *AIGatewayModelVectorDBConfigRedis) GetDimensions() int64 {
@@ -990,7 +880,7 @@ func (a *AIGatewayModelVectorDBConfigRedis) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AIGatewayModelVectorDBConfigRedis) GetPort() *Port {
+func (a *AIGatewayModelVectorDBConfigRedis) GetPort() *string {
 	if a == nil {
 		return nil
 	}

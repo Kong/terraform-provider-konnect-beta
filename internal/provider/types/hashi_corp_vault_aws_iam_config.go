@@ -9,7 +9,6 @@ import (
 type HashiCorpVaultAwsIAMConfig struct {
 	AccessKeyID     types.String `tfsdk:"access_key_id"`
 	AssumeRoleArn   types.String `tfsdk:"assume_role_arn"`
-	AuthMethod      types.String `tfsdk:"auth_method"`
 	Base64Decode    types.Bool   `tfsdk:"base64_decode"`
 	Host            types.String `tfsdk:"host"`
 	Kv              types.String `tfsdk:"kv"`

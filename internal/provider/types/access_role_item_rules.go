@@ -7,9 +7,9 @@ import (
 )
 
 type AccessRoleItemRules struct {
-	Access []AIGatewayRedisCloudConfigurationPort `tfsdk:"access"`
-	Mesh   types.String                           `tfsdk:"mesh"`
-	Names  []types.String                         `tfsdk:"names"`
-	Types  []types.String                         `tfsdk:"types"`
-	When   []When                                 `tfsdk:"when"`
+	Access []MeshItemMode `tfsdk:"access"`
+	Mesh   types.String   `tfsdk:"mesh"`
+	Names  []types.String `tfsdk:"names"`
+	Types  []types.String `tfsdk:"types"`
+	When   []When         `tfsdk:"when"`
 }

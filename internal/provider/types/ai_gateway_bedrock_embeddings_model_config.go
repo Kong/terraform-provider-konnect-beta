@@ -11,7 +11,6 @@ type AIGatewayBedrockEmbeddingsModelConfig struct {
 	EmbeddingsNormalize      types.Bool   `tfsdk:"embeddings_normalize"`
 	PerformanceConfigLatency types.String `tfsdk:"performance_config_latency"`
 	Region                   types.String `tfsdk:"region"`
-	Type                     types.String `tfsdk:"type"`
 	UpstreamURL              types.String `tfsdk:"upstream_url"`
 	VideoOutputS3URI         types.String `tfsdk:"video_output_s3_uri"`
 }

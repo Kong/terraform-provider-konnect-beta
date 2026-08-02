@@ -25,7 +25,6 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       ]
     }
   }
-  additional_properties = "{ \"see\": \"documentation\" }"
   config = {
     logging = {
       max_payload_size = 524288
@@ -97,7 +96,6 @@ A user-defined unique identifier for this agent, used as a stable human-readable
 This feature is currently in beta and is subject to change.
 
 Access control configuration for an agent. (see [below for nested schema](#nestedatt--access))
-- `additional_properties` (String) Parsed as JSON.
 - `enabled` (Boolean) Whether the Agent is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 

@@ -36,12 +36,6 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				}
 			}
 		}
-		if resp.AdditionalProperties == nil {
-			r.AdditionalProperties = jsontypes.NewNormalizedNull()
-		} else {
-			additionalPropertiesResult, _ := json.Marshal(resp.AdditionalProperties)
-			r.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
-		}
 		r.Config = &tfTypes.CreateAIGatewayAgentRequestConfig{}
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
@@ -62,13 +56,9 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 					r.Config.Route.Headers[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
-			if resp.Config.Route.Hosts != nil {
-				r.Config.Route.Hosts = make([]types.String, 0, len(resp.Config.Route.Hosts))
-				for _, v := range resp.Config.Route.Hosts {
-					r.Config.Route.Hosts = append(r.Config.Route.Hosts, types.StringValue(v))
-				}
-			} else {
-				r.Config.Route.Hosts = nil
+			r.Config.Route.Hosts = make([]types.String, 0, len(resp.Config.Route.Hosts))
+			for _, v := range resp.Config.Route.Hosts {
+				r.Config.Route.Hosts = append(r.Config.Route.Hosts, types.StringValue(v))
 			}
 			r.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.Config.Route.HTTPSRedirectStatusCode)
 			r.Config.Route.Methods = make([]types.String, 0, len(resp.Config.Route.Methods))
@@ -254,12 +244,9 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			_ = json.Unmarshal([]byte(r.Config.Route.Headers[headersKey].ValueString()), &headersInst)
 			headers[headersKey] = headersInst
 		}
-		var hosts []string
-		if r.Config.Route.Hosts != nil {
-			hosts = make([]string, 0, len(r.Config.Route.Hosts))
-			for hostsIndex := range r.Config.Route.Hosts {
-				hosts = append(hosts, r.Config.Route.Hosts[hostsIndex].ValueString())
-			}
+		hosts := make([]string, 0, len(r.Config.Route.Hosts))
+		for hostsIndex := range r.Config.Route.Hosts {
+			hosts = append(hosts, r.Config.Route.Hosts[hostsIndex].ValueString())
 		}
 		httpsRedirectStatusCode := new(int64)
 		if !r.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Config.Route.HTTPSRedirectStatusCode.IsNull() {
@@ -373,21 +360,16 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 
 		managedBy[managedByKey] = managedByInst
 	}
-	var additionalProperties map[string]any
-	if !r.AdditionalProperties.IsUnknown() && !r.AdditionalProperties.IsNull() {
-		_ = json.Unmarshal([]byte(r.AdditionalProperties.ValueString()), &additionalProperties)
-	}
 	out := shared.CreateAIGatewayAgentRequest{
-		DisplayName:          displayName,
-		Name:                 name,
-		Enabled:              enabled,
-		Type:                 typeVar,
-		Policies:             policies,
-		Access:               access,
-		Config:               config,
-		Labels:               labels,
-		ManagedBy:            managedBy,
-		AdditionalProperties: additionalProperties,
+		DisplayName: displayName,
+		Name:        name,
+		Enabled:     enabled,
+		Type:        typeVar,
+		Policies:    policies,
+		Access:      access,
+		Config:      config,
+		Labels:      labels,
+		ManagedBy:   managedBy,
 	}
 
 	return &out, diags
@@ -445,12 +427,9 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			_ = json.Unmarshal([]byte(r.Config.Route.Headers[headersKey].ValueString()), &headersInst)
 			headers[headersKey] = headersInst
 		}
-		var hosts []string
-		if r.Config.Route.Hosts != nil {
-			hosts = make([]string, 0, len(r.Config.Route.Hosts))
-			for hostsIndex := range r.Config.Route.Hosts {
-				hosts = append(hosts, r.Config.Route.Hosts[hostsIndex].ValueString())
-			}
+		hosts := make([]string, 0, len(r.Config.Route.Hosts))
+		for hostsIndex := range r.Config.Route.Hosts {
+			hosts = append(hosts, r.Config.Route.Hosts[hostsIndex].ValueString())
 		}
 		httpsRedirectStatusCode := new(int64)
 		if !r.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Config.Route.HTTPSRedirectStatusCode.IsNull() {
@@ -564,21 +543,16 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 
 		managedBy[managedByKey] = managedByInst
 	}
-	var additionalProperties map[string]any
-	if !r.AdditionalProperties.IsUnknown() && !r.AdditionalProperties.IsNull() {
-		_ = json.Unmarshal([]byte(r.AdditionalProperties.ValueString()), &additionalProperties)
-	}
 	out := shared.UpdateAIGatewayAgentRequest{
-		DisplayName:          displayName,
-		Name:                 name,
-		Enabled:              enabled,
-		Type:                 typeVar,
-		Policies:             policies,
-		Access:               access,
-		Config:               config,
-		Labels:               labels,
-		ManagedBy:            managedBy,
-		AdditionalProperties: additionalProperties,
+		DisplayName: displayName,
+		Name:        name,
+		Enabled:     enabled,
+		Type:        typeVar,
+		Policies:    policies,
+		Access:      access,
+		Config:      config,
+		Labels:      labels,
+		ManagedBy:   managedBy,
 	}
 
 	return &out, diags

@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -34,6 +35,15 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx context.Context, resp *shared.ListPortalsResponsePortal) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	if resp.Ai == nil {
+		r.Ai = nil
+	} else {
+		r.Ai = &tfTypes.AISettings{}
+		r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
+		r.Ai.Features = &tfTypes.Features{}
+		r.Ai.Features.McpServer = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+		r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
+	}
 	r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 	r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
 	r.AutoApproveDevelopers = types.BoolPointerValue(resp.AutoApproveDevelopers)

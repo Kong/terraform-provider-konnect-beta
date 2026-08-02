@@ -31,6 +31,7 @@ const (
 	CreateAIGatewayModelProviderRequestTypeVllm        CreateAIGatewayModelProviderRequestType = "vllm"
 	CreateAIGatewayModelProviderRequestTypeXai         CreateAIGatewayModelProviderRequestType = "xai"
 	CreateAIGatewayModelProviderRequestTypeVertex      CreateAIGatewayModelProviderRequestType = "vertex"
+	CreateAIGatewayModelProviderRequestTypeSagemaker   CreateAIGatewayModelProviderRequestType = "sagemaker"
 )
 
 // CreateAIGatewayModelProviderRequest - **Pre-release Feature**
@@ -55,15 +56,13 @@ type CreateAIGatewayModelProviderRequest struct {
 	AIGatewayModelProviderVllm        *AIGatewayModelProviderVllm        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderXai         *AIGatewayModelProviderXai         `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderVertex      *AIGatewayModelProviderVertex      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderSagemaker   *AIGatewayModelProviderSagemaker   `queryParam:"inline" union:"member"`
 
 	Type CreateAIGatewayModelProviderRequestType
 }
 
 func CreateCreateAIGatewayModelProviderRequestAnthropic(anthropic AIGatewayModelProviderAnthropic) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeAnthropic
-
-	typStr := AIGatewayModelProviderAnthropicType(typ)
-	anthropic.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderAnthropic: &anthropic,
@@ -74,9 +73,6 @@ func CreateCreateAIGatewayModelProviderRequestAnthropic(anthropic AIGatewayModel
 func CreateCreateAIGatewayModelProviderRequestAzure(azure AIGatewayModelProviderAzure) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeAzure
 
-	typStr := AIGatewayModelProviderAzureType(typ)
-	azure.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderAzure: &azure,
 		Type:                        typ,
@@ -85,9 +81,6 @@ func CreateCreateAIGatewayModelProviderRequestAzure(azure AIGatewayModelProvider
 
 func CreateCreateAIGatewayModelProviderRequestBedrock(bedrock AIGatewayModelProviderBedrock) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeBedrock
-
-	typStr := AIGatewayModelProviderBedrockType(typ)
-	bedrock.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderBedrock: &bedrock,
@@ -98,9 +91,6 @@ func CreateCreateAIGatewayModelProviderRequestBedrock(bedrock AIGatewayModelProv
 func CreateCreateAIGatewayModelProviderRequestCerebras(cerebras AIGatewayModelProviderCerebras) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeCerebras
 
-	typStr := AIGatewayModelProviderCerebrasType(typ)
-	cerebras.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderCerebras: &cerebras,
 		Type:                           typ,
@@ -109,9 +99,6 @@ func CreateCreateAIGatewayModelProviderRequestCerebras(cerebras AIGatewayModelPr
 
 func CreateCreateAIGatewayModelProviderRequestCohere(cohere AIGatewayModelProviderCohere) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeCohere
-
-	typStr := AIGatewayModelProviderCohereType(typ)
-	cohere.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderCohere: &cohere,
@@ -122,9 +109,6 @@ func CreateCreateAIGatewayModelProviderRequestCohere(cohere AIGatewayModelProvid
 func CreateCreateAIGatewayModelProviderRequestDashscope(dashscope AIGatewayModelProviderDashscope) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeDashscope
 
-	typStr := AIGatewayModelProviderDashscopeType(typ)
-	dashscope.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderDashscope: &dashscope,
 		Type:                            typ,
@@ -133,9 +117,6 @@ func CreateCreateAIGatewayModelProviderRequestDashscope(dashscope AIGatewayModel
 
 func CreateCreateAIGatewayModelProviderRequestDatabricks(databricks AIGatewayModelProviderDatabricks) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeDatabricks
-
-	typStr := AIGatewayModelProviderDatabricksType(typ)
-	databricks.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderDatabricks: &databricks,
@@ -146,9 +127,6 @@ func CreateCreateAIGatewayModelProviderRequestDatabricks(databricks AIGatewayMod
 func CreateCreateAIGatewayModelProviderRequestDeepseek(deepseek AIGatewayModelProviderDeepseek) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeDeepseek
 
-	typStr := AIGatewayModelProviderDeepseekType(typ)
-	deepseek.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderDeepseek: &deepseek,
 		Type:                           typ,
@@ -157,9 +135,6 @@ func CreateCreateAIGatewayModelProviderRequestDeepseek(deepseek AIGatewayModelPr
 
 func CreateCreateAIGatewayModelProviderRequestGemini(gemini AIGatewayModelProviderGemini) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeGemini
-
-	typStr := AIGatewayModelProviderGeminiType(typ)
-	gemini.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderGemini: &gemini,
@@ -170,9 +145,6 @@ func CreateCreateAIGatewayModelProviderRequestGemini(gemini AIGatewayModelProvid
 func CreateCreateAIGatewayModelProviderRequestHuggingface(huggingface AIGatewayModelProviderHuggingface) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeHuggingface
 
-	typStr := AIGatewayModelProviderHuggingfaceType(typ)
-	huggingface.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderHuggingface: &huggingface,
 		Type:                              typ,
@@ -181,9 +153,6 @@ func CreateCreateAIGatewayModelProviderRequestHuggingface(huggingface AIGatewayM
 
 func CreateCreateAIGatewayModelProviderRequestKimi(kimi AIGatewayModelProviderKimi) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeKimi
-
-	typStr := AIGatewayModelProviderKimiType(typ)
-	kimi.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderKimi: &kimi,
@@ -194,9 +163,6 @@ func CreateCreateAIGatewayModelProviderRequestKimi(kimi AIGatewayModelProviderKi
 func CreateCreateAIGatewayModelProviderRequestLlama2(llama2 AIGatewayModelProviderLlama2) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeLlama2
 
-	typStr := AIGatewayModelProviderLlama2Type(typ)
-	llama2.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderLlama2: &llama2,
 		Type:                         typ,
@@ -205,9 +171,6 @@ func CreateCreateAIGatewayModelProviderRequestLlama2(llama2 AIGatewayModelProvid
 
 func CreateCreateAIGatewayModelProviderRequestMistral(mistral AIGatewayModelProviderMistral) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeMistral
-
-	typStr := AIGatewayModelProviderMistralType(typ)
-	mistral.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderMistral: &mistral,
@@ -218,9 +181,6 @@ func CreateCreateAIGatewayModelProviderRequestMistral(mistral AIGatewayModelProv
 func CreateCreateAIGatewayModelProviderRequestOllama(ollama AIGatewayModelProviderOllama) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeOllama
 
-	typStr := AIGatewayModelProviderOllamaType(typ)
-	ollama.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderOllama: &ollama,
 		Type:                         typ,
@@ -229,9 +189,6 @@ func CreateCreateAIGatewayModelProviderRequestOllama(ollama AIGatewayModelProvid
 
 func CreateCreateAIGatewayModelProviderRequestOpenai(openai AIGatewayModelProviderOpenai) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeOpenai
-
-	typStr := AIGatewayModelProviderOpenaiType(typ)
-	openai.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderOpenai: &openai,
@@ -242,9 +199,6 @@ func CreateCreateAIGatewayModelProviderRequestOpenai(openai AIGatewayModelProvid
 func CreateCreateAIGatewayModelProviderRequestVercel(vercel AIGatewayModelProviderVercel) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeVercel
 
-	typStr := AIGatewayModelProviderVercelType(typ)
-	vercel.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderVercel: &vercel,
 		Type:                         typ,
@@ -253,9 +207,6 @@ func CreateCreateAIGatewayModelProviderRequestVercel(vercel AIGatewayModelProvid
 
 func CreateCreateAIGatewayModelProviderRequestVllm(vllm AIGatewayModelProviderVllm) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeVllm
-
-	typStr := AIGatewayModelProviderVllmType(typ)
-	vllm.Type = typStr
 
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderVllm: &vllm,
@@ -266,9 +217,6 @@ func CreateCreateAIGatewayModelProviderRequestVllm(vllm AIGatewayModelProviderVl
 func CreateCreateAIGatewayModelProviderRequestXai(xai AIGatewayModelProviderXai) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeXai
 
-	typStr := AIGatewayModelProviderXaiType(typ)
-	xai.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderXai: &xai,
 		Type:                      typ,
@@ -278,12 +226,21 @@ func CreateCreateAIGatewayModelProviderRequestXai(xai AIGatewayModelProviderXai)
 func CreateCreateAIGatewayModelProviderRequestVertex(vertex AIGatewayModelProviderVertex) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeVertex
 
-	typStr := AIGatewayModelProviderVertexType(typ)
-	vertex.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderVertex: &vertex,
 		Type:                         typ,
+	}
+}
+
+func CreateCreateAIGatewayModelProviderRequestSagemaker(sagemaker AIGatewayModelProviderSagemaker) CreateAIGatewayModelProviderRequest {
+	typ := CreateAIGatewayModelProviderRequestTypeSagemaker
+
+	typStr := AIGatewayModelProviderSagemakerType(typ)
+	sagemaker.Type = typStr
+
+	return CreateAIGatewayModelProviderRequest{
+		AIGatewayModelProviderSagemaker: &sagemaker,
+		Type:                            typ,
 	}
 }
 
@@ -470,6 +427,15 @@ func (u *CreateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 		u.AIGatewayModelProviderVertex = aiGatewayModelProviderVertex
 		u.Type = CreateAIGatewayModelProviderRequestTypeVertex
 		return nil
+	case "sagemaker":
+		aiGatewayModelProviderSagemaker := new(AIGatewayModelProviderSagemaker)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderSagemaker, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sagemaker) type AIGatewayModelProviderSagemaker within CreateAIGatewayModelProviderRequest: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderSagemaker = aiGatewayModelProviderSagemaker
+		u.Type = CreateAIGatewayModelProviderRequestTypeSagemaker
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateAIGatewayModelProviderRequest", string(data))
@@ -550,6 +516,10 @@ func (u CreateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderVertex != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderVertex, "", true)
+	}
+
+	if u.AIGatewayModelProviderSagemaker != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderSagemaker, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type CreateAIGatewayModelProviderRequest: all fields are null")

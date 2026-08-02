@@ -7,7 +7,6 @@ import (
 )
 
 type AIGatewayHuggingfaceEmbeddingsModelConfig struct {
-	Type         types.String `tfsdk:"type"`
 	UpstreamURL  types.String `tfsdk:"upstream_url"`
 	UseCache     types.Bool   `tfsdk:"use_cache"`
 	WaitForModel types.Bool   `tfsdk:"wait_for_model"`

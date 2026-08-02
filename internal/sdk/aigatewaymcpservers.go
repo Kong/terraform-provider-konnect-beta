@@ -221,12 +221,12 @@ func (s *AIGatewayMCPServers) CreateAiGatewayMcpServer(ctx context.Context, requ
 				return nil, err
 			}
 
-			var out shared.AIGatewayMCPServer
+			var out shared.AIGatewayMCPServerResponseTFOnly
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AIGatewayMCPServer = &out
+			res.AIGatewayMCPServerResponseTFOnly = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -555,12 +555,12 @@ func (s *AIGatewayMCPServers) GetAiGatewayMcpServer(ctx context.Context, request
 				return nil, err
 			}
 
-			var out shared.AIGatewayMCPServer
+			var out shared.AIGatewayMCPServerResponseTFOnly
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AIGatewayMCPServer = &out
+			res.AIGatewayMCPServerResponseTFOnly = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -854,12 +854,12 @@ func (s *AIGatewayMCPServers) UpdateAiGatewayMcpServer(ctx context.Context, requ
 				return nil, err
 			}
 
-			var out shared.AIGatewayMCPServer
+			var out shared.AIGatewayMCPServerResponseTFOnly
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AIGatewayMCPServer = &out
+			res.AIGatewayMCPServerResponseTFOnly = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

@@ -3,38 +3,14 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayMCPServerPassthroughListenerType string
-
-const (
-	AIGatewayMCPServerPassthroughListenerTypePassthroughListener AIGatewayMCPServerPassthroughListenerType = "passthrough-listener"
-)
-
-func (e AIGatewayMCPServerPassthroughListenerType) ToPointer() *AIGatewayMCPServerPassthroughListenerType {
-	return &e
-}
-func (e *AIGatewayMCPServerPassthroughListenerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "passthrough-listener":
-		*e = AIGatewayMCPServerPassthroughListenerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayMCPServerPassthroughListenerType: %v", v)
-	}
-}
 
 // AIGatewayMCPServerPassthroughListener - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerPassthroughListener struct {
-	Type AIGatewayMCPServerPassthroughListenerType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"passthrough-listener" json:"type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -67,8 +43,7 @@ type AIGatewayMCPServerPassthroughListener struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy            map[string]string `json:"managed_by,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (a AIGatewayMCPServerPassthroughListener) MarshalJSON() ([]byte, error) {
@@ -82,11 +57,8 @@ func (a *AIGatewayMCPServerPassthroughListener) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-func (a *AIGatewayMCPServerPassthroughListener) GetType() AIGatewayMCPServerPassthroughListenerType {
-	if a == nil {
-		return AIGatewayMCPServerPassthroughListenerType("")
-	}
-	return a.Type
+func (a *AIGatewayMCPServerPassthroughListener) GetType() string {
+	return "passthrough-listener"
 }
 
 func (a *AIGatewayMCPServerPassthroughListener) GetConfig() AIGatewayMCPServerWithUpstreamConfig {
@@ -164,11 +136,4 @@ func (a *AIGatewayMCPServerPassthroughListener) GetManagedBy() map[string]string
 		return nil
 	}
 	return a.ManagedBy
-}
-
-func (a *AIGatewayMCPServerPassthroughListener) GetAdditionalProperties() any {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalProperties
 }

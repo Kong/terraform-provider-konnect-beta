@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // CreateAIGatewayConsumerGroupRequest - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type CreateAIGatewayConsumerGroupRequest struct {
@@ -29,19 +25,7 @@ type CreateAIGatewayConsumerGroupRequest struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy            map[string]string `json:"managed_by,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
-}
-
-func (c CreateAIGatewayConsumerGroupRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateAIGatewayConsumerGroupRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (c *CreateAIGatewayConsumerGroupRequest) GetDisplayName() string {
@@ -77,11 +61,4 @@ func (c *CreateAIGatewayConsumerGroupRequest) GetManagedBy() map[string]string {
 		return nil
 	}
 	return c.ManagedBy
-}
-
-func (c *CreateAIGatewayConsumerGroupRequest) GetAdditionalProperties() any {
-	if c == nil {
-		return nil
-	}
-	return c.AdditionalProperties
 }

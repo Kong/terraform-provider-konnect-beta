@@ -38,7 +38,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -87,7 +86,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
                 client_id     = "...my_client_id..."
                 client_secret = "...my_client_secret..."
                 tenant_id     = "...my_tenant_id..."
-                type          = "azure"
               }
             }
             cluster = {
@@ -107,10 +105,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 1275755412
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              integer = 6379
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -191,10 +187,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "https"
       }
     ]
-    type = "conversion-listener"
   }
   conversion_only = {
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -283,7 +277,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "http"
       }
     ]
-    type = "conversion-only"
   }
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   listener = {
@@ -309,7 +302,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -356,7 +348,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             cloud_authentication = {
               gcp = {
                 service_account_json = "...my_service_account_json..."
-                type                 = "gcp"
               }
             }
             cluster = {
@@ -376,10 +367,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 254844406
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              str = "{vault://hcv/redis/port}"
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -459,7 +448,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "https"
       }
     ]
-    type = "listener"
   }
   passthrough_listener = {
     access = {
@@ -483,7 +471,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -548,7 +535,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
                 client_id     = "...my_client_id..."
                 client_secret = "...my_client_secret..."
                 tenant_id     = "...my_tenant_id..."
-                type          = "azure"
               }
             }
             cluster = {
@@ -568,10 +554,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 1750673053
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              integer = 6379
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -652,7 +636,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "http"
       }
     ]
-    type = "passthrough-listener"
   }
   upstream_server = {
     access = {
@@ -676,7 +659,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -724,7 +706,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             cloud_authentication = {
               gcp = {
                 service_account_json = "...my_service_account_json..."
-                type                 = "gcp"
               }
             }
             cluster = {
@@ -744,10 +725,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 176733398
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              str = "{vault://hcv/redis/port}"
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -776,7 +755,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             access_token_header = "Authorization"
             id_token_header     = "...my_id_token_header..."
             scope               = "...my_scope..."
-            type                = "jwt"
           }
         }
       }
@@ -839,7 +817,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "http"
       }
     ]
-    type = "upstream-server"
   }
 }
 ```
@@ -866,7 +843,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 ### Read-Only
 
-- `additional_properties` (String) Parsed as JSON.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `display_name` (String) The display name for the MCP Server.
 - `enabled` (Boolean) Whether the MCP Server is enabled.
@@ -875,7 +851,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
-- `type` (String)
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--conversion_listener"></a>
@@ -885,7 +860,6 @@ Optional:
 
 - `access` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--access))
-- `additional_properties` (String) Parsed as JSON.
 - `config` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -908,7 +882,6 @@ A user-defined unique identifier for this MCP server, used as a stable human-rea
 Not Null
 - `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--tools))
-- `type` (String) Not Null; must be "conversion-listener"
 
 Read-Only:
 
@@ -1098,8 +1071,9 @@ Default: "127.0.0.1"
 - `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--keepalive))
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (Attributes) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--port))
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--sentinel))
@@ -1146,7 +1120,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `secret_access_key` (String) AWS Secret Access Key.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "aws"
 
 
 <a id="nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--azure"></a>
@@ -1160,7 +1133,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `tenant_id` (String) Azure Tenant ID.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "azure"
 
 
 <a id="nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--gcp"></a>
@@ -1170,7 +1142,6 @@ Optional:
 
 - `service_account_json` (String) GCP Service Account JSON.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "gcp"
 
 
 
@@ -1199,15 +1170,6 @@ Optional:
 
 - `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
 - `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--conversion_listener--config--server--session--redis--port"></a>
-### Nested Schema for `conversion_listener.config.server.session.redis.port`
-
-Optional:
-
-- `integer` (Number)
-- `str` (String)
 
 
 <a id="nestedatt--conversion_listener--config--server--session--redis--sentinel"></a>
@@ -1326,7 +1288,6 @@ Optional:
 
 Optional:
 
-- `additional_properties` (String) Parsed as JSON.
 - `config` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1349,7 +1310,6 @@ A user-defined unique identifier for this MCP server, used as a stable human-rea
 Not Null
 - `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--conversion_only--tools))
-- `type` (String) Not Null; must be "conversion-only"
 
 Read-Only:
 
@@ -1495,7 +1455,6 @@ Optional:
 
 - `access` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--listener--access))
-- `additional_properties` (String) Parsed as JSON.
 - `config` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1518,7 +1477,6 @@ A user-defined unique identifier for this MCP server, used as a stable human-rea
 Not Null
 - `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--listener--tools))
-- `type` (String) Not Null; must be "listener"
 
 Read-Only:
 
@@ -1705,8 +1663,9 @@ Default: "127.0.0.1"
 - `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--keepalive))
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (Attributes) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). (see [below for nested schema](#nestedatt--listener--config--server--session--redis--port))
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--sentinel))
@@ -1753,7 +1712,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `secret_access_key` (String) AWS Secret Access Key.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "aws"
 
 
 <a id="nestedatt--listener--config--server--session--redis--cloud_authentication--azure"></a>
@@ -1767,7 +1725,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `tenant_id` (String) Azure Tenant ID.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "azure"
 
 
 <a id="nestedatt--listener--config--server--session--redis--cloud_authentication--gcp"></a>
@@ -1777,7 +1734,6 @@ Optional:
 
 - `service_account_json` (String) GCP Service Account JSON.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "gcp"
 
 
 
@@ -1806,15 +1762,6 @@ Optional:
 
 - `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
 - `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--listener--config--server--session--redis--port"></a>
-### Nested Schema for `listener.config.server.session.redis.port`
-
-Optional:
-
-- `integer` (Number)
-- `str` (String)
 
 
 <a id="nestedatt--listener--config--server--session--redis--sentinel"></a>
@@ -1935,7 +1882,6 @@ Optional:
 
 - `access` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--passthrough_listener--access))
-- `additional_properties` (String) Parsed as JSON.
 - `config` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1958,7 +1904,6 @@ A user-defined unique identifier for this MCP server, used as a stable human-rea
 Not Null
 - `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--tools))
-- `type` (String) Not Null; must be "passthrough-listener"
 
 Read-Only:
 
@@ -2190,8 +2135,9 @@ Default: "127.0.0.1"
 - `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--keepalive))
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (Attributes) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--port))
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--sentinel))
@@ -2238,7 +2184,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `secret_access_key` (String) AWS Secret Access Key.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "aws"
 
 
 <a id="nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--azure"></a>
@@ -2252,7 +2197,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `tenant_id` (String) Azure Tenant ID.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "azure"
 
 
 <a id="nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--gcp"></a>
@@ -2262,7 +2206,6 @@ Optional:
 
 - `service_account_json` (String) GCP Service Account JSON.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "gcp"
 
 
 
@@ -2291,15 +2234,6 @@ Optional:
 
 - `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
 - `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--passthrough_listener--config--server--session--redis--port"></a>
-### Nested Schema for `passthrough_listener.config.server.session.redis.port`
-
-Optional:
-
-- `integer` (Number)
-- `str` (String)
 
 
 <a id="nestedatt--passthrough_listener--config--server--session--redis--sentinel"></a>
@@ -2420,7 +2354,6 @@ Optional:
 
 - `access` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--access))
-- `additional_properties` (String) Parsed as JSON.
 - `config` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -2443,7 +2376,6 @@ A user-defined unique identifier for this MCP server, used as a stable human-rea
 Not Null
 - `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--upstream_server--tools))
-- `type` (String) Not Null; must be "upstream-server"
 
 Read-Only:
 
@@ -2641,8 +2573,9 @@ Default: "127.0.0.1"
 - `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--keepalive))
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (Attributes) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--port))
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--sentinel))
@@ -2689,7 +2622,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `secret_access_key` (String) AWS Secret Access Key.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "aws"
 
 
 <a id="nestedatt--upstream_server--config--server--session--redis--cloud_authentication--azure"></a>
@@ -2703,7 +2635,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `tenant_id` (String) Azure Tenant ID.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "azure"
 
 
 <a id="nestedatt--upstream_server--config--server--session--redis--cloud_authentication--gcp"></a>
@@ -2713,7 +2644,6 @@ Optional:
 
 - `service_account_json` (String) GCP Service Account JSON.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "gcp"
 
 
 
@@ -2742,15 +2672,6 @@ Optional:
 
 - `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
 - `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--upstream_server--config--server--session--redis--port"></a>
-### Nested Schema for `upstream_server.config.server.session.redis.port`
-
-Optional:
-
-- `integer` (Number)
-- `str` (String)
 
 
 <a id="nestedatt--upstream_server--config--server--session--redis--sentinel"></a>
@@ -2809,7 +2730,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `token_endpoint` (String) The token endpoint URL for fetching the OAuth 2.0 access token using client-credentials.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 Not Null
-- `type` (String) Not Null; must be "credentials"
 
 
 <a id="nestedatt--upstream_server--config--server--tools_list_auth--jwt"></a>
@@ -2825,7 +2745,6 @@ include the header name and the token prefix if needed. Leave empty to omit the 
 when fetching the tools list.
 - `scope` (String) The scopes for the OAuth 2.0 client-credentials.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "jwt"
 
 
 

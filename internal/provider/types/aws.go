@@ -7,7 +7,8 @@ import (
 )
 
 type Aws struct {
-	IamServerIDHeader types.String                          `tfsdk:"iam_server_id_header"`
-	Role              types.String                          `tfsdk:"role"`
-	Type              *AIGatewayRedisCloudConfigurationPort `tfsdk:"type"`
+	AssumeRoleArn   types.String `tfsdk:"assume_role_arn"`
+	Region          types.String `tfsdk:"region"`
+	RoleSessionName types.String `tfsdk:"role_session_name"`
+	StsEndpointURL  types.String `tfsdk:"sts_endpoint_url"`
 }

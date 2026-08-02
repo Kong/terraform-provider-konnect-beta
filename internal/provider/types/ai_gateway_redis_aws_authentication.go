@@ -14,5 +14,4 @@ type AIGatewayRedisAWSAuthentication struct {
 	Region          types.String `tfsdk:"region"`
 	RoleSessionName types.String `tfsdk:"role_session_name"`
 	SecretAccessKey types.String `tfsdk:"secret_access_key"`
-	Type            types.String `tfsdk:"type"`
 }

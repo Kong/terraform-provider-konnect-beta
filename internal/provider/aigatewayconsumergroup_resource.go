@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -37,16 +36,15 @@ type AIGatewayConsumerGroupResource struct {
 
 // AIGatewayConsumerGroupResourceModel describes the resource data model.
 type AIGatewayConsumerGroupResourceModel struct {
-	AdditionalProperties jsontypes.Normalized    `tfsdk:"additional_properties"`
-	CreatedAt            types.String            `tfsdk:"created_at"`
-	DisplayName          types.String            `tfsdk:"display_name"`
-	GatewayID            types.String            `tfsdk:"gateway_id"`
-	ID                   types.String            `tfsdk:"id"`
-	Labels               map[string]types.String `tfsdk:"labels"`
-	ManagedBy            map[string]types.String `tfsdk:"managed_by"`
-	Name                 types.String            `tfsdk:"name"`
-	Policies             []types.String          `tfsdk:"policies"`
-	UpdatedAt            types.String            `tfsdk:"updated_at"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	DisplayName types.String            `tfsdk:"display_name"`
+	GatewayID   types.String            `tfsdk:"gateway_id"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
+	Name        types.String            `tfsdk:"name"`
+	Policies    []types.String          `tfsdk:"policies"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayConsumerGroupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -57,12 +55,6 @@ func (r *AIGatewayConsumerGroupResource) Schema(ctx context.Context, req resourc
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayConsumerGroup Resource",
 		Attributes: map[string]schema.Attribute{
-			"additional_properties": schema.StringAttribute{
-				CustomType:  jsontypes.NormalizedType{},
-				Computed:    true,
-				Optional:    true,
-				Description: `Parsed as JSON.`,
-			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{

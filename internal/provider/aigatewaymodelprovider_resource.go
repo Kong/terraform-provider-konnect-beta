@@ -10,9 +10,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -62,7 +64,7 @@ type AIGatewayModelProviderResourceModel struct {
 	Name        types.String                             `tfsdk:"name"`
 	Ollama      *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"ollama"`
 	Openai      *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"openai"`
-	Type        types.String                             `tfsdk:"type"`
+	Sagemaker   *tfTypes.AIGatewayModelProviderSagemaker `queryParam:"inline" tfsdk:"sagemaker"`
 	UpdatedAt   types.String                             `tfsdk:"updated_at"`
 	Vercel      *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"vercel"`
 	Vertex      *tfTypes.AIGatewayModelProviderVertex    `queryParam:"inline" tfsdk:"vertex"`
@@ -108,6 +110,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -138,22 +143,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -227,17 +226,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "anthropic"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"anthropic",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -264,6 +252,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -299,15 +288,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												Optional: true,
 												MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.` + "\n" +
 													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "azure"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("azure"),
-												},
 											},
 											"use_managed_identity": schema.BoolAttribute{
 												Optional:    true,
@@ -346,6 +326,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														},
 														"value": schema.StringAttribute{
 															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
@@ -376,22 +359,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															},
 														},
 														"value": schema.StringAttribute{
-															Optional:    true,
+															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
 													},
 												},
 												Validators: []validator.List{
 													listvalidator.SizeAtMost(1),
-												},
-											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "basic"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("basic"),
 												},
 											},
 										},
@@ -480,15 +457,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "azure"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("azure"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -517,6 +485,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -566,15 +535,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												Optional:    true,
 												Description: `The STS endpoint URL to use for generating authentication tokens. If not specified, the default AWS STS endpoint will be used.`,
 											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "aws"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("aws"),
-												},
-											},
 										},
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
@@ -608,6 +568,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														},
 														"value": schema.StringAttribute{
 															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
@@ -638,22 +601,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															},
 														},
 														"value": schema.StringAttribute{
-															Optional:    true,
+															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
 													},
 												},
 												Validators: []validator.List{
 													listvalidator.SizeAtMost(1),
-												},
-											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "basic"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("basic"),
 												},
 											},
 										},
@@ -734,15 +691,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "bedrock"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("bedrock"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -771,6 +719,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -808,6 +757,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -838,22 +790,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -927,15 +873,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "cerebras"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("cerebras"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -962,6 +899,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -999,6 +937,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -1029,22 +970,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -1118,15 +1053,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "cohere"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("cohere"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1153,6 +1079,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -1197,6 +1124,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -1227,22 +1157,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -1316,17 +1240,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "dashscope"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"dashscope",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1353,6 +1266,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -1390,6 +1304,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -1420,22 +1337,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -1509,17 +1420,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "databricks"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"databricks",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1546,6 +1446,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -1583,6 +1484,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -1613,22 +1517,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -1702,15 +1600,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "deepseek"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("deepseek"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1737,6 +1626,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -1788,6 +1678,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														},
 														"value": schema.StringAttribute{
 															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
@@ -1818,22 +1711,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															},
 														},
 														"value": schema.StringAttribute{
-															Optional:    true,
+															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
 													},
 												},
 												Validators: []validator.List{
 													listvalidator.SizeAtMost(1),
-												},
-											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "basic"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("basic"),
 												},
 											},
 										},
@@ -1864,15 +1751,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												Optional: true,
 												MarkdownDescription: `Full JSON string of the GCP service account to authenticate. If not set (and gcp_use_service_account is true), the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.` + "\n" +
 													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "gcp"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("gcp"),
-												},
 											},
 											"use_gcp_service_account": schema.BoolAttribute{
 												Optional:    true,
@@ -1956,15 +1834,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "gemini"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("gemini"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1993,6 +1862,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -2030,6 +1900,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -2060,22 +1933,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -2149,17 +2016,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "huggingface"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"huggingface",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2186,6 +2042,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -2230,6 +2087,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -2260,22 +2120,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -2349,15 +2203,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "kimi"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("kimi"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2384,6 +2229,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -2421,6 +2267,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -2451,22 +2300,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -2540,15 +2383,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "llama2"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("llama2"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2575,6 +2409,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -2612,6 +2447,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -2642,22 +2480,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -2731,15 +2563,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "mistral"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("mistral"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2766,6 +2589,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("llama2"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -2813,6 +2637,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -2843,22 +2670,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -2932,15 +2753,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "ollama"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("ollama"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2967,6 +2779,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("llama2"),
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -3004,6 +2817,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -3034,22 +2850,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -3123,15 +2933,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "openai"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("openai"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3158,6 +2959,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("llama2"),
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
@@ -3165,10 +2967,215 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					}...),
 				},
 			},
-			"type": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("type")}}),
+			"sagemaker": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"config": schema.SingleNestedAttribute{
+						Required: true,
+						Attributes: map[string]schema.Attribute{
+							"auth": schema.SingleNestedAttribute{
+								Required: true,
+								Attributes: map[string]schema.Attribute{
+									"basic": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"headers": schema.ListNestedAttribute{
+												Optional: true,
+												NestedObject: schema.NestedAttributeObject{
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
+													Attributes: map[string]schema.Attribute{
+														"name": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+															MarkdownDescription: `The name of the header used for authentication.` + "\n" +
+																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																`Not Null`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+															},
+														},
+														"value": schema.StringAttribute{
+															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
+															MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
+																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+														},
+													},
+												},
+												Validators: []validator.List{
+													listvalidator.SizeAtMost(1),
+												},
+											},
+											"params": schema.ListNestedAttribute{
+												Optional: true,
+												NestedObject: schema.NestedAttributeObject{
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
+													Attributes: map[string]schema.Attribute{
+														"location": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+														},
+														"name": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+															},
+														},
+														"value": schema.StringAttribute{
+															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
+															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+														},
+													},
+												},
+												Validators: []validator.List{
+													listvalidator.SizeAtMost(1),
+												},
+											},
+										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`Basic auth config for an upstream model provider.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("sagemaker"),
+											}...),
+										},
+									},
+									"sagemaker": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"aws": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"access_key_id":     types.StringType,
+													"secret_access_key": types.StringType,
+													"session_token":     types.StringType,
+												})),
+												Attributes: map[string]schema.Attribute{
+													"access_key_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `static IAM user credential; overrides AWS_ACCESS_KEY_ID env var`,
+													},
+													"secret_access_key": schema.StringAttribute{
+														Optional:    true,
+														Description: `static IAM user credential; overrides AWS_SECRET_ACCESS_KEY env var`,
+													},
+													"session_token": schema.StringAttribute{
+														Optional:    true,
+														Description: `static IAM user credential; overrides AWS_SESSION_TOKEN env var`,
+													},
+												},
+											},
+											"type": schema.StringAttribute{
+												Required:    true,
+												Description: `must be "sagemaker"`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"sagemaker",
+													),
+												},
+											},
+										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`Auth configuration for Sagemaker model provider.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("basic"),
+											}...),
+										},
+									},
+								},
+							},
+						},
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.`,
+					},
+					"display_name": schema.StringAttribute{
+						Required:    true,
+						Description: `The display name for this model provider instance.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthBetween(1, 256),
+						},
+					},
+					"labels": schema.MapAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
+							`` + "\n" +
+							`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+					},
+					"managed_by": schema.MapAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+							`` + "\n" +
+							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					},
+					"name": schema.StringAttribute{
+						Required: true,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthBetween(1, 256),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+						},
+					},
+					"type": schema.StringAttribute{
+						Required:    true,
+						Description: `must be "sagemaker"`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"sagemaker",
+							),
+						},
+					},
+				},
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Config for Sagemaker model provider.`,
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("anthropic"),
+						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("bedrock"),
+						path.MatchRelative().AtParent().AtName("cerebras"),
+						path.MatchRelative().AtParent().AtName("cohere"),
+						path.MatchRelative().AtParent().AtName("dashscope"),
+						path.MatchRelative().AtParent().AtName("databricks"),
+						path.MatchRelative().AtParent().AtName("deepseek"),
+						path.MatchRelative().AtParent().AtName("gemini"),
+						path.MatchRelative().AtParent().AtName("huggingface"),
+						path.MatchRelative().AtParent().AtName("kimi"),
+						path.MatchRelative().AtParent().AtName("llama2"),
+						path.MatchRelative().AtParent().AtName("mistral"),
+						path.MatchRelative().AtParent().AtName("ollama"),
+						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("vercel"),
+						path.MatchRelative().AtParent().AtName("vertex"),
+						path.MatchRelative().AtParent().AtName("vllm"),
+						path.MatchRelative().AtParent().AtName("xai"),
+					}...),
 				},
 			},
 			"updated_at": schema.StringAttribute{
@@ -3208,6 +3215,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -3238,22 +3248,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -3327,15 +3331,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "vercel"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("vercel"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3363,6 +3358,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
@@ -3402,6 +3398,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														},
 														"value": schema.StringAttribute{
 															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
@@ -3432,22 +3431,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															},
 														},
 														"value": schema.StringAttribute{
-															Optional:    true,
+															Optional: true,
+															PlanModifiers: []planmodifier.String{
+																speakeasy_stringplanmodifier.UseConfigValue(),
+															},
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 														},
 													},
 												},
 												Validators: []validator.List{
 													listvalidator.SizeAtMost(1),
-												},
-											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "basic"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("basic"),
 												},
 											},
 										},
@@ -3468,15 +3461,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												Optional: true,
 												MarkdownDescription: `Full JSON string of the GCP service account to authenticate. If not set, the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.` + "\n" +
 													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-											},
-											"type": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "vertex"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("vertex"),
-												},
 											},
 										},
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -3556,15 +3540,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "vertex"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("vertex"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3594,6 +3569,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
@@ -3630,6 +3606,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -3660,22 +3639,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -3749,15 +3722,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "vllm"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("vllm"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3785,6 +3749,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("xai"),
@@ -3821,6 +3786,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 												"value": schema.StringAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
 														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
@@ -3851,22 +3819,16 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 												},
 											},
 										},
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Not Null; must be "basic"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf("basic"),
 										},
 									},
 								},
@@ -3940,15 +3902,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "xai"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("xai"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3976,6 +3929,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("mistral"),
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),

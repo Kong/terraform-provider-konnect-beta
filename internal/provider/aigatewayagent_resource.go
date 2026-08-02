@@ -44,20 +44,19 @@ type AIGatewayAgentResource struct {
 
 // AIGatewayAgentResourceModel describes the resource data model.
 type AIGatewayAgentResourceModel struct {
-	Access               *tfTypes.AIGatewayAgentAccess              `tfsdk:"access"`
-	AdditionalProperties jsontypes.Normalized                       `tfsdk:"additional_properties"`
-	Config               *tfTypes.CreateAIGatewayAgentRequestConfig `tfsdk:"config"`
-	CreatedAt            types.String                               `tfsdk:"created_at"`
-	DisplayName          types.String                               `tfsdk:"display_name"`
-	Enabled              types.Bool                                 `tfsdk:"enabled"`
-	GatewayID            types.String                               `tfsdk:"gateway_id"`
-	ID                   types.String                               `tfsdk:"id"`
-	Labels               map[string]types.String                    `tfsdk:"labels"`
-	ManagedBy            map[string]types.String                    `tfsdk:"managed_by"`
-	Name                 types.String                               `tfsdk:"name"`
-	Policies             []types.String                             `tfsdk:"policies"`
-	Type                 types.String                               `tfsdk:"type"`
-	UpdatedAt            types.String                               `tfsdk:"updated_at"`
+	Access      *tfTypes.AIGatewayAgentAccess              `tfsdk:"access"`
+	Config      *tfTypes.CreateAIGatewayAgentRequestConfig `tfsdk:"config"`
+	CreatedAt   types.String                               `tfsdk:"created_at"`
+	DisplayName types.String                               `tfsdk:"display_name"`
+	Enabled     types.Bool                                 `tfsdk:"enabled"`
+	GatewayID   types.String                               `tfsdk:"gateway_id"`
+	ID          types.String                               `tfsdk:"id"`
+	Labels      map[string]types.String                    `tfsdk:"labels"`
+	ManagedBy   map[string]types.String                    `tfsdk:"managed_by"`
+	Name        types.String                               `tfsdk:"name"`
+	Policies    []types.String                             `tfsdk:"policies"`
+	Type        types.String                               `tfsdk:"type"`
+	UpdatedAt   types.String                               `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayAgentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -100,16 +99,11 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 					`` + "\n" +
 					`Access control configuration for an agent.`,
 			},
-			"additional_properties": schema.StringAttribute{
-				CustomType:  jsontypes.NormalizedType{},
-				Computed:    true,
-				Optional:    true,
-				Description: `Parsed as JSON.`,
-			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"logging": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"max_payload_size": schema.Int64Attribute{

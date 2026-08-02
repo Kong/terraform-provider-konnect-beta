@@ -3,45 +3,21 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayMCPServerConversionListenerType string
-
-const (
-	AIGatewayMCPServerConversionListenerTypeConversionListener AIGatewayMCPServerConversionListenerType = "conversion-listener"
-)
-
-func (e AIGatewayMCPServerConversionListenerType) ToPointer() *AIGatewayMCPServerConversionListenerType {
-	return &e
-}
-func (e *AIGatewayMCPServerConversionListenerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "conversion-listener":
-		*e = AIGatewayMCPServerConversionListenerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayMCPServerConversionListenerType: %v", v)
-	}
-}
 
 // AIGatewayMCPServerConversionListener - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerConversionListener struct {
-	Type AIGatewayMCPServerConversionListenerType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"conversion-listener" json:"type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
 	// Routing, logging, and server configuration for the MCP Server.
 	Config AIGatewayMCPServerWithUpstreamNoProxyConfig `json:"config"`
 	// List of tools exposed by this MCP Server.
-	Tools []AIGatewayMCPConversionTool `json:"tools"`
+	Tools []AIGatewayMCPConversionTool `json:"tools,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	Access *AIGatewayMCPServerBaseACLProperties `json:"access,omitempty"`
@@ -67,8 +43,7 @@ type AIGatewayMCPServerConversionListener struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy            map[string]string `json:"managed_by,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (a AIGatewayMCPServerConversionListener) MarshalJSON() ([]byte, error) {
@@ -82,11 +57,8 @@ func (a *AIGatewayMCPServerConversionListener) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-func (a *AIGatewayMCPServerConversionListener) GetType() AIGatewayMCPServerConversionListenerType {
-	if a == nil {
-		return AIGatewayMCPServerConversionListenerType("")
-	}
-	return a.Type
+func (a *AIGatewayMCPServerConversionListener) GetType() string {
+	return "conversion-listener"
 }
 
 func (a *AIGatewayMCPServerConversionListener) GetConfig() AIGatewayMCPServerWithUpstreamNoProxyConfig {
@@ -164,11 +136,4 @@ func (a *AIGatewayMCPServerConversionListener) GetManagedBy() map[string]string 
 		return nil
 	}
 	return a.ManagedBy
-}
-
-func (a *AIGatewayMCPServerConversionListener) GetAdditionalProperties() any {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalProperties
 }

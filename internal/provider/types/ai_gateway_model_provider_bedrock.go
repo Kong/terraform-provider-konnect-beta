@@ -14,6 +14,5 @@ type AIGatewayModelProviderBedrock struct {
 	Labels      map[string]types.String              `tfsdk:"labels"`
 	ManagedBy   map[string]types.String              `tfsdk:"managed_by"`
 	Name        types.String                         `tfsdk:"name"`
-	Type        types.String                         `tfsdk:"type"`
 	UpdatedAt   types.String                         `tfsdk:"updated_at"`
 }

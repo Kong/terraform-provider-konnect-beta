@@ -7,7 +7,6 @@ import (
 )
 
 type HashiCorpVaultCertConfig struct {
-	AuthMethod   types.String `tfsdk:"auth_method"`
 	Base64Decode types.Bool   `tfsdk:"base64_decode"`
 	Cert         types.String `tfsdk:"cert"`
 	Host         types.String `tfsdk:"host"`

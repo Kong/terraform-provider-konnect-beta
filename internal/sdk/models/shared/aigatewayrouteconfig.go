@@ -14,7 +14,7 @@ type AIGatewayRouteConfig struct {
 	// One or more lists of values indexed by header name that will cause this route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
 	Headers map[string]any `json:"headers,omitempty"`
 	// A list of domain names that match this route. Note that the hosts value is case sensitive.
-	Hosts []string `json:"hosts"`
+	Hosts []string `json:"hosts,omitempty"`
 	// The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol.
 	HTTPSRedirectStatusCode *int64 `default:"426" json:"https_redirect_status_code"`
 	// A list of HTTP methods that match this route.

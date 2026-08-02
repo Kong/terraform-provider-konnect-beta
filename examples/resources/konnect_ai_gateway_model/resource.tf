@@ -20,7 +20,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     config = {
       balancer = {
         lowest_latency = {
-          algorithm       = "lowest-latency"
           connect_timeout = 60000
           fail_timeout    = 10000
           failover_criteria = [
@@ -110,16 +109,16 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          xai = {
-            embeddings_dimensions = 7
-            input_cost            = 3.7
-            max_tokens            = 6
-            output_cost           = 6.56
-            temperature           = 3.27
-            top_k                 = 2
-            top_p                 = 2.83
-            type                  = "xai"
-            upstream_url          = "https://baggy-trash.biz/"
+          anthropic = {
+            embeddings_dimensions = 3
+            input_cost            = 9.85
+            max_tokens            = 1
+            output_cost           = 1.7
+            temperature           = 6.58
+            top_k                 = 3
+            top_p                 = 4.84
+            upstream_url          = "https://ajar-summer.biz"
+            version               = "2023-06-01"
           }
         }
         name                 = "gpt-5-model"
@@ -128,7 +127,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         weight               = 100
       }
     ]
-    type = "api"
   }
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   model = {
@@ -151,13 +149,11 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     config = {
       balancer = {
         semantic = {
-          algorithm       = "semantic"
           connect_timeout = 60000
           embeddings = {
             allow_auth_override = false
             config = {
               huggingface = {
-                type           = "huggingface"
                 upstream_url   = "...my_upstream_url..."
                 use_cache      = false
                 wait_for_model = false
@@ -192,7 +188,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
               }
               threshold = 3.66
               timeout   = 5000
-              type      = "pgvector"
               user      = "postgres"
             }
           }
@@ -235,10 +230,10 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_path = {
-            path_aliases = [
-              "@azure/claude-sonnet-5"
-            ]
+          ai_gateway_model_alias_config_body = {
+            body = {
+              key = jsonencode("value")
+            }
           }
         }
         paths = [
@@ -278,17 +273,16 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          databricks = {
-            embeddings_dimensions = 6
-            input_cost            = 9.06
-            max_tokens            = 8
-            output_cost           = 7.78
-            temperature           = 3.33
-            top_k                 = 4
-            top_p                 = 7.55
-            type                  = "databricks"
-            upstream_url          = "https://distant-antelope.com"
-            workspace_instance_id = "...my_workspace_instance_id..."
+          mistral = {
+            embeddings_dimensions = 10
+            format                = "ollama"
+            input_cost            = 1.29
+            max_tokens            = 5
+            output_cost           = 5.4
+            temperature           = 4.9
+            top_k                 = 6
+            top_p                 = 5.29
+            upstream_url          = "https://sad-thigh.net"
           }
         }
         name                 = "gpt-5-model"
@@ -297,6 +291,5 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         weight               = 100
       }
     ]
-    type = "model"
   }
 }

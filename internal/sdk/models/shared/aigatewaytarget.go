@@ -15,7 +15,7 @@ type AIGatewayTarget struct {
 	// The semantic description of the target, required if using semantic load balancing.
 	// Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
 	//
-	SemanticDescription *string `default:"null" json:"semantic_description"`
+	SemanticDescription *string `json:"semantic_description,omitempty"`
 	// When enabled, request-level auth parameters (such as API keys or bearer tokens) will override the static values defined for the provider.
 	//
 	AllowAuthOverride *bool `default:"false" json:"allow_auth_override"`
@@ -155,4 +155,8 @@ func (a *AIGatewayTarget) GetConfigVllm() *AIGatewayTargetVllmConfig {
 
 func (a *AIGatewayTarget) GetConfigXai() *AIGatewayTargetXaiConfig {
 	return a.GetConfig().AIGatewayTargetXaiConfig
+}
+
+func (a *AIGatewayTarget) GetConfigSagemaker() *AIGatewayTargetSagemakerConfig {
+	return a.GetConfig().AIGatewayTargetSagemakerConfig
 }

@@ -10,5 +10,4 @@ type AIGatewayRedisAzureAuthentication struct {
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
 	TenantID     types.String `tfsdk:"tenant_id"`
-	Type         types.String `tfsdk:"type"`
 }

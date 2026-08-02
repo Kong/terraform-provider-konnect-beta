@@ -3,33 +3,8 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayVertexEmbeddingsModelConfigType string
-
-const (
-	AIGatewayVertexEmbeddingsModelConfigTypeVertex AIGatewayVertexEmbeddingsModelConfigType = "vertex"
-)
-
-func (e AIGatewayVertexEmbeddingsModelConfigType) ToPointer() *AIGatewayVertexEmbeddingsModelConfigType {
-	return &e
-}
-func (e *AIGatewayVertexEmbeddingsModelConfigType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "vertex":
-		*e = AIGatewayVertexEmbeddingsModelConfigType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayVertexEmbeddingsModelConfigType: %v", v)
-	}
-}
 
 // AIGatewayVertexEmbeddingsModelConfig - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
@@ -37,8 +12,9 @@ func (e *AIGatewayVertexEmbeddingsModelConfigType) UnmarshalJSON(data []byte) er
 // Google Vertex-specific configuration for a model.
 type AIGatewayVertexEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string                                  `default:"null" json:"upstream_url"`
-	Type        AIGatewayVertexEmbeddingsModelConfigType `json:"type"`
+	UpstreamURL *string `default:"null" json:"upstream_url"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"vertex" json:"type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -64,11 +40,8 @@ func (a *AIGatewayVertexEmbeddingsModelConfig) GetUpstreamURL() *string {
 	return a.UpstreamURL
 }
 
-func (a *AIGatewayVertexEmbeddingsModelConfig) GetType() AIGatewayVertexEmbeddingsModelConfigType {
-	if a == nil {
-		return AIGatewayVertexEmbeddingsModelConfigType("")
-	}
-	return a.Type
+func (a *AIGatewayVertexEmbeddingsModelConfig) GetType() string {
+	return "vertex"
 }
 
 func (a *AIGatewayVertexEmbeddingsModelConfig) GetGcpEnvironment() *GCPModelConfig {

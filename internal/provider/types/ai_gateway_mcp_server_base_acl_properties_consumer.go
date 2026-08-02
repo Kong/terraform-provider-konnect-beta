@@ -7,7 +7,7 @@ import (
 )
 
 type AIGatewayMCPServerBaseACLPropertiesConsumer struct {
-	ACLAttributeType types.String      `tfsdk:"acl_attribute_type"`
-	Acls             *AIGatewayMCPACLs `tfsdk:"acls"`
-	DefaultToolAcls  *AIGatewayMCPACLs `tfsdk:"default_tool_acls"`
+	ACLAttributeType types.String   `tfsdk:"acl_attribute_type"`
+	Acls             *AIGatewayACLS `tfsdk:"acls"`
+	DefaultToolAcls  *AIGatewayACLS `tfsdk:"default_tool_acls"`
 }

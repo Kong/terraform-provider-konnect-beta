@@ -10,5 +10,4 @@ type AIGatewayMCPServerUpstreamServerToolOauth2ConfigJwt struct {
 	AccessTokenHeader types.String `tfsdk:"access_token_header"`
 	IDTokenHeader     types.String `tfsdk:"id_token_header"`
 	Scope             types.String `tfsdk:"scope"`
-	Type              types.String `tfsdk:"type"`
 }

@@ -15,7 +15,7 @@ type AIGatewayRedisCloudConfiguration struct {
 	Host                types.String                                         `tfsdk:"host"`
 	Keepalive           *AIGatewayRedisCloudConfigurationKeepalive           `tfsdk:"keepalive"`
 	Password            types.String                                         `tfsdk:"password"`
-	Port                *AIGatewayRedisCloudConfigurationPort                `tfsdk:"port"`
+	Port                types.String                                         `tfsdk:"port"`
 	ReadTimeout         types.Int64                                          `tfsdk:"read_timeout"`
 	SendTimeout         types.Int64                                          `tfsdk:"send_timeout"`
 	Sentinel            *AIGatewayRedisCloudConfigurationSentinel            `tfsdk:"sentinel"`

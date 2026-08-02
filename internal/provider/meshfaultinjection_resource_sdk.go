@@ -61,7 +61,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 						http.Abort = &tfTypes.Abort{}
 						http.Abort.HTTPStatus = types.Int32Value(int32(httpItem.Abort.HTTPStatus))
 						if http.Abort.Percentage == nil {
-							http.Abort.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+							http.Abort.Percentage = &tfTypes.MeshItemMode{}
 						}
 						if httpItem.Abort.Percentage.Integer != nil {
 							http.Abort.Percentage.Integer = types.Int64PointerValue(httpItem.Abort.Percentage.Integer)
@@ -75,7 +75,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					} else {
 						http.Delay = &tfTypes.Delay{}
 						if http.Delay.Percentage == nil {
-							http.Delay.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+							http.Delay.Percentage = &tfTypes.MeshItemMode{}
 						}
 						if httpItem.Delay.Percentage.Integer != nil {
 							http.Delay.Percentage.Integer = types.Int64PointerValue(httpItem.Delay.Percentage.Integer)
@@ -91,7 +91,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 						http.ResponseBandwidth = &tfTypes.ResponseBandwidth{}
 						http.ResponseBandwidth.Limit = types.StringValue(httpItem.ResponseBandwidth.Limit)
 						if http.ResponseBandwidth.Percentage == nil {
-							http.ResponseBandwidth.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+							http.ResponseBandwidth.Percentage = &tfTypes.MeshItemMode{}
 						}
 						if httpItem.ResponseBandwidth.Percentage.Integer != nil {
 							http.ResponseBandwidth.Percentage.Integer = types.Int64PointerValue(httpItem.ResponseBandwidth.Percentage.Integer)
@@ -146,7 +146,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					http1.Abort = &tfTypes.Abort{}
 					http1.Abort.HTTPStatus = types.Int32Value(int32(httpItem1.Abort.HTTPStatus))
 					if http1.Abort.Percentage == nil {
-						http1.Abort.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+						http1.Abort.Percentage = &tfTypes.MeshItemMode{}
 					}
 					if httpItem1.Abort.Percentage.Integer != nil {
 						http1.Abort.Percentage.Integer = types.Int64PointerValue(httpItem1.Abort.Percentage.Integer)
@@ -160,7 +160,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 				} else {
 					http1.Delay = &tfTypes.Delay{}
 					if http1.Delay.Percentage == nil {
-						http1.Delay.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+						http1.Delay.Percentage = &tfTypes.MeshItemMode{}
 					}
 					if httpItem1.Delay.Percentage.Integer != nil {
 						http1.Delay.Percentage.Integer = types.Int64PointerValue(httpItem1.Delay.Percentage.Integer)
@@ -176,7 +176,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					http1.ResponseBandwidth = &tfTypes.ResponseBandwidth{}
 					http1.ResponseBandwidth.Limit = types.StringValue(httpItem1.ResponseBandwidth.Limit)
 					if http1.ResponseBandwidth.Percentage == nil {
-						http1.ResponseBandwidth.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+						http1.ResponseBandwidth.Percentage = &tfTypes.MeshItemMode{}
 					}
 					if httpItem1.ResponseBandwidth.Percentage.Integer != nil {
 						http1.ResponseBandwidth.Percentage.Integer = types.Int64PointerValue(httpItem1.ResponseBandwidth.Percentage.Integer)
@@ -259,7 +259,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 						http2.Abort = &tfTypes.Abort{}
 						http2.Abort.HTTPStatus = types.Int32Value(int32(httpItem2.Abort.HTTPStatus))
 						if http2.Abort.Percentage == nil {
-							http2.Abort.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+							http2.Abort.Percentage = &tfTypes.MeshItemMode{}
 						}
 						if httpItem2.Abort.Percentage.Integer != nil {
 							http2.Abort.Percentage.Integer = types.Int64PointerValue(httpItem2.Abort.Percentage.Integer)
@@ -273,7 +273,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					} else {
 						http2.Delay = &tfTypes.Delay{}
 						if http2.Delay.Percentage == nil {
-							http2.Delay.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+							http2.Delay.Percentage = &tfTypes.MeshItemMode{}
 						}
 						if httpItem2.Delay.Percentage.Integer != nil {
 							http2.Delay.Percentage.Integer = types.Int64PointerValue(httpItem2.Delay.Percentage.Integer)
@@ -289,7 +289,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 						http2.ResponseBandwidth = &tfTypes.ResponseBandwidth{}
 						http2.ResponseBandwidth.Limit = types.StringValue(httpItem2.ResponseBandwidth.Limit)
 						if http2.ResponseBandwidth.Percentage == nil {
-							http2.ResponseBandwidth.Percentage = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+							http2.ResponseBandwidth.Percentage = &tfTypes.MeshItemMode{}
 						}
 						if httpItem2.ResponseBandwidth.Percentage.Integer != nil {
 							http2.ResponseBandwidth.Percentage.Integer = types.Int64PointerValue(httpItem2.ResponseBandwidth.Percentage.Integer)

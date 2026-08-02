@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -17,12 +15,6 @@ func (r *AIGatewayConsumerGroupResourceModel) RefreshFromSharedAIGatewayConsumer
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AdditionalProperties == nil {
-			r.AdditionalProperties = jsontypes.NewNormalizedNull()
-		} else {
-			additionalPropertiesResult, _ := json.Marshal(resp.AdditionalProperties)
-			r.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
-		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.ID = types.StringValue(resp.ID)
@@ -156,17 +148,12 @@ func (r *AIGatewayConsumerGroupResourceModel) ToSharedCreateAIGatewayConsumerGro
 
 		managedBy[managedByKey] = managedByInst
 	}
-	var additionalProperties map[string]any
-	if !r.AdditionalProperties.IsUnknown() && !r.AdditionalProperties.IsNull() {
-		_ = json.Unmarshal([]byte(r.AdditionalProperties.ValueString()), &additionalProperties)
-	}
 	out := shared.CreateAIGatewayConsumerGroupRequest{
-		DisplayName:          displayName,
-		Name:                 name,
-		Policies:             policies,
-		Labels:               labels,
-		ManagedBy:            managedBy,
-		AdditionalProperties: additionalProperties,
+		DisplayName: displayName,
+		Name:        name,
+		Policies:    policies,
+		Labels:      labels,
+		ManagedBy:   managedBy,
 	}
 
 	return &out, diags
@@ -199,17 +186,12 @@ func (r *AIGatewayConsumerGroupResourceModel) ToSharedUpdateAIGatewayConsumerGro
 
 		managedBy[managedByKey] = managedByInst
 	}
-	var additionalProperties map[string]any
-	if !r.AdditionalProperties.IsUnknown() && !r.AdditionalProperties.IsNull() {
-		_ = json.Unmarshal([]byte(r.AdditionalProperties.ValueString()), &additionalProperties)
-	}
 	out := shared.UpdateAIGatewayConsumerGroupRequest{
-		DisplayName:          displayName,
-		Name:                 name,
-		Policies:             policies,
-		Labels:               labels,
-		ManagedBy:            managedBy,
-		AdditionalProperties: additionalProperties,
+		DisplayName: displayName,
+		Name:        name,
+		Policies:    policies,
+		Labels:      labels,
+		ManagedBy:   managedBy,
 	}
 
 	return &out, diags

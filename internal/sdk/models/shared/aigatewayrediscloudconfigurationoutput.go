@@ -29,9 +29,6 @@ type AIGatewayRedisCloudConfigurationCloudAuthenticationOutput struct {
 func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationOutputAws(aws AIGatewayRedisAWSAuthenticationOutput) AIGatewayRedisCloudConfigurationCloudAuthenticationOutput {
 	typ := AIGatewayRedisCloudConfigurationCloudAuthenticationOutputTypeAws
 
-	typStr := AIGatewayRedisAWSAuthenticationType(typ)
-	aws.Type = typStr
-
 	return AIGatewayRedisCloudConfigurationCloudAuthenticationOutput{
 		AIGatewayRedisAWSAuthenticationOutput: &aws,
 		Type:                                  typ,
@@ -41,9 +38,6 @@ func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationOutputAws(aws AIGa
 func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationOutputAzure(azure AIGatewayRedisAzureAuthenticationOutput) AIGatewayRedisCloudConfigurationCloudAuthenticationOutput {
 	typ := AIGatewayRedisCloudConfigurationCloudAuthenticationOutputTypeAzure
 
-	typStr := AIGatewayRedisAzureAuthenticationType(typ)
-	azure.Type = typStr
-
 	return AIGatewayRedisCloudConfigurationCloudAuthenticationOutput{
 		AIGatewayRedisAzureAuthenticationOutput: &azure,
 		Type:                                    typ,
@@ -52,9 +46,6 @@ func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationOutputAzure(azure 
 
 func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationOutputGcp(gcp AIGatewayRedisGCPAuthenticationOutput) AIGatewayRedisCloudConfigurationCloudAuthenticationOutput {
 	typ := AIGatewayRedisCloudConfigurationCloudAuthenticationOutputTypeGcp
-
-	typStr := AIGatewayRedisGCPAuthenticationType(typ)
-	gcp.Type = typStr
 
 	return AIGatewayRedisCloudConfigurationCloudAuthenticationOutput{
 		AIGatewayRedisGCPAuthenticationOutput: &gcp,
@@ -220,97 +211,6 @@ func (a *AIGatewayRedisCloudConfigurationKeepalive) GetPoolSize() *int64 {
 	return a.PoolSize
 }
 
-type AIGatewayRedisCloudConfigurationPortType string
-
-const (
-	AIGatewayRedisCloudConfigurationPortTypeInteger AIGatewayRedisCloudConfigurationPortType = "integer"
-	AIGatewayRedisCloudConfigurationPortTypeStr     AIGatewayRedisCloudConfigurationPortType = "str"
-)
-
-// AIGatewayRedisCloudConfigurationPort - An integer representing a port number between 0 and 65535, inclusive.
-// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-type AIGatewayRedisCloudConfigurationPort struct {
-	Integer *int64  `queryParam:"inline" union:"member"`
-	Str     *string `queryParam:"inline" union:"member"`
-
-	Type AIGatewayRedisCloudConfigurationPortType
-}
-
-func CreateAIGatewayRedisCloudConfigurationPortInteger(integer int64) AIGatewayRedisCloudConfigurationPort {
-	typ := AIGatewayRedisCloudConfigurationPortTypeInteger
-
-	return AIGatewayRedisCloudConfigurationPort{
-		Integer: &integer,
-		Type:    typ,
-	}
-}
-
-func CreateAIGatewayRedisCloudConfigurationPortStr(str string) AIGatewayRedisCloudConfigurationPort {
-	typ := AIGatewayRedisCloudConfigurationPortTypeStr
-
-	return AIGatewayRedisCloudConfigurationPort{
-		Str:  &str,
-		Type: typ,
-	}
-}
-
-func (u *AIGatewayRedisCloudConfigurationPort) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AIGatewayRedisCloudConfigurationPortTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AIGatewayRedisCloudConfigurationPortTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayRedisCloudConfigurationPort", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayRedisCloudConfigurationPort", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AIGatewayRedisCloudConfigurationPortType)
-	switch best.Type {
-	case AIGatewayRedisCloudConfigurationPortTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case AIGatewayRedisCloudConfigurationPortTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayRedisCloudConfigurationPort", string(data))
-}
-
-func (u AIGatewayRedisCloudConfigurationPort) MarshalJSON() ([]byte, error) {
-	if u.Integer != nil {
-		return utils.MarshalJSON(u.Integer, "", true)
-	}
-
-	if u.Str != nil {
-		return utils.MarshalJSON(u.Str, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type AIGatewayRedisCloudConfigurationPort: all fields are null")
-}
-
 type AIGatewayRedisCloudConfigurationSentinelNodes struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"127.0.0.1" json:"host"`
@@ -459,7 +359,7 @@ type AIGatewayRedisCloudConfigurationOutput struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Port *AIGatewayRedisCloudConfigurationPort `json:"port,omitempty"`
+	Port *string `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -481,10 +381,23 @@ type AIGatewayRedisCloudConfigurationOutput struct {
 }
 
 func (a AIGatewayRedisCloudConfigurationOutput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AIGatewayRedisCloudConfigurationOutput) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
@@ -568,7 +481,7 @@ func (a *AIGatewayRedisCloudConfigurationOutput) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AIGatewayRedisCloudConfigurationOutput) GetPort() *AIGatewayRedisCloudConfigurationPort {
+func (a *AIGatewayRedisCloudConfigurationOutput) GetPort() *string {
 	if a == nil {
 		return nil
 	}
@@ -644,9 +557,6 @@ type AIGatewayRedisCloudConfigurationCloudAuthentication struct {
 func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationAws(aws AIGatewayRedisAWSAuthentication) AIGatewayRedisCloudConfigurationCloudAuthentication {
 	typ := AIGatewayRedisCloudConfigurationCloudAuthenticationTypeAws
 
-	typStr := AIGatewayRedisAWSAuthenticationType(typ)
-	aws.Type = typStr
-
 	return AIGatewayRedisCloudConfigurationCloudAuthentication{
 		AIGatewayRedisAWSAuthentication: &aws,
 		Type:                            typ,
@@ -656,9 +566,6 @@ func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationAws(aws AIGatewayR
 func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationAzure(azure AIGatewayRedisAzureAuthentication) AIGatewayRedisCloudConfigurationCloudAuthentication {
 	typ := AIGatewayRedisCloudConfigurationCloudAuthenticationTypeAzure
 
-	typStr := AIGatewayRedisAzureAuthenticationType(typ)
-	azure.Type = typStr
-
 	return AIGatewayRedisCloudConfigurationCloudAuthentication{
 		AIGatewayRedisAzureAuthentication: &azure,
 		Type:                              typ,
@@ -667,9 +574,6 @@ func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationAzure(azure AIGate
 
 func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationGcp(gcp AIGatewayRedisGCPAuthentication) AIGatewayRedisCloudConfigurationCloudAuthentication {
 	typ := AIGatewayRedisCloudConfigurationCloudAuthenticationTypeGcp
-
-	typStr := AIGatewayRedisGCPAuthenticationType(typ)
-	gcp.Type = typStr
 
 	return AIGatewayRedisCloudConfigurationCloudAuthentication{
 		AIGatewayRedisGCPAuthentication: &gcp,
@@ -765,7 +669,7 @@ type AIGatewayRedisCloudConfiguration struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Port *AIGatewayRedisCloudConfigurationPort `json:"port,omitempty"`
+	Port *string `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -787,10 +691,23 @@ type AIGatewayRedisCloudConfiguration struct {
 }
 
 func (a AIGatewayRedisCloudConfiguration) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AIGatewayRedisCloudConfiguration) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
@@ -874,7 +791,7 @@ func (a *AIGatewayRedisCloudConfiguration) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AIGatewayRedisCloudConfiguration) GetPort() *AIGatewayRedisCloudConfigurationPort {
+func (a *AIGatewayRedisCloudConfiguration) GetPort() *string {
 	if a == nil {
 		return nil
 	}

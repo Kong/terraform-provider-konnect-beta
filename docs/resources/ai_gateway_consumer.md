@@ -15,10 +15,9 @@ AIGatewayConsumer Resource
 ```terraform
 resource "konnect_ai_gateway_consumer" "my_aigatewayconsumer" {
   provider = konnect-beta
-  additional_properties = "{ \"see\": \"documentation\" }"
-  custom_id             = "dev-users"
-  display_name          = "Greg's Dev Consumer"
-  gateway_id            = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+  custom_id    = "dev-users"
+  display_name = "Greg's Dev Consumer"
+  gateway_id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   labels = {
     key = "value"
   }
@@ -48,7 +47,6 @@ A user-defined unique identifier for this consumer, used as a stable human-reada
 
 ### Optional
 
-- `additional_properties` (String) Parsed as JSON.
 - `custom_id` (String) Identifier for mapping the consumer when using OAuth authentication.
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 

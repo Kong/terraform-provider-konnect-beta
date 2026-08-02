@@ -54,20 +54,18 @@ type AIGatewayMCPServerResource struct {
 
 // AIGatewayMCPServerResourceModel describes the resource data model.
 type AIGatewayMCPServerResourceModel struct {
-	AdditionalProperties jsontypes.Normalized                           `tfsdk:"additional_properties"`
-	ConversionListener   *tfTypes.AIGatewayMCPServerConversionListener  `queryParam:"inline" tfsdk:"conversion_listener"`
-	ConversionOnly       *tfTypes.AIGatewayMCPServerConversionOnly      `queryParam:"inline" tfsdk:"conversion_only"`
-	CreatedAt            types.String                                   `tfsdk:"created_at"`
-	DisplayName          types.String                                   `tfsdk:"display_name"`
-	Enabled              types.Bool                                     `tfsdk:"enabled"`
-	GatewayID            types.String                                   `tfsdk:"gateway_id"`
-	ID                   types.String                                   `tfsdk:"id"`
-	Listener             *tfTypes.AIGatewayMCPServerListener            `queryParam:"inline" tfsdk:"listener"`
-	Name                 types.String                                   `tfsdk:"name"`
-	PassthroughListener  *tfTypes.AIGatewayMCPServerPassthroughListener `queryParam:"inline" tfsdk:"passthrough_listener"`
-	Type                 types.String                                   `tfsdk:"type"`
-	UpdatedAt            types.String                                   `tfsdk:"updated_at"`
-	UpstreamServer       *tfTypes.AIGatewayMCPServerUpstreamServer      `queryParam:"inline" tfsdk:"upstream_server"`
+	ConversionListener  *tfTypes.AIGatewayMCPServerConversionListener  `queryParam:"inline" tfsdk:"conversion_listener"`
+	ConversionOnly      *tfTypes.AIGatewayMCPServerConversionOnly      `queryParam:"inline" tfsdk:"conversion_only"`
+	CreatedAt           types.String                                   `tfsdk:"created_at"`
+	DisplayName         types.String                                   `tfsdk:"display_name"`
+	Enabled             types.Bool                                     `tfsdk:"enabled"`
+	GatewayID           types.String                                   `tfsdk:"gateway_id"`
+	ID                  types.String                                   `tfsdk:"id"`
+	Listener            *tfTypes.AIGatewayMCPServerListener            `queryParam:"inline" tfsdk:"listener"`
+	Name                types.String                                   `tfsdk:"name"`
+	PassthroughListener *tfTypes.AIGatewayMCPServerPassthroughListener `queryParam:"inline" tfsdk:"passthrough_listener"`
+	UpdatedAt           types.String                                   `tfsdk:"updated_at"`
+	UpstreamServer      *tfTypes.AIGatewayMCPServerUpstreamServer      `queryParam:"inline" tfsdk:"upstream_server"`
 }
 
 func (r *AIGatewayMCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -78,14 +76,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayMCPServer Resource",
 		Attributes: map[string]schema.Attribute{
-			"additional_properties": schema.StringAttribute{
-				CustomType: jsontypes.NormalizedType{},
-				Computed:   true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conversion_only"), FieldPath: path.Root("conversion_only").AtName("additional_properties")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conversion_listener"), FieldPath: path.Root("conversion_listener").AtName("additional_properties")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("listener"), FieldPath: path.Root("listener").AtName("additional_properties")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("passthrough_listener"), FieldPath: path.Root("passthrough_listener").AtName("additional_properties")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("upstream_server"), FieldPath: path.Root("upstream_server").AtName("additional_properties")}}),
-				},
-				Description: `Parsed as JSON.`,
-			},
 			"conversion_listener": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -110,11 +100,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -130,11 +122,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -183,11 +177,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -203,11 +199,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -231,12 +229,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
 							`This feature is currently in beta and is subject to change.`,
 					},
-					"additional_properties": schema.StringAttribute{
-						CustomType:  jsontypes.NormalizedType{},
-						Computed:    true,
-						Optional:    true,
-						Description: `Parsed as JSON.`,
-					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -244,10 +236,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"audits":   types.BoolType,
-									"payloads": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"audits": schema.BoolAttribute{
 										Computed:    true,
@@ -400,7 +388,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`region`:            types.StringType,
 																	`role_session_name`: types.StringType,
 																	`secret_access_key`: types.StringType,
-																	`type`:              types.StringType,
 																},
 															},
 															`azure`: types.ObjectType{
@@ -408,13 +395,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`client_id`:     types.StringType,
 																	`client_secret`: types.StringType,
 																	`tenant_id`:     types.StringType,
-																	`type`:          types.StringType,
 																},
 															},
 															`gcp`: types.ObjectType{
 																AttrTypes: map[string]attr.Type{
 																	`service_account_json`: types.StringType,
-																	`type`:                 types.StringType,
 																},
 															},
 														},
@@ -442,13 +427,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`pool_size`: types.Int64Type,
 														},
 													},
-													`password`: types.StringType,
-													`port`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`integer`: types.Int64Type,
-															`str`:     types.StringType,
-														},
-													},
+													`password`:     types.StringType,
+													`port`:         types.StringType,
 													`read_timeout`: types.Int64Type,
 													`send_timeout`: types.Int64Type,
 													`sentinel`: types.ObjectType{
@@ -551,15 +531,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `AWS Secret Access Key.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "aws"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("aws"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -590,15 +561,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `Azure Tenant ID.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "azure"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("azure"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -618,15 +580,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		Optional: true,
 																		MarkdownDescription: `GCP Service Account JSON.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "gcp"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("gcp"),
-																		},
 																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -757,30 +710,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
-													"port": schema.SingleNestedAttribute{
+													"port": schema.StringAttribute{
 														Computed: true,
 														Optional: true,
-														Attributes: map[string]schema.Attribute{
-															"integer": schema.Int64Attribute{
-																Optional: true,
-																Validators: []validator.Int64{
-																	int64validator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("str"),
-																	}...),
-																	int64validator.Between(0, 65535),
-																},
-															},
-															"str": schema.StringAttribute{
-																Optional: true,
-																Validators: []validator.String{
-																	stringvalidator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("integer"),
-																	}...),
-																},
-															},
-														},
+														Default:  stringdefault.StaticString(`6379`),
 														MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
-															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+															`Default: "6379"`,
 													},
 													"read_timeout": schema.Int64Attribute{
 														Computed:    true,
@@ -1039,11 +975,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"allow": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
 												"deny": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
@@ -1211,17 +1149,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						},
 						Description: `List of tools exposed by this MCP Server.`,
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "conversion-listener"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"conversion-listener",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1244,12 +1171,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 			"conversion_only": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"additional_properties": schema.StringAttribute{
-						CustomType:  jsontypes.NormalizedType{},
-						Computed:    true,
-						Optional:    true,
-						Description: `Parsed as JSON.`,
-					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -1257,10 +1178,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"audits":   types.BoolType,
-									"payloads": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"audits": schema.BoolAttribute{
 										Computed:    true,
@@ -1489,11 +1406,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"allow": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
 												"deny": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
@@ -1661,17 +1580,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						},
 						Description: `List of tools exposed by this MCP Server.`,
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "conversion-only"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"conversion-only",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1747,11 +1655,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -1767,11 +1677,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -1820,11 +1732,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -1840,11 +1754,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -1868,12 +1784,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
 							`This feature is currently in beta and is subject to change.`,
 					},
-					"additional_properties": schema.StringAttribute{
-						CustomType:  jsontypes.NormalizedType{},
-						Computed:    true,
-						Optional:    true,
-						Description: `Parsed as JSON.`,
-					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -1881,10 +1791,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"audits":   types.BoolType,
-									"payloads": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"audits": schema.BoolAttribute{
 										Computed:    true,
@@ -2037,7 +1943,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`region`:            types.StringType,
 																	`role_session_name`: types.StringType,
 																	`secret_access_key`: types.StringType,
-																	`type`:              types.StringType,
 																},
 															},
 															`azure`: types.ObjectType{
@@ -2045,13 +1950,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`client_id`:     types.StringType,
 																	`client_secret`: types.StringType,
 																	`tenant_id`:     types.StringType,
-																	`type`:          types.StringType,
 																},
 															},
 															`gcp`: types.ObjectType{
 																AttrTypes: map[string]attr.Type{
 																	`service_account_json`: types.StringType,
-																	`type`:                 types.StringType,
 																},
 															},
 														},
@@ -2079,13 +1982,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`pool_size`: types.Int64Type,
 														},
 													},
-													`password`: types.StringType,
-													`port`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`integer`: types.Int64Type,
-															`str`:     types.StringType,
-														},
-													},
+													`password`:     types.StringType,
+													`port`:         types.StringType,
 													`read_timeout`: types.Int64Type,
 													`send_timeout`: types.Int64Type,
 													`sentinel`: types.ObjectType{
@@ -2188,15 +2086,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `AWS Secret Access Key.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "aws"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("aws"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -2227,15 +2116,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `Azure Tenant ID.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "azure"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("azure"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -2255,15 +2135,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		Optional: true,
 																		MarkdownDescription: `GCP Service Account JSON.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "gcp"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("gcp"),
-																		},
 																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -2394,30 +2265,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
-													"port": schema.SingleNestedAttribute{
+													"port": schema.StringAttribute{
 														Computed: true,
 														Optional: true,
-														Attributes: map[string]schema.Attribute{
-															"integer": schema.Int64Attribute{
-																Optional: true,
-																Validators: []validator.Int64{
-																	int64validator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("str"),
-																	}...),
-																	int64validator.Between(0, 65535),
-																},
-															},
-															"str": schema.StringAttribute{
-																Optional: true,
-																Validators: []validator.String{
-																	stringvalidator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("integer"),
-																	}...),
-																},
-															},
-														},
+														Default:  stringdefault.StaticString(`6379`),
 														MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
-															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+															`Default: "6379"`,
 													},
 													"read_timeout": schema.Int64Attribute{
 														Computed:    true,
@@ -2666,11 +2520,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"allow": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
 												"deny": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
@@ -2835,15 +2691,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						},
 						Description: `List of tools exposed by this MCP Server.`,
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "listener"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("listener"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2897,11 +2744,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -2917,11 +2766,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -2970,11 +2821,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -2990,11 +2843,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -3018,12 +2873,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
 							`This feature is currently in beta and is subject to change.`,
 					},
-					"additional_properties": schema.StringAttribute{
-						CustomType:  jsontypes.NormalizedType{},
-						Computed:    true,
-						Optional:    true,
-						Description: `Parsed as JSON.`,
-					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -3031,10 +2880,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"audits":   types.BoolType,
-									"payloads": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"audits": schema.BoolAttribute{
 										Computed:    true,
@@ -3272,7 +3117,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`region`:            types.StringType,
 																	`role_session_name`: types.StringType,
 																	`secret_access_key`: types.StringType,
-																	`type`:              types.StringType,
 																},
 															},
 															`azure`: types.ObjectType{
@@ -3280,13 +3124,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`client_id`:     types.StringType,
 																	`client_secret`: types.StringType,
 																	`tenant_id`:     types.StringType,
-																	`type`:          types.StringType,
 																},
 															},
 															`gcp`: types.ObjectType{
 																AttrTypes: map[string]attr.Type{
 																	`service_account_json`: types.StringType,
-																	`type`:                 types.StringType,
 																},
 															},
 														},
@@ -3314,13 +3156,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`pool_size`: types.Int64Type,
 														},
 													},
-													`password`: types.StringType,
-													`port`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`integer`: types.Int64Type,
-															`str`:     types.StringType,
-														},
-													},
+													`password`:     types.StringType,
+													`port`:         types.StringType,
 													`read_timeout`: types.Int64Type,
 													`send_timeout`: types.Int64Type,
 													`sentinel`: types.ObjectType{
@@ -3423,15 +3260,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `AWS Secret Access Key.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "aws"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("aws"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -3462,15 +3290,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `Azure Tenant ID.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "azure"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("azure"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -3490,15 +3309,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		Optional: true,
 																		MarkdownDescription: `GCP Service Account JSON.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "gcp"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("gcp"),
-																		},
 																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -3629,30 +3439,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
-													"port": schema.SingleNestedAttribute{
+													"port": schema.StringAttribute{
 														Computed: true,
 														Optional: true,
-														Attributes: map[string]schema.Attribute{
-															"integer": schema.Int64Attribute{
-																Optional: true,
-																Validators: []validator.Int64{
-																	int64validator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("str"),
-																	}...),
-																	int64validator.Between(0, 65535),
-																},
-															},
-															"str": schema.StringAttribute{
-																Optional: true,
-																Validators: []validator.String{
-																	stringvalidator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("integer"),
-																	}...),
-																},
-															},
-														},
+														Default:  stringdefault.StaticString(`6379`),
 														MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
-															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+															`Default: "6379"`,
 													},
 													"read_timeout": schema.Int64Attribute{
 														Computed:    true,
@@ -3911,11 +3704,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"allow": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
 												"deny": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
@@ -4080,17 +3875,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						},
 						Description: `List of tools exposed by this MCP Server.`,
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "passthrough-listener"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"passthrough-listener",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -4108,12 +3892,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						path.MatchRelative().AtParent().AtName("listener"),
 						path.MatchRelative().AtParent().AtName("upstream_server"),
 					}...),
-				},
-			},
-			"type": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conversion_only"), FieldPath: path.Root("conversion_only").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conversion_listener"), FieldPath: path.Root("conversion_listener").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("listener"), FieldPath: path.Root("listener").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("passthrough_listener"), FieldPath: path.Root("passthrough_listener").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("upstream_server"), FieldPath: path.Root("upstream_server").AtName("type")}}),
 				},
 			},
 			"updated_at": schema.StringAttribute{
@@ -4147,11 +3925,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -4167,11 +3947,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -4220,11 +4002,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -4240,11 +4024,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
 											"deny": schema.ListAttribute{
+												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
@@ -4268,12 +4054,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
 							`This feature is currently in beta and is subject to change.`,
 					},
-					"additional_properties": schema.StringAttribute{
-						CustomType:  jsontypes.NormalizedType{},
-						Computed:    true,
-						Optional:    true,
-						Description: `Parsed as JSON.`,
-					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -4281,10 +4061,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"audits":   types.BoolType,
-									"payloads": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"audits": schema.BoolAttribute{
 										Computed:    true,
@@ -4446,7 +4222,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`region`:            types.StringType,
 																	`role_session_name`: types.StringType,
 																	`secret_access_key`: types.StringType,
-																	`type`:              types.StringType,
 																},
 															},
 															`azure`: types.ObjectType{
@@ -4454,13 +4229,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																	`client_id`:     types.StringType,
 																	`client_secret`: types.StringType,
 																	`tenant_id`:     types.StringType,
-																	`type`:          types.StringType,
 																},
 															},
 															`gcp`: types.ObjectType{
 																AttrTypes: map[string]attr.Type{
 																	`service_account_json`: types.StringType,
-																	`type`:                 types.StringType,
 																},
 															},
 														},
@@ -4488,13 +4261,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`pool_size`: types.Int64Type,
 														},
 													},
-													`password`: types.StringType,
-													`port`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`integer`: types.Int64Type,
-															`str`:     types.StringType,
-														},
-													},
+													`password`:     types.StringType,
+													`port`:         types.StringType,
 													`read_timeout`: types.Int64Type,
 													`send_timeout`: types.Int64Type,
 													`sentinel`: types.ObjectType{
@@ -4597,15 +4365,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `AWS Secret Access Key.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "aws"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("aws"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -4636,15 +4395,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		MarkdownDescription: `Azure Tenant ID.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "azure"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("azure"),
-																		},
-																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
@@ -4664,15 +4414,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																		Optional: true,
 																		MarkdownDescription: `GCP Service Account JSON.` + "\n" +
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "gcp"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("gcp"),
-																		},
 																	},
 																},
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -4803,30 +4544,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
-													"port": schema.SingleNestedAttribute{
+													"port": schema.StringAttribute{
 														Computed: true,
 														Optional: true,
-														Attributes: map[string]schema.Attribute{
-															"integer": schema.Int64Attribute{
-																Optional: true,
-																Validators: []validator.Int64{
-																	int64validator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("str"),
-																	}...),
-																	int64validator.Between(0, 65535),
-																},
-															},
-															"str": schema.StringAttribute{
-																Optional: true,
-																Validators: []validator.String{
-																	stringvalidator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("integer"),
-																	}...),
-																},
-															},
-														},
+														Default:  stringdefault.StaticString(`6379`),
 														MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
-															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+															`Default: "6379"`,
 													},
 													"read_timeout": schema.Int64Attribute{
 														Computed:    true,
@@ -5015,17 +4739,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															speakeasy_stringvalidators.NotNull(),
 														},
 													},
-													"type": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Not Null; must be "credentials"`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-															stringvalidator.OneOf(
-																"credentials",
-															),
-														},
-													},
 												},
 												MarkdownDescription: `**Pre-release Feature**` + "\n" +
 													`This feature is currently in beta and is subject to change.`,
@@ -5056,15 +4769,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Optional: true,
 														MarkdownDescription: `The scopes for the OAuth 2.0 client-credentials.` + "\n" +
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-													},
-													"type": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Not Null; must be "jwt"`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-															stringvalidator.OneOf("jwt"),
-														},
 													},
 												},
 												MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -5210,11 +4914,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"allow": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
 												"deny": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
@@ -5393,17 +5099,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						},
 						Description: `List of tools exposed by this MCP Server.`,
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "upstream-server"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"upstream-server",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -5494,11 +5189,11 @@ func (r *AIGatewayMCPServerResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIGatewayMCPServer != nil) {
+	if !(res.AIGatewayMCPServerResponseTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServer(ctx, res.AIGatewayMCPServer)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServerResponseTFOnly(ctx, res.AIGatewayMCPServerResponseTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -5558,11 +5253,11 @@ func (r *AIGatewayMCPServerResource) Read(ctx context.Context, req resource.Read
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIGatewayMCPServer != nil) {
+	if !(res.AIGatewayMCPServerResponseTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServer(ctx, res.AIGatewayMCPServer)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServerResponseTFOnly(ctx, res.AIGatewayMCPServerResponseTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -5608,11 +5303,11 @@ func (r *AIGatewayMCPServerResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIGatewayMCPServer != nil) {
+	if !(res.AIGatewayMCPServerResponseTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServer(ctx, res.AIGatewayMCPServer)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServerResponseTFOnly(ctx, res.AIGatewayMCPServerResponseTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -3,22 +3,19 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type AIGatewayMCPServerConversionOnly struct {
-	AdditionalProperties jsontypes.Normalized                                       `tfsdk:"additional_properties"`
-	Config               *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig `tfsdk:"config"`
-	CreatedAt            types.String                                               `tfsdk:"created_at"`
-	DisplayName          types.String                                               `tfsdk:"display_name"`
-	Enabled              types.Bool                                                 `tfsdk:"enabled"`
-	ID                   types.String                                               `tfsdk:"id"`
-	Labels               map[string]types.String                                    `tfsdk:"labels"`
-	ManagedBy            map[string]types.String                                    `tfsdk:"managed_by"`
-	Name                 types.String                                               `tfsdk:"name"`
-	Policies             []types.String                                             `tfsdk:"policies"`
-	Tools                []AIGatewayMCPConversionTool                               `tfsdk:"tools"`
-	Type                 types.String                                               `tfsdk:"type"`
-	UpdatedAt            types.String                                               `tfsdk:"updated_at"`
+	Config      *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig `tfsdk:"config"`
+	CreatedAt   types.String                                               `tfsdk:"created_at"`
+	DisplayName types.String                                               `tfsdk:"display_name"`
+	Enabled     types.Bool                                                 `tfsdk:"enabled"`
+	ID          types.String                                               `tfsdk:"id"`
+	Labels      map[string]types.String                                    `tfsdk:"labels"`
+	ManagedBy   map[string]types.String                                    `tfsdk:"managed_by"`
+	Name        types.String                                               `tfsdk:"name"`
+	Policies    []types.String                                             `tfsdk:"policies"`
+	Tools       []AIGatewayMCPConversionTool                               `tfsdk:"tools"`
+	UpdatedAt   types.String                                               `tfsdk:"updated_at"`
 }

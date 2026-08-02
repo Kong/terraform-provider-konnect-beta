@@ -200,7 +200,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 			}
 			if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAppRoleConfig != nil {
 				r.Hcv.Config.Approle = &tfTypes.HashiCorpVaultAppRoleConfig{}
-				r.Hcv.Config.Approle.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAppRoleConfig.AuthMethod))
 				r.Hcv.Config.Approle.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAppRoleConfig.Base64Decode)
 				r.Hcv.Config.Approle.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAppRoleConfig.Host)
 				if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAppRoleConfig.Kv != nil {
@@ -228,7 +227,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 			}
 			if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsEc2Config != nil {
 				r.Hcv.Config.AwsEc2 = &tfTypes.HashiCorpVaultAwsEc2Config{}
-				r.Hcv.Config.AwsEc2.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsEc2Config.AuthMethod))
 				r.Hcv.Config.AwsEc2.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsEc2Config.Base64Decode)
 				r.Hcv.Config.AwsEc2.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsEc2Config.Host)
 				if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsEc2Config.Kv != nil {
@@ -260,7 +258,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 				r.Hcv.Config.AwsIam = &tfTypes.HashiCorpVaultAwsIAMConfig{}
 				r.Hcv.Config.AwsIam.AccessKeyID = types.StringPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsIAMConfigOutput.AccessKeyID)
 				r.Hcv.Config.AwsIam.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsIAMConfigOutput.AssumeRoleArn)
-				r.Hcv.Config.AwsIam.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsIAMConfigOutput.AuthMethod))
 				r.Hcv.Config.AwsIam.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsIAMConfigOutput.Base64Decode)
 				r.Hcv.Config.AwsIam.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsIAMConfigOutput.Host)
 				if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAwsIAMConfigOutput.Kv != nil {
@@ -291,7 +288,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 			}
 			if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAzureConfig != nil {
 				r.Hcv.Config.Azure = &tfTypes.HashiCorpVaultAzureConfig{}
-				r.Hcv.Config.Azure.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAzureConfig.AuthMethod))
 				r.Hcv.Config.Azure.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAzureConfig.Base64Decode)
 				r.Hcv.Config.Azure.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAzureConfig.Host)
 				if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultAzureConfig.Kv != nil {
@@ -320,7 +316,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 					certPriorData = configPriorData1.Cert
 				}
 				r.Hcv.Config.Cert = &tfTypes.HashiCorpVaultCertConfig{}
-				r.Hcv.Config.Cert.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultCertConfigOutput.AuthMethod))
 				r.Hcv.Config.Cert.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultCertConfigOutput.Base64Decode)
 				r.Hcv.Config.Cert.Cert = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultCertConfigOutput.Cert)
 				r.Hcv.Config.Cert.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultCertConfigOutput.Host)
@@ -348,7 +343,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 			}
 			if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpGCEConfig != nil {
 				r.Hcv.Config.GcpGce = &tfTypes.HashiCorpVaultAzureConfig{}
-				r.Hcv.Config.GcpGce.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpGCEConfig.AuthMethod))
 				r.Hcv.Config.GcpGce.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpGCEConfig.Base64Decode)
 				r.Hcv.Config.GcpGce.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpGCEConfig.Host)
 				if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpGCEConfig.Kv != nil {
@@ -373,7 +367,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 			}
 			if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpIAMConfig != nil {
 				r.Hcv.Config.GcpIam = &tfTypes.HashiCorpVaultGcpIAMConfig{}
-				r.Hcv.Config.GcpIam.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpIAMConfig.AuthMethod))
 				r.Hcv.Config.GcpIam.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpIAMConfig.Base64Decode)
 				r.Hcv.Config.GcpIam.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpIAMConfig.Host)
 				r.Hcv.Config.GcpIam.JwtExp = types.Int64Value(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultGcpIAMConfig.JwtExp)
@@ -400,7 +393,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 			if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultKubernetesConfig != nil {
 				r.Hcv.Config.Kubernetes = &tfTypes.HashiCorpVaultKubernetesConfig{}
 				r.Hcv.Config.Kubernetes.APITokenFile = types.StringPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultKubernetesConfig.APITokenFile)
-				r.Hcv.Config.Kubernetes.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultKubernetesConfig.AuthMethod))
 				r.Hcv.Config.Kubernetes.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultKubernetesConfig.Base64Decode)
 				r.Hcv.Config.Kubernetes.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultKubernetesConfig.Host)
 				if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultKubernetesConfig.Kv != nil {
@@ -430,7 +422,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 				}
 				r.Hcv.Config.Jwt = &tfTypes.HashiCorpVaultOauth2Config{}
 				r.Hcv.Config.Jwt.Audiences = types.StringPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultOauth2ConfigOutput.Audiences)
-				r.Hcv.Config.Jwt.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultOauth2ConfigOutput.AuthMethod))
 				r.Hcv.Config.Jwt.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultOauth2ConfigOutput.Base64Decode)
 				r.Hcv.Config.Jwt.ClientID = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultOauth2ConfigOutput.ClientID)
 				r.Hcv.Config.Jwt.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultOauth2ConfigOutput.Host)
@@ -463,7 +454,6 @@ func (r *AIGatewayVaultResourceModel) RefreshFromSharedAIGatewayVault(ctx contex
 					tokenPriorData = configPriorData1.Token
 				}
 				r.Hcv.Config.Token = &tfTypes.HashiCorpVaultTokenConfig{}
-				r.Hcv.Config.Token.AuthMethod = types.StringValue(string(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultTokenConfigOutput.AuthMethod))
 				r.Hcv.Config.Token.Base64Decode = types.BoolPointerValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultTokenConfigOutput.Base64Decode)
 				r.Hcv.Config.Token.Host = types.StringValue(resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultTokenConfigOutput.Host)
 				if resp.AIGatewayVaultHashiCorpVault.Config.HashiCorpVaultTokenConfigOutput.Kv != nil {
@@ -1178,7 +1168,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace = nil
 			}
-			authMethod := shared.AuthMethod(r.Hcv.Config.Token.AuthMethod.ValueString())
 			token := new(string)
 			if !r.Hcv.Config.Token.Token.IsUnknown() && !r.Hcv.Config.Token.Token.IsNull() {
 				*token = r.Hcv.Config.Token.Token.ValueString()
@@ -1197,7 +1186,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol,
 				SslVerify:    sslVerify,
 				Namespace:    namespace,
-				AuthMethod:   authMethod,
 				Token:        token,
 			}
 		}
@@ -1268,7 +1256,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace1 = nil
 			}
-			authMethod1 := shared.HashiCorpVaultCertConfigAuthMethod(r.Hcv.Config.Cert.AuthMethod.ValueString())
 			var cert string
 			cert = r.Hcv.Config.Cert.Cert.ValueString()
 
@@ -1296,7 +1283,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol1,
 				SslVerify:    sslVerify1,
 				Namespace:    namespace1,
-				AuthMethod:   authMethod1,
 				Cert:         cert,
 				Key:          key,
 				RoleName:     roleName,
@@ -1369,7 +1355,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace2 = nil
 			}
-			authMethod2 := shared.HashiCorpVaultOauth2ConfigAuthMethod(r.Hcv.Config.Jwt.AuthMethod.ValueString())
 			var role string
 			role = r.Hcv.Config.Jwt.Role.ValueString()
 
@@ -1403,7 +1388,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:      protocol2,
 				SslVerify:     sslVerify2,
 				Namespace:     namespace2,
-				AuthMethod:    authMethod2,
 				Role:          role,
 				TokenEndpoint: tokenEndpoint,
 				ClientID:      clientId1,
@@ -1478,7 +1462,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace3 = nil
 			}
-			authMethod3 := shared.HashiCorpVaultAppRoleConfigAuthMethod(r.Hcv.Config.Approle.AuthMethod.ValueString())
 			path := new(string)
 			if !r.Hcv.Config.Approle.Path.IsUnknown() && !r.Hcv.Config.Approle.Path.IsNull() {
 				*path = r.Hcv.Config.Approle.Path.ValueString()
@@ -1521,7 +1504,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:         protocol3,
 				SslVerify:        sslVerify3,
 				Namespace:        namespace3,
-				AuthMethod:       authMethod3,
 				Path:             path,
 				ResponseWrapping: responseWrapping,
 				RoleID:           roleID,
@@ -1596,7 +1578,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace4 = nil
 			}
-			authMethod4 := shared.HashiCorpVaultKubernetesConfigAuthMethod(r.Hcv.Config.Kubernetes.AuthMethod.ValueString())
 			role1 := new(string)
 			if !r.Hcv.Config.Kubernetes.Role.IsUnknown() && !r.Hcv.Config.Kubernetes.Role.IsNull() {
 				*role1 = r.Hcv.Config.Kubernetes.Role.ValueString()
@@ -1627,7 +1608,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol4,
 				SslVerify:    sslVerify4,
 				Namespace:    namespace4,
-				AuthMethod:   authMethod4,
 				Role:         role1,
 				Path:         path1,
 				APITokenFile: apiTokenFile,
@@ -1700,7 +1680,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace5 = nil
 			}
-			authMethod5 := shared.HashiCorpVaultGcpIAMConfigAuthMethod(r.Hcv.Config.GcpIam.AuthMethod.ValueString())
 			var role2 string
 			role2 = r.Hcv.Config.GcpIam.Role.ValueString()
 
@@ -1722,7 +1701,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:       protocol5,
 				SslVerify:      sslVerify5,
 				Namespace:      namespace5,
-				AuthMethod:     authMethod5,
 				Role:           role2,
 				ServiceAccount: serviceAccount,
 				JwtExp:         jwtExp,
@@ -1795,7 +1773,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace6 = nil
 			}
-			authMethod6 := shared.HashiCorpVaultGcpGCEConfigAuthMethod(r.Hcv.Config.GcpGce.AuthMethod.ValueString())
 			var role3 string
 			role3 = r.Hcv.Config.GcpGce.Role.ValueString()
 
@@ -1817,7 +1794,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol6,
 				SslVerify:    sslVerify6,
 				Namespace:    namespace6,
-				AuthMethod:   authMethod6,
 				Role:         role3,
 				LoginPath:    loginPath,
 			}
@@ -1889,7 +1865,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace7 = nil
 			}
-			authMethod7 := shared.HashiCorpVaultAwsEc2ConfigAuthMethod(r.Hcv.Config.AwsEc2.AuthMethod.ValueString())
 			var role4 string
 			role4 = r.Hcv.Config.AwsEc2.Role.ValueString()
 
@@ -1914,7 +1889,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol7,
 				SslVerify:    sslVerify7,
 				Namespace:    namespace7,
-				AuthMethod:   authMethod7,
 				Role:         role4,
 				Nonce:        nonce,
 				LoginPath:    loginPath1,
@@ -1987,7 +1961,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace8 = nil
 			}
-			authMethod8 := shared.HashiCorpVaultAwsIAMConfigAuthMethod(r.Hcv.Config.AwsIam.AuthMethod.ValueString())
 			var role5 string
 			role5 = r.Hcv.Config.AwsIam.Role.ValueString()
 
@@ -2042,7 +2015,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:        protocol8,
 				SslVerify:       sslVerify8,
 				Namespace:       namespace8,
-				AuthMethod:      authMethod8,
 				Role:            role5,
 				Region:          region1,
 				LoginPath:       loginPath2,
@@ -2120,7 +2092,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace9 = nil
 			}
-			authMethod9 := shared.HashiCorpVaultAzureConfigAuthMethod(r.Hcv.Config.Azure.AuthMethod.ValueString())
 			var role6 string
 			role6 = r.Hcv.Config.Azure.Role.ValueString()
 
@@ -2142,7 +2113,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedCreateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol9,
 				SslVerify:    sslVerify9,
 				Namespace:    namespace9,
-				AuthMethod:   authMethod9,
 				Role:         role6,
 				LoginPath:    loginPath3,
 			}
@@ -2725,7 +2695,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace = nil
 			}
-			authMethod := shared.AuthMethod(r.Hcv.Config.Token.AuthMethod.ValueString())
 			token := new(string)
 			if !r.Hcv.Config.Token.Token.IsUnknown() && !r.Hcv.Config.Token.Token.IsNull() {
 				*token = r.Hcv.Config.Token.Token.ValueString()
@@ -2744,7 +2713,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol,
 				SslVerify:    sslVerify,
 				Namespace:    namespace,
-				AuthMethod:   authMethod,
 				Token:        token,
 			}
 		}
@@ -2815,7 +2783,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace1 = nil
 			}
-			authMethod1 := shared.HashiCorpVaultCertConfigAuthMethod(r.Hcv.Config.Cert.AuthMethod.ValueString())
 			var cert string
 			cert = r.Hcv.Config.Cert.Cert.ValueString()
 
@@ -2843,7 +2810,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol1,
 				SslVerify:    sslVerify1,
 				Namespace:    namespace1,
-				AuthMethod:   authMethod1,
 				Cert:         cert,
 				Key:          key,
 				RoleName:     roleName,
@@ -2916,7 +2882,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace2 = nil
 			}
-			authMethod2 := shared.HashiCorpVaultOauth2ConfigAuthMethod(r.Hcv.Config.Jwt.AuthMethod.ValueString())
 			var role string
 			role = r.Hcv.Config.Jwt.Role.ValueString()
 
@@ -2950,7 +2915,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:      protocol2,
 				SslVerify:     sslVerify2,
 				Namespace:     namespace2,
-				AuthMethod:    authMethod2,
 				Role:          role,
 				TokenEndpoint: tokenEndpoint,
 				ClientID:      clientId1,
@@ -3025,7 +2989,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace3 = nil
 			}
-			authMethod3 := shared.HashiCorpVaultAppRoleConfigAuthMethod(r.Hcv.Config.Approle.AuthMethod.ValueString())
 			path := new(string)
 			if !r.Hcv.Config.Approle.Path.IsUnknown() && !r.Hcv.Config.Approle.Path.IsNull() {
 				*path = r.Hcv.Config.Approle.Path.ValueString()
@@ -3068,7 +3031,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:         protocol3,
 				SslVerify:        sslVerify3,
 				Namespace:        namespace3,
-				AuthMethod:       authMethod3,
 				Path:             path,
 				ResponseWrapping: responseWrapping,
 				RoleID:           roleID,
@@ -3143,7 +3105,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace4 = nil
 			}
-			authMethod4 := shared.HashiCorpVaultKubernetesConfigAuthMethod(r.Hcv.Config.Kubernetes.AuthMethod.ValueString())
 			role1 := new(string)
 			if !r.Hcv.Config.Kubernetes.Role.IsUnknown() && !r.Hcv.Config.Kubernetes.Role.IsNull() {
 				*role1 = r.Hcv.Config.Kubernetes.Role.ValueString()
@@ -3174,7 +3135,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol4,
 				SslVerify:    sslVerify4,
 				Namespace:    namespace4,
-				AuthMethod:   authMethod4,
 				Role:         role1,
 				Path:         path1,
 				APITokenFile: apiTokenFile,
@@ -3247,7 +3207,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace5 = nil
 			}
-			authMethod5 := shared.HashiCorpVaultGcpIAMConfigAuthMethod(r.Hcv.Config.GcpIam.AuthMethod.ValueString())
 			var role2 string
 			role2 = r.Hcv.Config.GcpIam.Role.ValueString()
 
@@ -3269,7 +3228,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:       protocol5,
 				SslVerify:      sslVerify5,
 				Namespace:      namespace5,
-				AuthMethod:     authMethod5,
 				Role:           role2,
 				ServiceAccount: serviceAccount,
 				JwtExp:         jwtExp,
@@ -3342,7 +3300,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace6 = nil
 			}
-			authMethod6 := shared.HashiCorpVaultGcpGCEConfigAuthMethod(r.Hcv.Config.GcpGce.AuthMethod.ValueString())
 			var role3 string
 			role3 = r.Hcv.Config.GcpGce.Role.ValueString()
 
@@ -3364,7 +3321,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol6,
 				SslVerify:    sslVerify6,
 				Namespace:    namespace6,
-				AuthMethod:   authMethod6,
 				Role:         role3,
 				LoginPath:    loginPath,
 			}
@@ -3436,7 +3392,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace7 = nil
 			}
-			authMethod7 := shared.HashiCorpVaultAwsEc2ConfigAuthMethod(r.Hcv.Config.AwsEc2.AuthMethod.ValueString())
 			var role4 string
 			role4 = r.Hcv.Config.AwsEc2.Role.ValueString()
 
@@ -3461,7 +3416,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol7,
 				SslVerify:    sslVerify7,
 				Namespace:    namespace7,
-				AuthMethod:   authMethod7,
 				Role:         role4,
 				Nonce:        nonce,
 				LoginPath:    loginPath1,
@@ -3534,7 +3488,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace8 = nil
 			}
-			authMethod8 := shared.HashiCorpVaultAwsIAMConfigAuthMethod(r.Hcv.Config.AwsIam.AuthMethod.ValueString())
 			var role5 string
 			role5 = r.Hcv.Config.AwsIam.Role.ValueString()
 
@@ -3589,7 +3542,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:        protocol8,
 				SslVerify:       sslVerify8,
 				Namespace:       namespace8,
-				AuthMethod:      authMethod8,
 				Role:            role5,
 				Region:          region1,
 				LoginPath:       loginPath2,
@@ -3667,7 +3619,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 			} else {
 				namespace9 = nil
 			}
-			authMethod9 := shared.HashiCorpVaultAzureConfigAuthMethod(r.Hcv.Config.Azure.AuthMethod.ValueString())
 			var role6 string
 			role6 = r.Hcv.Config.Azure.Role.ValueString()
 
@@ -3689,7 +3640,6 @@ func (r *AIGatewayVaultResourceModel) ToSharedUpdateAIGatewayVaultRequest(ctx co
 				Protocol:     protocol9,
 				SslVerify:    sslVerify9,
 				Namespace:    namespace9,
-				AuthMethod:   authMethod9,
 				Role:         role6,
 				LoginPath:    loginPath3,
 			}

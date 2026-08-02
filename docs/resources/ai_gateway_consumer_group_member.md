@@ -41,7 +41,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Read-Only:
 
-- `additional_properties` (String) Parsed as JSON.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `display_name` (String) The display name for this consumer group instance.
 - `id` (String) Contains a unique identifier used for this resource.

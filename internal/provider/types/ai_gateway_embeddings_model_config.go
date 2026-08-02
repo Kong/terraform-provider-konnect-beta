@@ -8,7 +8,7 @@ type AIGatewayEmbeddingsModelConfig struct {
 	Gemini      *AIGatewayGeminiEmbeddingsModelConfig      `queryParam:"inline" tfsdk:"gemini"`
 	Huggingface *AIGatewayHuggingfaceEmbeddingsModelConfig `queryParam:"inline" tfsdk:"huggingface"`
 	Mistral     *AIGatewayMistralEmbeddingsModelConfig     `queryParam:"inline" tfsdk:"mistral"`
-	Ollama      *AIGatewayMistralEmbeddingsModelConfig     `queryParam:"inline" tfsdk:"ollama"`
-	Openai      *AIGatewayMistralEmbeddingsModelConfig     `queryParam:"inline" tfsdk:"openai"`
+	Ollama      *AIGatewayOllamaEmbeddingsModelConfig      `queryParam:"inline" tfsdk:"ollama"`
+	Openai      *AIGatewayOllamaEmbeddingsModelConfig      `queryParam:"inline" tfsdk:"openai"`
 	Vertex      *AIGatewayGeminiEmbeddingsModelConfig      `queryParam:"inline" tfsdk:"vertex"`
 }

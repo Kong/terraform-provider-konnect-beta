@@ -1,8 +1,7 @@
 resource "konnect_ai_gateway" "my_aigateway" {
   provider = konnect-beta
-  additional_properties = "{ \"see\": \"documentation\" }"
-  description           = "An AI Gateway for my organization."
-  display_name          = "My AI Gateway"
+  description  = "An AI Gateway for my organization."
+  display_name = "My AI Gateway"
   labels = {
     key = "value"
   }

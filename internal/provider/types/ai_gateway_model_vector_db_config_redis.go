@@ -17,7 +17,7 @@ type AIGatewayModelVectorDBConfigRedis struct {
 	Host                types.String                                         `tfsdk:"host"`
 	Keepalive           *AIGatewayRedisCloudConfigurationKeepalive           `tfsdk:"keepalive"`
 	Password            types.String                                         `tfsdk:"password"`
-	Port                *AIGatewayRedisCloudConfigurationPort                `tfsdk:"port"`
+	Port                types.String                                         `tfsdk:"port"`
 	ReadTimeout         types.Int64                                          `tfsdk:"read_timeout"`
 	SendTimeout         types.Int64                                          `tfsdk:"send_timeout"`
 	Sentinel            *AIGatewayRedisCloudConfigurationSentinel            `tfsdk:"sentinel"`
@@ -25,6 +25,5 @@ type AIGatewayModelVectorDBConfigRedis struct {
 	Ssl                 types.Bool                                           `tfsdk:"ssl"`
 	SslVerify           types.Bool                                           `tfsdk:"ssl_verify"`
 	Threshold           types.Float64                                        `tfsdk:"threshold"`
-	Type                types.String                                         `tfsdk:"type"`
 	Username            types.String                                         `tfsdk:"username"`
 }

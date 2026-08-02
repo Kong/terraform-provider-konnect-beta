@@ -54,7 +54,7 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigOutput struct {
 	// This feature is currently in beta and is subject to change.
 	//
 	// Configuration for AI Gateway logging.
-	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigLogging `json:"logging"`
+	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// **Pre-release Feature**
@@ -128,7 +128,7 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfig struct {
 	// This feature is currently in beta and is subject to change.
 	//
 	// Configuration for AI Gateway logging.
-	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigLogging `json:"logging"`
+	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// **Pre-release Feature**

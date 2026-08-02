@@ -70,7 +70,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 			ports.Name = types.StringPointerValue(portsItem.Name)
 			ports.Port = types.Int32Value(int32(portsItem.Port))
 			if portsItem.TargetPort != nil {
-				ports.TargetPort = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
+				ports.TargetPort = &tfTypes.MeshItemMode{}
 				if portsItem.TargetPort.Integer != nil {
 					ports.TargetPort.Integer = types.Int64PointerValue(portsItem.TargetPort.Integer)
 				}

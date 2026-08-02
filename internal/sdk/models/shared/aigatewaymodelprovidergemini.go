@@ -9,29 +9,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type AIGatewayModelProviderGeminiType string
-
-const (
-	AIGatewayModelProviderGeminiTypeGemini AIGatewayModelProviderGeminiType = "gemini"
-)
-
-func (e AIGatewayModelProviderGeminiType) ToPointer() *AIGatewayModelProviderGeminiType {
-	return &e
-}
-func (e *AIGatewayModelProviderGeminiType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "gemini":
-		*e = AIGatewayModelProviderGeminiType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayModelProviderGeminiType: %v", v)
-	}
-}
-
 type AIGatewayModelProviderGeminiAuthType string
 
 const (
@@ -49,9 +26,6 @@ type AIGatewayModelProviderGeminiAuth struct {
 func CreateAIGatewayModelProviderGeminiAuthBasic(basic AIGatewayModelProviderConfigAuthBasic) AIGatewayModelProviderGeminiAuth {
 	typ := AIGatewayModelProviderGeminiAuthTypeBasic
 
-	typStr := AIGatewayModelProviderConfigAuthBasicType(typ)
-	basic.Type = typStr
-
 	return AIGatewayModelProviderGeminiAuth{
 		AIGatewayModelProviderConfigAuthBasic: &basic,
 		Type:                                  typ,
@@ -60,9 +34,6 @@ func CreateAIGatewayModelProviderGeminiAuthBasic(basic AIGatewayModelProviderCon
 
 func CreateAIGatewayModelProviderGeminiAuthGcp(gcp AIGatewayModelProviderConfigAuthGCP) AIGatewayModelProviderGeminiAuth {
 	typ := AIGatewayModelProviderGeminiAuthTypeGcp
-
-	typStr := AIGatewayModelProviderConfigAuthGCPType(typ)
-	gcp.Type = typStr
 
 	return AIGatewayModelProviderGeminiAuth{
 		AIGatewayModelProviderConfigAuthGCP: &gcp,
@@ -152,7 +123,8 @@ func (a *AIGatewayModelProviderGeminiConfig) GetAuthGcp() *AIGatewayModelProvide
 //
 // Config for GCP model provider.
 type AIGatewayModelProviderGemini struct {
-	Type AIGatewayModelProviderGeminiType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"gemini" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
 	// **Pre-release Feature**
@@ -186,11 +158,8 @@ func (a *AIGatewayModelProviderGemini) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AIGatewayModelProviderGemini) GetType() AIGatewayModelProviderGeminiType {
-	if a == nil {
-		return AIGatewayModelProviderGeminiType("")
-	}
-	return a.Type
+func (a *AIGatewayModelProviderGemini) GetType() string {
+	return "gemini"
 }
 
 func (a *AIGatewayModelProviderGemini) GetDisplayName() string {

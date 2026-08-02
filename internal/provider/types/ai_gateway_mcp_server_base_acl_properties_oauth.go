@@ -7,8 +7,8 @@ import (
 )
 
 type AIGatewayMCPServerBaseACLPropertiesOauth struct {
-	AccessTokenClaimField types.String      `tfsdk:"access_token_claim_field"`
-	ACLAttributeType      types.String      `tfsdk:"acl_attribute_type"`
-	Acls                  *AIGatewayMCPACLs `tfsdk:"acls"`
-	DefaultToolAcls       *AIGatewayMCPACLs `tfsdk:"default_tool_acls"`
+	AccessTokenClaimField types.String   `tfsdk:"access_token_claim_field"`
+	ACLAttributeType      types.String   `tfsdk:"acl_attribute_type"`
+	Acls                  *AIGatewayACLS `tfsdk:"acls"`
+	DefaultToolAcls       *AIGatewayACLS `tfsdk:"default_tool_acls"`
 }

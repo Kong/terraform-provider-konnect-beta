@@ -75,16 +75,16 @@ func (g *GetAiGatewayModelResponse) GetAIGatewayModel() *shared.AIGatewayModel {
 	return g.AIGatewayModel
 }
 
-func (g *GetAiGatewayModelResponse) GetAIGatewayModelAPI() *shared.AIGatewayModelAIGatewayModelAPI {
+func (g *GetAiGatewayModelResponse) GetAIGatewayModelAPI() *shared.AIGatewayModelAPIResponse {
 	if v := g.GetAIGatewayModel(); v != nil {
-		return v.AIGatewayModelAIGatewayModelAPI
+		return v.AIGatewayModelAPIResponse
 	}
 	return nil
 }
 
-func (g *GetAiGatewayModelResponse) GetAIGatewayModelModel() *shared.AIGatewayModelAIGatewayModelModel {
+func (g *GetAiGatewayModelResponse) GetAIGatewayModelModel() *shared.AIGatewayModelModelResponse {
 	if v := g.GetAIGatewayModel(); v != nil {
-		return v.AIGatewayModelAIGatewayModelModel
+		return v.AIGatewayModelModelResponse
 	}
 	return nil
 }

@@ -18,37 +18,37 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AIGatewayModelAIGatewayModelAPI != nil {
+		if resp.AIGatewayModelAPIResponse != nil {
 			apiPriorData := r.API
 			r.API = &tfTypes.AIGatewayModelAPI{}
-			if resp.AIGatewayModelAIGatewayModelAPI.Access == nil {
+			if resp.AIGatewayModelAPIResponse.Access == nil {
 				r.API.Access = nil
 			} else {
 				r.API.Access = &tfTypes.AIGatewayModelAccess{}
-				if resp.AIGatewayModelAIGatewayModelAPI.Access.Acls == nil {
+				if resp.AIGatewayModelAPIResponse.Access.Acls == nil {
 					r.API.Access.Acls = nil
 				} else {
 					r.API.Access.Acls = &tfTypes.AIGatewayACLS{}
-					r.API.Access.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.Allow))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.Allow {
+					r.API.Access.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Access.Acls.Allow))
+					for _, v := range resp.AIGatewayModelAPIResponse.Access.Acls.Allow {
 						r.API.Access.Acls.Allow = append(r.API.Access.Acls.Allow, types.StringValue(v))
 					}
-					r.API.Access.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.Deny))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.Deny {
+					r.API.Access.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Access.Acls.Deny))
+					for _, v := range resp.AIGatewayModelAPIResponse.Access.Acls.Deny {
 						r.API.Access.Acls.Deny = append(r.API.Access.Acls.Deny, types.StringValue(v))
 					}
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Access.IdentityProviders != nil {
-					r.API.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Access.IdentityProviders))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Access.IdentityProviders {
+				if resp.AIGatewayModelAPIResponse.Access.IdentityProviders != nil {
+					r.API.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Access.IdentityProviders))
+					for _, v := range resp.AIGatewayModelAPIResponse.Access.IdentityProviders {
 						r.API.Access.IdentityProviders = append(r.API.Access.IdentityProviders, types.StringValue(v))
 					}
 				} else {
 					r.API.Access.IdentityProviders = nil
 				}
 			}
-			r.API.Capabilities = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Capabilities))
-			for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Capabilities {
+			r.API.Capabilities = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Capabilities))
+			for _, v := range resp.AIGatewayModelAPIResponse.Capabilities {
 				r.API.Capabilities = append(r.API.Capabilities, types.StringValue(string(v)))
 			}
 			var configPriorData *tfTypes.AIGatewayModelAPIConfig
@@ -56,297 +56,279 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				configPriorData = apiPriorData.Config
 			}
 			r.API.Config = &tfTypes.AIGatewayModelAPIConfig{}
-			if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer != nil {
+			if resp.AIGatewayModelAPIResponse.Config.Balancer != nil {
 				balancerPriorData := configPriorData.Balancer
 				r.API.Config.Balancer = &tfTypes.AIGatewayModelBalancerConfig{}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig != nil {
 					r.API.Config.Balancer.ConsistentHashing = &tfTypes.AIGatewayModelBalancerConsistentHashingConfig{}
-					r.API.Config.Balancer.ConsistentHashing.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Algorithm))
-					r.API.Config.Balancer.ConsistentHashing.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ConnectTimeout)
-					r.API.Config.Balancer.ConsistentHashing.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailTimeout)
-					r.API.Config.Balancer.ConsistentHashing.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria {
+					r.API.Config.Balancer.ConsistentHashing.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ConnectTimeout)
+					r.API.Config.Balancer.ConsistentHashing.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailTimeout)
+					r.API.Config.Balancer.ConsistentHashing.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria {
 						r.API.Config.Balancer.ConsistentHashing.FailoverCriteria = append(r.API.Config.Balancer.ConsistentHashing.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.API.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.HashOnHeader)
-					r.API.Config.Balancer.ConsistentHashing.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.MaxFails)
-					r.API.Config.Balancer.ConsistentHashing.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ReadTimeout)
-					r.API.Config.Balancer.ConsistentHashing.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Retries)
-					r.API.Config.Balancer.ConsistentHashing.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Slots)
-					r.API.Config.Balancer.ConsistentHashing.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.WriteTimeout)
+					r.API.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.HashOnHeader)
+					r.API.Config.Balancer.ConsistentHashing.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.MaxFails)
+					r.API.Config.Balancer.ConsistentHashing.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ReadTimeout)
+					r.API.Config.Balancer.ConsistentHashing.Retries = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Retries)
+					r.API.Config.Balancer.ConsistentHashing.Slots = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Slots)
+					r.API.Config.Balancer.ConsistentHashing.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig != nil {
 					r.API.Config.Balancer.LeastConnections = &tfTypes.AIGatewayModelBalancerLeastConnectionsConfig{}
-					r.API.Config.Balancer.LeastConnections.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Algorithm))
-					r.API.Config.Balancer.LeastConnections.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ConnectTimeout)
-					r.API.Config.Balancer.LeastConnections.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailTimeout)
-					r.API.Config.Balancer.LeastConnections.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria {
+					r.API.Config.Balancer.LeastConnections.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ConnectTimeout)
+					r.API.Config.Balancer.LeastConnections.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailTimeout)
+					r.API.Config.Balancer.LeastConnections.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria {
 						r.API.Config.Balancer.LeastConnections.FailoverCriteria = append(r.API.Config.Balancer.LeastConnections.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.API.Config.Balancer.LeastConnections.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.MaxFails)
-					r.API.Config.Balancer.LeastConnections.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ReadTimeout)
-					r.API.Config.Balancer.LeastConnections.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Retries)
-					r.API.Config.Balancer.LeastConnections.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Slots)
-					r.API.Config.Balancer.LeastConnections.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.WriteTimeout)
+					r.API.Config.Balancer.LeastConnections.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.MaxFails)
+					r.API.Config.Balancer.LeastConnections.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ReadTimeout)
+					r.API.Config.Balancer.LeastConnections.Retries = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Retries)
+					r.API.Config.Balancer.LeastConnections.Slots = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Slots)
+					r.API.Config.Balancer.LeastConnections.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig != nil {
 					r.API.Config.Balancer.LowestLatency = &tfTypes.AIGatewayModelBalancerLowestLatencyConfig{}
-					r.API.Config.Balancer.LowestLatency.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Algorithm))
-					r.API.Config.Balancer.LowestLatency.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ConnectTimeout)
-					r.API.Config.Balancer.LowestLatency.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailTimeout)
-					r.API.Config.Balancer.LowestLatency.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria {
+					r.API.Config.Balancer.LowestLatency.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ConnectTimeout)
+					r.API.Config.Balancer.LowestLatency.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailTimeout)
+					r.API.Config.Balancer.LowestLatency.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria {
 						r.API.Config.Balancer.LowestLatency.FailoverCriteria = append(r.API.Config.Balancer.LowestLatency.FailoverCriteria, types.StringValue(string(v)))
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy != nil {
-						r.API.Config.Balancer.LowestLatency.LatencyStrategy = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy))
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy != nil {
+						r.API.Config.Balancer.LowestLatency.LatencyStrategy = types.StringValue(string(*resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy))
 					} else {
 						r.API.Config.Balancer.LowestLatency.LatencyStrategy = types.StringNull()
 					}
-					r.API.Config.Balancer.LowestLatency.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.MaxFails)
-					r.API.Config.Balancer.LowestLatency.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ReadTimeout)
-					r.API.Config.Balancer.LowestLatency.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Retries)
-					r.API.Config.Balancer.LowestLatency.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Slots)
-					r.API.Config.Balancer.LowestLatency.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.WriteTimeout)
+					r.API.Config.Balancer.LowestLatency.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.MaxFails)
+					r.API.Config.Balancer.LowestLatency.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ReadTimeout)
+					r.API.Config.Balancer.LowestLatency.Retries = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Retries)
+					r.API.Config.Balancer.LowestLatency.Slots = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Slots)
+					r.API.Config.Balancer.LowestLatency.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig != nil {
 					r.API.Config.Balancer.LowestUsage = &tfTypes.AIGatewayModelBalancerLowestUsageConfig{}
-					r.API.Config.Balancer.LowestUsage.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Algorithm))
-					r.API.Config.Balancer.LowestUsage.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ConnectTimeout)
-					r.API.Config.Balancer.LowestUsage.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailTimeout)
-					r.API.Config.Balancer.LowestUsage.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria {
+					r.API.Config.Balancer.LowestUsage.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ConnectTimeout)
+					r.API.Config.Balancer.LowestUsage.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailTimeout)
+					r.API.Config.Balancer.LowestUsage.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria {
 						r.API.Config.Balancer.LowestUsage.FailoverCriteria = append(r.API.Config.Balancer.LowestUsage.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.API.Config.Balancer.LowestUsage.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.MaxFails)
-					r.API.Config.Balancer.LowestUsage.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ReadTimeout)
-					r.API.Config.Balancer.LowestUsage.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Retries)
-					r.API.Config.Balancer.LowestUsage.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Slots)
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy != nil {
-						r.API.Config.Balancer.LowestUsage.TokensCountStrategy = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy))
+					r.API.Config.Balancer.LowestUsage.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.MaxFails)
+					r.API.Config.Balancer.LowestUsage.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ReadTimeout)
+					r.API.Config.Balancer.LowestUsage.Retries = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Retries)
+					r.API.Config.Balancer.LowestUsage.Slots = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Slots)
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy != nil {
+						r.API.Config.Balancer.LowestUsage.TokensCountStrategy = types.StringValue(string(*resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy))
 					} else {
 						r.API.Config.Balancer.LowestUsage.TokensCountStrategy = types.StringNull()
 					}
-					r.API.Config.Balancer.LowestUsage.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.WriteTimeout)
+					r.API.Config.Balancer.LowestUsage.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig != nil {
 					r.API.Config.Balancer.Priority = &tfTypes.AIGatewayModelBalancerLeastConnectionsConfig{}
-					r.API.Config.Balancer.Priority.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Algorithm))
-					r.API.Config.Balancer.Priority.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ConnectTimeout)
-					r.API.Config.Balancer.Priority.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailTimeout)
-					r.API.Config.Balancer.Priority.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria {
+					r.API.Config.Balancer.Priority.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ConnectTimeout)
+					r.API.Config.Balancer.Priority.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailTimeout)
+					r.API.Config.Balancer.Priority.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria {
 						r.API.Config.Balancer.Priority.FailoverCriteria = append(r.API.Config.Balancer.Priority.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.API.Config.Balancer.Priority.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.MaxFails)
-					r.API.Config.Balancer.Priority.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ReadTimeout)
-					r.API.Config.Balancer.Priority.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Retries)
-					r.API.Config.Balancer.Priority.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Slots)
-					r.API.Config.Balancer.Priority.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerPriorityConfig.WriteTimeout)
+					r.API.Config.Balancer.Priority.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.MaxFails)
+					r.API.Config.Balancer.Priority.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ReadTimeout)
+					r.API.Config.Balancer.Priority.Retries = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Retries)
+					r.API.Config.Balancer.Priority.Slots = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Slots)
+					r.API.Config.Balancer.Priority.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig != nil {
 					r.API.Config.Balancer.RoundRobin = &tfTypes.AIGatewayModelBalancerLeastConnectionsConfig{}
-					r.API.Config.Balancer.RoundRobin.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Algorithm))
-					r.API.Config.Balancer.RoundRobin.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ConnectTimeout)
-					r.API.Config.Balancer.RoundRobin.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailTimeout)
-					r.API.Config.Balancer.RoundRobin.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria {
+					r.API.Config.Balancer.RoundRobin.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ConnectTimeout)
+					r.API.Config.Balancer.RoundRobin.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailTimeout)
+					r.API.Config.Balancer.RoundRobin.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria {
 						r.API.Config.Balancer.RoundRobin.FailoverCriteria = append(r.API.Config.Balancer.RoundRobin.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.API.Config.Balancer.RoundRobin.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.MaxFails)
-					r.API.Config.Balancer.RoundRobin.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ReadTimeout)
-					r.API.Config.Balancer.RoundRobin.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Retries)
-					r.API.Config.Balancer.RoundRobin.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Slots)
-					r.API.Config.Balancer.RoundRobin.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.WriteTimeout)
+					r.API.Config.Balancer.RoundRobin.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.MaxFails)
+					r.API.Config.Balancer.RoundRobin.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ReadTimeout)
+					r.API.Config.Balancer.RoundRobin.Retries = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Retries)
+					r.API.Config.Balancer.RoundRobin.Slots = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Slots)
+					r.API.Config.Balancer.RoundRobin.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput != nil {
 					var semanticPriorData *tfTypes.AIGatewayModelBalancerSemanticConfig
 					if balancerPriorData != nil {
 						semanticPriorData = balancerPriorData.Semantic
 					}
 					r.API.Config.Balancer.Semantic = &tfTypes.AIGatewayModelBalancerSemanticConfig{}
-					r.API.Config.Balancer.Semantic.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Algorithm))
-					r.API.Config.Balancer.Semantic.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ConnectTimeout)
+					r.API.Config.Balancer.Semantic.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ConnectTimeout)
 					r.API.Config.Balancer.Semantic.Embeddings = &tfTypes.Embeddings{}
-					r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.AllowAuthOverride)
+					r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.AllowAuthOverride)
 					if r.API.Config.Balancer.Semantic.Embeddings.Config == nil {
 						r.API.Config.Balancer.Semantic.Embeddings.Config = &tfTypes.AIGatewayEmbeddingsModelConfig{}
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig != nil {
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure = &tfTypes.AIGatewayAzureEmbeddingsModelConfig{}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.APIVersion = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.APIVersion)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.DeploymentID)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.UpstreamURL)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.APIVersion = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.APIVersion)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.DeploymentID)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig != nil {
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock = &tfTypes.AIGatewayBedrockEmbeddingsModelConfig{}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.BatchBucketPrefix)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.EmbeddingsNormalize)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.PerformanceConfigLatency)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.Region)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.UpstreamURL)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.VideoOutputS3URI)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.BatchBucketPrefix)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.EmbeddingsNormalize)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.PerformanceConfigLatency)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.Region)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.UpstreamURL)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.VideoOutputS3URI)
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig != nil {
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini = &tfTypes.AIGatewayGeminiEmbeddingsModelConfig{}
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment == nil {
+						if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment == nil {
 							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment = nil
 						} else {
 							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment = &tfTypes.GCPModelConfig{}
-							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
-							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.LocationID)
-							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.ProjectID)
+							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
+							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.LocationID)
+							r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.ProjectID)
 						}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.UpstreamURL)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig != nil {
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface = &tfTypes.AIGatewayHuggingfaceEmbeddingsModelConfig{}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UpstreamURL)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UseCache)
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.WaitForModel = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.WaitForModel)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UpstreamURL)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UseCache)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.WaitForModel = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.WaitForModel)
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig != nil {
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral = &tfTypes.AIGatewayMistralEmbeddingsModelConfig{}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.UpstreamURL)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type = types.StringValue(string(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.Type))
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig != nil {
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama = &tfTypes.AIGatewayMistralEmbeddingsModelConfig{}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig.UpstreamURL)
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig != nil {
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama = &tfTypes.AIGatewayOllamaEmbeddingsModelConfig{}
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig != nil {
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Openai = &tfTypes.AIGatewayMistralEmbeddingsModelConfig{}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig.UpstreamURL)
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig != nil {
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Openai = &tfTypes.AIGatewayOllamaEmbeddingsModelConfig{}
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig != nil {
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex = &tfTypes.AIGatewayGeminiEmbeddingsModelConfig{}
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment == nil {
+						if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment == nil {
 							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment = nil
 						} else {
 							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment = &tfTypes.GCPModelConfig{}
-							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
-							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.LocationID)
-							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.ProjectID)
+							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
+							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.LocationID)
+							r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.ProjectID)
 						}
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.Type))
-						r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.UpstreamURL)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.UpstreamURL)
 					}
-					r.API.Config.Balancer.Semantic.Embeddings.Name = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Name)
-					r.API.Config.Balancer.Semantic.Embeddings.Provider = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Provider)
-					r.API.Config.Balancer.Semantic.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailTimeout)
-					r.API.Config.Balancer.Semantic.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria {
+					r.API.Config.Balancer.Semantic.Embeddings.Name = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Name)
+					r.API.Config.Balancer.Semantic.Embeddings.Provider = types.StringValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Provider)
+					r.API.Config.Balancer.Semantic.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailTimeout)
+					r.API.Config.Balancer.Semantic.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria {
 						r.API.Config.Balancer.Semantic.FailoverCriteria = append(r.API.Config.Balancer.Semantic.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.API.Config.Balancer.Semantic.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.MaxFails)
-					r.API.Config.Balancer.Semantic.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ReadTimeout)
-					r.API.Config.Balancer.Semantic.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Retries)
-					r.API.Config.Balancer.Semantic.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Slots)
+					r.API.Config.Balancer.Semantic.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.MaxFails)
+					r.API.Config.Balancer.Semantic.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ReadTimeout)
+					r.API.Config.Balancer.Semantic.Retries = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Retries)
+					r.API.Config.Balancer.Semantic.Slots = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Slots)
 					vectordbPriorData := semanticPriorData.Vectordb
 					if r.API.Config.Balancer.Semantic.Vectordb == nil {
 						r.API.Config.Balancer.Semantic.Vectordb = &tfTypes.AIGatewayModelVectorDBConfig{}
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput != nil {
 						var pgvectorPriorData *tfTypes.AIGatewayModelVectorDBConfigPgVector
 						if vectordbPriorData != nil {
 							pgvectorPriorData = vectordbPriorData.Pgvector
 						}
 						r.API.Config.Balancer.Semantic.Vectordb.Pgvector = &tfTypes.AIGatewayModelVectorDBConfigPgVector{}
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Database = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Database)
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions = types.Int64Value(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Dimensions)
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.DistanceMetric = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.DistanceMetric))
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Host)
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Port = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Port)
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl == nil {
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Database = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Database)
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions = types.Int64Value(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Dimensions)
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.DistanceMetric = types.StringValue(string(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.DistanceMetric))
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Host = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Host)
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Port = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Port)
+						if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl == nil {
 							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl = nil
 						} else {
 							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl = &tfTypes.Ssl{}
-							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Cert = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Cert)
-							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.CertKey = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.CertKey)
-							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Enabled = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Enabled)
-							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Required = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Required)
-							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Verify = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Verify)
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version))
+							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Cert = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Cert)
+							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.CertKey = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.CertKey)
+							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Enabled = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Enabled)
+							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Required = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Required)
+							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Verify = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Verify)
+							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version != nil {
+								r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version = types.StringValue(string(*resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version))
 							} else {
 								r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version = types.StringNull()
 							}
 						}
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Threshold = types.Float64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Threshold)
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Timeout = types.Float64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Timeout)
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Type))
-						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.User = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.User)
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Threshold = types.Float64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Threshold)
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Timeout = types.Float64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Timeout)
+						r.API.Config.Balancer.Semantic.Vectordb.Pgvector.User = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.User)
 						if pgvectorPriorData != nil {
 							r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Password = pgvectorPriorData.Password
 						}
 					}
-					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput != nil {
+					if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput != nil {
 						var redisPriorData *tfTypes.AIGatewayModelVectorDBConfigRedis
 						if vectordbPriorData != nil {
 							redisPriorData = vectordbPriorData.Redis
 						}
 						r.API.Config.Balancer.Semantic.Vectordb.Redis = &tfTypes.AIGatewayModelVectorDBConfigRedis{}
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication != nil {
+						if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication != nil {
 							cloudAuthenticationPriorData := redisPriorData.CloudAuthentication
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication = &tfTypes.AIGatewayRedisCloudConfigurationCloudAuthentication{}
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
+							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
 								var awsPriorData *tfTypes.AIGatewayRedisAWSAuthentication
 								if cloudAuthenticationPriorData != nil {
 									awsPriorData = cloudAuthenticationPriorData.Aws
 								}
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Type))
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
 								if awsPriorData != nil {
 									r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData.SecretAccessKey
 								}
 							}
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
+							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
 								var azurePriorData *tfTypes.AIGatewayRedisAzureAuthentication
 								if cloudAuthenticationPriorData != nil {
 									azurePriorData = cloudAuthenticationPriorData.Azure
 								}
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.Type))
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
 								if azurePriorData != nil {
 									r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData.ClientSecret
 								}
 							}
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
+							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
 								var gcpPriorData *tfTypes.AIGatewayRedisGCPAuthentication
 								if cloudAuthenticationPriorData != nil {
 									gcpPriorData = cloudAuthenticationPriorData.Gcp
 								}
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput.Type))
 								if gcpPriorData != nil {
 									r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData.ServiceAccountJSON
 								}
 							}
 						}
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster == nil {
+						if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster == nil {
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster = nil
 						} else {
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
-							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
+							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
+							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
 
-								for _, nodesItem := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
+								for _, nodesItem := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
 									var nodes tfTypes.AIGatewayRedisCloudConfigurationNodes
 
 									nodes.IP = types.StringPointerValue(nodesItem.IP)
@@ -358,40 +340,32 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = nil
 							}
 						}
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectTimeout)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectionIsProxied)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Database = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Database)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Dimensions = types.Int64Value(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Dimensions)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.DistanceMetric = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.DistanceMetric))
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Host)
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive == nil {
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectTimeout)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectionIsProxied)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Database = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Database)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Dimensions = types.Int64Value(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Dimensions)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.DistanceMetric = types.StringValue(string(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.DistanceMetric))
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Host = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Host)
+						if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive == nil {
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Keepalive = nil
 						} else {
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Keepalive = &tfTypes.AIGatewayRedisCloudConfigurationKeepalive{}
-							r.API.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.Backlog)
-							r.API.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.PoolSize)
+							r.API.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.Backlog)
+							r.API.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.PoolSize)
 						}
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Password = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Password)
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port != nil {
-							r.API.Config.Balancer.Semantic.Vectordb.Redis.Port = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Integer != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Integer)
-							}
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Str != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Str = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Str)
-							}
-						}
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ReadTimeout)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SendTimeout)
-						if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel == nil {
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Password = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Password)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Port = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ReadTimeout)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SendTimeout)
+						if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel == nil {
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = nil
 						} else {
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
-							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
+							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
+							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
 
-								for _, nodesItem1 := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
+								for _, nodesItem1 := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
 									var nodes1 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
 
 									nodes1.Host = types.StringPointerValue(nodesItem1.Host)
@@ -402,32 +376,31 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							} else {
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = nil
 							}
-							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Password)
-							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role))
+							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Password)
+							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role != nil {
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role))
 							} else {
 								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Role = types.StringNull()
 							}
-							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Username)
+							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Username)
 						}
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.ServerName = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ServerName)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Ssl)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SslVerify)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Threshold = types.Float64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Threshold)
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Type))
-						r.API.Config.Balancer.Semantic.Vectordb.Redis.Username = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Username)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.ServerName = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ServerName)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Ssl)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SslVerify)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Threshold = types.Float64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Threshold)
+						r.API.Config.Balancer.Semantic.Vectordb.Redis.Username = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Username)
 					}
-					r.API.Config.Balancer.Semantic.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.WriteTimeout)
+					r.API.Config.Balancer.Semantic.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.WriteTimeout)
 				}
 			}
-			if resp.AIGatewayModelAIGatewayModelAPI.Config.Logging == nil {
+			if resp.AIGatewayModelAPIResponse.Config.Logging == nil {
 				r.API.Config.Logging = nil
 			} else {
 				r.API.Config.Logging = &tfTypes.AIGatewayLoggingConfig{}
-				r.API.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Logging.Payloads)
+				r.API.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Logging.Payloads)
 			}
-			r.API.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.MaxRequestBodySize)
-			if resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy == nil {
+			r.API.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.MaxRequestBodySize)
+			if resp.AIGatewayModelAPIResponse.Config.Proxy == nil {
 				r.API.Config.Proxy = nil
 			} else {
 				var proxyPriorData *tfTypes.AIGatewayProxyConfig
@@ -435,7 +408,7 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					proxyPriorData = configPriorData.Proxy
 				}
 				r.API.Config.Proxy = &tfTypes.AIGatewayProxyConfig{}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.Auth == nil {
+				if resp.AIGatewayModelAPIResponse.Config.Proxy.Auth == nil {
 					r.API.Config.Proxy.Auth = nil
 				} else {
 					var authPriorData *tfTypes.Auth
@@ -443,94 +416,110 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						authPriorData = proxyPriorData.Auth
 					}
 					r.API.Config.Proxy.Auth = &tfTypes.Auth{}
-					r.API.Config.Proxy.Auth.Username = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.Auth.Username)
+					r.API.Config.Proxy.Auth.Username = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Proxy.Auth.Username)
 					if authPriorData != nil {
 						r.API.Config.Proxy.Auth.Password = authPriorData.Password
 					}
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.HTTPProxy == nil {
+				if resp.AIGatewayModelAPIResponse.Config.Proxy.HTTPProxy == nil {
 					r.API.Config.Proxy.HTTPProxy = nil
 				} else {
 					r.API.Config.Proxy.HTTPProxy = &tfTypes.HTTPProxy{}
-					r.API.Config.Proxy.HTTPProxy.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.HTTPProxy.Host)
-					r.API.Config.Proxy.HTTPProxy.Port = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.HTTPProxy.Port)
+					r.API.Config.Proxy.HTTPProxy.Host = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Proxy.HTTPProxy.Host)
+					r.API.Config.Proxy.HTTPProxy.Port = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Proxy.HTTPProxy.Port)
 				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.HTTPSProxy == nil {
+				if resp.AIGatewayModelAPIResponse.Config.Proxy.HTTPSProxy == nil {
 					r.API.Config.Proxy.HTTPSProxy = nil
 				} else {
 					r.API.Config.Proxy.HTTPSProxy = &tfTypes.HTTPProxy{}
-					r.API.Config.Proxy.HTTPSProxy.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.HTTPSProxy.Host)
-					r.API.Config.Proxy.HTTPSProxy.Port = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.HTTPSProxy.Port)
+					r.API.Config.Proxy.HTTPSProxy.Host = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Proxy.HTTPSProxy.Host)
+					r.API.Config.Proxy.HTTPSProxy.Port = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Proxy.HTTPSProxy.Port)
 				}
-				r.API.Config.Proxy.NoProxy = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.NoProxy)
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.ProxyScheme != nil {
-					r.API.Config.Proxy.ProxyScheme = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelAPI.Config.Proxy.ProxyScheme))
+				r.API.Config.Proxy.NoProxy = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Proxy.NoProxy)
+				if resp.AIGatewayModelAPIResponse.Config.Proxy.ProxyScheme != nil {
+					r.API.Config.Proxy.ProxyScheme = types.StringValue(string(*resp.AIGatewayModelAPIResponse.Config.Proxy.ProxyScheme))
 				} else {
 					r.API.Config.Proxy.ProxyScheme = types.StringNull()
 				}
 			}
-			if resp.AIGatewayModelAIGatewayModelAPI.Config.ResponseStreaming != nil {
-				r.API.Config.ResponseStreaming = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelAPI.Config.ResponseStreaming))
+			if resp.AIGatewayModelAPIResponse.Config.ResponseStreaming != nil {
+				r.API.Config.ResponseStreaming = types.StringValue(string(*resp.AIGatewayModelAPIResponse.Config.ResponseStreaming))
 			} else {
 				r.API.Config.ResponseStreaming = types.StringNull()
 			}
 			r.API.Config.Route = &tfTypes.AIGatewayModelRouteConfig{}
-			if len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Headers) > 0 {
-				r.API.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Headers))
-				for key, value := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Headers {
+			if len(resp.AIGatewayModelAPIResponse.Config.Route.Headers) > 0 {
+				r.API.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAPIResponse.Config.Route.Headers))
+				for key, value := range resp.AIGatewayModelAPIResponse.Config.Route.Headers {
 					result, _ := json.Marshal(value)
 					r.API.Config.Route.Headers[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
-			if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Hosts != nil {
-				r.API.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Hosts {
-					r.API.Config.Route.Hosts = append(r.API.Config.Route.Hosts, types.StringValue(v))
-				}
-			} else {
-				r.API.Config.Route.Hosts = nil
+			r.API.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Hosts {
+				r.API.Config.Route.Hosts = append(r.API.Config.Route.Hosts, types.StringValue(v))
 			}
-			r.API.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.HTTPSRedirectStatusCode)
-			r.API.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Methods))
-			for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Methods {
+			r.API.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.API.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Methods {
 				r.API.Config.Route.Methods = append(r.API.Config.Route.Methods, types.StringValue(v))
 			}
-			if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model != nil {
+			if resp.AIGatewayModelAPIResponse.Config.Route.Model != nil {
 				r.API.Config.Route.Model = &tfTypes.AIGatewayModelAliasConfig{}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
+				if resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+					r.API.Config.Route.Model.AIGatewayModelAliasConfigBody = &tfTypes.AIGatewayModelAliasConfigBody{}
+					if len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body) > 0 {
+						r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body))
+						for key1, value1 := range resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+							result1, _ := json.Marshal(value1)
+							r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[key1] = jsontypes.NewNormalizedValue(string(result1))
+						}
+					}
+				}
+				if resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+					r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders = &tfTypes.AIGatewayModelAliasConfigHeaders{}
+					if len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers) > 0 {
+						r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers))
+						for key2, value2 := range resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+							result2, _ := json.Marshal(value2)
+							r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[key2] = jsontypes.NewNormalizedValue(string(result2))
+						}
+					}
+				}
+				if resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
 					r.API.Config.Route.Model.AIGatewayModelAliasConfigPath = &tfTypes.AIGatewayModelAliasConfigPath{}
-					r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
+					r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
 						r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = append(r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases, types.StringValue(v))
 					}
 				}
 			}
-			r.API.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Paths))
-			for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Paths {
+			r.API.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Paths {
 				r.API.Config.Route.Paths = append(r.API.Config.Route.Paths, types.StringValue(v))
 			}
-			r.API.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.PreserveHost)
-			r.API.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Protocols))
-			for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Protocols {
+			r.API.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Route.PreserveHost)
+			r.API.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Protocols {
 				r.API.Config.Route.Protocols = append(r.API.Config.Route.Protocols, types.StringValue(v))
 			}
-			r.API.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.RegexPriority)
-			r.API.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.RequestBuffering)
-			r.API.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.ResponseBuffering)
-			r.API.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.StripPath)
-			r.API.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Tags))
-			for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Tags {
+			r.API.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Route.RegexPriority)
+			r.API.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Route.RequestBuffering)
+			r.API.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Route.ResponseBuffering)
+			r.API.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Config.Route.StripPath)
+			r.API.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Tags {
 				r.API.Config.Route.Tags = append(r.API.Config.Route.Tags, types.StringValue(v))
 			}
-			r.API.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAIGatewayModelAPI.CreatedAt))
+			r.API.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAPIResponse.CreatedAt))
 			r.CreatedAt = r.API.CreatedAt
-			r.API.DisplayName = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.DisplayName)
+			r.API.DisplayName = types.StringValue(resp.AIGatewayModelAPIResponse.DisplayName)
 			r.DisplayName = r.API.DisplayName
-			r.API.Enabled = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Enabled)
+			r.API.Enabled = types.BoolPointerValue(resp.AIGatewayModelAPIResponse.Enabled)
 			r.Enabled = r.API.Enabled
 			r.API.Formats = []tfTypes.AIGatewayModelFormat{}
 
-			for _, formatsItem := range resp.AIGatewayModelAIGatewayModelAPI.Formats {
+			for _, formatsItem := range resp.AIGatewayModelAPIResponse.Formats {
 				var formats tfTypes.AIGatewayModelFormat
 
 				if formatsItem.Type != nil {
@@ -541,29 +530,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 
 				r.API.Formats = append(r.API.Formats, formats)
 			}
-			r.API.ID = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.ID)
+			r.API.ID = types.StringValue(resp.AIGatewayModelAPIResponse.ID)
 			r.ID = r.API.ID
-			if len(resp.AIGatewayModelAIGatewayModelAPI.Labels) > 0 {
-				r.API.Labels = make(map[string]types.String, len(resp.AIGatewayModelAIGatewayModelAPI.Labels))
-				for key1, value1 := range resp.AIGatewayModelAIGatewayModelAPI.Labels {
-					r.API.Labels[key1] = types.StringValue(value1)
+			if len(resp.AIGatewayModelAPIResponse.Labels) > 0 {
+				r.API.Labels = make(map[string]types.String, len(resp.AIGatewayModelAPIResponse.Labels))
+				for key3, value3 := range resp.AIGatewayModelAPIResponse.Labels {
+					r.API.Labels[key3] = types.StringValue(value3)
 				}
 			}
-			if len(resp.AIGatewayModelAIGatewayModelAPI.ManagedBy) > 0 {
-				r.API.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelAIGatewayModelAPI.ManagedBy))
-				for key2, value2 := range resp.AIGatewayModelAIGatewayModelAPI.ManagedBy {
-					r.API.ManagedBy[key2] = types.StringValue(value2)
+			if len(resp.AIGatewayModelAPIResponse.ManagedBy) > 0 {
+				r.API.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelAPIResponse.ManagedBy))
+				for key4, value4 := range resp.AIGatewayModelAPIResponse.ManagedBy {
+					r.API.ManagedBy[key4] = types.StringValue(value4)
 				}
 			}
-			r.API.Name = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Name)
+			r.API.Name = types.StringValue(resp.AIGatewayModelAPIResponse.Name)
 			r.Name = r.API.Name
-			r.API.Policies = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Policies))
-			for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Policies {
+			r.API.Policies = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Policies))
+			for _, v := range resp.AIGatewayModelAPIResponse.Policies {
 				r.API.Policies = append(r.API.Policies, types.StringValue(v))
 			}
 			r.API.Targets = []tfTypes.AIGatewayTarget{}
 
-			for _, targetsItem := range resp.AIGatewayModelAIGatewayModelAPI.Targets {
+			for _, targetsItem := range resp.AIGatewayModelAPIResponse.Targets {
 				var targets tfTypes.AIGatewayTarget
 
 				targets.AllowAuthOverride = types.BoolPointerValue(targetsItem.AllowAuthOverride)
@@ -579,7 +568,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Anthropic.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.Temperature)
 					targets.Config.Anthropic.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.TopK)
 					targets.Config.Anthropic.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.TopP)
-					targets.Config.Anthropic.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetAnthropicConfig.Type))
 					targets.Config.Anthropic.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.UpstreamURL)
 					targets.Config.Anthropic.Version = types.StringPointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.Version)
 				}
@@ -594,7 +582,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Azure.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.Temperature)
 					targets.Config.Azure.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.TopK)
 					targets.Config.Azure.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.TopP)
-					targets.Config.Azure.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetAzureConfig.Type))
 					targets.Config.Azure.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetBedrockConfig != nil {
@@ -610,7 +597,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Bedrock.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.Temperature)
 					targets.Config.Bedrock.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.TopK)
 					targets.Config.Bedrock.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.TopP)
-					targets.Config.Bedrock.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetBedrockConfig.Type))
 					targets.Config.Bedrock.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.UpstreamURL)
 					targets.Config.Bedrock.VideoOutputS3URI = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.VideoOutputS3URI)
 				}
@@ -623,7 +609,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Cerebras.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.Temperature)
 					targets.Config.Cerebras.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.TopK)
 					targets.Config.Cerebras.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.TopP)
-					targets.Config.Cerebras.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetCerebrasConfig.Type))
 					targets.Config.Cerebras.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetCohereConfig != nil {
@@ -645,7 +630,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Cohere.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.Temperature)
 					targets.Config.Cohere.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.TopK)
 					targets.Config.Cohere.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.TopP)
-					targets.Config.Cohere.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetCohereConfig.Type))
 					targets.Config.Cohere.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.UpstreamURL)
 					targets.Config.Cohere.WaitForModel = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.WaitForModel)
 				}
@@ -659,7 +643,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Dashscope.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.Temperature)
 					targets.Config.Dashscope.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.TopK)
 					targets.Config.Dashscope.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.TopP)
-					targets.Config.Dashscope.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetDashscopeConfig.Type))
 					targets.Config.Dashscope.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetDatabricksConfig != nil {
@@ -671,7 +654,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Databricks.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.Temperature)
 					targets.Config.Databricks.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.TopK)
 					targets.Config.Databricks.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.TopP)
-					targets.Config.Databricks.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetDatabricksConfig.Type))
 					targets.Config.Databricks.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.UpstreamURL)
 					targets.Config.Databricks.WorkspaceInstanceID = types.StringValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.WorkspaceInstanceID)
 				}
@@ -684,7 +666,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Deepseek.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.Temperature)
 					targets.Config.Deepseek.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.TopK)
 					targets.Config.Deepseek.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.TopP)
-					targets.Config.Deepseek.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetDeepseekConfig.Type))
 					targets.Config.Deepseek.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetGeminiConfig != nil {
@@ -704,7 +685,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Gemini.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.Temperature)
 					targets.Config.Gemini.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.TopK)
 					targets.Config.Gemini.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.TopP)
-					targets.Config.Gemini.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetGeminiConfig.Type))
 					targets.Config.Gemini.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetHuggingfaceConfig != nil {
@@ -716,7 +696,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Huggingface.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.Temperature)
 					targets.Config.Huggingface.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.TopK)
 					targets.Config.Huggingface.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.TopP)
-					targets.Config.Huggingface.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.Type))
 					targets.Config.Huggingface.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.UpstreamURL)
 					targets.Config.Huggingface.UseCache = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.UseCache)
 					targets.Config.Huggingface.WaitForModel = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.WaitForModel)
@@ -731,7 +710,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Kimi.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.Temperature)
 					targets.Config.Kimi.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.TopK)
 					targets.Config.Kimi.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.TopP)
-					targets.Config.Kimi.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetKimiConfig.Type))
 					targets.Config.Kimi.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetLlama2Config != nil {
@@ -744,7 +722,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Llama2.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.Temperature)
 					targets.Config.Llama2.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.TopK)
 					targets.Config.Llama2.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.TopP)
-					targets.Config.Llama2.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetLlama2Config.Type))
 					targets.Config.Llama2.UpstreamURL = types.StringValue(targetsItem.Config.AIGatewayTargetLlama2Config.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetMistralConfig != nil {
@@ -757,7 +734,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Mistral.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.Temperature)
 					targets.Config.Mistral.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.TopK)
 					targets.Config.Mistral.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.TopP)
-					targets.Config.Mistral.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetMistralConfig.Type))
 					targets.Config.Mistral.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetOllamaConfig != nil {
@@ -769,7 +745,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Ollama.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.Temperature)
 					targets.Config.Ollama.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.TopK)
 					targets.Config.Ollama.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.TopP)
-					targets.Config.Ollama.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetOllamaConfig.Type))
 					targets.Config.Ollama.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetOpenaiConfig != nil {
@@ -781,8 +756,35 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Openai.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.Temperature)
 					targets.Config.Openai.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.TopK)
 					targets.Config.Openai.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.TopP)
-					targets.Config.Openai.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetOpenaiConfig.Type))
 					targets.Config.Openai.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.UpstreamURL)
+				}
+				if targetsItem.Config.AIGatewayTargetSagemakerConfig != nil {
+					targets.Config.Sagemaker = &tfTypes.AIGatewayTargetSagemakerConfig{}
+					if targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws == nil {
+						targets.Config.Sagemaker.Aws = nil
+					} else {
+						targets.Config.Sagemaker.Aws = &tfTypes.Aws{}
+						targets.Config.Sagemaker.Aws.AssumeRoleArn = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws.AssumeRoleArn)
+						targets.Config.Sagemaker.Aws.Region = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws.Region)
+						targets.Config.Sagemaker.Aws.RoleSessionName = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws.RoleSessionName)
+						targets.Config.Sagemaker.Aws.StsEndpointURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws.StsEndpointURL)
+					}
+					targets.Config.Sagemaker.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.EmbeddingsDimensions)
+					targets.Config.Sagemaker.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.InputCost)
+					targets.Config.Sagemaker.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.MaxTokens)
+					targets.Config.Sagemaker.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetSagemakerConfig.Target == nil {
+						targets.Config.Sagemaker.Target = nil
+					} else {
+						targets.Config.Sagemaker.Target = &tfTypes.Target{}
+						targets.Config.Sagemaker.Target.ContainerHostname = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Target.ContainerHostname)
+						targets.Config.Sagemaker.Target.Model = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Target.Model)
+						targets.Config.Sagemaker.Target.Variant = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Target.Variant)
+					}
+					targets.Config.Sagemaker.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Temperature)
+					targets.Config.Sagemaker.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.TopK)
+					targets.Config.Sagemaker.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.TopP)
+					targets.Config.Sagemaker.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetVercelConfig != nil {
 					targets.Config.Vercel = &tfTypes.AIGatewayTargetCerebrasConfig{}
@@ -793,7 +795,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Vercel.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.Temperature)
 					targets.Config.Vercel.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.TopK)
 					targets.Config.Vercel.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.TopP)
-					targets.Config.Vercel.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetVercelConfig.Type))
 					targets.Config.Vercel.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetVertexConfig != nil {
@@ -814,7 +815,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Vertex.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.Temperature)
 					targets.Config.Vertex.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.TopK)
 					targets.Config.Vertex.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.TopP)
-					targets.Config.Vertex.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetVertexConfig.Type))
 					targets.Config.Vertex.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetVllmConfig != nil {
@@ -826,7 +826,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Vllm.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.Temperature)
 					targets.Config.Vllm.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.TopK)
 					targets.Config.Vllm.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.TopP)
-					targets.Config.Vllm.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetVllmConfig.Type))
 					targets.Config.Vllm.UpstreamURL = types.StringValue(targetsItem.Config.AIGatewayTargetVllmConfig.UpstreamURL)
 				}
 				if targetsItem.Config.AIGatewayTargetXaiConfig != nil {
@@ -838,7 +837,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Xai.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.Temperature)
 					targets.Config.Xai.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.TopK)
 					targets.Config.Xai.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.TopP)
-					targets.Config.Xai.Type = types.StringValue(string(targetsItem.Config.AIGatewayTargetXaiConfig.Type))
 					targets.Config.Xai.UpstreamURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.UpstreamURL)
 				}
 				targets.Name = types.StringValue(targetsItem.Name)
@@ -848,42 +846,40 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 
 				r.API.Targets = append(r.API.Targets, targets)
 			}
-			r.API.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Type))
-			r.Type = r.API.Type
-			r.API.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAIGatewayModelAPI.UpdatedAt))
+			r.API.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAPIResponse.UpdatedAt))
 			r.UpdatedAt = r.API.UpdatedAt
 		}
-		if resp.AIGatewayModelAIGatewayModelModel != nil {
+		if resp.AIGatewayModelModelResponse != nil {
 			modelPriorData := r.Model
 			r.Model = &tfTypes.AIGatewayModelModel{}
-			if resp.AIGatewayModelAIGatewayModelModel.Access == nil {
+			if resp.AIGatewayModelModelResponse.Access == nil {
 				r.Model.Access = nil
 			} else {
 				r.Model.Access = &tfTypes.AIGatewayModelAccess{}
-				if resp.AIGatewayModelAIGatewayModelModel.Access.Acls == nil {
+				if resp.AIGatewayModelModelResponse.Access.Acls == nil {
 					r.Model.Access.Acls = nil
 				} else {
 					r.Model.Access.Acls = &tfTypes.AIGatewayACLS{}
-					r.Model.Access.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Access.Acls.Allow))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Access.Acls.Allow {
+					r.Model.Access.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Access.Acls.Allow))
+					for _, v := range resp.AIGatewayModelModelResponse.Access.Acls.Allow {
 						r.Model.Access.Acls.Allow = append(r.Model.Access.Acls.Allow, types.StringValue(v))
 					}
-					r.Model.Access.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Access.Acls.Deny))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Access.Acls.Deny {
+					r.Model.Access.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Access.Acls.Deny))
+					for _, v := range resp.AIGatewayModelModelResponse.Access.Acls.Deny {
 						r.Model.Access.Acls.Deny = append(r.Model.Access.Acls.Deny, types.StringValue(v))
 					}
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Access.IdentityProviders != nil {
-					r.Model.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Access.IdentityProviders))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Access.IdentityProviders {
+				if resp.AIGatewayModelModelResponse.Access.IdentityProviders != nil {
+					r.Model.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Access.IdentityProviders))
+					for _, v := range resp.AIGatewayModelModelResponse.Access.IdentityProviders {
 						r.Model.Access.IdentityProviders = append(r.Model.Access.IdentityProviders, types.StringValue(v))
 					}
 				} else {
 					r.Model.Access.IdentityProviders = nil
 				}
 			}
-			r.Model.Capabilities = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Capabilities))
-			for _, v := range resp.AIGatewayModelAIGatewayModelModel.Capabilities {
+			r.Model.Capabilities = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Capabilities))
+			for _, v := range resp.AIGatewayModelModelResponse.Capabilities {
 				r.Model.Capabilities = append(r.Model.Capabilities, types.StringValue(string(v)))
 			}
 			var configPriorData1 *tfTypes.AIGatewayModelModelConfig
@@ -891,297 +887,279 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				configPriorData1 = modelPriorData.Config
 			}
 			r.Model.Config = &tfTypes.AIGatewayModelModelConfig{}
-			if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer != nil {
+			if resp.AIGatewayModelModelResponse.Config.Balancer != nil {
 				balancerPriorData1 := configPriorData1.Balancer
 				r.Model.Config.Balancer = &tfTypes.AIGatewayModelBalancerConfig{}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig != nil {
+				if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig != nil {
 					r.Model.Config.Balancer.ConsistentHashing = &tfTypes.AIGatewayModelBalancerConsistentHashingConfig{}
-					r.Model.Config.Balancer.ConsistentHashing.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Algorithm))
-					r.Model.Config.Balancer.ConsistentHashing.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ConnectTimeout)
-					r.Model.Config.Balancer.ConsistentHashing.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailTimeout)
-					r.Model.Config.Balancer.ConsistentHashing.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria {
+					r.Model.Config.Balancer.ConsistentHashing.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ConnectTimeout)
+					r.Model.Config.Balancer.ConsistentHashing.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailTimeout)
+					r.Model.Config.Balancer.ConsistentHashing.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.FailoverCriteria {
 						r.Model.Config.Balancer.ConsistentHashing.FailoverCriteria = append(r.Model.Config.Balancer.ConsistentHashing.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.Model.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.HashOnHeader)
-					r.Model.Config.Balancer.ConsistentHashing.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.MaxFails)
-					r.Model.Config.Balancer.ConsistentHashing.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ReadTimeout)
-					r.Model.Config.Balancer.ConsistentHashing.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Retries)
-					r.Model.Config.Balancer.ConsistentHashing.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Slots)
-					r.Model.Config.Balancer.ConsistentHashing.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.WriteTimeout)
+					r.Model.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.HashOnHeader)
+					r.Model.Config.Balancer.ConsistentHashing.MaxFails = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.MaxFails)
+					r.Model.Config.Balancer.ConsistentHashing.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.ReadTimeout)
+					r.Model.Config.Balancer.ConsistentHashing.Retries = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Retries)
+					r.Model.Config.Balancer.ConsistentHashing.Slots = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.Slots)
+					r.Model.Config.Balancer.ConsistentHashing.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerConsistentHashingConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig != nil {
+				if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig != nil {
 					r.Model.Config.Balancer.LeastConnections = &tfTypes.AIGatewayModelBalancerLeastConnectionsConfig{}
-					r.Model.Config.Balancer.LeastConnections.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Algorithm))
-					r.Model.Config.Balancer.LeastConnections.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ConnectTimeout)
-					r.Model.Config.Balancer.LeastConnections.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailTimeout)
-					r.Model.Config.Balancer.LeastConnections.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria {
+					r.Model.Config.Balancer.LeastConnections.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ConnectTimeout)
+					r.Model.Config.Balancer.LeastConnections.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailTimeout)
+					r.Model.Config.Balancer.LeastConnections.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.FailoverCriteria {
 						r.Model.Config.Balancer.LeastConnections.FailoverCriteria = append(r.Model.Config.Balancer.LeastConnections.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.Model.Config.Balancer.LeastConnections.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.MaxFails)
-					r.Model.Config.Balancer.LeastConnections.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ReadTimeout)
-					r.Model.Config.Balancer.LeastConnections.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Retries)
-					r.Model.Config.Balancer.LeastConnections.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Slots)
-					r.Model.Config.Balancer.LeastConnections.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.WriteTimeout)
+					r.Model.Config.Balancer.LeastConnections.MaxFails = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.MaxFails)
+					r.Model.Config.Balancer.LeastConnections.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.ReadTimeout)
+					r.Model.Config.Balancer.LeastConnections.Retries = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Retries)
+					r.Model.Config.Balancer.LeastConnections.Slots = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.Slots)
+					r.Model.Config.Balancer.LeastConnections.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLeastConnectionsConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig != nil {
+				if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig != nil {
 					r.Model.Config.Balancer.LowestLatency = &tfTypes.AIGatewayModelBalancerLowestLatencyConfig{}
-					r.Model.Config.Balancer.LowestLatency.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Algorithm))
-					r.Model.Config.Balancer.LowestLatency.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ConnectTimeout)
-					r.Model.Config.Balancer.LowestLatency.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailTimeout)
-					r.Model.Config.Balancer.LowestLatency.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria {
+					r.Model.Config.Balancer.LowestLatency.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ConnectTimeout)
+					r.Model.Config.Balancer.LowestLatency.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailTimeout)
+					r.Model.Config.Balancer.LowestLatency.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.FailoverCriteria {
 						r.Model.Config.Balancer.LowestLatency.FailoverCriteria = append(r.Model.Config.Balancer.LowestLatency.FailoverCriteria, types.StringValue(string(v)))
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy != nil {
-						r.Model.Config.Balancer.LowestLatency.LatencyStrategy = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy))
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy != nil {
+						r.Model.Config.Balancer.LowestLatency.LatencyStrategy = types.StringValue(string(*resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.LatencyStrategy))
 					} else {
 						r.Model.Config.Balancer.LowestLatency.LatencyStrategy = types.StringNull()
 					}
-					r.Model.Config.Balancer.LowestLatency.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.MaxFails)
-					r.Model.Config.Balancer.LowestLatency.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ReadTimeout)
-					r.Model.Config.Balancer.LowestLatency.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Retries)
-					r.Model.Config.Balancer.LowestLatency.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Slots)
-					r.Model.Config.Balancer.LowestLatency.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.WriteTimeout)
+					r.Model.Config.Balancer.LowestLatency.MaxFails = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.MaxFails)
+					r.Model.Config.Balancer.LowestLatency.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.ReadTimeout)
+					r.Model.Config.Balancer.LowestLatency.Retries = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Retries)
+					r.Model.Config.Balancer.LowestLatency.Slots = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.Slots)
+					r.Model.Config.Balancer.LowestLatency.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestLatencyConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig != nil {
+				if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig != nil {
 					r.Model.Config.Balancer.LowestUsage = &tfTypes.AIGatewayModelBalancerLowestUsageConfig{}
-					r.Model.Config.Balancer.LowestUsage.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Algorithm))
-					r.Model.Config.Balancer.LowestUsage.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ConnectTimeout)
-					r.Model.Config.Balancer.LowestUsage.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailTimeout)
-					r.Model.Config.Balancer.LowestUsage.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria {
+					r.Model.Config.Balancer.LowestUsage.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ConnectTimeout)
+					r.Model.Config.Balancer.LowestUsage.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailTimeout)
+					r.Model.Config.Balancer.LowestUsage.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.FailoverCriteria {
 						r.Model.Config.Balancer.LowestUsage.FailoverCriteria = append(r.Model.Config.Balancer.LowestUsage.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.Model.Config.Balancer.LowestUsage.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.MaxFails)
-					r.Model.Config.Balancer.LowestUsage.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ReadTimeout)
-					r.Model.Config.Balancer.LowestUsage.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Retries)
-					r.Model.Config.Balancer.LowestUsage.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Slots)
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy != nil {
-						r.Model.Config.Balancer.LowestUsage.TokensCountStrategy = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy))
+					r.Model.Config.Balancer.LowestUsage.MaxFails = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.MaxFails)
+					r.Model.Config.Balancer.LowestUsage.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.ReadTimeout)
+					r.Model.Config.Balancer.LowestUsage.Retries = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Retries)
+					r.Model.Config.Balancer.LowestUsage.Slots = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.Slots)
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy != nil {
+						r.Model.Config.Balancer.LowestUsage.TokensCountStrategy = types.StringValue(string(*resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.TokensCountStrategy))
 					} else {
 						r.Model.Config.Balancer.LowestUsage.TokensCountStrategy = types.StringNull()
 					}
-					r.Model.Config.Balancer.LowestUsage.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.WriteTimeout)
+					r.Model.Config.Balancer.LowestUsage.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerLowestUsageConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig != nil {
+				if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig != nil {
 					r.Model.Config.Balancer.Priority = &tfTypes.AIGatewayModelBalancerLeastConnectionsConfig{}
-					r.Model.Config.Balancer.Priority.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Algorithm))
-					r.Model.Config.Balancer.Priority.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ConnectTimeout)
-					r.Model.Config.Balancer.Priority.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailTimeout)
-					r.Model.Config.Balancer.Priority.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria {
+					r.Model.Config.Balancer.Priority.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ConnectTimeout)
+					r.Model.Config.Balancer.Priority.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailTimeout)
+					r.Model.Config.Balancer.Priority.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.FailoverCriteria {
 						r.Model.Config.Balancer.Priority.FailoverCriteria = append(r.Model.Config.Balancer.Priority.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.Model.Config.Balancer.Priority.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.MaxFails)
-					r.Model.Config.Balancer.Priority.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ReadTimeout)
-					r.Model.Config.Balancer.Priority.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Retries)
-					r.Model.Config.Balancer.Priority.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Slots)
-					r.Model.Config.Balancer.Priority.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerPriorityConfig.WriteTimeout)
+					r.Model.Config.Balancer.Priority.MaxFails = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.MaxFails)
+					r.Model.Config.Balancer.Priority.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.ReadTimeout)
+					r.Model.Config.Balancer.Priority.Retries = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Retries)
+					r.Model.Config.Balancer.Priority.Slots = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.Slots)
+					r.Model.Config.Balancer.Priority.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerPriorityConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig != nil {
+				if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig != nil {
 					r.Model.Config.Balancer.RoundRobin = &tfTypes.AIGatewayModelBalancerLeastConnectionsConfig{}
-					r.Model.Config.Balancer.RoundRobin.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Algorithm))
-					r.Model.Config.Balancer.RoundRobin.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ConnectTimeout)
-					r.Model.Config.Balancer.RoundRobin.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailTimeout)
-					r.Model.Config.Balancer.RoundRobin.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria {
+					r.Model.Config.Balancer.RoundRobin.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ConnectTimeout)
+					r.Model.Config.Balancer.RoundRobin.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailTimeout)
+					r.Model.Config.Balancer.RoundRobin.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.FailoverCriteria {
 						r.Model.Config.Balancer.RoundRobin.FailoverCriteria = append(r.Model.Config.Balancer.RoundRobin.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.Model.Config.Balancer.RoundRobin.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.MaxFails)
-					r.Model.Config.Balancer.RoundRobin.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ReadTimeout)
-					r.Model.Config.Balancer.RoundRobin.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Retries)
-					r.Model.Config.Balancer.RoundRobin.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Slots)
-					r.Model.Config.Balancer.RoundRobin.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.WriteTimeout)
+					r.Model.Config.Balancer.RoundRobin.MaxFails = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.MaxFails)
+					r.Model.Config.Balancer.RoundRobin.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.ReadTimeout)
+					r.Model.Config.Balancer.RoundRobin.Retries = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Retries)
+					r.Model.Config.Balancer.RoundRobin.Slots = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.Slots)
+					r.Model.Config.Balancer.RoundRobin.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerRoundRobinConfig.WriteTimeout)
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput != nil {
+				if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput != nil {
 					var semanticPriorData1 *tfTypes.AIGatewayModelBalancerSemanticConfig
 					if balancerPriorData1 != nil {
 						semanticPriorData1 = balancerPriorData1.Semantic
 					}
 					r.Model.Config.Balancer.Semantic = &tfTypes.AIGatewayModelBalancerSemanticConfig{}
-					r.Model.Config.Balancer.Semantic.Algorithm = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Algorithm))
-					r.Model.Config.Balancer.Semantic.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ConnectTimeout)
+					r.Model.Config.Balancer.Semantic.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ConnectTimeout)
 					r.Model.Config.Balancer.Semantic.Embeddings = &tfTypes.Embeddings{}
-					r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.AllowAuthOverride)
+					r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.AllowAuthOverride)
 					if r.Model.Config.Balancer.Semantic.Embeddings.Config == nil {
 						r.Model.Config.Balancer.Semantic.Embeddings.Config = &tfTypes.AIGatewayEmbeddingsModelConfig{}
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig != nil {
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure = &tfTypes.AIGatewayAzureEmbeddingsModelConfig{}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.APIVersion = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.APIVersion)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.DeploymentID)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.UpstreamURL)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.APIVersion = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.APIVersion)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.DeploymentID)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig != nil {
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock = &tfTypes.AIGatewayBedrockEmbeddingsModelConfig{}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.BatchBucketPrefix)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.EmbeddingsNormalize)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.PerformanceConfigLatency)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.Region)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.UpstreamURL)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.VideoOutputS3URI)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.BatchBucketPrefix)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.EmbeddingsNormalize)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.PerformanceConfigLatency)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.Region)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.UpstreamURL)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig.VideoOutputS3URI)
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig != nil {
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini = &tfTypes.AIGatewayGeminiEmbeddingsModelConfig{}
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment == nil {
+						if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment == nil {
 							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment = nil
 						} else {
 							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment = &tfTypes.GCPModelConfig{}
-							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
-							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.LocationID)
-							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.ProjectID)
+							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
+							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.LocationID)
+							r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.GcpEnvironment.ProjectID)
 						}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.UpstreamURL)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayGeminiEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig != nil {
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface = &tfTypes.AIGatewayHuggingfaceEmbeddingsModelConfig{}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UpstreamURL)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UseCache)
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.WaitForModel = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.WaitForModel)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UpstreamURL)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.UseCache)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.WaitForModel = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayHuggingfaceEmbeddingsModelConfig.WaitForModel)
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig != nil {
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral = &tfTypes.AIGatewayMistralEmbeddingsModelConfig{}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.UpstreamURL)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type = types.StringValue(string(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.Type))
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayMistralEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig != nil {
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama = &tfTypes.AIGatewayMistralEmbeddingsModelConfig{}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig.UpstreamURL)
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig != nil {
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama = &tfTypes.AIGatewayOllamaEmbeddingsModelConfig{}
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOllamaEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig != nil {
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai = &tfTypes.AIGatewayMistralEmbeddingsModelConfig{}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig.UpstreamURL)
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig != nil {
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai = &tfTypes.AIGatewayOllamaEmbeddingsModelConfig{}
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayOpenaiEmbeddingsModelConfig.UpstreamURL)
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig != nil {
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex = &tfTypes.AIGatewayGeminiEmbeddingsModelConfig{}
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment == nil {
+						if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment == nil {
 							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment = nil
 						} else {
 							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment = &tfTypes.GCPModelConfig{}
-							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
-							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.LocationID)
-							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.ProjectID)
+							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.APIEndpoint = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.APIEndpoint)
+							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.LocationID = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.LocationID)
+							r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment.ProjectID = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.GcpEnvironment.ProjectID)
 						}
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.Type))
-						r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.UpstreamURL)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayVertexEmbeddingsModelConfig.UpstreamURL)
 					}
-					r.Model.Config.Balancer.Semantic.Embeddings.Name = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Name)
-					r.Model.Config.Balancer.Semantic.Embeddings.Provider = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Provider)
-					r.Model.Config.Balancer.Semantic.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailTimeout)
-					r.Model.Config.Balancer.Semantic.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria {
+					r.Model.Config.Balancer.Semantic.Embeddings.Name = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Name)
+					r.Model.Config.Balancer.Semantic.Embeddings.Provider = types.StringValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Provider)
+					r.Model.Config.Balancer.Semantic.FailTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailTimeout)
+					r.Model.Config.Balancer.Semantic.FailoverCriteria = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.FailoverCriteria {
 						r.Model.Config.Balancer.Semantic.FailoverCriteria = append(r.Model.Config.Balancer.Semantic.FailoverCriteria, types.StringValue(string(v)))
 					}
-					r.Model.Config.Balancer.Semantic.MaxFails = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.MaxFails)
-					r.Model.Config.Balancer.Semantic.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ReadTimeout)
-					r.Model.Config.Balancer.Semantic.Retries = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Retries)
-					r.Model.Config.Balancer.Semantic.Slots = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Slots)
+					r.Model.Config.Balancer.Semantic.MaxFails = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.MaxFails)
+					r.Model.Config.Balancer.Semantic.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.ReadTimeout)
+					r.Model.Config.Balancer.Semantic.Retries = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Retries)
+					r.Model.Config.Balancer.Semantic.Slots = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Slots)
 					vectordbPriorData1 := semanticPriorData1.Vectordb
 					if r.Model.Config.Balancer.Semantic.Vectordb == nil {
 						r.Model.Config.Balancer.Semantic.Vectordb = &tfTypes.AIGatewayModelVectorDBConfig{}
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput != nil {
 						var pgvectorPriorData1 *tfTypes.AIGatewayModelVectorDBConfigPgVector
 						if vectordbPriorData1 != nil {
 							pgvectorPriorData1 = vectordbPriorData1.Pgvector
 						}
 						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector = &tfTypes.AIGatewayModelVectorDBConfigPgVector{}
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Database = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Database)
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions = types.Int64Value(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Dimensions)
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.DistanceMetric = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.DistanceMetric))
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Host)
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Port = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Port)
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl == nil {
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Database = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Database)
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions = types.Int64Value(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Dimensions)
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.DistanceMetric = types.StringValue(string(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.DistanceMetric))
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Host = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Host)
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Port = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Port)
+						if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl == nil {
 							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl = nil
 						} else {
 							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl = &tfTypes.Ssl{}
-							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Cert = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Cert)
-							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.CertKey = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.CertKey)
-							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Enabled = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Enabled)
-							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Required = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Required)
-							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Verify = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Verify)
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version))
+							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Cert = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Cert)
+							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.CertKey = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.CertKey)
+							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Enabled = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Enabled)
+							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Required = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Required)
+							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Verify = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Verify)
+							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version != nil {
+								r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version = types.StringValue(string(*resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Ssl.Version))
 							} else {
 								r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version = types.StringNull()
 							}
 						}
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Threshold = types.Float64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Threshold)
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Timeout = types.Float64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Timeout)
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Type))
-						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.User = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.User)
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Threshold = types.Float64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Threshold)
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Timeout = types.Float64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.Timeout)
+						r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.User = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigPgVectorOutput.User)
 						if pgvectorPriorData1 != nil {
 							r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Password = pgvectorPriorData1.Password
 						}
 					}
-					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput != nil {
+					if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput != nil {
 						var redisPriorData1 *tfTypes.AIGatewayModelVectorDBConfigRedis
 						if vectordbPriorData1 != nil {
 							redisPriorData1 = vectordbPriorData1.Redis
 						}
 						r.Model.Config.Balancer.Semantic.Vectordb.Redis = &tfTypes.AIGatewayModelVectorDBConfigRedis{}
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication != nil {
+						if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication != nil {
 							cloudAuthenticationPriorData1 := redisPriorData1.CloudAuthentication
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication = &tfTypes.AIGatewayRedisCloudConfigurationCloudAuthentication{}
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
+							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
 								var awsPriorData1 *tfTypes.AIGatewayRedisAWSAuthentication
 								if cloudAuthenticationPriorData1 != nil {
 									awsPriorData1 = cloudAuthenticationPriorData1.Aws
 								}
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Type))
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
 								if awsPriorData1 != nil {
 									r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData1.SecretAccessKey
 								}
 							}
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
+							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
 								var azurePriorData1 *tfTypes.AIGatewayRedisAzureAuthentication
 								if cloudAuthenticationPriorData1 != nil {
 									azurePriorData1 = cloudAuthenticationPriorData1.Azure
 								}
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.Type))
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
 								if azurePriorData1 != nil {
 									r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData1.ClientSecret
 								}
 							}
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
+							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
 								var gcpPriorData1 *tfTypes.AIGatewayRedisGCPAuthentication
 								if cloudAuthenticationPriorData1 != nil {
 									gcpPriorData1 = cloudAuthenticationPriorData1.Gcp
 								}
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput.Type))
 								if gcpPriorData1 != nil {
 									r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData1.ServiceAccountJSON
 								}
 							}
 						}
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster == nil {
+						if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster == nil {
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster = nil
 						} else {
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
-							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
+							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
+							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
 
-								for _, nodesItem2 := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
+								for _, nodesItem2 := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
 									var nodes2 tfTypes.AIGatewayRedisCloudConfigurationNodes
 
 									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
@@ -1193,40 +1171,32 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = nil
 							}
 						}
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectTimeout)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectionIsProxied)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Database = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Database)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Dimensions = types.Int64Value(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Dimensions)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.DistanceMetric = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.DistanceMetric))
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Host)
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive == nil {
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectTimeout)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ConnectionIsProxied)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Database = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Database)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Dimensions = types.Int64Value(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Dimensions)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.DistanceMetric = types.StringValue(string(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.DistanceMetric))
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Host = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Host)
+						if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive == nil {
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Keepalive = nil
 						} else {
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Keepalive = &tfTypes.AIGatewayRedisCloudConfigurationKeepalive{}
-							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.Backlog)
-							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.PoolSize)
+							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.Backlog)
+							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Keepalive.PoolSize)
 						}
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Password = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Password)
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port != nil {
-							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Integer != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Integer)
-							}
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Str != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Str = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port.Str)
-							}
-						}
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ReadTimeout)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SendTimeout)
-						if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel == nil {
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Password = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Password)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Port)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ReadTimeout)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SendTimeout)
+						if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel == nil {
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = nil
 						} else {
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
-							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
+							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
+							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
 
-								for _, nodesItem3 := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
+								for _, nodesItem3 := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
 									var nodes3 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
 
 									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
@@ -1237,38 +1207,37 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							} else {
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = nil
 							}
-							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Password)
-							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role))
+							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Password)
+							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role != nil {
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Role))
 							} else {
 								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Role = types.StringNull()
 							}
-							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Username)
+							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Username)
 						}
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ServerName = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ServerName)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Ssl)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SslVerify)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Threshold = types.Float64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Threshold)
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Type))
-						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Username = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Username)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.ServerName = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.ServerName)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Ssl)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.SslVerify)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Threshold = types.Float64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Threshold)
+						r.Model.Config.Balancer.Semantic.Vectordb.Redis.Username = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Username)
 					}
-					r.Model.Config.Balancer.Semantic.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.WriteTimeout)
+					r.Model.Config.Balancer.Semantic.WriteTimeout = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.WriteTimeout)
 				}
 			}
-			if resp.AIGatewayModelAIGatewayModelModel.Config.Logging == nil {
+			if resp.AIGatewayModelModelResponse.Config.Logging == nil {
 				r.Model.Config.Logging = nil
 			} else {
 				r.Model.Config.Logging = &tfTypes.AIGatewayLoggingConfig{}
-				r.Model.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Logging.Payloads)
+				r.Model.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Logging.Payloads)
 			}
-			r.Model.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.MaxRequestBodySize)
-			if resp.AIGatewayModelAIGatewayModelModel.Config.Model == nil {
+			r.Model.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.MaxRequestBodySize)
+			if resp.AIGatewayModelModelResponse.Config.Model == nil {
 				r.Model.Config.Model = nil
 			} else {
 				r.Model.Config.Model = &tfTypes.Model{}
-				r.Model.Config.Model.NameHeader = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Model.NameHeader)
+				r.Model.Config.Model.NameHeader = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Model.NameHeader)
 			}
-			if resp.AIGatewayModelAIGatewayModelModel.Config.Proxy == nil {
+			if resp.AIGatewayModelModelResponse.Config.Proxy == nil {
 				r.Model.Config.Proxy = nil
 			} else {
 				var proxyPriorData1 *tfTypes.AIGatewayProxyConfig
@@ -1276,7 +1245,7 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					proxyPriorData1 = configPriorData1.Proxy
 				}
 				r.Model.Config.Proxy = &tfTypes.AIGatewayProxyConfig{}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.Auth == nil {
+				if resp.AIGatewayModelModelResponse.Config.Proxy.Auth == nil {
 					r.Model.Config.Proxy.Auth = nil
 				} else {
 					var authPriorData1 *tfTypes.Auth
@@ -1284,94 +1253,110 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						authPriorData1 = proxyPriorData1.Auth
 					}
 					r.Model.Config.Proxy.Auth = &tfTypes.Auth{}
-					r.Model.Config.Proxy.Auth.Username = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.Auth.Username)
+					r.Model.Config.Proxy.Auth.Username = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Proxy.Auth.Username)
 					if authPriorData1 != nil {
 						r.Model.Config.Proxy.Auth.Password = authPriorData1.Password
 					}
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.HTTPProxy == nil {
+				if resp.AIGatewayModelModelResponse.Config.Proxy.HTTPProxy == nil {
 					r.Model.Config.Proxy.HTTPProxy = nil
 				} else {
 					r.Model.Config.Proxy.HTTPProxy = &tfTypes.HTTPProxy{}
-					r.Model.Config.Proxy.HTTPProxy.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.HTTPProxy.Host)
-					r.Model.Config.Proxy.HTTPProxy.Port = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.HTTPProxy.Port)
+					r.Model.Config.Proxy.HTTPProxy.Host = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Proxy.HTTPProxy.Host)
+					r.Model.Config.Proxy.HTTPProxy.Port = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Proxy.HTTPProxy.Port)
 				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.HTTPSProxy == nil {
+				if resp.AIGatewayModelModelResponse.Config.Proxy.HTTPSProxy == nil {
 					r.Model.Config.Proxy.HTTPSProxy = nil
 				} else {
 					r.Model.Config.Proxy.HTTPSProxy = &tfTypes.HTTPProxy{}
-					r.Model.Config.Proxy.HTTPSProxy.Host = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.HTTPSProxy.Host)
-					r.Model.Config.Proxy.HTTPSProxy.Port = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.HTTPSProxy.Port)
+					r.Model.Config.Proxy.HTTPSProxy.Host = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Proxy.HTTPSProxy.Host)
+					r.Model.Config.Proxy.HTTPSProxy.Port = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Proxy.HTTPSProxy.Port)
 				}
-				r.Model.Config.Proxy.NoProxy = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.NoProxy)
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.ProxyScheme != nil {
-					r.Model.Config.Proxy.ProxyScheme = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelModel.Config.Proxy.ProxyScheme))
+				r.Model.Config.Proxy.NoProxy = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Proxy.NoProxy)
+				if resp.AIGatewayModelModelResponse.Config.Proxy.ProxyScheme != nil {
+					r.Model.Config.Proxy.ProxyScheme = types.StringValue(string(*resp.AIGatewayModelModelResponse.Config.Proxy.ProxyScheme))
 				} else {
 					r.Model.Config.Proxy.ProxyScheme = types.StringNull()
 				}
 			}
-			if resp.AIGatewayModelAIGatewayModelModel.Config.ResponseStreaming != nil {
-				r.Model.Config.ResponseStreaming = types.StringValue(string(*resp.AIGatewayModelAIGatewayModelModel.Config.ResponseStreaming))
+			if resp.AIGatewayModelModelResponse.Config.ResponseStreaming != nil {
+				r.Model.Config.ResponseStreaming = types.StringValue(string(*resp.AIGatewayModelModelResponse.Config.ResponseStreaming))
 			} else {
 				r.Model.Config.ResponseStreaming = types.StringNull()
 			}
 			r.Model.Config.Route = &tfTypes.AIGatewayModelRouteConfig{}
-			if len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Headers) > 0 {
-				r.Model.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Headers))
-				for key3, value3 := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Headers {
-					result1, _ := json.Marshal(value3)
-					r.Model.Config.Route.Headers[key3] = jsontypes.NewNormalizedValue(string(result1))
+			if len(resp.AIGatewayModelModelResponse.Config.Route.Headers) > 0 {
+				r.Model.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelModelResponse.Config.Route.Headers))
+				for key5, value5 := range resp.AIGatewayModelModelResponse.Config.Route.Headers {
+					result3, _ := json.Marshal(value5)
+					r.Model.Config.Route.Headers[key5] = jsontypes.NewNormalizedValue(string(result3))
 				}
 			}
-			if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Hosts != nil {
-				r.Model.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Hosts {
-					r.Model.Config.Route.Hosts = append(r.Model.Config.Route.Hosts, types.StringValue(v))
-				}
-			} else {
-				r.Model.Config.Route.Hosts = nil
+			r.Model.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Hosts {
+				r.Model.Config.Route.Hosts = append(r.Model.Config.Route.Hosts, types.StringValue(v))
 			}
-			r.Model.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.HTTPSRedirectStatusCode)
-			r.Model.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Methods))
-			for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Methods {
+			r.Model.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.Model.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Methods {
 				r.Model.Config.Route.Methods = append(r.Model.Config.Route.Methods, types.StringValue(v))
 			}
-			if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model != nil {
+			if resp.AIGatewayModelModelResponse.Config.Route.Model != nil {
 				r.Model.Config.Route.Model = &tfTypes.AIGatewayModelAliasConfig{}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
+				if resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+					r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody = &tfTypes.AIGatewayModelAliasConfigBody{}
+					if len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body) > 0 {
+						r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body))
+						for key6, value6 := range resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+							result4, _ := json.Marshal(value6)
+							r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[key6] = jsontypes.NewNormalizedValue(string(result4))
+						}
+					}
+				}
+				if resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+					r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders = &tfTypes.AIGatewayModelAliasConfigHeaders{}
+					if len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers) > 0 {
+						r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers))
+						for key7, value7 := range resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+							result5, _ := json.Marshal(value7)
+							r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[key7] = jsontypes.NewNormalizedValue(string(result5))
+						}
+					}
+				}
+				if resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
 					r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath = &tfTypes.AIGatewayModelAliasConfigPath{}
-					r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
+					r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
 						r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = append(r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases, types.StringValue(v))
 					}
 				}
 			}
-			r.Model.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Paths))
-			for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Paths {
+			r.Model.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Paths {
 				r.Model.Config.Route.Paths = append(r.Model.Config.Route.Paths, types.StringValue(v))
 			}
-			r.Model.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.PreserveHost)
-			r.Model.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Protocols))
-			for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Protocols {
+			r.Model.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Route.PreserveHost)
+			r.Model.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Protocols {
 				r.Model.Config.Route.Protocols = append(r.Model.Config.Route.Protocols, types.StringValue(v))
 			}
-			r.Model.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.RegexPriority)
-			r.Model.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.RequestBuffering)
-			r.Model.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.ResponseBuffering)
-			r.Model.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.StripPath)
-			r.Model.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Tags))
-			for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Tags {
+			r.Model.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Route.RegexPriority)
+			r.Model.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Route.RequestBuffering)
+			r.Model.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Route.ResponseBuffering)
+			r.Model.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Config.Route.StripPath)
+			r.Model.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Tags {
 				r.Model.Config.Route.Tags = append(r.Model.Config.Route.Tags, types.StringValue(v))
 			}
-			r.Model.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAIGatewayModelModel.CreatedAt))
+			r.Model.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelModelResponse.CreatedAt))
 			r.CreatedAt = r.Model.CreatedAt
-			r.Model.DisplayName = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.DisplayName)
+			r.Model.DisplayName = types.StringValue(resp.AIGatewayModelModelResponse.DisplayName)
 			r.DisplayName = r.Model.DisplayName
-			r.Model.Enabled = types.BoolPointerValue(resp.AIGatewayModelAIGatewayModelModel.Enabled)
+			r.Model.Enabled = types.BoolPointerValue(resp.AIGatewayModelModelResponse.Enabled)
 			r.Enabled = r.Model.Enabled
 			r.Model.Formats = []tfTypes.AIGatewayModelFormat{}
 
-			for _, formatsItem1 := range resp.AIGatewayModelAIGatewayModelModel.Formats {
+			for _, formatsItem1 := range resp.AIGatewayModelModelResponse.Formats {
 				var formats1 tfTypes.AIGatewayModelFormat
 
 				if formatsItem1.Type != nil {
@@ -1382,29 +1367,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 
 				r.Model.Formats = append(r.Model.Formats, formats1)
 			}
-			r.Model.ID = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.ID)
+			r.Model.ID = types.StringValue(resp.AIGatewayModelModelResponse.ID)
 			r.ID = r.Model.ID
-			if len(resp.AIGatewayModelAIGatewayModelModel.Labels) > 0 {
-				r.Model.Labels = make(map[string]types.String, len(resp.AIGatewayModelAIGatewayModelModel.Labels))
-				for key4, value4 := range resp.AIGatewayModelAIGatewayModelModel.Labels {
-					r.Model.Labels[key4] = types.StringValue(value4)
+			if len(resp.AIGatewayModelModelResponse.Labels) > 0 {
+				r.Model.Labels = make(map[string]types.String, len(resp.AIGatewayModelModelResponse.Labels))
+				for key8, value8 := range resp.AIGatewayModelModelResponse.Labels {
+					r.Model.Labels[key8] = types.StringValue(value8)
 				}
 			}
-			if len(resp.AIGatewayModelAIGatewayModelModel.ManagedBy) > 0 {
-				r.Model.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelAIGatewayModelModel.ManagedBy))
-				for key5, value5 := range resp.AIGatewayModelAIGatewayModelModel.ManagedBy {
-					r.Model.ManagedBy[key5] = types.StringValue(value5)
+			if len(resp.AIGatewayModelModelResponse.ManagedBy) > 0 {
+				r.Model.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelModelResponse.ManagedBy))
+				for key9, value9 := range resp.AIGatewayModelModelResponse.ManagedBy {
+					r.Model.ManagedBy[key9] = types.StringValue(value9)
 				}
 			}
-			r.Model.Name = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Name)
+			r.Model.Name = types.StringValue(resp.AIGatewayModelModelResponse.Name)
 			r.Name = r.Model.Name
-			r.Model.Policies = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Policies))
-			for _, v := range resp.AIGatewayModelAIGatewayModelModel.Policies {
+			r.Model.Policies = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Policies))
+			for _, v := range resp.AIGatewayModelModelResponse.Policies {
 				r.Model.Policies = append(r.Model.Policies, types.StringValue(v))
 			}
 			r.Model.Targets = []tfTypes.AIGatewayTarget{}
 
-			for _, targetsItem1 := range resp.AIGatewayModelAIGatewayModelModel.Targets {
+			for _, targetsItem1 := range resp.AIGatewayModelModelResponse.Targets {
 				var targets1 tfTypes.AIGatewayTarget
 
 				targets1.AllowAuthOverride = types.BoolPointerValue(targetsItem1.AllowAuthOverride)
@@ -1420,7 +1405,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Anthropic.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.Temperature)
 					targets1.Config.Anthropic.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.TopK)
 					targets1.Config.Anthropic.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.TopP)
-					targets1.Config.Anthropic.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetAnthropicConfig.Type))
 					targets1.Config.Anthropic.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.UpstreamURL)
 					targets1.Config.Anthropic.Version = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.Version)
 				}
@@ -1435,7 +1419,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Azure.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.Temperature)
 					targets1.Config.Azure.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.TopK)
 					targets1.Config.Azure.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.TopP)
-					targets1.Config.Azure.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetAzureConfig.Type))
 					targets1.Config.Azure.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetBedrockConfig != nil {
@@ -1451,7 +1434,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Bedrock.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.Temperature)
 					targets1.Config.Bedrock.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.TopK)
 					targets1.Config.Bedrock.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.TopP)
-					targets1.Config.Bedrock.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetBedrockConfig.Type))
 					targets1.Config.Bedrock.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.UpstreamURL)
 					targets1.Config.Bedrock.VideoOutputS3URI = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.VideoOutputS3URI)
 				}
@@ -1464,7 +1446,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Cerebras.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.Temperature)
 					targets1.Config.Cerebras.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.TopK)
 					targets1.Config.Cerebras.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.TopP)
-					targets1.Config.Cerebras.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetCerebrasConfig.Type))
 					targets1.Config.Cerebras.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetCohereConfig != nil {
@@ -1486,7 +1467,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Cohere.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.Temperature)
 					targets1.Config.Cohere.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.TopK)
 					targets1.Config.Cohere.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.TopP)
-					targets1.Config.Cohere.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetCohereConfig.Type))
 					targets1.Config.Cohere.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.UpstreamURL)
 					targets1.Config.Cohere.WaitForModel = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.WaitForModel)
 				}
@@ -1500,7 +1480,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Dashscope.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.Temperature)
 					targets1.Config.Dashscope.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.TopK)
 					targets1.Config.Dashscope.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.TopP)
-					targets1.Config.Dashscope.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetDashscopeConfig.Type))
 					targets1.Config.Dashscope.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetDatabricksConfig != nil {
@@ -1512,7 +1491,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Databricks.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.Temperature)
 					targets1.Config.Databricks.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.TopK)
 					targets1.Config.Databricks.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.TopP)
-					targets1.Config.Databricks.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetDatabricksConfig.Type))
 					targets1.Config.Databricks.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.UpstreamURL)
 					targets1.Config.Databricks.WorkspaceInstanceID = types.StringValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.WorkspaceInstanceID)
 				}
@@ -1525,7 +1503,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Deepseek.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.Temperature)
 					targets1.Config.Deepseek.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.TopK)
 					targets1.Config.Deepseek.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.TopP)
-					targets1.Config.Deepseek.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetDeepseekConfig.Type))
 					targets1.Config.Deepseek.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetGeminiConfig != nil {
@@ -1545,7 +1522,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Gemini.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.Temperature)
 					targets1.Config.Gemini.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.TopK)
 					targets1.Config.Gemini.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.TopP)
-					targets1.Config.Gemini.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetGeminiConfig.Type))
 					targets1.Config.Gemini.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetHuggingfaceConfig != nil {
@@ -1557,7 +1533,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Huggingface.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.Temperature)
 					targets1.Config.Huggingface.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.TopK)
 					targets1.Config.Huggingface.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.TopP)
-					targets1.Config.Huggingface.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.Type))
 					targets1.Config.Huggingface.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.UpstreamURL)
 					targets1.Config.Huggingface.UseCache = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.UseCache)
 					targets1.Config.Huggingface.WaitForModel = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.WaitForModel)
@@ -1572,7 +1547,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Kimi.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.Temperature)
 					targets1.Config.Kimi.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.TopK)
 					targets1.Config.Kimi.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.TopP)
-					targets1.Config.Kimi.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetKimiConfig.Type))
 					targets1.Config.Kimi.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetLlama2Config != nil {
@@ -1585,7 +1559,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Llama2.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.Temperature)
 					targets1.Config.Llama2.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.TopK)
 					targets1.Config.Llama2.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.TopP)
-					targets1.Config.Llama2.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetLlama2Config.Type))
 					targets1.Config.Llama2.UpstreamURL = types.StringValue(targetsItem1.Config.AIGatewayTargetLlama2Config.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetMistralConfig != nil {
@@ -1598,7 +1571,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Mistral.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.Temperature)
 					targets1.Config.Mistral.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.TopK)
 					targets1.Config.Mistral.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.TopP)
-					targets1.Config.Mistral.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetMistralConfig.Type))
 					targets1.Config.Mistral.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetOllamaConfig != nil {
@@ -1610,7 +1582,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Ollama.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.Temperature)
 					targets1.Config.Ollama.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.TopK)
 					targets1.Config.Ollama.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.TopP)
-					targets1.Config.Ollama.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetOllamaConfig.Type))
 					targets1.Config.Ollama.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetOpenaiConfig != nil {
@@ -1622,8 +1593,35 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Openai.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.Temperature)
 					targets1.Config.Openai.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.TopK)
 					targets1.Config.Openai.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.TopP)
-					targets1.Config.Openai.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetOpenaiConfig.Type))
 					targets1.Config.Openai.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.UpstreamURL)
+				}
+				if targetsItem1.Config.AIGatewayTargetSagemakerConfig != nil {
+					targets1.Config.Sagemaker = &tfTypes.AIGatewayTargetSagemakerConfig{}
+					if targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws == nil {
+						targets1.Config.Sagemaker.Aws = nil
+					} else {
+						targets1.Config.Sagemaker.Aws = &tfTypes.Aws{}
+						targets1.Config.Sagemaker.Aws.AssumeRoleArn = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws.AssumeRoleArn)
+						targets1.Config.Sagemaker.Aws.Region = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws.Region)
+						targets1.Config.Sagemaker.Aws.RoleSessionName = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws.RoleSessionName)
+						targets1.Config.Sagemaker.Aws.StsEndpointURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws.StsEndpointURL)
+					}
+					targets1.Config.Sagemaker.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.EmbeddingsDimensions)
+					targets1.Config.Sagemaker.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.InputCost)
+					targets1.Config.Sagemaker.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.MaxTokens)
+					targets1.Config.Sagemaker.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetSagemakerConfig.Target == nil {
+						targets1.Config.Sagemaker.Target = nil
+					} else {
+						targets1.Config.Sagemaker.Target = &tfTypes.Target{}
+						targets1.Config.Sagemaker.Target.ContainerHostname = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Target.ContainerHostname)
+						targets1.Config.Sagemaker.Target.Model = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Target.Model)
+						targets1.Config.Sagemaker.Target.Variant = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Target.Variant)
+					}
+					targets1.Config.Sagemaker.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Temperature)
+					targets1.Config.Sagemaker.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.TopK)
+					targets1.Config.Sagemaker.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.TopP)
+					targets1.Config.Sagemaker.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetVercelConfig != nil {
 					targets1.Config.Vercel = &tfTypes.AIGatewayTargetCerebrasConfig{}
@@ -1634,7 +1632,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Vercel.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.Temperature)
 					targets1.Config.Vercel.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.TopK)
 					targets1.Config.Vercel.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.TopP)
-					targets1.Config.Vercel.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetVercelConfig.Type))
 					targets1.Config.Vercel.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetVertexConfig != nil {
@@ -1655,7 +1652,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Vertex.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.Temperature)
 					targets1.Config.Vertex.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.TopK)
 					targets1.Config.Vertex.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.TopP)
-					targets1.Config.Vertex.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetVertexConfig.Type))
 					targets1.Config.Vertex.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetVllmConfig != nil {
@@ -1667,7 +1663,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Vllm.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.Temperature)
 					targets1.Config.Vllm.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.TopK)
 					targets1.Config.Vllm.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.TopP)
-					targets1.Config.Vllm.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetVllmConfig.Type))
 					targets1.Config.Vllm.UpstreamURL = types.StringValue(targetsItem1.Config.AIGatewayTargetVllmConfig.UpstreamURL)
 				}
 				if targetsItem1.Config.AIGatewayTargetXaiConfig != nil {
@@ -1679,7 +1674,6 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Xai.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.Temperature)
 					targets1.Config.Xai.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.TopK)
 					targets1.Config.Xai.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.TopP)
-					targets1.Config.Xai.Type = types.StringValue(string(targetsItem1.Config.AIGatewayTargetXaiConfig.Type))
 					targets1.Config.Xai.UpstreamURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.UpstreamURL)
 				}
 				targets1.Name = types.StringValue(targetsItem1.Name)
@@ -1689,9 +1683,7 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 
 				r.Model.Targets = append(r.Model.Targets, targets1)
 			}
-			r.Model.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Type))
-			r.Type = r.Model.Type
-			r.Model.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAIGatewayModelModel.UpdatedAt))
+			r.Model.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelModelResponse.UpdatedAt))
 			r.UpdatedAt = r.Model.UpdatedAt
 		}
 	}
@@ -1915,7 +1907,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamURL = nil
 				}
-				typeVar1 := shared.AIGatewayTargetAnthropicConfigType(r.API.Targets[targetsIndex].Config.Anthropic.Type.ValueString())
 				version := new(string)
 				if !r.API.Targets[targetsIndex].Config.Anthropic.Version.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.Version.IsNull() {
 					*version = r.API.Targets[targetsIndex].Config.Anthropic.Version.ValueString()
@@ -1931,7 +1922,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK,
 					TopP:                 topP,
 					UpstreamURL:          upstreamURL,
-					Type:                 typeVar1,
 					Version:              version,
 				}
 			}
@@ -1990,7 +1980,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl1 = nil
 				}
-				typeVar2 := shared.AIGatewayTargetAzureConfigType(r.API.Targets[targetsIndex].Config.Azure.Type.ValueString())
 				var deploymentID string
 				deploymentID = r.API.Targets[targetsIndex].Config.Azure.DeploymentID.ValueString()
 
@@ -2009,7 +1998,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK1,
 					TopP:                 topP1,
 					UpstreamURL:          upstreamUrl1,
-					Type:                 typeVar2,
 					DeploymentID:         deploymentID,
 					APIVersion:           apiVersion,
 				}
@@ -2069,7 +2057,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl2 = nil
 				}
-				typeVar3 := shared.AIGatewayTargetBedrockConfigType(r.API.Targets[targetsIndex].Config.Bedrock.Type.ValueString())
 				region := new(string)
 				if !r.API.Targets[targetsIndex].Config.Bedrock.Region.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.Region.IsNull() {
 					*region = r.API.Targets[targetsIndex].Config.Bedrock.Region.ValueString()
@@ -2109,7 +2096,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                     topK2,
 					TopP:                     topP2,
 					UpstreamURL:              upstreamUrl2,
-					Type:                     typeVar3,
 					Region:                   region,
 					BatchBucketPrefix:        batchBucketPrefix,
 					EmbeddingsNormalize:      embeddingsNormalize,
@@ -2172,7 +2158,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl3 = nil
 				}
-				typeVar4 := shared.AIGatewayTargetCerebrasConfigType(r.API.Targets[targetsIndex].Config.Cerebras.Type.ValueString())
 				aiGatewayTargetCerebrasConfig = &shared.AIGatewayTargetCerebrasConfig{
 					EmbeddingsDimensions: embeddingsDimensions3,
 					MaxTokens:            maxTokens3,
@@ -2182,7 +2167,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK3,
 					TopP:                 topP3,
 					UpstreamURL:          upstreamUrl3,
-					Type:                 typeVar4,
 				}
 			}
 			if aiGatewayTargetCerebrasConfig != nil {
@@ -2240,7 +2224,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl4 = nil
 				}
-				typeVar5 := shared.AIGatewayTargetCohereConfigType(r.API.Targets[targetsIndex].Config.Cohere.Type.ValueString())
 				apiVersion1 := new(shared.APIVersion)
 				if !r.API.Targets[targetsIndex].Config.Cohere.APIVersion.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.APIVersion.IsNull() {
 					*apiVersion1 = shared.APIVersion(r.API.Targets[targetsIndex].Config.Cohere.APIVersion.ValueString())
@@ -2268,7 +2251,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK4,
 					TopP:                 topP4,
 					UpstreamURL:          upstreamUrl4,
-					Type:                 typeVar5,
 					APIVersion:           apiVersion1,
 					EmbeddingInputType:   embeddingInputType,
 					WaitForModel:         waitForModel,
@@ -2329,7 +2311,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl5 = nil
 				}
-				typeVar6 := shared.AIGatewayTargetDashscopeConfigType(r.API.Targets[targetsIndex].Config.Dashscope.Type.ValueString())
 				international := new(bool)
 				if !r.API.Targets[targetsIndex].Config.Dashscope.International.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.International.IsNull() {
 					*international = r.API.Targets[targetsIndex].Config.Dashscope.International.ValueBool()
@@ -2345,7 +2326,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK5,
 					TopP:                 topP5,
 					UpstreamURL:          upstreamUrl5,
-					Type:                 typeVar6,
 					International:        international,
 				}
 			}
@@ -2404,7 +2384,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl6 = nil
 				}
-				typeVar7 := shared.AIGatewayTargetDatabricksConfigType(r.API.Targets[targetsIndex].Config.Databricks.Type.ValueString())
 				var workspaceInstanceID string
 				workspaceInstanceID = r.API.Targets[targetsIndex].Config.Databricks.WorkspaceInstanceID.ValueString()
 
@@ -2417,7 +2396,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK6,
 					TopP:                 topP6,
 					UpstreamURL:          upstreamUrl6,
-					Type:                 typeVar7,
 					WorkspaceInstanceID:  workspaceInstanceID,
 				}
 			}
@@ -2476,7 +2454,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl7 = nil
 				}
-				typeVar8 := shared.AIGatewayTargetDeepseekConfigType(r.API.Targets[targetsIndex].Config.Deepseek.Type.ValueString())
 				aiGatewayTargetDeepseekConfig = &shared.AIGatewayTargetDeepseekConfig{
 					EmbeddingsDimensions: embeddingsDimensions7,
 					MaxTokens:            maxTokens7,
@@ -2486,7 +2463,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK7,
 					TopP:                 topP7,
 					UpstreamURL:          upstreamUrl7,
-					Type:                 typeVar8,
 				}
 			}
 			if aiGatewayTargetDeepseekConfig != nil {
@@ -2544,7 +2520,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl8 = nil
 				}
-				typeVar9 := shared.AIGatewayTargetGeminiConfigType(r.API.Targets[targetsIndex].Config.Gemini.Type.ValueString())
 				var gcpEnvironment *shared.GCPModelConfig
 				if r.API.Targets[targetsIndex].Config.Gemini.GcpEnvironment != nil {
 					var apiEndpoint string
@@ -2571,7 +2546,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK8,
 					TopP:                 topP8,
 					UpstreamURL:          upstreamUrl8,
-					Type:                 typeVar9,
 					GcpEnvironment:       gcpEnvironment,
 				}
 			}
@@ -2630,7 +2604,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl9 = nil
 				}
-				typeVar10 := shared.AIGatewayTargetHuggingfaceConfigType(r.API.Targets[targetsIndex].Config.Huggingface.Type.ValueString())
 				useCache := new(bool)
 				if !r.API.Targets[targetsIndex].Config.Huggingface.UseCache.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.UseCache.IsNull() {
 					*useCache = r.API.Targets[targetsIndex].Config.Huggingface.UseCache.ValueBool()
@@ -2652,7 +2625,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK9,
 					TopP:                 topP9,
 					UpstreamURL:          upstreamUrl9,
-					Type:                 typeVar10,
 					UseCache:             useCache,
 					WaitForModel:         waitForModel1,
 				}
@@ -2712,7 +2684,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl10 = nil
 				}
-				typeVar11 := shared.AIGatewayTargetKimiConfigType(r.API.Targets[targetsIndex].Config.Kimi.Type.ValueString())
 				international1 := new(bool)
 				if !r.API.Targets[targetsIndex].Config.Kimi.International.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.International.IsNull() {
 					*international1 = r.API.Targets[targetsIndex].Config.Kimi.International.ValueBool()
@@ -2728,7 +2699,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK10,
 					TopP:                 topP10,
 					UpstreamURL:          upstreamUrl10,
-					Type:                 typeVar11,
 					International:        international1,
 				}
 			}
@@ -2784,7 +2754,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				var upstreamUrl11 string
 				upstreamUrl11 = r.API.Targets[targetsIndex].Config.Llama2.UpstreamURL.ValueString()
 
-				typeVar12 := shared.AIGatewayTargetLlama2ConfigType(r.API.Targets[targetsIndex].Config.Llama2.Type.ValueString())
 				format := shared.Format(r.API.Targets[targetsIndex].Config.Llama2.Format.ValueString())
 				aiGatewayTargetLlama2Config = &shared.AIGatewayTargetLlama2Config{
 					EmbeddingsDimensions: embeddingsDimensions11,
@@ -2795,7 +2764,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK11,
 					TopP:                 topP11,
 					UpstreamURL:          upstreamUrl11,
-					Type:                 typeVar12,
 					Format:               format,
 				}
 			}
@@ -2854,7 +2822,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl12 = nil
 				}
-				typeVar13 := shared.AIGatewayTargetMistralConfigType(r.API.Targets[targetsIndex].Config.Mistral.Type.ValueString())
 				format1 := shared.AIGatewayTargetMistralConfigFormat(r.API.Targets[targetsIndex].Config.Mistral.Format.ValueString())
 				aiGatewayTargetMistralConfig = &shared.AIGatewayTargetMistralConfig{
 					EmbeddingsDimensions: embeddingsDimensions12,
@@ -2865,7 +2832,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK12,
 					TopP:                 topP12,
 					UpstreamURL:          upstreamUrl12,
-					Type:                 typeVar13,
 					Format:               format1,
 				}
 			}
@@ -2924,7 +2890,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl13 = nil
 				}
-				typeVar14 := shared.AIGatewayTargetOllamaConfigType(r.API.Targets[targetsIndex].Config.Ollama.Type.ValueString())
 				aiGatewayTargetOllamaConfig = &shared.AIGatewayTargetOllamaConfig{
 					EmbeddingsDimensions: embeddingsDimensions13,
 					MaxTokens:            maxTokens13,
@@ -2934,7 +2899,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK13,
 					TopP:                 topP13,
 					UpstreamURL:          upstreamUrl13,
-					Type:                 typeVar14,
 				}
 			}
 			if aiGatewayTargetOllamaConfig != nil {
@@ -2992,7 +2956,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl14 = nil
 				}
-				typeVar15 := shared.AIGatewayTargetOpenaiConfigType(r.API.Targets[targetsIndex].Config.Openai.Type.ValueString())
 				aiGatewayTargetOpenaiConfig = &shared.AIGatewayTargetOpenaiConfig{
 					EmbeddingsDimensions: embeddingsDimensions14,
 					MaxTokens:            maxTokens14,
@@ -3002,7 +2965,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK14,
 					TopP:                 topP14,
 					UpstreamURL:          upstreamUrl14,
-					Type:                 typeVar15,
 				}
 			}
 			if aiGatewayTargetOpenaiConfig != nil {
@@ -3060,7 +3022,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl15 = nil
 				}
-				typeVar16 := shared.AIGatewayTargetVercelConfigType(r.API.Targets[targetsIndex].Config.Vercel.Type.ValueString())
 				aiGatewayTargetVercelConfig = &shared.AIGatewayTargetVercelConfig{
 					EmbeddingsDimensions: embeddingsDimensions15,
 					MaxTokens:            maxTokens15,
@@ -3070,7 +3031,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK15,
 					TopP:                 topP15,
 					UpstreamURL:          upstreamUrl15,
-					Type:                 typeVar16,
 				}
 			}
 			if aiGatewayTargetVercelConfig != nil {
@@ -3128,7 +3088,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl16 = nil
 				}
-				typeVar17 := shared.AIGatewayTargetVertexConfigType(r.API.Targets[targetsIndex].Config.Vertex.Type.ValueString())
 				var gcpEnvironment1 *shared.GcpEnvironment
 				if r.API.Targets[targetsIndex].Config.Vertex.GcpEnvironment != nil {
 					var apiEndpoint1 string
@@ -3162,7 +3121,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK16,
 					TopP:                 topP16,
 					UpstreamURL:          upstreamUrl16,
-					Type:                 typeVar17,
 					GcpEnvironment:       gcpEnvironment1,
 				}
 			}
@@ -3218,7 +3176,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				var upstreamUrl17 string
 				upstreamUrl17 = r.API.Targets[targetsIndex].Config.Vllm.UpstreamURL.ValueString()
 
-				typeVar18 := shared.AIGatewayTargetVllmConfigType(r.API.Targets[targetsIndex].Config.Vllm.Type.ValueString())
 				aiGatewayTargetVllmConfig = &shared.AIGatewayTargetVllmConfig{
 					EmbeddingsDimensions: embeddingsDimensions17,
 					MaxTokens:            maxTokens17,
@@ -3228,7 +3185,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK17,
 					TopP:                 topP17,
 					UpstreamURL:          upstreamUrl17,
-					Type:                 typeVar18,
 				}
 			}
 			if aiGatewayTargetVllmConfig != nil {
@@ -3286,7 +3242,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl18 = nil
 				}
-				typeVar19 := shared.AIGatewayTargetXaiConfigType(r.API.Targets[targetsIndex].Config.Xai.Type.ValueString())
 				aiGatewayTargetXaiConfig = &shared.AIGatewayTargetXaiConfig{
 					EmbeddingsDimensions: embeddingsDimensions18,
 					MaxTokens:            maxTokens18,
@@ -3296,12 +3251,138 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					TopK:                 topK18,
 					TopP:                 topP18,
 					UpstreamURL:          upstreamUrl18,
-					Type:                 typeVar19,
 				}
 			}
 			if aiGatewayTargetXaiConfig != nil {
 				config = shared.AIGatewayTargetConfig{
 					AIGatewayTargetXaiConfig: aiGatewayTargetXaiConfig,
+				}
+			}
+			var aiGatewayTargetSagemakerConfig *shared.AIGatewayTargetSagemakerConfig
+			if r.API.Targets[targetsIndex].Config.Sagemaker != nil {
+				embeddingsDimensions19 := new(int64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.EmbeddingsDimensions.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.EmbeddingsDimensions.IsNull() {
+					*embeddingsDimensions19 = r.API.Targets[targetsIndex].Config.Sagemaker.EmbeddingsDimensions.ValueInt64()
+				} else {
+					embeddingsDimensions19 = nil
+				}
+				maxTokens19 := new(int64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.MaxTokens.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.MaxTokens.IsNull() {
+					*maxTokens19 = r.API.Targets[targetsIndex].Config.Sagemaker.MaxTokens.ValueInt64()
+				} else {
+					maxTokens19 = nil
+				}
+				inputCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.InputCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.InputCost.IsNull() {
+					*inputCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.InputCost.ValueFloat64()
+				} else {
+					inputCost19 = nil
+				}
+				outputCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.IsNull() {
+					*outputCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.ValueFloat64()
+				} else {
+					outputCost19 = nil
+				}
+				temperature19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsNull() {
+					*temperature19 = r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.ValueFloat64()
+				} else {
+					temperature19 = nil
+				}
+				topK19 := new(int64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.TopK.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.TopK.IsNull() {
+					*topK19 = r.API.Targets[targetsIndex].Config.Sagemaker.TopK.ValueInt64()
+				} else {
+					topK19 = nil
+				}
+				topP19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.TopP.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.TopP.IsNull() {
+					*topP19 = r.API.Targets[targetsIndex].Config.Sagemaker.TopP.ValueFloat64()
+				} else {
+					topP19 = nil
+				}
+				upstreamUrl19 := new(string)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.UpstreamURL.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.UpstreamURL.IsNull() {
+					*upstreamUrl19 = r.API.Targets[targetsIndex].Config.Sagemaker.UpstreamURL.ValueString()
+				} else {
+					upstreamUrl19 = nil
+				}
+				var aws *shared.Aws
+				if r.API.Targets[targetsIndex].Config.Sagemaker.Aws != nil {
+					region1 := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.Region.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.Region.IsNull() {
+						*region1 = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.Region.ValueString()
+					} else {
+						region1 = nil
+					}
+					assumeRoleArn := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.AssumeRoleArn.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn = nil
+					}
+					roleSessionName := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.RoleSessionName.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.RoleSessionName.IsNull() {
+						*roleSessionName = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName = nil
+					}
+					stsEndpointURL := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.StsEndpointURL.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointURL = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointURL = nil
+					}
+					aws = &shared.Aws{
+						Region:          region1,
+						AssumeRoleArn:   assumeRoleArn,
+						RoleSessionName: roleSessionName,
+						StsEndpointURL:  stsEndpointURL,
+					}
+				}
+				var target *shared.Target
+				if r.API.Targets[targetsIndex].Config.Sagemaker.Target != nil {
+					model := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Model.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Model.IsNull() {
+						*model = r.API.Targets[targetsIndex].Config.Sagemaker.Target.Model.ValueString()
+					} else {
+						model = nil
+					}
+					variant := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Variant.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Variant.IsNull() {
+						*variant = r.API.Targets[targetsIndex].Config.Sagemaker.Target.Variant.ValueString()
+					} else {
+						variant = nil
+					}
+					containerHostname := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Target.ContainerHostname.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Target.ContainerHostname.IsNull() {
+						*containerHostname = r.API.Targets[targetsIndex].Config.Sagemaker.Target.ContainerHostname.ValueString()
+					} else {
+						containerHostname = nil
+					}
+					target = &shared.Target{
+						Model:             model,
+						Variant:           variant,
+						ContainerHostname: containerHostname,
+					}
+				}
+				aiGatewayTargetSagemakerConfig = &shared.AIGatewayTargetSagemakerConfig{
+					EmbeddingsDimensions: embeddingsDimensions19,
+					MaxTokens:            maxTokens19,
+					InputCost:            inputCost19,
+					OutputCost:           outputCost19,
+					Temperature:          temperature19,
+					TopK:                 topK19,
+					TopP:                 topP19,
+					UpstreamURL:          upstreamUrl19,
+					Aws:                  aws,
+					Target:               target,
+				}
+			}
+			if aiGatewayTargetSagemakerConfig != nil {
+				config = shared.AIGatewayTargetConfig{
+					AIGatewayTargetSagemakerConfig: aiGatewayTargetSagemakerConfig,
 				}
 			}
 			targets = append(targets, shared.AIGatewayTarget{
@@ -3331,19 +3412,15 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 
 			managedBy[managedByKey] = managedByInst
 		}
-		typeVar20 := shared.AIGatewayModelAPIType(r.API.Type.ValueString())
 		headers := make(map[string]interface{})
 		for headersKey := range r.API.Config.Route.Headers {
 			var headersInst interface{}
 			_ = json.Unmarshal([]byte(r.API.Config.Route.Headers[headersKey].ValueString()), &headersInst)
 			headers[headersKey] = headersInst
 		}
-		var hosts []string
-		if r.API.Config.Route.Hosts != nil {
-			hosts = make([]string, 0, len(r.API.Config.Route.Hosts))
-			for hostsIndex := range r.API.Config.Route.Hosts {
-				hosts = append(hosts, r.API.Config.Route.Hosts[hostsIndex].ValueString())
-			}
+		hosts := make([]string, 0, len(r.API.Config.Route.Hosts))
+		for hostsIndex := range r.API.Config.Route.Hosts {
+			hosts = append(hosts, r.API.Config.Route.Hosts[hostsIndex].ValueString())
 		}
 		httpsRedirectStatusCode := new(int64)
 		if !r.API.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.API.Config.Route.HTTPSRedirectStatusCode.IsNull() {
@@ -3397,8 +3474,42 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 		for tagsIndex := range r.API.Config.Route.Tags {
 			tags = append(tags, r.API.Config.Route.Tags[tagsIndex].ValueString())
 		}
-		var model *shared.AIGatewayModelAliasConfig
+		var model1 *shared.AIGatewayModelAliasConfig
 		if r.API.Config.Route.Model != nil {
+			var aiGatewayModelAliasConfigBody *shared.AIGatewayModelAliasConfigBody
+			if r.API.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+				body := make(map[string]interface{})
+				for bodyKey := range r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+					var bodyInst interface{}
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey].ValueString()), &bodyInst)
+					body[bodyKey] = bodyInst
+				}
+				aiGatewayModelAliasConfigBody = &shared.AIGatewayModelAliasConfigBody{
+					Body: body,
+				}
+			}
+			if aiGatewayModelAliasConfigBody != nil {
+				model1 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody,
+				}
+			}
+			var aiGatewayModelAliasConfigHeaders *shared.AIGatewayModelAliasConfigHeaders
+			if r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+				headers1 := make(map[string]interface{})
+				for headersKey1 := range r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+					var headersInst1 interface{}
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey1].ValueString()), &headersInst1)
+					headers1[headersKey1] = headersInst1
+				}
+				aiGatewayModelAliasConfigHeaders = &shared.AIGatewayModelAliasConfigHeaders{
+					Headers: headers1,
+				}
+			}
+			if aiGatewayModelAliasConfigHeaders != nil {
+				model1 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders,
+				}
+			}
 			var aiGatewayModelAliasConfigPath *shared.AIGatewayModelAliasConfigPath
 			if r.API.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
 				pathAliases := make([]string, 0, len(r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
@@ -3410,7 +3521,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 			}
 			if aiGatewayModelAliasConfigPath != nil {
-				model = &shared.AIGatewayModelAliasConfig{
+				model1 = &shared.AIGatewayModelAliasConfig{
 					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath,
 				}
 			}
@@ -3428,7 +3539,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			ResponseBuffering:       responseBuffering,
 			StripPath:               stripPath,
 			Tags:                    tags,
-			Model:                   model,
+			Model:                   model1,
 		}
 		var logging *shared.AIGatewayLoggingConfig
 		if r.API.Config.Logging != nil {
@@ -3504,7 +3615,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout = nil
 				}
-				algorithm := shared.AIGatewayModelBalancerConsistentHashingConfigAlgorithm(r.API.Config.Balancer.ConsistentHashing.Algorithm.ValueString())
 				hashOnHeader := new(string)
 				if !r.API.Config.Balancer.ConsistentHashing.HashOnHeader.IsUnknown() && !r.API.Config.Balancer.ConsistentHashing.HashOnHeader.IsNull() {
 					*hashOnHeader = r.API.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
@@ -3520,7 +3630,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries,
 					Slots:            slots,
 					WriteTimeout:     writeTimeout,
-					Algorithm:        algorithm,
 					HashOnHeader:     hashOnHeader,
 				}
 			}
@@ -3577,7 +3686,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout1 = nil
 				}
-				algorithm1 := shared.AIGatewayModelBalancerLeastConnectionsConfigAlgorithm(r.API.Config.Balancer.LeastConnections.Algorithm.ValueString())
 				aiGatewayModelBalancerLeastConnectionsConfig = &shared.AIGatewayModelBalancerLeastConnectionsConfig{
 					ConnectTimeout:   connectTimeout1,
 					FailTimeout:      failTimeout1,
@@ -3587,7 +3695,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries1,
 					Slots:            slots1,
 					WriteTimeout:     writeTimeout1,
-					Algorithm:        algorithm1,
 				}
 			}
 			if aiGatewayModelBalancerLeastConnectionsConfig != nil {
@@ -3643,7 +3750,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout2 = nil
 				}
-				algorithm2 := shared.AIGatewayModelBalancerLowestLatencyConfigAlgorithm(r.API.Config.Balancer.LowestLatency.Algorithm.ValueString())
 				latencyStrategy := new(shared.LatencyStrategy)
 				if !r.API.Config.Balancer.LowestLatency.LatencyStrategy.IsUnknown() && !r.API.Config.Balancer.LowestLatency.LatencyStrategy.IsNull() {
 					*latencyStrategy = shared.LatencyStrategy(r.API.Config.Balancer.LowestLatency.LatencyStrategy.ValueString())
@@ -3659,7 +3765,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries2,
 					Slots:            slots2,
 					WriteTimeout:     writeTimeout2,
-					Algorithm:        algorithm2,
 					LatencyStrategy:  latencyStrategy,
 				}
 			}
@@ -3716,7 +3821,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout3 = nil
 				}
-				algorithm3 := shared.AIGatewayModelBalancerLowestUsageConfigAlgorithm(r.API.Config.Balancer.LowestUsage.Algorithm.ValueString())
 				tokensCountStrategy := new(shared.TokensCountStrategy)
 				if !r.API.Config.Balancer.LowestUsage.TokensCountStrategy.IsUnknown() && !r.API.Config.Balancer.LowestUsage.TokensCountStrategy.IsNull() {
 					*tokensCountStrategy = shared.TokensCountStrategy(r.API.Config.Balancer.LowestUsage.TokensCountStrategy.ValueString())
@@ -3732,7 +3836,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:             retries3,
 					Slots:               slots3,
 					WriteTimeout:        writeTimeout3,
-					Algorithm:           algorithm3,
 					TokensCountStrategy: tokensCountStrategy,
 				}
 			}
@@ -3789,7 +3892,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout4 = nil
 				}
-				algorithm4 := shared.AIGatewayModelBalancerPriorityConfigAlgorithm(r.API.Config.Balancer.Priority.Algorithm.ValueString())
 				aiGatewayModelBalancerPriorityConfig = &shared.AIGatewayModelBalancerPriorityConfig{
 					ConnectTimeout:   connectTimeout4,
 					FailTimeout:      failTimeout4,
@@ -3799,7 +3901,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries4,
 					Slots:            slots4,
 					WriteTimeout:     writeTimeout4,
-					Algorithm:        algorithm4,
 				}
 			}
 			if aiGatewayModelBalancerPriorityConfig != nil {
@@ -3855,7 +3956,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout5 = nil
 				}
-				algorithm5 := shared.AIGatewayModelBalancerRoundRobinConfigAlgorithm(r.API.Config.Balancer.RoundRobin.Algorithm.ValueString())
 				aiGatewayModelBalancerRoundRobinConfig = &shared.AIGatewayModelBalancerRoundRobinConfig{
 					ConnectTimeout:   connectTimeout5,
 					FailTimeout:      failTimeout5,
@@ -3865,7 +3965,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries5,
 					Slots:            slots5,
 					WriteTimeout:     writeTimeout5,
-					Algorithm:        algorithm5,
 				}
 			}
 			if aiGatewayModelBalancerRoundRobinConfig != nil {
@@ -3921,7 +4020,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout6 = nil
 				}
-				algorithm6 := shared.AIGatewayModelBalancerSemanticConfigAlgorithm(r.API.Config.Balancer.Semantic.Algorithm.ValueString())
 				allowAuthOverride1 := new(bool)
 				if !r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsNull() {
 					*allowAuthOverride1 = r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.ValueBool()
@@ -3937,13 +4035,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				var config2 shared.AIGatewayEmbeddingsModelConfig
 				var aiGatewayAzureEmbeddingsModelConfig *shared.AIGatewayAzureEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Azure != nil {
-					upstreamUrl19 := new(string)
+					upstreamUrl20 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsNull() {
-						*upstreamUrl19 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
+						*upstreamUrl20 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl19 = nil
+						upstreamUrl20 = nil
 					}
-					typeVar21 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId1 string
 					deploymentId1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -3954,8 +4051,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						apiVersion2 = nil
 					}
 					aiGatewayAzureEmbeddingsModelConfig = &shared.AIGatewayAzureEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl19,
-						Type:         typeVar21,
+						UpstreamURL:  upstreamUrl20,
 						DeploymentID: deploymentId1,
 						APIVersion:   apiVersion2,
 					}
@@ -3967,18 +4063,17 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayBedrockEmbeddingsModelConfig *shared.AIGatewayBedrockEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock != nil {
-					upstreamUrl20 := new(string)
+					upstreamUrl21 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsNull() {
-						*upstreamUrl20 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
+						*upstreamUrl21 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl20 = nil
+						upstreamUrl21 = nil
 					}
-					typeVar22 := shared.AIGatewayBedrockEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Type.ValueString())
-					region1 := new(string)
+					region2 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsNull() {
-						*region1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
+						*region2 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
 					} else {
-						region1 = nil
+						region2 = nil
 					}
 					batchBucketPrefix1 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsNull() {
@@ -4005,9 +4100,8 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						videoOutputS3Uri1 = nil
 					}
 					aiGatewayBedrockEmbeddingsModelConfig = &shared.AIGatewayBedrockEmbeddingsModelConfig{
-						UpstreamURL:              upstreamUrl20,
-						Type:                     typeVar22,
-						Region:                   region1,
+						UpstreamURL:              upstreamUrl21,
+						Region:                   region2,
 						BatchBucketPrefix:        batchBucketPrefix1,
 						EmbeddingsNormalize:      embeddingsNormalize1,
 						PerformanceConfigLatency: performanceConfigLatency1,
@@ -4021,13 +4115,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayGeminiEmbeddingsModelConfig *shared.AIGatewayGeminiEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini != nil {
-					upstreamUrl21 := new(string)
+					upstreamUrl22 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsNull() {
-						*upstreamUrl21 = r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
+						*upstreamUrl22 = r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl21 = nil
+						upstreamUrl22 = nil
 					}
-					typeVar23 := shared.AIGatewayGeminiEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.Type.ValueString())
 					var gcpEnvironment2 *shared.GCPModelConfig
 					if r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment != nil {
 						var apiEndpoint2 string
@@ -4046,8 +4139,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayGeminiEmbeddingsModelConfig = &shared.AIGatewayGeminiEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl21,
-						Type:           typeVar23,
+						UpstreamURL:    upstreamUrl22,
 						GcpEnvironment: gcpEnvironment2,
 					}
 				}
@@ -4058,13 +4150,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayHuggingfaceEmbeddingsModelConfig *shared.AIGatewayHuggingfaceEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface != nil {
-					upstreamUrl22 := new(string)
+					upstreamUrl23 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsNull() {
-						*upstreamUrl22 = r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
+						*upstreamUrl23 = r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl22 = nil
+						upstreamUrl23 = nil
 					}
-					typeVar24 := shared.AIGatewayHuggingfaceEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.Type.ValueString())
 					useCache1 := new(bool)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsNull() {
 						*useCache1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.ValueBool()
@@ -4078,8 +4169,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						waitForModel2 = nil
 					}
 					aiGatewayHuggingfaceEmbeddingsModelConfig = &shared.AIGatewayHuggingfaceEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl22,
-						Type:         typeVar24,
+						UpstreamURL:  upstreamUrl23,
 						UseCache:     useCache1,
 						WaitForModel: waitForModel2,
 					}
@@ -4091,16 +4181,16 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayMistralEmbeddingsModelConfig *shared.AIGatewayMistralEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral != nil {
-					upstreamUrl23 := new(string)
+					upstreamUrl24 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsNull() {
-						*upstreamUrl23 = r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
+						*upstreamUrl24 = r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl23 = nil
+						upstreamUrl24 = nil
 					}
-					typeVar25 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar1 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig = &shared.AIGatewayMistralEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl23,
-						Type:        typeVar25,
+						UpstreamURL: upstreamUrl24,
+						Type:        typeVar1,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig != nil {
@@ -4110,16 +4200,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOllamaEmbeddingsModelConfig *shared.AIGatewayOllamaEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama != nil {
-					upstreamUrl24 := new(string)
+					upstreamUrl25 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsNull() {
-						*upstreamUrl24 = r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
+						*upstreamUrl25 = r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl24 = nil
+						upstreamUrl25 = nil
 					}
-					typeVar26 := shared.AIGatewayOllamaEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.Type.ValueString())
 					aiGatewayOllamaEmbeddingsModelConfig = &shared.AIGatewayOllamaEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl24,
-						Type:        typeVar26,
+						UpstreamURL: upstreamUrl25,
 					}
 				}
 				if aiGatewayOllamaEmbeddingsModelConfig != nil {
@@ -4129,16 +4217,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOpenaiEmbeddingsModelConfig *shared.AIGatewayOpenaiEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Openai != nil {
-					upstreamUrl25 := new(string)
+					upstreamUrl26 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsNull() {
-						*upstreamUrl25 = r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
+						*upstreamUrl26 = r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl25 = nil
+						upstreamUrl26 = nil
 					}
-					typeVar27 := shared.AIGatewayOpenaiEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.Type.ValueString())
 					aiGatewayOpenaiEmbeddingsModelConfig = &shared.AIGatewayOpenaiEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl25,
-						Type:        typeVar27,
+						UpstreamURL: upstreamUrl26,
 					}
 				}
 				if aiGatewayOpenaiEmbeddingsModelConfig != nil {
@@ -4148,13 +4234,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayVertexEmbeddingsModelConfig *shared.AIGatewayVertexEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex != nil {
-					upstreamUrl26 := new(string)
+					upstreamUrl27 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsNull() {
-						*upstreamUrl26 = r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
+						*upstreamUrl27 = r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl26 = nil
+						upstreamUrl27 = nil
 					}
-					typeVar28 := shared.AIGatewayVertexEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.Type.ValueString())
 					var gcpEnvironment3 *shared.GCPModelConfig
 					if r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment != nil {
 						var apiEndpoint3 string
@@ -4173,8 +4258,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayVertexEmbeddingsModelConfig = &shared.AIGatewayVertexEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl26,
-						Type:           typeVar28,
+						UpstreamURL:    upstreamUrl27,
 						GcpEnvironment: gcpEnvironment3,
 					}
 				}
@@ -4192,7 +4276,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				var vectordb shared.AIGatewayModelVectorDBConfig
 				var aiGatewayModelVectorDBConfigPgVector *shared.AIGatewayModelVectorDBConfigPgVector
 				if r.API.Config.Balancer.Semantic.Vectordb.Pgvector != nil {
-					typeVar29 := shared.AIGatewayModelVectorDBConfigPgVectorType(r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Type.ValueString())
 					var dimensions int64
 					dimensions = r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions.ValueInt64()
 
@@ -4287,7 +4370,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						user = nil
 					}
 					aiGatewayModelVectorDBConfigPgVector = &shared.AIGatewayModelVectorDBConfigPgVector{
-						Type:           typeVar29,
 						Dimensions:     dimensions,
 						DistanceMetric: distanceMetric,
 						Threshold:      threshold,
@@ -4307,7 +4389,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayModelVectorDBConfigRedis *shared.AIGatewayModelVectorDBConfigRedis
 				if r.API.Config.Balancer.Semantic.Vectordb.Redis != nil {
-					typeVar30 := shared.AIGatewayModelVectorDBConfigRedisType(r.API.Config.Balancer.Semantic.Vectordb.Redis.Type.ValueString())
 					var dimensions1 int64
 					dimensions1 = r.API.Config.Balancer.Semantic.Vectordb.Redis.Dimensions.ValueInt64()
 
@@ -4322,18 +4403,17 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
 						if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws != nil {
-							typeVar31 := shared.AIGatewayRedisAWSAuthenticationType(r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Type.ValueString())
 							accessKeyID := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
 								*accessKeyID = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
 								accessKeyID = nil
 							}
-							assumeRoleArn := new(string)
+							assumeRoleArn1 := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn1 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn = nil
+								assumeRoleArn1 = nil
 							}
 							cacheName := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -4347,17 +4427,17 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 							} else {
 								isServerless = nil
 							}
-							region2 := new(string)
+							region3 := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region2 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region3 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region2 = nil
+								region3 = nil
 							}
-							roleSessionName := new(string)
+							roleSessionName1 := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName1 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName = nil
+								roleSessionName1 = nil
 							}
 							secretAccessKey := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
@@ -4366,13 +4446,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 								secretAccessKey = nil
 							}
 							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
-								Type:            typeVar31,
 								AccessKeyID:     accessKeyID,
-								AssumeRoleArn:   assumeRoleArn,
+								AssumeRoleArn:   assumeRoleArn1,
 								CacheName:       cacheName,
 								IsServerless:    isServerless,
-								Region:          region2,
-								RoleSessionName: roleSessionName,
+								Region:          region3,
+								RoleSessionName: roleSessionName1,
 								SecretAccessKey: secretAccessKey,
 							}
 						}
@@ -4383,7 +4462,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisAzureAuthentication *shared.AIGatewayRedisAzureAuthentication
 						if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure != nil {
-							typeVar32 := shared.AIGatewayRedisAzureAuthenticationType(r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.Type.ValueString())
 							clientID := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
 								*clientID = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.ValueString()
@@ -4403,7 +4481,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 								tenantID = nil
 							}
 							aiGatewayRedisAzureAuthentication = &shared.AIGatewayRedisAzureAuthentication{
-								Type:         typeVar32,
 								ClientID:     clientID,
 								ClientSecret: clientSecret,
 								TenantID:     tenantID,
@@ -4416,7 +4493,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisGCPAuthentication *shared.AIGatewayRedisGCPAuthentication
 						if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp != nil {
-							typeVar33 := shared.AIGatewayRedisGCPAuthenticationType(r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.Type.ValueString())
 							serviceAccountJSON := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
 								*serviceAccountJSON = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
@@ -4424,7 +4500,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 								serviceAccountJSON = nil
 							}
 							aiGatewayRedisGCPAuthentication = &shared.AIGatewayRedisGCPAuthentication{
-								Type:               typeVar33,
 								ServiceAccountJSON: serviceAccountJSON,
 							}
 						}
@@ -4518,30 +4593,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					} else {
 						password1 = nil
 					}
-					var port2 *shared.Port
-					if r.API.Config.Balancer.Semantic.Vectordb.Redis.Port != nil {
-						integer := new(int64)
-						if !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsNull() {
-							*integer = r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.ValueInt64()
-						} else {
-							integer = nil
-						}
-						if integer != nil {
-							port2 = &shared.Port{
-								Integer: integer,
-							}
-						}
-						str := new(string)
-						if !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsNull() {
-							*str = r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.ValueString()
-						} else {
-							str = nil
-						}
-						if str != nil {
-							port2 = &shared.Port{
-								Str: str,
-							}
-						}
+					port2 := new(string)
+					if !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.IsNull() {
+						*port2 = r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.ValueString()
+					} else {
+						port2 = nil
 					}
 					readTimeout7 := new(int64)
 					if !r.API.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsNull() {
@@ -4636,7 +4692,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						username1 = nil
 					}
 					aiGatewayModelVectorDBConfigRedis = &shared.AIGatewayModelVectorDBConfigRedis{
-						Type:                typeVar30,
 						Dimensions:          dimensions1,
 						DistanceMetric:      distanceMetric1,
 						Threshold:           threshold1,
@@ -4672,7 +4727,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries6,
 					Slots:            slots6,
 					WriteTimeout:     writeTimeout6,
-					Algorithm:        algorithm6,
 					Embeddings:       embeddings,
 					Vectordb:         vectordb,
 				}
@@ -4784,7 +4838,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			Policies:     policies,
 			Labels:       labels,
 			ManagedBy:    managedBy,
-			Type:         typeVar20,
 			Config:       config1,
 			Capabilities: capabilities,
 		}
@@ -4878,55 +4931,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			var config3 shared.AIGatewayTargetConfig
 			var aiGatewayTargetAnthropicConfig1 *shared.AIGatewayTargetAnthropicConfig
 			if r.Model.Targets[targetsIndex1].Config.Anthropic != nil {
-				embeddingsDimensions19 := new(int64)
+				embeddingsDimensions20 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions19 = r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions20 = r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions19 = nil
+					embeddingsDimensions20 = nil
 				}
-				maxTokens19 := new(int64)
+				maxTokens20 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.IsNull() {
-					*maxTokens19 = r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.ValueInt64()
+					*maxTokens20 = r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.ValueInt64()
 				} else {
-					maxTokens19 = nil
+					maxTokens20 = nil
 				}
-				inputCost19 := new(float64)
+				inputCost20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.IsNull() {
-					*inputCost19 = r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.ValueFloat64()
+					*inputCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.ValueFloat64()
 				} else {
-					inputCost19 = nil
+					inputCost20 = nil
 				}
-				outputCost19 := new(float64)
+				outputCost20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.IsNull() {
-					*outputCost19 = r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.ValueFloat64()
+					*outputCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.ValueFloat64()
 				} else {
-					outputCost19 = nil
+					outputCost20 = nil
 				}
-				temperature19 := new(float64)
+				temperature20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsNull() {
-					*temperature19 = r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.ValueFloat64()
+					*temperature20 = r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.ValueFloat64()
 				} else {
-					temperature19 = nil
+					temperature20 = nil
 				}
-				topK19 := new(int64)
+				topK20 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.IsNull() {
-					*topK19 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.ValueInt64()
+					*topK20 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.ValueInt64()
 				} else {
-					topK19 = nil
+					topK20 = nil
 				}
-				topP19 := new(float64)
+				topP20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.IsNull() {
-					*topP19 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.ValueFloat64()
+					*topP20 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.ValueFloat64()
 				} else {
-					topP19 = nil
+					topP20 = nil
 				}
-				upstreamUrl27 := new(string)
+				upstreamUrl28 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.IsNull() {
-					*upstreamUrl27 = r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.ValueString()
+					*upstreamUrl28 = r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl27 = nil
+					upstreamUrl28 = nil
 				}
-				typeVar34 := shared.AIGatewayTargetAnthropicConfigType(r.Model.Targets[targetsIndex1].Config.Anthropic.Type.ValueString())
 				version2 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.Version.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.Version.IsNull() {
 					*version2 = r.Model.Targets[targetsIndex1].Config.Anthropic.Version.ValueString()
@@ -4934,15 +4986,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					version2 = nil
 				}
 				aiGatewayTargetAnthropicConfig1 = &shared.AIGatewayTargetAnthropicConfig{
-					EmbeddingsDimensions: embeddingsDimensions19,
-					MaxTokens:            maxTokens19,
-					InputCost:            inputCost19,
-					OutputCost:           outputCost19,
-					Temperature:          temperature19,
-					TopK:                 topK19,
-					TopP:                 topP19,
-					UpstreamURL:          upstreamUrl27,
-					Type:                 typeVar34,
+					EmbeddingsDimensions: embeddingsDimensions20,
+					MaxTokens:            maxTokens20,
+					InputCost:            inputCost20,
+					OutputCost:           outputCost20,
+					Temperature:          temperature20,
+					TopK:                 topK20,
+					TopP:                 topP20,
+					UpstreamURL:          upstreamUrl28,
 					Version:              version2,
 				}
 			}
@@ -4953,55 +5004,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetAzureConfig1 *shared.AIGatewayTargetAzureConfig
 			if r.Model.Targets[targetsIndex1].Config.Azure != nil {
-				embeddingsDimensions20 := new(int64)
+				embeddingsDimensions21 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions20 = r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions21 = r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions20 = nil
+					embeddingsDimensions21 = nil
 				}
-				maxTokens20 := new(int64)
+				maxTokens21 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.IsNull() {
-					*maxTokens20 = r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.ValueInt64()
+					*maxTokens21 = r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.ValueInt64()
 				} else {
-					maxTokens20 = nil
+					maxTokens21 = nil
 				}
-				inputCost20 := new(float64)
+				inputCost21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.InputCost.IsNull() {
-					*inputCost20 = r.Model.Targets[targetsIndex1].Config.Azure.InputCost.ValueFloat64()
+					*inputCost21 = r.Model.Targets[targetsIndex1].Config.Azure.InputCost.ValueFloat64()
 				} else {
-					inputCost20 = nil
+					inputCost21 = nil
 				}
-				outputCost20 := new(float64)
+				outputCost21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.IsNull() {
-					*outputCost20 = r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.ValueFloat64()
+					*outputCost21 = r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.ValueFloat64()
 				} else {
-					outputCost20 = nil
+					outputCost21 = nil
 				}
-				temperature20 := new(float64)
+				temperature21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsNull() {
-					*temperature20 = r.Model.Targets[targetsIndex1].Config.Azure.Temperature.ValueFloat64()
+					*temperature21 = r.Model.Targets[targetsIndex1].Config.Azure.Temperature.ValueFloat64()
 				} else {
-					temperature20 = nil
+					temperature21 = nil
 				}
-				topK20 := new(int64)
+				topK21 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.TopK.IsNull() {
-					*topK20 = r.Model.Targets[targetsIndex1].Config.Azure.TopK.ValueInt64()
+					*topK21 = r.Model.Targets[targetsIndex1].Config.Azure.TopK.ValueInt64()
 				} else {
-					topK20 = nil
+					topK21 = nil
 				}
-				topP20 := new(float64)
+				topP21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.TopP.IsNull() {
-					*topP20 = r.Model.Targets[targetsIndex1].Config.Azure.TopP.ValueFloat64()
+					*topP21 = r.Model.Targets[targetsIndex1].Config.Azure.TopP.ValueFloat64()
 				} else {
-					topP20 = nil
+					topP21 = nil
 				}
-				upstreamUrl28 := new(string)
+				upstreamUrl29 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.IsNull() {
-					*upstreamUrl28 = r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.ValueString()
+					*upstreamUrl29 = r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl28 = nil
+					upstreamUrl29 = nil
 				}
-				typeVar35 := shared.AIGatewayTargetAzureConfigType(r.Model.Targets[targetsIndex1].Config.Azure.Type.ValueString())
 				var deploymentId2 string
 				deploymentId2 = r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.ValueString()
 
@@ -5012,15 +5062,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					apiVersion3 = nil
 				}
 				aiGatewayTargetAzureConfig1 = &shared.AIGatewayTargetAzureConfig{
-					EmbeddingsDimensions: embeddingsDimensions20,
-					MaxTokens:            maxTokens20,
-					InputCost:            inputCost20,
-					OutputCost:           outputCost20,
-					Temperature:          temperature20,
-					TopK:                 topK20,
-					TopP:                 topP20,
-					UpstreamURL:          upstreamUrl28,
-					Type:                 typeVar35,
+					EmbeddingsDimensions: embeddingsDimensions21,
+					MaxTokens:            maxTokens21,
+					InputCost:            inputCost21,
+					OutputCost:           outputCost21,
+					Temperature:          temperature21,
+					TopK:                 topK21,
+					TopP:                 topP21,
+					UpstreamURL:          upstreamUrl29,
 					DeploymentID:         deploymentId2,
 					APIVersion:           apiVersion3,
 				}
@@ -5032,60 +5081,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetBedrockConfig1 *shared.AIGatewayTargetBedrockConfig
 			if r.Model.Targets[targetsIndex1].Config.Bedrock != nil {
-				embeddingsDimensions21 := new(int64)
+				embeddingsDimensions22 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions21 = r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions22 = r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions21 = nil
+					embeddingsDimensions22 = nil
 				}
-				maxTokens21 := new(int64)
+				maxTokens22 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.IsNull() {
-					*maxTokens21 = r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.ValueInt64()
+					*maxTokens22 = r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.ValueInt64()
 				} else {
-					maxTokens21 = nil
+					maxTokens22 = nil
 				}
-				inputCost21 := new(float64)
+				inputCost22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.IsNull() {
-					*inputCost21 = r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.ValueFloat64()
+					*inputCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.ValueFloat64()
 				} else {
-					inputCost21 = nil
+					inputCost22 = nil
 				}
-				outputCost21 := new(float64)
+				outputCost22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.IsNull() {
-					*outputCost21 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.ValueFloat64()
+					*outputCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.ValueFloat64()
 				} else {
-					outputCost21 = nil
+					outputCost22 = nil
 				}
-				temperature21 := new(float64)
+				temperature22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsNull() {
-					*temperature21 = r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.ValueFloat64()
+					*temperature22 = r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.ValueFloat64()
 				} else {
-					temperature21 = nil
+					temperature22 = nil
 				}
-				topK21 := new(int64)
+				topK22 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.IsNull() {
-					*topK21 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.ValueInt64()
+					*topK22 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.ValueInt64()
 				} else {
-					topK21 = nil
+					topK22 = nil
 				}
-				topP21 := new(float64)
+				topP22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.IsNull() {
-					*topP21 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.ValueFloat64()
+					*topP22 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.ValueFloat64()
 				} else {
-					topP21 = nil
+					topP22 = nil
 				}
-				upstreamUrl29 := new(string)
+				upstreamUrl30 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.IsNull() {
-					*upstreamUrl29 = r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.ValueString()
+					*upstreamUrl30 = r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl29 = nil
+					upstreamUrl30 = nil
 				}
-				typeVar36 := shared.AIGatewayTargetBedrockConfigType(r.Model.Targets[targetsIndex1].Config.Bedrock.Type.ValueString())
-				region3 := new(string)
+				region4 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.Region.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.Region.IsNull() {
-					*region3 = r.Model.Targets[targetsIndex1].Config.Bedrock.Region.ValueString()
+					*region4 = r.Model.Targets[targetsIndex1].Config.Bedrock.Region.ValueString()
 				} else {
-					region3 = nil
+					region4 = nil
 				}
 				batchBucketPrefix2 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.BatchBucketPrefix.IsNull() {
@@ -5112,16 +5160,15 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					videoOutputS3Uri2 = nil
 				}
 				aiGatewayTargetBedrockConfig1 = &shared.AIGatewayTargetBedrockConfig{
-					EmbeddingsDimensions:     embeddingsDimensions21,
-					MaxTokens:                maxTokens21,
-					InputCost:                inputCost21,
-					OutputCost:               outputCost21,
-					Temperature:              temperature21,
-					TopK:                     topK21,
-					TopP:                     topP21,
-					UpstreamURL:              upstreamUrl29,
-					Type:                     typeVar36,
-					Region:                   region3,
+					EmbeddingsDimensions:     embeddingsDimensions22,
+					MaxTokens:                maxTokens22,
+					InputCost:                inputCost22,
+					OutputCost:               outputCost22,
+					Temperature:              temperature22,
+					TopK:                     topK22,
+					TopP:                     topP22,
+					UpstreamURL:              upstreamUrl30,
+					Region:                   region4,
 					BatchBucketPrefix:        batchBucketPrefix2,
 					EmbeddingsNormalize:      embeddingsNormalize2,
 					PerformanceConfigLatency: performanceConfigLatency2,
@@ -5135,65 +5182,63 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetCerebrasConfig1 *shared.AIGatewayTargetCerebrasConfig
 			if r.Model.Targets[targetsIndex1].Config.Cerebras != nil {
-				embeddingsDimensions22 := new(int64)
+				embeddingsDimensions23 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions22 = r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions23 = r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions22 = nil
+					embeddingsDimensions23 = nil
 				}
-				maxTokens22 := new(int64)
+				maxTokens23 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.IsNull() {
-					*maxTokens22 = r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.ValueInt64()
+					*maxTokens23 = r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.ValueInt64()
 				} else {
-					maxTokens22 = nil
+					maxTokens23 = nil
 				}
-				inputCost22 := new(float64)
+				inputCost23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.IsNull() {
-					*inputCost22 = r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.ValueFloat64()
+					*inputCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.ValueFloat64()
 				} else {
-					inputCost22 = nil
+					inputCost23 = nil
 				}
-				outputCost22 := new(float64)
+				outputCost23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.IsNull() {
-					*outputCost22 = r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.ValueFloat64()
+					*outputCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.ValueFloat64()
 				} else {
-					outputCost22 = nil
+					outputCost23 = nil
 				}
-				temperature22 := new(float64)
+				temperature23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsNull() {
-					*temperature22 = r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.ValueFloat64()
+					*temperature23 = r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.ValueFloat64()
 				} else {
-					temperature22 = nil
+					temperature23 = nil
 				}
-				topK22 := new(int64)
+				topK23 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.IsNull() {
-					*topK22 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.ValueInt64()
+					*topK23 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.ValueInt64()
 				} else {
-					topK22 = nil
+					topK23 = nil
 				}
-				topP22 := new(float64)
+				topP23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.IsNull() {
-					*topP22 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.ValueFloat64()
+					*topP23 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.ValueFloat64()
 				} else {
-					topP22 = nil
+					topP23 = nil
 				}
-				upstreamUrl30 := new(string)
+				upstreamUrl31 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.IsNull() {
-					*upstreamUrl30 = r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.ValueString()
+					*upstreamUrl31 = r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl30 = nil
+					upstreamUrl31 = nil
 				}
-				typeVar37 := shared.AIGatewayTargetCerebrasConfigType(r.Model.Targets[targetsIndex1].Config.Cerebras.Type.ValueString())
 				aiGatewayTargetCerebrasConfig1 = &shared.AIGatewayTargetCerebrasConfig{
-					EmbeddingsDimensions: embeddingsDimensions22,
-					MaxTokens:            maxTokens22,
-					InputCost:            inputCost22,
-					OutputCost:           outputCost22,
-					Temperature:          temperature22,
-					TopK:                 topK22,
-					TopP:                 topP22,
-					UpstreamURL:          upstreamUrl30,
-					Type:                 typeVar37,
+					EmbeddingsDimensions: embeddingsDimensions23,
+					MaxTokens:            maxTokens23,
+					InputCost:            inputCost23,
+					OutputCost:           outputCost23,
+					Temperature:          temperature23,
+					TopK:                 topK23,
+					TopP:                 topP23,
+					UpstreamURL:          upstreamUrl31,
 				}
 			}
 			if aiGatewayTargetCerebrasConfig1 != nil {
@@ -5203,55 +5248,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetCohereConfig1 *shared.AIGatewayTargetCohereConfig
 			if r.Model.Targets[targetsIndex1].Config.Cohere != nil {
-				embeddingsDimensions23 := new(int64)
+				embeddingsDimensions24 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions23 = r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions24 = r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions23 = nil
+					embeddingsDimensions24 = nil
 				}
-				maxTokens23 := new(int64)
+				maxTokens24 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.IsNull() {
-					*maxTokens23 = r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.ValueInt64()
+					*maxTokens24 = r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.ValueInt64()
 				} else {
-					maxTokens23 = nil
+					maxTokens24 = nil
 				}
-				inputCost23 := new(float64)
+				inputCost24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.IsNull() {
-					*inputCost23 = r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.ValueFloat64()
+					*inputCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.ValueFloat64()
 				} else {
-					inputCost23 = nil
+					inputCost24 = nil
 				}
-				outputCost23 := new(float64)
+				outputCost24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.IsNull() {
-					*outputCost23 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.ValueFloat64()
+					*outputCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.ValueFloat64()
 				} else {
-					outputCost23 = nil
+					outputCost24 = nil
 				}
-				temperature23 := new(float64)
+				temperature24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsNull() {
-					*temperature23 = r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.ValueFloat64()
+					*temperature24 = r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.ValueFloat64()
 				} else {
-					temperature23 = nil
+					temperature24 = nil
 				}
-				topK23 := new(int64)
+				topK24 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.TopK.IsNull() {
-					*topK23 = r.Model.Targets[targetsIndex1].Config.Cohere.TopK.ValueInt64()
+					*topK24 = r.Model.Targets[targetsIndex1].Config.Cohere.TopK.ValueInt64()
 				} else {
-					topK23 = nil
+					topK24 = nil
 				}
-				topP23 := new(float64)
+				topP24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.TopP.IsNull() {
-					*topP23 = r.Model.Targets[targetsIndex1].Config.Cohere.TopP.ValueFloat64()
+					*topP24 = r.Model.Targets[targetsIndex1].Config.Cohere.TopP.ValueFloat64()
 				} else {
-					topP23 = nil
+					topP24 = nil
 				}
-				upstreamUrl31 := new(string)
+				upstreamUrl32 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.IsNull() {
-					*upstreamUrl31 = r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.ValueString()
+					*upstreamUrl32 = r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl31 = nil
+					upstreamUrl32 = nil
 				}
-				typeVar38 := shared.AIGatewayTargetCohereConfigType(r.Model.Targets[targetsIndex1].Config.Cohere.Type.ValueString())
 				apiVersion4 := new(shared.APIVersion)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.APIVersion.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.APIVersion.IsNull() {
 					*apiVersion4 = shared.APIVersion(r.Model.Targets[targetsIndex1].Config.Cohere.APIVersion.ValueString())
@@ -5271,15 +5315,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					waitForModel3 = nil
 				}
 				aiGatewayTargetCohereConfig1 = &shared.AIGatewayTargetCohereConfig{
-					EmbeddingsDimensions: embeddingsDimensions23,
-					MaxTokens:            maxTokens23,
-					InputCost:            inputCost23,
-					OutputCost:           outputCost23,
-					Temperature:          temperature23,
-					TopK:                 topK23,
-					TopP:                 topP23,
-					UpstreamURL:          upstreamUrl31,
-					Type:                 typeVar38,
+					EmbeddingsDimensions: embeddingsDimensions24,
+					MaxTokens:            maxTokens24,
+					InputCost:            inputCost24,
+					OutputCost:           outputCost24,
+					Temperature:          temperature24,
+					TopK:                 topK24,
+					TopP:                 topP24,
+					UpstreamURL:          upstreamUrl32,
 					APIVersion:           apiVersion4,
 					EmbeddingInputType:   embeddingInputType1,
 					WaitForModel:         waitForModel3,
@@ -5292,55 +5335,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetDashscopeConfig1 *shared.AIGatewayTargetDashscopeConfig
 			if r.Model.Targets[targetsIndex1].Config.Dashscope != nil {
-				embeddingsDimensions24 := new(int64)
+				embeddingsDimensions25 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions24 = r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions25 = r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions24 = nil
+					embeddingsDimensions25 = nil
 				}
-				maxTokens24 := new(int64)
+				maxTokens25 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.IsNull() {
-					*maxTokens24 = r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.ValueInt64()
+					*maxTokens25 = r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.ValueInt64()
 				} else {
-					maxTokens24 = nil
+					maxTokens25 = nil
 				}
-				inputCost24 := new(float64)
+				inputCost25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.IsNull() {
-					*inputCost24 = r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.ValueFloat64()
+					*inputCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.ValueFloat64()
 				} else {
-					inputCost24 = nil
+					inputCost25 = nil
 				}
-				outputCost24 := new(float64)
+				outputCost25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.IsNull() {
-					*outputCost24 = r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.ValueFloat64()
+					*outputCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.ValueFloat64()
 				} else {
-					outputCost24 = nil
+					outputCost25 = nil
 				}
-				temperature24 := new(float64)
+				temperature25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsNull() {
-					*temperature24 = r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.ValueFloat64()
+					*temperature25 = r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.ValueFloat64()
 				} else {
-					temperature24 = nil
+					temperature25 = nil
 				}
-				topK24 := new(int64)
+				topK25 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.IsNull() {
-					*topK24 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.ValueInt64()
+					*topK25 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.ValueInt64()
 				} else {
-					topK24 = nil
+					topK25 = nil
 				}
-				topP24 := new(float64)
+				topP25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.IsNull() {
-					*topP24 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.ValueFloat64()
+					*topP25 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.ValueFloat64()
 				} else {
-					topP24 = nil
+					topP25 = nil
 				}
-				upstreamUrl32 := new(string)
+				upstreamUrl33 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.IsNull() {
-					*upstreamUrl32 = r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.ValueString()
+					*upstreamUrl33 = r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl32 = nil
+					upstreamUrl33 = nil
 				}
-				typeVar39 := shared.AIGatewayTargetDashscopeConfigType(r.Model.Targets[targetsIndex1].Config.Dashscope.Type.ValueString())
 				international2 := new(bool)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.International.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.International.IsNull() {
 					*international2 = r.Model.Targets[targetsIndex1].Config.Dashscope.International.ValueBool()
@@ -5348,15 +5390,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					international2 = nil
 				}
 				aiGatewayTargetDashscopeConfig1 = &shared.AIGatewayTargetDashscopeConfig{
-					EmbeddingsDimensions: embeddingsDimensions24,
-					MaxTokens:            maxTokens24,
-					InputCost:            inputCost24,
-					OutputCost:           outputCost24,
-					Temperature:          temperature24,
-					TopK:                 topK24,
-					TopP:                 topP24,
-					UpstreamURL:          upstreamUrl32,
-					Type:                 typeVar39,
+					EmbeddingsDimensions: embeddingsDimensions25,
+					MaxTokens:            maxTokens25,
+					InputCost:            inputCost25,
+					OutputCost:           outputCost25,
+					Temperature:          temperature25,
+					TopK:                 topK25,
+					TopP:                 topP25,
+					UpstreamURL:          upstreamUrl33,
 					International:        international2,
 				}
 			}
@@ -5367,68 +5408,66 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetDatabricksConfig1 *shared.AIGatewayTargetDatabricksConfig
 			if r.Model.Targets[targetsIndex1].Config.Databricks != nil {
-				embeddingsDimensions25 := new(int64)
+				embeddingsDimensions26 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions25 = r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions26 = r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions25 = nil
+					embeddingsDimensions26 = nil
 				}
-				maxTokens25 := new(int64)
+				maxTokens26 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.IsNull() {
-					*maxTokens25 = r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.ValueInt64()
+					*maxTokens26 = r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.ValueInt64()
 				} else {
-					maxTokens25 = nil
+					maxTokens26 = nil
 				}
-				inputCost25 := new(float64)
+				inputCost26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.IsNull() {
-					*inputCost25 = r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.ValueFloat64()
+					*inputCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.ValueFloat64()
 				} else {
-					inputCost25 = nil
+					inputCost26 = nil
 				}
-				outputCost25 := new(float64)
+				outputCost26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.IsNull() {
-					*outputCost25 = r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.ValueFloat64()
+					*outputCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.ValueFloat64()
 				} else {
-					outputCost25 = nil
+					outputCost26 = nil
 				}
-				temperature25 := new(float64)
+				temperature26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsNull() {
-					*temperature25 = r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.ValueFloat64()
+					*temperature26 = r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.ValueFloat64()
 				} else {
-					temperature25 = nil
+					temperature26 = nil
 				}
-				topK25 := new(int64)
+				topK26 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.TopK.IsNull() {
-					*topK25 = r.Model.Targets[targetsIndex1].Config.Databricks.TopK.ValueInt64()
+					*topK26 = r.Model.Targets[targetsIndex1].Config.Databricks.TopK.ValueInt64()
 				} else {
-					topK25 = nil
+					topK26 = nil
 				}
-				topP25 := new(float64)
+				topP26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.TopP.IsNull() {
-					*topP25 = r.Model.Targets[targetsIndex1].Config.Databricks.TopP.ValueFloat64()
+					*topP26 = r.Model.Targets[targetsIndex1].Config.Databricks.TopP.ValueFloat64()
 				} else {
-					topP25 = nil
+					topP26 = nil
 				}
-				upstreamUrl33 := new(string)
+				upstreamUrl34 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.IsNull() {
-					*upstreamUrl33 = r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.ValueString()
+					*upstreamUrl34 = r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl33 = nil
+					upstreamUrl34 = nil
 				}
-				typeVar40 := shared.AIGatewayTargetDatabricksConfigType(r.Model.Targets[targetsIndex1].Config.Databricks.Type.ValueString())
 				var workspaceInstanceId1 string
 				workspaceInstanceId1 = r.Model.Targets[targetsIndex1].Config.Databricks.WorkspaceInstanceID.ValueString()
 
 				aiGatewayTargetDatabricksConfig1 = &shared.AIGatewayTargetDatabricksConfig{
-					EmbeddingsDimensions: embeddingsDimensions25,
-					MaxTokens:            maxTokens25,
-					InputCost:            inputCost25,
-					OutputCost:           outputCost25,
-					Temperature:          temperature25,
-					TopK:                 topK25,
-					TopP:                 topP25,
-					UpstreamURL:          upstreamUrl33,
-					Type:                 typeVar40,
+					EmbeddingsDimensions: embeddingsDimensions26,
+					MaxTokens:            maxTokens26,
+					InputCost:            inputCost26,
+					OutputCost:           outputCost26,
+					Temperature:          temperature26,
+					TopK:                 topK26,
+					TopP:                 topP26,
+					UpstreamURL:          upstreamUrl34,
 					WorkspaceInstanceID:  workspaceInstanceId1,
 				}
 			}
@@ -5439,65 +5478,63 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetDeepseekConfig1 *shared.AIGatewayTargetDeepseekConfig
 			if r.Model.Targets[targetsIndex1].Config.Deepseek != nil {
-				embeddingsDimensions26 := new(int64)
+				embeddingsDimensions27 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions26 = r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions27 = r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions26 = nil
+					embeddingsDimensions27 = nil
 				}
-				maxTokens26 := new(int64)
+				maxTokens27 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.IsNull() {
-					*maxTokens26 = r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.ValueInt64()
+					*maxTokens27 = r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.ValueInt64()
 				} else {
-					maxTokens26 = nil
+					maxTokens27 = nil
 				}
-				inputCost26 := new(float64)
+				inputCost27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.IsNull() {
-					*inputCost26 = r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.ValueFloat64()
+					*inputCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.ValueFloat64()
 				} else {
-					inputCost26 = nil
+					inputCost27 = nil
 				}
-				outputCost26 := new(float64)
+				outputCost27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.IsNull() {
-					*outputCost26 = r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.ValueFloat64()
+					*outputCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.ValueFloat64()
 				} else {
-					outputCost26 = nil
+					outputCost27 = nil
 				}
-				temperature26 := new(float64)
+				temperature27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsNull() {
-					*temperature26 = r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.ValueFloat64()
+					*temperature27 = r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.ValueFloat64()
 				} else {
-					temperature26 = nil
+					temperature27 = nil
 				}
-				topK26 := new(int64)
+				topK27 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.IsNull() {
-					*topK26 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.ValueInt64()
+					*topK27 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.ValueInt64()
 				} else {
-					topK26 = nil
+					topK27 = nil
 				}
-				topP26 := new(float64)
+				topP27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.IsNull() {
-					*topP26 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.ValueFloat64()
+					*topP27 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.ValueFloat64()
 				} else {
-					topP26 = nil
+					topP27 = nil
 				}
-				upstreamUrl34 := new(string)
+				upstreamUrl35 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.IsNull() {
-					*upstreamUrl34 = r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.ValueString()
+					*upstreamUrl35 = r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl34 = nil
+					upstreamUrl35 = nil
 				}
-				typeVar41 := shared.AIGatewayTargetDeepseekConfigType(r.Model.Targets[targetsIndex1].Config.Deepseek.Type.ValueString())
 				aiGatewayTargetDeepseekConfig1 = &shared.AIGatewayTargetDeepseekConfig{
-					EmbeddingsDimensions: embeddingsDimensions26,
-					MaxTokens:            maxTokens26,
-					InputCost:            inputCost26,
-					OutputCost:           outputCost26,
-					Temperature:          temperature26,
-					TopK:                 topK26,
-					TopP:                 topP26,
-					UpstreamURL:          upstreamUrl34,
-					Type:                 typeVar41,
+					EmbeddingsDimensions: embeddingsDimensions27,
+					MaxTokens:            maxTokens27,
+					InputCost:            inputCost27,
+					OutputCost:           outputCost27,
+					Temperature:          temperature27,
+					TopK:                 topK27,
+					TopP:                 topP27,
+					UpstreamURL:          upstreamUrl35,
 				}
 			}
 			if aiGatewayTargetDeepseekConfig1 != nil {
@@ -5507,55 +5544,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetGeminiConfig1 *shared.AIGatewayTargetGeminiConfig
 			if r.Model.Targets[targetsIndex1].Config.Gemini != nil {
-				embeddingsDimensions27 := new(int64)
+				embeddingsDimensions28 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions27 = r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions28 = r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions27 = nil
+					embeddingsDimensions28 = nil
 				}
-				maxTokens27 := new(int64)
+				maxTokens28 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.IsNull() {
-					*maxTokens27 = r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.ValueInt64()
+					*maxTokens28 = r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.ValueInt64()
 				} else {
-					maxTokens27 = nil
+					maxTokens28 = nil
 				}
-				inputCost27 := new(float64)
+				inputCost28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.IsNull() {
-					*inputCost27 = r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.ValueFloat64()
+					*inputCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.ValueFloat64()
 				} else {
-					inputCost27 = nil
+					inputCost28 = nil
 				}
-				outputCost27 := new(float64)
+				outputCost28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.IsNull() {
-					*outputCost27 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.ValueFloat64()
+					*outputCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.ValueFloat64()
 				} else {
-					outputCost27 = nil
+					outputCost28 = nil
 				}
-				temperature27 := new(float64)
+				temperature28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsNull() {
-					*temperature27 = r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.ValueFloat64()
+					*temperature28 = r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.ValueFloat64()
 				} else {
-					temperature27 = nil
+					temperature28 = nil
 				}
-				topK27 := new(int64)
+				topK28 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.TopK.IsNull() {
-					*topK27 = r.Model.Targets[targetsIndex1].Config.Gemini.TopK.ValueInt64()
+					*topK28 = r.Model.Targets[targetsIndex1].Config.Gemini.TopK.ValueInt64()
 				} else {
-					topK27 = nil
+					topK28 = nil
 				}
-				topP27 := new(float64)
+				topP28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.TopP.IsNull() {
-					*topP27 = r.Model.Targets[targetsIndex1].Config.Gemini.TopP.ValueFloat64()
+					*topP28 = r.Model.Targets[targetsIndex1].Config.Gemini.TopP.ValueFloat64()
 				} else {
-					topP27 = nil
+					topP28 = nil
 				}
-				upstreamUrl35 := new(string)
+				upstreamUrl36 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.IsNull() {
-					*upstreamUrl35 = r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.ValueString()
+					*upstreamUrl36 = r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl35 = nil
+					upstreamUrl36 = nil
 				}
-				typeVar42 := shared.AIGatewayTargetGeminiConfigType(r.Model.Targets[targetsIndex1].Config.Gemini.Type.ValueString())
 				var gcpEnvironment4 *shared.GCPModelConfig
 				if r.Model.Targets[targetsIndex1].Config.Gemini.GcpEnvironment != nil {
 					var apiEndpoint4 string
@@ -5574,15 +5610,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					}
 				}
 				aiGatewayTargetGeminiConfig1 = &shared.AIGatewayTargetGeminiConfig{
-					EmbeddingsDimensions: embeddingsDimensions27,
-					MaxTokens:            maxTokens27,
-					InputCost:            inputCost27,
-					OutputCost:           outputCost27,
-					Temperature:          temperature27,
-					TopK:                 topK27,
-					TopP:                 topP27,
-					UpstreamURL:          upstreamUrl35,
-					Type:                 typeVar42,
+					EmbeddingsDimensions: embeddingsDimensions28,
+					MaxTokens:            maxTokens28,
+					InputCost:            inputCost28,
+					OutputCost:           outputCost28,
+					Temperature:          temperature28,
+					TopK:                 topK28,
+					TopP:                 topP28,
+					UpstreamURL:          upstreamUrl36,
 					GcpEnvironment:       gcpEnvironment4,
 				}
 			}
@@ -5593,55 +5628,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetHuggingfaceConfig1 *shared.AIGatewayTargetHuggingfaceConfig
 			if r.Model.Targets[targetsIndex1].Config.Huggingface != nil {
-				embeddingsDimensions28 := new(int64)
+				embeddingsDimensions29 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions28 = r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions29 = r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions28 = nil
+					embeddingsDimensions29 = nil
 				}
-				maxTokens28 := new(int64)
+				maxTokens29 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.IsNull() {
-					*maxTokens28 = r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.ValueInt64()
+					*maxTokens29 = r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.ValueInt64()
 				} else {
-					maxTokens28 = nil
+					maxTokens29 = nil
 				}
-				inputCost28 := new(float64)
+				inputCost29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.IsNull() {
-					*inputCost28 = r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.ValueFloat64()
+					*inputCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.ValueFloat64()
 				} else {
-					inputCost28 = nil
+					inputCost29 = nil
 				}
-				outputCost28 := new(float64)
+				outputCost29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.IsNull() {
-					*outputCost28 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.ValueFloat64()
+					*outputCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.ValueFloat64()
 				} else {
-					outputCost28 = nil
+					outputCost29 = nil
 				}
-				temperature28 := new(float64)
+				temperature29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsNull() {
-					*temperature28 = r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.ValueFloat64()
+					*temperature29 = r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.ValueFloat64()
 				} else {
-					temperature28 = nil
+					temperature29 = nil
 				}
-				topK28 := new(int64)
+				topK29 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.IsNull() {
-					*topK28 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.ValueInt64()
+					*topK29 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.ValueInt64()
 				} else {
-					topK28 = nil
+					topK29 = nil
 				}
-				topP28 := new(float64)
+				topP29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.IsNull() {
-					*topP28 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.ValueFloat64()
+					*topP29 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.ValueFloat64()
 				} else {
-					topP28 = nil
+					topP29 = nil
 				}
-				upstreamUrl36 := new(string)
+				upstreamUrl37 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.IsNull() {
-					*upstreamUrl36 = r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.ValueString()
+					*upstreamUrl37 = r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl36 = nil
+					upstreamUrl37 = nil
 				}
-				typeVar43 := shared.AIGatewayTargetHuggingfaceConfigType(r.Model.Targets[targetsIndex1].Config.Huggingface.Type.ValueString())
 				useCache2 := new(bool)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.UseCache.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.UseCache.IsNull() {
 					*useCache2 = r.Model.Targets[targetsIndex1].Config.Huggingface.UseCache.ValueBool()
@@ -5655,15 +5689,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					waitForModel4 = nil
 				}
 				aiGatewayTargetHuggingfaceConfig1 = &shared.AIGatewayTargetHuggingfaceConfig{
-					EmbeddingsDimensions: embeddingsDimensions28,
-					MaxTokens:            maxTokens28,
-					InputCost:            inputCost28,
-					OutputCost:           outputCost28,
-					Temperature:          temperature28,
-					TopK:                 topK28,
-					TopP:                 topP28,
-					UpstreamURL:          upstreamUrl36,
-					Type:                 typeVar43,
+					EmbeddingsDimensions: embeddingsDimensions29,
+					MaxTokens:            maxTokens29,
+					InputCost:            inputCost29,
+					OutputCost:           outputCost29,
+					Temperature:          temperature29,
+					TopK:                 topK29,
+					TopP:                 topP29,
+					UpstreamURL:          upstreamUrl37,
 					UseCache:             useCache2,
 					WaitForModel:         waitForModel4,
 				}
@@ -5675,55 +5708,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetKimiConfig1 *shared.AIGatewayTargetKimiConfig
 			if r.Model.Targets[targetsIndex1].Config.Kimi != nil {
-				embeddingsDimensions29 := new(int64)
+				embeddingsDimensions30 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions29 = r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions30 = r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions29 = nil
+					embeddingsDimensions30 = nil
 				}
-				maxTokens29 := new(int64)
+				maxTokens30 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.IsNull() {
-					*maxTokens29 = r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.ValueInt64()
+					*maxTokens30 = r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.ValueInt64()
 				} else {
-					maxTokens29 = nil
+					maxTokens30 = nil
 				}
-				inputCost29 := new(float64)
+				inputCost30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.IsNull() {
-					*inputCost29 = r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.ValueFloat64()
+					*inputCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.ValueFloat64()
 				} else {
-					inputCost29 = nil
+					inputCost30 = nil
 				}
-				outputCost29 := new(float64)
+				outputCost30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.IsNull() {
-					*outputCost29 = r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.ValueFloat64()
+					*outputCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.ValueFloat64()
 				} else {
-					outputCost29 = nil
+					outputCost30 = nil
 				}
-				temperature29 := new(float64)
+				temperature30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsNull() {
-					*temperature29 = r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.ValueFloat64()
+					*temperature30 = r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.ValueFloat64()
 				} else {
-					temperature29 = nil
+					temperature30 = nil
 				}
-				topK29 := new(int64)
+				topK30 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.TopK.IsNull() {
-					*topK29 = r.Model.Targets[targetsIndex1].Config.Kimi.TopK.ValueInt64()
+					*topK30 = r.Model.Targets[targetsIndex1].Config.Kimi.TopK.ValueInt64()
 				} else {
-					topK29 = nil
+					topK30 = nil
 				}
-				topP29 := new(float64)
+				topP30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.TopP.IsNull() {
-					*topP29 = r.Model.Targets[targetsIndex1].Config.Kimi.TopP.ValueFloat64()
+					*topP30 = r.Model.Targets[targetsIndex1].Config.Kimi.TopP.ValueFloat64()
 				} else {
-					topP29 = nil
+					topP30 = nil
 				}
-				upstreamUrl37 := new(string)
+				upstreamUrl38 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.IsNull() {
-					*upstreamUrl37 = r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.ValueString()
+					*upstreamUrl38 = r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl37 = nil
+					upstreamUrl38 = nil
 				}
-				typeVar44 := shared.AIGatewayTargetKimiConfigType(r.Model.Targets[targetsIndex1].Config.Kimi.Type.ValueString())
 				international3 := new(bool)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.International.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.International.IsNull() {
 					*international3 = r.Model.Targets[targetsIndex1].Config.Kimi.International.ValueBool()
@@ -5731,15 +5763,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					international3 = nil
 				}
 				aiGatewayTargetKimiConfig1 = &shared.AIGatewayTargetKimiConfig{
-					EmbeddingsDimensions: embeddingsDimensions29,
-					MaxTokens:            maxTokens29,
-					InputCost:            inputCost29,
-					OutputCost:           outputCost29,
-					Temperature:          temperature29,
-					TopK:                 topK29,
-					TopP:                 topP29,
-					UpstreamURL:          upstreamUrl37,
-					Type:                 typeVar44,
+					EmbeddingsDimensions: embeddingsDimensions30,
+					MaxTokens:            maxTokens30,
+					InputCost:            inputCost30,
+					OutputCost:           outputCost30,
+					Temperature:          temperature30,
+					TopK:                 topK30,
+					TopP:                 topP30,
+					UpstreamURL:          upstreamUrl38,
 					International:        international3,
 				}
 			}
@@ -5750,63 +5781,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetLlama2Config1 *shared.AIGatewayTargetLlama2Config
 			if r.Model.Targets[targetsIndex1].Config.Llama2 != nil {
-				embeddingsDimensions30 := new(int64)
+				embeddingsDimensions31 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions30 = r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions31 = r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions30 = nil
+					embeddingsDimensions31 = nil
 				}
-				maxTokens30 := new(int64)
+				maxTokens31 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.IsNull() {
-					*maxTokens30 = r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.ValueInt64()
+					*maxTokens31 = r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.ValueInt64()
 				} else {
-					maxTokens30 = nil
+					maxTokens31 = nil
 				}
-				inputCost30 := new(float64)
+				inputCost31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.IsNull() {
-					*inputCost30 = r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.ValueFloat64()
+					*inputCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.ValueFloat64()
 				} else {
-					inputCost30 = nil
+					inputCost31 = nil
 				}
-				outputCost30 := new(float64)
+				outputCost31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.IsNull() {
-					*outputCost30 = r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.ValueFloat64()
+					*outputCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.ValueFloat64()
 				} else {
-					outputCost30 = nil
+					outputCost31 = nil
 				}
-				temperature30 := new(float64)
+				temperature31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsNull() {
-					*temperature30 = r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.ValueFloat64()
+					*temperature31 = r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.ValueFloat64()
 				} else {
-					temperature30 = nil
+					temperature31 = nil
 				}
-				topK30 := new(int64)
+				topK31 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.TopK.IsNull() {
-					*topK30 = r.Model.Targets[targetsIndex1].Config.Llama2.TopK.ValueInt64()
+					*topK31 = r.Model.Targets[targetsIndex1].Config.Llama2.TopK.ValueInt64()
 				} else {
-					topK30 = nil
+					topK31 = nil
 				}
-				topP30 := new(float64)
+				topP31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.TopP.IsNull() {
-					*topP30 = r.Model.Targets[targetsIndex1].Config.Llama2.TopP.ValueFloat64()
+					*topP31 = r.Model.Targets[targetsIndex1].Config.Llama2.TopP.ValueFloat64()
 				} else {
-					topP30 = nil
+					topP31 = nil
 				}
-				var upstreamUrl38 string
-				upstreamUrl38 = r.Model.Targets[targetsIndex1].Config.Llama2.UpstreamURL.ValueString()
+				var upstreamUrl39 string
+				upstreamUrl39 = r.Model.Targets[targetsIndex1].Config.Llama2.UpstreamURL.ValueString()
 
-				typeVar45 := shared.AIGatewayTargetLlama2ConfigType(r.Model.Targets[targetsIndex1].Config.Llama2.Type.ValueString())
 				format2 := shared.Format(r.Model.Targets[targetsIndex1].Config.Llama2.Format.ValueString())
 				aiGatewayTargetLlama2Config1 = &shared.AIGatewayTargetLlama2Config{
-					EmbeddingsDimensions: embeddingsDimensions30,
-					MaxTokens:            maxTokens30,
-					InputCost:            inputCost30,
-					OutputCost:           outputCost30,
-					Temperature:          temperature30,
-					TopK:                 topK30,
-					TopP:                 topP30,
-					UpstreamURL:          upstreamUrl38,
-					Type:                 typeVar45,
+					EmbeddingsDimensions: embeddingsDimensions31,
+					MaxTokens:            maxTokens31,
+					InputCost:            inputCost31,
+					OutputCost:           outputCost31,
+					Temperature:          temperature31,
+					TopK:                 topK31,
+					TopP:                 topP31,
+					UpstreamURL:          upstreamUrl39,
 					Format:               format2,
 				}
 			}
@@ -5817,66 +5846,64 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetMistralConfig1 *shared.AIGatewayTargetMistralConfig
 			if r.Model.Targets[targetsIndex1].Config.Mistral != nil {
-				embeddingsDimensions31 := new(int64)
+				embeddingsDimensions32 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions31 = r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions32 = r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions31 = nil
+					embeddingsDimensions32 = nil
 				}
-				maxTokens31 := new(int64)
+				maxTokens32 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.IsNull() {
-					*maxTokens31 = r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.ValueInt64()
+					*maxTokens32 = r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.ValueInt64()
 				} else {
-					maxTokens31 = nil
+					maxTokens32 = nil
 				}
-				inputCost31 := new(float64)
+				inputCost32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.IsNull() {
-					*inputCost31 = r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.ValueFloat64()
+					*inputCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.ValueFloat64()
 				} else {
-					inputCost31 = nil
+					inputCost32 = nil
 				}
-				outputCost31 := new(float64)
+				outputCost32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.IsNull() {
-					*outputCost31 = r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.ValueFloat64()
+					*outputCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.ValueFloat64()
 				} else {
-					outputCost31 = nil
+					outputCost32 = nil
 				}
-				temperature31 := new(float64)
+				temperature32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsNull() {
-					*temperature31 = r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.ValueFloat64()
+					*temperature32 = r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.ValueFloat64()
 				} else {
-					temperature31 = nil
+					temperature32 = nil
 				}
-				topK31 := new(int64)
+				topK32 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.TopK.IsNull() {
-					*topK31 = r.Model.Targets[targetsIndex1].Config.Mistral.TopK.ValueInt64()
+					*topK32 = r.Model.Targets[targetsIndex1].Config.Mistral.TopK.ValueInt64()
 				} else {
-					topK31 = nil
+					topK32 = nil
 				}
-				topP31 := new(float64)
+				topP32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.TopP.IsNull() {
-					*topP31 = r.Model.Targets[targetsIndex1].Config.Mistral.TopP.ValueFloat64()
+					*topP32 = r.Model.Targets[targetsIndex1].Config.Mistral.TopP.ValueFloat64()
 				} else {
-					topP31 = nil
+					topP32 = nil
 				}
-				upstreamUrl39 := new(string)
+				upstreamUrl40 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.IsNull() {
-					*upstreamUrl39 = r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.ValueString()
+					*upstreamUrl40 = r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl39 = nil
+					upstreamUrl40 = nil
 				}
-				typeVar46 := shared.AIGatewayTargetMistralConfigType(r.Model.Targets[targetsIndex1].Config.Mistral.Type.ValueString())
 				format3 := shared.AIGatewayTargetMistralConfigFormat(r.Model.Targets[targetsIndex1].Config.Mistral.Format.ValueString())
 				aiGatewayTargetMistralConfig1 = &shared.AIGatewayTargetMistralConfig{
-					EmbeddingsDimensions: embeddingsDimensions31,
-					MaxTokens:            maxTokens31,
-					InputCost:            inputCost31,
-					OutputCost:           outputCost31,
-					Temperature:          temperature31,
-					TopK:                 topK31,
-					TopP:                 topP31,
-					UpstreamURL:          upstreamUrl39,
-					Type:                 typeVar46,
+					EmbeddingsDimensions: embeddingsDimensions32,
+					MaxTokens:            maxTokens32,
+					InputCost:            inputCost32,
+					OutputCost:           outputCost32,
+					Temperature:          temperature32,
+					TopK:                 topK32,
+					TopP:                 topP32,
+					UpstreamURL:          upstreamUrl40,
 					Format:               format3,
 				}
 			}
@@ -5887,65 +5914,63 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetOllamaConfig1 *shared.AIGatewayTargetOllamaConfig
 			if r.Model.Targets[targetsIndex1].Config.Ollama != nil {
-				embeddingsDimensions32 := new(int64)
+				embeddingsDimensions33 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions32 = r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions33 = r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions32 = nil
+					embeddingsDimensions33 = nil
 				}
-				maxTokens32 := new(int64)
+				maxTokens33 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.IsNull() {
-					*maxTokens32 = r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.ValueInt64()
+					*maxTokens33 = r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.ValueInt64()
 				} else {
-					maxTokens32 = nil
+					maxTokens33 = nil
 				}
-				inputCost32 := new(float64)
+				inputCost33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.IsNull() {
-					*inputCost32 = r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.ValueFloat64()
+					*inputCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.ValueFloat64()
 				} else {
-					inputCost32 = nil
+					inputCost33 = nil
 				}
-				outputCost32 := new(float64)
+				outputCost33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.IsNull() {
-					*outputCost32 = r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.ValueFloat64()
+					*outputCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.ValueFloat64()
 				} else {
-					outputCost32 = nil
+					outputCost33 = nil
 				}
-				temperature32 := new(float64)
+				temperature33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsNull() {
-					*temperature32 = r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.ValueFloat64()
+					*temperature33 = r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.ValueFloat64()
 				} else {
-					temperature32 = nil
+					temperature33 = nil
 				}
-				topK32 := new(int64)
+				topK33 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.TopK.IsNull() {
-					*topK32 = r.Model.Targets[targetsIndex1].Config.Ollama.TopK.ValueInt64()
+					*topK33 = r.Model.Targets[targetsIndex1].Config.Ollama.TopK.ValueInt64()
 				} else {
-					topK32 = nil
+					topK33 = nil
 				}
-				topP32 := new(float64)
+				topP33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.TopP.IsNull() {
-					*topP32 = r.Model.Targets[targetsIndex1].Config.Ollama.TopP.ValueFloat64()
+					*topP33 = r.Model.Targets[targetsIndex1].Config.Ollama.TopP.ValueFloat64()
 				} else {
-					topP32 = nil
+					topP33 = nil
 				}
-				upstreamUrl40 := new(string)
+				upstreamUrl41 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.IsNull() {
-					*upstreamUrl40 = r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.ValueString()
+					*upstreamUrl41 = r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl40 = nil
+					upstreamUrl41 = nil
 				}
-				typeVar47 := shared.AIGatewayTargetOllamaConfigType(r.Model.Targets[targetsIndex1].Config.Ollama.Type.ValueString())
 				aiGatewayTargetOllamaConfig1 = &shared.AIGatewayTargetOllamaConfig{
-					EmbeddingsDimensions: embeddingsDimensions32,
-					MaxTokens:            maxTokens32,
-					InputCost:            inputCost32,
-					OutputCost:           outputCost32,
-					Temperature:          temperature32,
-					TopK:                 topK32,
-					TopP:                 topP32,
-					UpstreamURL:          upstreamUrl40,
-					Type:                 typeVar47,
+					EmbeddingsDimensions: embeddingsDimensions33,
+					MaxTokens:            maxTokens33,
+					InputCost:            inputCost33,
+					OutputCost:           outputCost33,
+					Temperature:          temperature33,
+					TopK:                 topK33,
+					TopP:                 topP33,
+					UpstreamURL:          upstreamUrl41,
 				}
 			}
 			if aiGatewayTargetOllamaConfig1 != nil {
@@ -5955,65 +5980,63 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetOpenaiConfig1 *shared.AIGatewayTargetOpenaiConfig
 			if r.Model.Targets[targetsIndex1].Config.Openai != nil {
-				embeddingsDimensions33 := new(int64)
+				embeddingsDimensions34 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions33 = r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions34 = r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions33 = nil
+					embeddingsDimensions34 = nil
 				}
-				maxTokens33 := new(int64)
+				maxTokens34 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.IsNull() {
-					*maxTokens33 = r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.ValueInt64()
+					*maxTokens34 = r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.ValueInt64()
 				} else {
-					maxTokens33 = nil
+					maxTokens34 = nil
 				}
-				inputCost33 := new(float64)
+				inputCost34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.InputCost.IsNull() {
-					*inputCost33 = r.Model.Targets[targetsIndex1].Config.Openai.InputCost.ValueFloat64()
+					*inputCost34 = r.Model.Targets[targetsIndex1].Config.Openai.InputCost.ValueFloat64()
 				} else {
-					inputCost33 = nil
+					inputCost34 = nil
 				}
-				outputCost33 := new(float64)
+				outputCost34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.IsNull() {
-					*outputCost33 = r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.ValueFloat64()
+					*outputCost34 = r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.ValueFloat64()
 				} else {
-					outputCost33 = nil
+					outputCost34 = nil
 				}
-				temperature33 := new(float64)
+				temperature34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsNull() {
-					*temperature33 = r.Model.Targets[targetsIndex1].Config.Openai.Temperature.ValueFloat64()
+					*temperature34 = r.Model.Targets[targetsIndex1].Config.Openai.Temperature.ValueFloat64()
 				} else {
-					temperature33 = nil
+					temperature34 = nil
 				}
-				topK33 := new(int64)
+				topK34 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.TopK.IsNull() {
-					*topK33 = r.Model.Targets[targetsIndex1].Config.Openai.TopK.ValueInt64()
+					*topK34 = r.Model.Targets[targetsIndex1].Config.Openai.TopK.ValueInt64()
 				} else {
-					topK33 = nil
+					topK34 = nil
 				}
-				topP33 := new(float64)
+				topP34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.TopP.IsNull() {
-					*topP33 = r.Model.Targets[targetsIndex1].Config.Openai.TopP.ValueFloat64()
+					*topP34 = r.Model.Targets[targetsIndex1].Config.Openai.TopP.ValueFloat64()
 				} else {
-					topP33 = nil
+					topP34 = nil
 				}
-				upstreamUrl41 := new(string)
+				upstreamUrl42 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.IsNull() {
-					*upstreamUrl41 = r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.ValueString()
+					*upstreamUrl42 = r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl41 = nil
+					upstreamUrl42 = nil
 				}
-				typeVar48 := shared.AIGatewayTargetOpenaiConfigType(r.Model.Targets[targetsIndex1].Config.Openai.Type.ValueString())
 				aiGatewayTargetOpenaiConfig1 = &shared.AIGatewayTargetOpenaiConfig{
-					EmbeddingsDimensions: embeddingsDimensions33,
-					MaxTokens:            maxTokens33,
-					InputCost:            inputCost33,
-					OutputCost:           outputCost33,
-					Temperature:          temperature33,
-					TopK:                 topK33,
-					TopP:                 topP33,
-					UpstreamURL:          upstreamUrl41,
-					Type:                 typeVar48,
+					EmbeddingsDimensions: embeddingsDimensions34,
+					MaxTokens:            maxTokens34,
+					InputCost:            inputCost34,
+					OutputCost:           outputCost34,
+					Temperature:          temperature34,
+					TopK:                 topK34,
+					TopP:                 topP34,
+					UpstreamURL:          upstreamUrl42,
 				}
 			}
 			if aiGatewayTargetOpenaiConfig1 != nil {
@@ -6023,65 +6046,63 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetVercelConfig1 *shared.AIGatewayTargetVercelConfig
 			if r.Model.Targets[targetsIndex1].Config.Vercel != nil {
-				embeddingsDimensions34 := new(int64)
+				embeddingsDimensions35 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions34 = r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions35 = r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions34 = nil
+					embeddingsDimensions35 = nil
 				}
-				maxTokens34 := new(int64)
+				maxTokens35 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.IsNull() {
-					*maxTokens34 = r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.ValueInt64()
+					*maxTokens35 = r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.ValueInt64()
 				} else {
-					maxTokens34 = nil
+					maxTokens35 = nil
 				}
-				inputCost34 := new(float64)
+				inputCost35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.IsNull() {
-					*inputCost34 = r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.ValueFloat64()
+					*inputCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.ValueFloat64()
 				} else {
-					inputCost34 = nil
+					inputCost35 = nil
 				}
-				outputCost34 := new(float64)
+				outputCost35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.IsNull() {
-					*outputCost34 = r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.ValueFloat64()
+					*outputCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.ValueFloat64()
 				} else {
-					outputCost34 = nil
+					outputCost35 = nil
 				}
-				temperature34 := new(float64)
+				temperature35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsNull() {
-					*temperature34 = r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.ValueFloat64()
+					*temperature35 = r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.ValueFloat64()
 				} else {
-					temperature34 = nil
+					temperature35 = nil
 				}
-				topK34 := new(int64)
+				topK35 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.TopK.IsNull() {
-					*topK34 = r.Model.Targets[targetsIndex1].Config.Vercel.TopK.ValueInt64()
+					*topK35 = r.Model.Targets[targetsIndex1].Config.Vercel.TopK.ValueInt64()
 				} else {
-					topK34 = nil
+					topK35 = nil
 				}
-				topP34 := new(float64)
+				topP35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.TopP.IsNull() {
-					*topP34 = r.Model.Targets[targetsIndex1].Config.Vercel.TopP.ValueFloat64()
+					*topP35 = r.Model.Targets[targetsIndex1].Config.Vercel.TopP.ValueFloat64()
 				} else {
-					topP34 = nil
+					topP35 = nil
 				}
-				upstreamUrl42 := new(string)
+				upstreamUrl43 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.IsNull() {
-					*upstreamUrl42 = r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.ValueString()
+					*upstreamUrl43 = r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl42 = nil
+					upstreamUrl43 = nil
 				}
-				typeVar49 := shared.AIGatewayTargetVercelConfigType(r.Model.Targets[targetsIndex1].Config.Vercel.Type.ValueString())
 				aiGatewayTargetVercelConfig1 = &shared.AIGatewayTargetVercelConfig{
-					EmbeddingsDimensions: embeddingsDimensions34,
-					MaxTokens:            maxTokens34,
-					InputCost:            inputCost34,
-					OutputCost:           outputCost34,
-					Temperature:          temperature34,
-					TopK:                 topK34,
-					TopP:                 topP34,
-					UpstreamURL:          upstreamUrl42,
-					Type:                 typeVar49,
+					EmbeddingsDimensions: embeddingsDimensions35,
+					MaxTokens:            maxTokens35,
+					InputCost:            inputCost35,
+					OutputCost:           outputCost35,
+					Temperature:          temperature35,
+					TopK:                 topK35,
+					TopP:                 topP35,
+					UpstreamURL:          upstreamUrl43,
 				}
 			}
 			if aiGatewayTargetVercelConfig1 != nil {
@@ -6091,55 +6112,54 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetVertexConfig1 *shared.AIGatewayTargetVertexConfig
 			if r.Model.Targets[targetsIndex1].Config.Vertex != nil {
-				embeddingsDimensions35 := new(int64)
+				embeddingsDimensions36 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions35 = r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions36 = r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions35 = nil
+					embeddingsDimensions36 = nil
 				}
-				maxTokens35 := new(int64)
+				maxTokens36 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.IsNull() {
-					*maxTokens35 = r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.ValueInt64()
+					*maxTokens36 = r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.ValueInt64()
 				} else {
-					maxTokens35 = nil
+					maxTokens36 = nil
 				}
-				inputCost35 := new(float64)
+				inputCost36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.IsNull() {
-					*inputCost35 = r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.ValueFloat64()
+					*inputCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.ValueFloat64()
 				} else {
-					inputCost35 = nil
+					inputCost36 = nil
 				}
-				outputCost35 := new(float64)
+				outputCost36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.IsNull() {
-					*outputCost35 = r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.ValueFloat64()
+					*outputCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.ValueFloat64()
 				} else {
-					outputCost35 = nil
+					outputCost36 = nil
 				}
-				temperature35 := new(float64)
+				temperature36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsNull() {
-					*temperature35 = r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.ValueFloat64()
+					*temperature36 = r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.ValueFloat64()
 				} else {
-					temperature35 = nil
+					temperature36 = nil
 				}
-				topK35 := new(int64)
+				topK36 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.TopK.IsNull() {
-					*topK35 = r.Model.Targets[targetsIndex1].Config.Vertex.TopK.ValueInt64()
+					*topK36 = r.Model.Targets[targetsIndex1].Config.Vertex.TopK.ValueInt64()
 				} else {
-					topK35 = nil
+					topK36 = nil
 				}
-				topP35 := new(float64)
+				topP36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.TopP.IsNull() {
-					*topP35 = r.Model.Targets[targetsIndex1].Config.Vertex.TopP.ValueFloat64()
+					*topP36 = r.Model.Targets[targetsIndex1].Config.Vertex.TopP.ValueFloat64()
 				} else {
-					topP35 = nil
+					topP36 = nil
 				}
-				upstreamUrl43 := new(string)
+				upstreamUrl44 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.IsNull() {
-					*upstreamUrl43 = r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.ValueString()
+					*upstreamUrl44 = r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl43 = nil
+					upstreamUrl44 = nil
 				}
-				typeVar50 := shared.AIGatewayTargetVertexConfigType(r.Model.Targets[targetsIndex1].Config.Vertex.Type.ValueString())
 				var gcpEnvironment5 *shared.GcpEnvironment
 				if r.Model.Targets[targetsIndex1].Config.Vertex.GcpEnvironment != nil {
 					var apiEndpoint5 string
@@ -6165,15 +6185,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					}
 				}
 				aiGatewayTargetVertexConfig1 = &shared.AIGatewayTargetVertexConfig{
-					EmbeddingsDimensions: embeddingsDimensions35,
-					MaxTokens:            maxTokens35,
-					InputCost:            inputCost35,
-					OutputCost:           outputCost35,
-					Temperature:          temperature35,
-					TopK:                 topK35,
-					TopP:                 topP35,
-					UpstreamURL:          upstreamUrl43,
-					Type:                 typeVar50,
+					EmbeddingsDimensions: embeddingsDimensions36,
+					MaxTokens:            maxTokens36,
+					InputCost:            inputCost36,
+					OutputCost:           outputCost36,
+					Temperature:          temperature36,
+					TopK:                 topK36,
+					TopP:                 topP36,
+					UpstreamURL:          upstreamUrl44,
 					GcpEnvironment:       gcpEnvironment5,
 				}
 			}
@@ -6184,62 +6203,60 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetVllmConfig1 *shared.AIGatewayTargetVllmConfig
 			if r.Model.Targets[targetsIndex1].Config.Vllm != nil {
-				embeddingsDimensions36 := new(int64)
+				embeddingsDimensions37 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions36 = r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions37 = r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions36 = nil
+					embeddingsDimensions37 = nil
 				}
-				maxTokens36 := new(int64)
+				maxTokens37 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.IsNull() {
-					*maxTokens36 = r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.ValueInt64()
+					*maxTokens37 = r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.ValueInt64()
 				} else {
-					maxTokens36 = nil
+					maxTokens37 = nil
 				}
-				inputCost36 := new(float64)
+				inputCost37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.IsNull() {
-					*inputCost36 = r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.ValueFloat64()
+					*inputCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.ValueFloat64()
 				} else {
-					inputCost36 = nil
+					inputCost37 = nil
 				}
-				outputCost36 := new(float64)
+				outputCost37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.IsNull() {
-					*outputCost36 = r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.ValueFloat64()
+					*outputCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.ValueFloat64()
 				} else {
-					outputCost36 = nil
+					outputCost37 = nil
 				}
-				temperature36 := new(float64)
+				temperature37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsNull() {
-					*temperature36 = r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.ValueFloat64()
+					*temperature37 = r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.ValueFloat64()
 				} else {
-					temperature36 = nil
+					temperature37 = nil
 				}
-				topK36 := new(int64)
+				topK37 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.TopK.IsNull() {
-					*topK36 = r.Model.Targets[targetsIndex1].Config.Vllm.TopK.ValueInt64()
+					*topK37 = r.Model.Targets[targetsIndex1].Config.Vllm.TopK.ValueInt64()
 				} else {
-					topK36 = nil
+					topK37 = nil
 				}
-				topP36 := new(float64)
+				topP37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.TopP.IsNull() {
-					*topP36 = r.Model.Targets[targetsIndex1].Config.Vllm.TopP.ValueFloat64()
+					*topP37 = r.Model.Targets[targetsIndex1].Config.Vllm.TopP.ValueFloat64()
 				} else {
-					topP36 = nil
+					topP37 = nil
 				}
-				var upstreamUrl44 string
-				upstreamUrl44 = r.Model.Targets[targetsIndex1].Config.Vllm.UpstreamURL.ValueString()
+				var upstreamUrl45 string
+				upstreamUrl45 = r.Model.Targets[targetsIndex1].Config.Vllm.UpstreamURL.ValueString()
 
-				typeVar51 := shared.AIGatewayTargetVllmConfigType(r.Model.Targets[targetsIndex1].Config.Vllm.Type.ValueString())
 				aiGatewayTargetVllmConfig1 = &shared.AIGatewayTargetVllmConfig{
-					EmbeddingsDimensions: embeddingsDimensions36,
-					MaxTokens:            maxTokens36,
-					InputCost:            inputCost36,
-					OutputCost:           outputCost36,
-					Temperature:          temperature36,
-					TopK:                 topK36,
-					TopP:                 topP36,
-					UpstreamURL:          upstreamUrl44,
-					Type:                 typeVar51,
+					EmbeddingsDimensions: embeddingsDimensions37,
+					MaxTokens:            maxTokens37,
+					InputCost:            inputCost37,
+					OutputCost:           outputCost37,
+					Temperature:          temperature37,
+					TopK:                 topK37,
+					TopP:                 topP37,
+					UpstreamURL:          upstreamUrl45,
 				}
 			}
 			if aiGatewayTargetVllmConfig1 != nil {
@@ -6249,70 +6266,195 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetXaiConfig1 *shared.AIGatewayTargetXaiConfig
 			if r.Model.Targets[targetsIndex1].Config.Xai != nil {
-				embeddingsDimensions37 := new(int64)
+				embeddingsDimensions38 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions37 = r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions38 = r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions37 = nil
+					embeddingsDimensions38 = nil
 				}
-				maxTokens37 := new(int64)
+				maxTokens38 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.IsNull() {
-					*maxTokens37 = r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.ValueInt64()
+					*maxTokens38 = r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.ValueInt64()
 				} else {
-					maxTokens37 = nil
+					maxTokens38 = nil
 				}
-				inputCost37 := new(float64)
+				inputCost38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.InputCost.IsNull() {
-					*inputCost37 = r.Model.Targets[targetsIndex1].Config.Xai.InputCost.ValueFloat64()
+					*inputCost38 = r.Model.Targets[targetsIndex1].Config.Xai.InputCost.ValueFloat64()
 				} else {
-					inputCost37 = nil
+					inputCost38 = nil
 				}
-				outputCost37 := new(float64)
+				outputCost38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.IsNull() {
-					*outputCost37 = r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.ValueFloat64()
+					*outputCost38 = r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.ValueFloat64()
 				} else {
-					outputCost37 = nil
+					outputCost38 = nil
 				}
-				temperature37 := new(float64)
+				temperature38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsNull() {
-					*temperature37 = r.Model.Targets[targetsIndex1].Config.Xai.Temperature.ValueFloat64()
+					*temperature38 = r.Model.Targets[targetsIndex1].Config.Xai.Temperature.ValueFloat64()
 				} else {
-					temperature37 = nil
+					temperature38 = nil
 				}
-				topK37 := new(int64)
+				topK38 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.TopK.IsNull() {
-					*topK37 = r.Model.Targets[targetsIndex1].Config.Xai.TopK.ValueInt64()
+					*topK38 = r.Model.Targets[targetsIndex1].Config.Xai.TopK.ValueInt64()
 				} else {
-					topK37 = nil
+					topK38 = nil
 				}
-				topP37 := new(float64)
+				topP38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.TopP.IsNull() {
-					*topP37 = r.Model.Targets[targetsIndex1].Config.Xai.TopP.ValueFloat64()
+					*topP38 = r.Model.Targets[targetsIndex1].Config.Xai.TopP.ValueFloat64()
 				} else {
-					topP37 = nil
+					topP38 = nil
 				}
-				upstreamUrl45 := new(string)
+				upstreamUrl46 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.IsNull() {
-					*upstreamUrl45 = r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.ValueString()
+					*upstreamUrl46 = r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl45 = nil
+					upstreamUrl46 = nil
 				}
-				typeVar52 := shared.AIGatewayTargetXaiConfigType(r.Model.Targets[targetsIndex1].Config.Xai.Type.ValueString())
 				aiGatewayTargetXaiConfig1 = &shared.AIGatewayTargetXaiConfig{
-					EmbeddingsDimensions: embeddingsDimensions37,
-					MaxTokens:            maxTokens37,
-					InputCost:            inputCost37,
-					OutputCost:           outputCost37,
-					Temperature:          temperature37,
-					TopK:                 topK37,
-					TopP:                 topP37,
-					UpstreamURL:          upstreamUrl45,
-					Type:                 typeVar52,
+					EmbeddingsDimensions: embeddingsDimensions38,
+					MaxTokens:            maxTokens38,
+					InputCost:            inputCost38,
+					OutputCost:           outputCost38,
+					Temperature:          temperature38,
+					TopK:                 topK38,
+					TopP:                 topP38,
+					UpstreamURL:          upstreamUrl46,
 				}
 			}
 			if aiGatewayTargetXaiConfig1 != nil {
 				config3 = shared.AIGatewayTargetConfig{
 					AIGatewayTargetXaiConfig: aiGatewayTargetXaiConfig1,
+				}
+			}
+			var aiGatewayTargetSagemakerConfig1 *shared.AIGatewayTargetSagemakerConfig
+			if r.Model.Targets[targetsIndex1].Config.Sagemaker != nil {
+				embeddingsDimensions39 := new(int64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.EmbeddingsDimensions.IsNull() {
+					*embeddingsDimensions39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.EmbeddingsDimensions.ValueInt64()
+				} else {
+					embeddingsDimensions39 = nil
+				}
+				maxTokens39 := new(int64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.MaxTokens.IsNull() {
+					*maxTokens39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.MaxTokens.ValueInt64()
+				} else {
+					maxTokens39 = nil
+				}
+				inputCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCost.IsNull() {
+					*inputCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCost.ValueFloat64()
+				} else {
+					inputCost39 = nil
+				}
+				outputCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.IsNull() {
+					*outputCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.ValueFloat64()
+				} else {
+					outputCost39 = nil
+				}
+				temperature39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsNull() {
+					*temperature39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.ValueFloat64()
+				} else {
+					temperature39 = nil
+				}
+				topK39 := new(int64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopK.IsNull() {
+					*topK39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.TopK.ValueInt64()
+				} else {
+					topK39 = nil
+				}
+				topP39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopP.IsNull() {
+					*topP39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.TopP.ValueFloat64()
+				} else {
+					topP39 = nil
+				}
+				upstreamUrl47 := new(string)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.UpstreamURL.IsNull() {
+					*upstreamUrl47 = r.Model.Targets[targetsIndex1].Config.Sagemaker.UpstreamURL.ValueString()
+				} else {
+					upstreamUrl47 = nil
+				}
+				var aws1 *shared.Aws
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws != nil {
+					region5 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.Region.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.Region.IsNull() {
+						*region5 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.Region.ValueString()
+					} else {
+						region5 = nil
+					}
+					assumeRoleArn2 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.AssumeRoleArn.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn2 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn2 = nil
+					}
+					roleSessionName2 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.RoleSessionName.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.RoleSessionName.IsNull() {
+						*roleSessionName2 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName2 = nil
+					}
+					stsEndpointUrl1 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.StsEndpointURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl1 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl1 = nil
+					}
+					aws1 = &shared.Aws{
+						Region:          region5,
+						AssumeRoleArn:   assumeRoleArn2,
+						RoleSessionName: roleSessionName2,
+						StsEndpointURL:  stsEndpointUrl1,
+					}
+				}
+				var target1 *shared.Target
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.Target != nil {
+					model2 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Model.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Model.IsNull() {
+						*model2 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Model.ValueString()
+					} else {
+						model2 = nil
+					}
+					variant1 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Variant.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Variant.IsNull() {
+						*variant1 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Variant.ValueString()
+					} else {
+						variant1 = nil
+					}
+					containerHostname1 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.ContainerHostname.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.ContainerHostname.IsNull() {
+						*containerHostname1 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.ContainerHostname.ValueString()
+					} else {
+						containerHostname1 = nil
+					}
+					target1 = &shared.Target{
+						Model:             model2,
+						Variant:           variant1,
+						ContainerHostname: containerHostname1,
+					}
+				}
+				aiGatewayTargetSagemakerConfig1 = &shared.AIGatewayTargetSagemakerConfig{
+					EmbeddingsDimensions: embeddingsDimensions39,
+					MaxTokens:            maxTokens39,
+					InputCost:            inputCost39,
+					OutputCost:           outputCost39,
+					Temperature:          temperature39,
+					TopK:                 topK39,
+					TopP:                 topP39,
+					UpstreamURL:          upstreamUrl47,
+					Aws:                  aws1,
+					Target:               target1,
+				}
+			}
+			if aiGatewayTargetSagemakerConfig1 != nil {
+				config3 = shared.AIGatewayTargetConfig{
+					AIGatewayTargetSagemakerConfig: aiGatewayTargetSagemakerConfig1,
 				}
 			}
 			targets1 = append(targets1, shared.AIGatewayTarget{
@@ -6342,19 +6484,15 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		typeVar53 := shared.AIGatewayModelModelType(r.Model.Type.ValueString())
-		headers1 := make(map[string]interface{})
-		for headersKey1 := range r.Model.Config.Route.Headers {
-			var headersInst1 interface{}
-			_ = json.Unmarshal([]byte(r.Model.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-			headers1[headersKey1] = headersInst1
+		headers2 := make(map[string]interface{})
+		for headersKey2 := range r.Model.Config.Route.Headers {
+			var headersInst2 interface{}
+			_ = json.Unmarshal([]byte(r.Model.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+			headers2[headersKey2] = headersInst2
 		}
-		var hosts1 []string
-		if r.Model.Config.Route.Hosts != nil {
-			hosts1 = make([]string, 0, len(r.Model.Config.Route.Hosts))
-			for hostsIndex1 := range r.Model.Config.Route.Hosts {
-				hosts1 = append(hosts1, r.Model.Config.Route.Hosts[hostsIndex1].ValueString())
-			}
+		hosts1 := make([]string, 0, len(r.Model.Config.Route.Hosts))
+		for hostsIndex1 := range r.Model.Config.Route.Hosts {
+			hosts1 = append(hosts1, r.Model.Config.Route.Hosts[hostsIndex1].ValueString())
 		}
 		httpsRedirectStatusCode1 := new(int64)
 		if !r.Model.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Model.Config.Route.HTTPSRedirectStatusCode.IsNull() {
@@ -6408,8 +6546,42 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 		for tagsIndex1 := range r.Model.Config.Route.Tags {
 			tags1 = append(tags1, r.Model.Config.Route.Tags[tagsIndex1].ValueString())
 		}
-		var model1 *shared.AIGatewayModelAliasConfig
+		var model3 *shared.AIGatewayModelAliasConfig
 		if r.Model.Config.Route.Model != nil {
+			var aiGatewayModelAliasConfigBody1 *shared.AIGatewayModelAliasConfigBody
+			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+				body1 := make(map[string]interface{})
+				for bodyKey1 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+					var bodyInst1 interface{}
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey1].ValueString()), &bodyInst1)
+					body1[bodyKey1] = bodyInst1
+				}
+				aiGatewayModelAliasConfigBody1 = &shared.AIGatewayModelAliasConfigBody{
+					Body: body1,
+				}
+			}
+			if aiGatewayModelAliasConfigBody1 != nil {
+				model3 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody1,
+				}
+			}
+			var aiGatewayModelAliasConfigHeaders1 *shared.AIGatewayModelAliasConfigHeaders
+			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+				headers3 := make(map[string]interface{})
+				for headersKey3 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+					var headersInst3 interface{}
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey3].ValueString()), &headersInst3)
+					headers3[headersKey3] = headersInst3
+				}
+				aiGatewayModelAliasConfigHeaders1 = &shared.AIGatewayModelAliasConfigHeaders{
+					Headers: headers3,
+				}
+			}
+			if aiGatewayModelAliasConfigHeaders1 != nil {
+				model3 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders1,
+				}
+			}
 			var aiGatewayModelAliasConfigPath1 *shared.AIGatewayModelAliasConfigPath
 			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
 				pathAliases1 := make([]string, 0, len(r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
@@ -6421,13 +6593,13 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 			}
 			if aiGatewayModelAliasConfigPath1 != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
+				model3 = &shared.AIGatewayModelAliasConfig{
 					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath1,
 				}
 			}
 		}
 		route1 := shared.AIGatewayModelRouteConfig{
-			Headers:                 headers1,
+			Headers:                 headers2,
 			Hosts:                   hosts1,
 			HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
 			Methods:                 methods1,
@@ -6439,7 +6611,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			ResponseBuffering:       responseBuffering1,
 			StripPath:               stripPath1,
 			Tags:                    tags1,
-			Model:                   model1,
+			Model:                   model3,
 		}
 		var logging1 *shared.AIGatewayLoggingConfig
 		if r.Model.Config.Logging != nil {
@@ -6465,7 +6637,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 		} else {
 			maxRequestBodySize1 = nil
 		}
-		var model2 *shared.Model
+		var model4 *shared.Model
 		if r.Model.Config.Model != nil {
 			nameHeader := new(bool)
 			if !r.Model.Config.Model.NameHeader.IsUnknown() && !r.Model.Config.Model.NameHeader.IsNull() {
@@ -6473,7 +6645,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			} else {
 				nameHeader = nil
 			}
-			model2 = &shared.Model{
+			model4 = &shared.Model{
 				NameHeader: nameHeader,
 			}
 		}
@@ -6527,7 +6699,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout7 = nil
 				}
-				algorithm7 := shared.AIGatewayModelBalancerConsistentHashingConfigAlgorithm(r.Model.Config.Balancer.ConsistentHashing.Algorithm.ValueString())
 				hashOnHeader1 := new(string)
 				if !r.Model.Config.Balancer.ConsistentHashing.HashOnHeader.IsUnknown() && !r.Model.Config.Balancer.ConsistentHashing.HashOnHeader.IsNull() {
 					*hashOnHeader1 = r.Model.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
@@ -6543,7 +6714,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries7,
 					Slots:            slots7,
 					WriteTimeout:     writeTimeout7,
-					Algorithm:        algorithm7,
 					HashOnHeader:     hashOnHeader1,
 				}
 			}
@@ -6600,7 +6770,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout8 = nil
 				}
-				algorithm8 := shared.AIGatewayModelBalancerLeastConnectionsConfigAlgorithm(r.Model.Config.Balancer.LeastConnections.Algorithm.ValueString())
 				aiGatewayModelBalancerLeastConnectionsConfig1 = &shared.AIGatewayModelBalancerLeastConnectionsConfig{
 					ConnectTimeout:   connectTimeout9,
 					FailTimeout:      failTimeout8,
@@ -6610,7 +6779,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries8,
 					Slots:            slots8,
 					WriteTimeout:     writeTimeout8,
-					Algorithm:        algorithm8,
 				}
 			}
 			if aiGatewayModelBalancerLeastConnectionsConfig1 != nil {
@@ -6666,7 +6834,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout9 = nil
 				}
-				algorithm9 := shared.AIGatewayModelBalancerLowestLatencyConfigAlgorithm(r.Model.Config.Balancer.LowestLatency.Algorithm.ValueString())
 				latencyStrategy1 := new(shared.LatencyStrategy)
 				if !r.Model.Config.Balancer.LowestLatency.LatencyStrategy.IsUnknown() && !r.Model.Config.Balancer.LowestLatency.LatencyStrategy.IsNull() {
 					*latencyStrategy1 = shared.LatencyStrategy(r.Model.Config.Balancer.LowestLatency.LatencyStrategy.ValueString())
@@ -6682,7 +6849,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries9,
 					Slots:            slots9,
 					WriteTimeout:     writeTimeout9,
-					Algorithm:        algorithm9,
 					LatencyStrategy:  latencyStrategy1,
 				}
 			}
@@ -6739,7 +6905,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout10 = nil
 				}
-				algorithm10 := shared.AIGatewayModelBalancerLowestUsageConfigAlgorithm(r.Model.Config.Balancer.LowestUsage.Algorithm.ValueString())
 				tokensCountStrategy1 := new(shared.TokensCountStrategy)
 				if !r.Model.Config.Balancer.LowestUsage.TokensCountStrategy.IsUnknown() && !r.Model.Config.Balancer.LowestUsage.TokensCountStrategy.IsNull() {
 					*tokensCountStrategy1 = shared.TokensCountStrategy(r.Model.Config.Balancer.LowestUsage.TokensCountStrategy.ValueString())
@@ -6755,7 +6920,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:             retries10,
 					Slots:               slots10,
 					WriteTimeout:        writeTimeout10,
-					Algorithm:           algorithm10,
 					TokensCountStrategy: tokensCountStrategy1,
 				}
 			}
@@ -6812,7 +6976,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout11 = nil
 				}
-				algorithm11 := shared.AIGatewayModelBalancerPriorityConfigAlgorithm(r.Model.Config.Balancer.Priority.Algorithm.ValueString())
 				aiGatewayModelBalancerPriorityConfig1 = &shared.AIGatewayModelBalancerPriorityConfig{
 					ConnectTimeout:   connectTimeout12,
 					FailTimeout:      failTimeout11,
@@ -6822,7 +6985,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries11,
 					Slots:            slots11,
 					WriteTimeout:     writeTimeout11,
-					Algorithm:        algorithm11,
 				}
 			}
 			if aiGatewayModelBalancerPriorityConfig1 != nil {
@@ -6878,7 +7040,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout12 = nil
 				}
-				algorithm12 := shared.AIGatewayModelBalancerRoundRobinConfigAlgorithm(r.Model.Config.Balancer.RoundRobin.Algorithm.ValueString())
 				aiGatewayModelBalancerRoundRobinConfig1 = &shared.AIGatewayModelBalancerRoundRobinConfig{
 					ConnectTimeout:   connectTimeout13,
 					FailTimeout:      failTimeout12,
@@ -6888,7 +7049,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries12,
 					Slots:            slots12,
 					WriteTimeout:     writeTimeout12,
-					Algorithm:        algorithm12,
 				}
 			}
 			if aiGatewayModelBalancerRoundRobinConfig1 != nil {
@@ -6944,7 +7104,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout13 = nil
 				}
-				algorithm13 := shared.AIGatewayModelBalancerSemanticConfigAlgorithm(r.Model.Config.Balancer.Semantic.Algorithm.ValueString())
 				allowAuthOverride3 := new(bool)
 				if !r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsNull() {
 					*allowAuthOverride3 = r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.ValueBool()
@@ -6960,13 +7119,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				var config5 shared.AIGatewayEmbeddingsModelConfig
 				var aiGatewayAzureEmbeddingsModelConfig1 *shared.AIGatewayAzureEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure != nil {
-					upstreamUrl46 := new(string)
+					upstreamUrl48 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsNull() {
-						*upstreamUrl46 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
+						*upstreamUrl48 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl46 = nil
+						upstreamUrl48 = nil
 					}
-					typeVar54 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId3 string
 					deploymentId3 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -6977,8 +7135,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						apiVersion5 = nil
 					}
 					aiGatewayAzureEmbeddingsModelConfig1 = &shared.AIGatewayAzureEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl46,
-						Type:         typeVar54,
+						UpstreamURL:  upstreamUrl48,
 						DeploymentID: deploymentId3,
 						APIVersion:   apiVersion5,
 					}
@@ -6990,18 +7147,17 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayBedrockEmbeddingsModelConfig1 *shared.AIGatewayBedrockEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock != nil {
-					upstreamUrl47 := new(string)
+					upstreamUrl49 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsNull() {
-						*upstreamUrl47 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
+						*upstreamUrl49 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl47 = nil
+						upstreamUrl49 = nil
 					}
-					typeVar55 := shared.AIGatewayBedrockEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Type.ValueString())
-					region4 := new(string)
+					region6 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsNull() {
-						*region4 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
+						*region6 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
 					} else {
-						region4 = nil
+						region6 = nil
 					}
 					batchBucketPrefix3 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsNull() {
@@ -7028,9 +7184,8 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						videoOutputS3Uri3 = nil
 					}
 					aiGatewayBedrockEmbeddingsModelConfig1 = &shared.AIGatewayBedrockEmbeddingsModelConfig{
-						UpstreamURL:              upstreamUrl47,
-						Type:                     typeVar55,
-						Region:                   region4,
+						UpstreamURL:              upstreamUrl49,
+						Region:                   region6,
 						BatchBucketPrefix:        batchBucketPrefix3,
 						EmbeddingsNormalize:      embeddingsNormalize3,
 						PerformanceConfigLatency: performanceConfigLatency3,
@@ -7044,13 +7199,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayGeminiEmbeddingsModelConfig1 *shared.AIGatewayGeminiEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini != nil {
-					upstreamUrl48 := new(string)
+					upstreamUrl50 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsNull() {
-						*upstreamUrl48 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
+						*upstreamUrl50 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl48 = nil
+						upstreamUrl50 = nil
 					}
-					typeVar56 := shared.AIGatewayGeminiEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.Type.ValueString())
 					var gcpEnvironment6 *shared.GCPModelConfig
 					if r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment != nil {
 						var apiEndpoint6 string
@@ -7069,8 +7223,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayGeminiEmbeddingsModelConfig1 = &shared.AIGatewayGeminiEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl48,
-						Type:           typeVar56,
+						UpstreamURL:    upstreamUrl50,
 						GcpEnvironment: gcpEnvironment6,
 					}
 				}
@@ -7081,13 +7234,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayHuggingfaceEmbeddingsModelConfig1 *shared.AIGatewayHuggingfaceEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface != nil {
-					upstreamUrl49 := new(string)
+					upstreamUrl51 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsNull() {
-						*upstreamUrl49 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
+						*upstreamUrl51 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl49 = nil
+						upstreamUrl51 = nil
 					}
-					typeVar57 := shared.AIGatewayHuggingfaceEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.Type.ValueString())
 					useCache3 := new(bool)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsNull() {
 						*useCache3 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.ValueBool()
@@ -7101,8 +7253,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						waitForModel5 = nil
 					}
 					aiGatewayHuggingfaceEmbeddingsModelConfig1 = &shared.AIGatewayHuggingfaceEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl49,
-						Type:         typeVar57,
+						UpstreamURL:  upstreamUrl51,
 						UseCache:     useCache3,
 						WaitForModel: waitForModel5,
 					}
@@ -7114,16 +7265,16 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayMistralEmbeddingsModelConfig1 *shared.AIGatewayMistralEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral != nil {
-					upstreamUrl50 := new(string)
+					upstreamUrl52 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsNull() {
-						*upstreamUrl50 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
+						*upstreamUrl52 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl50 = nil
+						upstreamUrl52 = nil
 					}
-					typeVar58 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar2 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig1 = &shared.AIGatewayMistralEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl50,
-						Type:        typeVar58,
+						UpstreamURL: upstreamUrl52,
+						Type:        typeVar2,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig1 != nil {
@@ -7133,16 +7284,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOllamaEmbeddingsModelConfig1 *shared.AIGatewayOllamaEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama != nil {
-					upstreamUrl51 := new(string)
+					upstreamUrl53 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsNull() {
-						*upstreamUrl51 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
+						*upstreamUrl53 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl51 = nil
+						upstreamUrl53 = nil
 					}
-					typeVar59 := shared.AIGatewayOllamaEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.Type.ValueString())
 					aiGatewayOllamaEmbeddingsModelConfig1 = &shared.AIGatewayOllamaEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl51,
-						Type:        typeVar59,
+						UpstreamURL: upstreamUrl53,
 					}
 				}
 				if aiGatewayOllamaEmbeddingsModelConfig1 != nil {
@@ -7152,16 +7301,14 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOpenaiEmbeddingsModelConfig1 *shared.AIGatewayOpenaiEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai != nil {
-					upstreamUrl52 := new(string)
+					upstreamUrl54 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsNull() {
-						*upstreamUrl52 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
+						*upstreamUrl54 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl52 = nil
+						upstreamUrl54 = nil
 					}
-					typeVar60 := shared.AIGatewayOpenaiEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.Type.ValueString())
 					aiGatewayOpenaiEmbeddingsModelConfig1 = &shared.AIGatewayOpenaiEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl52,
-						Type:        typeVar60,
+						UpstreamURL: upstreamUrl54,
 					}
 				}
 				if aiGatewayOpenaiEmbeddingsModelConfig1 != nil {
@@ -7171,13 +7318,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayVertexEmbeddingsModelConfig1 *shared.AIGatewayVertexEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex != nil {
-					upstreamUrl53 := new(string)
+					upstreamUrl55 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsNull() {
-						*upstreamUrl53 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
+						*upstreamUrl55 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl53 = nil
+						upstreamUrl55 = nil
 					}
-					typeVar61 := shared.AIGatewayVertexEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.Type.ValueString())
 					var gcpEnvironment7 *shared.GCPModelConfig
 					if r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment != nil {
 						var apiEndpoint7 string
@@ -7196,8 +7342,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayVertexEmbeddingsModelConfig1 = &shared.AIGatewayVertexEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl53,
-						Type:           typeVar61,
+						UpstreamURL:    upstreamUrl55,
 						GcpEnvironment: gcpEnvironment7,
 					}
 				}
@@ -7215,7 +7360,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				var vectordb1 shared.AIGatewayModelVectorDBConfig
 				var aiGatewayModelVectorDBConfigPgVector1 *shared.AIGatewayModelVectorDBConfigPgVector
 				if r.Model.Config.Balancer.Semantic.Vectordb.Pgvector != nil {
-					typeVar62 := shared.AIGatewayModelVectorDBConfigPgVectorType(r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Type.ValueString())
 					var dimensions2 int64
 					dimensions2 = r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions.ValueInt64()
 
@@ -7310,7 +7454,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						user1 = nil
 					}
 					aiGatewayModelVectorDBConfigPgVector1 = &shared.AIGatewayModelVectorDBConfigPgVector{
-						Type:           typeVar62,
 						Dimensions:     dimensions2,
 						DistanceMetric: distanceMetric2,
 						Threshold:      threshold2,
@@ -7330,7 +7473,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayModelVectorDBConfigRedis1 *shared.AIGatewayModelVectorDBConfigRedis
 				if r.Model.Config.Balancer.Semantic.Vectordb.Redis != nil {
-					typeVar63 := shared.AIGatewayModelVectorDBConfigRedisType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.Type.ValueString())
 					var dimensions3 int64
 					dimensions3 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Dimensions.ValueInt64()
 
@@ -7345,18 +7487,17 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
 						if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws != nil {
-							typeVar64 := shared.AIGatewayRedisAWSAuthenticationType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Type.ValueString())
 							accessKeyId1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
 								*accessKeyId1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
 								accessKeyId1 = nil
 							}
-							assumeRoleArn1 := new(string)
+							assumeRoleArn3 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn3 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn1 = nil
+								assumeRoleArn3 = nil
 							}
 							cacheName1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -7370,17 +7511,17 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 							} else {
 								isServerless1 = nil
 							}
-							region5 := new(string)
+							region7 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region5 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region7 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region5 = nil
+								region7 = nil
 							}
-							roleSessionName1 := new(string)
+							roleSessionName3 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName3 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName1 = nil
+								roleSessionName3 = nil
 							}
 							secretAccessKey1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
@@ -7389,13 +7530,12 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 								secretAccessKey1 = nil
 							}
 							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
-								Type:            typeVar64,
 								AccessKeyID:     accessKeyId1,
-								AssumeRoleArn:   assumeRoleArn1,
+								AssumeRoleArn:   assumeRoleArn3,
 								CacheName:       cacheName1,
 								IsServerless:    isServerless1,
-								Region:          region5,
-								RoleSessionName: roleSessionName1,
+								Region:          region7,
+								RoleSessionName: roleSessionName3,
 								SecretAccessKey: secretAccessKey1,
 							}
 						}
@@ -7406,7 +7546,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisAzureAuthentication1 *shared.AIGatewayRedisAzureAuthentication
 						if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure != nil {
-							typeVar65 := shared.AIGatewayRedisAzureAuthenticationType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.Type.ValueString())
 							clientId1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
 								*clientId1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.ValueString()
@@ -7426,7 +7565,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 								tenantId1 = nil
 							}
 							aiGatewayRedisAzureAuthentication1 = &shared.AIGatewayRedisAzureAuthentication{
-								Type:         typeVar65,
 								ClientID:     clientId1,
 								ClientSecret: clientSecret1,
 								TenantID:     tenantId1,
@@ -7439,7 +7577,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisGCPAuthentication1 *shared.AIGatewayRedisGCPAuthentication
 						if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp != nil {
-							typeVar66 := shared.AIGatewayRedisGCPAuthenticationType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.Type.ValueString())
 							serviceAccountJson1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
 								*serviceAccountJson1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
@@ -7447,7 +7584,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 								serviceAccountJson1 = nil
 							}
 							aiGatewayRedisGCPAuthentication1 = &shared.AIGatewayRedisGCPAuthentication{
-								Type:               typeVar66,
 								ServiceAccountJSON: serviceAccountJson1,
 							}
 						}
@@ -7541,30 +7677,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					} else {
 						password5 = nil
 					}
-					var port8 *shared.Port
-					if r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port != nil {
-						integer1 := new(int64)
-						if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsNull() {
-							*integer1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.ValueInt64()
-						} else {
-							integer1 = nil
-						}
-						if integer1 != nil {
-							port8 = &shared.Port{
-								Integer: integer1,
-							}
-						}
-						str1 := new(string)
-						if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsNull() {
-							*str1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.ValueString()
-						} else {
-							str1 = nil
-						}
-						if str1 != nil {
-							port8 = &shared.Port{
-								Str: str1,
-							}
-						}
+					port8 := new(string)
+					if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.IsNull() {
+						*port8 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.ValueString()
+					} else {
+						port8 = nil
 					}
 					readTimeout15 := new(int64)
 					if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsNull() {
@@ -7659,7 +7776,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						username4 = nil
 					}
 					aiGatewayModelVectorDBConfigRedis1 = &shared.AIGatewayModelVectorDBConfigRedis{
-						Type:                typeVar63,
 						Dimensions:          dimensions3,
 						DistanceMetric:      distanceMetric3,
 						Threshold:           threshold3,
@@ -7695,7 +7811,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Retries:          retries13,
 					Slots:            slots13,
 					WriteTimeout:     writeTimeout13,
-					Algorithm:        algorithm13,
 					Embeddings:       embeddings1,
 					Vectordb:         vectordb1,
 				}
@@ -7790,7 +7905,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			Logging:            logging1,
 			ResponseStreaming:  responseStreaming1,
 			MaxRequestBodySize: maxRequestBodySize1,
-			Model:              model2,
+			Model:              model4,
 			Balancer:           balancer1,
 			Proxy:              proxy1,
 		}
@@ -7808,7 +7923,6 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 			Policies:     policies1,
 			Labels:       labels1,
 			ManagedBy:    managedBy1,
-			Type:         typeVar53,
 			Config:       config4,
 			Capabilities: capabilities1,
 		}
@@ -7958,7 +8072,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamURL = nil
 				}
-				typeVar1 := shared.AIGatewayTargetAnthropicConfigType(r.API.Targets[targetsIndex].Config.Anthropic.Type.ValueString())
 				version := new(string)
 				if !r.API.Targets[targetsIndex].Config.Anthropic.Version.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.Version.IsNull() {
 					*version = r.API.Targets[targetsIndex].Config.Anthropic.Version.ValueString()
@@ -7974,7 +8087,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK,
 					TopP:                 topP,
 					UpstreamURL:          upstreamURL,
-					Type:                 typeVar1,
 					Version:              version,
 				}
 			}
@@ -8033,7 +8145,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl1 = nil
 				}
-				typeVar2 := shared.AIGatewayTargetAzureConfigType(r.API.Targets[targetsIndex].Config.Azure.Type.ValueString())
 				var deploymentID string
 				deploymentID = r.API.Targets[targetsIndex].Config.Azure.DeploymentID.ValueString()
 
@@ -8052,7 +8163,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK1,
 					TopP:                 topP1,
 					UpstreamURL:          upstreamUrl1,
-					Type:                 typeVar2,
 					DeploymentID:         deploymentID,
 					APIVersion:           apiVersion,
 				}
@@ -8112,7 +8222,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl2 = nil
 				}
-				typeVar3 := shared.AIGatewayTargetBedrockConfigType(r.API.Targets[targetsIndex].Config.Bedrock.Type.ValueString())
 				region := new(string)
 				if !r.API.Targets[targetsIndex].Config.Bedrock.Region.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.Region.IsNull() {
 					*region = r.API.Targets[targetsIndex].Config.Bedrock.Region.ValueString()
@@ -8152,7 +8261,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                     topK2,
 					TopP:                     topP2,
 					UpstreamURL:              upstreamUrl2,
-					Type:                     typeVar3,
 					Region:                   region,
 					BatchBucketPrefix:        batchBucketPrefix,
 					EmbeddingsNormalize:      embeddingsNormalize,
@@ -8215,7 +8323,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl3 = nil
 				}
-				typeVar4 := shared.AIGatewayTargetCerebrasConfigType(r.API.Targets[targetsIndex].Config.Cerebras.Type.ValueString())
 				aiGatewayTargetCerebrasConfig = &shared.AIGatewayTargetCerebrasConfig{
 					EmbeddingsDimensions: embeddingsDimensions3,
 					MaxTokens:            maxTokens3,
@@ -8225,7 +8332,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK3,
 					TopP:                 topP3,
 					UpstreamURL:          upstreamUrl3,
-					Type:                 typeVar4,
 				}
 			}
 			if aiGatewayTargetCerebrasConfig != nil {
@@ -8283,7 +8389,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl4 = nil
 				}
-				typeVar5 := shared.AIGatewayTargetCohereConfigType(r.API.Targets[targetsIndex].Config.Cohere.Type.ValueString())
 				apiVersion1 := new(shared.APIVersion)
 				if !r.API.Targets[targetsIndex].Config.Cohere.APIVersion.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.APIVersion.IsNull() {
 					*apiVersion1 = shared.APIVersion(r.API.Targets[targetsIndex].Config.Cohere.APIVersion.ValueString())
@@ -8311,7 +8416,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK4,
 					TopP:                 topP4,
 					UpstreamURL:          upstreamUrl4,
-					Type:                 typeVar5,
 					APIVersion:           apiVersion1,
 					EmbeddingInputType:   embeddingInputType,
 					WaitForModel:         waitForModel,
@@ -8372,7 +8476,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl5 = nil
 				}
-				typeVar6 := shared.AIGatewayTargetDashscopeConfigType(r.API.Targets[targetsIndex].Config.Dashscope.Type.ValueString())
 				international := new(bool)
 				if !r.API.Targets[targetsIndex].Config.Dashscope.International.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.International.IsNull() {
 					*international = r.API.Targets[targetsIndex].Config.Dashscope.International.ValueBool()
@@ -8388,7 +8491,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK5,
 					TopP:                 topP5,
 					UpstreamURL:          upstreamUrl5,
-					Type:                 typeVar6,
 					International:        international,
 				}
 			}
@@ -8447,7 +8549,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl6 = nil
 				}
-				typeVar7 := shared.AIGatewayTargetDatabricksConfigType(r.API.Targets[targetsIndex].Config.Databricks.Type.ValueString())
 				var workspaceInstanceID string
 				workspaceInstanceID = r.API.Targets[targetsIndex].Config.Databricks.WorkspaceInstanceID.ValueString()
 
@@ -8460,7 +8561,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK6,
 					TopP:                 topP6,
 					UpstreamURL:          upstreamUrl6,
-					Type:                 typeVar7,
 					WorkspaceInstanceID:  workspaceInstanceID,
 				}
 			}
@@ -8519,7 +8619,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl7 = nil
 				}
-				typeVar8 := shared.AIGatewayTargetDeepseekConfigType(r.API.Targets[targetsIndex].Config.Deepseek.Type.ValueString())
 				aiGatewayTargetDeepseekConfig = &shared.AIGatewayTargetDeepseekConfig{
 					EmbeddingsDimensions: embeddingsDimensions7,
 					MaxTokens:            maxTokens7,
@@ -8529,7 +8628,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK7,
 					TopP:                 topP7,
 					UpstreamURL:          upstreamUrl7,
-					Type:                 typeVar8,
 				}
 			}
 			if aiGatewayTargetDeepseekConfig != nil {
@@ -8587,7 +8685,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl8 = nil
 				}
-				typeVar9 := shared.AIGatewayTargetGeminiConfigType(r.API.Targets[targetsIndex].Config.Gemini.Type.ValueString())
 				var gcpEnvironment *shared.GCPModelConfig
 				if r.API.Targets[targetsIndex].Config.Gemini.GcpEnvironment != nil {
 					var apiEndpoint string
@@ -8614,7 +8711,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK8,
 					TopP:                 topP8,
 					UpstreamURL:          upstreamUrl8,
-					Type:                 typeVar9,
 					GcpEnvironment:       gcpEnvironment,
 				}
 			}
@@ -8673,7 +8769,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl9 = nil
 				}
-				typeVar10 := shared.AIGatewayTargetHuggingfaceConfigType(r.API.Targets[targetsIndex].Config.Huggingface.Type.ValueString())
 				useCache := new(bool)
 				if !r.API.Targets[targetsIndex].Config.Huggingface.UseCache.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.UseCache.IsNull() {
 					*useCache = r.API.Targets[targetsIndex].Config.Huggingface.UseCache.ValueBool()
@@ -8695,7 +8790,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK9,
 					TopP:                 topP9,
 					UpstreamURL:          upstreamUrl9,
-					Type:                 typeVar10,
 					UseCache:             useCache,
 					WaitForModel:         waitForModel1,
 				}
@@ -8755,7 +8849,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl10 = nil
 				}
-				typeVar11 := shared.AIGatewayTargetKimiConfigType(r.API.Targets[targetsIndex].Config.Kimi.Type.ValueString())
 				international1 := new(bool)
 				if !r.API.Targets[targetsIndex].Config.Kimi.International.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.International.IsNull() {
 					*international1 = r.API.Targets[targetsIndex].Config.Kimi.International.ValueBool()
@@ -8771,7 +8864,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK10,
 					TopP:                 topP10,
 					UpstreamURL:          upstreamUrl10,
-					Type:                 typeVar11,
 					International:        international1,
 				}
 			}
@@ -8827,7 +8919,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				var upstreamUrl11 string
 				upstreamUrl11 = r.API.Targets[targetsIndex].Config.Llama2.UpstreamURL.ValueString()
 
-				typeVar12 := shared.AIGatewayTargetLlama2ConfigType(r.API.Targets[targetsIndex].Config.Llama2.Type.ValueString())
 				format := shared.Format(r.API.Targets[targetsIndex].Config.Llama2.Format.ValueString())
 				aiGatewayTargetLlama2Config = &shared.AIGatewayTargetLlama2Config{
 					EmbeddingsDimensions: embeddingsDimensions11,
@@ -8838,7 +8929,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK11,
 					TopP:                 topP11,
 					UpstreamURL:          upstreamUrl11,
-					Type:                 typeVar12,
 					Format:               format,
 				}
 			}
@@ -8897,7 +8987,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl12 = nil
 				}
-				typeVar13 := shared.AIGatewayTargetMistralConfigType(r.API.Targets[targetsIndex].Config.Mistral.Type.ValueString())
 				format1 := shared.AIGatewayTargetMistralConfigFormat(r.API.Targets[targetsIndex].Config.Mistral.Format.ValueString())
 				aiGatewayTargetMistralConfig = &shared.AIGatewayTargetMistralConfig{
 					EmbeddingsDimensions: embeddingsDimensions12,
@@ -8908,7 +8997,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK12,
 					TopP:                 topP12,
 					UpstreamURL:          upstreamUrl12,
-					Type:                 typeVar13,
 					Format:               format1,
 				}
 			}
@@ -8967,7 +9055,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl13 = nil
 				}
-				typeVar14 := shared.AIGatewayTargetOllamaConfigType(r.API.Targets[targetsIndex].Config.Ollama.Type.ValueString())
 				aiGatewayTargetOllamaConfig = &shared.AIGatewayTargetOllamaConfig{
 					EmbeddingsDimensions: embeddingsDimensions13,
 					MaxTokens:            maxTokens13,
@@ -8977,7 +9064,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK13,
 					TopP:                 topP13,
 					UpstreamURL:          upstreamUrl13,
-					Type:                 typeVar14,
 				}
 			}
 			if aiGatewayTargetOllamaConfig != nil {
@@ -9035,7 +9121,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl14 = nil
 				}
-				typeVar15 := shared.AIGatewayTargetOpenaiConfigType(r.API.Targets[targetsIndex].Config.Openai.Type.ValueString())
 				aiGatewayTargetOpenaiConfig = &shared.AIGatewayTargetOpenaiConfig{
 					EmbeddingsDimensions: embeddingsDimensions14,
 					MaxTokens:            maxTokens14,
@@ -9045,7 +9130,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK14,
 					TopP:                 topP14,
 					UpstreamURL:          upstreamUrl14,
-					Type:                 typeVar15,
 				}
 			}
 			if aiGatewayTargetOpenaiConfig != nil {
@@ -9103,7 +9187,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl15 = nil
 				}
-				typeVar16 := shared.AIGatewayTargetVercelConfigType(r.API.Targets[targetsIndex].Config.Vercel.Type.ValueString())
 				aiGatewayTargetVercelConfig = &shared.AIGatewayTargetVercelConfig{
 					EmbeddingsDimensions: embeddingsDimensions15,
 					MaxTokens:            maxTokens15,
@@ -9113,7 +9196,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK15,
 					TopP:                 topP15,
 					UpstreamURL:          upstreamUrl15,
-					Type:                 typeVar16,
 				}
 			}
 			if aiGatewayTargetVercelConfig != nil {
@@ -9171,7 +9253,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl16 = nil
 				}
-				typeVar17 := shared.AIGatewayTargetVertexConfigType(r.API.Targets[targetsIndex].Config.Vertex.Type.ValueString())
 				var gcpEnvironment1 *shared.GcpEnvironment
 				if r.API.Targets[targetsIndex].Config.Vertex.GcpEnvironment != nil {
 					var apiEndpoint1 string
@@ -9205,7 +9286,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK16,
 					TopP:                 topP16,
 					UpstreamURL:          upstreamUrl16,
-					Type:                 typeVar17,
 					GcpEnvironment:       gcpEnvironment1,
 				}
 			}
@@ -9261,7 +9341,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				var upstreamUrl17 string
 				upstreamUrl17 = r.API.Targets[targetsIndex].Config.Vllm.UpstreamURL.ValueString()
 
-				typeVar18 := shared.AIGatewayTargetVllmConfigType(r.API.Targets[targetsIndex].Config.Vllm.Type.ValueString())
 				aiGatewayTargetVllmConfig = &shared.AIGatewayTargetVllmConfig{
 					EmbeddingsDimensions: embeddingsDimensions17,
 					MaxTokens:            maxTokens17,
@@ -9271,7 +9350,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK17,
 					TopP:                 topP17,
 					UpstreamURL:          upstreamUrl17,
-					Type:                 typeVar18,
 				}
 			}
 			if aiGatewayTargetVllmConfig != nil {
@@ -9329,7 +9407,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl18 = nil
 				}
-				typeVar19 := shared.AIGatewayTargetXaiConfigType(r.API.Targets[targetsIndex].Config.Xai.Type.ValueString())
 				aiGatewayTargetXaiConfig = &shared.AIGatewayTargetXaiConfig{
 					EmbeddingsDimensions: embeddingsDimensions18,
 					MaxTokens:            maxTokens18,
@@ -9339,12 +9416,138 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					TopK:                 topK18,
 					TopP:                 topP18,
 					UpstreamURL:          upstreamUrl18,
-					Type:                 typeVar19,
 				}
 			}
 			if aiGatewayTargetXaiConfig != nil {
 				config = shared.AIGatewayTargetConfig{
 					AIGatewayTargetXaiConfig: aiGatewayTargetXaiConfig,
+				}
+			}
+			var aiGatewayTargetSagemakerConfig *shared.AIGatewayTargetSagemakerConfig
+			if r.API.Targets[targetsIndex].Config.Sagemaker != nil {
+				embeddingsDimensions19 := new(int64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.EmbeddingsDimensions.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.EmbeddingsDimensions.IsNull() {
+					*embeddingsDimensions19 = r.API.Targets[targetsIndex].Config.Sagemaker.EmbeddingsDimensions.ValueInt64()
+				} else {
+					embeddingsDimensions19 = nil
+				}
+				maxTokens19 := new(int64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.MaxTokens.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.MaxTokens.IsNull() {
+					*maxTokens19 = r.API.Targets[targetsIndex].Config.Sagemaker.MaxTokens.ValueInt64()
+				} else {
+					maxTokens19 = nil
+				}
+				inputCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.InputCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.InputCost.IsNull() {
+					*inputCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.InputCost.ValueFloat64()
+				} else {
+					inputCost19 = nil
+				}
+				outputCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.IsNull() {
+					*outputCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.ValueFloat64()
+				} else {
+					outputCost19 = nil
+				}
+				temperature19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsNull() {
+					*temperature19 = r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.ValueFloat64()
+				} else {
+					temperature19 = nil
+				}
+				topK19 := new(int64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.TopK.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.TopK.IsNull() {
+					*topK19 = r.API.Targets[targetsIndex].Config.Sagemaker.TopK.ValueInt64()
+				} else {
+					topK19 = nil
+				}
+				topP19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.TopP.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.TopP.IsNull() {
+					*topP19 = r.API.Targets[targetsIndex].Config.Sagemaker.TopP.ValueFloat64()
+				} else {
+					topP19 = nil
+				}
+				upstreamUrl19 := new(string)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.UpstreamURL.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.UpstreamURL.IsNull() {
+					*upstreamUrl19 = r.API.Targets[targetsIndex].Config.Sagemaker.UpstreamURL.ValueString()
+				} else {
+					upstreamUrl19 = nil
+				}
+				var aws *shared.Aws
+				if r.API.Targets[targetsIndex].Config.Sagemaker.Aws != nil {
+					region1 := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.Region.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.Region.IsNull() {
+						*region1 = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.Region.ValueString()
+					} else {
+						region1 = nil
+					}
+					assumeRoleArn := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.AssumeRoleArn.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn = nil
+					}
+					roleSessionName := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.RoleSessionName.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.RoleSessionName.IsNull() {
+						*roleSessionName = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName = nil
+					}
+					stsEndpointURL := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.StsEndpointURL.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointURL = r.API.Targets[targetsIndex].Config.Sagemaker.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointURL = nil
+					}
+					aws = &shared.Aws{
+						Region:          region1,
+						AssumeRoleArn:   assumeRoleArn,
+						RoleSessionName: roleSessionName,
+						StsEndpointURL:  stsEndpointURL,
+					}
+				}
+				var target *shared.Target
+				if r.API.Targets[targetsIndex].Config.Sagemaker.Target != nil {
+					model := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Model.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Model.IsNull() {
+						*model = r.API.Targets[targetsIndex].Config.Sagemaker.Target.Model.ValueString()
+					} else {
+						model = nil
+					}
+					variant := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Variant.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Target.Variant.IsNull() {
+						*variant = r.API.Targets[targetsIndex].Config.Sagemaker.Target.Variant.ValueString()
+					} else {
+						variant = nil
+					}
+					containerHostname := new(string)
+					if !r.API.Targets[targetsIndex].Config.Sagemaker.Target.ContainerHostname.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Target.ContainerHostname.IsNull() {
+						*containerHostname = r.API.Targets[targetsIndex].Config.Sagemaker.Target.ContainerHostname.ValueString()
+					} else {
+						containerHostname = nil
+					}
+					target = &shared.Target{
+						Model:             model,
+						Variant:           variant,
+						ContainerHostname: containerHostname,
+					}
+				}
+				aiGatewayTargetSagemakerConfig = &shared.AIGatewayTargetSagemakerConfig{
+					EmbeddingsDimensions: embeddingsDimensions19,
+					MaxTokens:            maxTokens19,
+					InputCost:            inputCost19,
+					OutputCost:           outputCost19,
+					Temperature:          temperature19,
+					TopK:                 topK19,
+					TopP:                 topP19,
+					UpstreamURL:          upstreamUrl19,
+					Aws:                  aws,
+					Target:               target,
+				}
+			}
+			if aiGatewayTargetSagemakerConfig != nil {
+				config = shared.AIGatewayTargetConfig{
+					AIGatewayTargetSagemakerConfig: aiGatewayTargetSagemakerConfig,
 				}
 			}
 			targets = append(targets, shared.AIGatewayTarget{
@@ -9374,19 +9577,15 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 
 			managedBy[managedByKey] = managedByInst
 		}
-		typeVar20 := shared.AIGatewayModelAPIType(r.API.Type.ValueString())
 		headers := make(map[string]interface{})
 		for headersKey := range r.API.Config.Route.Headers {
 			var headersInst interface{}
 			_ = json.Unmarshal([]byte(r.API.Config.Route.Headers[headersKey].ValueString()), &headersInst)
 			headers[headersKey] = headersInst
 		}
-		var hosts []string
-		if r.API.Config.Route.Hosts != nil {
-			hosts = make([]string, 0, len(r.API.Config.Route.Hosts))
-			for hostsIndex := range r.API.Config.Route.Hosts {
-				hosts = append(hosts, r.API.Config.Route.Hosts[hostsIndex].ValueString())
-			}
+		hosts := make([]string, 0, len(r.API.Config.Route.Hosts))
+		for hostsIndex := range r.API.Config.Route.Hosts {
+			hosts = append(hosts, r.API.Config.Route.Hosts[hostsIndex].ValueString())
 		}
 		httpsRedirectStatusCode := new(int64)
 		if !r.API.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.API.Config.Route.HTTPSRedirectStatusCode.IsNull() {
@@ -9440,8 +9639,42 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 		for tagsIndex := range r.API.Config.Route.Tags {
 			tags = append(tags, r.API.Config.Route.Tags[tagsIndex].ValueString())
 		}
-		var model *shared.AIGatewayModelAliasConfig
+		var model1 *shared.AIGatewayModelAliasConfig
 		if r.API.Config.Route.Model != nil {
+			var aiGatewayModelAliasConfigBody *shared.AIGatewayModelAliasConfigBody
+			if r.API.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+				body := make(map[string]interface{})
+				for bodyKey := range r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+					var bodyInst interface{}
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey].ValueString()), &bodyInst)
+					body[bodyKey] = bodyInst
+				}
+				aiGatewayModelAliasConfigBody = &shared.AIGatewayModelAliasConfigBody{
+					Body: body,
+				}
+			}
+			if aiGatewayModelAliasConfigBody != nil {
+				model1 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody,
+				}
+			}
+			var aiGatewayModelAliasConfigHeaders *shared.AIGatewayModelAliasConfigHeaders
+			if r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+				headers1 := make(map[string]interface{})
+				for headersKey1 := range r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+					var headersInst1 interface{}
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey1].ValueString()), &headersInst1)
+					headers1[headersKey1] = headersInst1
+				}
+				aiGatewayModelAliasConfigHeaders = &shared.AIGatewayModelAliasConfigHeaders{
+					Headers: headers1,
+				}
+			}
+			if aiGatewayModelAliasConfigHeaders != nil {
+				model1 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders,
+				}
+			}
 			var aiGatewayModelAliasConfigPath *shared.AIGatewayModelAliasConfigPath
 			if r.API.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
 				pathAliases := make([]string, 0, len(r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
@@ -9453,7 +9686,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 			}
 			if aiGatewayModelAliasConfigPath != nil {
-				model = &shared.AIGatewayModelAliasConfig{
+				model1 = &shared.AIGatewayModelAliasConfig{
 					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath,
 				}
 			}
@@ -9471,7 +9704,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			ResponseBuffering:       responseBuffering,
 			StripPath:               stripPath,
 			Tags:                    tags,
-			Model:                   model,
+			Model:                   model1,
 		}
 		var logging *shared.AIGatewayLoggingConfig
 		if r.API.Config.Logging != nil {
@@ -9547,7 +9780,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout = nil
 				}
-				algorithm := shared.AIGatewayModelBalancerConsistentHashingConfigAlgorithm(r.API.Config.Balancer.ConsistentHashing.Algorithm.ValueString())
 				hashOnHeader := new(string)
 				if !r.API.Config.Balancer.ConsistentHashing.HashOnHeader.IsUnknown() && !r.API.Config.Balancer.ConsistentHashing.HashOnHeader.IsNull() {
 					*hashOnHeader = r.API.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
@@ -9563,7 +9795,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries,
 					Slots:            slots,
 					WriteTimeout:     writeTimeout,
-					Algorithm:        algorithm,
 					HashOnHeader:     hashOnHeader,
 				}
 			}
@@ -9620,7 +9851,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout1 = nil
 				}
-				algorithm1 := shared.AIGatewayModelBalancerLeastConnectionsConfigAlgorithm(r.API.Config.Balancer.LeastConnections.Algorithm.ValueString())
 				aiGatewayModelBalancerLeastConnectionsConfig = &shared.AIGatewayModelBalancerLeastConnectionsConfig{
 					ConnectTimeout:   connectTimeout1,
 					FailTimeout:      failTimeout1,
@@ -9630,7 +9860,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries1,
 					Slots:            slots1,
 					WriteTimeout:     writeTimeout1,
-					Algorithm:        algorithm1,
 				}
 			}
 			if aiGatewayModelBalancerLeastConnectionsConfig != nil {
@@ -9686,7 +9915,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout2 = nil
 				}
-				algorithm2 := shared.AIGatewayModelBalancerLowestLatencyConfigAlgorithm(r.API.Config.Balancer.LowestLatency.Algorithm.ValueString())
 				latencyStrategy := new(shared.LatencyStrategy)
 				if !r.API.Config.Balancer.LowestLatency.LatencyStrategy.IsUnknown() && !r.API.Config.Balancer.LowestLatency.LatencyStrategy.IsNull() {
 					*latencyStrategy = shared.LatencyStrategy(r.API.Config.Balancer.LowestLatency.LatencyStrategy.ValueString())
@@ -9702,7 +9930,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries2,
 					Slots:            slots2,
 					WriteTimeout:     writeTimeout2,
-					Algorithm:        algorithm2,
 					LatencyStrategy:  latencyStrategy,
 				}
 			}
@@ -9759,7 +9986,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout3 = nil
 				}
-				algorithm3 := shared.AIGatewayModelBalancerLowestUsageConfigAlgorithm(r.API.Config.Balancer.LowestUsage.Algorithm.ValueString())
 				tokensCountStrategy := new(shared.TokensCountStrategy)
 				if !r.API.Config.Balancer.LowestUsage.TokensCountStrategy.IsUnknown() && !r.API.Config.Balancer.LowestUsage.TokensCountStrategy.IsNull() {
 					*tokensCountStrategy = shared.TokensCountStrategy(r.API.Config.Balancer.LowestUsage.TokensCountStrategy.ValueString())
@@ -9775,7 +10001,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:             retries3,
 					Slots:               slots3,
 					WriteTimeout:        writeTimeout3,
-					Algorithm:           algorithm3,
 					TokensCountStrategy: tokensCountStrategy,
 				}
 			}
@@ -9832,7 +10057,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout4 = nil
 				}
-				algorithm4 := shared.AIGatewayModelBalancerPriorityConfigAlgorithm(r.API.Config.Balancer.Priority.Algorithm.ValueString())
 				aiGatewayModelBalancerPriorityConfig = &shared.AIGatewayModelBalancerPriorityConfig{
 					ConnectTimeout:   connectTimeout4,
 					FailTimeout:      failTimeout4,
@@ -9842,7 +10066,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries4,
 					Slots:            slots4,
 					WriteTimeout:     writeTimeout4,
-					Algorithm:        algorithm4,
 				}
 			}
 			if aiGatewayModelBalancerPriorityConfig != nil {
@@ -9898,7 +10121,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout5 = nil
 				}
-				algorithm5 := shared.AIGatewayModelBalancerRoundRobinConfigAlgorithm(r.API.Config.Balancer.RoundRobin.Algorithm.ValueString())
 				aiGatewayModelBalancerRoundRobinConfig = &shared.AIGatewayModelBalancerRoundRobinConfig{
 					ConnectTimeout:   connectTimeout5,
 					FailTimeout:      failTimeout5,
@@ -9908,7 +10130,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries5,
 					Slots:            slots5,
 					WriteTimeout:     writeTimeout5,
-					Algorithm:        algorithm5,
 				}
 			}
 			if aiGatewayModelBalancerRoundRobinConfig != nil {
@@ -9964,7 +10185,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout6 = nil
 				}
-				algorithm6 := shared.AIGatewayModelBalancerSemanticConfigAlgorithm(r.API.Config.Balancer.Semantic.Algorithm.ValueString())
 				allowAuthOverride1 := new(bool)
 				if !r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsNull() {
 					*allowAuthOverride1 = r.API.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.ValueBool()
@@ -9980,13 +10200,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				var config2 shared.AIGatewayEmbeddingsModelConfig
 				var aiGatewayAzureEmbeddingsModelConfig *shared.AIGatewayAzureEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Azure != nil {
-					upstreamUrl19 := new(string)
+					upstreamUrl20 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsNull() {
-						*upstreamUrl19 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
+						*upstreamUrl20 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl19 = nil
+						upstreamUrl20 = nil
 					}
-					typeVar21 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId1 string
 					deploymentId1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -9997,8 +10216,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						apiVersion2 = nil
 					}
 					aiGatewayAzureEmbeddingsModelConfig = &shared.AIGatewayAzureEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl19,
-						Type:         typeVar21,
+						UpstreamURL:  upstreamUrl20,
 						DeploymentID: deploymentId1,
 						APIVersion:   apiVersion2,
 					}
@@ -10010,18 +10228,17 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayBedrockEmbeddingsModelConfig *shared.AIGatewayBedrockEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock != nil {
-					upstreamUrl20 := new(string)
+					upstreamUrl21 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsNull() {
-						*upstreamUrl20 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
+						*upstreamUrl21 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl20 = nil
+						upstreamUrl21 = nil
 					}
-					typeVar22 := shared.AIGatewayBedrockEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Type.ValueString())
-					region1 := new(string)
+					region2 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsNull() {
-						*region1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
+						*region2 = r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
 					} else {
-						region1 = nil
+						region2 = nil
 					}
 					batchBucketPrefix1 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsNull() {
@@ -10048,9 +10265,8 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						videoOutputS3Uri1 = nil
 					}
 					aiGatewayBedrockEmbeddingsModelConfig = &shared.AIGatewayBedrockEmbeddingsModelConfig{
-						UpstreamURL:              upstreamUrl20,
-						Type:                     typeVar22,
-						Region:                   region1,
+						UpstreamURL:              upstreamUrl21,
+						Region:                   region2,
 						BatchBucketPrefix:        batchBucketPrefix1,
 						EmbeddingsNormalize:      embeddingsNormalize1,
 						PerformanceConfigLatency: performanceConfigLatency1,
@@ -10064,13 +10280,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayGeminiEmbeddingsModelConfig *shared.AIGatewayGeminiEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini != nil {
-					upstreamUrl21 := new(string)
+					upstreamUrl22 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsNull() {
-						*upstreamUrl21 = r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
+						*upstreamUrl22 = r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl21 = nil
+						upstreamUrl22 = nil
 					}
-					typeVar23 := shared.AIGatewayGeminiEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.Type.ValueString())
 					var gcpEnvironment2 *shared.GCPModelConfig
 					if r.API.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment != nil {
 						var apiEndpoint2 string
@@ -10089,8 +10304,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayGeminiEmbeddingsModelConfig = &shared.AIGatewayGeminiEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl21,
-						Type:           typeVar23,
+						UpstreamURL:    upstreamUrl22,
 						GcpEnvironment: gcpEnvironment2,
 					}
 				}
@@ -10101,13 +10315,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayHuggingfaceEmbeddingsModelConfig *shared.AIGatewayHuggingfaceEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface != nil {
-					upstreamUrl22 := new(string)
+					upstreamUrl23 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsNull() {
-						*upstreamUrl22 = r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
+						*upstreamUrl23 = r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl22 = nil
+						upstreamUrl23 = nil
 					}
-					typeVar24 := shared.AIGatewayHuggingfaceEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.Type.ValueString())
 					useCache1 := new(bool)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsNull() {
 						*useCache1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.ValueBool()
@@ -10121,8 +10334,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						waitForModel2 = nil
 					}
 					aiGatewayHuggingfaceEmbeddingsModelConfig = &shared.AIGatewayHuggingfaceEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl22,
-						Type:         typeVar24,
+						UpstreamURL:  upstreamUrl23,
 						UseCache:     useCache1,
 						WaitForModel: waitForModel2,
 					}
@@ -10134,16 +10346,16 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayMistralEmbeddingsModelConfig *shared.AIGatewayMistralEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral != nil {
-					upstreamUrl23 := new(string)
+					upstreamUrl24 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsNull() {
-						*upstreamUrl23 = r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
+						*upstreamUrl24 = r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl23 = nil
+						upstreamUrl24 = nil
 					}
-					typeVar25 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar1 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig = &shared.AIGatewayMistralEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl23,
-						Type:        typeVar25,
+						UpstreamURL: upstreamUrl24,
+						Type:        typeVar1,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig != nil {
@@ -10153,16 +10365,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOllamaEmbeddingsModelConfig *shared.AIGatewayOllamaEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama != nil {
-					upstreamUrl24 := new(string)
+					upstreamUrl25 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsNull() {
-						*upstreamUrl24 = r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
+						*upstreamUrl25 = r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl24 = nil
+						upstreamUrl25 = nil
 					}
-					typeVar26 := shared.AIGatewayOllamaEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Ollama.Type.ValueString())
 					aiGatewayOllamaEmbeddingsModelConfig = &shared.AIGatewayOllamaEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl24,
-						Type:        typeVar26,
+						UpstreamURL: upstreamUrl25,
 					}
 				}
 				if aiGatewayOllamaEmbeddingsModelConfig != nil {
@@ -10172,16 +10382,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOpenaiEmbeddingsModelConfig *shared.AIGatewayOpenaiEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Openai != nil {
-					upstreamUrl25 := new(string)
+					upstreamUrl26 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsNull() {
-						*upstreamUrl25 = r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
+						*upstreamUrl26 = r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl25 = nil
+						upstreamUrl26 = nil
 					}
-					typeVar27 := shared.AIGatewayOpenaiEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Openai.Type.ValueString())
 					aiGatewayOpenaiEmbeddingsModelConfig = &shared.AIGatewayOpenaiEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl25,
-						Type:        typeVar27,
+						UpstreamURL: upstreamUrl26,
 					}
 				}
 				if aiGatewayOpenaiEmbeddingsModelConfig != nil {
@@ -10191,13 +10399,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayVertexEmbeddingsModelConfig *shared.AIGatewayVertexEmbeddingsModelConfig
 				if r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex != nil {
-					upstreamUrl26 := new(string)
+					upstreamUrl27 := new(string)
 					if !r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsUnknown() && !r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsNull() {
-						*upstreamUrl26 = r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
+						*upstreamUrl27 = r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl26 = nil
+						upstreamUrl27 = nil
 					}
-					typeVar28 := shared.AIGatewayVertexEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.Type.ValueString())
 					var gcpEnvironment3 *shared.GCPModelConfig
 					if r.API.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment != nil {
 						var apiEndpoint3 string
@@ -10216,8 +10423,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayVertexEmbeddingsModelConfig = &shared.AIGatewayVertexEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl26,
-						Type:           typeVar28,
+						UpstreamURL:    upstreamUrl27,
 						GcpEnvironment: gcpEnvironment3,
 					}
 				}
@@ -10235,7 +10441,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				var vectordb shared.AIGatewayModelVectorDBConfig
 				var aiGatewayModelVectorDBConfigPgVector *shared.AIGatewayModelVectorDBConfigPgVector
 				if r.API.Config.Balancer.Semantic.Vectordb.Pgvector != nil {
-					typeVar29 := shared.AIGatewayModelVectorDBConfigPgVectorType(r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Type.ValueString())
 					var dimensions int64
 					dimensions = r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions.ValueInt64()
 
@@ -10330,7 +10535,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						user = nil
 					}
 					aiGatewayModelVectorDBConfigPgVector = &shared.AIGatewayModelVectorDBConfigPgVector{
-						Type:           typeVar29,
 						Dimensions:     dimensions,
 						DistanceMetric: distanceMetric,
 						Threshold:      threshold,
@@ -10350,7 +10554,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayModelVectorDBConfigRedis *shared.AIGatewayModelVectorDBConfigRedis
 				if r.API.Config.Balancer.Semantic.Vectordb.Redis != nil {
-					typeVar30 := shared.AIGatewayModelVectorDBConfigRedisType(r.API.Config.Balancer.Semantic.Vectordb.Redis.Type.ValueString())
 					var dimensions1 int64
 					dimensions1 = r.API.Config.Balancer.Semantic.Vectordb.Redis.Dimensions.ValueInt64()
 
@@ -10365,18 +10568,17 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
 						if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws != nil {
-							typeVar31 := shared.AIGatewayRedisAWSAuthenticationType(r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Type.ValueString())
 							accessKeyID := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
 								*accessKeyID = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
 								accessKeyID = nil
 							}
-							assumeRoleArn := new(string)
+							assumeRoleArn1 := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn1 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn = nil
+								assumeRoleArn1 = nil
 							}
 							cacheName := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -10390,17 +10592,17 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 							} else {
 								isServerless = nil
 							}
-							region2 := new(string)
+							region3 := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region2 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region3 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region2 = nil
+								region3 = nil
 							}
-							roleSessionName := new(string)
+							roleSessionName1 := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName1 = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName = nil
+								roleSessionName1 = nil
 							}
 							secretAccessKey := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
@@ -10409,13 +10611,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 								secretAccessKey = nil
 							}
 							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
-								Type:            typeVar31,
 								AccessKeyID:     accessKeyID,
-								AssumeRoleArn:   assumeRoleArn,
+								AssumeRoleArn:   assumeRoleArn1,
 								CacheName:       cacheName,
 								IsServerless:    isServerless,
-								Region:          region2,
-								RoleSessionName: roleSessionName,
+								Region:          region3,
+								RoleSessionName: roleSessionName1,
 								SecretAccessKey: secretAccessKey,
 							}
 						}
@@ -10426,7 +10627,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisAzureAuthentication *shared.AIGatewayRedisAzureAuthentication
 						if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure != nil {
-							typeVar32 := shared.AIGatewayRedisAzureAuthenticationType(r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.Type.ValueString())
 							clientID := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
 								*clientID = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.ValueString()
@@ -10446,7 +10646,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 								tenantID = nil
 							}
 							aiGatewayRedisAzureAuthentication = &shared.AIGatewayRedisAzureAuthentication{
-								Type:         typeVar32,
 								ClientID:     clientID,
 								ClientSecret: clientSecret,
 								TenantID:     tenantID,
@@ -10459,7 +10658,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisGCPAuthentication *shared.AIGatewayRedisGCPAuthentication
 						if r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp != nil {
-							typeVar33 := shared.AIGatewayRedisGCPAuthenticationType(r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.Type.ValueString())
 							serviceAccountJSON := new(string)
 							if !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
 								*serviceAccountJSON = r.API.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
@@ -10467,7 +10665,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 								serviceAccountJSON = nil
 							}
 							aiGatewayRedisGCPAuthentication = &shared.AIGatewayRedisGCPAuthentication{
-								Type:               typeVar33,
 								ServiceAccountJSON: serviceAccountJSON,
 							}
 						}
@@ -10561,30 +10758,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					} else {
 						password1 = nil
 					}
-					var port2 *shared.Port
-					if r.API.Config.Balancer.Semantic.Vectordb.Redis.Port != nil {
-						integer := new(int64)
-						if !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsNull() {
-							*integer = r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.ValueInt64()
-						} else {
-							integer = nil
-						}
-						if integer != nil {
-							port2 = &shared.Port{
-								Integer: integer,
-							}
-						}
-						str := new(string)
-						if !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsNull() {
-							*str = r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.ValueString()
-						} else {
-							str = nil
-						}
-						if str != nil {
-							port2 = &shared.Port{
-								Str: str,
-							}
-						}
+					port2 := new(string)
+					if !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.IsNull() {
+						*port2 = r.API.Config.Balancer.Semantic.Vectordb.Redis.Port.ValueString()
+					} else {
+						port2 = nil
 					}
 					readTimeout7 := new(int64)
 					if !r.API.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsNull() {
@@ -10679,7 +10857,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						username1 = nil
 					}
 					aiGatewayModelVectorDBConfigRedis = &shared.AIGatewayModelVectorDBConfigRedis{
-						Type:                typeVar30,
 						Dimensions:          dimensions1,
 						DistanceMetric:      distanceMetric1,
 						Threshold:           threshold1,
@@ -10715,7 +10892,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries6,
 					Slots:            slots6,
 					WriteTimeout:     writeTimeout6,
-					Algorithm:        algorithm6,
 					Embeddings:       embeddings,
 					Vectordb:         vectordb,
 				}
@@ -10827,7 +11003,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			Policies:     policies,
 			Labels:       labels,
 			ManagedBy:    managedBy,
-			Type:         typeVar20,
 			Config:       config1,
 			Capabilities: capabilities,
 		}
@@ -10921,55 +11096,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			var config3 shared.AIGatewayTargetConfig
 			var aiGatewayTargetAnthropicConfig1 *shared.AIGatewayTargetAnthropicConfig
 			if r.Model.Targets[targetsIndex1].Config.Anthropic != nil {
-				embeddingsDimensions19 := new(int64)
+				embeddingsDimensions20 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions19 = r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions20 = r.Model.Targets[targetsIndex1].Config.Anthropic.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions19 = nil
+					embeddingsDimensions20 = nil
 				}
-				maxTokens19 := new(int64)
+				maxTokens20 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.IsNull() {
-					*maxTokens19 = r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.ValueInt64()
+					*maxTokens20 = r.Model.Targets[targetsIndex1].Config.Anthropic.MaxTokens.ValueInt64()
 				} else {
-					maxTokens19 = nil
+					maxTokens20 = nil
 				}
-				inputCost19 := new(float64)
+				inputCost20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.IsNull() {
-					*inputCost19 = r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.ValueFloat64()
+					*inputCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.InputCost.ValueFloat64()
 				} else {
-					inputCost19 = nil
+					inputCost20 = nil
 				}
-				outputCost19 := new(float64)
+				outputCost20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.IsNull() {
-					*outputCost19 = r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.ValueFloat64()
+					*outputCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCost.ValueFloat64()
 				} else {
-					outputCost19 = nil
+					outputCost20 = nil
 				}
-				temperature19 := new(float64)
+				temperature20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsNull() {
-					*temperature19 = r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.ValueFloat64()
+					*temperature20 = r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.ValueFloat64()
 				} else {
-					temperature19 = nil
+					temperature20 = nil
 				}
-				topK19 := new(int64)
+				topK20 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.IsNull() {
-					*topK19 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.ValueInt64()
+					*topK20 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopK.ValueInt64()
 				} else {
-					topK19 = nil
+					topK20 = nil
 				}
-				topP19 := new(float64)
+				topP20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.IsNull() {
-					*topP19 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.ValueFloat64()
+					*topP20 = r.Model.Targets[targetsIndex1].Config.Anthropic.TopP.ValueFloat64()
 				} else {
-					topP19 = nil
+					topP20 = nil
 				}
-				upstreamUrl27 := new(string)
+				upstreamUrl28 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.IsNull() {
-					*upstreamUrl27 = r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.ValueString()
+					*upstreamUrl28 = r.Model.Targets[targetsIndex1].Config.Anthropic.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl27 = nil
+					upstreamUrl28 = nil
 				}
-				typeVar34 := shared.AIGatewayTargetAnthropicConfigType(r.Model.Targets[targetsIndex1].Config.Anthropic.Type.ValueString())
 				version2 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.Version.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.Version.IsNull() {
 					*version2 = r.Model.Targets[targetsIndex1].Config.Anthropic.Version.ValueString()
@@ -10977,15 +11151,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					version2 = nil
 				}
 				aiGatewayTargetAnthropicConfig1 = &shared.AIGatewayTargetAnthropicConfig{
-					EmbeddingsDimensions: embeddingsDimensions19,
-					MaxTokens:            maxTokens19,
-					InputCost:            inputCost19,
-					OutputCost:           outputCost19,
-					Temperature:          temperature19,
-					TopK:                 topK19,
-					TopP:                 topP19,
-					UpstreamURL:          upstreamUrl27,
-					Type:                 typeVar34,
+					EmbeddingsDimensions: embeddingsDimensions20,
+					MaxTokens:            maxTokens20,
+					InputCost:            inputCost20,
+					OutputCost:           outputCost20,
+					Temperature:          temperature20,
+					TopK:                 topK20,
+					TopP:                 topP20,
+					UpstreamURL:          upstreamUrl28,
 					Version:              version2,
 				}
 			}
@@ -10996,55 +11169,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetAzureConfig1 *shared.AIGatewayTargetAzureConfig
 			if r.Model.Targets[targetsIndex1].Config.Azure != nil {
-				embeddingsDimensions20 := new(int64)
+				embeddingsDimensions21 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions20 = r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions21 = r.Model.Targets[targetsIndex1].Config.Azure.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions20 = nil
+					embeddingsDimensions21 = nil
 				}
-				maxTokens20 := new(int64)
+				maxTokens21 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.IsNull() {
-					*maxTokens20 = r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.ValueInt64()
+					*maxTokens21 = r.Model.Targets[targetsIndex1].Config.Azure.MaxTokens.ValueInt64()
 				} else {
-					maxTokens20 = nil
+					maxTokens21 = nil
 				}
-				inputCost20 := new(float64)
+				inputCost21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.InputCost.IsNull() {
-					*inputCost20 = r.Model.Targets[targetsIndex1].Config.Azure.InputCost.ValueFloat64()
+					*inputCost21 = r.Model.Targets[targetsIndex1].Config.Azure.InputCost.ValueFloat64()
 				} else {
-					inputCost20 = nil
+					inputCost21 = nil
 				}
-				outputCost20 := new(float64)
+				outputCost21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.IsNull() {
-					*outputCost20 = r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.ValueFloat64()
+					*outputCost21 = r.Model.Targets[targetsIndex1].Config.Azure.OutputCost.ValueFloat64()
 				} else {
-					outputCost20 = nil
+					outputCost21 = nil
 				}
-				temperature20 := new(float64)
+				temperature21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsNull() {
-					*temperature20 = r.Model.Targets[targetsIndex1].Config.Azure.Temperature.ValueFloat64()
+					*temperature21 = r.Model.Targets[targetsIndex1].Config.Azure.Temperature.ValueFloat64()
 				} else {
-					temperature20 = nil
+					temperature21 = nil
 				}
-				topK20 := new(int64)
+				topK21 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.TopK.IsNull() {
-					*topK20 = r.Model.Targets[targetsIndex1].Config.Azure.TopK.ValueInt64()
+					*topK21 = r.Model.Targets[targetsIndex1].Config.Azure.TopK.ValueInt64()
 				} else {
-					topK20 = nil
+					topK21 = nil
 				}
-				topP20 := new(float64)
+				topP21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.TopP.IsNull() {
-					*topP20 = r.Model.Targets[targetsIndex1].Config.Azure.TopP.ValueFloat64()
+					*topP21 = r.Model.Targets[targetsIndex1].Config.Azure.TopP.ValueFloat64()
 				} else {
-					topP20 = nil
+					topP21 = nil
 				}
-				upstreamUrl28 := new(string)
+				upstreamUrl29 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.IsNull() {
-					*upstreamUrl28 = r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.ValueString()
+					*upstreamUrl29 = r.Model.Targets[targetsIndex1].Config.Azure.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl28 = nil
+					upstreamUrl29 = nil
 				}
-				typeVar35 := shared.AIGatewayTargetAzureConfigType(r.Model.Targets[targetsIndex1].Config.Azure.Type.ValueString())
 				var deploymentId2 string
 				deploymentId2 = r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.ValueString()
 
@@ -11055,15 +11227,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					apiVersion3 = nil
 				}
 				aiGatewayTargetAzureConfig1 = &shared.AIGatewayTargetAzureConfig{
-					EmbeddingsDimensions: embeddingsDimensions20,
-					MaxTokens:            maxTokens20,
-					InputCost:            inputCost20,
-					OutputCost:           outputCost20,
-					Temperature:          temperature20,
-					TopK:                 topK20,
-					TopP:                 topP20,
-					UpstreamURL:          upstreamUrl28,
-					Type:                 typeVar35,
+					EmbeddingsDimensions: embeddingsDimensions21,
+					MaxTokens:            maxTokens21,
+					InputCost:            inputCost21,
+					OutputCost:           outputCost21,
+					Temperature:          temperature21,
+					TopK:                 topK21,
+					TopP:                 topP21,
+					UpstreamURL:          upstreamUrl29,
 					DeploymentID:         deploymentId2,
 					APIVersion:           apiVersion3,
 				}
@@ -11075,60 +11246,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetBedrockConfig1 *shared.AIGatewayTargetBedrockConfig
 			if r.Model.Targets[targetsIndex1].Config.Bedrock != nil {
-				embeddingsDimensions21 := new(int64)
+				embeddingsDimensions22 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions21 = r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions22 = r.Model.Targets[targetsIndex1].Config.Bedrock.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions21 = nil
+					embeddingsDimensions22 = nil
 				}
-				maxTokens21 := new(int64)
+				maxTokens22 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.IsNull() {
-					*maxTokens21 = r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.ValueInt64()
+					*maxTokens22 = r.Model.Targets[targetsIndex1].Config.Bedrock.MaxTokens.ValueInt64()
 				} else {
-					maxTokens21 = nil
+					maxTokens22 = nil
 				}
-				inputCost21 := new(float64)
+				inputCost22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.IsNull() {
-					*inputCost21 = r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.ValueFloat64()
+					*inputCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.InputCost.ValueFloat64()
 				} else {
-					inputCost21 = nil
+					inputCost22 = nil
 				}
-				outputCost21 := new(float64)
+				outputCost22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.IsNull() {
-					*outputCost21 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.ValueFloat64()
+					*outputCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.ValueFloat64()
 				} else {
-					outputCost21 = nil
+					outputCost22 = nil
 				}
-				temperature21 := new(float64)
+				temperature22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsNull() {
-					*temperature21 = r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.ValueFloat64()
+					*temperature22 = r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.ValueFloat64()
 				} else {
-					temperature21 = nil
+					temperature22 = nil
 				}
-				topK21 := new(int64)
+				topK22 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.IsNull() {
-					*topK21 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.ValueInt64()
+					*topK22 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopK.ValueInt64()
 				} else {
-					topK21 = nil
+					topK22 = nil
 				}
-				topP21 := new(float64)
+				topP22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.IsNull() {
-					*topP21 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.ValueFloat64()
+					*topP22 = r.Model.Targets[targetsIndex1].Config.Bedrock.TopP.ValueFloat64()
 				} else {
-					topP21 = nil
+					topP22 = nil
 				}
-				upstreamUrl29 := new(string)
+				upstreamUrl30 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.IsNull() {
-					*upstreamUrl29 = r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.ValueString()
+					*upstreamUrl30 = r.Model.Targets[targetsIndex1].Config.Bedrock.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl29 = nil
+					upstreamUrl30 = nil
 				}
-				typeVar36 := shared.AIGatewayTargetBedrockConfigType(r.Model.Targets[targetsIndex1].Config.Bedrock.Type.ValueString())
-				region3 := new(string)
+				region4 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.Region.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.Region.IsNull() {
-					*region3 = r.Model.Targets[targetsIndex1].Config.Bedrock.Region.ValueString()
+					*region4 = r.Model.Targets[targetsIndex1].Config.Bedrock.Region.ValueString()
 				} else {
-					region3 = nil
+					region4 = nil
 				}
 				batchBucketPrefix2 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.BatchBucketPrefix.IsNull() {
@@ -11155,16 +11325,15 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					videoOutputS3Uri2 = nil
 				}
 				aiGatewayTargetBedrockConfig1 = &shared.AIGatewayTargetBedrockConfig{
-					EmbeddingsDimensions:     embeddingsDimensions21,
-					MaxTokens:                maxTokens21,
-					InputCost:                inputCost21,
-					OutputCost:               outputCost21,
-					Temperature:              temperature21,
-					TopK:                     topK21,
-					TopP:                     topP21,
-					UpstreamURL:              upstreamUrl29,
-					Type:                     typeVar36,
-					Region:                   region3,
+					EmbeddingsDimensions:     embeddingsDimensions22,
+					MaxTokens:                maxTokens22,
+					InputCost:                inputCost22,
+					OutputCost:               outputCost22,
+					Temperature:              temperature22,
+					TopK:                     topK22,
+					TopP:                     topP22,
+					UpstreamURL:              upstreamUrl30,
+					Region:                   region4,
 					BatchBucketPrefix:        batchBucketPrefix2,
 					EmbeddingsNormalize:      embeddingsNormalize2,
 					PerformanceConfigLatency: performanceConfigLatency2,
@@ -11178,65 +11347,63 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetCerebrasConfig1 *shared.AIGatewayTargetCerebrasConfig
 			if r.Model.Targets[targetsIndex1].Config.Cerebras != nil {
-				embeddingsDimensions22 := new(int64)
+				embeddingsDimensions23 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions22 = r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions23 = r.Model.Targets[targetsIndex1].Config.Cerebras.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions22 = nil
+					embeddingsDimensions23 = nil
 				}
-				maxTokens22 := new(int64)
+				maxTokens23 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.IsNull() {
-					*maxTokens22 = r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.ValueInt64()
+					*maxTokens23 = r.Model.Targets[targetsIndex1].Config.Cerebras.MaxTokens.ValueInt64()
 				} else {
-					maxTokens22 = nil
+					maxTokens23 = nil
 				}
-				inputCost22 := new(float64)
+				inputCost23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.IsNull() {
-					*inputCost22 = r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.ValueFloat64()
+					*inputCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.InputCost.ValueFloat64()
 				} else {
-					inputCost22 = nil
+					inputCost23 = nil
 				}
-				outputCost22 := new(float64)
+				outputCost23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.IsNull() {
-					*outputCost22 = r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.ValueFloat64()
+					*outputCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCost.ValueFloat64()
 				} else {
-					outputCost22 = nil
+					outputCost23 = nil
 				}
-				temperature22 := new(float64)
+				temperature23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsNull() {
-					*temperature22 = r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.ValueFloat64()
+					*temperature23 = r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.ValueFloat64()
 				} else {
-					temperature22 = nil
+					temperature23 = nil
 				}
-				topK22 := new(int64)
+				topK23 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.IsNull() {
-					*topK22 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.ValueInt64()
+					*topK23 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopK.ValueInt64()
 				} else {
-					topK22 = nil
+					topK23 = nil
 				}
-				topP22 := new(float64)
+				topP23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.IsNull() {
-					*topP22 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.ValueFloat64()
+					*topP23 = r.Model.Targets[targetsIndex1].Config.Cerebras.TopP.ValueFloat64()
 				} else {
-					topP22 = nil
+					topP23 = nil
 				}
-				upstreamUrl30 := new(string)
+				upstreamUrl31 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.IsNull() {
-					*upstreamUrl30 = r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.ValueString()
+					*upstreamUrl31 = r.Model.Targets[targetsIndex1].Config.Cerebras.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl30 = nil
+					upstreamUrl31 = nil
 				}
-				typeVar37 := shared.AIGatewayTargetCerebrasConfigType(r.Model.Targets[targetsIndex1].Config.Cerebras.Type.ValueString())
 				aiGatewayTargetCerebrasConfig1 = &shared.AIGatewayTargetCerebrasConfig{
-					EmbeddingsDimensions: embeddingsDimensions22,
-					MaxTokens:            maxTokens22,
-					InputCost:            inputCost22,
-					OutputCost:           outputCost22,
-					Temperature:          temperature22,
-					TopK:                 topK22,
-					TopP:                 topP22,
-					UpstreamURL:          upstreamUrl30,
-					Type:                 typeVar37,
+					EmbeddingsDimensions: embeddingsDimensions23,
+					MaxTokens:            maxTokens23,
+					InputCost:            inputCost23,
+					OutputCost:           outputCost23,
+					Temperature:          temperature23,
+					TopK:                 topK23,
+					TopP:                 topP23,
+					UpstreamURL:          upstreamUrl31,
 				}
 			}
 			if aiGatewayTargetCerebrasConfig1 != nil {
@@ -11246,55 +11413,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetCohereConfig1 *shared.AIGatewayTargetCohereConfig
 			if r.Model.Targets[targetsIndex1].Config.Cohere != nil {
-				embeddingsDimensions23 := new(int64)
+				embeddingsDimensions24 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions23 = r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions24 = r.Model.Targets[targetsIndex1].Config.Cohere.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions23 = nil
+					embeddingsDimensions24 = nil
 				}
-				maxTokens23 := new(int64)
+				maxTokens24 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.IsNull() {
-					*maxTokens23 = r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.ValueInt64()
+					*maxTokens24 = r.Model.Targets[targetsIndex1].Config.Cohere.MaxTokens.ValueInt64()
 				} else {
-					maxTokens23 = nil
+					maxTokens24 = nil
 				}
-				inputCost23 := new(float64)
+				inputCost24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.IsNull() {
-					*inputCost23 = r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.ValueFloat64()
+					*inputCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.InputCost.ValueFloat64()
 				} else {
-					inputCost23 = nil
+					inputCost24 = nil
 				}
-				outputCost23 := new(float64)
+				outputCost24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.IsNull() {
-					*outputCost23 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.ValueFloat64()
+					*outputCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.ValueFloat64()
 				} else {
-					outputCost23 = nil
+					outputCost24 = nil
 				}
-				temperature23 := new(float64)
+				temperature24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsNull() {
-					*temperature23 = r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.ValueFloat64()
+					*temperature24 = r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.ValueFloat64()
 				} else {
-					temperature23 = nil
+					temperature24 = nil
 				}
-				topK23 := new(int64)
+				topK24 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.TopK.IsNull() {
-					*topK23 = r.Model.Targets[targetsIndex1].Config.Cohere.TopK.ValueInt64()
+					*topK24 = r.Model.Targets[targetsIndex1].Config.Cohere.TopK.ValueInt64()
 				} else {
-					topK23 = nil
+					topK24 = nil
 				}
-				topP23 := new(float64)
+				topP24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.TopP.IsNull() {
-					*topP23 = r.Model.Targets[targetsIndex1].Config.Cohere.TopP.ValueFloat64()
+					*topP24 = r.Model.Targets[targetsIndex1].Config.Cohere.TopP.ValueFloat64()
 				} else {
-					topP23 = nil
+					topP24 = nil
 				}
-				upstreamUrl31 := new(string)
+				upstreamUrl32 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.IsNull() {
-					*upstreamUrl31 = r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.ValueString()
+					*upstreamUrl32 = r.Model.Targets[targetsIndex1].Config.Cohere.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl31 = nil
+					upstreamUrl32 = nil
 				}
-				typeVar38 := shared.AIGatewayTargetCohereConfigType(r.Model.Targets[targetsIndex1].Config.Cohere.Type.ValueString())
 				apiVersion4 := new(shared.APIVersion)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.APIVersion.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.APIVersion.IsNull() {
 					*apiVersion4 = shared.APIVersion(r.Model.Targets[targetsIndex1].Config.Cohere.APIVersion.ValueString())
@@ -11314,15 +11480,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					waitForModel3 = nil
 				}
 				aiGatewayTargetCohereConfig1 = &shared.AIGatewayTargetCohereConfig{
-					EmbeddingsDimensions: embeddingsDimensions23,
-					MaxTokens:            maxTokens23,
-					InputCost:            inputCost23,
-					OutputCost:           outputCost23,
-					Temperature:          temperature23,
-					TopK:                 topK23,
-					TopP:                 topP23,
-					UpstreamURL:          upstreamUrl31,
-					Type:                 typeVar38,
+					EmbeddingsDimensions: embeddingsDimensions24,
+					MaxTokens:            maxTokens24,
+					InputCost:            inputCost24,
+					OutputCost:           outputCost24,
+					Temperature:          temperature24,
+					TopK:                 topK24,
+					TopP:                 topP24,
+					UpstreamURL:          upstreamUrl32,
 					APIVersion:           apiVersion4,
 					EmbeddingInputType:   embeddingInputType1,
 					WaitForModel:         waitForModel3,
@@ -11335,55 +11500,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetDashscopeConfig1 *shared.AIGatewayTargetDashscopeConfig
 			if r.Model.Targets[targetsIndex1].Config.Dashscope != nil {
-				embeddingsDimensions24 := new(int64)
+				embeddingsDimensions25 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions24 = r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions25 = r.Model.Targets[targetsIndex1].Config.Dashscope.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions24 = nil
+					embeddingsDimensions25 = nil
 				}
-				maxTokens24 := new(int64)
+				maxTokens25 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.IsNull() {
-					*maxTokens24 = r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.ValueInt64()
+					*maxTokens25 = r.Model.Targets[targetsIndex1].Config.Dashscope.MaxTokens.ValueInt64()
 				} else {
-					maxTokens24 = nil
+					maxTokens25 = nil
 				}
-				inputCost24 := new(float64)
+				inputCost25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.IsNull() {
-					*inputCost24 = r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.ValueFloat64()
+					*inputCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.InputCost.ValueFloat64()
 				} else {
-					inputCost24 = nil
+					inputCost25 = nil
 				}
-				outputCost24 := new(float64)
+				outputCost25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.IsNull() {
-					*outputCost24 = r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.ValueFloat64()
+					*outputCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCost.ValueFloat64()
 				} else {
-					outputCost24 = nil
+					outputCost25 = nil
 				}
-				temperature24 := new(float64)
+				temperature25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsNull() {
-					*temperature24 = r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.ValueFloat64()
+					*temperature25 = r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.ValueFloat64()
 				} else {
-					temperature24 = nil
+					temperature25 = nil
 				}
-				topK24 := new(int64)
+				topK25 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.IsNull() {
-					*topK24 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.ValueInt64()
+					*topK25 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopK.ValueInt64()
 				} else {
-					topK24 = nil
+					topK25 = nil
 				}
-				topP24 := new(float64)
+				topP25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.IsNull() {
-					*topP24 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.ValueFloat64()
+					*topP25 = r.Model.Targets[targetsIndex1].Config.Dashscope.TopP.ValueFloat64()
 				} else {
-					topP24 = nil
+					topP25 = nil
 				}
-				upstreamUrl32 := new(string)
+				upstreamUrl33 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.IsNull() {
-					*upstreamUrl32 = r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.ValueString()
+					*upstreamUrl33 = r.Model.Targets[targetsIndex1].Config.Dashscope.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl32 = nil
+					upstreamUrl33 = nil
 				}
-				typeVar39 := shared.AIGatewayTargetDashscopeConfigType(r.Model.Targets[targetsIndex1].Config.Dashscope.Type.ValueString())
 				international2 := new(bool)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.International.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.International.IsNull() {
 					*international2 = r.Model.Targets[targetsIndex1].Config.Dashscope.International.ValueBool()
@@ -11391,15 +11555,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					international2 = nil
 				}
 				aiGatewayTargetDashscopeConfig1 = &shared.AIGatewayTargetDashscopeConfig{
-					EmbeddingsDimensions: embeddingsDimensions24,
-					MaxTokens:            maxTokens24,
-					InputCost:            inputCost24,
-					OutputCost:           outputCost24,
-					Temperature:          temperature24,
-					TopK:                 topK24,
-					TopP:                 topP24,
-					UpstreamURL:          upstreamUrl32,
-					Type:                 typeVar39,
+					EmbeddingsDimensions: embeddingsDimensions25,
+					MaxTokens:            maxTokens25,
+					InputCost:            inputCost25,
+					OutputCost:           outputCost25,
+					Temperature:          temperature25,
+					TopK:                 topK25,
+					TopP:                 topP25,
+					UpstreamURL:          upstreamUrl33,
 					International:        international2,
 				}
 			}
@@ -11410,68 +11573,66 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetDatabricksConfig1 *shared.AIGatewayTargetDatabricksConfig
 			if r.Model.Targets[targetsIndex1].Config.Databricks != nil {
-				embeddingsDimensions25 := new(int64)
+				embeddingsDimensions26 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions25 = r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions26 = r.Model.Targets[targetsIndex1].Config.Databricks.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions25 = nil
+					embeddingsDimensions26 = nil
 				}
-				maxTokens25 := new(int64)
+				maxTokens26 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.IsNull() {
-					*maxTokens25 = r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.ValueInt64()
+					*maxTokens26 = r.Model.Targets[targetsIndex1].Config.Databricks.MaxTokens.ValueInt64()
 				} else {
-					maxTokens25 = nil
+					maxTokens26 = nil
 				}
-				inputCost25 := new(float64)
+				inputCost26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.IsNull() {
-					*inputCost25 = r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.ValueFloat64()
+					*inputCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.InputCost.ValueFloat64()
 				} else {
-					inputCost25 = nil
+					inputCost26 = nil
 				}
-				outputCost25 := new(float64)
+				outputCost26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.IsNull() {
-					*outputCost25 = r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.ValueFloat64()
+					*outputCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.OutputCost.ValueFloat64()
 				} else {
-					outputCost25 = nil
+					outputCost26 = nil
 				}
-				temperature25 := new(float64)
+				temperature26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsNull() {
-					*temperature25 = r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.ValueFloat64()
+					*temperature26 = r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.ValueFloat64()
 				} else {
-					temperature25 = nil
+					temperature26 = nil
 				}
-				topK25 := new(int64)
+				topK26 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.TopK.IsNull() {
-					*topK25 = r.Model.Targets[targetsIndex1].Config.Databricks.TopK.ValueInt64()
+					*topK26 = r.Model.Targets[targetsIndex1].Config.Databricks.TopK.ValueInt64()
 				} else {
-					topK25 = nil
+					topK26 = nil
 				}
-				topP25 := new(float64)
+				topP26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.TopP.IsNull() {
-					*topP25 = r.Model.Targets[targetsIndex1].Config.Databricks.TopP.ValueFloat64()
+					*topP26 = r.Model.Targets[targetsIndex1].Config.Databricks.TopP.ValueFloat64()
 				} else {
-					topP25 = nil
+					topP26 = nil
 				}
-				upstreamUrl33 := new(string)
+				upstreamUrl34 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.IsNull() {
-					*upstreamUrl33 = r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.ValueString()
+					*upstreamUrl34 = r.Model.Targets[targetsIndex1].Config.Databricks.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl33 = nil
+					upstreamUrl34 = nil
 				}
-				typeVar40 := shared.AIGatewayTargetDatabricksConfigType(r.Model.Targets[targetsIndex1].Config.Databricks.Type.ValueString())
 				var workspaceInstanceId1 string
 				workspaceInstanceId1 = r.Model.Targets[targetsIndex1].Config.Databricks.WorkspaceInstanceID.ValueString()
 
 				aiGatewayTargetDatabricksConfig1 = &shared.AIGatewayTargetDatabricksConfig{
-					EmbeddingsDimensions: embeddingsDimensions25,
-					MaxTokens:            maxTokens25,
-					InputCost:            inputCost25,
-					OutputCost:           outputCost25,
-					Temperature:          temperature25,
-					TopK:                 topK25,
-					TopP:                 topP25,
-					UpstreamURL:          upstreamUrl33,
-					Type:                 typeVar40,
+					EmbeddingsDimensions: embeddingsDimensions26,
+					MaxTokens:            maxTokens26,
+					InputCost:            inputCost26,
+					OutputCost:           outputCost26,
+					Temperature:          temperature26,
+					TopK:                 topK26,
+					TopP:                 topP26,
+					UpstreamURL:          upstreamUrl34,
 					WorkspaceInstanceID:  workspaceInstanceId1,
 				}
 			}
@@ -11482,65 +11643,63 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetDeepseekConfig1 *shared.AIGatewayTargetDeepseekConfig
 			if r.Model.Targets[targetsIndex1].Config.Deepseek != nil {
-				embeddingsDimensions26 := new(int64)
+				embeddingsDimensions27 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions26 = r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions27 = r.Model.Targets[targetsIndex1].Config.Deepseek.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions26 = nil
+					embeddingsDimensions27 = nil
 				}
-				maxTokens26 := new(int64)
+				maxTokens27 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.IsNull() {
-					*maxTokens26 = r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.ValueInt64()
+					*maxTokens27 = r.Model.Targets[targetsIndex1].Config.Deepseek.MaxTokens.ValueInt64()
 				} else {
-					maxTokens26 = nil
+					maxTokens27 = nil
 				}
-				inputCost26 := new(float64)
+				inputCost27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.IsNull() {
-					*inputCost26 = r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.ValueFloat64()
+					*inputCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.InputCost.ValueFloat64()
 				} else {
-					inputCost26 = nil
+					inputCost27 = nil
 				}
-				outputCost26 := new(float64)
+				outputCost27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.IsNull() {
-					*outputCost26 = r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.ValueFloat64()
+					*outputCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCost.ValueFloat64()
 				} else {
-					outputCost26 = nil
+					outputCost27 = nil
 				}
-				temperature26 := new(float64)
+				temperature27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsNull() {
-					*temperature26 = r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.ValueFloat64()
+					*temperature27 = r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.ValueFloat64()
 				} else {
-					temperature26 = nil
+					temperature27 = nil
 				}
-				topK26 := new(int64)
+				topK27 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.IsNull() {
-					*topK26 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.ValueInt64()
+					*topK27 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopK.ValueInt64()
 				} else {
-					topK26 = nil
+					topK27 = nil
 				}
-				topP26 := new(float64)
+				topP27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.IsNull() {
-					*topP26 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.ValueFloat64()
+					*topP27 = r.Model.Targets[targetsIndex1].Config.Deepseek.TopP.ValueFloat64()
 				} else {
-					topP26 = nil
+					topP27 = nil
 				}
-				upstreamUrl34 := new(string)
+				upstreamUrl35 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.IsNull() {
-					*upstreamUrl34 = r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.ValueString()
+					*upstreamUrl35 = r.Model.Targets[targetsIndex1].Config.Deepseek.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl34 = nil
+					upstreamUrl35 = nil
 				}
-				typeVar41 := shared.AIGatewayTargetDeepseekConfigType(r.Model.Targets[targetsIndex1].Config.Deepseek.Type.ValueString())
 				aiGatewayTargetDeepseekConfig1 = &shared.AIGatewayTargetDeepseekConfig{
-					EmbeddingsDimensions: embeddingsDimensions26,
-					MaxTokens:            maxTokens26,
-					InputCost:            inputCost26,
-					OutputCost:           outputCost26,
-					Temperature:          temperature26,
-					TopK:                 topK26,
-					TopP:                 topP26,
-					UpstreamURL:          upstreamUrl34,
-					Type:                 typeVar41,
+					EmbeddingsDimensions: embeddingsDimensions27,
+					MaxTokens:            maxTokens27,
+					InputCost:            inputCost27,
+					OutputCost:           outputCost27,
+					Temperature:          temperature27,
+					TopK:                 topK27,
+					TopP:                 topP27,
+					UpstreamURL:          upstreamUrl35,
 				}
 			}
 			if aiGatewayTargetDeepseekConfig1 != nil {
@@ -11550,55 +11709,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetGeminiConfig1 *shared.AIGatewayTargetGeminiConfig
 			if r.Model.Targets[targetsIndex1].Config.Gemini != nil {
-				embeddingsDimensions27 := new(int64)
+				embeddingsDimensions28 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions27 = r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions28 = r.Model.Targets[targetsIndex1].Config.Gemini.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions27 = nil
+					embeddingsDimensions28 = nil
 				}
-				maxTokens27 := new(int64)
+				maxTokens28 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.IsNull() {
-					*maxTokens27 = r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.ValueInt64()
+					*maxTokens28 = r.Model.Targets[targetsIndex1].Config.Gemini.MaxTokens.ValueInt64()
 				} else {
-					maxTokens27 = nil
+					maxTokens28 = nil
 				}
-				inputCost27 := new(float64)
+				inputCost28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.IsNull() {
-					*inputCost27 = r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.ValueFloat64()
+					*inputCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.InputCost.ValueFloat64()
 				} else {
-					inputCost27 = nil
+					inputCost28 = nil
 				}
-				outputCost27 := new(float64)
+				outputCost28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.IsNull() {
-					*outputCost27 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.ValueFloat64()
+					*outputCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.ValueFloat64()
 				} else {
-					outputCost27 = nil
+					outputCost28 = nil
 				}
-				temperature27 := new(float64)
+				temperature28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsNull() {
-					*temperature27 = r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.ValueFloat64()
+					*temperature28 = r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.ValueFloat64()
 				} else {
-					temperature27 = nil
+					temperature28 = nil
 				}
-				topK27 := new(int64)
+				topK28 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.TopK.IsNull() {
-					*topK27 = r.Model.Targets[targetsIndex1].Config.Gemini.TopK.ValueInt64()
+					*topK28 = r.Model.Targets[targetsIndex1].Config.Gemini.TopK.ValueInt64()
 				} else {
-					topK27 = nil
+					topK28 = nil
 				}
-				topP27 := new(float64)
+				topP28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.TopP.IsNull() {
-					*topP27 = r.Model.Targets[targetsIndex1].Config.Gemini.TopP.ValueFloat64()
+					*topP28 = r.Model.Targets[targetsIndex1].Config.Gemini.TopP.ValueFloat64()
 				} else {
-					topP27 = nil
+					topP28 = nil
 				}
-				upstreamUrl35 := new(string)
+				upstreamUrl36 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.IsNull() {
-					*upstreamUrl35 = r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.ValueString()
+					*upstreamUrl36 = r.Model.Targets[targetsIndex1].Config.Gemini.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl35 = nil
+					upstreamUrl36 = nil
 				}
-				typeVar42 := shared.AIGatewayTargetGeminiConfigType(r.Model.Targets[targetsIndex1].Config.Gemini.Type.ValueString())
 				var gcpEnvironment4 *shared.GCPModelConfig
 				if r.Model.Targets[targetsIndex1].Config.Gemini.GcpEnvironment != nil {
 					var apiEndpoint4 string
@@ -11617,15 +11775,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					}
 				}
 				aiGatewayTargetGeminiConfig1 = &shared.AIGatewayTargetGeminiConfig{
-					EmbeddingsDimensions: embeddingsDimensions27,
-					MaxTokens:            maxTokens27,
-					InputCost:            inputCost27,
-					OutputCost:           outputCost27,
-					Temperature:          temperature27,
-					TopK:                 topK27,
-					TopP:                 topP27,
-					UpstreamURL:          upstreamUrl35,
-					Type:                 typeVar42,
+					EmbeddingsDimensions: embeddingsDimensions28,
+					MaxTokens:            maxTokens28,
+					InputCost:            inputCost28,
+					OutputCost:           outputCost28,
+					Temperature:          temperature28,
+					TopK:                 topK28,
+					TopP:                 topP28,
+					UpstreamURL:          upstreamUrl36,
 					GcpEnvironment:       gcpEnvironment4,
 				}
 			}
@@ -11636,55 +11793,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetHuggingfaceConfig1 *shared.AIGatewayTargetHuggingfaceConfig
 			if r.Model.Targets[targetsIndex1].Config.Huggingface != nil {
-				embeddingsDimensions28 := new(int64)
+				embeddingsDimensions29 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions28 = r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions29 = r.Model.Targets[targetsIndex1].Config.Huggingface.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions28 = nil
+					embeddingsDimensions29 = nil
 				}
-				maxTokens28 := new(int64)
+				maxTokens29 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.IsNull() {
-					*maxTokens28 = r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.ValueInt64()
+					*maxTokens29 = r.Model.Targets[targetsIndex1].Config.Huggingface.MaxTokens.ValueInt64()
 				} else {
-					maxTokens28 = nil
+					maxTokens29 = nil
 				}
-				inputCost28 := new(float64)
+				inputCost29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.IsNull() {
-					*inputCost28 = r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.ValueFloat64()
+					*inputCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.InputCost.ValueFloat64()
 				} else {
-					inputCost28 = nil
+					inputCost29 = nil
 				}
-				outputCost28 := new(float64)
+				outputCost29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.IsNull() {
-					*outputCost28 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.ValueFloat64()
+					*outputCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.ValueFloat64()
 				} else {
-					outputCost28 = nil
+					outputCost29 = nil
 				}
-				temperature28 := new(float64)
+				temperature29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsNull() {
-					*temperature28 = r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.ValueFloat64()
+					*temperature29 = r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.ValueFloat64()
 				} else {
-					temperature28 = nil
+					temperature29 = nil
 				}
-				topK28 := new(int64)
+				topK29 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.IsNull() {
-					*topK28 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.ValueInt64()
+					*topK29 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopK.ValueInt64()
 				} else {
-					topK28 = nil
+					topK29 = nil
 				}
-				topP28 := new(float64)
+				topP29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.IsNull() {
-					*topP28 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.ValueFloat64()
+					*topP29 = r.Model.Targets[targetsIndex1].Config.Huggingface.TopP.ValueFloat64()
 				} else {
-					topP28 = nil
+					topP29 = nil
 				}
-				upstreamUrl36 := new(string)
+				upstreamUrl37 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.IsNull() {
-					*upstreamUrl36 = r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.ValueString()
+					*upstreamUrl37 = r.Model.Targets[targetsIndex1].Config.Huggingface.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl36 = nil
+					upstreamUrl37 = nil
 				}
-				typeVar43 := shared.AIGatewayTargetHuggingfaceConfigType(r.Model.Targets[targetsIndex1].Config.Huggingface.Type.ValueString())
 				useCache2 := new(bool)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.UseCache.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.UseCache.IsNull() {
 					*useCache2 = r.Model.Targets[targetsIndex1].Config.Huggingface.UseCache.ValueBool()
@@ -11698,15 +11854,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					waitForModel4 = nil
 				}
 				aiGatewayTargetHuggingfaceConfig1 = &shared.AIGatewayTargetHuggingfaceConfig{
-					EmbeddingsDimensions: embeddingsDimensions28,
-					MaxTokens:            maxTokens28,
-					InputCost:            inputCost28,
-					OutputCost:           outputCost28,
-					Temperature:          temperature28,
-					TopK:                 topK28,
-					TopP:                 topP28,
-					UpstreamURL:          upstreamUrl36,
-					Type:                 typeVar43,
+					EmbeddingsDimensions: embeddingsDimensions29,
+					MaxTokens:            maxTokens29,
+					InputCost:            inputCost29,
+					OutputCost:           outputCost29,
+					Temperature:          temperature29,
+					TopK:                 topK29,
+					TopP:                 topP29,
+					UpstreamURL:          upstreamUrl37,
 					UseCache:             useCache2,
 					WaitForModel:         waitForModel4,
 				}
@@ -11718,55 +11873,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetKimiConfig1 *shared.AIGatewayTargetKimiConfig
 			if r.Model.Targets[targetsIndex1].Config.Kimi != nil {
-				embeddingsDimensions29 := new(int64)
+				embeddingsDimensions30 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions29 = r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions30 = r.Model.Targets[targetsIndex1].Config.Kimi.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions29 = nil
+					embeddingsDimensions30 = nil
 				}
-				maxTokens29 := new(int64)
+				maxTokens30 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.IsNull() {
-					*maxTokens29 = r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.ValueInt64()
+					*maxTokens30 = r.Model.Targets[targetsIndex1].Config.Kimi.MaxTokens.ValueInt64()
 				} else {
-					maxTokens29 = nil
+					maxTokens30 = nil
 				}
-				inputCost29 := new(float64)
+				inputCost30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.IsNull() {
-					*inputCost29 = r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.ValueFloat64()
+					*inputCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.InputCost.ValueFloat64()
 				} else {
-					inputCost29 = nil
+					inputCost30 = nil
 				}
-				outputCost29 := new(float64)
+				outputCost30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.IsNull() {
-					*outputCost29 = r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.ValueFloat64()
+					*outputCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.OutputCost.ValueFloat64()
 				} else {
-					outputCost29 = nil
+					outputCost30 = nil
 				}
-				temperature29 := new(float64)
+				temperature30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsNull() {
-					*temperature29 = r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.ValueFloat64()
+					*temperature30 = r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.ValueFloat64()
 				} else {
-					temperature29 = nil
+					temperature30 = nil
 				}
-				topK29 := new(int64)
+				topK30 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.TopK.IsNull() {
-					*topK29 = r.Model.Targets[targetsIndex1].Config.Kimi.TopK.ValueInt64()
+					*topK30 = r.Model.Targets[targetsIndex1].Config.Kimi.TopK.ValueInt64()
 				} else {
-					topK29 = nil
+					topK30 = nil
 				}
-				topP29 := new(float64)
+				topP30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.TopP.IsNull() {
-					*topP29 = r.Model.Targets[targetsIndex1].Config.Kimi.TopP.ValueFloat64()
+					*topP30 = r.Model.Targets[targetsIndex1].Config.Kimi.TopP.ValueFloat64()
 				} else {
-					topP29 = nil
+					topP30 = nil
 				}
-				upstreamUrl37 := new(string)
+				upstreamUrl38 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.IsNull() {
-					*upstreamUrl37 = r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.ValueString()
+					*upstreamUrl38 = r.Model.Targets[targetsIndex1].Config.Kimi.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl37 = nil
+					upstreamUrl38 = nil
 				}
-				typeVar44 := shared.AIGatewayTargetKimiConfigType(r.Model.Targets[targetsIndex1].Config.Kimi.Type.ValueString())
 				international3 := new(bool)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.International.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.International.IsNull() {
 					*international3 = r.Model.Targets[targetsIndex1].Config.Kimi.International.ValueBool()
@@ -11774,15 +11928,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					international3 = nil
 				}
 				aiGatewayTargetKimiConfig1 = &shared.AIGatewayTargetKimiConfig{
-					EmbeddingsDimensions: embeddingsDimensions29,
-					MaxTokens:            maxTokens29,
-					InputCost:            inputCost29,
-					OutputCost:           outputCost29,
-					Temperature:          temperature29,
-					TopK:                 topK29,
-					TopP:                 topP29,
-					UpstreamURL:          upstreamUrl37,
-					Type:                 typeVar44,
+					EmbeddingsDimensions: embeddingsDimensions30,
+					MaxTokens:            maxTokens30,
+					InputCost:            inputCost30,
+					OutputCost:           outputCost30,
+					Temperature:          temperature30,
+					TopK:                 topK30,
+					TopP:                 topP30,
+					UpstreamURL:          upstreamUrl38,
 					International:        international3,
 				}
 			}
@@ -11793,63 +11946,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetLlama2Config1 *shared.AIGatewayTargetLlama2Config
 			if r.Model.Targets[targetsIndex1].Config.Llama2 != nil {
-				embeddingsDimensions30 := new(int64)
+				embeddingsDimensions31 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions30 = r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions31 = r.Model.Targets[targetsIndex1].Config.Llama2.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions30 = nil
+					embeddingsDimensions31 = nil
 				}
-				maxTokens30 := new(int64)
+				maxTokens31 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.IsNull() {
-					*maxTokens30 = r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.ValueInt64()
+					*maxTokens31 = r.Model.Targets[targetsIndex1].Config.Llama2.MaxTokens.ValueInt64()
 				} else {
-					maxTokens30 = nil
+					maxTokens31 = nil
 				}
-				inputCost30 := new(float64)
+				inputCost31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.IsNull() {
-					*inputCost30 = r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.ValueFloat64()
+					*inputCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.InputCost.ValueFloat64()
 				} else {
-					inputCost30 = nil
+					inputCost31 = nil
 				}
-				outputCost30 := new(float64)
+				outputCost31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.IsNull() {
-					*outputCost30 = r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.ValueFloat64()
+					*outputCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.OutputCost.ValueFloat64()
 				} else {
-					outputCost30 = nil
+					outputCost31 = nil
 				}
-				temperature30 := new(float64)
+				temperature31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsNull() {
-					*temperature30 = r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.ValueFloat64()
+					*temperature31 = r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.ValueFloat64()
 				} else {
-					temperature30 = nil
+					temperature31 = nil
 				}
-				topK30 := new(int64)
+				topK31 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.TopK.IsNull() {
-					*topK30 = r.Model.Targets[targetsIndex1].Config.Llama2.TopK.ValueInt64()
+					*topK31 = r.Model.Targets[targetsIndex1].Config.Llama2.TopK.ValueInt64()
 				} else {
-					topK30 = nil
+					topK31 = nil
 				}
-				topP30 := new(float64)
+				topP31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.TopP.IsNull() {
-					*topP30 = r.Model.Targets[targetsIndex1].Config.Llama2.TopP.ValueFloat64()
+					*topP31 = r.Model.Targets[targetsIndex1].Config.Llama2.TopP.ValueFloat64()
 				} else {
-					topP30 = nil
+					topP31 = nil
 				}
-				var upstreamUrl38 string
-				upstreamUrl38 = r.Model.Targets[targetsIndex1].Config.Llama2.UpstreamURL.ValueString()
+				var upstreamUrl39 string
+				upstreamUrl39 = r.Model.Targets[targetsIndex1].Config.Llama2.UpstreamURL.ValueString()
 
-				typeVar45 := shared.AIGatewayTargetLlama2ConfigType(r.Model.Targets[targetsIndex1].Config.Llama2.Type.ValueString())
 				format2 := shared.Format(r.Model.Targets[targetsIndex1].Config.Llama2.Format.ValueString())
 				aiGatewayTargetLlama2Config1 = &shared.AIGatewayTargetLlama2Config{
-					EmbeddingsDimensions: embeddingsDimensions30,
-					MaxTokens:            maxTokens30,
-					InputCost:            inputCost30,
-					OutputCost:           outputCost30,
-					Temperature:          temperature30,
-					TopK:                 topK30,
-					TopP:                 topP30,
-					UpstreamURL:          upstreamUrl38,
-					Type:                 typeVar45,
+					EmbeddingsDimensions: embeddingsDimensions31,
+					MaxTokens:            maxTokens31,
+					InputCost:            inputCost31,
+					OutputCost:           outputCost31,
+					Temperature:          temperature31,
+					TopK:                 topK31,
+					TopP:                 topP31,
+					UpstreamURL:          upstreamUrl39,
 					Format:               format2,
 				}
 			}
@@ -11860,66 +12011,64 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetMistralConfig1 *shared.AIGatewayTargetMistralConfig
 			if r.Model.Targets[targetsIndex1].Config.Mistral != nil {
-				embeddingsDimensions31 := new(int64)
+				embeddingsDimensions32 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions31 = r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions32 = r.Model.Targets[targetsIndex1].Config.Mistral.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions31 = nil
+					embeddingsDimensions32 = nil
 				}
-				maxTokens31 := new(int64)
+				maxTokens32 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.IsNull() {
-					*maxTokens31 = r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.ValueInt64()
+					*maxTokens32 = r.Model.Targets[targetsIndex1].Config.Mistral.MaxTokens.ValueInt64()
 				} else {
-					maxTokens31 = nil
+					maxTokens32 = nil
 				}
-				inputCost31 := new(float64)
+				inputCost32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.IsNull() {
-					*inputCost31 = r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.ValueFloat64()
+					*inputCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.InputCost.ValueFloat64()
 				} else {
-					inputCost31 = nil
+					inputCost32 = nil
 				}
-				outputCost31 := new(float64)
+				outputCost32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.IsNull() {
-					*outputCost31 = r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.ValueFloat64()
+					*outputCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.OutputCost.ValueFloat64()
 				} else {
-					outputCost31 = nil
+					outputCost32 = nil
 				}
-				temperature31 := new(float64)
+				temperature32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsNull() {
-					*temperature31 = r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.ValueFloat64()
+					*temperature32 = r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.ValueFloat64()
 				} else {
-					temperature31 = nil
+					temperature32 = nil
 				}
-				topK31 := new(int64)
+				topK32 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.TopK.IsNull() {
-					*topK31 = r.Model.Targets[targetsIndex1].Config.Mistral.TopK.ValueInt64()
+					*topK32 = r.Model.Targets[targetsIndex1].Config.Mistral.TopK.ValueInt64()
 				} else {
-					topK31 = nil
+					topK32 = nil
 				}
-				topP31 := new(float64)
+				topP32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.TopP.IsNull() {
-					*topP31 = r.Model.Targets[targetsIndex1].Config.Mistral.TopP.ValueFloat64()
+					*topP32 = r.Model.Targets[targetsIndex1].Config.Mistral.TopP.ValueFloat64()
 				} else {
-					topP31 = nil
+					topP32 = nil
 				}
-				upstreamUrl39 := new(string)
+				upstreamUrl40 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.IsNull() {
-					*upstreamUrl39 = r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.ValueString()
+					*upstreamUrl40 = r.Model.Targets[targetsIndex1].Config.Mistral.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl39 = nil
+					upstreamUrl40 = nil
 				}
-				typeVar46 := shared.AIGatewayTargetMistralConfigType(r.Model.Targets[targetsIndex1].Config.Mistral.Type.ValueString())
 				format3 := shared.AIGatewayTargetMistralConfigFormat(r.Model.Targets[targetsIndex1].Config.Mistral.Format.ValueString())
 				aiGatewayTargetMistralConfig1 = &shared.AIGatewayTargetMistralConfig{
-					EmbeddingsDimensions: embeddingsDimensions31,
-					MaxTokens:            maxTokens31,
-					InputCost:            inputCost31,
-					OutputCost:           outputCost31,
-					Temperature:          temperature31,
-					TopK:                 topK31,
-					TopP:                 topP31,
-					UpstreamURL:          upstreamUrl39,
-					Type:                 typeVar46,
+					EmbeddingsDimensions: embeddingsDimensions32,
+					MaxTokens:            maxTokens32,
+					InputCost:            inputCost32,
+					OutputCost:           outputCost32,
+					Temperature:          temperature32,
+					TopK:                 topK32,
+					TopP:                 topP32,
+					UpstreamURL:          upstreamUrl40,
 					Format:               format3,
 				}
 			}
@@ -11930,65 +12079,63 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetOllamaConfig1 *shared.AIGatewayTargetOllamaConfig
 			if r.Model.Targets[targetsIndex1].Config.Ollama != nil {
-				embeddingsDimensions32 := new(int64)
+				embeddingsDimensions33 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions32 = r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions33 = r.Model.Targets[targetsIndex1].Config.Ollama.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions32 = nil
+					embeddingsDimensions33 = nil
 				}
-				maxTokens32 := new(int64)
+				maxTokens33 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.IsNull() {
-					*maxTokens32 = r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.ValueInt64()
+					*maxTokens33 = r.Model.Targets[targetsIndex1].Config.Ollama.MaxTokens.ValueInt64()
 				} else {
-					maxTokens32 = nil
+					maxTokens33 = nil
 				}
-				inputCost32 := new(float64)
+				inputCost33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.IsNull() {
-					*inputCost32 = r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.ValueFloat64()
+					*inputCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.InputCost.ValueFloat64()
 				} else {
-					inputCost32 = nil
+					inputCost33 = nil
 				}
-				outputCost32 := new(float64)
+				outputCost33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.IsNull() {
-					*outputCost32 = r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.ValueFloat64()
+					*outputCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.OutputCost.ValueFloat64()
 				} else {
-					outputCost32 = nil
+					outputCost33 = nil
 				}
-				temperature32 := new(float64)
+				temperature33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsNull() {
-					*temperature32 = r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.ValueFloat64()
+					*temperature33 = r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.ValueFloat64()
 				} else {
-					temperature32 = nil
+					temperature33 = nil
 				}
-				topK32 := new(int64)
+				topK33 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.TopK.IsNull() {
-					*topK32 = r.Model.Targets[targetsIndex1].Config.Ollama.TopK.ValueInt64()
+					*topK33 = r.Model.Targets[targetsIndex1].Config.Ollama.TopK.ValueInt64()
 				} else {
-					topK32 = nil
+					topK33 = nil
 				}
-				topP32 := new(float64)
+				topP33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.TopP.IsNull() {
-					*topP32 = r.Model.Targets[targetsIndex1].Config.Ollama.TopP.ValueFloat64()
+					*topP33 = r.Model.Targets[targetsIndex1].Config.Ollama.TopP.ValueFloat64()
 				} else {
-					topP32 = nil
+					topP33 = nil
 				}
-				upstreamUrl40 := new(string)
+				upstreamUrl41 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.IsNull() {
-					*upstreamUrl40 = r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.ValueString()
+					*upstreamUrl41 = r.Model.Targets[targetsIndex1].Config.Ollama.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl40 = nil
+					upstreamUrl41 = nil
 				}
-				typeVar47 := shared.AIGatewayTargetOllamaConfigType(r.Model.Targets[targetsIndex1].Config.Ollama.Type.ValueString())
 				aiGatewayTargetOllamaConfig1 = &shared.AIGatewayTargetOllamaConfig{
-					EmbeddingsDimensions: embeddingsDimensions32,
-					MaxTokens:            maxTokens32,
-					InputCost:            inputCost32,
-					OutputCost:           outputCost32,
-					Temperature:          temperature32,
-					TopK:                 topK32,
-					TopP:                 topP32,
-					UpstreamURL:          upstreamUrl40,
-					Type:                 typeVar47,
+					EmbeddingsDimensions: embeddingsDimensions33,
+					MaxTokens:            maxTokens33,
+					InputCost:            inputCost33,
+					OutputCost:           outputCost33,
+					Temperature:          temperature33,
+					TopK:                 topK33,
+					TopP:                 topP33,
+					UpstreamURL:          upstreamUrl41,
 				}
 			}
 			if aiGatewayTargetOllamaConfig1 != nil {
@@ -11998,65 +12145,63 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetOpenaiConfig1 *shared.AIGatewayTargetOpenaiConfig
 			if r.Model.Targets[targetsIndex1].Config.Openai != nil {
-				embeddingsDimensions33 := new(int64)
+				embeddingsDimensions34 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions33 = r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions34 = r.Model.Targets[targetsIndex1].Config.Openai.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions33 = nil
+					embeddingsDimensions34 = nil
 				}
-				maxTokens33 := new(int64)
+				maxTokens34 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.IsNull() {
-					*maxTokens33 = r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.ValueInt64()
+					*maxTokens34 = r.Model.Targets[targetsIndex1].Config.Openai.MaxTokens.ValueInt64()
 				} else {
-					maxTokens33 = nil
+					maxTokens34 = nil
 				}
-				inputCost33 := new(float64)
+				inputCost34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.InputCost.IsNull() {
-					*inputCost33 = r.Model.Targets[targetsIndex1].Config.Openai.InputCost.ValueFloat64()
+					*inputCost34 = r.Model.Targets[targetsIndex1].Config.Openai.InputCost.ValueFloat64()
 				} else {
-					inputCost33 = nil
+					inputCost34 = nil
 				}
-				outputCost33 := new(float64)
+				outputCost34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.IsNull() {
-					*outputCost33 = r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.ValueFloat64()
+					*outputCost34 = r.Model.Targets[targetsIndex1].Config.Openai.OutputCost.ValueFloat64()
 				} else {
-					outputCost33 = nil
+					outputCost34 = nil
 				}
-				temperature33 := new(float64)
+				temperature34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsNull() {
-					*temperature33 = r.Model.Targets[targetsIndex1].Config.Openai.Temperature.ValueFloat64()
+					*temperature34 = r.Model.Targets[targetsIndex1].Config.Openai.Temperature.ValueFloat64()
 				} else {
-					temperature33 = nil
+					temperature34 = nil
 				}
-				topK33 := new(int64)
+				topK34 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.TopK.IsNull() {
-					*topK33 = r.Model.Targets[targetsIndex1].Config.Openai.TopK.ValueInt64()
+					*topK34 = r.Model.Targets[targetsIndex1].Config.Openai.TopK.ValueInt64()
 				} else {
-					topK33 = nil
+					topK34 = nil
 				}
-				topP33 := new(float64)
+				topP34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.TopP.IsNull() {
-					*topP33 = r.Model.Targets[targetsIndex1].Config.Openai.TopP.ValueFloat64()
+					*topP34 = r.Model.Targets[targetsIndex1].Config.Openai.TopP.ValueFloat64()
 				} else {
-					topP33 = nil
+					topP34 = nil
 				}
-				upstreamUrl41 := new(string)
+				upstreamUrl42 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.IsNull() {
-					*upstreamUrl41 = r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.ValueString()
+					*upstreamUrl42 = r.Model.Targets[targetsIndex1].Config.Openai.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl41 = nil
+					upstreamUrl42 = nil
 				}
-				typeVar48 := shared.AIGatewayTargetOpenaiConfigType(r.Model.Targets[targetsIndex1].Config.Openai.Type.ValueString())
 				aiGatewayTargetOpenaiConfig1 = &shared.AIGatewayTargetOpenaiConfig{
-					EmbeddingsDimensions: embeddingsDimensions33,
-					MaxTokens:            maxTokens33,
-					InputCost:            inputCost33,
-					OutputCost:           outputCost33,
-					Temperature:          temperature33,
-					TopK:                 topK33,
-					TopP:                 topP33,
-					UpstreamURL:          upstreamUrl41,
-					Type:                 typeVar48,
+					EmbeddingsDimensions: embeddingsDimensions34,
+					MaxTokens:            maxTokens34,
+					InputCost:            inputCost34,
+					OutputCost:           outputCost34,
+					Temperature:          temperature34,
+					TopK:                 topK34,
+					TopP:                 topP34,
+					UpstreamURL:          upstreamUrl42,
 				}
 			}
 			if aiGatewayTargetOpenaiConfig1 != nil {
@@ -12066,65 +12211,63 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetVercelConfig1 *shared.AIGatewayTargetVercelConfig
 			if r.Model.Targets[targetsIndex1].Config.Vercel != nil {
-				embeddingsDimensions34 := new(int64)
+				embeddingsDimensions35 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions34 = r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions35 = r.Model.Targets[targetsIndex1].Config.Vercel.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions34 = nil
+					embeddingsDimensions35 = nil
 				}
-				maxTokens34 := new(int64)
+				maxTokens35 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.IsNull() {
-					*maxTokens34 = r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.ValueInt64()
+					*maxTokens35 = r.Model.Targets[targetsIndex1].Config.Vercel.MaxTokens.ValueInt64()
 				} else {
-					maxTokens34 = nil
+					maxTokens35 = nil
 				}
-				inputCost34 := new(float64)
+				inputCost35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.IsNull() {
-					*inputCost34 = r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.ValueFloat64()
+					*inputCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.InputCost.ValueFloat64()
 				} else {
-					inputCost34 = nil
+					inputCost35 = nil
 				}
-				outputCost34 := new(float64)
+				outputCost35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.IsNull() {
-					*outputCost34 = r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.ValueFloat64()
+					*outputCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.OutputCost.ValueFloat64()
 				} else {
-					outputCost34 = nil
+					outputCost35 = nil
 				}
-				temperature34 := new(float64)
+				temperature35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsNull() {
-					*temperature34 = r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.ValueFloat64()
+					*temperature35 = r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.ValueFloat64()
 				} else {
-					temperature34 = nil
+					temperature35 = nil
 				}
-				topK34 := new(int64)
+				topK35 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.TopK.IsNull() {
-					*topK34 = r.Model.Targets[targetsIndex1].Config.Vercel.TopK.ValueInt64()
+					*topK35 = r.Model.Targets[targetsIndex1].Config.Vercel.TopK.ValueInt64()
 				} else {
-					topK34 = nil
+					topK35 = nil
 				}
-				topP34 := new(float64)
+				topP35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.TopP.IsNull() {
-					*topP34 = r.Model.Targets[targetsIndex1].Config.Vercel.TopP.ValueFloat64()
+					*topP35 = r.Model.Targets[targetsIndex1].Config.Vercel.TopP.ValueFloat64()
 				} else {
-					topP34 = nil
+					topP35 = nil
 				}
-				upstreamUrl42 := new(string)
+				upstreamUrl43 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.IsNull() {
-					*upstreamUrl42 = r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.ValueString()
+					*upstreamUrl43 = r.Model.Targets[targetsIndex1].Config.Vercel.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl42 = nil
+					upstreamUrl43 = nil
 				}
-				typeVar49 := shared.AIGatewayTargetVercelConfigType(r.Model.Targets[targetsIndex1].Config.Vercel.Type.ValueString())
 				aiGatewayTargetVercelConfig1 = &shared.AIGatewayTargetVercelConfig{
-					EmbeddingsDimensions: embeddingsDimensions34,
-					MaxTokens:            maxTokens34,
-					InputCost:            inputCost34,
-					OutputCost:           outputCost34,
-					Temperature:          temperature34,
-					TopK:                 topK34,
-					TopP:                 topP34,
-					UpstreamURL:          upstreamUrl42,
-					Type:                 typeVar49,
+					EmbeddingsDimensions: embeddingsDimensions35,
+					MaxTokens:            maxTokens35,
+					InputCost:            inputCost35,
+					OutputCost:           outputCost35,
+					Temperature:          temperature35,
+					TopK:                 topK35,
+					TopP:                 topP35,
+					UpstreamURL:          upstreamUrl43,
 				}
 			}
 			if aiGatewayTargetVercelConfig1 != nil {
@@ -12134,55 +12277,54 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetVertexConfig1 *shared.AIGatewayTargetVertexConfig
 			if r.Model.Targets[targetsIndex1].Config.Vertex != nil {
-				embeddingsDimensions35 := new(int64)
+				embeddingsDimensions36 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions35 = r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions36 = r.Model.Targets[targetsIndex1].Config.Vertex.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions35 = nil
+					embeddingsDimensions36 = nil
 				}
-				maxTokens35 := new(int64)
+				maxTokens36 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.IsNull() {
-					*maxTokens35 = r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.ValueInt64()
+					*maxTokens36 = r.Model.Targets[targetsIndex1].Config.Vertex.MaxTokens.ValueInt64()
 				} else {
-					maxTokens35 = nil
+					maxTokens36 = nil
 				}
-				inputCost35 := new(float64)
+				inputCost36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.IsNull() {
-					*inputCost35 = r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.ValueFloat64()
+					*inputCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.InputCost.ValueFloat64()
 				} else {
-					inputCost35 = nil
+					inputCost36 = nil
 				}
-				outputCost35 := new(float64)
+				outputCost36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.IsNull() {
-					*outputCost35 = r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.ValueFloat64()
+					*outputCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.ValueFloat64()
 				} else {
-					outputCost35 = nil
+					outputCost36 = nil
 				}
-				temperature35 := new(float64)
+				temperature36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsNull() {
-					*temperature35 = r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.ValueFloat64()
+					*temperature36 = r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.ValueFloat64()
 				} else {
-					temperature35 = nil
+					temperature36 = nil
 				}
-				topK35 := new(int64)
+				topK36 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.TopK.IsNull() {
-					*topK35 = r.Model.Targets[targetsIndex1].Config.Vertex.TopK.ValueInt64()
+					*topK36 = r.Model.Targets[targetsIndex1].Config.Vertex.TopK.ValueInt64()
 				} else {
-					topK35 = nil
+					topK36 = nil
 				}
-				topP35 := new(float64)
+				topP36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.TopP.IsNull() {
-					*topP35 = r.Model.Targets[targetsIndex1].Config.Vertex.TopP.ValueFloat64()
+					*topP36 = r.Model.Targets[targetsIndex1].Config.Vertex.TopP.ValueFloat64()
 				} else {
-					topP35 = nil
+					topP36 = nil
 				}
-				upstreamUrl43 := new(string)
+				upstreamUrl44 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.IsNull() {
-					*upstreamUrl43 = r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.ValueString()
+					*upstreamUrl44 = r.Model.Targets[targetsIndex1].Config.Vertex.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl43 = nil
+					upstreamUrl44 = nil
 				}
-				typeVar50 := shared.AIGatewayTargetVertexConfigType(r.Model.Targets[targetsIndex1].Config.Vertex.Type.ValueString())
 				var gcpEnvironment5 *shared.GcpEnvironment
 				if r.Model.Targets[targetsIndex1].Config.Vertex.GcpEnvironment != nil {
 					var apiEndpoint5 string
@@ -12208,15 +12350,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					}
 				}
 				aiGatewayTargetVertexConfig1 = &shared.AIGatewayTargetVertexConfig{
-					EmbeddingsDimensions: embeddingsDimensions35,
-					MaxTokens:            maxTokens35,
-					InputCost:            inputCost35,
-					OutputCost:           outputCost35,
-					Temperature:          temperature35,
-					TopK:                 topK35,
-					TopP:                 topP35,
-					UpstreamURL:          upstreamUrl43,
-					Type:                 typeVar50,
+					EmbeddingsDimensions: embeddingsDimensions36,
+					MaxTokens:            maxTokens36,
+					InputCost:            inputCost36,
+					OutputCost:           outputCost36,
+					Temperature:          temperature36,
+					TopK:                 topK36,
+					TopP:                 topP36,
+					UpstreamURL:          upstreamUrl44,
 					GcpEnvironment:       gcpEnvironment5,
 				}
 			}
@@ -12227,62 +12368,60 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetVllmConfig1 *shared.AIGatewayTargetVllmConfig
 			if r.Model.Targets[targetsIndex1].Config.Vllm != nil {
-				embeddingsDimensions36 := new(int64)
+				embeddingsDimensions37 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions36 = r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions37 = r.Model.Targets[targetsIndex1].Config.Vllm.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions36 = nil
+					embeddingsDimensions37 = nil
 				}
-				maxTokens36 := new(int64)
+				maxTokens37 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.IsNull() {
-					*maxTokens36 = r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.ValueInt64()
+					*maxTokens37 = r.Model.Targets[targetsIndex1].Config.Vllm.MaxTokens.ValueInt64()
 				} else {
-					maxTokens36 = nil
+					maxTokens37 = nil
 				}
-				inputCost36 := new(float64)
+				inputCost37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.IsNull() {
-					*inputCost36 = r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.ValueFloat64()
+					*inputCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.InputCost.ValueFloat64()
 				} else {
-					inputCost36 = nil
+					inputCost37 = nil
 				}
-				outputCost36 := new(float64)
+				outputCost37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.IsNull() {
-					*outputCost36 = r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.ValueFloat64()
+					*outputCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.OutputCost.ValueFloat64()
 				} else {
-					outputCost36 = nil
+					outputCost37 = nil
 				}
-				temperature36 := new(float64)
+				temperature37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsNull() {
-					*temperature36 = r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.ValueFloat64()
+					*temperature37 = r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.ValueFloat64()
 				} else {
-					temperature36 = nil
+					temperature37 = nil
 				}
-				topK36 := new(int64)
+				topK37 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.TopK.IsNull() {
-					*topK36 = r.Model.Targets[targetsIndex1].Config.Vllm.TopK.ValueInt64()
+					*topK37 = r.Model.Targets[targetsIndex1].Config.Vllm.TopK.ValueInt64()
 				} else {
-					topK36 = nil
+					topK37 = nil
 				}
-				topP36 := new(float64)
+				topP37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.TopP.IsNull() {
-					*topP36 = r.Model.Targets[targetsIndex1].Config.Vllm.TopP.ValueFloat64()
+					*topP37 = r.Model.Targets[targetsIndex1].Config.Vllm.TopP.ValueFloat64()
 				} else {
-					topP36 = nil
+					topP37 = nil
 				}
-				var upstreamUrl44 string
-				upstreamUrl44 = r.Model.Targets[targetsIndex1].Config.Vllm.UpstreamURL.ValueString()
+				var upstreamUrl45 string
+				upstreamUrl45 = r.Model.Targets[targetsIndex1].Config.Vllm.UpstreamURL.ValueString()
 
-				typeVar51 := shared.AIGatewayTargetVllmConfigType(r.Model.Targets[targetsIndex1].Config.Vllm.Type.ValueString())
 				aiGatewayTargetVllmConfig1 = &shared.AIGatewayTargetVllmConfig{
-					EmbeddingsDimensions: embeddingsDimensions36,
-					MaxTokens:            maxTokens36,
-					InputCost:            inputCost36,
-					OutputCost:           outputCost36,
-					Temperature:          temperature36,
-					TopK:                 topK36,
-					TopP:                 topP36,
-					UpstreamURL:          upstreamUrl44,
-					Type:                 typeVar51,
+					EmbeddingsDimensions: embeddingsDimensions37,
+					MaxTokens:            maxTokens37,
+					InputCost:            inputCost37,
+					OutputCost:           outputCost37,
+					Temperature:          temperature37,
+					TopK:                 topK37,
+					TopP:                 topP37,
+					UpstreamURL:          upstreamUrl45,
 				}
 			}
 			if aiGatewayTargetVllmConfig1 != nil {
@@ -12292,70 +12431,195 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			}
 			var aiGatewayTargetXaiConfig1 *shared.AIGatewayTargetXaiConfig
 			if r.Model.Targets[targetsIndex1].Config.Xai != nil {
-				embeddingsDimensions37 := new(int64)
+				embeddingsDimensions38 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.IsNull() {
-					*embeddingsDimensions37 = r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.ValueInt64()
+					*embeddingsDimensions38 = r.Model.Targets[targetsIndex1].Config.Xai.EmbeddingsDimensions.ValueInt64()
 				} else {
-					embeddingsDimensions37 = nil
+					embeddingsDimensions38 = nil
 				}
-				maxTokens37 := new(int64)
+				maxTokens38 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.IsNull() {
-					*maxTokens37 = r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.ValueInt64()
+					*maxTokens38 = r.Model.Targets[targetsIndex1].Config.Xai.MaxTokens.ValueInt64()
 				} else {
-					maxTokens37 = nil
+					maxTokens38 = nil
 				}
-				inputCost37 := new(float64)
+				inputCost38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.InputCost.IsNull() {
-					*inputCost37 = r.Model.Targets[targetsIndex1].Config.Xai.InputCost.ValueFloat64()
+					*inputCost38 = r.Model.Targets[targetsIndex1].Config.Xai.InputCost.ValueFloat64()
 				} else {
-					inputCost37 = nil
+					inputCost38 = nil
 				}
-				outputCost37 := new(float64)
+				outputCost38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.IsNull() {
-					*outputCost37 = r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.ValueFloat64()
+					*outputCost38 = r.Model.Targets[targetsIndex1].Config.Xai.OutputCost.ValueFloat64()
 				} else {
-					outputCost37 = nil
+					outputCost38 = nil
 				}
-				temperature37 := new(float64)
+				temperature38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsNull() {
-					*temperature37 = r.Model.Targets[targetsIndex1].Config.Xai.Temperature.ValueFloat64()
+					*temperature38 = r.Model.Targets[targetsIndex1].Config.Xai.Temperature.ValueFloat64()
 				} else {
-					temperature37 = nil
+					temperature38 = nil
 				}
-				topK37 := new(int64)
+				topK38 := new(int64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.TopK.IsNull() {
-					*topK37 = r.Model.Targets[targetsIndex1].Config.Xai.TopK.ValueInt64()
+					*topK38 = r.Model.Targets[targetsIndex1].Config.Xai.TopK.ValueInt64()
 				} else {
-					topK37 = nil
+					topK38 = nil
 				}
-				topP37 := new(float64)
+				topP38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.TopP.IsNull() {
-					*topP37 = r.Model.Targets[targetsIndex1].Config.Xai.TopP.ValueFloat64()
+					*topP38 = r.Model.Targets[targetsIndex1].Config.Xai.TopP.ValueFloat64()
 				} else {
-					topP37 = nil
+					topP38 = nil
 				}
-				upstreamUrl45 := new(string)
+				upstreamUrl46 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.IsNull() {
-					*upstreamUrl45 = r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.ValueString()
+					*upstreamUrl46 = r.Model.Targets[targetsIndex1].Config.Xai.UpstreamURL.ValueString()
 				} else {
-					upstreamUrl45 = nil
+					upstreamUrl46 = nil
 				}
-				typeVar52 := shared.AIGatewayTargetXaiConfigType(r.Model.Targets[targetsIndex1].Config.Xai.Type.ValueString())
 				aiGatewayTargetXaiConfig1 = &shared.AIGatewayTargetXaiConfig{
-					EmbeddingsDimensions: embeddingsDimensions37,
-					MaxTokens:            maxTokens37,
-					InputCost:            inputCost37,
-					OutputCost:           outputCost37,
-					Temperature:          temperature37,
-					TopK:                 topK37,
-					TopP:                 topP37,
-					UpstreamURL:          upstreamUrl45,
-					Type:                 typeVar52,
+					EmbeddingsDimensions: embeddingsDimensions38,
+					MaxTokens:            maxTokens38,
+					InputCost:            inputCost38,
+					OutputCost:           outputCost38,
+					Temperature:          temperature38,
+					TopK:                 topK38,
+					TopP:                 topP38,
+					UpstreamURL:          upstreamUrl46,
 				}
 			}
 			if aiGatewayTargetXaiConfig1 != nil {
 				config3 = shared.AIGatewayTargetConfig{
 					AIGatewayTargetXaiConfig: aiGatewayTargetXaiConfig1,
+				}
+			}
+			var aiGatewayTargetSagemakerConfig1 *shared.AIGatewayTargetSagemakerConfig
+			if r.Model.Targets[targetsIndex1].Config.Sagemaker != nil {
+				embeddingsDimensions39 := new(int64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.EmbeddingsDimensions.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.EmbeddingsDimensions.IsNull() {
+					*embeddingsDimensions39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.EmbeddingsDimensions.ValueInt64()
+				} else {
+					embeddingsDimensions39 = nil
+				}
+				maxTokens39 := new(int64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.MaxTokens.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.MaxTokens.IsNull() {
+					*maxTokens39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.MaxTokens.ValueInt64()
+				} else {
+					maxTokens39 = nil
+				}
+				inputCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCost.IsNull() {
+					*inputCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCost.ValueFloat64()
+				} else {
+					inputCost39 = nil
+				}
+				outputCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.IsNull() {
+					*outputCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.ValueFloat64()
+				} else {
+					outputCost39 = nil
+				}
+				temperature39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsNull() {
+					*temperature39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.ValueFloat64()
+				} else {
+					temperature39 = nil
+				}
+				topK39 := new(int64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopK.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopK.IsNull() {
+					*topK39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.TopK.ValueInt64()
+				} else {
+					topK39 = nil
+				}
+				topP39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopP.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.TopP.IsNull() {
+					*topP39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.TopP.ValueFloat64()
+				} else {
+					topP39 = nil
+				}
+				upstreamUrl47 := new(string)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.UpstreamURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.UpstreamURL.IsNull() {
+					*upstreamUrl47 = r.Model.Targets[targetsIndex1].Config.Sagemaker.UpstreamURL.ValueString()
+				} else {
+					upstreamUrl47 = nil
+				}
+				var aws1 *shared.Aws
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws != nil {
+					region5 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.Region.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.Region.IsNull() {
+						*region5 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.Region.ValueString()
+					} else {
+						region5 = nil
+					}
+					assumeRoleArn2 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.AssumeRoleArn.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn2 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn2 = nil
+					}
+					roleSessionName2 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.RoleSessionName.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.RoleSessionName.IsNull() {
+						*roleSessionName2 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName2 = nil
+					}
+					stsEndpointUrl1 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.StsEndpointURL.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl1 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl1 = nil
+					}
+					aws1 = &shared.Aws{
+						Region:          region5,
+						AssumeRoleArn:   assumeRoleArn2,
+						RoleSessionName: roleSessionName2,
+						StsEndpointURL:  stsEndpointUrl1,
+					}
+				}
+				var target1 *shared.Target
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.Target != nil {
+					model2 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Model.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Model.IsNull() {
+						*model2 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Model.ValueString()
+					} else {
+						model2 = nil
+					}
+					variant1 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Variant.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Variant.IsNull() {
+						*variant1 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.Variant.ValueString()
+					} else {
+						variant1 = nil
+					}
+					containerHostname1 := new(string)
+					if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.ContainerHostname.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.ContainerHostname.IsNull() {
+						*containerHostname1 = r.Model.Targets[targetsIndex1].Config.Sagemaker.Target.ContainerHostname.ValueString()
+					} else {
+						containerHostname1 = nil
+					}
+					target1 = &shared.Target{
+						Model:             model2,
+						Variant:           variant1,
+						ContainerHostname: containerHostname1,
+					}
+				}
+				aiGatewayTargetSagemakerConfig1 = &shared.AIGatewayTargetSagemakerConfig{
+					EmbeddingsDimensions: embeddingsDimensions39,
+					MaxTokens:            maxTokens39,
+					InputCost:            inputCost39,
+					OutputCost:           outputCost39,
+					Temperature:          temperature39,
+					TopK:                 topK39,
+					TopP:                 topP39,
+					UpstreamURL:          upstreamUrl47,
+					Aws:                  aws1,
+					Target:               target1,
+				}
+			}
+			if aiGatewayTargetSagemakerConfig1 != nil {
+				config3 = shared.AIGatewayTargetConfig{
+					AIGatewayTargetSagemakerConfig: aiGatewayTargetSagemakerConfig1,
 				}
 			}
 			targets1 = append(targets1, shared.AIGatewayTarget{
@@ -12385,19 +12649,15 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		typeVar53 := shared.AIGatewayModelModelType(r.Model.Type.ValueString())
-		headers1 := make(map[string]interface{})
-		for headersKey1 := range r.Model.Config.Route.Headers {
-			var headersInst1 interface{}
-			_ = json.Unmarshal([]byte(r.Model.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-			headers1[headersKey1] = headersInst1
+		headers2 := make(map[string]interface{})
+		for headersKey2 := range r.Model.Config.Route.Headers {
+			var headersInst2 interface{}
+			_ = json.Unmarshal([]byte(r.Model.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+			headers2[headersKey2] = headersInst2
 		}
-		var hosts1 []string
-		if r.Model.Config.Route.Hosts != nil {
-			hosts1 = make([]string, 0, len(r.Model.Config.Route.Hosts))
-			for hostsIndex1 := range r.Model.Config.Route.Hosts {
-				hosts1 = append(hosts1, r.Model.Config.Route.Hosts[hostsIndex1].ValueString())
-			}
+		hosts1 := make([]string, 0, len(r.Model.Config.Route.Hosts))
+		for hostsIndex1 := range r.Model.Config.Route.Hosts {
+			hosts1 = append(hosts1, r.Model.Config.Route.Hosts[hostsIndex1].ValueString())
 		}
 		httpsRedirectStatusCode1 := new(int64)
 		if !r.Model.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Model.Config.Route.HTTPSRedirectStatusCode.IsNull() {
@@ -12451,8 +12711,42 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 		for tagsIndex1 := range r.Model.Config.Route.Tags {
 			tags1 = append(tags1, r.Model.Config.Route.Tags[tagsIndex1].ValueString())
 		}
-		var model1 *shared.AIGatewayModelAliasConfig
+		var model3 *shared.AIGatewayModelAliasConfig
 		if r.Model.Config.Route.Model != nil {
+			var aiGatewayModelAliasConfigBody1 *shared.AIGatewayModelAliasConfigBody
+			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+				body1 := make(map[string]interface{})
+				for bodyKey1 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+					var bodyInst1 interface{}
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey1].ValueString()), &bodyInst1)
+					body1[bodyKey1] = bodyInst1
+				}
+				aiGatewayModelAliasConfigBody1 = &shared.AIGatewayModelAliasConfigBody{
+					Body: body1,
+				}
+			}
+			if aiGatewayModelAliasConfigBody1 != nil {
+				model3 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody1,
+				}
+			}
+			var aiGatewayModelAliasConfigHeaders1 *shared.AIGatewayModelAliasConfigHeaders
+			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+				headers3 := make(map[string]interface{})
+				for headersKey3 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+					var headersInst3 interface{}
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey3].ValueString()), &headersInst3)
+					headers3[headersKey3] = headersInst3
+				}
+				aiGatewayModelAliasConfigHeaders1 = &shared.AIGatewayModelAliasConfigHeaders{
+					Headers: headers3,
+				}
+			}
+			if aiGatewayModelAliasConfigHeaders1 != nil {
+				model3 = &shared.AIGatewayModelAliasConfig{
+					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders1,
+				}
+			}
 			var aiGatewayModelAliasConfigPath1 *shared.AIGatewayModelAliasConfigPath
 			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
 				pathAliases1 := make([]string, 0, len(r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
@@ -12464,13 +12758,13 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 			}
 			if aiGatewayModelAliasConfigPath1 != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
+				model3 = &shared.AIGatewayModelAliasConfig{
 					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath1,
 				}
 			}
 		}
 		route1 := shared.AIGatewayModelRouteConfig{
-			Headers:                 headers1,
+			Headers:                 headers2,
 			Hosts:                   hosts1,
 			HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
 			Methods:                 methods1,
@@ -12482,7 +12776,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			ResponseBuffering:       responseBuffering1,
 			StripPath:               stripPath1,
 			Tags:                    tags1,
-			Model:                   model1,
+			Model:                   model3,
 		}
 		var logging1 *shared.AIGatewayLoggingConfig
 		if r.Model.Config.Logging != nil {
@@ -12508,7 +12802,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 		} else {
 			maxRequestBodySize1 = nil
 		}
-		var model2 *shared.Model
+		var model4 *shared.Model
 		if r.Model.Config.Model != nil {
 			nameHeader := new(bool)
 			if !r.Model.Config.Model.NameHeader.IsUnknown() && !r.Model.Config.Model.NameHeader.IsNull() {
@@ -12516,7 +12810,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			} else {
 				nameHeader = nil
 			}
-			model2 = &shared.Model{
+			model4 = &shared.Model{
 				NameHeader: nameHeader,
 			}
 		}
@@ -12570,7 +12864,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout7 = nil
 				}
-				algorithm7 := shared.AIGatewayModelBalancerConsistentHashingConfigAlgorithm(r.Model.Config.Balancer.ConsistentHashing.Algorithm.ValueString())
 				hashOnHeader1 := new(string)
 				if !r.Model.Config.Balancer.ConsistentHashing.HashOnHeader.IsUnknown() && !r.Model.Config.Balancer.ConsistentHashing.HashOnHeader.IsNull() {
 					*hashOnHeader1 = r.Model.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
@@ -12586,7 +12879,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries7,
 					Slots:            slots7,
 					WriteTimeout:     writeTimeout7,
-					Algorithm:        algorithm7,
 					HashOnHeader:     hashOnHeader1,
 				}
 			}
@@ -12643,7 +12935,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout8 = nil
 				}
-				algorithm8 := shared.AIGatewayModelBalancerLeastConnectionsConfigAlgorithm(r.Model.Config.Balancer.LeastConnections.Algorithm.ValueString())
 				aiGatewayModelBalancerLeastConnectionsConfig1 = &shared.AIGatewayModelBalancerLeastConnectionsConfig{
 					ConnectTimeout:   connectTimeout9,
 					FailTimeout:      failTimeout8,
@@ -12653,7 +12944,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries8,
 					Slots:            slots8,
 					WriteTimeout:     writeTimeout8,
-					Algorithm:        algorithm8,
 				}
 			}
 			if aiGatewayModelBalancerLeastConnectionsConfig1 != nil {
@@ -12709,7 +12999,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout9 = nil
 				}
-				algorithm9 := shared.AIGatewayModelBalancerLowestLatencyConfigAlgorithm(r.Model.Config.Balancer.LowestLatency.Algorithm.ValueString())
 				latencyStrategy1 := new(shared.LatencyStrategy)
 				if !r.Model.Config.Balancer.LowestLatency.LatencyStrategy.IsUnknown() && !r.Model.Config.Balancer.LowestLatency.LatencyStrategy.IsNull() {
 					*latencyStrategy1 = shared.LatencyStrategy(r.Model.Config.Balancer.LowestLatency.LatencyStrategy.ValueString())
@@ -12725,7 +13014,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries9,
 					Slots:            slots9,
 					WriteTimeout:     writeTimeout9,
-					Algorithm:        algorithm9,
 					LatencyStrategy:  latencyStrategy1,
 				}
 			}
@@ -12782,7 +13070,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout10 = nil
 				}
-				algorithm10 := shared.AIGatewayModelBalancerLowestUsageConfigAlgorithm(r.Model.Config.Balancer.LowestUsage.Algorithm.ValueString())
 				tokensCountStrategy1 := new(shared.TokensCountStrategy)
 				if !r.Model.Config.Balancer.LowestUsage.TokensCountStrategy.IsUnknown() && !r.Model.Config.Balancer.LowestUsage.TokensCountStrategy.IsNull() {
 					*tokensCountStrategy1 = shared.TokensCountStrategy(r.Model.Config.Balancer.LowestUsage.TokensCountStrategy.ValueString())
@@ -12798,7 +13085,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:             retries10,
 					Slots:               slots10,
 					WriteTimeout:        writeTimeout10,
-					Algorithm:           algorithm10,
 					TokensCountStrategy: tokensCountStrategy1,
 				}
 			}
@@ -12855,7 +13141,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout11 = nil
 				}
-				algorithm11 := shared.AIGatewayModelBalancerPriorityConfigAlgorithm(r.Model.Config.Balancer.Priority.Algorithm.ValueString())
 				aiGatewayModelBalancerPriorityConfig1 = &shared.AIGatewayModelBalancerPriorityConfig{
 					ConnectTimeout:   connectTimeout12,
 					FailTimeout:      failTimeout11,
@@ -12865,7 +13150,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries11,
 					Slots:            slots11,
 					WriteTimeout:     writeTimeout11,
-					Algorithm:        algorithm11,
 				}
 			}
 			if aiGatewayModelBalancerPriorityConfig1 != nil {
@@ -12921,7 +13205,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout12 = nil
 				}
-				algorithm12 := shared.AIGatewayModelBalancerRoundRobinConfigAlgorithm(r.Model.Config.Balancer.RoundRobin.Algorithm.ValueString())
 				aiGatewayModelBalancerRoundRobinConfig1 = &shared.AIGatewayModelBalancerRoundRobinConfig{
 					ConnectTimeout:   connectTimeout13,
 					FailTimeout:      failTimeout12,
@@ -12931,7 +13214,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries12,
 					Slots:            slots12,
 					WriteTimeout:     writeTimeout12,
-					Algorithm:        algorithm12,
 				}
 			}
 			if aiGatewayModelBalancerRoundRobinConfig1 != nil {
@@ -12987,7 +13269,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					writeTimeout13 = nil
 				}
-				algorithm13 := shared.AIGatewayModelBalancerSemanticConfigAlgorithm(r.Model.Config.Balancer.Semantic.Algorithm.ValueString())
 				allowAuthOverride3 := new(bool)
 				if !r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.IsNull() {
 					*allowAuthOverride3 = r.Model.Config.Balancer.Semantic.Embeddings.AllowAuthOverride.ValueBool()
@@ -13003,13 +13284,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				var config5 shared.AIGatewayEmbeddingsModelConfig
 				var aiGatewayAzureEmbeddingsModelConfig1 *shared.AIGatewayAzureEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure != nil {
-					upstreamUrl46 := new(string)
+					upstreamUrl48 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.IsNull() {
-						*upstreamUrl46 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
+						*upstreamUrl48 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl46 = nil
+						upstreamUrl48 = nil
 					}
-					typeVar54 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId3 string
 					deploymentId3 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -13020,8 +13300,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						apiVersion5 = nil
 					}
 					aiGatewayAzureEmbeddingsModelConfig1 = &shared.AIGatewayAzureEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl46,
-						Type:         typeVar54,
+						UpstreamURL:  upstreamUrl48,
 						DeploymentID: deploymentId3,
 						APIVersion:   apiVersion5,
 					}
@@ -13033,18 +13312,17 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayBedrockEmbeddingsModelConfig1 *shared.AIGatewayBedrockEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock != nil {
-					upstreamUrl47 := new(string)
+					upstreamUrl49 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.IsNull() {
-						*upstreamUrl47 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
+						*upstreamUrl49 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl47 = nil
+						upstreamUrl49 = nil
 					}
-					typeVar55 := shared.AIGatewayBedrockEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Type.ValueString())
-					region4 := new(string)
+					region6 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.IsNull() {
-						*region4 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
+						*region6 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.Region.ValueString()
 					} else {
-						region4 = nil
+						region6 = nil
 					}
 					batchBucketPrefix3 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Bedrock.BatchBucketPrefix.IsNull() {
@@ -13071,9 +13349,8 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						videoOutputS3Uri3 = nil
 					}
 					aiGatewayBedrockEmbeddingsModelConfig1 = &shared.AIGatewayBedrockEmbeddingsModelConfig{
-						UpstreamURL:              upstreamUrl47,
-						Type:                     typeVar55,
-						Region:                   region4,
+						UpstreamURL:              upstreamUrl49,
+						Region:                   region6,
 						BatchBucketPrefix:        batchBucketPrefix3,
 						EmbeddingsNormalize:      embeddingsNormalize3,
 						PerformanceConfigLatency: performanceConfigLatency3,
@@ -13087,13 +13364,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayGeminiEmbeddingsModelConfig1 *shared.AIGatewayGeminiEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini != nil {
-					upstreamUrl48 := new(string)
+					upstreamUrl50 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.IsNull() {
-						*upstreamUrl48 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
+						*upstreamUrl50 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl48 = nil
+						upstreamUrl50 = nil
 					}
-					typeVar56 := shared.AIGatewayGeminiEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.Type.ValueString())
 					var gcpEnvironment6 *shared.GCPModelConfig
 					if r.Model.Config.Balancer.Semantic.Embeddings.Config.Gemini.GcpEnvironment != nil {
 						var apiEndpoint6 string
@@ -13112,8 +13388,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayGeminiEmbeddingsModelConfig1 = &shared.AIGatewayGeminiEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl48,
-						Type:           typeVar56,
+						UpstreamURL:    upstreamUrl50,
 						GcpEnvironment: gcpEnvironment6,
 					}
 				}
@@ -13124,13 +13399,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayHuggingfaceEmbeddingsModelConfig1 *shared.AIGatewayHuggingfaceEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface != nil {
-					upstreamUrl49 := new(string)
+					upstreamUrl51 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.IsNull() {
-						*upstreamUrl49 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
+						*upstreamUrl51 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl49 = nil
+						upstreamUrl51 = nil
 					}
-					typeVar57 := shared.AIGatewayHuggingfaceEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.Type.ValueString())
 					useCache3 := new(bool)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.IsNull() {
 						*useCache3 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Huggingface.UseCache.ValueBool()
@@ -13144,8 +13418,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						waitForModel5 = nil
 					}
 					aiGatewayHuggingfaceEmbeddingsModelConfig1 = &shared.AIGatewayHuggingfaceEmbeddingsModelConfig{
-						UpstreamURL:  upstreamUrl49,
-						Type:         typeVar57,
+						UpstreamURL:  upstreamUrl51,
 						UseCache:     useCache3,
 						WaitForModel: waitForModel5,
 					}
@@ -13157,16 +13430,16 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayMistralEmbeddingsModelConfig1 *shared.AIGatewayMistralEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral != nil {
-					upstreamUrl50 := new(string)
+					upstreamUrl52 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.IsNull() {
-						*upstreamUrl50 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
+						*upstreamUrl52 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl50 = nil
+						upstreamUrl52 = nil
 					}
-					typeVar58 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar2 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig1 = &shared.AIGatewayMistralEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl50,
-						Type:        typeVar58,
+						UpstreamURL: upstreamUrl52,
+						Type:        typeVar2,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig1 != nil {
@@ -13176,16 +13449,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOllamaEmbeddingsModelConfig1 *shared.AIGatewayOllamaEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama != nil {
-					upstreamUrl51 := new(string)
+					upstreamUrl53 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.IsNull() {
-						*upstreamUrl51 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
+						*upstreamUrl53 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl51 = nil
+						upstreamUrl53 = nil
 					}
-					typeVar59 := shared.AIGatewayOllamaEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Ollama.Type.ValueString())
 					aiGatewayOllamaEmbeddingsModelConfig1 = &shared.AIGatewayOllamaEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl51,
-						Type:        typeVar59,
+						UpstreamURL: upstreamUrl53,
 					}
 				}
 				if aiGatewayOllamaEmbeddingsModelConfig1 != nil {
@@ -13195,16 +13466,14 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayOpenaiEmbeddingsModelConfig1 *shared.AIGatewayOpenaiEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai != nil {
-					upstreamUrl52 := new(string)
+					upstreamUrl54 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.IsNull() {
-						*upstreamUrl52 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
+						*upstreamUrl54 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl52 = nil
+						upstreamUrl54 = nil
 					}
-					typeVar60 := shared.AIGatewayOpenaiEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Openai.Type.ValueString())
 					aiGatewayOpenaiEmbeddingsModelConfig1 = &shared.AIGatewayOpenaiEmbeddingsModelConfig{
-						UpstreamURL: upstreamUrl52,
-						Type:        typeVar60,
+						UpstreamURL: upstreamUrl54,
 					}
 				}
 				if aiGatewayOpenaiEmbeddingsModelConfig1 != nil {
@@ -13214,13 +13483,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayVertexEmbeddingsModelConfig1 *shared.AIGatewayVertexEmbeddingsModelConfig
 				if r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex != nil {
-					upstreamUrl53 := new(string)
+					upstreamUrl55 := new(string)
 					if !r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsUnknown() && !r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.IsNull() {
-						*upstreamUrl53 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
+						*upstreamUrl55 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.UpstreamURL.ValueString()
 					} else {
-						upstreamUrl53 = nil
+						upstreamUrl55 = nil
 					}
-					typeVar61 := shared.AIGatewayVertexEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.Type.ValueString())
 					var gcpEnvironment7 *shared.GCPModelConfig
 					if r.Model.Config.Balancer.Semantic.Embeddings.Config.Vertex.GcpEnvironment != nil {
 						var apiEndpoint7 string
@@ -13239,8 +13507,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 					}
 					aiGatewayVertexEmbeddingsModelConfig1 = &shared.AIGatewayVertexEmbeddingsModelConfig{
-						UpstreamURL:    upstreamUrl53,
-						Type:           typeVar61,
+						UpstreamURL:    upstreamUrl55,
 						GcpEnvironment: gcpEnvironment7,
 					}
 				}
@@ -13258,7 +13525,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				var vectordb1 shared.AIGatewayModelVectorDBConfig
 				var aiGatewayModelVectorDBConfigPgVector1 *shared.AIGatewayModelVectorDBConfigPgVector
 				if r.Model.Config.Balancer.Semantic.Vectordb.Pgvector != nil {
-					typeVar62 := shared.AIGatewayModelVectorDBConfigPgVectorType(r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Type.ValueString())
 					var dimensions2 int64
 					dimensions2 = r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Dimensions.ValueInt64()
 
@@ -13353,7 +13619,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						user1 = nil
 					}
 					aiGatewayModelVectorDBConfigPgVector1 = &shared.AIGatewayModelVectorDBConfigPgVector{
-						Type:           typeVar62,
 						Dimensions:     dimensions2,
 						DistanceMetric: distanceMetric2,
 						Threshold:      threshold2,
@@ -13373,7 +13638,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				}
 				var aiGatewayModelVectorDBConfigRedis1 *shared.AIGatewayModelVectorDBConfigRedis
 				if r.Model.Config.Balancer.Semantic.Vectordb.Redis != nil {
-					typeVar63 := shared.AIGatewayModelVectorDBConfigRedisType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.Type.ValueString())
 					var dimensions3 int64
 					dimensions3 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Dimensions.ValueInt64()
 
@@ -13388,18 +13652,17 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
 						if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws != nil {
-							typeVar64 := shared.AIGatewayRedisAWSAuthenticationType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Type.ValueString())
 							accessKeyId1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
 								*accessKeyId1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
 								accessKeyId1 = nil
 							}
-							assumeRoleArn1 := new(string)
+							assumeRoleArn3 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn3 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn1 = nil
+								assumeRoleArn3 = nil
 							}
 							cacheName1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -13413,17 +13676,17 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 							} else {
 								isServerless1 = nil
 							}
-							region5 := new(string)
+							region7 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region5 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region7 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region5 = nil
+								region7 = nil
 							}
-							roleSessionName1 := new(string)
+							roleSessionName3 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName3 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName1 = nil
+								roleSessionName3 = nil
 							}
 							secretAccessKey1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
@@ -13432,13 +13695,12 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 								secretAccessKey1 = nil
 							}
 							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
-								Type:            typeVar64,
 								AccessKeyID:     accessKeyId1,
-								AssumeRoleArn:   assumeRoleArn1,
+								AssumeRoleArn:   assumeRoleArn3,
 								CacheName:       cacheName1,
 								IsServerless:    isServerless1,
-								Region:          region5,
-								RoleSessionName: roleSessionName1,
+								Region:          region7,
+								RoleSessionName: roleSessionName3,
 								SecretAccessKey: secretAccessKey1,
 							}
 						}
@@ -13449,7 +13711,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisAzureAuthentication1 *shared.AIGatewayRedisAzureAuthentication
 						if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure != nil {
-							typeVar65 := shared.AIGatewayRedisAzureAuthenticationType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.Type.ValueString())
 							clientId1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
 								*clientId1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Azure.ClientID.ValueString()
@@ -13469,7 +13730,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 								tenantId1 = nil
 							}
 							aiGatewayRedisAzureAuthentication1 = &shared.AIGatewayRedisAzureAuthentication{
-								Type:         typeVar65,
 								ClientID:     clientId1,
 								ClientSecret: clientSecret1,
 								TenantID:     tenantId1,
@@ -13482,7 +13742,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						}
 						var aiGatewayRedisGCPAuthentication1 *shared.AIGatewayRedisGCPAuthentication
 						if r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp != nil {
-							typeVar66 := shared.AIGatewayRedisGCPAuthenticationType(r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.Type.ValueString())
 							serviceAccountJson1 := new(string)
 							if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
 								*serviceAccountJson1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
@@ -13490,7 +13749,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 								serviceAccountJson1 = nil
 							}
 							aiGatewayRedisGCPAuthentication1 = &shared.AIGatewayRedisGCPAuthentication{
-								Type:               typeVar66,
 								ServiceAccountJSON: serviceAccountJson1,
 							}
 						}
@@ -13584,30 +13842,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					} else {
 						password5 = nil
 					}
-					var port8 *shared.Port
-					if r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port != nil {
-						integer1 := new(int64)
-						if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.IsNull() {
-							*integer1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Integer.ValueInt64()
-						} else {
-							integer1 = nil
-						}
-						if integer1 != nil {
-							port8 = &shared.Port{
-								Integer: integer1,
-							}
-						}
-						str1 := new(string)
-						if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.IsNull() {
-							*str1 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.Str.ValueString()
-						} else {
-							str1 = nil
-						}
-						if str1 != nil {
-							port8 = &shared.Port{
-								Str: str1,
-							}
-						}
+					port8 := new(string)
+					if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.IsNull() {
+						*port8 = r.Model.Config.Balancer.Semantic.Vectordb.Redis.Port.ValueString()
+					} else {
+						port8 = nil
 					}
 					readTimeout15 := new(int64)
 					if !r.Model.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Redis.ReadTimeout.IsNull() {
@@ -13702,7 +13941,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						username4 = nil
 					}
 					aiGatewayModelVectorDBConfigRedis1 = &shared.AIGatewayModelVectorDBConfigRedis{
-						Type:                typeVar63,
 						Dimensions:          dimensions3,
 						DistanceMetric:      distanceMetric3,
 						Threshold:           threshold3,
@@ -13738,7 +13976,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Retries:          retries13,
 					Slots:            slots13,
 					WriteTimeout:     writeTimeout13,
-					Algorithm:        algorithm13,
 					Embeddings:       embeddings1,
 					Vectordb:         vectordb1,
 				}
@@ -13833,7 +14070,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			Logging:            logging1,
 			ResponseStreaming:  responseStreaming1,
 			MaxRequestBodySize: maxRequestBodySize1,
-			Model:              model2,
+			Model:              model4,
 			Balancer:           balancer1,
 			Proxy:              proxy1,
 		}
@@ -13851,7 +14088,6 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 			Policies:     policies1,
 			Labels:       labels1,
 			ManagedBy:    managedBy1,
-			Type:         typeVar53,
 			Config:       config4,
 			Capabilities: capabilities1,
 		}

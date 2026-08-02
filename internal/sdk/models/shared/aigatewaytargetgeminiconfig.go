@@ -3,33 +3,8 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayTargetGeminiConfigType string
-
-const (
-	AIGatewayTargetGeminiConfigTypeGemini AIGatewayTargetGeminiConfigType = "gemini"
-)
-
-func (e AIGatewayTargetGeminiConfigType) ToPointer() *AIGatewayTargetGeminiConfigType {
-	return &e
-}
-func (e *AIGatewayTargetGeminiConfigType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "gemini":
-		*e = AIGatewayTargetGeminiConfigType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayTargetGeminiConfigType: %v", v)
-	}
-}
 
 // AIGatewayTargetGeminiConfig - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
@@ -37,22 +12,23 @@ func (e *AIGatewayTargetGeminiConfigType) UnmarshalJSON(data []byte) error {
 // Google Gemini-specific configuration for a model.
 type AIGatewayTargetGeminiConfig struct {
 	// The number of dimensions for embedding outputs.
-	EmbeddingsDimensions *int64 `default:"null" json:"embeddings_dimensions"`
+	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
 	// The maximum number of tokens to generate in the response.
-	MaxTokens *int64 `default:"null" json:"max_tokens"`
+	MaxTokens *int64 `json:"max_tokens,omitempty"`
 	// Cost per input token for billing and cost tracking.
-	InputCost *float64 `default:"null" json:"input_cost"`
+	InputCost *float64 `json:"input_cost,omitempty"`
 	// Cost per output token for billing and cost tracking.
-	OutputCost *float64 `default:"null" json:"output_cost"`
+	OutputCost *float64 `json:"output_cost,omitempty"`
 	// Controls randomness in the model output. Higher values produce more varied responses.
-	Temperature *float64 `default:"null" json:"temperature"`
+	Temperature *float64 `json:"temperature,omitempty"`
 	// Limits the number of highest-probability tokens considered during generation.
-	TopK *int64 `default:"null" json:"top_k"`
+	TopK *int64 `json:"top_k,omitempty"`
 	// Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-	TopP *float64 `default:"null" json:"top_p"`
+	TopP *float64 `json:"top_p,omitempty"`
 	// The upstream URL for the model endpoint.
-	UpstreamURL *string                         `default:"null" json:"upstream_url"`
-	Type        AIGatewayTargetGeminiConfigType `json:"type"`
+	UpstreamURL *string `json:"upstream_url,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"gemini" json:"type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -127,11 +103,8 @@ func (a *AIGatewayTargetGeminiConfig) GetUpstreamURL() *string {
 	return a.UpstreamURL
 }
 
-func (a *AIGatewayTargetGeminiConfig) GetType() AIGatewayTargetGeminiConfigType {
-	if a == nil {
-		return AIGatewayTargetGeminiConfigType("")
-	}
-	return a.Type
+func (a *AIGatewayTargetGeminiConfig) GetType() string {
+	return "gemini"
 }
 
 func (a *AIGatewayTargetGeminiConfig) GetGcpEnvironment() *GCPModelConfig {

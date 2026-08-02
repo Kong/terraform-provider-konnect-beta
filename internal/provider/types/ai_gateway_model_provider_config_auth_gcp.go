@@ -10,6 +10,5 @@ type AIGatewayModelProviderConfigAuthGCP struct {
 	MetadataURL          types.String `tfsdk:"metadata_url"`
 	OauthTokenURL        types.String `tfsdk:"oauth_token_url"`
 	ServiceAccountJSON   types.String `tfsdk:"service_account_json"`
-	Type                 types.String `tfsdk:"type"`
 	UseGcpServiceAccount types.Bool   `tfsdk:"use_gcp_service_account"`
 }

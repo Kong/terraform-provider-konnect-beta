@@ -313,6 +313,7 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 									`For example, to map to user.info.id, set [ "user", "info", "id" ].`,
 							},
 							"consumer_groups_claim": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `The claim used for consumer groups mapping. ` + "\n" +

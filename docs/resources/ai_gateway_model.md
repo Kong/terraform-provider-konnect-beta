@@ -35,7 +35,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     config = {
       balancer = {
         lowest_latency = {
-          algorithm       = "lowest-latency"
           connect_timeout = 60000
           fail_timeout    = 10000
           failover_criteria = [
@@ -125,16 +124,16 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          xai = {
-            embeddings_dimensions = 7
-            input_cost            = 3.7
-            max_tokens            = 6
-            output_cost           = 6.56
-            temperature           = 3.27
-            top_k                 = 2
-            top_p                 = 2.83
-            type                  = "xai"
-            upstream_url          = "https://baggy-trash.biz/"
+          anthropic = {
+            embeddings_dimensions = 3
+            input_cost            = 9.85
+            max_tokens            = 1
+            output_cost           = 1.7
+            temperature           = 6.58
+            top_k                 = 3
+            top_p                 = 4.84
+            upstream_url          = "https://ajar-summer.biz"
+            version               = "2023-06-01"
           }
         }
         name                 = "gpt-5-model"
@@ -143,7 +142,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         weight               = 100
       }
     ]
-    type = "api"
   }
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   model = {
@@ -166,13 +164,11 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     config = {
       balancer = {
         semantic = {
-          algorithm       = "semantic"
           connect_timeout = 60000
           embeddings = {
             allow_auth_override = false
             config = {
               huggingface = {
-                type           = "huggingface"
                 upstream_url   = "...my_upstream_url..."
                 use_cache      = false
                 wait_for_model = false
@@ -207,7 +203,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
               }
               threshold = 3.66
               timeout   = 5000
-              type      = "pgvector"
               user      = "postgres"
             }
           }
@@ -250,10 +245,10 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_path = {
-            path_aliases = [
-              "@azure/claude-sonnet-5"
-            ]
+          ai_gateway_model_alias_config_body = {
+            body = {
+              key = jsonencode("value")
+            }
           }
         }
         paths = [
@@ -293,17 +288,16 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          databricks = {
-            embeddings_dimensions = 6
-            input_cost            = 9.06
-            max_tokens            = 8
-            output_cost           = 7.78
-            temperature           = 3.33
-            top_k                 = 4
-            top_p                 = 7.55
-            type                  = "databricks"
-            upstream_url          = "https://distant-antelope.com"
-            workspace_instance_id = "...my_workspace_instance_id..."
+          mistral = {
+            embeddings_dimensions = 10
+            format                = "ollama"
+            input_cost            = 1.29
+            max_tokens            = 5
+            output_cost           = 5.4
+            temperature           = 4.9
+            top_k                 = 6
+            top_p                 = 5.29
+            upstream_url          = "https://sad-thigh.net"
           }
         }
         name                 = "gpt-5-model"
@@ -312,7 +306,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         weight               = 100
       }
     ]
-    type = "model"
   }
 }
 ```
@@ -339,7 +332,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
 This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.
-- `type` (String)
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--api"></a>
@@ -371,7 +363,6 @@ A user-defined unique identifier for this model, used as a stable human-readable
 Not Null
 - `policies` (List of String) List of policy references.
 - `targets` (Attributes List) One or more backend models that this model entry routes to. Not Null (see [below for nested schema](#nestedatt--api--targets))
-- `type` (String) Not Null; must be "api"
 
 Read-Only:
 
@@ -448,7 +439,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "consistent-hashing"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -465,7 +455,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "least-connections"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -481,7 +470,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "lowest-latency"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -498,7 +486,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "lowest-usage"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -515,7 +502,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "priority"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -531,7 +517,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "round-robin"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -547,7 +532,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "semantic"
 - `connect_timeout` (Number) Default: 60000
 - `embeddings` (Attributes) Embeddings model configuration for this model. Not Null (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings))
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
@@ -620,7 +604,6 @@ Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
 - `deployment_id` (String) The Azure deployment ID for the model. Not Null
-- `type` (String) Not Null; must be "azure"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -634,7 +617,6 @@ Optional:
 - `performance_config_latency` (String) Latency performance configuration for the model invocation.
 - `region` (String) The AWS region for the model.
 Setting this option overrides the AWS_REGION environment variable.
-- `type` (String) Not Null; must be "bedrock"
 - `upstream_url` (String) The URL of the embeddings model.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
 
@@ -648,7 +630,6 @@ Optional:
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings--config--gemini--gcp_environment))
-- `type` (String) Not Null; must be "gemini"
 - `upstream_url` (String) The URL of the embeddings model.
 
 <a id="nestedatt--api--config--balancer--semantic--embeddings--config--gemini--gcp_environment"></a>
@@ -667,7 +648,6 @@ Optional:
 
 Optional:
 
-- `type` (String) Not Null; must be "huggingface"
 - `upstream_url` (String) The URL of the embeddings model.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
@@ -687,7 +667,6 @@ Optional:
 
 Optional:
 
-- `type` (String) Not Null; must be "ollama"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -696,7 +675,6 @@ Optional:
 
 Optional:
 
-- `type` (String) Not Null; must be "openai"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -709,7 +687,6 @@ Optional:
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings--config--vertex--gcp_environment))
-- `type` (String) Not Null; must be "vertex"
 - `upstream_url` (String) The URL of the embeddings model.
 
 <a id="nestedatt--api--config--balancer--semantic--embeddings--config--vertex--gcp_environment"></a>
@@ -752,7 +729,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `ssl` (Attributes) (see [below for nested schema](#nestedatt--api--config--balancer--semantic--vectordb--pgvector--ssl))
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 - `timeout` (Number) the timeout of the pgvector database. Default: 5000
-- `type` (String) Not Null; must be "pgvector"
 - `user` (String) the user of the pgvector database
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 Default: "postgres"
@@ -789,8 +765,9 @@ Default: "127.0.0.1"
 - `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--vectordb--redis--keepalive))
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (Attributes) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). (see [below for nested schema](#nestedatt--api--config--balancer--semantic--vectordb--redis--port))
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--vectordb--redis--sentinel))
@@ -799,7 +776,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
-- `type` (String) Not Null; must be "redis"
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -839,7 +815,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `secret_access_key` (String) AWS Secret Access Key.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "aws"
 
 
 <a id="nestedatt--api--config--balancer--semantic--vectordb--redis--cloud_authentication--azure"></a>
@@ -853,7 +828,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `tenant_id` (String) Azure Tenant ID.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "azure"
 
 
 <a id="nestedatt--api--config--balancer--semantic--vectordb--redis--cloud_authentication--gcp"></a>
@@ -863,7 +837,6 @@ Optional:
 
 - `service_account_json` (String) GCP Service Account JSON.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "gcp"
 
 
 
@@ -892,15 +865,6 @@ Optional:
 
 - `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
 - `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--api--config--balancer--semantic--vectordb--redis--port"></a>
-### Nested Schema for `api.config.balancer.semantic.vectordb.redis.port`
-
-Optional:
-
-- `integer` (Number)
-- `str` (String)
 
 
 <a id="nestedatt--api--config--balancer--semantic--vectordb--redis--sentinel"></a>
@@ -1003,7 +967,25 @@ Optional:
 
 Optional:
 
+- `ai_gateway_model_alias_config_body` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_body))
+- `ai_gateway_model_alias_config_headers` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_headers))
 - `ai_gateway_model_alias_config_path` (Attributes) Configuration for routing requests to a specific model using a path alias. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_path))
+
+<a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_body"></a>
+### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_body`
+
+Optional:
+
+- `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
+
+
+<a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_headers"></a>
+### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_headers`
+
+Optional:
+
+- `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
+
 
 <a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_path"></a>
 ### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_path`
@@ -1106,6 +1088,10 @@ Ollama-specific configuration for a model. (see [below for nested schema](#neste
 This feature is currently in beta and is subject to change.
 
 Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--openai))
+- `sagemaker` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS SageMaker-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker))
 - `vercel` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1135,7 +1121,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "anthropic"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
 
@@ -1154,7 +1139,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "azure"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1175,7 +1159,6 @@ Setting this option overrides the AWS_REGION environment variable.
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "bedrock"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
 
@@ -1192,7 +1175,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "cerebras"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1212,7 +1194,6 @@ possible known values include one of ["v1", "v2"]; Default: "v2"
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "cohere"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
 
@@ -1230,7 +1211,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "dashscope"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1246,7 +1226,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "databricks"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
 
@@ -1263,7 +1242,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "deepseek"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1283,7 +1261,6 @@ Configuration for a model hosted on Google Cloud Project. (see [below for nested
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "gemini"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--gemini--gcp_environment"></a>
@@ -1309,7 +1286,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "huggingface"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
@@ -1330,7 +1306,6 @@ Default: true
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "kimi"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1347,7 +1322,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "llama2"
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 
@@ -1364,7 +1338,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "mistral"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1380,7 +1353,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "ollama"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1396,8 +1368,46 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "openai"
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+
+<a id="nestedatt--api--targets--config--sagemaker"></a>
+### Nested Schema for `api.targets.config.sagemaker`
+
+Optional:
+
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--aws))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `target` (Attributes) (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--target))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--sagemaker--aws"></a>
+### Nested Schema for `api.targets.config.sagemaker.aws`
+
+Optional:
+
+- `assume_role_arn` (String) Assume a different IAM role after authenticating; mutually required with role_session_name.
+- `region` (String) Overrides the AWS_REGION environment variable for SageMaker requests.
+- `role_session_name` (String) Session identifier for the assumed role; mutually required with assume_role_arn.
+- `sts_endpoint_url` (String) Overrides the STS endpoint when assuming a role.
+
+
+<a id="nestedatt--api--targets--config--sagemaker--target"></a>
+### Nested Schema for `api.targets.config.sagemaker.target`
+
+Optional:
+
+- `container_hostname` (String) Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).
+- `model` (String) Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
+- `variant` (String) Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
+
 
 
 <a id="nestedatt--api--targets--config--vercel"></a>
@@ -1412,7 +1422,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "vercel"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1432,7 +1441,6 @@ Configuration for a model hosted on Google Cloud Project. (see [below for nested
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "vertex"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--vertex--gcp_environment"></a>
@@ -1460,7 +1468,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "vllm"
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 
@@ -1476,7 +1483,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "xai"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -1512,7 +1518,6 @@ A user-defined unique identifier for this model, used as a stable human-readable
 Not Null
 - `policies` (List of String) List of policy references.
 - `targets` (Attributes List) One or more backend models that this model entry routes to. Not Null (see [below for nested schema](#nestedatt--model--targets))
-- `type` (String) Not Null; must be "model"
 
 Read-Only:
 
@@ -1591,7 +1596,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "consistent-hashing"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -1608,7 +1612,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "least-connections"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -1624,7 +1627,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "lowest-latency"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -1641,7 +1643,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "lowest-usage"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -1658,7 +1659,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "priority"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -1674,7 +1674,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "round-robin"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
@@ -1690,7 +1689,6 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Not Null; must be "semantic"
 - `connect_timeout` (Number) Default: 60000
 - `embeddings` (Attributes) Embeddings model configuration for this model. Not Null (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings))
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
@@ -1763,7 +1761,6 @@ Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
 - `deployment_id` (String) The Azure deployment ID for the model. Not Null
-- `type` (String) Not Null; must be "azure"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -1777,7 +1774,6 @@ Optional:
 - `performance_config_latency` (String) Latency performance configuration for the model invocation.
 - `region` (String) The AWS region for the model.
 Setting this option overrides the AWS_REGION environment variable.
-- `type` (String) Not Null; must be "bedrock"
 - `upstream_url` (String) The URL of the embeddings model.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
 
@@ -1791,7 +1787,6 @@ Optional:
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings--config--gemini--gcp_environment))
-- `type` (String) Not Null; must be "gemini"
 - `upstream_url` (String) The URL of the embeddings model.
 
 <a id="nestedatt--model--config--balancer--semantic--embeddings--config--gemini--gcp_environment"></a>
@@ -1810,7 +1805,6 @@ Optional:
 
 Optional:
 
-- `type` (String) Not Null; must be "huggingface"
 - `upstream_url` (String) The URL of the embeddings model.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
@@ -1830,7 +1824,6 @@ Optional:
 
 Optional:
 
-- `type` (String) Not Null; must be "ollama"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -1839,7 +1832,6 @@ Optional:
 
 Optional:
 
-- `type` (String) Not Null; must be "openai"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -1852,7 +1844,6 @@ Optional:
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings--config--vertex--gcp_environment))
-- `type` (String) Not Null; must be "vertex"
 - `upstream_url` (String) The URL of the embeddings model.
 
 <a id="nestedatt--model--config--balancer--semantic--embeddings--config--vertex--gcp_environment"></a>
@@ -1895,7 +1886,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `ssl` (Attributes) (see [below for nested schema](#nestedatt--model--config--balancer--semantic--vectordb--pgvector--ssl))
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 - `timeout` (Number) the timeout of the pgvector database. Default: 5000
-- `type` (String) Not Null; must be "pgvector"
 - `user` (String) the user of the pgvector database
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 Default: "postgres"
@@ -1932,8 +1922,9 @@ Default: "127.0.0.1"
 - `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--vectordb--redis--keepalive))
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (Attributes) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). (see [below for nested schema](#nestedatt--model--config--balancer--semantic--vectordb--redis--port))
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--vectordb--redis--sentinel))
@@ -1942,7 +1933,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
-- `type` (String) Not Null; must be "redis"
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1982,7 +1972,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `secret_access_key` (String) AWS Secret Access Key.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "aws"
 
 
 <a id="nestedatt--model--config--balancer--semantic--vectordb--redis--cloud_authentication--azure"></a>
@@ -1996,7 +1985,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `tenant_id` (String) Azure Tenant ID.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "azure"
 
 
 <a id="nestedatt--model--config--balancer--semantic--vectordb--redis--cloud_authentication--gcp"></a>
@@ -2006,7 +1994,6 @@ Optional:
 
 - `service_account_json` (String) GCP Service Account JSON.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "gcp"
 
 
 
@@ -2035,15 +2022,6 @@ Optional:
 
 - `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
 - `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--model--config--balancer--semantic--vectordb--redis--port"></a>
-### Nested Schema for `model.config.balancer.semantic.vectordb.redis.port`
-
-Optional:
-
-- `integer` (Number)
-- `str` (String)
 
 
 <a id="nestedatt--model--config--balancer--semantic--vectordb--redis--sentinel"></a>
@@ -2158,7 +2136,25 @@ Optional:
 
 Optional:
 
+- `ai_gateway_model_alias_config_body` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_body))
+- `ai_gateway_model_alias_config_headers` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_headers))
 - `ai_gateway_model_alias_config_path` (Attributes) Configuration for routing requests to a specific model using a path alias. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_path))
+
+<a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_body"></a>
+### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_body`
+
+Optional:
+
+- `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
+
+
+<a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_headers"></a>
+### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_headers`
+
+Optional:
+
+- `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
+
 
 <a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_path"></a>
 ### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_path`
@@ -2261,6 +2257,10 @@ Ollama-specific configuration for a model. (see [below for nested schema](#neste
 This feature is currently in beta and is subject to change.
 
 Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--openai))
+- `sagemaker` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS SageMaker-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker))
 - `vercel` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -2290,7 +2290,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "anthropic"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
 
@@ -2309,7 +2308,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "azure"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2330,7 +2328,6 @@ Setting this option overrides the AWS_REGION environment variable.
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "bedrock"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
 
@@ -2347,7 +2344,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "cerebras"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2367,7 +2363,6 @@ possible known values include one of ["v1", "v2"]; Default: "v2"
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "cohere"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
 
@@ -2385,7 +2380,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "dashscope"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2401,7 +2395,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "databricks"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
 
@@ -2418,7 +2411,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "deepseek"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2438,7 +2430,6 @@ Configuration for a model hosted on Google Cloud Project. (see [below for nested
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "gemini"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--gemini--gcp_environment"></a>
@@ -2464,7 +2455,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "huggingface"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
@@ -2485,7 +2475,6 @@ Default: true
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "kimi"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2502,7 +2491,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "llama2"
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 
@@ -2519,7 +2507,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "mistral"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2535,7 +2522,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "ollama"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2551,8 +2537,46 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "openai"
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+
+<a id="nestedatt--model--targets--config--sagemaker"></a>
+### Nested Schema for `model.targets.config.sagemaker`
+
+Optional:
+
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--aws))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `target` (Attributes) (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--target))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--sagemaker--aws"></a>
+### Nested Schema for `model.targets.config.sagemaker.aws`
+
+Optional:
+
+- `assume_role_arn` (String) Assume a different IAM role after authenticating; mutually required with role_session_name.
+- `region` (String) Overrides the AWS_REGION environment variable for SageMaker requests.
+- `role_session_name` (String) Session identifier for the assumed role; mutually required with assume_role_arn.
+- `sts_endpoint_url` (String) Overrides the STS endpoint when assuming a role.
+
+
+<a id="nestedatt--model--targets--config--sagemaker--target"></a>
+### Nested Schema for `model.targets.config.sagemaker.target`
+
+Optional:
+
+- `container_hostname` (String) Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).
+- `model` (String) Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
+- `variant` (String) Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
+
 
 
 <a id="nestedatt--model--targets--config--vercel"></a>
@@ -2567,7 +2591,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "vercel"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2587,7 +2610,6 @@ Configuration for a model hosted on Google Cloud Project. (see [below for nested
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "vertex"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--vertex--gcp_environment"></a>
@@ -2615,7 +2637,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "vllm"
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 
@@ -2631,7 +2652,6 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `type` (String) Not Null; must be "xai"
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 ## Import

@@ -5,7 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -55,11 +54,6 @@ func (r *AIGatewayConsumerGroupMemberResource) Schema(ctx context.Context, req r
 			"consumer_group": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"additional_properties": schema.StringAttribute{
-						CustomType:  jsontypes.NormalizedType{},
-						Computed:    true,
-						Description: `Parsed as JSON.`,
-					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{

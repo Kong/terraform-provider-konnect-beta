@@ -7,7 +7,6 @@ import (
 )
 
 type HashiCorpVaultGcpIAMConfig struct {
-	AuthMethod     types.String `tfsdk:"auth_method"`
 	Base64Decode   types.Bool   `tfsdk:"base64_decode"`
 	Host           types.String `tfsdk:"host"`
 	JwtExp         types.Int64  `tfsdk:"jwt_exp"`

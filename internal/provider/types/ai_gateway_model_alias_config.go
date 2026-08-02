@@ -3,5 +3,7 @@
 package types
 
 type AIGatewayModelAliasConfig struct {
-	AIGatewayModelAliasConfigPath *AIGatewayModelAliasConfigPath `queryParam:"inline" tfsdk:"ai_gateway_model_alias_config_path"`
+	AIGatewayModelAliasConfigBody    *AIGatewayModelAliasConfigBody    `queryParam:"inline" tfsdk:"ai_gateway_model_alias_config_body"`
+	AIGatewayModelAliasConfigHeaders *AIGatewayModelAliasConfigHeaders `queryParam:"inline" tfsdk:"ai_gateway_model_alias_config_headers"`
+	AIGatewayModelAliasConfigPath    *AIGatewayModelAliasConfigPath    `queryParam:"inline" tfsdk:"ai_gateway_model_alias_config_path"`
 }

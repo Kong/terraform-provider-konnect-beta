@@ -10,7 +10,6 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       ]
     }
   }
-  additional_properties = "{ \"see\": \"documentation\" }"
   config = {
     logging = {
       max_payload_size = 524288

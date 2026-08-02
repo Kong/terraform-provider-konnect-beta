@@ -3,33 +3,8 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayOpenaiEmbeddingsModelConfigType string
-
-const (
-	AIGatewayOpenaiEmbeddingsModelConfigTypeOpenai AIGatewayOpenaiEmbeddingsModelConfigType = "openai"
-)
-
-func (e AIGatewayOpenaiEmbeddingsModelConfigType) ToPointer() *AIGatewayOpenaiEmbeddingsModelConfigType {
-	return &e
-}
-func (e *AIGatewayOpenaiEmbeddingsModelConfigType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "openai":
-		*e = AIGatewayOpenaiEmbeddingsModelConfigType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayOpenaiEmbeddingsModelConfigType: %v", v)
-	}
-}
 
 // AIGatewayOpenaiEmbeddingsModelConfig - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
@@ -37,8 +12,9 @@ func (e *AIGatewayOpenaiEmbeddingsModelConfigType) UnmarshalJSON(data []byte) er
 // Openai-specific configuration for a model.
 type AIGatewayOpenaiEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string                                  `default:"null" json:"upstream_url"`
-	Type        AIGatewayOpenaiEmbeddingsModelConfigType `json:"type"`
+	UpstreamURL *string `default:"null" json:"upstream_url"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"openai" json:"type"`
 }
 
 func (a AIGatewayOpenaiEmbeddingsModelConfig) MarshalJSON() ([]byte, error) {
@@ -59,9 +35,6 @@ func (a *AIGatewayOpenaiEmbeddingsModelConfig) GetUpstreamURL() *string {
 	return a.UpstreamURL
 }
 
-func (a *AIGatewayOpenaiEmbeddingsModelConfig) GetType() AIGatewayOpenaiEmbeddingsModelConfigType {
-	if a == nil {
-		return AIGatewayOpenaiEmbeddingsModelConfigType("")
-	}
-	return a.Type
+func (a *AIGatewayOpenaiEmbeddingsModelConfig) GetType() string {
+	return "openai"
 }

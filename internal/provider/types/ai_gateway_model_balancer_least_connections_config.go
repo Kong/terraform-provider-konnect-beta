@@ -7,7 +7,6 @@ import (
 )
 
 type AIGatewayModelBalancerLeastConnectionsConfig struct {
-	Algorithm        types.String   `tfsdk:"algorithm"`
 	ConnectTimeout   types.Int64    `tfsdk:"connect_timeout"`
 	FailTimeout      types.Int64    `tfsdk:"fail_timeout"`
 	FailoverCriteria []types.String `tfsdk:"failover_criteria"`

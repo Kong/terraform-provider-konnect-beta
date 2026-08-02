@@ -15,9 +15,8 @@ AIGateway Resource
 ```terraform
 resource "konnect_ai_gateway" "my_aigateway" {
   provider = konnect-beta
-  additional_properties = "{ \"see\": \"documentation\" }"
-  description           = "An AI Gateway for my organization."
-  display_name          = "My AI Gateway"
+  description  = "An AI Gateway for my organization."
+  display_name = "My AI Gateway"
   labels = {
     key = "value"
   }
@@ -42,7 +41,6 @@ resource "konnect_ai_gateway" "my_aigateway" {
 
 ### Optional
 
-- `additional_properties` (String) Parsed as JSON.
 - `description` (String) The description of the AI Gateway.
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 

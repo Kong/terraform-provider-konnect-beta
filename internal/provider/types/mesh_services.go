@@ -3,5 +3,5 @@
 package types
 
 type MeshServices struct {
-	Mode *AIGatewayRedisCloudConfigurationPort `tfsdk:"mode"`
+	Mode *MeshItemMode `tfsdk:"mode"`
 }

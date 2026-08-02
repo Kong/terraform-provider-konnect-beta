@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayRedisCloudConfigurationPort struct {
+type MeshItemMode struct {
 	Integer types.Int64  `queryParam:"inline" tfsdk:"integer"`
 	Str     types.String `queryParam:"inline" tfsdk:"str"`
 }

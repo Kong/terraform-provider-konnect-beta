@@ -9116,6 +9116,89 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Auth Server Clients
+  '/v1/auth-servers/{authServerId}/trusted-idps':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerTrustedIdp#create
+        terraform-datasource: null
+      operationId: createAuthServerTrustedIdp
+      summary: Create a new auth server trusted IdP
+      description: Create a trusted IdP for a given auth server. The `issuer_url` must be unique within the auth server. Only one trusted IdP per auth server is allowed.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTrustedIdp'
+      responses:
+        '201':
+          $ref: '#/components/responses/TrustedIdp'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server Trusted IdPs
+  '/v1/auth-servers/{authServerId}/trusted-idps/{trustedIdpId}':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/trustedIdpId'
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerTrustedIdp#read
+        terraform-datasource: null
+      operationId: getAuthServerTrustedIdp
+      summary: Get an auth server trusted IdP
+      description: Get a trusted IdP for a given auth server.
+      responses:
+        '200':
+          $ref: '#/components/responses/TrustedIdp'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Trusted IdPs
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerTrustedIdp#update
+        terraform-datasource: null
+      operationId: updateAuthServerTrustedIdp
+      summary: Update an auth server trusted IdP
+      description: Replace a trusted IdP for a given auth server. The request body is the full representation; omitted optional fields are reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTrustedIdp'
+      responses:
+        '200':
+          $ref: '#/components/responses/TrustedIdp'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server Trusted IdPs
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerTrustedIdp#delete
+        terraform-datasource: null
+      operationId: deleteAuthServerTrustedIdp
+      summary: Delete an auth server trusted IdP
+      description: Delete a trusted IdP for a given auth server.
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Trusted IdPs
   /v2/dashboards:
     post:
       x-speakeasy-entity-operation:
@@ -14110,6 +14193,16 @@ components:
       in: path
       required: true
       description: ID of the team.
+    trustedIdpId:
+      schema:
+        type: string
+        format: uuid
+        example: 7b5c1c2e-9f3a-4b6d-8e21-0a1b2c3d4e5f
+      name: trustedIdpId
+      in: path
+      required: true
+      description: The trusted IdP ID
+      x-speakeasy-match: id
     VersionId:
       schema:
         type: string
@@ -15612,6 +15705,32 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
+    AISettings:
+      type: object
+      properties:
+        enabled:
+          description: Is AI enabled?
+          type: boolean
+        features:
+          type: object
+          additionalProperties: false
+          properties:
+            mcp_server:
+              description: AI Features config
+              type: object
+              additionalProperties: false
+              properties:
+                enabled:
+                  description: Is the MCP Server enabled?
+                  type: boolean
+              required:
+                - enabled
+          required:
+            - mcp_server
+      additionalProperties: false
+      required:
+        - enabled
+        - features
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -31437,6 +31556,95 @@ components:
               type: string
               example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
               x-speakeasy-param-computed: true
+    TrustedIdpIssuerUrl:
+      description: The issuer URL of the trusted IdP. Unique per auth server.
+      type: string
+      format: uri
+      example: 'https://acme.okta.com/oauth2/default'
+    TrustedIdpJwksUri:
+      description: JWKS URI of the trusted IdP. Overrides OIDC discovery when set.
+      type: string
+      format: uri
+    TrustedIdpDirectoryId:
+      description: The Kong Identity directory used for principal lookup and provisioning.
+      type: string
+      format: uuid
+    CreateTrustedIdpPayload:
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/TrustedIdpIssuerUrl'
+        jwks_uri:
+          $ref: '#/components/schemas/TrustedIdpJwksUri'
+        directory_id:
+          $ref: '#/components/schemas/TrustedIdpDirectoryId'
+        id_jag_enabled:
+          description: Whether ID-JAG (jwt-bearer) token exchange is enabled.
+          type: boolean
+          default: false
+        jit_provisioning_enabled:
+          description: Whether principals are provisioned just-in-time on first exchange.
+          type: boolean
+          default: false
+      required:
+        - issuer_url
+        - directory_id
+    UpdateTrustedIdpPayload:
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/TrustedIdpIssuerUrl'
+        jwks_uri:
+          $ref: '#/components/schemas/TrustedIdpJwksUri'
+        directory_id:
+          $ref: '#/components/schemas/TrustedIdpDirectoryId'
+        id_jag_enabled:
+          description: Whether ID-JAG (jwt-bearer) token exchange is enabled.
+          type: boolean
+          default: false
+        jit_provisioning_enabled:
+          description: Whether principals are provisioned just-in-time on first exchange.
+          type: boolean
+          default: false
+      required:
+        - issuer_url
+        - directory_id
+    TrustedIdp:
+      type: object
+      properties:
+        id:
+          description: The ID of the trusted IdP.
+          type: string
+          format: uuid
+        auth_server_id:
+          description: The auth server this trusted IdP belongs to.
+          type: string
+          format: uuid
+        issuer_url:
+          $ref: '#/components/schemas/TrustedIdpIssuerUrl'
+        jwks_uri:
+          $ref: '#/components/schemas/TrustedIdpJwksUri'
+        directory_id:
+          $ref: '#/components/schemas/TrustedIdpDirectoryId'
+        id_jag_enabled:
+          description: Whether ID-JAG (jwt-bearer) token exchange is enabled.
+          type: boolean
+        jit_provisioning_enabled:
+          description: Whether principals are provisioned just-in-time on first exchange.
+          type: boolean
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - auth_server_id
+        - issuer_url
+        - directory_id
+        - id_jag_enabled
+        - jit_provisioning_enabled
+        - created_at
+        - updated_at
     AdvancedQuery:
       description: A query targeting the API usage analytics datasource.
       type: object
@@ -39164,7 +39372,7 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -39201,7 +39409,7 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -39275,7 +39483,6 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: true
       required:
         - display_name
         - name
@@ -39445,8 +39652,7 @@ components:
           $ref: '#/components/schemas/ManagedBy'
         type:
           type: string
-          enum:
-            - model
+          const: model
         config:
           $ref: '#/components/schemas/AIGatewayModelModelConfig'
         capabilities:
@@ -39524,8 +39730,7 @@ components:
           $ref: '#/components/schemas/ManagedBy'
         type:
           type: string
-          enum:
-            - api
+          const: api
         config:
           $ref: '#/components/schemas/AIGatewayModelAPIConfig'
         capabilities:
@@ -39545,6 +39750,179 @@ components:
         - type
         - config
         - capabilities
+      x-unstable: true
+    AIGatewayModelAPIResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an AI Gateway model.
+      type: object
+      properties:
+        display_name:
+          description: The display name for this model instance.
+          type: string
+          example: My GPT 5 model
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-gpt-5-model
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the model is enabled.
+          type: boolean
+          example: true
+          default: true
+        access:
+          $ref: '#/components/schemas/AIGatewayModelAccess'
+        formats:
+          description: List of request/response formats supported by this model.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayModelFormat'
+          maxItems: 1
+          minItems: 1
+        targets:
+          description: One or more backend models that this model entry routes to.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayTarget'
+          minItems: 1
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: api
+        config:
+          $ref: '#/components/schemas/AIGatewayModelAPIConfig'
+        capabilities:
+          description: List of AI capabilities enabled for this API model.
+          type: array
+          items:
+            type: string
+            enum:
+              - batches
+              - files
+            x-speakeasy-unknown-values: allow
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - display_name
+        - name
+        - formats
+        - targets
+        - type
+        - config
+        - capabilities
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelModelResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an AI Gateway model.
+      type: object
+      properties:
+        display_name:
+          description: The display name for this model instance.
+          type: string
+          example: My GPT 5 model
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-gpt-5-model
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the model is enabled.
+          type: boolean
+          example: true
+          default: true
+        access:
+          $ref: '#/components/schemas/AIGatewayModelAccess'
+        formats:
+          description: List of request/response formats supported by this model.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayModelFormat'
+          maxItems: 1
+          minItems: 1
+        targets:
+          description: One or more backend models that this model entry routes to.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayTarget'
+          minItems: 1
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: model
+        config:
+          $ref: '#/components/schemas/AIGatewayModelModelConfig'
+        capabilities:
+          description: List of AI capabilities enabled for this model.
+          type: array
+          items:
+            type: string
+            enum:
+              - generate
+              - agentic
+              - realtime
+              - embeddings
+              - image
+              - audio/speech
+              - audio/transcription
+              - audio/translation
+              - video
+              - rerank
+            x-speakeasy-unknown-values: allow
+          minItems: 1
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - display_name
+        - name
+        - formats
+        - targets
+        - type
+        - config
+        - capabilities
+        - id
+        - created_at
+        - updated_at
       x-unstable: true
     CreateAIGatewayModelRequest:
       description: |-
@@ -39580,28 +39958,14 @@ components:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
-
-        Configuration for an AI Gateway model.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
       discriminator:
         propertyName: type
         mapping:
-          api: '#/components/schemas/AIGatewayModelAPI'
-          model: '#/components/schemas/AIGatewayModelModel'
+          api: '#/components/schemas/AIGatewayModelAPIResponse'
+          model: '#/components/schemas/AIGatewayModelModelResponse'
       oneOf:
-        - $ref: '#/components/schemas/AIGatewayModelAPI'
-        - $ref: '#/components/schemas/AIGatewayModelModel'
-      required:
-        - id
-        - created_at
-        - updated_at
+        - $ref: '#/components/schemas/AIGatewayModelAPIResponse'
+        - $ref: '#/components/schemas/AIGatewayModelModelResponse'
       x-unstable: true
     AIGatewayModelModelConfig:
       description: 'Routing, logging, and load balancing configuration for the model.'
@@ -39699,8 +40063,6 @@ components:
           items:
             type: string
             example: foo.example.com
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         https_redirect_status_code:
           description: 'The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol.'
@@ -39759,8 +40121,46 @@ components:
     AIGatewayModelAliasConfig:
       description: Configuration for routing to this model using an alias.
       oneOf:
+        - $ref: '#/components/schemas/AIGatewayModelAliasConfigBody'
+        - $ref: '#/components/schemas/AIGatewayModelAliasConfigHeaders'
         - $ref: '#/components/schemas/AIGatewayModelAliasConfigPath'
       title: AIGatewayModelAliasConfig
+    AIGatewayModelAliasConfigBody:
+      description: |
+        Configuration for routing requests to a specific model using a request body property.
+      type: object
+      properties:
+        body:
+          description: |
+            Value indexed by property name that will cause this route to match if present in the request body.
+          type: object
+          example:
+            model:
+              - '@azure/claude-sonnet-5'
+          additionalProperties: true
+          maxProperties: 1
+      additionalProperties: false
+      required:
+        - body
+      title: AIGatewayModelAliasConfigBody
+    AIGatewayModelAliasConfigHeaders:
+      description: |
+        Configuration for routing requests to a specific model using a header.
+      type: object
+      properties:
+        headers:
+          description: |
+            Value indexed by property name that will cause this route to match if present in the request headers.
+          type: object
+          example:
+            model:
+              - '@azure/claude-sonnet-5'
+          additionalProperties: true
+          maxProperties: 1
+      additionalProperties: false
+      required:
+        - headers
+      title: AIGatewayModelAliasConfigHeaders
     AIGatewayModelAliasConfigPath:
       description: |
         Configuration for routing requests to a specific model using a path alias.
@@ -39871,8 +40271,7 @@ components:
           minimum: 1
         algorithm:
           type: string
-          enum:
-            - consistent-hashing
+          const: consistent-hashing
         hash_on_header:
           description: The header to use for consistent-hashing.
           type: string
@@ -39949,8 +40348,7 @@ components:
           minimum: 1
         algorithm:
           type: string
-          enum:
-            - least-connections
+          const: least-connections
       additionalProperties: false
       required:
         - algorithm
@@ -40023,8 +40421,7 @@ components:
           minimum: 1
         algorithm:
           type: string
-          enum:
-            - lowest-latency
+          const: lowest-latency
         latency_strategy:
           description: 'What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.'
           type: string
@@ -40106,8 +40503,7 @@ components:
           minimum: 1
         algorithm:
           type: string
-          enum:
-            - lowest-usage
+          const: lowest-usage
         tokens_count_strategy:
           description: Methodology to use for token usage calculation.
           type: string
@@ -40192,8 +40588,7 @@ components:
           minimum: 1
         algorithm:
           type: string
-          enum:
-            - priority
+          const: priority
       additionalProperties: false
       required:
         - algorithm
@@ -40266,8 +40661,7 @@ components:
           minimum: 1
         algorithm:
           type: string
-          enum:
-            - round-robin
+          const: round-robin
       additionalProperties: false
       required:
         - algorithm
@@ -40340,8 +40734,7 @@ components:
           minimum: 1
         algorithm:
           type: string
-          enum:
-            - semantic
+          const: semantic
         embeddings:
           description: Embeddings model configuration for this model.
           type: object
@@ -40414,8 +40807,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - azure
+          const: azure
         deployment_id:
           description: The Azure deployment ID for the model.
           type: string
@@ -40444,8 +40836,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - bedrock
+          const: bedrock
         region:
           description: |
             The AWS region for the model.
@@ -40496,8 +40887,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - gemini
+          const: gemini
         gcp_environment:
           $ref: '#/components/schemas/GCPModelConfig'
       additionalProperties: false
@@ -40520,8 +40910,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - huggingface
+          const: huggingface
         use_cache:
           description: Whether to use the Hugging Face inference cache.
           type: boolean
@@ -40570,8 +40959,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - ollama
+          const: ollama
       additionalProperties: false
       required:
         - type
@@ -40592,8 +40980,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - openai
+          const: openai
       additionalProperties: false
       required:
         - type
@@ -40614,8 +41001,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - vertex
+          const: vertex
         gcp_environment:
           $ref: '#/components/schemas/GCPModelConfig'
       additionalProperties: false
@@ -40647,8 +41033,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - redis
+          const: redis
         dimensions:
           description: the desired dimensionality for the vectors
           type: integer
@@ -40765,14 +41150,11 @@ components:
           description: |
             An integer representing a port number between 0 and 65535, inclusive.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-          oneOf:
-            - type: integer
-              default: 6379
-              maximum: 65535
-              minimum: 0
-              example: 6379
-            - type: string
-              example: '{vault://hcv/redis/port}'
+          type: string
+          example: 6379
+          default: '6379'
+          maximum: 65535
+          minimum: 0
           x-go-type: types.Referenceable
           x-go-type-import:
             path: github.com/kong/koko/internal/server/public/openapi/controlplanesconfig/types
@@ -40881,6 +41263,12 @@ components:
         - type
         - dimensions
         - distance_metric
+      x-speakeasy-transform-from-api:
+        jq: |
+          if has("port") then .port |= if type == "number" then tostring else . end else . end
+      x-speakeasy-transform-to-api:
+        jq: |
+          if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
       x-unstable: true
     AIGatewayModelVectorDBConfigPgVector:
       description: |-
@@ -40890,8 +41278,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - pgvector
+          const: pgvector
         dimensions:
           description: the desired dimensionality for the vectors
           type: integer
@@ -41025,8 +41412,6 @@ components:
             The semantic description of the target, required if using semantic load balancing.
             Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         allow_auth_override:
           description: |
@@ -41070,6 +41455,7 @@ components:
           vertex: '#/components/schemas/AIGatewayTargetVertexConfig'
           vllm: '#/components/schemas/AIGatewayTargetVllmConfig'
           xai: '#/components/schemas/AIGatewayTargetXaiConfig'
+          sagemaker: '#/components/schemas/AIGatewayTargetSagemakerConfig'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayTargetAnthropicConfig'
         - $ref: '#/components/schemas/AIGatewayTargetAzureConfig'
@@ -41090,6 +41476,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayTargetVertexConfig'
         - $ref: '#/components/schemas/AIGatewayTargetVllmConfig'
         - $ref: '#/components/schemas/AIGatewayTargetXaiConfig'
+        - $ref: '#/components/schemas/AIGatewayTargetSagemakerConfig'
       x-unstable: true
     AIGatewayTargetAnthropicConfig:
       description: |-
@@ -41102,56 +41489,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - anthropic
+          const: anthropic
         version:
           description: The Anthropic API version to use.
           type: string
@@ -41170,56 +41540,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - azure
+          const: azure
         deployment_id:
           description: The Azure deployment ID for the model.
           type: string
@@ -41242,56 +41595,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - bedrock
+          const: bedrock
         region:
           description: |
             The AWS region for the model.
@@ -41336,56 +41672,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - cerebras
+          const: cerebras
       required:
         - type
       x-unstable: true
@@ -41400,56 +41719,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - cohere
+          const: cohere
         api_version:
           description: |
             Cohere API version. `v1` uses the legacy `/v1/chat` endpoint; `v2` (default)
@@ -41489,56 +41791,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - dashscope
+          const: dashscope
         international:
           description: Whether to use the international DashScope endpoint.
           type: boolean
@@ -41557,56 +41842,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - databricks
+          const: databricks
         workspace_instance_id:
           description: The Databricks workspace instance ID.
           type: string
@@ -41625,56 +41893,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - deepseek
+          const: deepseek
       required:
         - type
       x-unstable: true
@@ -41689,56 +41940,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - gemini
+          const: gemini
         gcp_environment:
           $ref: '#/components/schemas/GCPModelConfig'
       required:
@@ -41755,56 +41989,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - huggingface
+          const: huggingface
         use_cache:
           description: Whether to use the Hugging Face inference cache.
           type: boolean
@@ -41827,56 +42044,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - kimi
+          const: kimi
         international:
           description: |
             When `true`, requests are sent to `api.moonshot.ai` (international).
@@ -41897,53 +42097,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
+          x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - llama2
+          const: llama2
         format:
           description: The request format to use when communicating with the Llama2 model.
           type: string
@@ -41968,56 +42154,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - mistral
+          const: mistral
         format:
           description: The request format to use when communicating with the Mistral model.
           type: string
@@ -42040,56 +42209,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - ollama
+          const: ollama
       required:
         - type
       x-unstable: true
@@ -42104,56 +42256,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - openai
+          const: openai
       required:
         - type
       x-unstable: true
@@ -42168,56 +42303,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - vercel
+          const: vercel
       required:
         - type
       x-unstable: true
@@ -42232,56 +42350,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - vertex
+          const: vertex
         gcp_environment:
           description: |-
             **Pre-release Feature**
@@ -42329,53 +42430,39 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
+          x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - vllm
+          const: vllm
       required:
         - type
         - upstream_url
@@ -42391,56 +42478,146 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per input token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per output token for billing and cost tracking.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - xai
+          const: xai
+      required:
+        - type
+      x-unstable: true
+    AIGatewayTargetSagemakerConfig:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        AWS SageMaker-specific configuration for a model.
+      type: object
+      properties:
+        embeddings_dimensions:
+          description: The number of dimensions for embedding outputs.
+          type: integer
+          x-speakeasy-param-computed: false
+        max_tokens:
+          description: The maximum number of tokens to generate in the response.
+          type: integer
+          x-speakeasy-param-computed: false
+        input_cost:
+          description: Cost per input token for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        output_cost:
+          description: Cost per output token for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        temperature:
+          description: Controls randomness in the model output. Higher values produce more varied responses.
+          type: number
+          x-speakeasy-param-computed: false
+        top_k:
+          description: Limits the number of highest-probability tokens considered during generation.
+          type: integer
+          x-speakeasy-param-computed: false
+        top_p:
+          description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+          type: number
+          x-speakeasy-param-computed: false
+        upstream_url:
+          description: The upstream URL for the model endpoint.
+          type: string
+          format: uri
+          x-speakeasy-param-computed: false
+        type:
+          type: string
+          const: sagemaker
+        aws:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            region:
+              description: Overrides the AWS_REGION environment variable for SageMaker requests.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            assume_role_arn:
+              description: Assume a different IAM role after authenticating; mutually required with role_session_name.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            role_session_name:
+              description: Session identifier for the assumed role; mutually required with assume_role_arn.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            sts_endpoint_url:
+              description: Overrides the STS endpoint when assuming a role.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+          x-unstable: true
+        target:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            model:
+              description: Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            variant:
+              description: Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            container_hostname:
+              description: Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
       required:
         - type
       x-unstable: true
@@ -42533,17 +42710,13 @@ components:
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         deny:
           description: List of consumer groups that are denied access.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       example:
         allow:
           - gold-partner
@@ -43208,8 +43381,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - token
+          const: token
         token:
           description: The token string to be used for authentication.
           type: string
@@ -43296,8 +43468,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - cert
+          const: cert
         cert:
           description: The client certificate.
           type: string
@@ -43402,8 +43573,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - jwt
+          const: jwt
         role:
           description: |
             The configured role name in HashiCorp Vault for JWT auth.
@@ -43512,8 +43682,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - approle
+          const: approle
         path:
           description: |
             Path for enabling the AppRole auth method. Single leading/trailing slashes are trimmed.
@@ -43627,8 +43796,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - kubernetes
+          const: kubernetes
         role:
           description: |
             Role assigned to the Kubernetes service account.
@@ -43725,8 +43893,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - gcp_iam
+          const: gcp_iam
         role:
           description: The role to use for GCP IAM auth.
           type: string
@@ -43820,8 +43987,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - gcp_gce
+          const: gcp_gce
         role:
           description: The role to use for GCP GCE auth.
           type: string
@@ -43909,8 +44075,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - azure
+          const: azure
         role:
           description: The role to use for Azure auth.
           type: string
@@ -43998,8 +44163,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - aws_ec2
+          const: aws_ec2
         role:
           description: The role to use for AWS EC2 auth.
           type: string
@@ -44091,8 +44255,7 @@ components:
           x-speakeasy-param-computed: false
         auth_method:
           type: string
-          enum:
-            - aws_iam
+          const: aws_iam
         role:
           description: The role to use for AWS IAM auth.
           type: string
@@ -44507,7 +44670,7 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
               x-unstable: true
           required:
             - url
@@ -44515,7 +44678,7 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -44596,7 +44759,7 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
               x-unstable: true
           required:
             - url
@@ -44604,7 +44767,7 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -44685,7 +44848,7 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
               x-unstable: true
           required:
             - url
@@ -44699,7 +44862,7 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -44751,7 +44914,7 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -44799,7 +44962,7 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -44853,7 +45016,6 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: true
       required:
         - display_name
         - name
@@ -45027,7 +45189,7 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -45060,7 +45222,7 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+      additionalProperties: false
       required:
         - display_name
         - name
@@ -45113,7 +45275,6 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: true
       required:
         - display_name
         - name
@@ -45121,7 +45282,7 @@ components:
         - created_at
         - updated_at
       x-unstable: true
-    AIGatewayMCPServerConversionOnly:
+    AIGatewayMCPServerConversionOnlyResponse:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
@@ -45129,8 +45290,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - conversion-only
+          const: conversion-only
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig'
         tools:
@@ -45168,14 +45328,23 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
       required:
         - type
         - config
         - display_name
         - name
+        - id
+        - created_at
+        - updated_at
       x-unstable: true
-    AIGatewayMCPServerConversionListener:
+    AIGatewayMCPServerConversionListenerResponse:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
@@ -45183,8 +45352,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - conversion-listener
+          const: conversion-listener
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamNoProxyConfig'
         tools:
@@ -45224,14 +45392,23 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
       required:
         - type
         - config
         - display_name
         - name
+        - id
+        - created_at
+        - updated_at
       x-unstable: true
-    AIGatewayMCPServerListener:
+    AIGatewayMCPServerListenerResponse:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
@@ -45239,8 +45416,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - listener
+          const: listener
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerNoUpstreamConfig'
         tools:
@@ -45280,14 +45456,23 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
       required:
         - type
         - config
         - display_name
         - name
+        - id
+        - created_at
+        - updated_at
       x-unstable: true
-    AIGatewayMCPServerPassthroughListener:
+    AIGatewayMCPServerPassthroughListenerResponse:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
@@ -45295,8 +45480,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - passthrough-listener
+          const: passthrough-listener
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamConfig'
         tools:
@@ -45336,14 +45520,23 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
       required:
         - type
         - config
         - display_name
         - name
+        - id
+        - created_at
+        - updated_at
       x-unstable: true
-    AIGatewayMCPServerUpstreamServer:
+    AIGatewayMCPServerUpstreamServerResponse:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
@@ -45351,8 +45544,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - upstream-server
+          const: upstream-server
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServerConfig'
         tools:
@@ -45392,7 +45584,304 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
-      additionalProperties: true
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - display_name
+        - name
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayMCPServerResponseTFOnly:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      discriminator:
+        propertyName: type
+        mapping:
+          conversion-only: '#/components/schemas/AIGatewayMCPServerConversionOnlyResponse'
+          conversion-listener: '#/components/schemas/AIGatewayMCPServerConversionListenerResponse'
+          listener: '#/components/schemas/AIGatewayMCPServerListenerResponse'
+          passthrough-listener: '#/components/schemas/AIGatewayMCPServerPassthroughListenerResponse'
+          upstream-server: '#/components/schemas/AIGatewayMCPServerUpstreamServerResponse'
+      oneOf:
+        - $ref: '#/components/schemas/AIGatewayMCPServerConversionOnlyResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerConversionListenerResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerListenerResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerPassthroughListenerResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServerResponse'
+      x-unstable: true
+    AIGatewayMCPServerConversionOnly:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: conversion-only
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig'
+        tools:
+          description: List of tools exposed by this MCP Server.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPConversionTool'
+          x-speakeasy-param-computed: false
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - display_name
+        - name
+      x-unstable: true
+    AIGatewayMCPServerConversionListener:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: conversion-listener
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamNoProxyConfig'
+        tools:
+          description: List of tools exposed by this MCP Server.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPConversionTool'
+          x-speakeasy-param-computed: false
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - display_name
+        - name
+      x-unstable: true
+    AIGatewayMCPServerListener:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: listener
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerNoUpstreamConfig'
+        tools:
+          description: List of tools exposed by this MCP Server.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPToolBase'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - display_name
+        - name
+      x-unstable: true
+    AIGatewayMCPServerPassthroughListener:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: passthrough-listener
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamConfig'
+        tools:
+          description: List of tools exposed by this MCP Server.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPToolBase'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - display_name
+        - name
+      x-unstable: true
+    AIGatewayMCPServerUpstreamServer:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: upstream-server
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServerConfig'
+        tools:
+          description: List of tools exposed by this MCP Server.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPUpstreamTool'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
       required:
         - type
         - config
@@ -45431,8 +45920,6 @@ components:
         host:
           description: 'The host of the exported API, which must match the route''s hosts. It should be the route''s host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         name:
           description: 'Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present).'
@@ -45450,8 +45937,6 @@ components:
         path:
           description: 'The path of the exported API, which must match the route''s paths. Path not starting with ''/'' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.'
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         query:
           $ref: '#/components/schemas/AIGatewayMCPToolQuery'
@@ -45571,8 +46056,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - aws
+          const: aws
         access_key_id:
           description: |
             AWS Access Key ID to be used for authentication.
@@ -45647,8 +46131,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - azure
+          const: azure
         client_id:
           description: |
             Azure Client ID.
@@ -45692,8 +46175,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - gcp
+          const: gcp
         service_account_json:
           description: |
             GCP Service Account JSON.
@@ -45817,14 +46299,11 @@ components:
           description: |
             An integer representing a port number between 0 and 65535, inclusive.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-          oneOf:
-            - type: integer
-              default: 6379
-              maximum: 65535
-              minimum: 0
-              example: 6379
-            - type: string
-              example: '{vault://hcv/redis/port}'
+          type: string
+          example: 6379
+          default: '6379'
+          maximum: 65535
+          minimum: 0
           x-go-type: types.Referenceable
           x-go-type-import:
             path: github.com/kong/koko/internal/server/public/openapi/controlplanesconfig/types
@@ -45929,6 +46408,12 @@ components:
           x-referenceable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
+      x-speakeasy-transform-from-api:
+        jq: |
+          if has("port") then .port |= if type == "number" then tostring else . end else . end
+      x-speakeasy-transform-to-api:
+        jq: |
+          if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
       x-unstable: true
     AIGatewayProxyConfig:
       description: HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
@@ -46041,8 +46526,6 @@ components:
           items:
             type: string
             example: foo.example.com
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         https_redirect_status_code:
           description: 'The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol.'
@@ -46108,6 +46591,7 @@ components:
           type: boolean
           default: false
       additionalProperties: false
+      x-speakeasy-param-computed: true
       x-unstable: true
     AIGatewayMCPServerNoUpstreamConfig:
       description: |-
@@ -46126,9 +46610,7 @@ components:
 
             Configuration for AI Gateway logging.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             payloads:
               type: boolean
@@ -46136,7 +46618,7 @@ components:
             audits:
               type: boolean
               default: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
           x-unstable: true
         max_request_body_size:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
@@ -46163,9 +46645,7 @@ components:
 
             Configuration for AI Gateway logging.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             payloads:
               type: boolean
@@ -46173,7 +46653,7 @@ components:
             audits:
               type: boolean
               default: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
           x-unstable: true
         max_request_body_size:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
@@ -46207,9 +46687,7 @@ components:
 
             Configuration for AI Gateway logging.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             payloads:
               type: boolean
@@ -46217,7 +46695,7 @@ components:
             audits:
               type: boolean
               default: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
           x-unstable: true
         max_request_body_size:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
@@ -46253,9 +46731,7 @@ components:
 
             Configuration for AI Gateway logging.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             payloads:
               type: boolean
@@ -46263,7 +46739,7 @@ components:
             audits:
               type: boolean
               default: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
           x-unstable: true
         max_request_body_size:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
@@ -46301,9 +46777,7 @@ components:
 
             Configuration for AI Gateway logging.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             payloads:
               type: boolean
@@ -46311,7 +46785,7 @@ components:
             audits:
               type: boolean
               default: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
           x-unstable: true
         max_request_body_size:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
@@ -46537,8 +47011,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - jwt
+          const: jwt
       additionalProperties: false
       required:
         - type
@@ -46575,8 +47048,7 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          enum:
-            - credentials
+          const: credentials
         token_endpoint:
           description: |
             The token endpoint URL for fetching the OAuth 2.0 access token using client-credentials.
@@ -46644,37 +47116,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayMCPServerPassthroughListener'
         - $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServer'
       x-unstable: true
-    AIGatewayMCPServer:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      discriminator:
-        propertyName: type
-        mapping:
-          conversion-only: '#/components/schemas/AIGatewayMCPServerConversionOnly'
-          conversion-listener: '#/components/schemas/AIGatewayMCPServerConversionListener'
-          listener: '#/components/schemas/AIGatewayMCPServerListener'
-          passthrough-listener: '#/components/schemas/AIGatewayMCPServerPassthroughListener'
-          upstream-server: '#/components/schemas/AIGatewayMCPServerUpstreamServer'
-      oneOf:
-        - $ref: '#/components/schemas/AIGatewayMCPServerConversionOnly'
-        - $ref: '#/components/schemas/AIGatewayMCPServerConversionListener'
-        - $ref: '#/components/schemas/AIGatewayMCPServerListener'
-        - $ref: '#/components/schemas/AIGatewayMCPServerPassthroughListener'
-        - $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServer'
-      required:
-        - id
-        - created_at
-        - updated_at
-      x-unstable: true
     AIGatewayMCPToolBase:
       description: 'A tool exposed by the MCP Server, mapped to a backend HTTP endpoint.'
       type: object
@@ -46707,8 +47148,6 @@ components:
         host:
           description: 'The host of the exported API, which must match the route''s hosts. It should be the route''s host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         name:
           description: 'Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present).'
@@ -46726,8 +47165,6 @@ components:
         path:
           description: 'The path of the exported API, which must match the route''s paths. Path not starting with ''/'' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.'
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         query:
           $ref: '#/components/schemas/AIGatewayMCPToolQuery'
@@ -46780,8 +47217,6 @@ components:
         host:
           description: 'The host of the exported API, which must match the route''s hosts. It should be the route''s host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         name:
           description: 'Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present).'
@@ -46799,8 +47234,6 @@ components:
         path:
           description: 'The path of the exported API, which must match the route''s paths. Path not starting with ''/'' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.'
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         query:
           $ref: '#/components/schemas/AIGatewayMCPToolQuery'
@@ -47146,7 +47579,7 @@ components:
               type: array
               items:
                 type: string
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             consumer_groups_optional:
               description: |
                 Do not terminate the request if consumer groups mapping fails.
@@ -47200,8 +47633,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - anthropic
+          const: anthropic
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47245,8 +47677,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - cerebras
+          const: cerebras
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47290,8 +47721,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - cohere
+          const: cohere
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47335,8 +47765,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - dashscope
+          const: dashscope
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47380,8 +47809,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - databricks
+          const: databricks
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47425,8 +47853,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - deepseek
+          const: deepseek
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47470,8 +47897,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - huggingface
+          const: huggingface
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47515,8 +47941,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - kimi
+          const: kimi
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47560,8 +47985,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - llama2
+          const: llama2
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47605,8 +48029,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - mistral
+          const: mistral
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47650,8 +48073,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - ollama
+          const: ollama
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47695,8 +48117,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - openai
+          const: openai
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47740,8 +48161,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - vercel
+          const: vercel
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47785,8 +48205,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - vllm
+          const: vllm
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47830,8 +48249,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - xai
+          const: xai
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -47877,8 +48295,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - basic
+          const: basic
         headers:
           type: array
           items:
@@ -47898,11 +48315,10 @@ components:
                   The auth header value for ‘header_name’, for example ‘Bearer key...’.
                   This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
                 type: string
-                default: null
-                nullable: true
+                nullable: false
                 writeOnly: true
                 x-referenceable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-terraform-plan-only: true
           default: null
           maxItems: 1
           nullable: true
@@ -47924,11 +48340,10 @@ components:
                 description: |
                   This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
                 type: string
-                default: null
-                nullable: true
+                nullable: false
                 writeOnly: true
                 x-referenceable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-terraform-plan-only: true
               location:
                 description: 'Specify whether the param name and value options go in a query string, or the POST form/JSON body.'
                 type: string
@@ -47955,8 +48370,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - bedrock
+          const: bedrock
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -48008,8 +48422,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - aws
+          const: aws
         access_key_id:
           description: |
             The access key id for authenticating with static IAM User credentials.
@@ -48073,8 +48486,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - azure
+          const: azure
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -48130,8 +48542,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - azure
+          const: azure
         client_id:
           description: |
             If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
@@ -48181,8 +48592,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - gemini
+          const: gemini
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -48234,8 +48644,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - gcp
+          const: gcp
         service_account_json:
           description: |
             Full JSON string of the GCP service account to authenticate. If not set (and gcp_use_service_account is true), the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.
@@ -48285,8 +48694,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - vertex
+          const: vertex
         display_name:
           description: The display name for this model provider instance.
           type: string
@@ -48328,6 +48736,105 @@ components:
         - name
         - config
       x-unstable: true
+    AIGatewayModelProviderSagemaker:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Config for Sagemaker model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sagemaker
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              discriminator:
+                propertyName: type
+                mapping:
+                  basic: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                  sagemaker: '#/components/schemas/AIGatewayModelProviderConfigAuthSagemaker'
+              oneOf:
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthSagemaker'
+          required:
+            - auth
+          x-unstable: true
+      required:
+        - type
+        - display_name
+        - name
+        - config
+      x-unstable: true
+    AIGatewayModelProviderConfigAuthSagemaker:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Auth configuration for Sagemaker model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sagemaker
+        aws:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            access_key_id:
+              description: static IAM user credential; overrides AWS_ACCESS_KEY_ID env var
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            secret_access_key:
+              description: static IAM user credential; overrides AWS_SECRET_ACCESS_KEY env var
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            session_token:
+              description: static IAM user credential; overrides AWS_SESSION_TOKEN env var
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+      title: AIGatewayModelProviderConfigAuthSagemaker
+      x-unstable: true
     AIGatewayModelProviderConfigAuthVertex:
       description: |-
         **Pre-release Feature**
@@ -48338,8 +48845,7 @@ components:
       properties:
         type:
           type: string
-          enum:
-            - vertex
+          const: vertex
         use_gcp_service_account:
           description: Use the Google Cloud Service Account (or user-assigned identity) to authenticate with Vertex-provider models.
           type: boolean
@@ -48360,6 +48866,1079 @@ components:
       required:
         - type
       title: AIGatewayModelProviderConfigAuthVertex
+      x-unstable: true
+    AIGatewayModelProviderAnthropicResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: anthropic
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderAzureResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: azure
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              discriminator:
+                propertyName: type
+                mapping:
+                  basic: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                  azure: '#/components/schemas/AIGatewayModelProviderConfigAuthAzure'
+              oneOf:
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthAzure'
+            instance:
+              type: string
+              example: kong-az-east
+          required:
+            - auth
+            - instance
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderBedrockResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: bedrock
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              discriminator:
+                propertyName: type
+                mapping:
+                  basic: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                  aws: '#/components/schemas/AIGatewayModelProviderConfigAuthAWS'
+              oneOf:
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthAWS'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderCerebrasResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: cerebras
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderCohereResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: cohere
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderDashscopeResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: dashscope
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderDatabricksResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: databricks
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderDeepseekResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: deepseek
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderGeminiResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: gemini
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              discriminator:
+                propertyName: type
+                mapping:
+                  basic: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                  gcp: '#/components/schemas/AIGatewayModelProviderConfigAuthGCP'
+              oneOf:
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthGCP'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderHuggingfaceResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: huggingface
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderKimiResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: kimi
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderLlama2Response:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: llama2
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderMistralResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: mistral
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderOllamaResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: ollama
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderOpenaiResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: openai
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderVercelResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: vercel
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderVllmResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: vllm
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderXaiResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: xai
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewayModelProviderVertexResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Response for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: vertex
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              discriminator:
+                propertyName: type
+                mapping:
+                  basic: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                  vertex: '#/components/schemas/AIGatewayModelProviderConfigAuthVertex'
+              oneOf:
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthVertex'
+          required:
+            - auth
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - type
+        - display_name
+        - name
+        - config
+        - id
+        - created_at
+        - updated_at
       x-unstable: true
     CreateAIGatewayConfigStoreRequest:
       description: |-
@@ -48528,6 +50107,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           vertex: '#/components/schemas/AIGatewayModelProviderVertex'
+          sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -48548,6 +50128,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderVertex'
+        - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
       x-unstable: true
     UpdateAIGatewayModelProviderRequest:
       description: |-
@@ -48575,6 +50156,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           vertex: '#/components/schemas/AIGatewayModelProviderVertex'
+          sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -48595,65 +50177,54 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderVertex'
+        - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
       x-unstable: true
     AIGatewayModelProvider:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
       discriminator:
         propertyName: type
         mapping:
-          anthropic: '#/components/schemas/AIGatewayModelProviderAnthropic'
-          azure: '#/components/schemas/AIGatewayModelProviderAzure'
-          bedrock: '#/components/schemas/AIGatewayModelProviderBedrock'
-          cerebras: '#/components/schemas/AIGatewayModelProviderCerebras'
-          cohere: '#/components/schemas/AIGatewayModelProviderCohere'
-          dashscope: '#/components/schemas/AIGatewayModelProviderDashscope'
-          databricks: '#/components/schemas/AIGatewayModelProviderDatabricks'
-          deepseek: '#/components/schemas/AIGatewayModelProviderDeepseek'
-          gemini: '#/components/schemas/AIGatewayModelProviderGemini'
-          huggingface: '#/components/schemas/AIGatewayModelProviderHuggingface'
-          kimi: '#/components/schemas/AIGatewayModelProviderKimi'
-          llama2: '#/components/schemas/AIGatewayModelProviderLlama2'
-          mistral: '#/components/schemas/AIGatewayModelProviderMistral'
-          ollama: '#/components/schemas/AIGatewayModelProviderOllama'
-          openai: '#/components/schemas/AIGatewayModelProviderOpenai'
-          vercel: '#/components/schemas/AIGatewayModelProviderVercel'
-          vllm: '#/components/schemas/AIGatewayModelProviderVllm'
-          xai: '#/components/schemas/AIGatewayModelProviderXai'
-          vertex: '#/components/schemas/AIGatewayModelProviderVertex'
+          anthropic: '#/components/schemas/AIGatewayModelProviderAnthropicResponse'
+          azure: '#/components/schemas/AIGatewayModelProviderAzureResponse'
+          bedrock: '#/components/schemas/AIGatewayModelProviderBedrockResponse'
+          cerebras: '#/components/schemas/AIGatewayModelProviderCerebrasResponse'
+          cohere: '#/components/schemas/AIGatewayModelProviderCohereResponse'
+          dashscope: '#/components/schemas/AIGatewayModelProviderDashscopeResponse'
+          databricks: '#/components/schemas/AIGatewayModelProviderDatabricksResponse'
+          deepseek: '#/components/schemas/AIGatewayModelProviderDeepseekResponse'
+          gemini: '#/components/schemas/AIGatewayModelProviderGeminiResponse'
+          huggingface: '#/components/schemas/AIGatewayModelProviderHuggingfaceResponse'
+          kimi: '#/components/schemas/AIGatewayModelProviderKimiResponse'
+          llama2: '#/components/schemas/AIGatewayModelProviderLlama2Response'
+          mistral: '#/components/schemas/AIGatewayModelProviderMistralResponse'
+          ollama: '#/components/schemas/AIGatewayModelProviderOllamaResponse'
+          openai: '#/components/schemas/AIGatewayModelProviderOpenaiResponse'
+          vercel: '#/components/schemas/AIGatewayModelProviderVercelResponse'
+          vllm: '#/components/schemas/AIGatewayModelProviderVllmResponse'
+          xai: '#/components/schemas/AIGatewayModelProviderXaiResponse'
+          vertex: '#/components/schemas/AIGatewayModelProviderVertexResponse'
       oneOf:
-        - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
-        - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
-        - $ref: '#/components/schemas/AIGatewayModelProviderBedrock'
-        - $ref: '#/components/schemas/AIGatewayModelProviderCerebras'
-        - $ref: '#/components/schemas/AIGatewayModelProviderCohere'
-        - $ref: '#/components/schemas/AIGatewayModelProviderDashscope'
-        - $ref: '#/components/schemas/AIGatewayModelProviderDatabricks'
-        - $ref: '#/components/schemas/AIGatewayModelProviderDeepseek'
-        - $ref: '#/components/schemas/AIGatewayModelProviderGemini'
-        - $ref: '#/components/schemas/AIGatewayModelProviderHuggingface'
-        - $ref: '#/components/schemas/AIGatewayModelProviderKimi'
-        - $ref: '#/components/schemas/AIGatewayModelProviderLlama2'
-        - $ref: '#/components/schemas/AIGatewayModelProviderMistral'
-        - $ref: '#/components/schemas/AIGatewayModelProviderOllama'
-        - $ref: '#/components/schemas/AIGatewayModelProviderOpenai'
-        - $ref: '#/components/schemas/AIGatewayModelProviderVercel'
-        - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
-        - $ref: '#/components/schemas/AIGatewayModelProviderXai'
-        - $ref: '#/components/schemas/AIGatewayModelProviderVertex'
-      required:
-        - id
-        - created_at
-        - updated_at
+        - $ref: '#/components/schemas/AIGatewayModelProviderAnthropicResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderAzureResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderBedrockResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderCerebrasResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderCohereResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderDashscopeResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderDatabricksResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderDeepseekResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderGeminiResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderHuggingfaceResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderKimiResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderLlama2Response'
+        - $ref: '#/components/schemas/AIGatewayModelProviderMistralResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderOllamaResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderOpenaiResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderVercelResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderVllmResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderXaiResponse'
+        - $ref: '#/components/schemas/AIGatewayModelProviderVertexResponse'
       x-unstable: true
     CreateAIGatewayIdentityProviderRequest:
       description: |-
@@ -48871,7 +50442,7 @@ components:
               type: array
               items:
                 type: string
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             consumer_groups_optional:
               description: |
                 Do not terminate the request if consumer groups mapping fails.
@@ -49152,7 +50723,10 @@ components:
               mcp_server_enabled:
                 description: Whether the portal has the MCP server enabled
                 type: boolean
+                deprecated: true
                 x-speakeasy-param-computed: true
+              ai:
+                $ref: '#/components/schemas/AISettings'
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -49218,6 +50792,9 @@ components:
               mcp_server_enabled:
                 - x-unstable
                 - x-internal
+              ai:
+                - x-unstable
+                - x-internal
               create_default_content:
                 - x-unstable
                 - x-internal
@@ -49268,7 +50845,10 @@ components:
               mcp_server_enabled:
                 description: Whether the portal has the MCP server enabled
                 type: boolean
+                deprecated: true
                 x-speakeasy-param-computed: true
+              ai:
+                $ref: '#/components/schemas/AISettings'
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -49326,6 +50906,9 @@ components:
             title: Portal
             x-property-annotations:
               mcp_server_enabled:
+                - x-unstable
+                - x-internal
+              ai:
                 - x-unstable
                 - x-internal
     UpdateDeveloper:
@@ -50074,6 +51657,20 @@ components:
               refresh_token_duration:
                 - x-unstable
                 - x-internal
+    CreateTrustedIdp:
+      description: Trusted IdP to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateTrustedIdpPayload'
+    UpdateTrustedIdp:
+      description: Full trusted IdP representation to replace the existing one. Omitted optional fields are reset to their defaults.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateTrustedIdpPayload'
     PersonalAccessTokenSettingsUpdateRequest:
       description: Request body schema for updating personal access token settings.
       content:
@@ -50505,6 +52102,9 @@ components:
                     mcp_server_enabled:
                       - x-unstable
                       - x-internal
+                    ai:
+                      - x-unstable
+                      - x-internal
                   properties:
                     id:
                       $ref: '#/components/schemas/UUID'
@@ -50541,7 +52141,10 @@ components:
                     mcp_server_enabled:
                       description: Whether the portal has the MCP server enabled
                       type: boolean
+                      deprecated: true
                       x-speakeasy-param-computed: true
+                    ai:
+                      $ref: '#/components/schemas/AISettings'
                     sipr_enabled:
                       description: Whether ip allow list is enabled for the portal.
                       type: boolean
@@ -50661,7 +52264,10 @@ components:
               mcp_server_enabled:
                 description: Whether the portal has the MCP server enabled
                 type: boolean
+                deprecated: true
                 x-speakeasy-param-computed: true
+              ai:
+                $ref: '#/components/schemas/AISettings'
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -50736,6 +52342,9 @@ components:
             title: Portal
             x-property-annotations:
               mcp_server_enabled:
+                - x-unstable
+                - x-internal
+              ai:
                 - x-unstable
                 - x-internal
     PortalAssetResponse:
@@ -52926,6 +54535,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    TrustedIdp:
+      description: A trusted IdP
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrustedIdp'
     PersonalAccessTokenSettingsResponse:
       description: Response containing personal access token settings.
       content:
@@ -53074,19 +54689,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AIGatewayMCPServer'
+            $ref: '#/components/schemas/AIGatewayMCPServerResponseTFOnly'
     GetMCPServerResponse:
       description: A successful response returning an MCP Server.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AIGatewayMCPServer'
+            $ref: '#/components/schemas/AIGatewayMCPServerResponseTFOnly'
     UpdateAIGatewayMCPServerResponse:
       description: MCP Server updated successfully.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AIGatewayMCPServer'
+            $ref: '#/components/schemas/AIGatewayMCPServerResponseTFOnly'
     CreateAIGatewayAgentResponse:
       description: AI Agent created successfully.
       content:
@@ -53320,6 +54935,8 @@ tags:
     description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
   - name: Auth Server Scopes
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
+  - name: Auth Server Trusted IdPs
+    description: Trusted IdPs allow an Auth Server to accept identity assertions from an external identity provider and exchange them for Konnect-issued tokens. The management API will give you the ability to configure the trusted IdP for an Auth Server.
   - name: Dashboards
   - name: Event Gateways
     description: |

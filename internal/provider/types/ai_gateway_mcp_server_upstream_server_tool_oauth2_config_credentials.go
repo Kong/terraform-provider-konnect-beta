@@ -13,5 +13,4 @@ type AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials struct {
 	IDTokenHeader     types.String `tfsdk:"id_token_header"`
 	Scope             types.String `tfsdk:"scope"`
 	TokenEndpoint     types.String `tfsdk:"token_endpoint"`
-	Type              types.String `tfsdk:"type"`
 }

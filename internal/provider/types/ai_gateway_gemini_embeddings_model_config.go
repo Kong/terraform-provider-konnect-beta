@@ -8,6 +8,5 @@ import (
 
 type AIGatewayGeminiEmbeddingsModelConfig struct {
 	GcpEnvironment *GCPModelConfig `tfsdk:"gcp_environment"`
-	Type           types.String    `tfsdk:"type"`
 	UpstreamURL    types.String    `tfsdk:"upstream_url"`
 }

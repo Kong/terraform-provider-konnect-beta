@@ -5,7 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -39,17 +38,16 @@ type AIGatewayResource struct {
 
 // AIGatewayResourceModel describes the resource data model.
 type AIGatewayResourceModel struct {
-	AdditionalProperties jsontypes.Normalized        `tfsdk:"additional_properties"`
-	ConfigVersion        types.String                `tfsdk:"config_version"`
-	CreatedAt            types.String                `tfsdk:"created_at"`
-	Description          types.String                `tfsdk:"description"`
-	DisplayName          types.String                `tfsdk:"display_name"`
-	Endpoints            *tfTypes.Endpoints          `tfsdk:"endpoints"`
-	ID                   types.String                `tfsdk:"id"`
-	Labels               map[string]types.String     `tfsdk:"labels"`
-	Name                 types.String                `tfsdk:"name"`
-	ProxyUrls            []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
-	UpdatedAt            types.String                `tfsdk:"updated_at"`
+	ConfigVersion types.String                `tfsdk:"config_version"`
+	CreatedAt     types.String                `tfsdk:"created_at"`
+	Description   types.String                `tfsdk:"description"`
+	DisplayName   types.String                `tfsdk:"display_name"`
+	Endpoints     *tfTypes.Endpoints          `tfsdk:"endpoints"`
+	ID            types.String                `tfsdk:"id"`
+	Labels        map[string]types.String     `tfsdk:"labels"`
+	Name          types.String                `tfsdk:"name"`
+	ProxyUrls     []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
+	UpdatedAt     types.String                `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,12 +58,6 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGateway Resource",
 		Attributes: map[string]schema.Attribute{
-			"additional_properties": schema.StringAttribute{
-				CustomType:  jsontypes.NormalizedType{},
-				Computed:    true,
-				Optional:    true,
-				Description: `Parsed as JSON.`,
-			},
 			"config_version": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{

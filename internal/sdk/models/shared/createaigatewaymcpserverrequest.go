@@ -34,9 +34,6 @@ type CreateAIGatewayMCPServerRequest struct {
 func CreateCreateAIGatewayMCPServerRequestConversionOnly(conversionOnly AIGatewayMCPServerConversionOnly) CreateAIGatewayMCPServerRequest {
 	typ := CreateAIGatewayMCPServerRequestTypeConversionOnly
 
-	typStr := AIGatewayMCPServerConversionOnlyType(typ)
-	conversionOnly.Type = typStr
-
 	return CreateAIGatewayMCPServerRequest{
 		AIGatewayMCPServerConversionOnly: &conversionOnly,
 		Type:                             typ,
@@ -45,9 +42,6 @@ func CreateCreateAIGatewayMCPServerRequestConversionOnly(conversionOnly AIGatewa
 
 func CreateCreateAIGatewayMCPServerRequestConversionListener(conversionListener AIGatewayMCPServerConversionListener) CreateAIGatewayMCPServerRequest {
 	typ := CreateAIGatewayMCPServerRequestTypeConversionListener
-
-	typStr := AIGatewayMCPServerConversionListenerType(typ)
-	conversionListener.Type = typStr
 
 	return CreateAIGatewayMCPServerRequest{
 		AIGatewayMCPServerConversionListener: &conversionListener,
@@ -58,9 +52,6 @@ func CreateCreateAIGatewayMCPServerRequestConversionListener(conversionListener 
 func CreateCreateAIGatewayMCPServerRequestListener(listener AIGatewayMCPServerListener) CreateAIGatewayMCPServerRequest {
 	typ := CreateAIGatewayMCPServerRequestTypeListener
 
-	typStr := AIGatewayMCPServerListenerType(typ)
-	listener.Type = typStr
-
 	return CreateAIGatewayMCPServerRequest{
 		AIGatewayMCPServerListener: &listener,
 		Type:                       typ,
@@ -70,9 +61,6 @@ func CreateCreateAIGatewayMCPServerRequestListener(listener AIGatewayMCPServerLi
 func CreateCreateAIGatewayMCPServerRequestPassthroughListener(passthroughListener AIGatewayMCPServerPassthroughListener) CreateAIGatewayMCPServerRequest {
 	typ := CreateAIGatewayMCPServerRequestTypePassthroughListener
 
-	typStr := AIGatewayMCPServerPassthroughListenerType(typ)
-	passthroughListener.Type = typStr
-
 	return CreateAIGatewayMCPServerRequest{
 		AIGatewayMCPServerPassthroughListener: &passthroughListener,
 		Type:                                  typ,
@@ -81,9 +69,6 @@ func CreateCreateAIGatewayMCPServerRequestPassthroughListener(passthroughListene
 
 func CreateCreateAIGatewayMCPServerRequestUpstreamServer(upstreamServer AIGatewayMCPServerUpstreamServer) CreateAIGatewayMCPServerRequest {
 	typ := CreateAIGatewayMCPServerRequestTypeUpstreamServer
-
-	typStr := AIGatewayMCPServerUpstreamServerType(typ)
-	upstreamServer.Type = typStr
 
 	return CreateAIGatewayMCPServerRequest{
 		AIGatewayMCPServerUpstreamServer: &upstreamServer,

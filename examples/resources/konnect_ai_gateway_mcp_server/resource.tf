@@ -23,7 +23,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -72,7 +71,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
                 client_id     = "...my_client_id..."
                 client_secret = "...my_client_secret..."
                 tenant_id     = "...my_tenant_id..."
-                type          = "azure"
               }
             }
             cluster = {
@@ -92,10 +90,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 1275755412
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              integer = 6379
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -176,10 +172,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "https"
       }
     ]
-    type = "conversion-listener"
   }
   conversion_only = {
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -268,7 +262,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "http"
       }
     ]
-    type = "conversion-only"
   }
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   listener = {
@@ -294,7 +287,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -341,7 +333,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             cloud_authentication = {
               gcp = {
                 service_account_json = "...my_service_account_json..."
-                type                 = "gcp"
               }
             }
             cluster = {
@@ -361,10 +352,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 254844406
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              str = "{vault://hcv/redis/port}"
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -444,7 +433,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "https"
       }
     ]
-    type = "listener"
   }
   passthrough_listener = {
     access = {
@@ -468,7 +456,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -533,7 +520,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
                 client_id     = "...my_client_id..."
                 client_secret = "...my_client_secret..."
                 tenant_id     = "...my_tenant_id..."
-                type          = "azure"
               }
             }
             cluster = {
@@ -553,10 +539,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 1750673053
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              integer = 6379
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -637,7 +621,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "http"
       }
     ]
-    type = "passthrough-listener"
   }
   upstream_server = {
     access = {
@@ -661,7 +644,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
     }
-    additional_properties = "{ \"see\": \"documentation\" }"
     config = {
       logging = {
         audits   = false
@@ -709,7 +691,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             cloud_authentication = {
               gcp = {
                 service_account_json = "...my_service_account_json..."
-                type                 = "gcp"
               }
             }
             cluster = {
@@ -729,10 +710,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
               backlog   = 176733398
               pool_size = 256
             }
-            password = "...my_password..."
-            port = {
-              str = "{vault://hcv/redis/port}"
-            }
+            password     = "...my_password..."
+            port         = 6379
             read_timeout = 2000
             send_timeout = 2000
             sentinel = {
@@ -761,7 +740,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             access_token_header = "Authorization"
             id_token_header     = "...my_id_token_header..."
             scope               = "...my_scope..."
-            type                = "jwt"
           }
         }
       }
@@ -824,6 +802,5 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         scheme       = "http"
       }
     ]
-    type = "upstream-server"
   }
 }

@@ -3,38 +3,14 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayMCPServerUpstreamServerType string
-
-const (
-	AIGatewayMCPServerUpstreamServerTypeUpstreamServer AIGatewayMCPServerUpstreamServerType = "upstream-server"
-)
-
-func (e AIGatewayMCPServerUpstreamServerType) ToPointer() *AIGatewayMCPServerUpstreamServerType {
-	return &e
-}
-func (e *AIGatewayMCPServerUpstreamServerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "upstream-server":
-		*e = AIGatewayMCPServerUpstreamServerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayMCPServerUpstreamServerType: %v", v)
-	}
-}
 
 // AIGatewayMCPServerUpstreamServer - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerUpstreamServer struct {
-	Type AIGatewayMCPServerUpstreamServerType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"upstream-server" json:"type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -67,8 +43,7 @@ type AIGatewayMCPServerUpstreamServer struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy            map[string]string `json:"managed_by,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (a AIGatewayMCPServerUpstreamServer) MarshalJSON() ([]byte, error) {
@@ -82,11 +57,8 @@ func (a *AIGatewayMCPServerUpstreamServer) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AIGatewayMCPServerUpstreamServer) GetType() AIGatewayMCPServerUpstreamServerType {
-	if a == nil {
-		return AIGatewayMCPServerUpstreamServerType("")
-	}
-	return a.Type
+func (a *AIGatewayMCPServerUpstreamServer) GetType() string {
+	return "upstream-server"
 }
 
 func (a *AIGatewayMCPServerUpstreamServer) GetConfig() AIGatewayMCPServerUpstreamServerConfig {
@@ -164,11 +136,4 @@ func (a *AIGatewayMCPServerUpstreamServer) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
-}
-
-func (a *AIGatewayMCPServerUpstreamServer) GetAdditionalProperties() any {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalProperties
 }

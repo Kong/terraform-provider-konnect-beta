@@ -8,7 +8,6 @@ import (
 
 type HashiCorpVaultOauth2Config struct {
 	Audiences     types.String `tfsdk:"audiences"`
-	AuthMethod    types.String `tfsdk:"auth_method"`
 	Base64Decode  types.Bool   `tfsdk:"base64_decode"`
 	ClientID      types.String `tfsdk:"client_id"`
 	ClientSecret  types.String `tfsdk:"client_secret"`

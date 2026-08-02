@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -18,12 +16,6 @@ func (r *AIGatewayResourceModel) RefreshFromSharedAIGateway(ctx context.Context,
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AdditionalProperties == nil {
-			r.AdditionalProperties = jsontypes.NewNormalizedNull()
-		} else {
-			additionalPropertiesResult, _ := json.Marshal(resp.AdditionalProperties)
-			r.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
-		}
 		r.ConfigVersion = types.StringPointerValue(resp.ConfigVersion)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -142,17 +134,12 @@ func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Cont
 
 		labels[labelsKey] = labelsInst
 	}
-	var additionalProperties map[string]any
-	if !r.AdditionalProperties.IsUnknown() && !r.AdditionalProperties.IsNull() {
-		_ = json.Unmarshal([]byte(r.AdditionalProperties.ValueString()), &additionalProperties)
-	}
 	out := shared.CreateAIGatewayRequest{
-		DisplayName:          displayName,
-		Name:                 name,
-		Description:          description,
-		ProxyUrls:            proxyUrls,
-		Labels:               labels,
-		AdditionalProperties: additionalProperties,
+		DisplayName: displayName,
+		Name:        name,
+		Description: description,
+		ProxyUrls:   proxyUrls,
+		Labels:      labels,
 	}
 
 	return &out, diags
@@ -197,17 +184,12 @@ func (r *AIGatewayResourceModel) ToSharedUpdateAIGatewayRequest(ctx context.Cont
 
 		labels[labelsKey] = labelsInst
 	}
-	var additionalProperties map[string]any
-	if !r.AdditionalProperties.IsUnknown() && !r.AdditionalProperties.IsNull() {
-		_ = json.Unmarshal([]byte(r.AdditionalProperties.ValueString()), &additionalProperties)
-	}
 	out := shared.UpdateAIGatewayRequest{
-		DisplayName:          displayName,
-		Name:                 name,
-		Description:          description,
-		ProxyUrls:            proxyUrls,
-		Labels:               labels,
-		AdditionalProperties: additionalProperties,
+		DisplayName: displayName,
+		Name:        name,
+		Description: description,
+		ProxyUrls:   proxyUrls,
+		Labels:      labels,
 	}
 
 	return &out, diags

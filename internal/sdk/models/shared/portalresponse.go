@@ -72,7 +72,10 @@ type PortalResponse struct {
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.
 	RbacEnabled *bool `default:"false" json:"rbac_enabled"`
 	// Whether the portal has the MCP server enabled
-	McpServerEnabled *bool `json:"mcp_server_enabled,omitempty"`
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	McpServerEnabled *bool       `json:"mcp_server_enabled,omitempty"`
+	Ai               *AISettings `json:"ai,omitempty"`
 	// Whether ip allow list is enabled for the portal.
 	SiprEnabled *bool `default:"false" json:"sipr_enabled"`
 	// The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.
@@ -170,6 +173,13 @@ func (p *PortalResponse) GetMcpServerEnabled() *bool {
 		return nil
 	}
 	return p.McpServerEnabled
+}
+
+func (p *PortalResponse) GetAi() *AISettings {
+	if p == nil {
+		return nil
+	}
+	return p.Ai
 }
 
 func (p *PortalResponse) GetSiprEnabled() *bool {

@@ -16,7 +16,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -27,7 +26,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "anthropic"
   }
   azure = {
     config = {
@@ -36,7 +34,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           client_id            = "...my_client_id..."
           client_secret        = "...my_client_secret..."
           tenant_id            = "...my_tenant_id..."
-          type                 = "azure"
           use_managed_identity = true
         }
       }
@@ -50,7 +47,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "azure"
   }
   bedrock = {
     config = {
@@ -62,7 +58,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           role_session_name = "...my_role_session_name..."
           secret_access_key = "...my_secret_access_key..."
           sts_endpoint_url  = "...my_sts_endpoint_url..."
-          type              = "aws"
         }
       }
     }
@@ -74,7 +69,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "bedrock"
   }
   cerebras = {
     config = {
@@ -92,7 +86,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -103,7 +96,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "cerebras"
   }
   cohere = {
     config = {
@@ -121,7 +113,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -132,7 +123,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "cohere"
   }
   dashscope = {
     config = {
@@ -150,7 +140,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -161,7 +150,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "dashscope"
   }
   databricks = {
     config = {
@@ -179,7 +167,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -190,7 +177,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "databricks"
   }
   deepseek = {
     config = {
@@ -208,7 +194,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -219,7 +204,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "deepseek"
   }
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   gemini = {
@@ -229,7 +213,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           metadata_url            = "...my_metadata_url..."
           oauth_token_url         = "...my_oauth_token_url..."
           service_account_json    = "...my_service_account_json..."
-          type                    = "gcp"
           use_gcp_service_account = false
         }
       }
@@ -242,7 +225,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "gemini"
   }
   huggingface = {
     config = {
@@ -260,7 +242,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -271,7 +252,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "huggingface"
   }
   kimi = {
     config = {
@@ -289,7 +269,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -300,7 +279,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "kimi"
   }
   llama2 = {
     config = {
@@ -318,7 +296,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -329,7 +306,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "llama2"
   }
   mistral = {
     config = {
@@ -347,7 +323,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -358,7 +333,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "mistral"
   }
   ollama = {
     config = {
@@ -376,7 +350,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -387,7 +360,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "ollama"
   }
   openai = {
     config = {
@@ -405,7 +377,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -416,7 +387,36 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "openai"
+  }
+  sagemaker = {
+    config = {
+      auth = {
+        basic = {
+          headers = [
+            {
+              name  = "...my_name..."
+              value = "...my_value..."
+            }
+          ]
+          params = [
+            {
+              location = "query"
+              name     = "...my_name..."
+              value    = "...my_value..."
+            }
+          ]
+        }
+      }
+    }
+    display_name = "Azure AI SE"
+    labels = {
+      key = "value"
+    }
+    managed_by = {
+      key = "value"
+    }
+    name = "azure-ai-se"
+    type = "sagemaker"
   }
   vercel = {
     config = {
@@ -434,7 +434,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -445,14 +444,12 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "vercel"
   }
   vertex = {
     config = {
       auth = {
         vertex = {
           service_account_json = "...my_service_account_json..."
-          type                 = "vertex"
         }
       }
     }
@@ -464,7 +461,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "vertex"
   }
   vllm = {
     config = {
@@ -482,7 +478,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -493,7 +488,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "vllm"
   }
   xai = {
     config = {
@@ -511,7 +505,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -522,6 +515,5 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "xai"
   }
 }

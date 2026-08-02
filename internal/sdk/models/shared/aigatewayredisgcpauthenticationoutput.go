@@ -3,40 +3,16 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayRedisGCPAuthenticationType string
-
-const (
-	AIGatewayRedisGCPAuthenticationTypeGcp AIGatewayRedisGCPAuthenticationType = "gcp"
-)
-
-func (e AIGatewayRedisGCPAuthenticationType) ToPointer() *AIGatewayRedisGCPAuthenticationType {
-	return &e
-}
-func (e *AIGatewayRedisGCPAuthenticationType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "gcp":
-		*e = AIGatewayRedisGCPAuthenticationType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayRedisGCPAuthenticationType: %v", v)
-	}
-}
 
 // AIGatewayRedisGCPAuthenticationOutput - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
 // GCP specific configs for connecting to a Cloud Provider's redis instance.
 type AIGatewayRedisGCPAuthenticationOutput struct {
-	Type AIGatewayRedisGCPAuthenticationType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"gcp" json:"type"`
 }
 
 func (a AIGatewayRedisGCPAuthenticationOutput) MarshalJSON() ([]byte, error) {
@@ -50,46 +26,6 @@ func (a *AIGatewayRedisGCPAuthenticationOutput) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-func (a *AIGatewayRedisGCPAuthenticationOutput) GetType() AIGatewayRedisGCPAuthenticationType {
-	if a == nil {
-		return AIGatewayRedisGCPAuthenticationType("")
-	}
-	return a.Type
-}
-
-// AIGatewayRedisGCPAuthentication - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// GCP specific configs for connecting to a Cloud Provider's redis instance.
-type AIGatewayRedisGCPAuthentication struct {
-	Type AIGatewayRedisGCPAuthenticationType `json:"type"`
-	// GCP Service Account JSON.
-	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	//
-	ServiceAccountJSON *string `default:"null" json:"service_account_json"`
-}
-
-func (a AIGatewayRedisGCPAuthentication) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayRedisGCPAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AIGatewayRedisGCPAuthentication) GetType() AIGatewayRedisGCPAuthenticationType {
-	if a == nil {
-		return AIGatewayRedisGCPAuthenticationType("")
-	}
-	return a.Type
-}
-
-func (a *AIGatewayRedisGCPAuthentication) GetServiceAccountJSON() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ServiceAccountJSON
+func (a *AIGatewayRedisGCPAuthenticationOutput) GetType() string {
+	return "gcp"
 }

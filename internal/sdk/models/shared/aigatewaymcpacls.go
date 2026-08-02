@@ -12,9 +12,9 @@ import (
 // Access control rules for MCP resources. Configure `allow`, `deny`, or both.
 type AIGatewayMCPACLs struct {
 	// List of consumer groups that are permitted access.
-	Allow []string `json:"allow"`
+	Allow []string `json:"allow,omitempty"`
 	// List of consumer groups that are denied access.
-	Deny []string `json:"deny"`
+	Deny []string `json:"deny,omitempty"`
 }
 
 func (a AIGatewayMCPACLs) MarshalJSON() ([]byte, error) {

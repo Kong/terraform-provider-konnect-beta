@@ -2,12 +2,7 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type AIGatewayModelProviderConfigAuthBasic struct {
-	Headers []Headers    `tfsdk:"headers"`
-	Params  []Params     `tfsdk:"params"`
-	Type    types.String `tfsdk:"type"`
+	Headers []Headers `tfsdk:"headers"`
+	Params  []Params  `tfsdk:"params"`
 }

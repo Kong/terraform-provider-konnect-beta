@@ -20,6 +20,5 @@ type AIGatewayModelModel struct {
 	Name         types.String               `tfsdk:"name"`
 	Policies     []types.String             `tfsdk:"policies"`
 	Targets      []AIGatewayTarget          `tfsdk:"targets"`
-	Type         types.String               `tfsdk:"type"`
 	UpdatedAt    types.String               `tfsdk:"updated_at"`
 }

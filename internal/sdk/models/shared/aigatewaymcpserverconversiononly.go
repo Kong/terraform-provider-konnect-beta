@@ -3,45 +3,21 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type AIGatewayMCPServerConversionOnlyType string
-
-const (
-	AIGatewayMCPServerConversionOnlyTypeConversionOnly AIGatewayMCPServerConversionOnlyType = "conversion-only"
-)
-
-func (e AIGatewayMCPServerConversionOnlyType) ToPointer() *AIGatewayMCPServerConversionOnlyType {
-	return &e
-}
-func (e *AIGatewayMCPServerConversionOnlyType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "conversion-only":
-		*e = AIGatewayMCPServerConversionOnlyType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayMCPServerConversionOnlyType: %v", v)
-	}
-}
 
 // AIGatewayMCPServerConversionOnly - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerConversionOnly struct {
-	Type AIGatewayMCPServerConversionOnlyType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"conversion-only" json:"type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
 	// Routing, logging, and request body size limits for the MCP Server.
 	Config AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig `json:"config"`
 	// List of tools exposed by this MCP Server.
-	Tools []AIGatewayMCPConversionTool `json:"tools"`
+	Tools []AIGatewayMCPConversionTool `json:"tools,omitempty"`
 	// The display name for the MCP Server.
 	DisplayName string `json:"display_name"`
 	// **Pre-release Feature**
@@ -64,8 +40,7 @@ type AIGatewayMCPServerConversionOnly struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy            map[string]string `json:"managed_by,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (a AIGatewayMCPServerConversionOnly) MarshalJSON() ([]byte, error) {
@@ -79,11 +54,8 @@ func (a *AIGatewayMCPServerConversionOnly) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AIGatewayMCPServerConversionOnly) GetType() AIGatewayMCPServerConversionOnlyType {
-	if a == nil {
-		return AIGatewayMCPServerConversionOnlyType("")
-	}
-	return a.Type
+func (a *AIGatewayMCPServerConversionOnly) GetType() string {
+	return "conversion-only"
 }
 
 func (a *AIGatewayMCPServerConversionOnly) GetConfig() AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig {
@@ -140,11 +112,4 @@ func (a *AIGatewayMCPServerConversionOnly) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
-}
-
-func (a *AIGatewayMCPServerConversionOnly) GetAdditionalProperties() any {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalProperties
 }

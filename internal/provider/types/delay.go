@@ -7,6 +7,6 @@ import (
 )
 
 type Delay struct {
-	Percentage *AIGatewayRedisCloudConfigurationPort `tfsdk:"percentage"`
-	Value      types.String                          `tfsdk:"value"`
+	Percentage *MeshItemMode `tfsdk:"percentage"`
+	Value      types.String  `tfsdk:"value"`
 }

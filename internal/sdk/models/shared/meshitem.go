@@ -2783,38 +2783,38 @@ func (u AuthType) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type AuthType: all fields are null")
 }
 
-type Aws struct {
+type AuthAws struct {
 	IamServerIDHeader *string   `json:"iamServerIdHeader,omitempty"`
 	Role              *string   `json:"role,omitempty"`
 	Type              *AuthType `json:"type,omitempty"`
 }
 
-func (a Aws) MarshalJSON() ([]byte, error) {
+func (a AuthAws) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *Aws) UnmarshalJSON(data []byte) error {
+func (a *AuthAws) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *Aws) GetIamServerIDHeader() *string {
+func (a *AuthAws) GetIamServerIDHeader() *string {
 	if a == nil {
 		return nil
 	}
 	return a.IamServerIDHeader
 }
 
-func (a *Aws) GetRole() *string {
+func (a *AuthAws) GetRole() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Role
 }
 
-func (a *Aws) GetType() *AuthType {
+func (a *AuthAws) GetType() *AuthType {
 	if a == nil {
 		return nil
 	}
@@ -2822,7 +2822,7 @@ func (a *Aws) GetType() *AuthType {
 }
 
 type VaultCertificateAuthorityConfigFromCpAuthAws struct {
-	Aws *Aws `json:"aws,omitempty"`
+	Aws *AuthAws `json:"aws,omitempty"`
 }
 
 func (v VaultCertificateAuthorityConfigFromCpAuthAws) MarshalJSON() ([]byte, error) {
@@ -2836,7 +2836,7 @@ func (v *VaultCertificateAuthorityConfigFromCpAuthAws) UnmarshalJSON(data []byte
 	return nil
 }
 
-func (v *VaultCertificateAuthorityConfigFromCpAuthAws) GetAws() *Aws {
+func (v *VaultCertificateAuthorityConfigFromCpAuthAws) GetAws() *AuthAws {
 	if v == nil {
 		return nil
 	}

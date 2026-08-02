@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -54,29 +52,6 @@ func (e *HashiCorpVaultKubernetesConfigProtocol) IsExact() bool {
 	return false
 }
 
-type HashiCorpVaultKubernetesConfigAuthMethod string
-
-const (
-	HashiCorpVaultKubernetesConfigAuthMethodKubernetes HashiCorpVaultKubernetesConfigAuthMethod = "kubernetes"
-)
-
-func (e HashiCorpVaultKubernetesConfigAuthMethod) ToPointer() *HashiCorpVaultKubernetesConfigAuthMethod {
-	return &e
-}
-func (e *HashiCorpVaultKubernetesConfigAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "kubernetes":
-		*e = HashiCorpVaultKubernetesConfigAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HashiCorpVaultKubernetesConfigAuthMethod: %v", v)
-	}
-}
-
 // HashiCorpVaultKubernetesConfig - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type HashiCorpVaultKubernetesConfig struct {
@@ -112,8 +87,9 @@ type HashiCorpVaultKubernetesConfig struct {
 	// Whether to verify the TLS certificate of the vault when connecting.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// Namespace for the Vault. Vault Enterprise requires a namespace to connect successfully.
-	Namespace  *string                                  `default:"null" json:"namespace"`
-	AuthMethod HashiCorpVaultKubernetesConfigAuthMethod `json:"auth_method"`
+	Namespace *string `default:"null" json:"namespace"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	authMethod string `const:"kubernetes" json:"auth_method"`
 	// Role assigned to the Kubernetes service account.
 	//
 	Role *string `default:"null" json:"role"`
@@ -213,11 +189,8 @@ func (h *HashiCorpVaultKubernetesConfig) GetNamespace() *string {
 	return h.Namespace
 }
 
-func (h *HashiCorpVaultKubernetesConfig) GetAuthMethod() HashiCorpVaultKubernetesConfigAuthMethod {
-	if h == nil {
-		return HashiCorpVaultKubernetesConfigAuthMethod("")
-	}
-	return h.AuthMethod
+func (h *HashiCorpVaultKubernetesConfig) GetAuthMethod() string {
+	return "kubernetes"
 }
 
 func (h *HashiCorpVaultKubernetesConfig) GetRole() *string {

@@ -99,7 +99,6 @@ resource "konnect_ai_gateway_vault" "my_aigatewayvault" {
     config = {
       jwt = {
         audiences      = "...my_audiences..."
-        auth_method    = "jwt"
         base64_decode  = true
         client_id      = "...my_client_id..."
         client_secret  = "...my_client_secret..."

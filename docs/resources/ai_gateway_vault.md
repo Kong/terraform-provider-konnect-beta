@@ -114,7 +114,6 @@ resource "konnect_ai_gateway_vault" "my_aigatewayvault" {
     config = {
       jwt = {
         audiences      = "...my_audiences..."
-        auth_method    = "jwt"
         base64_decode  = true
         client_id      = "...my_client_id..."
         client_secret  = "...my_client_secret..."
@@ -541,7 +540,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Optional:
 
-- `auth_method` (String) Not Null; must be "approle"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -580,7 +578,6 @@ Default: 0
 
 Optional:
 
-- `auth_method` (String) Not Null; must be "aws_ec2"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -616,7 +613,6 @@ Optional:
 If set, `secret_access_key` must also be set.
 - `assume_role_arn` (String) The ARN of the role to assume for AWS IAM authentication.
 If set, `role_session_name` must also be set.
-- `auth_method` (String) Not Null; must be "aws_iam"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -656,7 +652,6 @@ Default: 0
 
 Optional:
 
-- `auth_method` (String) Not Null; must be "azure"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -687,7 +682,6 @@ Default: 0
 
 Optional:
 
-- `auth_method` (String) Not Null; must be "cert"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -719,7 +713,6 @@ Default: 0
 
 Optional:
 
-- `auth_method` (String) Not Null; must be "gcp_gce"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -750,7 +743,6 @@ Default: 0
 
 Optional:
 
-- `auth_method` (String) Not Null; must be "gcp_iam"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -783,7 +775,6 @@ Default: 0
 Optional:
 
 - `audiences` (String) Comma-separated list of OAuth2 audiences.
-- `auth_method` (String) Not Null; must be "jwt"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -820,7 +811,6 @@ Default: 0
 Optional:
 
 - `api_token_file` (String) Path to the Kubernetes service account token file. Default: "/run/secrets/kubernetes.io/serviceaccount/token"
-- `auth_method` (String) Not Null; must be "kubernetes"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.
@@ -851,7 +841,6 @@ Default: 0
 
 Optional:
 
-- `auth_method` (String) Not Null; must be "token"
 - `base64_decode` (Boolean) Decode all secrets in this vault as base64. Useful for binary data.
 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 We recommend creating a separate vault for base64 secrets.

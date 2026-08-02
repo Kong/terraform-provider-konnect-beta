@@ -14,7 +14,6 @@ type AIGatewayTargetDatabricksConfig struct {
 	Temperature          types.Float64 `tfsdk:"temperature"`
 	TopK                 types.Int64   `tfsdk:"top_k"`
 	TopP                 types.Float64 `tfsdk:"top_p"`
-	Type                 types.String  `tfsdk:"type"`
 	UpstreamURL          types.String  `tfsdk:"upstream_url"`
 	WorkspaceInstanceID  types.String  `tfsdk:"workspace_instance_id"`
 }

@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -20,12 +18,6 @@ func (r *AIGatewayConsumerGroupMemberResourceModel) RefreshFromSharedAddAIGatewa
 	if resp != nil {
 		r.Consumer = types.StringValue(resp.Consumer)
 		r.ConsumerGroup = &tfTypes.AIGatewayConsumerGroup{}
-		if resp.ConsumerGroup.AdditionalProperties == nil {
-			r.ConsumerGroup.AdditionalProperties = jsontypes.NewNormalizedNull()
-		} else {
-			additionalPropertiesResult, _ := json.Marshal(resp.ConsumerGroup.AdditionalProperties)
-			r.ConsumerGroup.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
-		}
 		r.ConsumerGroup.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.ConsumerGroup.CreatedAt))
 		r.ConsumerGroup.DisplayName = types.StringValue(resp.ConsumerGroup.DisplayName)
 		r.ConsumerGroup.ID = types.StringValue(resp.ConsumerGroup.ID)

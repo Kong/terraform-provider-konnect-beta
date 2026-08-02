@@ -54,7 +54,7 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
 	// This feature is currently in beta and is subject to change.
 	//
 	// Configuration for AI Gateway logging.
-	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging `json:"logging"`
+	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.

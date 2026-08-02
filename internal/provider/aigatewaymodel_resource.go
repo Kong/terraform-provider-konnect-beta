@@ -35,6 +35,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
+	speakeasy_mapvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/mapvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -64,7 +65,6 @@ type AIGatewayModelResourceModel struct {
 	ID          types.String                 `tfsdk:"id"`
 	Model       *tfTypes.AIGatewayModelModel `queryParam:"inline" tfsdk:"model"`
 	Name        types.String                 `tfsdk:"name"`
-	Type        types.String                 `tfsdk:"type"`
 	UpdatedAt   types.String                 `tfsdk:"updated_at"`
 }
 
@@ -137,17 +137,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"consistent_hashing": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "consistent-hashing"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"consistent-hashing",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -244,17 +233,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"least_connections": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "least-connections"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"least-connections",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -345,17 +323,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"lowest_latency": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "lowest-latency"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"lowest-latency",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -452,17 +419,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"lowest_usage": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "lowest-usage"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"lowest-usage",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -559,15 +515,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"priority": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "priority"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("priority"),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -658,17 +605,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"round_robin": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "round-robin"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"round-robin",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -759,15 +695,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"semantic": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "semantic"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("semantic"),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -806,15 +733,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The Azure deployment ID for the model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
-																		},
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "azure"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("azure"),
 																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
@@ -859,15 +777,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Optional: true,
 																		MarkdownDescription: `The AWS region for the model.` + "\n" +
 																			`Setting this option overrides the AWS_REGION environment variable.`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "bedrock"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("bedrock"),
-																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
@@ -931,15 +840,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																			`` + "\n" +
 																			`Configuration for a model hosted on Google Cloud Project.`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "gemini"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("gemini"),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -964,17 +864,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"huggingface": schema.SingleNestedAttribute{
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "huggingface"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf(
-																				"huggingface",
-																			),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -1042,15 +931,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"ollama": schema.SingleNestedAttribute{
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "ollama"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("ollama"),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -1075,15 +955,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"openai": schema.SingleNestedAttribute{
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "openai"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("openai"),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -1141,15 +1012,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																			`This feature is currently in beta and is subject to change.` + "\n" +
 																			`` + "\n" +
 																			`Configuration for a model hosted on Google Cloud Project.`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "vertex"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("vertex"),
-																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
@@ -1361,15 +1223,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Default:     float64default.StaticFloat64(5000),
 																Description: `the timeout of the pgvector database. Default: 5000`,
 															},
-															"type": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Not Null; must be "pgvector"`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf("pgvector"),
-																},
-															},
 															"user": schema.StringAttribute{
 																Computed: true,
 																Optional: true,
@@ -1433,15 +1286,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				MarkdownDescription: `AWS Secret Access Key.` + "\n" +
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
-																			"type": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Not Null; must be "aws"`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf("aws"),
-																				},
-																			},
 																		},
 																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																			`This feature is currently in beta and is subject to change.` + "\n" +
@@ -1472,15 +1316,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				MarkdownDescription: `Azure Tenant ID.` + "\n" +
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
-																			"type": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Not Null; must be "azure"`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf("azure"),
-																				},
-																			},
 																		},
 																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																			`This feature is currently in beta and is subject to change.` + "\n" +
@@ -1500,15 +1335,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Optional: true,
 																				MarkdownDescription: `GCP Service Account JSON.` + "\n" +
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-																			},
-																			"type": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Not Null; must be "gcp"`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf("gcp"),
-																				},
 																			},
 																		},
 																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1655,30 +1481,13 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
 																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 															},
-															"port": schema.SingleNestedAttribute{
+															"port": schema.StringAttribute{
 																Computed: true,
 																Optional: true,
-																Attributes: map[string]schema.Attribute{
-																	"integer": schema.Int64Attribute{
-																		Optional: true,
-																		Validators: []validator.Int64{
-																			int64validator.ConflictsWith(path.Expressions{
-																				path.MatchRelative().AtParent().AtName("str"),
-																			}...),
-																			int64validator.Between(0, 65535),
-																		},
-																	},
-																	"str": schema.StringAttribute{
-																		Optional: true,
-																		Validators: []validator.String{
-																			stringvalidator.ConflictsWith(path.Expressions{
-																				path.MatchRelative().AtParent().AtName("integer"),
-																			}...),
-																		},
-																	},
-																},
+																Default:  stringdefault.StaticString(`6379`),
 																MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
-																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																	`Default: "6379"`,
 															},
 															"read_timeout": schema.Int64Attribute{
 																Computed:    true,
@@ -1787,15 +1596,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"threshold": schema.Float64Attribute{
 																Optional:    true,
 																Description: `the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.`,
-															},
-															"type": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Not Null; must be "redis"`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf("redis"),
-																},
 															},
 															"username": schema.StringAttribute{
 																Optional: true,
@@ -1999,6 +1799,50 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
+											"ai_gateway_model_alias_config_body": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"body": schema.MapAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: jsontypes.NormalizedType{},
+														Description: `Value indexed by property name that will cause this route to match if present in the request body. Not Null`,
+														Validators: []validator.Map{
+															speakeasy_mapvalidators.NotNull(),
+															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														},
+													},
+												},
+												Description: `Configuration for routing requests to a specific model using a request body property.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+													}...),
+												},
+											},
+											"ai_gateway_model_alias_config_headers": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"headers": schema.MapAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: jsontypes.NormalizedType{},
+														Description: `Value indexed by property name that will cause this route to match if present in the request headers. Not Null`,
+														Validators: []validator.Map{
+															speakeasy_mapvalidators.NotNull(),
+															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														},
+													},
+												},
+												Description: `Configuration for routing requests to a specific model using a header.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+													}...),
+												},
+											},
 											"ai_gateway_model_alias_config_path": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -2014,6 +1858,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												Description: `Configuration for routing requests to a specific model using a path alias.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
+													}...),
+												},
 											},
 										},
 										Description: `Configuration for routing to this model using an alias.`,
@@ -2224,17 +2074,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "anthropic"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"anthropic",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2266,6 +2105,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2318,15 +2158,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "azure"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("azure"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2352,6 +2183,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2409,15 +2241,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "bedrock"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("bedrock"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2447,6 +2270,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2485,15 +2309,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "cerebras"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("cerebras"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2519,6 +2334,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2571,15 +2387,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "cohere"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("cohere"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2611,6 +2418,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2655,17 +2463,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "dashscope"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"dashscope",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2691,6 +2488,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2729,17 +2527,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "databricks"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"databricks",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2773,6 +2560,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2811,15 +2599,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "deepseek"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("deepseek"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2845,6 +2624,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2917,15 +2697,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "gemini"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("gemini"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2951,6 +2722,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2989,17 +2761,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "huggingface"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"huggingface",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3037,6 +2798,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3083,15 +2845,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "kimi"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("kimi"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3117,6 +2870,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3163,17 +2917,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "llama2"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("llama2"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
@@ -3201,6 +2945,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3247,15 +2992,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "mistral"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("mistral"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3281,6 +3017,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("llama2"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3319,15 +3056,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "ollama"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("ollama"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3353,6 +3081,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("llama2"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3391,15 +3120,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "openai"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("openai"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3425,6 +3145,124 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("llama2"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vertex"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"sagemaker": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"aws": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"assume_role_arn":   types.StringType,
+														"region":            types.StringType,
+														"role_session_name": types.StringType,
+														"sts_endpoint_url":  types.StringType,
+													})),
+													Attributes: map[string]schema.Attribute{
+														"assume_role_arn": schema.StringAttribute{
+															Optional:    true,
+															Description: `Assume a different IAM role after authenticating; mutually required with role_session_name.`,
+														},
+														"region": schema.StringAttribute{
+															Optional:    true,
+															Description: `Overrides the AWS_REGION environment variable for SageMaker requests.`,
+														},
+														"role_session_name": schema.StringAttribute{
+															Optional:    true,
+															Description: `Session identifier for the assumed role; mutually required with assume_role_arn.`,
+														},
+														"sts_endpoint_url": schema.StringAttribute{
+															Optional:    true,
+															Description: `Overrides the STS endpoint when assuming a role.`,
+														},
+													},
+													MarkdownDescription: `**Pre-release Feature**` + "\n" +
+														`This feature is currently in beta and is subject to change.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per input token for billing and cost tracking.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per output token for billing and cost tracking.`,
+												},
+												"target": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"container_hostname": types.StringType,
+														"model":              types.StringType,
+														"variant":            types.StringType,
+													})),
+													Attributes: map[string]schema.Attribute{
+														"container_hostname": schema.StringAttribute{
+															Optional:    true,
+															Description: `Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).`,
+														},
+														"model": schema.StringAttribute{
+															Optional:    true,
+															Description: `Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).`,
+														},
+														"variant": schema.StringAttribute{
+															Optional:    true,
+															Description: `Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).`,
+														},
+													},
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`AWS SageMaker-specific configuration for a model.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3463,15 +3301,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "vercel"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("vercel"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3498,6 +3327,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -3580,15 +3410,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "vertex"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("vertex"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3615,6 +3436,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -3652,17 +3474,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "vllm"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("vllm"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
@@ -3691,6 +3503,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -3728,15 +3541,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "xai"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("xai"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3763,6 +3567,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3815,15 +3620,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.List{
 							speakeasy_listvalidators.NotNull(),
 							listvalidator.SizeAtLeast(1),
-						},
-					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "api"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("api"),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -3935,17 +3731,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"consistent_hashing": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "consistent-hashing"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"consistent-hashing",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -4042,17 +3827,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"least_connections": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "least-connections"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"least-connections",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -4143,17 +3917,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"lowest_latency": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "lowest-latency"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"lowest-latency",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -4250,17 +4013,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"lowest_usage": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "lowest-usage"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"lowest-usage",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -4357,15 +4109,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"priority": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "priority"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("priority"),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -4456,17 +4199,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"round_robin": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "round-robin"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"round-robin",
-													),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -4557,15 +4289,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									"semantic": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"algorithm": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null; must be "semantic"`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf("semantic"),
-												},
-											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -4604,15 +4327,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The Azure deployment ID for the model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
-																		},
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "azure"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("azure"),
 																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
@@ -4657,15 +4371,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Optional: true,
 																		MarkdownDescription: `The AWS region for the model.` + "\n" +
 																			`Setting this option overrides the AWS_REGION environment variable.`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "bedrock"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("bedrock"),
-																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
@@ -4729,15 +4434,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																			`` + "\n" +
 																			`Configuration for a model hosted on Google Cloud Project.`,
 																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "gemini"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("gemini"),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -4762,17 +4458,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"huggingface": schema.SingleNestedAttribute{
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "huggingface"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf(
-																				"huggingface",
-																			),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -4840,15 +4525,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"ollama": schema.SingleNestedAttribute{
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "ollama"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("ollama"),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -4873,15 +4549,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"openai": schema.SingleNestedAttribute{
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "openai"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("openai"),
-																		},
-																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
@@ -4939,15 +4606,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																			`This feature is currently in beta and is subject to change.` + "\n" +
 																			`` + "\n" +
 																			`Configuration for a model hosted on Google Cloud Project.`,
-																	},
-																	"type": schema.StringAttribute{
-																		Computed:    true,
-																		Optional:    true,
-																		Description: `Not Null; must be "vertex"`,
-																		Validators: []validator.String{
-																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf("vertex"),
-																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
@@ -5159,15 +4817,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Default:     float64default.StaticFloat64(5000),
 																Description: `the timeout of the pgvector database. Default: 5000`,
 															},
-															"type": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Not Null; must be "pgvector"`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf("pgvector"),
-																},
-															},
 															"user": schema.StringAttribute{
 																Computed: true,
 																Optional: true,
@@ -5231,15 +4880,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				MarkdownDescription: `AWS Secret Access Key.` + "\n" +
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
-																			"type": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Not Null; must be "aws"`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf("aws"),
-																				},
-																			},
 																		},
 																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																			`This feature is currently in beta and is subject to change.` + "\n" +
@@ -5270,15 +4910,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				MarkdownDescription: `Azure Tenant ID.` + "\n" +
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
-																			"type": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Not Null; must be "azure"`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf("azure"),
-																				},
-																			},
 																		},
 																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																			`This feature is currently in beta and is subject to change.` + "\n" +
@@ -5298,15 +4929,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Optional: true,
 																				MarkdownDescription: `GCP Service Account JSON.` + "\n" +
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-																			},
-																			"type": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Not Null; must be "gcp"`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf("gcp"),
-																				},
 																			},
 																		},
 																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -5453,30 +5075,13 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
 																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 															},
-															"port": schema.SingleNestedAttribute{
+															"port": schema.StringAttribute{
 																Computed: true,
 																Optional: true,
-																Attributes: map[string]schema.Attribute{
-																	"integer": schema.Int64Attribute{
-																		Optional: true,
-																		Validators: []validator.Int64{
-																			int64validator.ConflictsWith(path.Expressions{
-																				path.MatchRelative().AtParent().AtName("str"),
-																			}...),
-																			int64validator.Between(0, 65535),
-																		},
-																	},
-																	"str": schema.StringAttribute{
-																		Optional: true,
-																		Validators: []validator.String{
-																			stringvalidator.ConflictsWith(path.Expressions{
-																				path.MatchRelative().AtParent().AtName("integer"),
-																			}...),
-																		},
-																	},
-																},
+																Default:  stringdefault.StaticString(`6379`),
 																MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
-																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																	`Default: "6379"`,
 															},
 															"read_timeout": schema.Int64Attribute{
 																Computed:    true,
@@ -5585,15 +5190,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															"threshold": schema.Float64Attribute{
 																Optional:    true,
 																Description: `the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.`,
-															},
-															"type": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Not Null; must be "redis"`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf("redis"),
-																},
 															},
 															"username": schema.StringAttribute{
 																Optional: true,
@@ -5815,6 +5411,50 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
+											"ai_gateway_model_alias_config_body": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"body": schema.MapAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: jsontypes.NormalizedType{},
+														Description: `Value indexed by property name that will cause this route to match if present in the request body. Not Null`,
+														Validators: []validator.Map{
+															speakeasy_mapvalidators.NotNull(),
+															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														},
+													},
+												},
+												Description: `Configuration for routing requests to a specific model using a request body property.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+													}...),
+												},
+											},
+											"ai_gateway_model_alias_config_headers": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"headers": schema.MapAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: jsontypes.NormalizedType{},
+														Description: `Value indexed by property name that will cause this route to match if present in the request headers. Not Null`,
+														Validators: []validator.Map{
+															speakeasy_mapvalidators.NotNull(),
+															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														},
+													},
+												},
+												Description: `Configuration for routing requests to a specific model using a header.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+													}...),
+												},
+											},
 											"ai_gateway_model_alias_config_path": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -5830,6 +5470,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												Description: `Configuration for routing requests to a specific model using a path alias.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
+														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
+													}...),
+												},
 											},
 										},
 										Description: `Configuration for routing to this model using an alias.`,
@@ -6040,17 +5686,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "anthropic"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"anthropic",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6082,6 +5717,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6134,15 +5770,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "azure"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("azure"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6168,6 +5795,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6225,15 +5853,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "bedrock"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("bedrock"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6263,6 +5882,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6301,15 +5921,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "cerebras"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("cerebras"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6335,6 +5946,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6387,15 +5999,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "cohere"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("cohere"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6427,6 +6030,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6471,17 +6075,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "dashscope"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"dashscope",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6507,6 +6100,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6545,17 +6139,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "databricks"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"databricks",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6589,6 +6172,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6627,15 +6211,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "deepseek"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("deepseek"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6661,6 +6236,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6733,15 +6309,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "gemini"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("gemini"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6767,6 +6334,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6805,17 +6373,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "huggingface"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"huggingface",
-														),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6853,6 +6410,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6899,15 +6457,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "kimi"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("kimi"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6933,6 +6482,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6979,17 +6529,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "llama2"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("llama2"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
@@ -7017,6 +6557,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -7063,15 +6604,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "mistral"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("mistral"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7097,6 +6629,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("llama2"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -7135,15 +6668,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "ollama"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("ollama"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7169,6 +6693,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("llama2"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -7207,15 +6732,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "openai"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("openai"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7241,6 +6757,124 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("llama2"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vertex"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"sagemaker": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"aws": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"assume_role_arn":   types.StringType,
+														"region":            types.StringType,
+														"role_session_name": types.StringType,
+														"sts_endpoint_url":  types.StringType,
+													})),
+													Attributes: map[string]schema.Attribute{
+														"assume_role_arn": schema.StringAttribute{
+															Optional:    true,
+															Description: `Assume a different IAM role after authenticating; mutually required with role_session_name.`,
+														},
+														"region": schema.StringAttribute{
+															Optional:    true,
+															Description: `Overrides the AWS_REGION environment variable for SageMaker requests.`,
+														},
+														"role_session_name": schema.StringAttribute{
+															Optional:    true,
+															Description: `Session identifier for the assumed role; mutually required with assume_role_arn.`,
+														},
+														"sts_endpoint_url": schema.StringAttribute{
+															Optional:    true,
+															Description: `Overrides the STS endpoint when assuming a role.`,
+														},
+													},
+													MarkdownDescription: `**Pre-release Feature**` + "\n" +
+														`This feature is currently in beta and is subject to change.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per input token for billing and cost tracking.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per output token for billing and cost tracking.`,
+												},
+												"target": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"container_hostname": types.StringType,
+														"model":              types.StringType,
+														"variant":            types.StringType,
+													})),
+													Attributes: map[string]schema.Attribute{
+														"container_hostname": schema.StringAttribute{
+															Optional:    true,
+															Description: `Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).`,
+														},
+														"model": schema.StringAttribute{
+															Optional:    true,
+															Description: `Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).`,
+														},
+														"variant": schema.StringAttribute{
+															Optional:    true,
+															Description: `Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).`,
+														},
+													},
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`AWS SageMaker-specific configuration for a model.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -7279,15 +6913,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "vercel"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("vercel"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7314,6 +6939,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -7396,15 +7022,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "vertex"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("vertex"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7431,6 +7048,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -7468,17 +7086,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "vllm"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("vllm"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
@@ -7507,6 +7115,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -7544,15 +7153,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "xai"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("xai"),
-													},
-												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7579,6 +7179,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -7633,15 +7234,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 							listvalidator.SizeAtLeast(1),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "model"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("model"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -7666,12 +7258,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 					`This feature is currently in beta and is subject to change.` + "\n" +
 					`` + "\n" +
 					`A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.`,
-			},
-			"type": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("api"), FieldPath: path.Root("api").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("model"), FieldPath: path.Root("model").AtName("type")}}),
-				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

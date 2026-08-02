@@ -7,7 +7,6 @@ import (
 )
 
 type AIGatewayModelBalancerSemanticConfig struct {
-	Algorithm        types.String                  `tfsdk:"algorithm"`
 	ConnectTimeout   types.Int64                   `tfsdk:"connect_timeout"`
 	Embeddings       *Embeddings                   `tfsdk:"embeddings"`
 	FailTimeout      types.Int64                   `tfsdk:"fail_timeout"`

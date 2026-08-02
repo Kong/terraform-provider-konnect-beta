@@ -8,7 +8,7 @@ import (
 )
 
 type AIGatewayMCPUpstreamTool struct {
-	Access       *Access                      `tfsdk:"access"`
+	Access       *AIGatewayAgentAccess        `tfsdk:"access"`
 	Annotations  *AIGatewayMCPToolAnnotations `tfsdk:"annotations"`
 	Description  types.String                 `tfsdk:"description"`
 	Headers      jsontypes.Normalized         `tfsdk:"headers"`

@@ -31,7 +31,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -42,7 +41,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "anthropic"
   }
   azure = {
     config = {
@@ -51,7 +49,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           client_id            = "...my_client_id..."
           client_secret        = "...my_client_secret..."
           tenant_id            = "...my_tenant_id..."
-          type                 = "azure"
           use_managed_identity = true
         }
       }
@@ -65,7 +62,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "azure"
   }
   bedrock = {
     config = {
@@ -77,7 +73,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           role_session_name = "...my_role_session_name..."
           secret_access_key = "...my_secret_access_key..."
           sts_endpoint_url  = "...my_sts_endpoint_url..."
-          type              = "aws"
         }
       }
     }
@@ -89,7 +84,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "bedrock"
   }
   cerebras = {
     config = {
@@ -107,7 +101,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -118,7 +111,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "cerebras"
   }
   cohere = {
     config = {
@@ -136,7 +128,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -147,7 +138,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "cohere"
   }
   dashscope = {
     config = {
@@ -165,7 +155,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -176,7 +165,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "dashscope"
   }
   databricks = {
     config = {
@@ -194,7 +182,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -205,7 +192,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "databricks"
   }
   deepseek = {
     config = {
@@ -223,7 +209,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -234,7 +219,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "deepseek"
   }
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   gemini = {
@@ -244,7 +228,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           metadata_url            = "...my_metadata_url..."
           oauth_token_url         = "...my_oauth_token_url..."
           service_account_json    = "...my_service_account_json..."
-          type                    = "gcp"
           use_gcp_service_account = false
         }
       }
@@ -257,7 +240,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "gemini"
   }
   huggingface = {
     config = {
@@ -275,7 +257,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -286,7 +267,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "huggingface"
   }
   kimi = {
     config = {
@@ -304,7 +284,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -315,7 +294,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "kimi"
   }
   llama2 = {
     config = {
@@ -333,7 +311,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -344,7 +321,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "llama2"
   }
   mistral = {
     config = {
@@ -362,7 +338,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -373,7 +348,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "mistral"
   }
   ollama = {
     config = {
@@ -391,7 +365,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -402,7 +375,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "ollama"
   }
   openai = {
     config = {
@@ -420,7 +392,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -431,7 +402,36 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "openai"
+  }
+  sagemaker = {
+    config = {
+      auth = {
+        basic = {
+          headers = [
+            {
+              name  = "...my_name..."
+              value = "...my_value..."
+            }
+          ]
+          params = [
+            {
+              location = "query"
+              name     = "...my_name..."
+              value    = "...my_value..."
+            }
+          ]
+        }
+      }
+    }
+    display_name = "Azure AI SE"
+    labels = {
+      key = "value"
+    }
+    managed_by = {
+      key = "value"
+    }
+    name = "azure-ai-se"
+    type = "sagemaker"
   }
   vercel = {
     config = {
@@ -449,7 +449,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -460,14 +459,12 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "vercel"
   }
   vertex = {
     config = {
       auth = {
         vertex = {
           service_account_json = "...my_service_account_json..."
-          type                 = "vertex"
         }
       }
     }
@@ -479,7 +476,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "vertex"
   }
   vllm = {
     config = {
@@ -497,7 +493,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -508,7 +503,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "vllm"
   }
   xai = {
     config = {
@@ -526,7 +520,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             value    = "...my_value..."
           }
         ]
-        type = "basic"
       }
     }
     display_name = "Azure AI SE"
@@ -537,7 +530,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "xai"
   }
 }
 ```
@@ -587,6 +579,10 @@ This feature is currently in beta and is subject to change. (see [below for nest
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--ollama))
 - `openai` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--openai))
+- `sagemaker` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker))
 - `vercel` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--vercel))
 - `vertex` (Attributes) **Pre-release Feature**
@@ -607,7 +603,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
-- `type` (String)
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--anthropic"></a>
@@ -630,7 +625,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "anthropic"
 
 Read-Only:
 
@@ -656,7 +650,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--anthropic--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--anthropic--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--anthropic--config--auth--headers"></a>
 ### Nested Schema for `anthropic.config.auth.headers`
@@ -703,7 +696,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "azure"
 
 Read-Only:
 
@@ -744,7 +736,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "azure"
 - `use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 
 
@@ -755,7 +746,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--azure--config--auth--basic--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--azure--config--auth--basic--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--azure--config--auth--basic--headers"></a>
 ### Nested Schema for `azure.config.auth.basic.headers`
@@ -803,7 +793,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "bedrock"
 
 Read-Only:
 
@@ -847,7 +836,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens. If not specified, the default AWS STS endpoint will be used.
-- `type` (String) Not Null; must be "aws"
 
 
 <a id="nestedatt--bedrock--config--auth--basic"></a>
@@ -857,7 +845,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--bedrock--config--auth--basic--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--bedrock--config--auth--basic--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--bedrock--config--auth--basic--headers"></a>
 ### Nested Schema for `bedrock.config.auth.basic.headers`
@@ -905,7 +892,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "cerebras"
 
 Read-Only:
 
@@ -931,7 +917,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--cerebras--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--cerebras--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--cerebras--config--auth--headers"></a>
 ### Nested Schema for `cerebras.config.auth.headers`
@@ -978,7 +963,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "cohere"
 
 Read-Only:
 
@@ -1004,7 +988,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--cohere--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--cohere--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--cohere--config--auth--headers"></a>
 ### Nested Schema for `cohere.config.auth.headers`
@@ -1051,7 +1034,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "dashscope"
 
 Read-Only:
 
@@ -1077,7 +1059,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--dashscope--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--dashscope--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--dashscope--config--auth--headers"></a>
 ### Nested Schema for `dashscope.config.auth.headers`
@@ -1124,7 +1105,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "databricks"
 
 Read-Only:
 
@@ -1150,7 +1130,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--databricks--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--databricks--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--databricks--config--auth--headers"></a>
 ### Nested Schema for `databricks.config.auth.headers`
@@ -1197,7 +1176,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "deepseek"
 
 Read-Only:
 
@@ -1223,7 +1201,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--deepseek--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--deepseek--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--deepseek--config--auth--headers"></a>
 ### Nested Schema for `deepseek.config.auth.headers`
@@ -1270,7 +1247,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "gemini"
 
 Read-Only:
 
@@ -1306,7 +1282,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--gemini--config--auth--basic--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--gemini--config--auth--basic--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--gemini--config--auth--basic--headers"></a>
 ### Nested Schema for `gemini.config.auth.basic.headers`
@@ -1342,7 +1317,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `service_account_json` (String) Full JSON string of the GCP service account to authenticate. If not set (and gcp_use_service_account is true), the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "gcp"
 - `use_gcp_service_account` (Boolean) Use service account auth for GCP-based providers and models.
 
 
@@ -1369,7 +1343,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "huggingface"
 
 Read-Only:
 
@@ -1395,7 +1368,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--huggingface--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--huggingface--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--huggingface--config--auth--headers"></a>
 ### Nested Schema for `huggingface.config.auth.headers`
@@ -1442,7 +1414,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "kimi"
 
 Read-Only:
 
@@ -1468,7 +1439,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--kimi--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--kimi--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--kimi--config--auth--headers"></a>
 ### Nested Schema for `kimi.config.auth.headers`
@@ -1515,7 +1485,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "llama2"
 
 Read-Only:
 
@@ -1541,7 +1510,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--llama2--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--llama2--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--llama2--config--auth--headers"></a>
 ### Nested Schema for `llama2.config.auth.headers`
@@ -1588,7 +1556,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "mistral"
 
 Read-Only:
 
@@ -1614,7 +1581,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--mistral--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--mistral--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--mistral--config--auth--headers"></a>
 ### Nested Schema for `mistral.config.auth.headers`
@@ -1661,7 +1627,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "ollama"
 
 Read-Only:
 
@@ -1687,7 +1652,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--ollama--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--ollama--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--ollama--config--auth--headers"></a>
 ### Nested Schema for `ollama.config.auth.headers`
@@ -1734,7 +1698,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "openai"
 
 Read-Only:
 
@@ -1760,7 +1723,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--openai--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--openai--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--openai--config--auth--headers"></a>
 ### Nested Schema for `openai.config.auth.headers`
@@ -1787,6 +1749,108 @@ Optional:
 
 
 
+<a id="nestedatt--sagemaker"></a>
+### Nested Schema for `sagemaker`
+
+Required:
+
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--sagemaker--config))
+- `display_name` (String) The display name for this model provider instance.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+- `type` (String) must be "sagemaker"
+
+Optional:
+
+- `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
+
+Public labels are intended to store **PUBLIC** metadata. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long and start with an alphanumeric character.
+
+<a id="nestedatt--sagemaker--config"></a>
+### Nested Schema for `sagemaker.config`
+
+Required:
+
+- `auth` (Attributes) (see [below for nested schema](#nestedatt--sagemaker--config--auth))
+
+<a id="nestedatt--sagemaker--config--auth"></a>
+### Nested Schema for `sagemaker.config.auth`
+
+Optional:
+
+- `basic` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--sagemaker--config--auth--basic))
+- `sagemaker` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth configuration for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker--config--auth--sagemaker))
+
+<a id="nestedatt--sagemaker--config--auth--basic"></a>
+### Nested Schema for `sagemaker.config.auth.basic`
+
+Optional:
+
+- `headers` (Attributes List) (see [below for nested schema](#nestedatt--sagemaker--config--auth--basic--headers))
+- `params` (Attributes List) (see [below for nested schema](#nestedatt--sagemaker--config--auth--basic--params))
+
+<a id="nestedatt--sagemaker--config--auth--basic--headers"></a>
+### Nested Schema for `sagemaker.config.auth.basic.headers`
+
+Optional:
+
+- `name` (String) The name of the header used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Not Null
+- `value` (String) The auth header value for ‘header_name’, for example ‘Bearer key...’.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--sagemaker--config--auth--basic--params"></a>
+### Nested Schema for `sagemaker.config.auth.basic.params`
+
+Optional:
+
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
+- `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--sagemaker--config--auth--sagemaker"></a>
+### Nested Schema for `sagemaker.config.auth.sagemaker`
+
+Required:
+
+- `type` (String) must be "sagemaker"
+
+Optional:
+
+- `aws` (Attributes) (see [below for nested schema](#nestedatt--sagemaker--config--auth--sagemaker--aws))
+
+<a id="nestedatt--sagemaker--config--auth--sagemaker--aws"></a>
+### Nested Schema for `sagemaker.config.auth.sagemaker.aws`
+
+Optional:
+
+- `access_key_id` (String) static IAM user credential; overrides AWS_ACCESS_KEY_ID env var
+- `secret_access_key` (String) static IAM user credential; overrides AWS_SECRET_ACCESS_KEY env var
+- `session_token` (String) static IAM user credential; overrides AWS_SESSION_TOKEN env var
+
+
+
+
+
+
 <a id="nestedatt--vercel"></a>
 ### Nested Schema for `vercel`
 
@@ -1807,7 +1871,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "vercel"
 
 Read-Only:
 
@@ -1833,7 +1896,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--vercel--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--vercel--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--vercel--config--auth--headers"></a>
 ### Nested Schema for `vercel.config.auth.headers`
@@ -1880,7 +1942,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "vertex"
 
 Read-Only:
 
@@ -1916,7 +1977,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--vertex--config--auth--basic--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--vertex--config--auth--basic--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--vertex--config--auth--basic--headers"></a>
 ### Nested Schema for `vertex.config.auth.basic.headers`
@@ -1948,7 +2008,6 @@ Optional:
 
 - `service_account_json` (String) Full JSON string of the GCP service account to authenticate. If not set, the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `type` (String) Not Null; must be "vertex"
 
 
 
@@ -1974,7 +2033,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "vllm"
 
 Read-Only:
 
@@ -2000,7 +2058,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--vllm--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--vllm--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--vllm--config--auth--headers"></a>
 ### Nested Schema for `vllm.config.auth.headers`
@@ -2047,7 +2104,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "xai"
 
 Read-Only:
 
@@ -2073,7 +2129,6 @@ Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--xai--config--auth--headers))
 - `params` (Attributes List) (see [below for nested schema](#nestedatt--xai--config--auth--params))
-- `type` (String) Not Null; must be "basic"
 
 <a id="nestedatt--xai--config--auth--headers"></a>
 ### Nested Schema for `xai.config.auth.headers`

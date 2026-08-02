@@ -16,6 +16,5 @@ type AIGatewayModelVectorDBConfigPgVector struct {
 	Ssl            *Ssl          `tfsdk:"ssl"`
 	Threshold      types.Float64 `tfsdk:"threshold"`
 	Timeout        types.Float64 `tfsdk:"timeout"`
-	Type           types.String  `tfsdk:"type"`
 	User           types.String  `tfsdk:"user"`
 }

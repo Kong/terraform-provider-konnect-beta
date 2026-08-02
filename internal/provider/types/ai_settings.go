@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayMCPACLs struct {
-	Allow []types.String `tfsdk:"allow"`
-	Deny  []types.String `tfsdk:"deny"`
+type AISettings struct {
+	Enabled  types.Bool `tfsdk:"enabled"`
+	Features *Features  `tfsdk:"features"`
 }

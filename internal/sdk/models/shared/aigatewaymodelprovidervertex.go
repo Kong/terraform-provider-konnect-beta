@@ -9,29 +9,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type AIGatewayModelProviderVertexType string
-
-const (
-	AIGatewayModelProviderVertexTypeVertex AIGatewayModelProviderVertexType = "vertex"
-)
-
-func (e AIGatewayModelProviderVertexType) ToPointer() *AIGatewayModelProviderVertexType {
-	return &e
-}
-func (e *AIGatewayModelProviderVertexType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "vertex":
-		*e = AIGatewayModelProviderVertexType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayModelProviderVertexType: %v", v)
-	}
-}
-
 type AIGatewayModelProviderVertexAuthType string
 
 const (
@@ -49,9 +26,6 @@ type AIGatewayModelProviderVertexAuth struct {
 func CreateAIGatewayModelProviderVertexAuthBasic(basic AIGatewayModelProviderConfigAuthBasic) AIGatewayModelProviderVertexAuth {
 	typ := AIGatewayModelProviderVertexAuthTypeBasic
 
-	typStr := AIGatewayModelProviderConfigAuthBasicType(typ)
-	basic.Type = typStr
-
 	return AIGatewayModelProviderVertexAuth{
 		AIGatewayModelProviderConfigAuthBasic: &basic,
 		Type:                                  typ,
@@ -60,9 +34,6 @@ func CreateAIGatewayModelProviderVertexAuthBasic(basic AIGatewayModelProviderCon
 
 func CreateAIGatewayModelProviderVertexAuthVertex(vertex AIGatewayModelProviderConfigAuthVertex) AIGatewayModelProviderVertexAuth {
 	typ := AIGatewayModelProviderVertexAuthTypeVertex
-
-	typStr := AIGatewayModelProviderConfigAuthVertexType(typ)
-	vertex.Type = typStr
 
 	return AIGatewayModelProviderVertexAuth{
 		AIGatewayModelProviderConfigAuthVertex: &vertex,
@@ -152,7 +123,8 @@ func (a *AIGatewayModelProviderVertexConfig) GetAuthVertex() *AIGatewayModelProv
 //
 // Config for Vertex model provider.
 type AIGatewayModelProviderVertex struct {
-	Type AIGatewayModelProviderVertexType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"vertex" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
 	// **Pre-release Feature**
@@ -186,11 +158,8 @@ func (a *AIGatewayModelProviderVertex) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AIGatewayModelProviderVertex) GetType() AIGatewayModelProviderVertexType {
-	if a == nil {
-		return AIGatewayModelProviderVertexType("")
-	}
-	return a.Type
+func (a *AIGatewayModelProviderVertex) GetType() string {
+	return "vertex"
 }
 
 func (a *AIGatewayModelProviderVertex) GetDisplayName() string {
