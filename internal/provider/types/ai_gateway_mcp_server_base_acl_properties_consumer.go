@@ -2,12 +2,7 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type AIGatewayMCPServerBaseACLPropertiesConsumer struct {
-	ACLAttributeType types.String   `tfsdk:"acl_attribute_type"`
-	Acls             *AIGatewayACLS `tfsdk:"acls"`
-	DefaultToolAcls  *AIGatewayACLS `tfsdk:"default_tool_acls"`
+	Acls            *AIGatewayACLS `tfsdk:"acls"`
+	DefaultToolAcls *AIGatewayACLS `tfsdk:"default_tool_acls"`
 }

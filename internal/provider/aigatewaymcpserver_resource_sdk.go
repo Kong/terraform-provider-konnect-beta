@@ -25,11 +25,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				r.ConversionListener.Access = &tfTypes.AIGatewayMCPServerBaseACLProperties{}
 				if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer != nil {
 					r.ConversionListener.Access.Consumer = &tfTypes.AIGatewayMCPServerBaseACLPropertiesConsumer{}
-					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType != nil {
-						r.ConversionListener.Access.Consumer.ACLAttributeType = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType))
-					} else {
-						r.ConversionListener.Access.Consumer.ACLAttributeType = types.StringNull()
-					}
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.Acls == nil {
 						r.ConversionListener.Access.Consumer.Acls = nil
 					} else {
@@ -60,7 +55,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth != nil {
 					r.ConversionListener.Access.OauthAccessToken = &tfTypes.AIGatewayMCPServerBaseACLPropertiesOauth{}
 					r.ConversionListener.Access.OauthAccessToken.AccessTokenClaimField = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.AccessTokenClaimField)
-					r.ConversionListener.Access.OauthAccessToken.ACLAttributeType = types.StringValue(string(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.ACLAttributeType))
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.Acls == nil {
 						r.ConversionListener.Access.OauthAccessToken.Acls = nil
 					} else {
@@ -377,7 +371,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 					parameters.In = types.StringValue(string(parametersItem.In))
 					parameters.Name = types.StringValue(parametersItem.Name)
 					parameters.Required = types.BoolPointerValue(parametersItem.Required)
-					if parametersItem.Schema != nil {
+					if len(parametersItem.Schema) > 0 {
 						parameters.Schema = make(map[string]jsontypes.Normalized, len(parametersItem.Schema))
 						for key3, value3 := range parametersItem.Schema {
 							result1, _ := json.Marshal(value3)
@@ -545,7 +539,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 					parameters1.In = types.StringValue(string(parametersItem1.In))
 					parameters1.Name = types.StringValue(parametersItem1.Name)
 					parameters1.Required = types.BoolPointerValue(parametersItem1.Required)
-					if parametersItem1.Schema != nil {
+					if len(parametersItem1.Schema) > 0 {
 						parameters1.Schema = make(map[string]jsontypes.Normalized, len(parametersItem1.Schema))
 						for key7, value7 := range parametersItem1.Schema {
 							result3, _ := json.Marshal(value7)
@@ -592,11 +586,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				r.Listener.Access = &tfTypes.AIGatewayMCPServerBaseACLProperties{}
 				if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer != nil {
 					r.Listener.Access.Consumer = &tfTypes.AIGatewayMCPServerBaseACLPropertiesConsumer{}
-					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType != nil {
-						r.Listener.Access.Consumer.ACLAttributeType = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType))
-					} else {
-						r.Listener.Access.Consumer.ACLAttributeType = types.StringNull()
-					}
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.Acls == nil {
 						r.Listener.Access.Consumer.Acls = nil
 					} else {
@@ -627,7 +616,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth != nil {
 					r.Listener.Access.OauthAccessToken = &tfTypes.AIGatewayMCPServerBaseACLPropertiesOauth{}
 					r.Listener.Access.OauthAccessToken.AccessTokenClaimField = types.StringValue(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.AccessTokenClaimField)
-					r.Listener.Access.OauthAccessToken.ACLAttributeType = types.StringValue(string(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.ACLAttributeType))
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.Acls == nil {
 						r.Listener.Access.OauthAccessToken.Acls = nil
 					} else {
@@ -891,102 +879,98 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 			for _, v := range resp.AIGatewayMCPServerListenerResponse.Policies {
 				r.Listener.Policies = append(r.Listener.Policies, types.StringValue(v))
 			}
-			if resp.AIGatewayMCPServerListenerResponse.Tools != nil {
-				r.Listener.Tools = []tfTypes.AIGatewayMCPToolBase{}
+			r.Listener.Tools = []tfTypes.AIGatewayMCPToolBase{}
 
-				for _, toolsItem2 := range resp.AIGatewayMCPServerListenerResponse.Tools {
-					var tools2 tfTypes.AIGatewayMCPToolBase
+			for _, toolsItem2 := range resp.AIGatewayMCPServerListenerResponse.Tools {
+				var tools2 tfTypes.AIGatewayMCPToolBase
 
-					if toolsItem2.Access == nil {
-						tools2.Access = nil
+				if toolsItem2.Access == nil {
+					tools2.Access = nil
+				} else {
+					tools2.Access = &tfTypes.AIGatewayAgentAccess{}
+					if toolsItem2.Access.Acls == nil {
+						tools2.Access.Acls = nil
 					} else {
-						tools2.Access = &tfTypes.AIGatewayAgentAccess{}
-						if toolsItem2.Access.Acls == nil {
-							tools2.Access.Acls = nil
-						} else {
-							tools2.Access.Acls = &tfTypes.AIGatewayACLS{}
-							tools2.Access.Acls.Allow = make([]types.String, 0, len(toolsItem2.Access.Acls.Allow))
-							for _, v := range toolsItem2.Access.Acls.Allow {
-								tools2.Access.Acls.Allow = append(tools2.Access.Acls.Allow, types.StringValue(v))
-							}
-							tools2.Access.Acls.Deny = make([]types.String, 0, len(toolsItem2.Access.Acls.Deny))
-							for _, v := range toolsItem2.Access.Acls.Deny {
-								tools2.Access.Acls.Deny = append(tools2.Access.Acls.Deny, types.StringValue(v))
-							}
+						tools2.Access.Acls = &tfTypes.AIGatewayACLS{}
+						tools2.Access.Acls.Allow = make([]types.String, 0, len(toolsItem2.Access.Acls.Allow))
+						for _, v := range toolsItem2.Access.Acls.Allow {
+							tools2.Access.Acls.Allow = append(tools2.Access.Acls.Allow, types.StringValue(v))
+						}
+						tools2.Access.Acls.Deny = make([]types.String, 0, len(toolsItem2.Access.Acls.Deny))
+						for _, v := range toolsItem2.Access.Acls.Deny {
+							tools2.Access.Acls.Deny = append(tools2.Access.Acls.Deny, types.StringValue(v))
 						}
 					}
-					if toolsItem2.Annotations == nil {
-						tools2.Annotations = nil
-					} else {
-						tools2.Annotations = &tfTypes.AIGatewayMCPToolAnnotations{}
-						tools2.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem2.Annotations.DestructiveHint)
-						tools2.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem2.Annotations.IdempotentHint)
-						tools2.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem2.Annotations.OpenWorldHint)
-						tools2.Annotations.ReadOnlyHint = types.BoolPointerValue(toolsItem2.Annotations.ReadOnlyHint)
-						tools2.Annotations.Title = types.StringPointerValue(toolsItem2.Annotations.Title)
-					}
-					tools2.Description = types.StringValue(toolsItem2.Description)
-					if toolsItem2.Headers == nil {
-						tools2.Headers = jsontypes.NewNormalizedNull()
-					} else {
-						headersResult2, _ := json.Marshal(toolsItem2.Headers)
-						tools2.Headers = jsontypes.NewNormalizedValue(string(headersResult2))
-					}
-					tools2.Host = types.StringPointerValue(toolsItem2.Host)
-					if toolsItem2.Method != nil {
-						tools2.Method = types.StringValue(string(*toolsItem2.Method))
-					} else {
-						tools2.Method = types.StringNull()
-					}
-					tools2.Name = types.StringValue(toolsItem2.Name)
-					tools2.Parameters = []tfTypes.AIGatewayMCPToolParameter{}
-
-					for _, parametersItem2 := range toolsItem2.Parameters {
-						var parameters2 tfTypes.AIGatewayMCPToolParameter
-
-						parameters2.Description = types.StringPointerValue(parametersItem2.Description)
-						parameters2.In = types.StringValue(string(parametersItem2.In))
-						parameters2.Name = types.StringValue(parametersItem2.Name)
-						parameters2.Required = types.BoolPointerValue(parametersItem2.Required)
-						if parametersItem2.Schema != nil {
-							parameters2.Schema = make(map[string]jsontypes.Normalized, len(parametersItem2.Schema))
-							for key11, value11 := range parametersItem2.Schema {
-								result5, _ := json.Marshal(value11)
-								parameters2.Schema[key11] = jsontypes.NewNormalizedValue(string(result5))
-							}
-						}
-
-						tools2.Parameters = append(tools2.Parameters, parameters2)
-					}
-					tools2.Path = types.StringPointerValue(toolsItem2.Path)
-					if toolsItem2.Query == nil {
-						tools2.Query = jsontypes.NewNormalizedNull()
-					} else {
-						queryResult2, _ := json.Marshal(toolsItem2.Query)
-						tools2.Query = jsontypes.NewNormalizedValue(string(queryResult2))
-					}
-					if toolsItem2.RequestBody == nil {
-						tools2.RequestBody = jsontypes.NewNormalizedNull()
-					} else {
-						requestBodyResult2, _ := json.Marshal(toolsItem2.RequestBody)
-						tools2.RequestBody = jsontypes.NewNormalizedValue(string(requestBodyResult2))
-					}
-					if toolsItem2.Responses == nil {
-						tools2.Responses = jsontypes.NewNormalizedNull()
-					} else {
-						responsesResult2, _ := json.Marshal(toolsItem2.Responses)
-						tools2.Responses = jsontypes.NewNormalizedValue(string(responsesResult2))
-					}
-					if toolsItem2.Scheme != nil {
-						tools2.Scheme = types.StringValue(string(*toolsItem2.Scheme))
-					} else {
-						tools2.Scheme = types.StringNull()
-					}
-
-					r.Listener.Tools = append(r.Listener.Tools, tools2)
 				}
-			} else {
-				r.Listener.Tools = nil
+				if toolsItem2.Annotations == nil {
+					tools2.Annotations = nil
+				} else {
+					tools2.Annotations = &tfTypes.AIGatewayMCPToolAnnotations{}
+					tools2.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem2.Annotations.DestructiveHint)
+					tools2.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem2.Annotations.IdempotentHint)
+					tools2.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem2.Annotations.OpenWorldHint)
+					tools2.Annotations.ReadOnlyHint = types.BoolPointerValue(toolsItem2.Annotations.ReadOnlyHint)
+					tools2.Annotations.Title = types.StringPointerValue(toolsItem2.Annotations.Title)
+				}
+				tools2.Description = types.StringValue(toolsItem2.Description)
+				if toolsItem2.Headers == nil {
+					tools2.Headers = jsontypes.NewNormalizedNull()
+				} else {
+					headersResult2, _ := json.Marshal(toolsItem2.Headers)
+					tools2.Headers = jsontypes.NewNormalizedValue(string(headersResult2))
+				}
+				tools2.Host = types.StringPointerValue(toolsItem2.Host)
+				if toolsItem2.Method != nil {
+					tools2.Method = types.StringValue(string(*toolsItem2.Method))
+				} else {
+					tools2.Method = types.StringNull()
+				}
+				tools2.Name = types.StringValue(toolsItem2.Name)
+				tools2.Parameters = []tfTypes.AIGatewayMCPToolParameter{}
+
+				for _, parametersItem2 := range toolsItem2.Parameters {
+					var parameters2 tfTypes.AIGatewayMCPToolParameter
+
+					parameters2.Description = types.StringPointerValue(parametersItem2.Description)
+					parameters2.In = types.StringValue(string(parametersItem2.In))
+					parameters2.Name = types.StringValue(parametersItem2.Name)
+					parameters2.Required = types.BoolPointerValue(parametersItem2.Required)
+					if len(parametersItem2.Schema) > 0 {
+						parameters2.Schema = make(map[string]jsontypes.Normalized, len(parametersItem2.Schema))
+						for key11, value11 := range parametersItem2.Schema {
+							result5, _ := json.Marshal(value11)
+							parameters2.Schema[key11] = jsontypes.NewNormalizedValue(string(result5))
+						}
+					}
+
+					tools2.Parameters = append(tools2.Parameters, parameters2)
+				}
+				tools2.Path = types.StringPointerValue(toolsItem2.Path)
+				if toolsItem2.Query == nil {
+					tools2.Query = jsontypes.NewNormalizedNull()
+				} else {
+					queryResult2, _ := json.Marshal(toolsItem2.Query)
+					tools2.Query = jsontypes.NewNormalizedValue(string(queryResult2))
+				}
+				if toolsItem2.RequestBody == nil {
+					tools2.RequestBody = jsontypes.NewNormalizedNull()
+				} else {
+					requestBodyResult2, _ := json.Marshal(toolsItem2.RequestBody)
+					tools2.RequestBody = jsontypes.NewNormalizedValue(string(requestBodyResult2))
+				}
+				if toolsItem2.Responses == nil {
+					tools2.Responses = jsontypes.NewNormalizedNull()
+				} else {
+					responsesResult2, _ := json.Marshal(toolsItem2.Responses)
+					tools2.Responses = jsontypes.NewNormalizedValue(string(responsesResult2))
+				}
+				if toolsItem2.Scheme != nil {
+					tools2.Scheme = types.StringValue(string(*toolsItem2.Scheme))
+				} else {
+					tools2.Scheme = types.StringNull()
+				}
+
+				r.Listener.Tools = append(r.Listener.Tools, tools2)
 			}
 			r.Listener.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerListenerResponse.UpdatedAt))
 			r.UpdatedAt = r.Listener.UpdatedAt
@@ -998,11 +982,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				r.PassthroughListener.Access = &tfTypes.AIGatewayMCPServerBaseACLProperties{}
 				if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer != nil {
 					r.PassthroughListener.Access.Consumer = &tfTypes.AIGatewayMCPServerBaseACLPropertiesConsumer{}
-					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType != nil {
-						r.PassthroughListener.Access.Consumer.ACLAttributeType = types.StringValue(string(*resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType))
-					} else {
-						r.PassthroughListener.Access.Consumer.ACLAttributeType = types.StringNull()
-					}
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.Acls == nil {
 						r.PassthroughListener.Access.Consumer.Acls = nil
 					} else {
@@ -1033,7 +1012,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth != nil {
 					r.PassthroughListener.Access.OauthAccessToken = &tfTypes.AIGatewayMCPServerBaseACLPropertiesOauth{}
 					r.PassthroughListener.Access.OauthAccessToken.AccessTokenClaimField = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.AccessTokenClaimField)
-					r.PassthroughListener.Access.OauthAccessToken.ACLAttributeType = types.StringValue(string(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.ACLAttributeType))
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.Acls == nil {
 						r.PassthroughListener.Access.OauthAccessToken.Acls = nil
 					} else {
@@ -1340,102 +1318,98 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Policies {
 				r.PassthroughListener.Policies = append(r.PassthroughListener.Policies, types.StringValue(v))
 			}
-			if resp.AIGatewayMCPServerPassthroughListenerResponse.Tools != nil {
-				r.PassthroughListener.Tools = []tfTypes.AIGatewayMCPToolBase{}
+			r.PassthroughListener.Tools = []tfTypes.AIGatewayMCPToolBase{}
 
-				for _, toolsItem3 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Tools {
-					var tools3 tfTypes.AIGatewayMCPToolBase
+			for _, toolsItem3 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Tools {
+				var tools3 tfTypes.AIGatewayMCPToolBase
 
-					if toolsItem3.Access == nil {
-						tools3.Access = nil
+				if toolsItem3.Access == nil {
+					tools3.Access = nil
+				} else {
+					tools3.Access = &tfTypes.AIGatewayAgentAccess{}
+					if toolsItem3.Access.Acls == nil {
+						tools3.Access.Acls = nil
 					} else {
-						tools3.Access = &tfTypes.AIGatewayAgentAccess{}
-						if toolsItem3.Access.Acls == nil {
-							tools3.Access.Acls = nil
-						} else {
-							tools3.Access.Acls = &tfTypes.AIGatewayACLS{}
-							tools3.Access.Acls.Allow = make([]types.String, 0, len(toolsItem3.Access.Acls.Allow))
-							for _, v := range toolsItem3.Access.Acls.Allow {
-								tools3.Access.Acls.Allow = append(tools3.Access.Acls.Allow, types.StringValue(v))
-							}
-							tools3.Access.Acls.Deny = make([]types.String, 0, len(toolsItem3.Access.Acls.Deny))
-							for _, v := range toolsItem3.Access.Acls.Deny {
-								tools3.Access.Acls.Deny = append(tools3.Access.Acls.Deny, types.StringValue(v))
-							}
+						tools3.Access.Acls = &tfTypes.AIGatewayACLS{}
+						tools3.Access.Acls.Allow = make([]types.String, 0, len(toolsItem3.Access.Acls.Allow))
+						for _, v := range toolsItem3.Access.Acls.Allow {
+							tools3.Access.Acls.Allow = append(tools3.Access.Acls.Allow, types.StringValue(v))
+						}
+						tools3.Access.Acls.Deny = make([]types.String, 0, len(toolsItem3.Access.Acls.Deny))
+						for _, v := range toolsItem3.Access.Acls.Deny {
+							tools3.Access.Acls.Deny = append(tools3.Access.Acls.Deny, types.StringValue(v))
 						}
 					}
-					if toolsItem3.Annotations == nil {
-						tools3.Annotations = nil
-					} else {
-						tools3.Annotations = &tfTypes.AIGatewayMCPToolAnnotations{}
-						tools3.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem3.Annotations.DestructiveHint)
-						tools3.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem3.Annotations.IdempotentHint)
-						tools3.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem3.Annotations.OpenWorldHint)
-						tools3.Annotations.ReadOnlyHint = types.BoolPointerValue(toolsItem3.Annotations.ReadOnlyHint)
-						tools3.Annotations.Title = types.StringPointerValue(toolsItem3.Annotations.Title)
-					}
-					tools3.Description = types.StringValue(toolsItem3.Description)
-					if toolsItem3.Headers == nil {
-						tools3.Headers = jsontypes.NewNormalizedNull()
-					} else {
-						headersResult3, _ := json.Marshal(toolsItem3.Headers)
-						tools3.Headers = jsontypes.NewNormalizedValue(string(headersResult3))
-					}
-					tools3.Host = types.StringPointerValue(toolsItem3.Host)
-					if toolsItem3.Method != nil {
-						tools3.Method = types.StringValue(string(*toolsItem3.Method))
-					} else {
-						tools3.Method = types.StringNull()
-					}
-					tools3.Name = types.StringValue(toolsItem3.Name)
-					tools3.Parameters = []tfTypes.AIGatewayMCPToolParameter{}
-
-					for _, parametersItem3 := range toolsItem3.Parameters {
-						var parameters3 tfTypes.AIGatewayMCPToolParameter
-
-						parameters3.Description = types.StringPointerValue(parametersItem3.Description)
-						parameters3.In = types.StringValue(string(parametersItem3.In))
-						parameters3.Name = types.StringValue(parametersItem3.Name)
-						parameters3.Required = types.BoolPointerValue(parametersItem3.Required)
-						if parametersItem3.Schema != nil {
-							parameters3.Schema = make(map[string]jsontypes.Normalized, len(parametersItem3.Schema))
-							for key15, value15 := range parametersItem3.Schema {
-								result7, _ := json.Marshal(value15)
-								parameters3.Schema[key15] = jsontypes.NewNormalizedValue(string(result7))
-							}
-						}
-
-						tools3.Parameters = append(tools3.Parameters, parameters3)
-					}
-					tools3.Path = types.StringPointerValue(toolsItem3.Path)
-					if toolsItem3.Query == nil {
-						tools3.Query = jsontypes.NewNormalizedNull()
-					} else {
-						queryResult3, _ := json.Marshal(toolsItem3.Query)
-						tools3.Query = jsontypes.NewNormalizedValue(string(queryResult3))
-					}
-					if toolsItem3.RequestBody == nil {
-						tools3.RequestBody = jsontypes.NewNormalizedNull()
-					} else {
-						requestBodyResult3, _ := json.Marshal(toolsItem3.RequestBody)
-						tools3.RequestBody = jsontypes.NewNormalizedValue(string(requestBodyResult3))
-					}
-					if toolsItem3.Responses == nil {
-						tools3.Responses = jsontypes.NewNormalizedNull()
-					} else {
-						responsesResult3, _ := json.Marshal(toolsItem3.Responses)
-						tools3.Responses = jsontypes.NewNormalizedValue(string(responsesResult3))
-					}
-					if toolsItem3.Scheme != nil {
-						tools3.Scheme = types.StringValue(string(*toolsItem3.Scheme))
-					} else {
-						tools3.Scheme = types.StringNull()
-					}
-
-					r.PassthroughListener.Tools = append(r.PassthroughListener.Tools, tools3)
 				}
-			} else {
-				r.PassthroughListener.Tools = nil
+				if toolsItem3.Annotations == nil {
+					tools3.Annotations = nil
+				} else {
+					tools3.Annotations = &tfTypes.AIGatewayMCPToolAnnotations{}
+					tools3.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem3.Annotations.DestructiveHint)
+					tools3.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem3.Annotations.IdempotentHint)
+					tools3.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem3.Annotations.OpenWorldHint)
+					tools3.Annotations.ReadOnlyHint = types.BoolPointerValue(toolsItem3.Annotations.ReadOnlyHint)
+					tools3.Annotations.Title = types.StringPointerValue(toolsItem3.Annotations.Title)
+				}
+				tools3.Description = types.StringValue(toolsItem3.Description)
+				if toolsItem3.Headers == nil {
+					tools3.Headers = jsontypes.NewNormalizedNull()
+				} else {
+					headersResult3, _ := json.Marshal(toolsItem3.Headers)
+					tools3.Headers = jsontypes.NewNormalizedValue(string(headersResult3))
+				}
+				tools3.Host = types.StringPointerValue(toolsItem3.Host)
+				if toolsItem3.Method != nil {
+					tools3.Method = types.StringValue(string(*toolsItem3.Method))
+				} else {
+					tools3.Method = types.StringNull()
+				}
+				tools3.Name = types.StringValue(toolsItem3.Name)
+				tools3.Parameters = []tfTypes.AIGatewayMCPToolParameter{}
+
+				for _, parametersItem3 := range toolsItem3.Parameters {
+					var parameters3 tfTypes.AIGatewayMCPToolParameter
+
+					parameters3.Description = types.StringPointerValue(parametersItem3.Description)
+					parameters3.In = types.StringValue(string(parametersItem3.In))
+					parameters3.Name = types.StringValue(parametersItem3.Name)
+					parameters3.Required = types.BoolPointerValue(parametersItem3.Required)
+					if len(parametersItem3.Schema) > 0 {
+						parameters3.Schema = make(map[string]jsontypes.Normalized, len(parametersItem3.Schema))
+						for key15, value15 := range parametersItem3.Schema {
+							result7, _ := json.Marshal(value15)
+							parameters3.Schema[key15] = jsontypes.NewNormalizedValue(string(result7))
+						}
+					}
+
+					tools3.Parameters = append(tools3.Parameters, parameters3)
+				}
+				tools3.Path = types.StringPointerValue(toolsItem3.Path)
+				if toolsItem3.Query == nil {
+					tools3.Query = jsontypes.NewNormalizedNull()
+				} else {
+					queryResult3, _ := json.Marshal(toolsItem3.Query)
+					tools3.Query = jsontypes.NewNormalizedValue(string(queryResult3))
+				}
+				if toolsItem3.RequestBody == nil {
+					tools3.RequestBody = jsontypes.NewNormalizedNull()
+				} else {
+					requestBodyResult3, _ := json.Marshal(toolsItem3.RequestBody)
+					tools3.RequestBody = jsontypes.NewNormalizedValue(string(requestBodyResult3))
+				}
+				if toolsItem3.Responses == nil {
+					tools3.Responses = jsontypes.NewNormalizedNull()
+				} else {
+					responsesResult3, _ := json.Marshal(toolsItem3.Responses)
+					tools3.Responses = jsontypes.NewNormalizedValue(string(responsesResult3))
+				}
+				if toolsItem3.Scheme != nil {
+					tools3.Scheme = types.StringValue(string(*toolsItem3.Scheme))
+				} else {
+					tools3.Scheme = types.StringNull()
+				}
+
+				r.PassthroughListener.Tools = append(r.PassthroughListener.Tools, tools3)
 			}
 			r.PassthroughListener.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerPassthroughListenerResponse.UpdatedAt))
 			r.UpdatedAt = r.PassthroughListener.UpdatedAt
@@ -1447,11 +1421,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				r.UpstreamServer.Access = &tfTypes.AIGatewayMCPServerBaseACLProperties{}
 				if resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer != nil {
 					r.UpstreamServer.Access.Consumer = &tfTypes.AIGatewayMCPServerBaseACLPropertiesConsumer{}
-					if resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType != nil {
-						r.UpstreamServer.Access.Consumer.ACLAttributeType = types.StringValue(string(*resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.ACLAttributeType))
-					} else {
-						r.UpstreamServer.Access.Consumer.ACLAttributeType = types.StringNull()
-					}
 					if resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesConsumer.Acls == nil {
 						r.UpstreamServer.Access.Consumer.Acls = nil
 					} else {
@@ -1482,7 +1451,6 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth != nil {
 					r.UpstreamServer.Access.OauthAccessToken = &tfTypes.AIGatewayMCPServerBaseACLPropertiesOauth{}
 					r.UpstreamServer.Access.OauthAccessToken.AccessTokenClaimField = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.AccessTokenClaimField)
-					r.UpstreamServer.Access.OauthAccessToken.ACLAttributeType = types.StringValue(string(resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.ACLAttributeType))
 					if resp.AIGatewayMCPServerUpstreamServerResponse.Access.AIGatewayMCPServerBaseACLPropertiesOauth.Acls == nil {
 						r.UpstreamServer.Access.OauthAccessToken.Acls = nil
 					} else {
@@ -1774,114 +1742,110 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Policies {
 				r.UpstreamServer.Policies = append(r.UpstreamServer.Policies, types.StringValue(v))
 			}
-			if resp.AIGatewayMCPServerUpstreamServerResponse.Tools != nil {
-				r.UpstreamServer.Tools = []tfTypes.AIGatewayMCPUpstreamTool{}
+			r.UpstreamServer.Tools = []tfTypes.AIGatewayMCPUpstreamTool{}
 
-				for _, toolsItem4 := range resp.AIGatewayMCPServerUpstreamServerResponse.Tools {
-					var tools4 tfTypes.AIGatewayMCPUpstreamTool
+			for _, toolsItem4 := range resp.AIGatewayMCPServerUpstreamServerResponse.Tools {
+				var tools4 tfTypes.AIGatewayMCPUpstreamTool
 
-					if toolsItem4.Access == nil {
-						tools4.Access = nil
+				if toolsItem4.Access == nil {
+					tools4.Access = nil
+				} else {
+					tools4.Access = &tfTypes.AIGatewayAgentAccess{}
+					if toolsItem4.Access.Acls == nil {
+						tools4.Access.Acls = nil
 					} else {
-						tools4.Access = &tfTypes.AIGatewayAgentAccess{}
-						if toolsItem4.Access.Acls == nil {
-							tools4.Access.Acls = nil
-						} else {
-							tools4.Access.Acls = &tfTypes.AIGatewayACLS{}
-							tools4.Access.Acls.Allow = make([]types.String, 0, len(toolsItem4.Access.Acls.Allow))
-							for _, v := range toolsItem4.Access.Acls.Allow {
-								tools4.Access.Acls.Allow = append(tools4.Access.Acls.Allow, types.StringValue(v))
-							}
-							tools4.Access.Acls.Deny = make([]types.String, 0, len(toolsItem4.Access.Acls.Deny))
-							for _, v := range toolsItem4.Access.Acls.Deny {
-								tools4.Access.Acls.Deny = append(tools4.Access.Acls.Deny, types.StringValue(v))
-							}
+						tools4.Access.Acls = &tfTypes.AIGatewayACLS{}
+						tools4.Access.Acls.Allow = make([]types.String, 0, len(toolsItem4.Access.Acls.Allow))
+						for _, v := range toolsItem4.Access.Acls.Allow {
+							tools4.Access.Acls.Allow = append(tools4.Access.Acls.Allow, types.StringValue(v))
+						}
+						tools4.Access.Acls.Deny = make([]types.String, 0, len(toolsItem4.Access.Acls.Deny))
+						for _, v := range toolsItem4.Access.Acls.Deny {
+							tools4.Access.Acls.Deny = append(tools4.Access.Acls.Deny, types.StringValue(v))
 						}
 					}
-					if toolsItem4.Annotations == nil {
-						tools4.Annotations = nil
-					} else {
-						tools4.Annotations = &tfTypes.AIGatewayMCPToolAnnotations{}
-						tools4.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem4.Annotations.DestructiveHint)
-						tools4.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem4.Annotations.IdempotentHint)
-						tools4.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem4.Annotations.OpenWorldHint)
-						tools4.Annotations.ReadOnlyHint = types.BoolPointerValue(toolsItem4.Annotations.ReadOnlyHint)
-						tools4.Annotations.Title = types.StringPointerValue(toolsItem4.Annotations.Title)
-					}
-					tools4.Description = types.StringValue(toolsItem4.Description)
-					if toolsItem4.Headers == nil {
-						tools4.Headers = jsontypes.NewNormalizedNull()
-					} else {
-						headersResult4, _ := json.Marshal(toolsItem4.Headers)
-						tools4.Headers = jsontypes.NewNormalizedValue(string(headersResult4))
-					}
-					tools4.Host = types.StringPointerValue(toolsItem4.Host)
-					if toolsItem4.InputSchema == nil {
-						tools4.InputSchema = jsontypes.NewNormalizedNull()
-					} else {
-						inputSchemaResult, _ := json.Marshal(toolsItem4.InputSchema)
-						tools4.InputSchema = jsontypes.NewNormalizedValue(string(inputSchemaResult))
-					}
-					if toolsItem4.Method != nil {
-						tools4.Method = types.StringValue(string(*toolsItem4.Method))
-					} else {
-						tools4.Method = types.StringNull()
-					}
-					tools4.Name = types.StringValue(toolsItem4.Name)
-					if toolsItem4.OutputSchema == nil {
-						tools4.OutputSchema = jsontypes.NewNormalizedNull()
-					} else {
-						outputSchemaResult, _ := json.Marshal(toolsItem4.OutputSchema)
-						tools4.OutputSchema = jsontypes.NewNormalizedValue(string(outputSchemaResult))
-					}
-					tools4.Parameters = []tfTypes.AIGatewayMCPToolParameter{}
-
-					for _, parametersItem4 := range toolsItem4.Parameters {
-						var parameters4 tfTypes.AIGatewayMCPToolParameter
-
-						parameters4.Description = types.StringPointerValue(parametersItem4.Description)
-						parameters4.In = types.StringValue(string(parametersItem4.In))
-						parameters4.Name = types.StringValue(parametersItem4.Name)
-						parameters4.Required = types.BoolPointerValue(parametersItem4.Required)
-						if parametersItem4.Schema != nil {
-							parameters4.Schema = make(map[string]jsontypes.Normalized, len(parametersItem4.Schema))
-							for key19, value19 := range parametersItem4.Schema {
-								result9, _ := json.Marshal(value19)
-								parameters4.Schema[key19] = jsontypes.NewNormalizedValue(string(result9))
-							}
-						}
-
-						tools4.Parameters = append(tools4.Parameters, parameters4)
-					}
-					tools4.Path = types.StringPointerValue(toolsItem4.Path)
-					if toolsItem4.Query == nil {
-						tools4.Query = jsontypes.NewNormalizedNull()
-					} else {
-						queryResult4, _ := json.Marshal(toolsItem4.Query)
-						tools4.Query = jsontypes.NewNormalizedValue(string(queryResult4))
-					}
-					if toolsItem4.RequestBody == nil {
-						tools4.RequestBody = jsontypes.NewNormalizedNull()
-					} else {
-						requestBodyResult4, _ := json.Marshal(toolsItem4.RequestBody)
-						tools4.RequestBody = jsontypes.NewNormalizedValue(string(requestBodyResult4))
-					}
-					if toolsItem4.Responses == nil {
-						tools4.Responses = jsontypes.NewNormalizedNull()
-					} else {
-						responsesResult4, _ := json.Marshal(toolsItem4.Responses)
-						tools4.Responses = jsontypes.NewNormalizedValue(string(responsesResult4))
-					}
-					if toolsItem4.Scheme != nil {
-						tools4.Scheme = types.StringValue(string(*toolsItem4.Scheme))
-					} else {
-						tools4.Scheme = types.StringNull()
-					}
-
-					r.UpstreamServer.Tools = append(r.UpstreamServer.Tools, tools4)
 				}
-			} else {
-				r.UpstreamServer.Tools = nil
+				if toolsItem4.Annotations == nil {
+					tools4.Annotations = nil
+				} else {
+					tools4.Annotations = &tfTypes.AIGatewayMCPToolAnnotations{}
+					tools4.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem4.Annotations.DestructiveHint)
+					tools4.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem4.Annotations.IdempotentHint)
+					tools4.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem4.Annotations.OpenWorldHint)
+					tools4.Annotations.ReadOnlyHint = types.BoolPointerValue(toolsItem4.Annotations.ReadOnlyHint)
+					tools4.Annotations.Title = types.StringPointerValue(toolsItem4.Annotations.Title)
+				}
+				tools4.Description = types.StringValue(toolsItem4.Description)
+				if toolsItem4.Headers == nil {
+					tools4.Headers = jsontypes.NewNormalizedNull()
+				} else {
+					headersResult4, _ := json.Marshal(toolsItem4.Headers)
+					tools4.Headers = jsontypes.NewNormalizedValue(string(headersResult4))
+				}
+				tools4.Host = types.StringPointerValue(toolsItem4.Host)
+				if toolsItem4.InputSchema == nil {
+					tools4.InputSchema = jsontypes.NewNormalizedNull()
+				} else {
+					inputSchemaResult, _ := json.Marshal(toolsItem4.InputSchema)
+					tools4.InputSchema = jsontypes.NewNormalizedValue(string(inputSchemaResult))
+				}
+				if toolsItem4.Method != nil {
+					tools4.Method = types.StringValue(string(*toolsItem4.Method))
+				} else {
+					tools4.Method = types.StringNull()
+				}
+				tools4.Name = types.StringValue(toolsItem4.Name)
+				if toolsItem4.OutputSchema == nil {
+					tools4.OutputSchema = jsontypes.NewNormalizedNull()
+				} else {
+					outputSchemaResult, _ := json.Marshal(toolsItem4.OutputSchema)
+					tools4.OutputSchema = jsontypes.NewNormalizedValue(string(outputSchemaResult))
+				}
+				tools4.Parameters = []tfTypes.AIGatewayMCPToolParameter{}
+
+				for _, parametersItem4 := range toolsItem4.Parameters {
+					var parameters4 tfTypes.AIGatewayMCPToolParameter
+
+					parameters4.Description = types.StringPointerValue(parametersItem4.Description)
+					parameters4.In = types.StringValue(string(parametersItem4.In))
+					parameters4.Name = types.StringValue(parametersItem4.Name)
+					parameters4.Required = types.BoolPointerValue(parametersItem4.Required)
+					if len(parametersItem4.Schema) > 0 {
+						parameters4.Schema = make(map[string]jsontypes.Normalized, len(parametersItem4.Schema))
+						for key19, value19 := range parametersItem4.Schema {
+							result9, _ := json.Marshal(value19)
+							parameters4.Schema[key19] = jsontypes.NewNormalizedValue(string(result9))
+						}
+					}
+
+					tools4.Parameters = append(tools4.Parameters, parameters4)
+				}
+				tools4.Path = types.StringPointerValue(toolsItem4.Path)
+				if toolsItem4.Query == nil {
+					tools4.Query = jsontypes.NewNormalizedNull()
+				} else {
+					queryResult4, _ := json.Marshal(toolsItem4.Query)
+					tools4.Query = jsontypes.NewNormalizedValue(string(queryResult4))
+				}
+				if toolsItem4.RequestBody == nil {
+					tools4.RequestBody = jsontypes.NewNormalizedNull()
+				} else {
+					requestBodyResult4, _ := json.Marshal(toolsItem4.RequestBody)
+					tools4.RequestBody = jsontypes.NewNormalizedValue(string(requestBodyResult4))
+				}
+				if toolsItem4.Responses == nil {
+					tools4.Responses = jsontypes.NewNormalizedNull()
+				} else {
+					responsesResult4, _ := json.Marshal(toolsItem4.Responses)
+					tools4.Responses = jsontypes.NewNormalizedValue(string(responsesResult4))
+				}
+				if toolsItem4.Scheme != nil {
+					tools4.Scheme = types.StringValue(string(*toolsItem4.Scheme))
+				} else {
+					tools4.Scheme = types.StringNull()
+				}
+
+				r.UpstreamServer.Tools = append(r.UpstreamServer.Tools, tools4)
 			}
 			r.UpstreamServer.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerUpstreamServerResponse.UpdatedAt))
 			r.UpdatedAt = r.UpstreamServer.UpdatedAt
@@ -2212,14 +2176,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					required = nil
 				}
-				var schema map[string]interface{}
-				if r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema != nil {
-					schema = make(map[string]interface{})
-					for schemaKey := range r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema {
-						var schemaInst interface{}
-						_ = json.Unmarshal([]byte(r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema[schemaKey].ValueString()), &schemaInst)
-						schema[schemaKey] = schemaInst
-					}
+				schema := make(map[string]interface{})
+				for schemaKey := range r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema {
+					var schemaInst interface{}
+					_ = json.Unmarshal([]byte(r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema[schemaKey].ValueString()), &schemaInst)
+					schema[schemaKey] = schemaInst
 				}
 				parameters = append(parameters, shared.AIGatewayMCPToolParameter{
 					Name:        name1,
@@ -2910,14 +2871,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					required1 = nil
 				}
-				var schema1 map[string]interface{}
-				if r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema != nil {
-					schema1 = make(map[string]interface{})
-					for schemaKey1 := range r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema {
-						var schemaInst1 interface{}
-						_ = json.Unmarshal([]byte(r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema[schemaKey1].ValueString()), &schemaInst1)
-						schema1[schemaKey1] = schemaInst1
-					}
+				schema1 := make(map[string]interface{})
+				for schemaKey1 := range r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema {
+					var schemaInst1 interface{}
+					_ = json.Unmarshal([]byte(r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema[schemaKey1].ValueString()), &schemaInst1)
+					schema1[schemaKey1] = schemaInst1
 				}
 				parameters1 = append(parameters1, shared.AIGatewayMCPToolParameter{
 					Name:        name4,
@@ -2947,12 +2905,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.ConversionListener.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.ConversionListener.Access.Consumer != nil {
-				aclAttributeType := new(shared.ACLAttributeType)
-				if !r.ConversionListener.Access.Consumer.ACLAttributeType.IsUnknown() && !r.ConversionListener.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType = shared.ACLAttributeType(r.ConversionListener.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType = nil
-				}
 				var acls2 *shared.AIGatewayMCPACLs
 				if r.ConversionListener.Access.Consumer.Acls != nil {
 					allow2 := make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.Allow))
@@ -2984,9 +2936,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType,
-					Acls:             acls2,
-					DefaultToolAcls:  defaultToolAcls,
+					Acls:            acls2,
+					DefaultToolAcls: defaultToolAcls,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer != nil {
@@ -2996,7 +2947,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.ConversionListener.Access.OauthAccessToken != nil {
-				aclAttributeType1 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.ConversionListener.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField string
 				accessTokenClaimField = r.ConversionListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -3031,7 +2981,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType1,
 					AccessTokenClaimField: accessTokenClaimField,
 					Acls:                  acls3,
 					DefaultToolAcls:       defaultToolAcls1,
@@ -3583,179 +3532,167 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize2,
 			Server:             server1,
 		}
-		var tools2 []shared.AIGatewayMCPToolBase
-		if r.Listener.Tools != nil {
-			tools2 = make([]shared.AIGatewayMCPToolBase, 0, len(r.Listener.Tools))
-			for toolsIndex2 := range r.Listener.Tools {
-				var access3 *shared.AIGatewayMCPToolBaseAccess
-				if r.Listener.Tools[toolsIndex2].Access != nil {
-					var acls4 *shared.AIGatewayMCPACLs
-					if r.Listener.Tools[toolsIndex2].Access.Acls != nil {
-						allow6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Allow))
-						for allowIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Allow {
-							allow6 = append(allow6, r.Listener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex6].ValueString())
-						}
-						deny6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Deny))
-						for denyIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Deny {
-							deny6 = append(deny6, r.Listener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex6].ValueString())
-						}
-						acls4 = &shared.AIGatewayMCPACLs{
-							Allow: allow6,
-							Deny:  deny6,
-						}
+		tools2 := make([]shared.AIGatewayMCPToolBase, 0, len(r.Listener.Tools))
+		for toolsIndex2 := range r.Listener.Tools {
+			var access3 *shared.AIGatewayMCPToolBaseAccess
+			if r.Listener.Tools[toolsIndex2].Access != nil {
+				var acls4 *shared.AIGatewayMCPACLs
+				if r.Listener.Tools[toolsIndex2].Access.Acls != nil {
+					allow6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Allow))
+					for allowIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Allow {
+						allow6 = append(allow6, r.Listener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex6].ValueString())
 					}
-					access3 = &shared.AIGatewayMCPToolBaseAccess{
-						Acls: acls4,
+					deny6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Deny))
+					for denyIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Deny {
+						deny6 = append(deny6, r.Listener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex6].ValueString())
+					}
+					acls4 = &shared.AIGatewayMCPACLs{
+						Allow: allow6,
+						Deny:  deny6,
 					}
 				}
-				var annotations2 *shared.AIGatewayMCPToolAnnotations
-				if r.Listener.Tools[toolsIndex2].Annotations != nil {
-					destructiveHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsNull() {
-						*destructiveHint2 = r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.ValueBool()
-					} else {
-						destructiveHint2 = nil
-					}
-					idempotentHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsNull() {
-						*idempotentHint2 = r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.ValueBool()
-					} else {
-						idempotentHint2 = nil
-					}
-					openWorldHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsNull() {
-						*openWorldHint2 = r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.ValueBool()
-					} else {
-						openWorldHint2 = nil
-					}
-					readOnlyHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsNull() {
-						*readOnlyHint2 = r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.ValueBool()
-					} else {
-						readOnlyHint2 = nil
-					}
-					title2 := new(string)
-					if !r.Listener.Tools[toolsIndex2].Annotations.Title.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.Title.IsNull() {
-						*title2 = r.Listener.Tools[toolsIndex2].Annotations.Title.ValueString()
-					} else {
-						title2 = nil
-					}
-					annotations2 = &shared.AIGatewayMCPToolAnnotations{
-						DestructiveHint: destructiveHint2,
-						IdempotentHint:  idempotentHint2,
-						OpenWorldHint:   openWorldHint2,
-						ReadOnlyHint:    readOnlyHint2,
-						Title:           title2,
-					}
+				access3 = &shared.AIGatewayMCPToolBaseAccess{
+					Acls: acls4,
 				}
-				var description4 string
-				description4 = r.Listener.Tools[toolsIndex2].Description.ValueString()
+			}
+			var annotations2 *shared.AIGatewayMCPToolAnnotations
+			if r.Listener.Tools[toolsIndex2].Annotations != nil {
+				destructiveHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsNull() {
+					*destructiveHint2 = r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.ValueBool()
+				} else {
+					destructiveHint2 = nil
+				}
+				idempotentHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsNull() {
+					*idempotentHint2 = r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.ValueBool()
+				} else {
+					idempotentHint2 = nil
+				}
+				openWorldHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsNull() {
+					*openWorldHint2 = r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.ValueBool()
+				} else {
+					openWorldHint2 = nil
+				}
+				readOnlyHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsNull() {
+					*readOnlyHint2 = r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.ValueBool()
+				} else {
+					readOnlyHint2 = nil
+				}
+				title2 := new(string)
+				if !r.Listener.Tools[toolsIndex2].Annotations.Title.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.Title.IsNull() {
+					*title2 = r.Listener.Tools[toolsIndex2].Annotations.Title.ValueString()
+				} else {
+					title2 = nil
+				}
+				annotations2 = &shared.AIGatewayMCPToolAnnotations{
+					DestructiveHint: destructiveHint2,
+					IdempotentHint:  idempotentHint2,
+					OpenWorldHint:   openWorldHint2,
+					ReadOnlyHint:    readOnlyHint2,
+					Title:           title2,
+				}
+			}
+			var description4 string
+			description4 = r.Listener.Tools[toolsIndex2].Description.ValueString()
 
-				var headers5 interface{}
-				if !r.Listener.Tools[toolsIndex2].Headers.IsUnknown() && !r.Listener.Tools[toolsIndex2].Headers.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Headers.ValueString()), &headers5)
-				}
-				host6 := new(string)
-				if !r.Listener.Tools[toolsIndex2].Host.IsUnknown() && !r.Listener.Tools[toolsIndex2].Host.IsNull() {
-					*host6 = r.Listener.Tools[toolsIndex2].Host.ValueString()
-				} else {
-					host6 = nil
-				}
-				var name6 string
-				name6 = r.Listener.Tools[toolsIndex2].Name.ValueString()
+			var headers5 interface{}
+			if !r.Listener.Tools[toolsIndex2].Headers.IsUnknown() && !r.Listener.Tools[toolsIndex2].Headers.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Headers.ValueString()), &headers5)
+			}
+			host6 := new(string)
+			if !r.Listener.Tools[toolsIndex2].Host.IsUnknown() && !r.Listener.Tools[toolsIndex2].Host.IsNull() {
+				*host6 = r.Listener.Tools[toolsIndex2].Host.ValueString()
+			} else {
+				host6 = nil
+			}
+			var name6 string
+			name6 = r.Listener.Tools[toolsIndex2].Name.ValueString()
 
-				method2 := new(shared.AIGatewayMCPToolBaseMethod)
-				if !r.Listener.Tools[toolsIndex2].Method.IsUnknown() && !r.Listener.Tools[toolsIndex2].Method.IsNull() {
-					*method2 = shared.AIGatewayMCPToolBaseMethod(r.Listener.Tools[toolsIndex2].Method.ValueString())
-				} else {
-					method2 = nil
-				}
-				path2 := new(string)
-				if !r.Listener.Tools[toolsIndex2].Path.IsUnknown() && !r.Listener.Tools[toolsIndex2].Path.IsNull() {
-					*path2 = r.Listener.Tools[toolsIndex2].Path.ValueString()
-				} else {
-					path2 = nil
-				}
-				var query2 interface{}
-				if !r.Listener.Tools[toolsIndex2].Query.IsUnknown() && !r.Listener.Tools[toolsIndex2].Query.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Query.ValueString()), &query2)
-				}
-				var requestBody2 interface{}
-				if !r.Listener.Tools[toolsIndex2].RequestBody.IsUnknown() && !r.Listener.Tools[toolsIndex2].RequestBody.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].RequestBody.ValueString()), &requestBody2)
-				}
-				var responses2 interface{}
-				if !r.Listener.Tools[toolsIndex2].Responses.IsUnknown() && !r.Listener.Tools[toolsIndex2].Responses.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Responses.ValueString()), &responses2)
-				}
-				scheme2 := new(shared.AIGatewayMCPToolBaseScheme)
-				if !r.Listener.Tools[toolsIndex2].Scheme.IsUnknown() && !r.Listener.Tools[toolsIndex2].Scheme.IsNull() {
-					*scheme2 = shared.AIGatewayMCPToolBaseScheme(r.Listener.Tools[toolsIndex2].Scheme.ValueString())
-				} else {
-					scheme2 = nil
-				}
-				parameters2 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.Listener.Tools[toolsIndex2].Parameters))
-				for parametersIndex2 := range r.Listener.Tools[toolsIndex2].Parameters {
-					var name7 string
-					name7 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Name.ValueString()
+			method2 := new(shared.AIGatewayMCPToolBaseMethod)
+			if !r.Listener.Tools[toolsIndex2].Method.IsUnknown() && !r.Listener.Tools[toolsIndex2].Method.IsNull() {
+				*method2 = shared.AIGatewayMCPToolBaseMethod(r.Listener.Tools[toolsIndex2].Method.ValueString())
+			} else {
+				method2 = nil
+			}
+			path2 := new(string)
+			if !r.Listener.Tools[toolsIndex2].Path.IsUnknown() && !r.Listener.Tools[toolsIndex2].Path.IsNull() {
+				*path2 = r.Listener.Tools[toolsIndex2].Path.ValueString()
+			} else {
+				path2 = nil
+			}
+			var query2 interface{}
+			if !r.Listener.Tools[toolsIndex2].Query.IsUnknown() && !r.Listener.Tools[toolsIndex2].Query.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Query.ValueString()), &query2)
+			}
+			var requestBody2 interface{}
+			if !r.Listener.Tools[toolsIndex2].RequestBody.IsUnknown() && !r.Listener.Tools[toolsIndex2].RequestBody.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].RequestBody.ValueString()), &requestBody2)
+			}
+			var responses2 interface{}
+			if !r.Listener.Tools[toolsIndex2].Responses.IsUnknown() && !r.Listener.Tools[toolsIndex2].Responses.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Responses.ValueString()), &responses2)
+			}
+			scheme2 := new(shared.AIGatewayMCPToolBaseScheme)
+			if !r.Listener.Tools[toolsIndex2].Scheme.IsUnknown() && !r.Listener.Tools[toolsIndex2].Scheme.IsNull() {
+				*scheme2 = shared.AIGatewayMCPToolBaseScheme(r.Listener.Tools[toolsIndex2].Scheme.ValueString())
+			} else {
+				scheme2 = nil
+			}
+			parameters2 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.Listener.Tools[toolsIndex2].Parameters))
+			for parametersIndex2 := range r.Listener.Tools[toolsIndex2].Parameters {
+				var name7 string
+				name7 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Name.ValueString()
 
-					in2 := shared.In(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].In.ValueString())
-					description5 := new(string)
-					if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsNull() {
-						*description5 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.ValueString()
-					} else {
-						description5 = nil
-					}
-					required2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsNull() {
-						*required2 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.ValueBool()
-					} else {
-						required2 = nil
-					}
-					var schema2 map[string]interface{}
-					if r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema != nil {
-						schema2 = make(map[string]interface{})
-						for schemaKey2 := range r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema {
-							var schemaInst2 interface{}
-							_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema[schemaKey2].ValueString()), &schemaInst2)
-							schema2[schemaKey2] = schemaInst2
-						}
-					}
-					parameters2 = append(parameters2, shared.AIGatewayMCPToolParameter{
-						Name:        name7,
-						In:          in2,
-						Description: description5,
-						Required:    required2,
-						Schema:      schema2,
-					})
+				in2 := shared.In(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].In.ValueString())
+				description5 := new(string)
+				if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsNull() {
+					*description5 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.ValueString()
+				} else {
+					description5 = nil
 				}
-				tools2 = append(tools2, shared.AIGatewayMCPToolBase{
-					Access:      access3,
-					Annotations: annotations2,
-					Description: description4,
-					Headers:     headers5,
-					Host:        host6,
-					Name:        name6,
-					Method:      method2,
-					Path:        path2,
-					Query:       query2,
-					RequestBody: requestBody2,
-					Responses:   responses2,
-					Scheme:      scheme2,
-					Parameters:  parameters2,
+				required2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsNull() {
+					*required2 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.ValueBool()
+				} else {
+					required2 = nil
+				}
+				schema2 := make(map[string]interface{})
+				for schemaKey2 := range r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema {
+					var schemaInst2 interface{}
+					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema[schemaKey2].ValueString()), &schemaInst2)
+					schema2[schemaKey2] = schemaInst2
+				}
+				parameters2 = append(parameters2, shared.AIGatewayMCPToolParameter{
+					Name:        name7,
+					In:          in2,
+					Description: description5,
+					Required:    required2,
+					Schema:      schema2,
 				})
 			}
+			tools2 = append(tools2, shared.AIGatewayMCPToolBase{
+				Access:      access3,
+				Annotations: annotations2,
+				Description: description4,
+				Headers:     headers5,
+				Host:        host6,
+				Name:        name6,
+				Method:      method2,
+				Path:        path2,
+				Query:       query2,
+				RequestBody: requestBody2,
+				Responses:   responses2,
+				Scheme:      scheme2,
+				Parameters:  parameters2,
+			})
 		}
 		var access4 *shared.AIGatewayMCPServerBaseACLProperties
 		if r.Listener.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer1 *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.Listener.Access.Consumer != nil {
-				aclAttributeType2 := new(shared.ACLAttributeType)
-				if !r.Listener.Access.Consumer.ACLAttributeType.IsUnknown() && !r.Listener.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType2 = shared.ACLAttributeType(r.Listener.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType2 = nil
-				}
 				var acls5 *shared.AIGatewayMCPACLs
 				if r.Listener.Access.Consumer.Acls != nil {
 					allow7 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
@@ -3787,9 +3724,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer1 = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType2,
-					Acls:             acls5,
-					DefaultToolAcls:  defaultToolAcls2,
+					Acls:            acls5,
+					DefaultToolAcls: defaultToolAcls2,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer1 != nil {
@@ -3799,7 +3735,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth1 *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.Listener.Access.OauthAccessToken != nil {
-				aclAttributeType3 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.Listener.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField1 string
 				accessTokenClaimField1 = r.Listener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -3834,7 +3769,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth1 = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType3,
 					AccessTokenClaimField: accessTokenClaimField1,
 					Acls:                  acls6,
 					DefaultToolAcls:       defaultToolAcls3,
@@ -4470,179 +4404,167 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			URL:                url2,
 			Proxy:              proxy,
 		}
-		var tools3 []shared.AIGatewayMCPToolBase
-		if r.PassthroughListener.Tools != nil {
-			tools3 = make([]shared.AIGatewayMCPToolBase, 0, len(r.PassthroughListener.Tools))
-			for toolsIndex3 := range r.PassthroughListener.Tools {
-				var access5 *shared.AIGatewayMCPToolBaseAccess
-				if r.PassthroughListener.Tools[toolsIndex3].Access != nil {
-					var acls7 *shared.AIGatewayMCPACLs
-					if r.PassthroughListener.Tools[toolsIndex3].Access.Acls != nil {
-						allow11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow))
-						for allowIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow {
-							allow11 = append(allow11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow[allowIndex11].ValueString())
-						}
-						deny11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny))
-						for denyIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny {
-							deny11 = append(deny11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny[denyIndex11].ValueString())
-						}
-						acls7 = &shared.AIGatewayMCPACLs{
-							Allow: allow11,
-							Deny:  deny11,
-						}
+		tools3 := make([]shared.AIGatewayMCPToolBase, 0, len(r.PassthroughListener.Tools))
+		for toolsIndex3 := range r.PassthroughListener.Tools {
+			var access5 *shared.AIGatewayMCPToolBaseAccess
+			if r.PassthroughListener.Tools[toolsIndex3].Access != nil {
+				var acls7 *shared.AIGatewayMCPACLs
+				if r.PassthroughListener.Tools[toolsIndex3].Access.Acls != nil {
+					allow11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow))
+					for allowIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow {
+						allow11 = append(allow11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow[allowIndex11].ValueString())
 					}
-					access5 = &shared.AIGatewayMCPToolBaseAccess{
-						Acls: acls7,
+					deny11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny))
+					for denyIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny {
+						deny11 = append(deny11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny[denyIndex11].ValueString())
+					}
+					acls7 = &shared.AIGatewayMCPACLs{
+						Allow: allow11,
+						Deny:  deny11,
 					}
 				}
-				var annotations3 *shared.AIGatewayMCPToolAnnotations
-				if r.PassthroughListener.Tools[toolsIndex3].Annotations != nil {
-					destructiveHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsNull() {
-						*destructiveHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.ValueBool()
-					} else {
-						destructiveHint3 = nil
-					}
-					idempotentHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsNull() {
-						*idempotentHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.ValueBool()
-					} else {
-						idempotentHint3 = nil
-					}
-					openWorldHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsNull() {
-						*openWorldHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.ValueBool()
-					} else {
-						openWorldHint3 = nil
-					}
-					readOnlyHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsNull() {
-						*readOnlyHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.ValueBool()
-					} else {
-						readOnlyHint3 = nil
-					}
-					title3 := new(string)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsNull() {
-						*title3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.ValueString()
-					} else {
-						title3 = nil
-					}
-					annotations3 = &shared.AIGatewayMCPToolAnnotations{
-						DestructiveHint: destructiveHint3,
-						IdempotentHint:  idempotentHint3,
-						OpenWorldHint:   openWorldHint3,
-						ReadOnlyHint:    readOnlyHint3,
-						Title:           title3,
-					}
+				access5 = &shared.AIGatewayMCPToolBaseAccess{
+					Acls: acls7,
 				}
-				var description6 string
-				description6 = r.PassthroughListener.Tools[toolsIndex3].Description.ValueString()
+			}
+			var annotations3 *shared.AIGatewayMCPToolAnnotations
+			if r.PassthroughListener.Tools[toolsIndex3].Annotations != nil {
+				destructiveHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsNull() {
+					*destructiveHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.ValueBool()
+				} else {
+					destructiveHint3 = nil
+				}
+				idempotentHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsNull() {
+					*idempotentHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.ValueBool()
+				} else {
+					idempotentHint3 = nil
+				}
+				openWorldHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsNull() {
+					*openWorldHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.ValueBool()
+				} else {
+					openWorldHint3 = nil
+				}
+				readOnlyHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsNull() {
+					*readOnlyHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.ValueBool()
+				} else {
+					readOnlyHint3 = nil
+				}
+				title3 := new(string)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsNull() {
+					*title3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.ValueString()
+				} else {
+					title3 = nil
+				}
+				annotations3 = &shared.AIGatewayMCPToolAnnotations{
+					DestructiveHint: destructiveHint3,
+					IdempotentHint:  idempotentHint3,
+					OpenWorldHint:   openWorldHint3,
+					ReadOnlyHint:    readOnlyHint3,
+					Title:           title3,
+				}
+			}
+			var description6 string
+			description6 = r.PassthroughListener.Tools[toolsIndex3].Description.ValueString()
 
-				var headers7 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].Headers.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Headers.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Headers.ValueString()), &headers7)
-				}
-				host11 := new(string)
-				if !r.PassthroughListener.Tools[toolsIndex3].Host.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Host.IsNull() {
-					*host11 = r.PassthroughListener.Tools[toolsIndex3].Host.ValueString()
-				} else {
-					host11 = nil
-				}
-				var name9 string
-				name9 = r.PassthroughListener.Tools[toolsIndex3].Name.ValueString()
+			var headers7 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].Headers.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Headers.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Headers.ValueString()), &headers7)
+			}
+			host11 := new(string)
+			if !r.PassthroughListener.Tools[toolsIndex3].Host.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Host.IsNull() {
+				*host11 = r.PassthroughListener.Tools[toolsIndex3].Host.ValueString()
+			} else {
+				host11 = nil
+			}
+			var name9 string
+			name9 = r.PassthroughListener.Tools[toolsIndex3].Name.ValueString()
 
-				method3 := new(shared.AIGatewayMCPToolBaseMethod)
-				if !r.PassthroughListener.Tools[toolsIndex3].Method.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Method.IsNull() {
-					*method3 = shared.AIGatewayMCPToolBaseMethod(r.PassthroughListener.Tools[toolsIndex3].Method.ValueString())
-				} else {
-					method3 = nil
-				}
-				path3 := new(string)
-				if !r.PassthroughListener.Tools[toolsIndex3].Path.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Path.IsNull() {
-					*path3 = r.PassthroughListener.Tools[toolsIndex3].Path.ValueString()
-				} else {
-					path3 = nil
-				}
-				var query3 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].Query.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Query.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Query.ValueString()), &query3)
-				}
-				var requestBody3 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].RequestBody.ValueString()), &requestBody3)
-				}
-				var responses3 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].Responses.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Responses.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Responses.ValueString()), &responses3)
-				}
-				scheme3 := new(shared.AIGatewayMCPToolBaseScheme)
-				if !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsNull() {
-					*scheme3 = shared.AIGatewayMCPToolBaseScheme(r.PassthroughListener.Tools[toolsIndex3].Scheme.ValueString())
-				} else {
-					scheme3 = nil
-				}
-				parameters3 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.PassthroughListener.Tools[toolsIndex3].Parameters))
-				for parametersIndex3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters {
-					var name10 string
-					name10 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Name.ValueString()
+			method3 := new(shared.AIGatewayMCPToolBaseMethod)
+			if !r.PassthroughListener.Tools[toolsIndex3].Method.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Method.IsNull() {
+				*method3 = shared.AIGatewayMCPToolBaseMethod(r.PassthroughListener.Tools[toolsIndex3].Method.ValueString())
+			} else {
+				method3 = nil
+			}
+			path3 := new(string)
+			if !r.PassthroughListener.Tools[toolsIndex3].Path.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Path.IsNull() {
+				*path3 = r.PassthroughListener.Tools[toolsIndex3].Path.ValueString()
+			} else {
+				path3 = nil
+			}
+			var query3 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].Query.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Query.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Query.ValueString()), &query3)
+			}
+			var requestBody3 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].RequestBody.ValueString()), &requestBody3)
+			}
+			var responses3 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].Responses.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Responses.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Responses.ValueString()), &responses3)
+			}
+			scheme3 := new(shared.AIGatewayMCPToolBaseScheme)
+			if !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsNull() {
+				*scheme3 = shared.AIGatewayMCPToolBaseScheme(r.PassthroughListener.Tools[toolsIndex3].Scheme.ValueString())
+			} else {
+				scheme3 = nil
+			}
+			parameters3 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.PassthroughListener.Tools[toolsIndex3].Parameters))
+			for parametersIndex3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters {
+				var name10 string
+				name10 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Name.ValueString()
 
-					in3 := shared.In(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].In.ValueString())
-					description7 := new(string)
-					if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsNull() {
-						*description7 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.ValueString()
-					} else {
-						description7 = nil
-					}
-					required3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsNull() {
-						*required3 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.ValueBool()
-					} else {
-						required3 = nil
-					}
-					var schema3 map[string]interface{}
-					if r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema != nil {
-						schema3 = make(map[string]interface{})
-						for schemaKey3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema {
-							var schemaInst3 interface{}
-							_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema[schemaKey3].ValueString()), &schemaInst3)
-							schema3[schemaKey3] = schemaInst3
-						}
-					}
-					parameters3 = append(parameters3, shared.AIGatewayMCPToolParameter{
-						Name:        name10,
-						In:          in3,
-						Description: description7,
-						Required:    required3,
-						Schema:      schema3,
-					})
+				in3 := shared.In(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].In.ValueString())
+				description7 := new(string)
+				if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsNull() {
+					*description7 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.ValueString()
+				} else {
+					description7 = nil
 				}
-				tools3 = append(tools3, shared.AIGatewayMCPToolBase{
-					Access:      access5,
-					Annotations: annotations3,
-					Description: description6,
-					Headers:     headers7,
-					Host:        host11,
-					Name:        name9,
-					Method:      method3,
-					Path:        path3,
-					Query:       query3,
-					RequestBody: requestBody3,
-					Responses:   responses3,
-					Scheme:      scheme3,
-					Parameters:  parameters3,
+				required3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsNull() {
+					*required3 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.ValueBool()
+				} else {
+					required3 = nil
+				}
+				schema3 := make(map[string]interface{})
+				for schemaKey3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema {
+					var schemaInst3 interface{}
+					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema[schemaKey3].ValueString()), &schemaInst3)
+					schema3[schemaKey3] = schemaInst3
+				}
+				parameters3 = append(parameters3, shared.AIGatewayMCPToolParameter{
+					Name:        name10,
+					In:          in3,
+					Description: description7,
+					Required:    required3,
+					Schema:      schema3,
 				})
 			}
+			tools3 = append(tools3, shared.AIGatewayMCPToolBase{
+				Access:      access5,
+				Annotations: annotations3,
+				Description: description6,
+				Headers:     headers7,
+				Host:        host11,
+				Name:        name9,
+				Method:      method3,
+				Path:        path3,
+				Query:       query3,
+				RequestBody: requestBody3,
+				Responses:   responses3,
+				Scheme:      scheme3,
+				Parameters:  parameters3,
+			})
 		}
 		var access6 *shared.AIGatewayMCPServerBaseACLProperties
 		if r.PassthroughListener.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer2 *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.PassthroughListener.Access.Consumer != nil {
-				aclAttributeType4 := new(shared.ACLAttributeType)
-				if !r.PassthroughListener.Access.Consumer.ACLAttributeType.IsUnknown() && !r.PassthroughListener.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType4 = shared.ACLAttributeType(r.PassthroughListener.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType4 = nil
-				}
 				var acls8 *shared.AIGatewayMCPACLs
 				if r.PassthroughListener.Access.Consumer.Acls != nil {
 					allow12 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
@@ -4674,9 +4596,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer2 = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType4,
-					Acls:             acls8,
-					DefaultToolAcls:  defaultToolAcls4,
+					Acls:            acls8,
+					DefaultToolAcls: defaultToolAcls4,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer2 != nil {
@@ -4686,7 +4607,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth2 *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.PassthroughListener.Access.OauthAccessToken != nil {
-				aclAttributeType5 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.PassthroughListener.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField2 string
 				accessTokenClaimField2 = r.PassthroughListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -4721,7 +4641,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth2 = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType5,
 					AccessTokenClaimField: accessTokenClaimField2,
 					Acls:                  acls9,
 					DefaultToolAcls:       defaultToolAcls5,
@@ -5369,189 +5288,177 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			URL:                  url3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
-		var tools4 []shared.AIGatewayMCPUpstreamTool
-		if r.UpstreamServer.Tools != nil {
-			tools4 = make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
-			for toolsIndex4 := range r.UpstreamServer.Tools {
-				var access7 *shared.AIGatewayMCPUpstreamToolAccess
-				if r.UpstreamServer.Tools[toolsIndex4].Access != nil {
-					var acls10 *shared.AIGatewayMCPACLs
-					if r.UpstreamServer.Tools[toolsIndex4].Access.Acls != nil {
-						allow16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow))
-						for allowIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow {
-							allow16 = append(allow16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow[allowIndex16].ValueString())
-						}
-						deny16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny))
-						for denyIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny {
-							deny16 = append(deny16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny[denyIndex16].ValueString())
-						}
-						acls10 = &shared.AIGatewayMCPACLs{
-							Allow: allow16,
-							Deny:  deny16,
-						}
+		tools4 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
+		for toolsIndex4 := range r.UpstreamServer.Tools {
+			var access7 *shared.AIGatewayMCPUpstreamToolAccess
+			if r.UpstreamServer.Tools[toolsIndex4].Access != nil {
+				var acls10 *shared.AIGatewayMCPACLs
+				if r.UpstreamServer.Tools[toolsIndex4].Access.Acls != nil {
+					allow16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow))
+					for allowIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow {
+						allow16 = append(allow16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow[allowIndex16].ValueString())
 					}
-					access7 = &shared.AIGatewayMCPUpstreamToolAccess{
-						Acls: acls10,
+					deny16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny))
+					for denyIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny {
+						deny16 = append(deny16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny[denyIndex16].ValueString())
+					}
+					acls10 = &shared.AIGatewayMCPACLs{
+						Allow: allow16,
+						Deny:  deny16,
 					}
 				}
-				var annotations4 *shared.AIGatewayMCPToolAnnotations
-				if r.UpstreamServer.Tools[toolsIndex4].Annotations != nil {
-					destructiveHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsNull() {
-						*destructiveHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.ValueBool()
-					} else {
-						destructiveHint4 = nil
-					}
-					idempotentHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsNull() {
-						*idempotentHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.ValueBool()
-					} else {
-						idempotentHint4 = nil
-					}
-					openWorldHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsNull() {
-						*openWorldHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.ValueBool()
-					} else {
-						openWorldHint4 = nil
-					}
-					readOnlyHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsNull() {
-						*readOnlyHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.ValueBool()
-					} else {
-						readOnlyHint4 = nil
-					}
-					title4 := new(string)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsNull() {
-						*title4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.ValueString()
-					} else {
-						title4 = nil
-					}
-					annotations4 = &shared.AIGatewayMCPToolAnnotations{
-						DestructiveHint: destructiveHint4,
-						IdempotentHint:  idempotentHint4,
-						OpenWorldHint:   openWorldHint4,
-						ReadOnlyHint:    readOnlyHint4,
-						Title:           title4,
-					}
+				access7 = &shared.AIGatewayMCPUpstreamToolAccess{
+					Acls: acls10,
 				}
-				var description8 string
-				description8 = r.UpstreamServer.Tools[toolsIndex4].Description.ValueString()
+			}
+			var annotations4 *shared.AIGatewayMCPToolAnnotations
+			if r.UpstreamServer.Tools[toolsIndex4].Annotations != nil {
+				destructiveHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsNull() {
+					*destructiveHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.ValueBool()
+				} else {
+					destructiveHint4 = nil
+				}
+				idempotentHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsNull() {
+					*idempotentHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.ValueBool()
+				} else {
+					idempotentHint4 = nil
+				}
+				openWorldHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsNull() {
+					*openWorldHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.ValueBool()
+				} else {
+					openWorldHint4 = nil
+				}
+				readOnlyHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsNull() {
+					*readOnlyHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.ValueBool()
+				} else {
+					readOnlyHint4 = nil
+				}
+				title4 := new(string)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsNull() {
+					*title4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.ValueString()
+				} else {
+					title4 = nil
+				}
+				annotations4 = &shared.AIGatewayMCPToolAnnotations{
+					DestructiveHint: destructiveHint4,
+					IdempotentHint:  idempotentHint4,
+					OpenWorldHint:   openWorldHint4,
+					ReadOnlyHint:    readOnlyHint4,
+					Title:           title4,
+				}
+			}
+			var description8 string
+			description8 = r.UpstreamServer.Tools[toolsIndex4].Description.ValueString()
 
-				var headers9 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].Headers.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Headers.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Headers.ValueString()), &headers9)
-				}
-				host14 := new(string)
-				if !r.UpstreamServer.Tools[toolsIndex4].Host.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Host.IsNull() {
-					*host14 = r.UpstreamServer.Tools[toolsIndex4].Host.ValueString()
-				} else {
-					host14 = nil
-				}
-				var name12 string
-				name12 = r.UpstreamServer.Tools[toolsIndex4].Name.ValueString()
+			var headers9 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].Headers.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Headers.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Headers.ValueString()), &headers9)
+			}
+			host14 := new(string)
+			if !r.UpstreamServer.Tools[toolsIndex4].Host.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Host.IsNull() {
+				*host14 = r.UpstreamServer.Tools[toolsIndex4].Host.ValueString()
+			} else {
+				host14 = nil
+			}
+			var name12 string
+			name12 = r.UpstreamServer.Tools[toolsIndex4].Name.ValueString()
 
-				method4 := new(shared.AIGatewayMCPUpstreamToolMethod)
-				if !r.UpstreamServer.Tools[toolsIndex4].Method.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Method.IsNull() {
-					*method4 = shared.AIGatewayMCPUpstreamToolMethod(r.UpstreamServer.Tools[toolsIndex4].Method.ValueString())
-				} else {
-					method4 = nil
-				}
-				path4 := new(string)
-				if !r.UpstreamServer.Tools[toolsIndex4].Path.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Path.IsNull() {
-					*path4 = r.UpstreamServer.Tools[toolsIndex4].Path.ValueString()
-				} else {
-					path4 = nil
-				}
-				var query4 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].Query.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Query.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Query.ValueString()), &query4)
-				}
-				var requestBody4 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].RequestBody.ValueString()), &requestBody4)
-				}
-				var responses4 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].Responses.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Responses.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Responses.ValueString()), &responses4)
-				}
-				scheme4 := new(shared.AIGatewayMCPUpstreamToolScheme)
-				if !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsNull() {
-					*scheme4 = shared.AIGatewayMCPUpstreamToolScheme(r.UpstreamServer.Tools[toolsIndex4].Scheme.ValueString())
-				} else {
-					scheme4 = nil
-				}
-				parameters4 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.UpstreamServer.Tools[toolsIndex4].Parameters))
-				for parametersIndex4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters {
-					var name13 string
-					name13 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Name.ValueString()
+			method4 := new(shared.AIGatewayMCPUpstreamToolMethod)
+			if !r.UpstreamServer.Tools[toolsIndex4].Method.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Method.IsNull() {
+				*method4 = shared.AIGatewayMCPUpstreamToolMethod(r.UpstreamServer.Tools[toolsIndex4].Method.ValueString())
+			} else {
+				method4 = nil
+			}
+			path4 := new(string)
+			if !r.UpstreamServer.Tools[toolsIndex4].Path.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Path.IsNull() {
+				*path4 = r.UpstreamServer.Tools[toolsIndex4].Path.ValueString()
+			} else {
+				path4 = nil
+			}
+			var query4 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].Query.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Query.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Query.ValueString()), &query4)
+			}
+			var requestBody4 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].RequestBody.ValueString()), &requestBody4)
+			}
+			var responses4 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].Responses.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Responses.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Responses.ValueString()), &responses4)
+			}
+			scheme4 := new(shared.AIGatewayMCPUpstreamToolScheme)
+			if !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsNull() {
+				*scheme4 = shared.AIGatewayMCPUpstreamToolScheme(r.UpstreamServer.Tools[toolsIndex4].Scheme.ValueString())
+			} else {
+				scheme4 = nil
+			}
+			parameters4 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.UpstreamServer.Tools[toolsIndex4].Parameters))
+			for parametersIndex4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters {
+				var name13 string
+				name13 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Name.ValueString()
 
-					in4 := shared.In(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].In.ValueString())
-					description9 := new(string)
-					if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsNull() {
-						*description9 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.ValueString()
-					} else {
-						description9 = nil
-					}
-					required4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsNull() {
-						*required4 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.ValueBool()
-					} else {
-						required4 = nil
-					}
-					var schema4 map[string]interface{}
-					if r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema != nil {
-						schema4 = make(map[string]interface{})
-						for schemaKey4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema {
-							var schemaInst4 interface{}
-							_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema[schemaKey4].ValueString()), &schemaInst4)
-							schema4[schemaKey4] = schemaInst4
-						}
-					}
-					parameters4 = append(parameters4, shared.AIGatewayMCPToolParameter{
-						Name:        name13,
-						In:          in4,
-						Description: description9,
-						Required:    required4,
-						Schema:      schema4,
-					})
+				in4 := shared.In(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].In.ValueString())
+				description9 := new(string)
+				if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsNull() {
+					*description9 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.ValueString()
+				} else {
+					description9 = nil
 				}
-				var inputSchema interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].InputSchema.ValueString()), &inputSchema)
+				required4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsNull() {
+					*required4 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.ValueBool()
+				} else {
+					required4 = nil
 				}
-				var outputSchema interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].OutputSchema.ValueString()), &outputSchema)
+				schema4 := make(map[string]interface{})
+				for schemaKey4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema {
+					var schemaInst4 interface{}
+					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema[schemaKey4].ValueString()), &schemaInst4)
+					schema4[schemaKey4] = schemaInst4
 				}
-				tools4 = append(tools4, shared.AIGatewayMCPUpstreamTool{
-					Access:       access7,
-					Annotations:  annotations4,
-					Description:  description8,
-					Headers:      headers9,
-					Host:         host14,
-					Name:         name12,
-					Method:       method4,
-					Path:         path4,
-					Query:        query4,
-					RequestBody:  requestBody4,
-					Responses:    responses4,
-					Scheme:       scheme4,
-					Parameters:   parameters4,
-					InputSchema:  inputSchema,
-					OutputSchema: outputSchema,
+				parameters4 = append(parameters4, shared.AIGatewayMCPToolParameter{
+					Name:        name13,
+					In:          in4,
+					Description: description9,
+					Required:    required4,
+					Schema:      schema4,
 				})
 			}
+			var inputSchema interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].InputSchema.ValueString()), &inputSchema)
+			}
+			var outputSchema interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].OutputSchema.ValueString()), &outputSchema)
+			}
+			tools4 = append(tools4, shared.AIGatewayMCPUpstreamTool{
+				Access:       access7,
+				Annotations:  annotations4,
+				Description:  description8,
+				Headers:      headers9,
+				Host:         host14,
+				Name:         name12,
+				Method:       method4,
+				Path:         path4,
+				Query:        query4,
+				RequestBody:  requestBody4,
+				Responses:    responses4,
+				Scheme:       scheme4,
+				Parameters:   parameters4,
+				InputSchema:  inputSchema,
+				OutputSchema: outputSchema,
+			})
 		}
 		var access8 *shared.AIGatewayMCPServerBaseACLProperties
 		if r.UpstreamServer.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer3 *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.UpstreamServer.Access.Consumer != nil {
-				aclAttributeType6 := new(shared.ACLAttributeType)
-				if !r.UpstreamServer.Access.Consumer.ACLAttributeType.IsUnknown() && !r.UpstreamServer.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType6 = shared.ACLAttributeType(r.UpstreamServer.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType6 = nil
-				}
 				var acls11 *shared.AIGatewayMCPACLs
 				if r.UpstreamServer.Access.Consumer.Acls != nil {
 					allow17 := make([]string, 0, len(r.UpstreamServer.Access.Consumer.Acls.Allow))
@@ -5583,9 +5490,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer3 = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType6,
-					Acls:             acls11,
-					DefaultToolAcls:  defaultToolAcls6,
+					Acls:            acls11,
+					DefaultToolAcls: defaultToolAcls6,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer3 != nil {
@@ -5595,7 +5501,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth3 *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.UpstreamServer.Access.OauthAccessToken != nil {
-				aclAttributeType7 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.UpstreamServer.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField3 string
 				accessTokenClaimField3 = r.UpstreamServer.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -5630,7 +5535,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth3 = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType7,
 					AccessTokenClaimField: accessTokenClaimField3,
 					Acls:                  acls12,
 					DefaultToolAcls:       defaultToolAcls7,
@@ -5934,14 +5838,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					required = nil
 				}
-				var schema map[string]interface{}
-				if r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema != nil {
-					schema = make(map[string]interface{})
-					for schemaKey := range r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema {
-						var schemaInst interface{}
-						_ = json.Unmarshal([]byte(r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema[schemaKey].ValueString()), &schemaInst)
-						schema[schemaKey] = schemaInst
-					}
+				schema := make(map[string]interface{})
+				for schemaKey := range r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema {
+					var schemaInst interface{}
+					_ = json.Unmarshal([]byte(r.ConversionOnly.Tools[toolsIndex].Parameters[parametersIndex].Schema[schemaKey].ValueString()), &schemaInst)
+					schema[schemaKey] = schemaInst
 				}
 				parameters = append(parameters, shared.AIGatewayMCPToolParameter{
 					Name:        name1,
@@ -6632,14 +6533,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					required1 = nil
 				}
-				var schema1 map[string]interface{}
-				if r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema != nil {
-					schema1 = make(map[string]interface{})
-					for schemaKey1 := range r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema {
-						var schemaInst1 interface{}
-						_ = json.Unmarshal([]byte(r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema[schemaKey1].ValueString()), &schemaInst1)
-						schema1[schemaKey1] = schemaInst1
-					}
+				schema1 := make(map[string]interface{})
+				for schemaKey1 := range r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema {
+					var schemaInst1 interface{}
+					_ = json.Unmarshal([]byte(r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Schema[schemaKey1].ValueString()), &schemaInst1)
+					schema1[schemaKey1] = schemaInst1
 				}
 				parameters1 = append(parameters1, shared.AIGatewayMCPToolParameter{
 					Name:        name4,
@@ -6669,12 +6567,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.ConversionListener.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.ConversionListener.Access.Consumer != nil {
-				aclAttributeType := new(shared.ACLAttributeType)
-				if !r.ConversionListener.Access.Consumer.ACLAttributeType.IsUnknown() && !r.ConversionListener.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType = shared.ACLAttributeType(r.ConversionListener.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType = nil
-				}
 				var acls2 *shared.AIGatewayMCPACLs
 				if r.ConversionListener.Access.Consumer.Acls != nil {
 					allow2 := make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.Allow))
@@ -6706,9 +6598,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType,
-					Acls:             acls2,
-					DefaultToolAcls:  defaultToolAcls,
+					Acls:            acls2,
+					DefaultToolAcls: defaultToolAcls,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer != nil {
@@ -6718,7 +6609,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.ConversionListener.Access.OauthAccessToken != nil {
-				aclAttributeType1 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.ConversionListener.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField string
 				accessTokenClaimField = r.ConversionListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -6753,7 +6643,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType1,
 					AccessTokenClaimField: accessTokenClaimField,
 					Acls:                  acls3,
 					DefaultToolAcls:       defaultToolAcls1,
@@ -7305,179 +7194,167 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize2,
 			Server:             server1,
 		}
-		var tools2 []shared.AIGatewayMCPToolBase
-		if r.Listener.Tools != nil {
-			tools2 = make([]shared.AIGatewayMCPToolBase, 0, len(r.Listener.Tools))
-			for toolsIndex2 := range r.Listener.Tools {
-				var access3 *shared.AIGatewayMCPToolBaseAccess
-				if r.Listener.Tools[toolsIndex2].Access != nil {
-					var acls4 *shared.AIGatewayMCPACLs
-					if r.Listener.Tools[toolsIndex2].Access.Acls != nil {
-						allow6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Allow))
-						for allowIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Allow {
-							allow6 = append(allow6, r.Listener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex6].ValueString())
-						}
-						deny6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Deny))
-						for denyIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Deny {
-							deny6 = append(deny6, r.Listener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex6].ValueString())
-						}
-						acls4 = &shared.AIGatewayMCPACLs{
-							Allow: allow6,
-							Deny:  deny6,
-						}
+		tools2 := make([]shared.AIGatewayMCPToolBase, 0, len(r.Listener.Tools))
+		for toolsIndex2 := range r.Listener.Tools {
+			var access3 *shared.AIGatewayMCPToolBaseAccess
+			if r.Listener.Tools[toolsIndex2].Access != nil {
+				var acls4 *shared.AIGatewayMCPACLs
+				if r.Listener.Tools[toolsIndex2].Access.Acls != nil {
+					allow6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Allow))
+					for allowIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Allow {
+						allow6 = append(allow6, r.Listener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex6].ValueString())
 					}
-					access3 = &shared.AIGatewayMCPToolBaseAccess{
-						Acls: acls4,
+					deny6 := make([]string, 0, len(r.Listener.Tools[toolsIndex2].Access.Acls.Deny))
+					for denyIndex6 := range r.Listener.Tools[toolsIndex2].Access.Acls.Deny {
+						deny6 = append(deny6, r.Listener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex6].ValueString())
+					}
+					acls4 = &shared.AIGatewayMCPACLs{
+						Allow: allow6,
+						Deny:  deny6,
 					}
 				}
-				var annotations2 *shared.AIGatewayMCPToolAnnotations
-				if r.Listener.Tools[toolsIndex2].Annotations != nil {
-					destructiveHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsNull() {
-						*destructiveHint2 = r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.ValueBool()
-					} else {
-						destructiveHint2 = nil
-					}
-					idempotentHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsNull() {
-						*idempotentHint2 = r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.ValueBool()
-					} else {
-						idempotentHint2 = nil
-					}
-					openWorldHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsNull() {
-						*openWorldHint2 = r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.ValueBool()
-					} else {
-						openWorldHint2 = nil
-					}
-					readOnlyHint2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsNull() {
-						*readOnlyHint2 = r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.ValueBool()
-					} else {
-						readOnlyHint2 = nil
-					}
-					title2 := new(string)
-					if !r.Listener.Tools[toolsIndex2].Annotations.Title.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.Title.IsNull() {
-						*title2 = r.Listener.Tools[toolsIndex2].Annotations.Title.ValueString()
-					} else {
-						title2 = nil
-					}
-					annotations2 = &shared.AIGatewayMCPToolAnnotations{
-						DestructiveHint: destructiveHint2,
-						IdempotentHint:  idempotentHint2,
-						OpenWorldHint:   openWorldHint2,
-						ReadOnlyHint:    readOnlyHint2,
-						Title:           title2,
-					}
+				access3 = &shared.AIGatewayMCPToolBaseAccess{
+					Acls: acls4,
 				}
-				var description4 string
-				description4 = r.Listener.Tools[toolsIndex2].Description.ValueString()
+			}
+			var annotations2 *shared.AIGatewayMCPToolAnnotations
+			if r.Listener.Tools[toolsIndex2].Annotations != nil {
+				destructiveHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.IsNull() {
+					*destructiveHint2 = r.Listener.Tools[toolsIndex2].Annotations.DestructiveHint.ValueBool()
+				} else {
+					destructiveHint2 = nil
+				}
+				idempotentHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.IsNull() {
+					*idempotentHint2 = r.Listener.Tools[toolsIndex2].Annotations.IdempotentHint.ValueBool()
+				} else {
+					idempotentHint2 = nil
+				}
+				openWorldHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.IsNull() {
+					*openWorldHint2 = r.Listener.Tools[toolsIndex2].Annotations.OpenWorldHint.ValueBool()
+				} else {
+					openWorldHint2 = nil
+				}
+				readOnlyHint2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.IsNull() {
+					*readOnlyHint2 = r.Listener.Tools[toolsIndex2].Annotations.ReadOnlyHint.ValueBool()
+				} else {
+					readOnlyHint2 = nil
+				}
+				title2 := new(string)
+				if !r.Listener.Tools[toolsIndex2].Annotations.Title.IsUnknown() && !r.Listener.Tools[toolsIndex2].Annotations.Title.IsNull() {
+					*title2 = r.Listener.Tools[toolsIndex2].Annotations.Title.ValueString()
+				} else {
+					title2 = nil
+				}
+				annotations2 = &shared.AIGatewayMCPToolAnnotations{
+					DestructiveHint: destructiveHint2,
+					IdempotentHint:  idempotentHint2,
+					OpenWorldHint:   openWorldHint2,
+					ReadOnlyHint:    readOnlyHint2,
+					Title:           title2,
+				}
+			}
+			var description4 string
+			description4 = r.Listener.Tools[toolsIndex2].Description.ValueString()
 
-				var headers5 interface{}
-				if !r.Listener.Tools[toolsIndex2].Headers.IsUnknown() && !r.Listener.Tools[toolsIndex2].Headers.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Headers.ValueString()), &headers5)
-				}
-				host6 := new(string)
-				if !r.Listener.Tools[toolsIndex2].Host.IsUnknown() && !r.Listener.Tools[toolsIndex2].Host.IsNull() {
-					*host6 = r.Listener.Tools[toolsIndex2].Host.ValueString()
-				} else {
-					host6 = nil
-				}
-				var name6 string
-				name6 = r.Listener.Tools[toolsIndex2].Name.ValueString()
+			var headers5 interface{}
+			if !r.Listener.Tools[toolsIndex2].Headers.IsUnknown() && !r.Listener.Tools[toolsIndex2].Headers.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Headers.ValueString()), &headers5)
+			}
+			host6 := new(string)
+			if !r.Listener.Tools[toolsIndex2].Host.IsUnknown() && !r.Listener.Tools[toolsIndex2].Host.IsNull() {
+				*host6 = r.Listener.Tools[toolsIndex2].Host.ValueString()
+			} else {
+				host6 = nil
+			}
+			var name6 string
+			name6 = r.Listener.Tools[toolsIndex2].Name.ValueString()
 
-				method2 := new(shared.AIGatewayMCPToolBaseMethod)
-				if !r.Listener.Tools[toolsIndex2].Method.IsUnknown() && !r.Listener.Tools[toolsIndex2].Method.IsNull() {
-					*method2 = shared.AIGatewayMCPToolBaseMethod(r.Listener.Tools[toolsIndex2].Method.ValueString())
-				} else {
-					method2 = nil
-				}
-				path2 := new(string)
-				if !r.Listener.Tools[toolsIndex2].Path.IsUnknown() && !r.Listener.Tools[toolsIndex2].Path.IsNull() {
-					*path2 = r.Listener.Tools[toolsIndex2].Path.ValueString()
-				} else {
-					path2 = nil
-				}
-				var query2 interface{}
-				if !r.Listener.Tools[toolsIndex2].Query.IsUnknown() && !r.Listener.Tools[toolsIndex2].Query.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Query.ValueString()), &query2)
-				}
-				var requestBody2 interface{}
-				if !r.Listener.Tools[toolsIndex2].RequestBody.IsUnknown() && !r.Listener.Tools[toolsIndex2].RequestBody.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].RequestBody.ValueString()), &requestBody2)
-				}
-				var responses2 interface{}
-				if !r.Listener.Tools[toolsIndex2].Responses.IsUnknown() && !r.Listener.Tools[toolsIndex2].Responses.IsNull() {
-					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Responses.ValueString()), &responses2)
-				}
-				scheme2 := new(shared.AIGatewayMCPToolBaseScheme)
-				if !r.Listener.Tools[toolsIndex2].Scheme.IsUnknown() && !r.Listener.Tools[toolsIndex2].Scheme.IsNull() {
-					*scheme2 = shared.AIGatewayMCPToolBaseScheme(r.Listener.Tools[toolsIndex2].Scheme.ValueString())
-				} else {
-					scheme2 = nil
-				}
-				parameters2 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.Listener.Tools[toolsIndex2].Parameters))
-				for parametersIndex2 := range r.Listener.Tools[toolsIndex2].Parameters {
-					var name7 string
-					name7 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Name.ValueString()
+			method2 := new(shared.AIGatewayMCPToolBaseMethod)
+			if !r.Listener.Tools[toolsIndex2].Method.IsUnknown() && !r.Listener.Tools[toolsIndex2].Method.IsNull() {
+				*method2 = shared.AIGatewayMCPToolBaseMethod(r.Listener.Tools[toolsIndex2].Method.ValueString())
+			} else {
+				method2 = nil
+			}
+			path2 := new(string)
+			if !r.Listener.Tools[toolsIndex2].Path.IsUnknown() && !r.Listener.Tools[toolsIndex2].Path.IsNull() {
+				*path2 = r.Listener.Tools[toolsIndex2].Path.ValueString()
+			} else {
+				path2 = nil
+			}
+			var query2 interface{}
+			if !r.Listener.Tools[toolsIndex2].Query.IsUnknown() && !r.Listener.Tools[toolsIndex2].Query.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Query.ValueString()), &query2)
+			}
+			var requestBody2 interface{}
+			if !r.Listener.Tools[toolsIndex2].RequestBody.IsUnknown() && !r.Listener.Tools[toolsIndex2].RequestBody.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].RequestBody.ValueString()), &requestBody2)
+			}
+			var responses2 interface{}
+			if !r.Listener.Tools[toolsIndex2].Responses.IsUnknown() && !r.Listener.Tools[toolsIndex2].Responses.IsNull() {
+				_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Responses.ValueString()), &responses2)
+			}
+			scheme2 := new(shared.AIGatewayMCPToolBaseScheme)
+			if !r.Listener.Tools[toolsIndex2].Scheme.IsUnknown() && !r.Listener.Tools[toolsIndex2].Scheme.IsNull() {
+				*scheme2 = shared.AIGatewayMCPToolBaseScheme(r.Listener.Tools[toolsIndex2].Scheme.ValueString())
+			} else {
+				scheme2 = nil
+			}
+			parameters2 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.Listener.Tools[toolsIndex2].Parameters))
+			for parametersIndex2 := range r.Listener.Tools[toolsIndex2].Parameters {
+				var name7 string
+				name7 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Name.ValueString()
 
-					in2 := shared.In(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].In.ValueString())
-					description5 := new(string)
-					if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsNull() {
-						*description5 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.ValueString()
-					} else {
-						description5 = nil
-					}
-					required2 := new(bool)
-					if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsNull() {
-						*required2 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.ValueBool()
-					} else {
-						required2 = nil
-					}
-					var schema2 map[string]interface{}
-					if r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema != nil {
-						schema2 = make(map[string]interface{})
-						for schemaKey2 := range r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema {
-							var schemaInst2 interface{}
-							_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema[schemaKey2].ValueString()), &schemaInst2)
-							schema2[schemaKey2] = schemaInst2
-						}
-					}
-					parameters2 = append(parameters2, shared.AIGatewayMCPToolParameter{
-						Name:        name7,
-						In:          in2,
-						Description: description5,
-						Required:    required2,
-						Schema:      schema2,
-					})
+				in2 := shared.In(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].In.ValueString())
+				description5 := new(string)
+				if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.IsNull() {
+					*description5 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Description.ValueString()
+				} else {
+					description5 = nil
 				}
-				tools2 = append(tools2, shared.AIGatewayMCPToolBase{
-					Access:      access3,
-					Annotations: annotations2,
-					Description: description4,
-					Headers:     headers5,
-					Host:        host6,
-					Name:        name6,
-					Method:      method2,
-					Path:        path2,
-					Query:       query2,
-					RequestBody: requestBody2,
-					Responses:   responses2,
-					Scheme:      scheme2,
-					Parameters:  parameters2,
+				required2 := new(bool)
+				if !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsUnknown() && !r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.IsNull() {
+					*required2 = r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Required.ValueBool()
+				} else {
+					required2 = nil
+				}
+				schema2 := make(map[string]interface{})
+				for schemaKey2 := range r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema {
+					var schemaInst2 interface{}
+					_ = json.Unmarshal([]byte(r.Listener.Tools[toolsIndex2].Parameters[parametersIndex2].Schema[schemaKey2].ValueString()), &schemaInst2)
+					schema2[schemaKey2] = schemaInst2
+				}
+				parameters2 = append(parameters2, shared.AIGatewayMCPToolParameter{
+					Name:        name7,
+					In:          in2,
+					Description: description5,
+					Required:    required2,
+					Schema:      schema2,
 				})
 			}
+			tools2 = append(tools2, shared.AIGatewayMCPToolBase{
+				Access:      access3,
+				Annotations: annotations2,
+				Description: description4,
+				Headers:     headers5,
+				Host:        host6,
+				Name:        name6,
+				Method:      method2,
+				Path:        path2,
+				Query:       query2,
+				RequestBody: requestBody2,
+				Responses:   responses2,
+				Scheme:      scheme2,
+				Parameters:  parameters2,
+			})
 		}
 		var access4 *shared.AIGatewayMCPServerBaseACLProperties
 		if r.Listener.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer1 *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.Listener.Access.Consumer != nil {
-				aclAttributeType2 := new(shared.ACLAttributeType)
-				if !r.Listener.Access.Consumer.ACLAttributeType.IsUnknown() && !r.Listener.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType2 = shared.ACLAttributeType(r.Listener.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType2 = nil
-				}
 				var acls5 *shared.AIGatewayMCPACLs
 				if r.Listener.Access.Consumer.Acls != nil {
 					allow7 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
@@ -7509,9 +7386,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer1 = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType2,
-					Acls:             acls5,
-					DefaultToolAcls:  defaultToolAcls2,
+					Acls:            acls5,
+					DefaultToolAcls: defaultToolAcls2,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer1 != nil {
@@ -7521,7 +7397,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth1 *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.Listener.Access.OauthAccessToken != nil {
-				aclAttributeType3 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.Listener.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField1 string
 				accessTokenClaimField1 = r.Listener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -7556,7 +7431,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth1 = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType3,
 					AccessTokenClaimField: accessTokenClaimField1,
 					Acls:                  acls6,
 					DefaultToolAcls:       defaultToolAcls3,
@@ -8192,179 +8066,167 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			URL:                url2,
 			Proxy:              proxy,
 		}
-		var tools3 []shared.AIGatewayMCPToolBase
-		if r.PassthroughListener.Tools != nil {
-			tools3 = make([]shared.AIGatewayMCPToolBase, 0, len(r.PassthroughListener.Tools))
-			for toolsIndex3 := range r.PassthroughListener.Tools {
-				var access5 *shared.AIGatewayMCPToolBaseAccess
-				if r.PassthroughListener.Tools[toolsIndex3].Access != nil {
-					var acls7 *shared.AIGatewayMCPACLs
-					if r.PassthroughListener.Tools[toolsIndex3].Access.Acls != nil {
-						allow11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow))
-						for allowIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow {
-							allow11 = append(allow11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow[allowIndex11].ValueString())
-						}
-						deny11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny))
-						for denyIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny {
-							deny11 = append(deny11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny[denyIndex11].ValueString())
-						}
-						acls7 = &shared.AIGatewayMCPACLs{
-							Allow: allow11,
-							Deny:  deny11,
-						}
+		tools3 := make([]shared.AIGatewayMCPToolBase, 0, len(r.PassthroughListener.Tools))
+		for toolsIndex3 := range r.PassthroughListener.Tools {
+			var access5 *shared.AIGatewayMCPToolBaseAccess
+			if r.PassthroughListener.Tools[toolsIndex3].Access != nil {
+				var acls7 *shared.AIGatewayMCPACLs
+				if r.PassthroughListener.Tools[toolsIndex3].Access.Acls != nil {
+					allow11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow))
+					for allowIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow {
+						allow11 = append(allow11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Allow[allowIndex11].ValueString())
 					}
-					access5 = &shared.AIGatewayMCPToolBaseAccess{
-						Acls: acls7,
+					deny11 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny))
+					for denyIndex11 := range r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny {
+						deny11 = append(deny11, r.PassthroughListener.Tools[toolsIndex3].Access.Acls.Deny[denyIndex11].ValueString())
+					}
+					acls7 = &shared.AIGatewayMCPACLs{
+						Allow: allow11,
+						Deny:  deny11,
 					}
 				}
-				var annotations3 *shared.AIGatewayMCPToolAnnotations
-				if r.PassthroughListener.Tools[toolsIndex3].Annotations != nil {
-					destructiveHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsNull() {
-						*destructiveHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.ValueBool()
-					} else {
-						destructiveHint3 = nil
-					}
-					idempotentHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsNull() {
-						*idempotentHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.ValueBool()
-					} else {
-						idempotentHint3 = nil
-					}
-					openWorldHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsNull() {
-						*openWorldHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.ValueBool()
-					} else {
-						openWorldHint3 = nil
-					}
-					readOnlyHint3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsNull() {
-						*readOnlyHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.ValueBool()
-					} else {
-						readOnlyHint3 = nil
-					}
-					title3 := new(string)
-					if !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsNull() {
-						*title3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.ValueString()
-					} else {
-						title3 = nil
-					}
-					annotations3 = &shared.AIGatewayMCPToolAnnotations{
-						DestructiveHint: destructiveHint3,
-						IdempotentHint:  idempotentHint3,
-						OpenWorldHint:   openWorldHint3,
-						ReadOnlyHint:    readOnlyHint3,
-						Title:           title3,
-					}
+				access5 = &shared.AIGatewayMCPToolBaseAccess{
+					Acls: acls7,
 				}
-				var description6 string
-				description6 = r.PassthroughListener.Tools[toolsIndex3].Description.ValueString()
+			}
+			var annotations3 *shared.AIGatewayMCPToolAnnotations
+			if r.PassthroughListener.Tools[toolsIndex3].Annotations != nil {
+				destructiveHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.IsNull() {
+					*destructiveHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.DestructiveHint.ValueBool()
+				} else {
+					destructiveHint3 = nil
+				}
+				idempotentHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.IsNull() {
+					*idempotentHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.IdempotentHint.ValueBool()
+				} else {
+					idempotentHint3 = nil
+				}
+				openWorldHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.IsNull() {
+					*openWorldHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.OpenWorldHint.ValueBool()
+				} else {
+					openWorldHint3 = nil
+				}
+				readOnlyHint3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.IsNull() {
+					*readOnlyHint3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.ReadOnlyHint.ValueBool()
+				} else {
+					readOnlyHint3 = nil
+				}
+				title3 := new(string)
+				if !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.IsNull() {
+					*title3 = r.PassthroughListener.Tools[toolsIndex3].Annotations.Title.ValueString()
+				} else {
+					title3 = nil
+				}
+				annotations3 = &shared.AIGatewayMCPToolAnnotations{
+					DestructiveHint: destructiveHint3,
+					IdempotentHint:  idempotentHint3,
+					OpenWorldHint:   openWorldHint3,
+					ReadOnlyHint:    readOnlyHint3,
+					Title:           title3,
+				}
+			}
+			var description6 string
+			description6 = r.PassthroughListener.Tools[toolsIndex3].Description.ValueString()
 
-				var headers7 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].Headers.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Headers.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Headers.ValueString()), &headers7)
-				}
-				host11 := new(string)
-				if !r.PassthroughListener.Tools[toolsIndex3].Host.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Host.IsNull() {
-					*host11 = r.PassthroughListener.Tools[toolsIndex3].Host.ValueString()
-				} else {
-					host11 = nil
-				}
-				var name9 string
-				name9 = r.PassthroughListener.Tools[toolsIndex3].Name.ValueString()
+			var headers7 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].Headers.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Headers.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Headers.ValueString()), &headers7)
+			}
+			host11 := new(string)
+			if !r.PassthroughListener.Tools[toolsIndex3].Host.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Host.IsNull() {
+				*host11 = r.PassthroughListener.Tools[toolsIndex3].Host.ValueString()
+			} else {
+				host11 = nil
+			}
+			var name9 string
+			name9 = r.PassthroughListener.Tools[toolsIndex3].Name.ValueString()
 
-				method3 := new(shared.AIGatewayMCPToolBaseMethod)
-				if !r.PassthroughListener.Tools[toolsIndex3].Method.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Method.IsNull() {
-					*method3 = shared.AIGatewayMCPToolBaseMethod(r.PassthroughListener.Tools[toolsIndex3].Method.ValueString())
-				} else {
-					method3 = nil
-				}
-				path3 := new(string)
-				if !r.PassthroughListener.Tools[toolsIndex3].Path.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Path.IsNull() {
-					*path3 = r.PassthroughListener.Tools[toolsIndex3].Path.ValueString()
-				} else {
-					path3 = nil
-				}
-				var query3 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].Query.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Query.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Query.ValueString()), &query3)
-				}
-				var requestBody3 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].RequestBody.ValueString()), &requestBody3)
-				}
-				var responses3 interface{}
-				if !r.PassthroughListener.Tools[toolsIndex3].Responses.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Responses.IsNull() {
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Responses.ValueString()), &responses3)
-				}
-				scheme3 := new(shared.AIGatewayMCPToolBaseScheme)
-				if !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsNull() {
-					*scheme3 = shared.AIGatewayMCPToolBaseScheme(r.PassthroughListener.Tools[toolsIndex3].Scheme.ValueString())
-				} else {
-					scheme3 = nil
-				}
-				parameters3 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.PassthroughListener.Tools[toolsIndex3].Parameters))
-				for parametersIndex3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters {
-					var name10 string
-					name10 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Name.ValueString()
+			method3 := new(shared.AIGatewayMCPToolBaseMethod)
+			if !r.PassthroughListener.Tools[toolsIndex3].Method.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Method.IsNull() {
+				*method3 = shared.AIGatewayMCPToolBaseMethod(r.PassthroughListener.Tools[toolsIndex3].Method.ValueString())
+			} else {
+				method3 = nil
+			}
+			path3 := new(string)
+			if !r.PassthroughListener.Tools[toolsIndex3].Path.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Path.IsNull() {
+				*path3 = r.PassthroughListener.Tools[toolsIndex3].Path.ValueString()
+			} else {
+				path3 = nil
+			}
+			var query3 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].Query.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Query.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Query.ValueString()), &query3)
+			}
+			var requestBody3 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].RequestBody.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].RequestBody.ValueString()), &requestBody3)
+			}
+			var responses3 interface{}
+			if !r.PassthroughListener.Tools[toolsIndex3].Responses.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Responses.IsNull() {
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Responses.ValueString()), &responses3)
+			}
+			scheme3 := new(shared.AIGatewayMCPToolBaseScheme)
+			if !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Scheme.IsNull() {
+				*scheme3 = shared.AIGatewayMCPToolBaseScheme(r.PassthroughListener.Tools[toolsIndex3].Scheme.ValueString())
+			} else {
+				scheme3 = nil
+			}
+			parameters3 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.PassthroughListener.Tools[toolsIndex3].Parameters))
+			for parametersIndex3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters {
+				var name10 string
+				name10 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Name.ValueString()
 
-					in3 := shared.In(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].In.ValueString())
-					description7 := new(string)
-					if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsNull() {
-						*description7 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.ValueString()
-					} else {
-						description7 = nil
-					}
-					required3 := new(bool)
-					if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsNull() {
-						*required3 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.ValueBool()
-					} else {
-						required3 = nil
-					}
-					var schema3 map[string]interface{}
-					if r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema != nil {
-						schema3 = make(map[string]interface{})
-						for schemaKey3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema {
-							var schemaInst3 interface{}
-							_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema[schemaKey3].ValueString()), &schemaInst3)
-							schema3[schemaKey3] = schemaInst3
-						}
-					}
-					parameters3 = append(parameters3, shared.AIGatewayMCPToolParameter{
-						Name:        name10,
-						In:          in3,
-						Description: description7,
-						Required:    required3,
-						Schema:      schema3,
-					})
+				in3 := shared.In(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].In.ValueString())
+				description7 := new(string)
+				if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.IsNull() {
+					*description7 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Description.ValueString()
+				} else {
+					description7 = nil
 				}
-				tools3 = append(tools3, shared.AIGatewayMCPToolBase{
-					Access:      access5,
-					Annotations: annotations3,
-					Description: description6,
-					Headers:     headers7,
-					Host:        host11,
-					Name:        name9,
-					Method:      method3,
-					Path:        path3,
-					Query:       query3,
-					RequestBody: requestBody3,
-					Responses:   responses3,
-					Scheme:      scheme3,
-					Parameters:  parameters3,
+				required3 := new(bool)
+				if !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsUnknown() && !r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.IsNull() {
+					*required3 = r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Required.ValueBool()
+				} else {
+					required3 = nil
+				}
+				schema3 := make(map[string]interface{})
+				for schemaKey3 := range r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema {
+					var schemaInst3 interface{}
+					_ = json.Unmarshal([]byte(r.PassthroughListener.Tools[toolsIndex3].Parameters[parametersIndex3].Schema[schemaKey3].ValueString()), &schemaInst3)
+					schema3[schemaKey3] = schemaInst3
+				}
+				parameters3 = append(parameters3, shared.AIGatewayMCPToolParameter{
+					Name:        name10,
+					In:          in3,
+					Description: description7,
+					Required:    required3,
+					Schema:      schema3,
 				})
 			}
+			tools3 = append(tools3, shared.AIGatewayMCPToolBase{
+				Access:      access5,
+				Annotations: annotations3,
+				Description: description6,
+				Headers:     headers7,
+				Host:        host11,
+				Name:        name9,
+				Method:      method3,
+				Path:        path3,
+				Query:       query3,
+				RequestBody: requestBody3,
+				Responses:   responses3,
+				Scheme:      scheme3,
+				Parameters:  parameters3,
+			})
 		}
 		var access6 *shared.AIGatewayMCPServerBaseACLProperties
 		if r.PassthroughListener.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer2 *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.PassthroughListener.Access.Consumer != nil {
-				aclAttributeType4 := new(shared.ACLAttributeType)
-				if !r.PassthroughListener.Access.Consumer.ACLAttributeType.IsUnknown() && !r.PassthroughListener.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType4 = shared.ACLAttributeType(r.PassthroughListener.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType4 = nil
-				}
 				var acls8 *shared.AIGatewayMCPACLs
 				if r.PassthroughListener.Access.Consumer.Acls != nil {
 					allow12 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
@@ -8396,9 +8258,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer2 = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType4,
-					Acls:             acls8,
-					DefaultToolAcls:  defaultToolAcls4,
+					Acls:            acls8,
+					DefaultToolAcls: defaultToolAcls4,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer2 != nil {
@@ -8408,7 +8269,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth2 *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.PassthroughListener.Access.OauthAccessToken != nil {
-				aclAttributeType5 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.PassthroughListener.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField2 string
 				accessTokenClaimField2 = r.PassthroughListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -8443,7 +8303,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth2 = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType5,
 					AccessTokenClaimField: accessTokenClaimField2,
 					Acls:                  acls9,
 					DefaultToolAcls:       defaultToolAcls5,
@@ -9091,189 +8950,177 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			URL:                  url3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
-		var tools4 []shared.AIGatewayMCPUpstreamTool
-		if r.UpstreamServer.Tools != nil {
-			tools4 = make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
-			for toolsIndex4 := range r.UpstreamServer.Tools {
-				var access7 *shared.AIGatewayMCPUpstreamToolAccess
-				if r.UpstreamServer.Tools[toolsIndex4].Access != nil {
-					var acls10 *shared.AIGatewayMCPACLs
-					if r.UpstreamServer.Tools[toolsIndex4].Access.Acls != nil {
-						allow16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow))
-						for allowIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow {
-							allow16 = append(allow16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow[allowIndex16].ValueString())
-						}
-						deny16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny))
-						for denyIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny {
-							deny16 = append(deny16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny[denyIndex16].ValueString())
-						}
-						acls10 = &shared.AIGatewayMCPACLs{
-							Allow: allow16,
-							Deny:  deny16,
-						}
+		tools4 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
+		for toolsIndex4 := range r.UpstreamServer.Tools {
+			var access7 *shared.AIGatewayMCPUpstreamToolAccess
+			if r.UpstreamServer.Tools[toolsIndex4].Access != nil {
+				var acls10 *shared.AIGatewayMCPACLs
+				if r.UpstreamServer.Tools[toolsIndex4].Access.Acls != nil {
+					allow16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow))
+					for allowIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow {
+						allow16 = append(allow16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Allow[allowIndex16].ValueString())
 					}
-					access7 = &shared.AIGatewayMCPUpstreamToolAccess{
-						Acls: acls10,
+					deny16 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny))
+					for denyIndex16 := range r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny {
+						deny16 = append(deny16, r.UpstreamServer.Tools[toolsIndex4].Access.Acls.Deny[denyIndex16].ValueString())
+					}
+					acls10 = &shared.AIGatewayMCPACLs{
+						Allow: allow16,
+						Deny:  deny16,
 					}
 				}
-				var annotations4 *shared.AIGatewayMCPToolAnnotations
-				if r.UpstreamServer.Tools[toolsIndex4].Annotations != nil {
-					destructiveHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsNull() {
-						*destructiveHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.ValueBool()
-					} else {
-						destructiveHint4 = nil
-					}
-					idempotentHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsNull() {
-						*idempotentHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.ValueBool()
-					} else {
-						idempotentHint4 = nil
-					}
-					openWorldHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsNull() {
-						*openWorldHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.ValueBool()
-					} else {
-						openWorldHint4 = nil
-					}
-					readOnlyHint4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsNull() {
-						*readOnlyHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.ValueBool()
-					} else {
-						readOnlyHint4 = nil
-					}
-					title4 := new(string)
-					if !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsNull() {
-						*title4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.ValueString()
-					} else {
-						title4 = nil
-					}
-					annotations4 = &shared.AIGatewayMCPToolAnnotations{
-						DestructiveHint: destructiveHint4,
-						IdempotentHint:  idempotentHint4,
-						OpenWorldHint:   openWorldHint4,
-						ReadOnlyHint:    readOnlyHint4,
-						Title:           title4,
-					}
+				access7 = &shared.AIGatewayMCPUpstreamToolAccess{
+					Acls: acls10,
 				}
-				var description8 string
-				description8 = r.UpstreamServer.Tools[toolsIndex4].Description.ValueString()
+			}
+			var annotations4 *shared.AIGatewayMCPToolAnnotations
+			if r.UpstreamServer.Tools[toolsIndex4].Annotations != nil {
+				destructiveHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.IsNull() {
+					*destructiveHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.DestructiveHint.ValueBool()
+				} else {
+					destructiveHint4 = nil
+				}
+				idempotentHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.IsNull() {
+					*idempotentHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.IdempotentHint.ValueBool()
+				} else {
+					idempotentHint4 = nil
+				}
+				openWorldHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.IsNull() {
+					*openWorldHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.OpenWorldHint.ValueBool()
+				} else {
+					openWorldHint4 = nil
+				}
+				readOnlyHint4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.IsNull() {
+					*readOnlyHint4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.ReadOnlyHint.ValueBool()
+				} else {
+					readOnlyHint4 = nil
+				}
+				title4 := new(string)
+				if !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.IsNull() {
+					*title4 = r.UpstreamServer.Tools[toolsIndex4].Annotations.Title.ValueString()
+				} else {
+					title4 = nil
+				}
+				annotations4 = &shared.AIGatewayMCPToolAnnotations{
+					DestructiveHint: destructiveHint4,
+					IdempotentHint:  idempotentHint4,
+					OpenWorldHint:   openWorldHint4,
+					ReadOnlyHint:    readOnlyHint4,
+					Title:           title4,
+				}
+			}
+			var description8 string
+			description8 = r.UpstreamServer.Tools[toolsIndex4].Description.ValueString()
 
-				var headers9 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].Headers.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Headers.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Headers.ValueString()), &headers9)
-				}
-				host14 := new(string)
-				if !r.UpstreamServer.Tools[toolsIndex4].Host.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Host.IsNull() {
-					*host14 = r.UpstreamServer.Tools[toolsIndex4].Host.ValueString()
-				} else {
-					host14 = nil
-				}
-				var name12 string
-				name12 = r.UpstreamServer.Tools[toolsIndex4].Name.ValueString()
+			var headers9 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].Headers.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Headers.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Headers.ValueString()), &headers9)
+			}
+			host14 := new(string)
+			if !r.UpstreamServer.Tools[toolsIndex4].Host.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Host.IsNull() {
+				*host14 = r.UpstreamServer.Tools[toolsIndex4].Host.ValueString()
+			} else {
+				host14 = nil
+			}
+			var name12 string
+			name12 = r.UpstreamServer.Tools[toolsIndex4].Name.ValueString()
 
-				method4 := new(shared.AIGatewayMCPUpstreamToolMethod)
-				if !r.UpstreamServer.Tools[toolsIndex4].Method.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Method.IsNull() {
-					*method4 = shared.AIGatewayMCPUpstreamToolMethod(r.UpstreamServer.Tools[toolsIndex4].Method.ValueString())
-				} else {
-					method4 = nil
-				}
-				path4 := new(string)
-				if !r.UpstreamServer.Tools[toolsIndex4].Path.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Path.IsNull() {
-					*path4 = r.UpstreamServer.Tools[toolsIndex4].Path.ValueString()
-				} else {
-					path4 = nil
-				}
-				var query4 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].Query.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Query.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Query.ValueString()), &query4)
-				}
-				var requestBody4 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].RequestBody.ValueString()), &requestBody4)
-				}
-				var responses4 interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].Responses.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Responses.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Responses.ValueString()), &responses4)
-				}
-				scheme4 := new(shared.AIGatewayMCPUpstreamToolScheme)
-				if !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsNull() {
-					*scheme4 = shared.AIGatewayMCPUpstreamToolScheme(r.UpstreamServer.Tools[toolsIndex4].Scheme.ValueString())
-				} else {
-					scheme4 = nil
-				}
-				parameters4 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.UpstreamServer.Tools[toolsIndex4].Parameters))
-				for parametersIndex4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters {
-					var name13 string
-					name13 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Name.ValueString()
+			method4 := new(shared.AIGatewayMCPUpstreamToolMethod)
+			if !r.UpstreamServer.Tools[toolsIndex4].Method.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Method.IsNull() {
+				*method4 = shared.AIGatewayMCPUpstreamToolMethod(r.UpstreamServer.Tools[toolsIndex4].Method.ValueString())
+			} else {
+				method4 = nil
+			}
+			path4 := new(string)
+			if !r.UpstreamServer.Tools[toolsIndex4].Path.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Path.IsNull() {
+				*path4 = r.UpstreamServer.Tools[toolsIndex4].Path.ValueString()
+			} else {
+				path4 = nil
+			}
+			var query4 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].Query.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Query.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Query.ValueString()), &query4)
+			}
+			var requestBody4 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].RequestBody.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].RequestBody.ValueString()), &requestBody4)
+			}
+			var responses4 interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].Responses.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Responses.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Responses.ValueString()), &responses4)
+			}
+			scheme4 := new(shared.AIGatewayMCPUpstreamToolScheme)
+			if !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Scheme.IsNull() {
+				*scheme4 = shared.AIGatewayMCPUpstreamToolScheme(r.UpstreamServer.Tools[toolsIndex4].Scheme.ValueString())
+			} else {
+				scheme4 = nil
+			}
+			parameters4 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.UpstreamServer.Tools[toolsIndex4].Parameters))
+			for parametersIndex4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters {
+				var name13 string
+				name13 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Name.ValueString()
 
-					in4 := shared.In(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].In.ValueString())
-					description9 := new(string)
-					if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsNull() {
-						*description9 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.ValueString()
-					} else {
-						description9 = nil
-					}
-					required4 := new(bool)
-					if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsNull() {
-						*required4 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.ValueBool()
-					} else {
-						required4 = nil
-					}
-					var schema4 map[string]interface{}
-					if r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema != nil {
-						schema4 = make(map[string]interface{})
-						for schemaKey4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema {
-							var schemaInst4 interface{}
-							_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema[schemaKey4].ValueString()), &schemaInst4)
-							schema4[schemaKey4] = schemaInst4
-						}
-					}
-					parameters4 = append(parameters4, shared.AIGatewayMCPToolParameter{
-						Name:        name13,
-						In:          in4,
-						Description: description9,
-						Required:    required4,
-						Schema:      schema4,
-					})
+				in4 := shared.In(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].In.ValueString())
+				description9 := new(string)
+				if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.IsNull() {
+					*description9 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Description.ValueString()
+				} else {
+					description9 = nil
 				}
-				var inputSchema interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].InputSchema.ValueString()), &inputSchema)
+				required4 := new(bool)
+				if !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.IsNull() {
+					*required4 = r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Required.ValueBool()
+				} else {
+					required4 = nil
 				}
-				var outputSchema interface{}
-				if !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsNull() {
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].OutputSchema.ValueString()), &outputSchema)
+				schema4 := make(map[string]interface{})
+				for schemaKey4 := range r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema {
+					var schemaInst4 interface{}
+					_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].Parameters[parametersIndex4].Schema[schemaKey4].ValueString()), &schemaInst4)
+					schema4[schemaKey4] = schemaInst4
 				}
-				tools4 = append(tools4, shared.AIGatewayMCPUpstreamTool{
-					Access:       access7,
-					Annotations:  annotations4,
-					Description:  description8,
-					Headers:      headers9,
-					Host:         host14,
-					Name:         name12,
-					Method:       method4,
-					Path:         path4,
-					Query:        query4,
-					RequestBody:  requestBody4,
-					Responses:    responses4,
-					Scheme:       scheme4,
-					Parameters:   parameters4,
-					InputSchema:  inputSchema,
-					OutputSchema: outputSchema,
+				parameters4 = append(parameters4, shared.AIGatewayMCPToolParameter{
+					Name:        name13,
+					In:          in4,
+					Description: description9,
+					Required:    required4,
+					Schema:      schema4,
 				})
 			}
+			var inputSchema interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].InputSchema.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].InputSchema.ValueString()), &inputSchema)
+			}
+			var outputSchema interface{}
+			if !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex4].OutputSchema.IsNull() {
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex4].OutputSchema.ValueString()), &outputSchema)
+			}
+			tools4 = append(tools4, shared.AIGatewayMCPUpstreamTool{
+				Access:       access7,
+				Annotations:  annotations4,
+				Description:  description8,
+				Headers:      headers9,
+				Host:         host14,
+				Name:         name12,
+				Method:       method4,
+				Path:         path4,
+				Query:        query4,
+				RequestBody:  requestBody4,
+				Responses:    responses4,
+				Scheme:       scheme4,
+				Parameters:   parameters4,
+				InputSchema:  inputSchema,
+				OutputSchema: outputSchema,
+			})
 		}
 		var access8 *shared.AIGatewayMCPServerBaseACLProperties
 		if r.UpstreamServer.Access != nil {
 			var aiGatewayMCPServerBaseACLPropertiesConsumer3 *shared.AIGatewayMCPServerBaseACLPropertiesConsumer
 			if r.UpstreamServer.Access.Consumer != nil {
-				aclAttributeType6 := new(shared.ACLAttributeType)
-				if !r.UpstreamServer.Access.Consumer.ACLAttributeType.IsUnknown() && !r.UpstreamServer.Access.Consumer.ACLAttributeType.IsNull() {
-					*aclAttributeType6 = shared.ACLAttributeType(r.UpstreamServer.Access.Consumer.ACLAttributeType.ValueString())
-				} else {
-					aclAttributeType6 = nil
-				}
 				var acls11 *shared.AIGatewayMCPACLs
 				if r.UpstreamServer.Access.Consumer.Acls != nil {
 					allow17 := make([]string, 0, len(r.UpstreamServer.Access.Consumer.Acls.Allow))
@@ -9305,9 +9152,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesConsumer3 = &shared.AIGatewayMCPServerBaseACLPropertiesConsumer{
-					ACLAttributeType: aclAttributeType6,
-					Acls:             acls11,
-					DefaultToolAcls:  defaultToolAcls6,
+					Acls:            acls11,
+					DefaultToolAcls: defaultToolAcls6,
 				}
 			}
 			if aiGatewayMCPServerBaseACLPropertiesConsumer3 != nil {
@@ -9317,7 +9163,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			}
 			var aiGatewayMCPServerBaseACLPropertiesOauth3 *shared.AIGatewayMCPServerBaseACLPropertiesOauth
 			if r.UpstreamServer.Access.OauthAccessToken != nil {
-				aclAttributeType7 := shared.AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(r.UpstreamServer.Access.OauthAccessToken.ACLAttributeType.ValueString())
 				var accessTokenClaimField3 string
 				accessTokenClaimField3 = r.UpstreamServer.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
@@ -9352,7 +9197,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerBaseACLPropertiesOauth3 = &shared.AIGatewayMCPServerBaseACLPropertiesOauth{
-					ACLAttributeType:      aclAttributeType7,
 					AccessTokenClaimField: accessTokenClaimField3,
 					Acls:                  acls12,
 					DefaultToolAcls:       defaultToolAcls7,

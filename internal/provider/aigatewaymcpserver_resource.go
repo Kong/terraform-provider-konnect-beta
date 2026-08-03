@@ -86,15 +86,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"consumer": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     stringdefault.StaticString(`consumer`),
-										Description: `The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"`,
-										Validators: []validator.String{
-											stringvalidator.OneOf("consumer"),
-										},
-									},
 									"acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -159,17 +150,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-										},
-									},
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"oauth_access_token",
-											),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -948,6 +928,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `List of policy references.`,
 					},
 					"tools": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -955,20 +936,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
-									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-										"acls": types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`allow`: types.ListType{
-													ElemType: types.StringType,
-												},
-												`deny`: types.ListType{
-													ElemType: types.StringType,
-												},
-											},
-										},
-									})),
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
 											Computed: true,
@@ -1379,6 +1347,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `List of policy references.`,
 					},
 					"tools": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -1386,20 +1355,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
-									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-										"acls": types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`allow`: types.ListType{
-													ElemType: types.StringType,
-												},
-												`deny`: types.ListType{
-													ElemType: types.StringType,
-												},
-											},
-										},
-									})),
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
 											Computed: true,
@@ -1641,15 +1597,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"consumer": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     stringdefault.StaticString(`consumer`),
-										Description: `The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"`,
-										Validators: []validator.String{
-											stringvalidator.OneOf("consumer"),
-										},
-									},
 									"acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -1714,17 +1661,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-										},
-									},
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"oauth_access_token",
-											),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -2493,6 +2429,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `List of policy references.`,
 					},
 					"tools": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -2500,20 +2437,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
-									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-										"acls": types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`allow`: types.ListType{
-													ElemType: types.StringType,
-												},
-												`deny`: types.ListType{
-													ElemType: types.StringType,
-												},
-											},
-										},
-									})),
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
 											Computed: true,
@@ -2730,15 +2654,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"consumer": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     stringdefault.StaticString(`consumer`),
-										Description: `The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"`,
-										Validators: []validator.String{
-											stringvalidator.OneOf("consumer"),
-										},
-									},
 									"acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -2803,17 +2718,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-										},
-									},
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"oauth_access_token",
-											),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -3677,6 +3581,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `List of policy references.`,
 					},
 					"tools": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -3684,20 +3589,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
-									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-										"acls": types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`allow`: types.ListType{
-													ElemType: types.StringType,
-												},
-												`deny`: types.ListType{
-													ElemType: types.StringType,
-												},
-											},
-										},
-									})),
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
 											Computed: true,
@@ -3911,15 +3803,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							"consumer": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     stringdefault.StaticString(`consumer`),
-										Description: `The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"`,
-										Validators: []validator.String{
-											stringvalidator.OneOf("consumer"),
-										},
-									},
 									"acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -3984,17 +3867,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-										},
-									},
-									"acl_attribute_type": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"oauth_access_token",
-											),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -4887,6 +4759,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `List of policy references.`,
 					},
 					"tools": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -4894,20 +4767,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
-									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-										"acls": types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`allow`: types.ListType{
-													ElemType: types.StringType,
-												},
-												`deny`: types.ListType{
-													ElemType: types.StringType,
-												},
-											},
-										},
-									})),
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
 											Computed: true,

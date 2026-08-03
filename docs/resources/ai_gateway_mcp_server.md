@@ -19,7 +19,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     access = {
       oauth_access_token = {
         access_token_claim_field = "...my_access_token_claim_field..."
-        acl_attribute_type       = "oauth_access_token"
         acls = {
           allow = [
             "..."
@@ -283,7 +282,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     access = {
       oauth_access_token = {
         access_token_claim_field = "...my_access_token_claim_field..."
-        acl_attribute_type       = "oauth_access_token"
         acls = {
           allow = [
             "..."
@@ -452,7 +450,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   passthrough_listener = {
     access = {
       consumer = {
-        acl_attribute_type = "consumer"
         acls = {
           allow = [
             "..."
@@ -640,7 +637,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   upstream_server = {
     access = {
       consumer = {
-        acl_attribute_type = "consumer"
         acls = {
           allow = [
             "..."
@@ -904,7 +900,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Optional:
 
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -941,7 +936,6 @@ Optional:
 - `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
 Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
 Not Null
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1499,7 +1493,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Optional:
 
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1536,7 +1529,6 @@ Optional:
 - `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
 Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
 Not Null
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1926,7 +1918,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Optional:
 
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1963,7 +1954,6 @@ Optional:
 - `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
 Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
 Not Null
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -2398,7 +2388,6 @@ This feature is currently in beta and is subject to change. (see [below for nest
 
 Optional:
 
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Default: "consumer"; must be "consumer"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -2435,7 +2424,6 @@ Optional:
 - `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
 Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
 Not Null
-- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Not Null; must be "oauth_access_token"
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 

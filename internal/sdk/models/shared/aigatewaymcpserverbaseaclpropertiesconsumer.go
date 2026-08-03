@@ -3,40 +3,16 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/types"
 )
-
-// ACLAttributeType - The type of attributes that ACL is evaluated with.
-type ACLAttributeType string
-
-const (
-	ACLAttributeTypeConsumer ACLAttributeType = "consumer"
-)
-
-func (e ACLAttributeType) ToPointer() *ACLAttributeType {
-	return &e
-}
-func (e *ACLAttributeType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "consumer":
-		*e = ACLAttributeType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ACLAttributeType: %v", v)
-	}
-}
 
 // AIGatewayMCPServerBaseACLPropertiesConsumer - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerBaseACLPropertiesConsumer struct {
 	// The type of attributes that ACL is evaluated with.
-	ACLAttributeType *ACLAttributeType `default:"consumer" json:"acl_attribute_type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	aclAttributeType *string `const:"consumer" json:"acl_attribute_type"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -60,11 +36,8 @@ func (a *AIGatewayMCPServerBaseACLPropertiesConsumer) UnmarshalJSON(data []byte)
 	return nil
 }
 
-func (a *AIGatewayMCPServerBaseACLPropertiesConsumer) GetACLAttributeType() *ACLAttributeType {
-	if a == nil {
-		return nil
-	}
-	return a.ACLAttributeType
+func (a *AIGatewayMCPServerBaseACLPropertiesConsumer) GetACLAttributeType() *string {
+	return types.Pointer("consumer")
 }
 
 func (a *AIGatewayMCPServerBaseACLPropertiesConsumer) GetAcls() *AIGatewayMCPACLs {

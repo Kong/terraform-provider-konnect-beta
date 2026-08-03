@@ -19,7 +19,7 @@ type AIGatewayModelAccess struct {
 	// List of identity providers for granting access to the model.
 	// At most 1 identity provider of each identity provider type can be referenced.
 	//
-	IdentityProviders []string `json:"identity_providers"`
+	IdentityProviders []string `json:"identity_providers,omitempty"`
 }
 
 func (a AIGatewayModelAccess) MarshalJSON() ([]byte, error) {

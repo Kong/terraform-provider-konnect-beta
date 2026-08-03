@@ -4,7 +4,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     access = {
       oauth_access_token = {
         access_token_claim_field = "...my_access_token_claim_field..."
-        acl_attribute_type       = "oauth_access_token"
         acls = {
           allow = [
             "..."
@@ -268,7 +267,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     access = {
       oauth_access_token = {
         access_token_claim_field = "...my_access_token_claim_field..."
-        acl_attribute_type       = "oauth_access_token"
         acls = {
           allow = [
             "..."
@@ -437,7 +435,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   passthrough_listener = {
     access = {
       consumer = {
-        acl_attribute_type = "consumer"
         acls = {
           allow = [
             "..."
@@ -625,7 +622,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   upstream_server = {
     access = {
       consumer = {
-        acl_attribute_type = "consumer"
         acls = {
           allow = [
             "..."

@@ -106,6 +106,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 							},
 							"identity_providers": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `List of identity providers for granting access to the model.` + "\n" +
@@ -3699,6 +3700,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 							},
 							"identity_providers": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `List of identity providers for granting access to the model.` + "\n" +

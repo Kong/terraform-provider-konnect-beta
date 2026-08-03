@@ -17,11 +17,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 	if resp != nil {
 		if resp.AIGatewayModelProviderAnthropicResponse != nil {
+			anthropicPriorData := r.Anthropic
 			r.Anthropic = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if anthropicPriorData != nil {
+				configPriorData = anthropicPriorData.Config
+			}
 			r.Anthropic.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData != nil {
+				authPriorData = configPriorData.Auth
+			}
 			r.Anthropic.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderAnthropicResponse.Config.Auth.Headers != nil {
-				headersPriorSlice := r.Anthropic.Config.Auth.Headers
+				var headersPriorSlice []tfTypes.Headers
+				if authPriorData != nil {
+					headersPriorSlice = authPriorData.Headers
+				}
 				r.Anthropic.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx, headersItem := range resp.AIGatewayModelProviderAnthropicResponse.Config.Auth.Headers {
@@ -43,7 +55,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Anthropic.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderAnthropicResponse.Config.Auth.Params != nil {
-				paramsPriorSlice := r.Anthropic.Config.Auth.Params
+				var paramsPriorSlice []tfTypes.Params
+				if authPriorData != nil {
+					paramsPriorSlice = authPriorData.Params
+				}
 				r.Anthropic.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx, paramsItem := range resp.AIGatewayModelProviderAnthropicResponse.Config.Auth.Params {
@@ -95,19 +110,19 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 		if resp.AIGatewayModelProviderAzureResponse != nil {
 			azurePriorData := r.Azure
 			r.Azure = &tfTypes.AIGatewayModelProviderAzure{}
-			var configPriorData *tfTypes.AIGatewayModelProviderAzureConfig
+			var configPriorData1 *tfTypes.AIGatewayModelProviderAzureConfig
 			if azurePriorData != nil {
-				configPriorData = azurePriorData.Config
+				configPriorData1 = azurePriorData.Config
 			}
 			r.Azure.Config = &tfTypes.AIGatewayModelProviderAzureConfig{}
-			authPriorData := configPriorData.Auth
+			authPriorData1 := configPriorData1.Auth
 			if r.Azure.Config.Auth == nil {
 				r.Azure.Config.Auth = &tfTypes.AIGatewayModelProviderAzureAuth{}
 			}
 			if resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput != nil {
 				var azurePriorData1 *tfTypes.AIGatewayModelProviderConfigAuthAzure
-				if authPriorData != nil {
-					azurePriorData1 = authPriorData.Azure
+				if authPriorData1 != nil {
+					azurePriorData1 = authPriorData1.Azure
 				}
 				r.Azure.Config.Auth.Azure = &tfTypes.AIGatewayModelProviderConfigAuthAzure{}
 				r.Azure.Config.Auth.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.ClientID)
@@ -118,9 +133,16 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 			}
 			if resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData1 != nil {
+					basicPriorData = authPriorData1.Basic
+				}
 				r.Azure.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 				if resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers != nil {
-					headersPriorSlice1 := r.Azure.Config.Auth.Basic.Headers
+					var headersPriorSlice1 []tfTypes.Headers
+					if basicPriorData != nil {
+						headersPriorSlice1 = basicPriorData.Headers
+					}
 					r.Azure.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
 					for headersIdx1, headersItem1 := range resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
@@ -142,7 +164,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Azure.Config.Auth.Basic.Headers = nil
 				}
 				if resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params != nil {
-					paramsPriorSlice1 := r.Azure.Config.Auth.Basic.Params
+					var paramsPriorSlice1 []tfTypes.Params
+					if basicPriorData != nil {
+						paramsPriorSlice1 = basicPriorData.Params
+					}
 					r.Azure.Config.Auth.Basic.Params = []tfTypes.Params{}
 
 					for paramsIdx1, paramsItem1 := range resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
@@ -196,19 +221,19 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 		if resp.AIGatewayModelProviderBedrockResponse != nil {
 			bedrockPriorData := r.Bedrock
 			r.Bedrock = &tfTypes.AIGatewayModelProviderBedrock{}
-			var configPriorData1 *tfTypes.AIGatewayModelProviderBedrockConfig
+			var configPriorData2 *tfTypes.AIGatewayModelProviderBedrockConfig
 			if bedrockPriorData != nil {
-				configPriorData1 = bedrockPriorData.Config
+				configPriorData2 = bedrockPriorData.Config
 			}
 			r.Bedrock.Config = &tfTypes.AIGatewayModelProviderBedrockConfig{}
-			authPriorData1 := configPriorData1.Auth
+			authPriorData2 := configPriorData2.Auth
 			if r.Bedrock.Config.Auth == nil {
 				r.Bedrock.Config.Auth = &tfTypes.AIGatewayModelProviderBedrockAuth{}
 			}
 			if resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput != nil {
 				var awsPriorData *tfTypes.AIGatewayModelProviderConfigAuthAWS
-				if authPriorData1 != nil {
-					awsPriorData = authPriorData1.Aws
+				if authPriorData2 != nil {
+					awsPriorData = authPriorData2.Aws
 				}
 				r.Bedrock.Config.Auth.Aws = &tfTypes.AIGatewayModelProviderConfigAuthAWS{}
 				r.Bedrock.Config.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.AccessKeyID)
@@ -221,9 +246,16 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 			}
 			if resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData1 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData2 != nil {
+					basicPriorData1 = authPriorData2.Basic
+				}
 				r.Bedrock.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 				if resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers != nil {
-					headersPriorSlice2 := r.Bedrock.Config.Auth.Basic.Headers
+					var headersPriorSlice2 []tfTypes.Headers
+					if basicPriorData1 != nil {
+						headersPriorSlice2 = basicPriorData1.Headers
+					}
 					r.Bedrock.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
 					for headersIdx2, headersItem2 := range resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
@@ -245,7 +277,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Bedrock.Config.Auth.Basic.Headers = nil
 				}
 				if resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params != nil {
-					paramsPriorSlice2 := r.Bedrock.Config.Auth.Basic.Params
+					var paramsPriorSlice2 []tfTypes.Params
+					if basicPriorData1 != nil {
+						paramsPriorSlice2 = basicPriorData1.Params
+					}
 					r.Bedrock.Config.Auth.Basic.Params = []tfTypes.Params{}
 
 					for paramsIdx2, paramsItem2 := range resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
@@ -296,11 +331,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Bedrock.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderCerebrasResponse != nil {
+			cerebrasPriorData := r.Cerebras
 			r.Cerebras = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData3 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if cerebrasPriorData != nil {
+				configPriorData3 = cerebrasPriorData.Config
+			}
 			r.Cerebras.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData3 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData3 != nil {
+				authPriorData3 = configPriorData3.Auth
+			}
 			r.Cerebras.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderCerebrasResponse.Config.Auth.Headers != nil {
-				headersPriorSlice3 := r.Cerebras.Config.Auth.Headers
+				var headersPriorSlice3 []tfTypes.Headers
+				if authPriorData3 != nil {
+					headersPriorSlice3 = authPriorData3.Headers
+				}
 				r.Cerebras.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx3, headersItem3 := range resp.AIGatewayModelProviderCerebrasResponse.Config.Auth.Headers {
@@ -322,7 +369,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Cerebras.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderCerebrasResponse.Config.Auth.Params != nil {
-				paramsPriorSlice3 := r.Cerebras.Config.Auth.Params
+				var paramsPriorSlice3 []tfTypes.Params
+				if authPriorData3 != nil {
+					paramsPriorSlice3 = authPriorData3.Params
+				}
 				r.Cerebras.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx3, paramsItem3 := range resp.AIGatewayModelProviderCerebrasResponse.Config.Auth.Params {
@@ -372,11 +422,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Cerebras.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderCohereResponse != nil {
+			coherePriorData := r.Cohere
 			r.Cohere = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData4 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if coherePriorData != nil {
+				configPriorData4 = coherePriorData.Config
+			}
 			r.Cohere.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData4 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData4 != nil {
+				authPriorData4 = configPriorData4.Auth
+			}
 			r.Cohere.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderCohereResponse.Config.Auth.Headers != nil {
-				headersPriorSlice4 := r.Cohere.Config.Auth.Headers
+				var headersPriorSlice4 []tfTypes.Headers
+				if authPriorData4 != nil {
+					headersPriorSlice4 = authPriorData4.Headers
+				}
 				r.Cohere.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx4, headersItem4 := range resp.AIGatewayModelProviderCohereResponse.Config.Auth.Headers {
@@ -398,7 +460,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Cohere.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderCohereResponse.Config.Auth.Params != nil {
-				paramsPriorSlice4 := r.Cohere.Config.Auth.Params
+				var paramsPriorSlice4 []tfTypes.Params
+				if authPriorData4 != nil {
+					paramsPriorSlice4 = authPriorData4.Params
+				}
 				r.Cohere.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx4, paramsItem4 := range resp.AIGatewayModelProviderCohereResponse.Config.Auth.Params {
@@ -448,11 +513,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Cohere.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderDashscopeResponse != nil {
+			dashscopePriorData := r.Dashscope
 			r.Dashscope = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData5 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if dashscopePriorData != nil {
+				configPriorData5 = dashscopePriorData.Config
+			}
 			r.Dashscope.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData5 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData5 != nil {
+				authPriorData5 = configPriorData5.Auth
+			}
 			r.Dashscope.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderDashscopeResponse.Config.Auth.Headers != nil {
-				headersPriorSlice5 := r.Dashscope.Config.Auth.Headers
+				var headersPriorSlice5 []tfTypes.Headers
+				if authPriorData5 != nil {
+					headersPriorSlice5 = authPriorData5.Headers
+				}
 				r.Dashscope.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx5, headersItem5 := range resp.AIGatewayModelProviderDashscopeResponse.Config.Auth.Headers {
@@ -474,7 +551,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Dashscope.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderDashscopeResponse.Config.Auth.Params != nil {
-				paramsPriorSlice5 := r.Dashscope.Config.Auth.Params
+				var paramsPriorSlice5 []tfTypes.Params
+				if authPriorData5 != nil {
+					paramsPriorSlice5 = authPriorData5.Params
+				}
 				r.Dashscope.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx5, paramsItem5 := range resp.AIGatewayModelProviderDashscopeResponse.Config.Auth.Params {
@@ -524,11 +604,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Dashscope.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderDatabricksResponse != nil {
+			databricksPriorData := r.Databricks
 			r.Databricks = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData6 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if databricksPriorData != nil {
+				configPriorData6 = databricksPriorData.Config
+			}
 			r.Databricks.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData6 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData6 != nil {
+				authPriorData6 = configPriorData6.Auth
+			}
 			r.Databricks.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderDatabricksResponse.Config.Auth.Headers != nil {
-				headersPriorSlice6 := r.Databricks.Config.Auth.Headers
+				var headersPriorSlice6 []tfTypes.Headers
+				if authPriorData6 != nil {
+					headersPriorSlice6 = authPriorData6.Headers
+				}
 				r.Databricks.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx6, headersItem6 := range resp.AIGatewayModelProviderDatabricksResponse.Config.Auth.Headers {
@@ -550,7 +642,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Databricks.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderDatabricksResponse.Config.Auth.Params != nil {
-				paramsPriorSlice6 := r.Databricks.Config.Auth.Params
+				var paramsPriorSlice6 []tfTypes.Params
+				if authPriorData6 != nil {
+					paramsPriorSlice6 = authPriorData6.Params
+				}
 				r.Databricks.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx6, paramsItem6 := range resp.AIGatewayModelProviderDatabricksResponse.Config.Auth.Params {
@@ -600,11 +695,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Databricks.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderDeepseekResponse != nil {
+			deepseekPriorData := r.Deepseek
 			r.Deepseek = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData7 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if deepseekPriorData != nil {
+				configPriorData7 = deepseekPriorData.Config
+			}
 			r.Deepseek.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData7 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData7 != nil {
+				authPriorData7 = configPriorData7.Auth
+			}
 			r.Deepseek.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderDeepseekResponse.Config.Auth.Headers != nil {
-				headersPriorSlice7 := r.Deepseek.Config.Auth.Headers
+				var headersPriorSlice7 []tfTypes.Headers
+				if authPriorData7 != nil {
+					headersPriorSlice7 = authPriorData7.Headers
+				}
 				r.Deepseek.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx7, headersItem7 := range resp.AIGatewayModelProviderDeepseekResponse.Config.Auth.Headers {
@@ -626,7 +733,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Deepseek.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderDeepseekResponse.Config.Auth.Params != nil {
-				paramsPriorSlice7 := r.Deepseek.Config.Auth.Params
+				var paramsPriorSlice7 []tfTypes.Params
+				if authPriorData7 != nil {
+					paramsPriorSlice7 = authPriorData7.Params
+				}
 				r.Deepseek.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx7, paramsItem7 := range resp.AIGatewayModelProviderDeepseekResponse.Config.Auth.Params {
@@ -678,19 +788,26 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 		if resp.AIGatewayModelProviderGeminiResponse != nil {
 			geminiPriorData := r.Gemini
 			r.Gemini = &tfTypes.AIGatewayModelProviderGemini{}
-			var configPriorData2 *tfTypes.AIGatewayModelProviderGeminiConfig
+			var configPriorData8 *tfTypes.AIGatewayModelProviderGeminiConfig
 			if geminiPriorData != nil {
-				configPriorData2 = geminiPriorData.Config
+				configPriorData8 = geminiPriorData.Config
 			}
 			r.Gemini.Config = &tfTypes.AIGatewayModelProviderGeminiConfig{}
-			authPriorData2 := configPriorData2.Auth
+			authPriorData8 := configPriorData8.Auth
 			if r.Gemini.Config.Auth == nil {
 				r.Gemini.Config.Auth = &tfTypes.AIGatewayModelProviderGeminiAuth{}
 			}
 			if resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData2 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData8 != nil {
+					basicPriorData2 = authPriorData8.Basic
+				}
 				r.Gemini.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 				if resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers != nil {
-					headersPriorSlice8 := r.Gemini.Config.Auth.Basic.Headers
+					var headersPriorSlice8 []tfTypes.Headers
+					if basicPriorData2 != nil {
+						headersPriorSlice8 = basicPriorData2.Headers
+					}
 					r.Gemini.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
 					for headersIdx8, headersItem8 := range resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
@@ -712,7 +829,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Gemini.Config.Auth.Basic.Headers = nil
 				}
 				if resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params != nil {
-					paramsPriorSlice8 := r.Gemini.Config.Auth.Basic.Params
+					var paramsPriorSlice8 []tfTypes.Params
+					if basicPriorData2 != nil {
+						paramsPriorSlice8 = basicPriorData2.Params
+					}
 					r.Gemini.Config.Auth.Basic.Params = []tfTypes.Params{}
 
 					for paramsIdx8, paramsItem8 := range resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
@@ -741,8 +861,8 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			if resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput != nil {
 				var gcpPriorData *tfTypes.AIGatewayModelProviderConfigAuthGCP
-				if authPriorData2 != nil {
-					gcpPriorData = authPriorData2.Gcp
+				if authPriorData8 != nil {
+					gcpPriorData = authPriorData8.Gcp
 				}
 				r.Gemini.Config.Auth.Gcp = &tfTypes.AIGatewayModelProviderConfigAuthGCP{}
 				r.Gemini.Config.Auth.Gcp.MetadataURL = types.StringPointerValue(resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.MetadataURL)
@@ -776,11 +896,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Gemini.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderHuggingfaceResponse != nil {
+			huggingfacePriorData := r.Huggingface
 			r.Huggingface = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData9 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if huggingfacePriorData != nil {
+				configPriorData9 = huggingfacePriorData.Config
+			}
 			r.Huggingface.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData9 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData9 != nil {
+				authPriorData9 = configPriorData9.Auth
+			}
 			r.Huggingface.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderHuggingfaceResponse.Config.Auth.Headers != nil {
-				headersPriorSlice9 := r.Huggingface.Config.Auth.Headers
+				var headersPriorSlice9 []tfTypes.Headers
+				if authPriorData9 != nil {
+					headersPriorSlice9 = authPriorData9.Headers
+				}
 				r.Huggingface.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx9, headersItem9 := range resp.AIGatewayModelProviderHuggingfaceResponse.Config.Auth.Headers {
@@ -802,7 +934,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Huggingface.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderHuggingfaceResponse.Config.Auth.Params != nil {
-				paramsPriorSlice9 := r.Huggingface.Config.Auth.Params
+				var paramsPriorSlice9 []tfTypes.Params
+				if authPriorData9 != nil {
+					paramsPriorSlice9 = authPriorData9.Params
+				}
 				r.Huggingface.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx9, paramsItem9 := range resp.AIGatewayModelProviderHuggingfaceResponse.Config.Auth.Params {
@@ -852,11 +987,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Huggingface.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderKimiResponse != nil {
+			kimiPriorData := r.Kimi
 			r.Kimi = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData10 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if kimiPriorData != nil {
+				configPriorData10 = kimiPriorData.Config
+			}
 			r.Kimi.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData10 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData10 != nil {
+				authPriorData10 = configPriorData10.Auth
+			}
 			r.Kimi.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderKimiResponse.Config.Auth.Headers != nil {
-				headersPriorSlice10 := r.Kimi.Config.Auth.Headers
+				var headersPriorSlice10 []tfTypes.Headers
+				if authPriorData10 != nil {
+					headersPriorSlice10 = authPriorData10.Headers
+				}
 				r.Kimi.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx10, headersItem10 := range resp.AIGatewayModelProviderKimiResponse.Config.Auth.Headers {
@@ -878,7 +1025,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Kimi.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderKimiResponse.Config.Auth.Params != nil {
-				paramsPriorSlice10 := r.Kimi.Config.Auth.Params
+				var paramsPriorSlice10 []tfTypes.Params
+				if authPriorData10 != nil {
+					paramsPriorSlice10 = authPriorData10.Params
+				}
 				r.Kimi.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx10, paramsItem10 := range resp.AIGatewayModelProviderKimiResponse.Config.Auth.Params {
@@ -928,11 +1078,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Kimi.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderLlama2Response != nil {
+			llama2PriorData := r.Llama2
 			r.Llama2 = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData11 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if llama2PriorData != nil {
+				configPriorData11 = llama2PriorData.Config
+			}
 			r.Llama2.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData11 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData11 != nil {
+				authPriorData11 = configPriorData11.Auth
+			}
 			r.Llama2.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderLlama2Response.Config.Auth.Headers != nil {
-				headersPriorSlice11 := r.Llama2.Config.Auth.Headers
+				var headersPriorSlice11 []tfTypes.Headers
+				if authPriorData11 != nil {
+					headersPriorSlice11 = authPriorData11.Headers
+				}
 				r.Llama2.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx11, headersItem11 := range resp.AIGatewayModelProviderLlama2Response.Config.Auth.Headers {
@@ -954,7 +1116,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Llama2.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderLlama2Response.Config.Auth.Params != nil {
-				paramsPriorSlice11 := r.Llama2.Config.Auth.Params
+				var paramsPriorSlice11 []tfTypes.Params
+				if authPriorData11 != nil {
+					paramsPriorSlice11 = authPriorData11.Params
+				}
 				r.Llama2.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx11, paramsItem11 := range resp.AIGatewayModelProviderLlama2Response.Config.Auth.Params {
@@ -1004,11 +1169,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Llama2.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderMistralResponse != nil {
+			mistralPriorData := r.Mistral
 			r.Mistral = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData12 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if mistralPriorData != nil {
+				configPriorData12 = mistralPriorData.Config
+			}
 			r.Mistral.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData12 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData12 != nil {
+				authPriorData12 = configPriorData12.Auth
+			}
 			r.Mistral.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderMistralResponse.Config.Auth.Headers != nil {
-				headersPriorSlice12 := r.Mistral.Config.Auth.Headers
+				var headersPriorSlice12 []tfTypes.Headers
+				if authPriorData12 != nil {
+					headersPriorSlice12 = authPriorData12.Headers
+				}
 				r.Mistral.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx12, headersItem12 := range resp.AIGatewayModelProviderMistralResponse.Config.Auth.Headers {
@@ -1030,7 +1207,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Mistral.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderMistralResponse.Config.Auth.Params != nil {
-				paramsPriorSlice12 := r.Mistral.Config.Auth.Params
+				var paramsPriorSlice12 []tfTypes.Params
+				if authPriorData12 != nil {
+					paramsPriorSlice12 = authPriorData12.Params
+				}
 				r.Mistral.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx12, paramsItem12 := range resp.AIGatewayModelProviderMistralResponse.Config.Auth.Params {
@@ -1080,11 +1260,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Mistral.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderOllamaResponse != nil {
+			ollamaPriorData := r.Ollama
 			r.Ollama = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData13 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if ollamaPriorData != nil {
+				configPriorData13 = ollamaPriorData.Config
+			}
 			r.Ollama.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData13 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData13 != nil {
+				authPriorData13 = configPriorData13.Auth
+			}
 			r.Ollama.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderOllamaResponse.Config.Auth.Headers != nil {
-				headersPriorSlice13 := r.Ollama.Config.Auth.Headers
+				var headersPriorSlice13 []tfTypes.Headers
+				if authPriorData13 != nil {
+					headersPriorSlice13 = authPriorData13.Headers
+				}
 				r.Ollama.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx13, headersItem13 := range resp.AIGatewayModelProviderOllamaResponse.Config.Auth.Headers {
@@ -1106,7 +1298,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Ollama.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderOllamaResponse.Config.Auth.Params != nil {
-				paramsPriorSlice13 := r.Ollama.Config.Auth.Params
+				var paramsPriorSlice13 []tfTypes.Params
+				if authPriorData13 != nil {
+					paramsPriorSlice13 = authPriorData13.Params
+				}
 				r.Ollama.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx13, paramsItem13 := range resp.AIGatewayModelProviderOllamaResponse.Config.Auth.Params {
@@ -1156,11 +1351,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Ollama.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderOpenaiResponse != nil {
+			openaiPriorData := r.Openai
 			r.Openai = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData14 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if openaiPriorData != nil {
+				configPriorData14 = openaiPriorData.Config
+			}
 			r.Openai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData14 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData14 != nil {
+				authPriorData14 = configPriorData14.Auth
+			}
 			r.Openai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderOpenaiResponse.Config.Auth.Headers != nil {
-				headersPriorSlice14 := r.Openai.Config.Auth.Headers
+				var headersPriorSlice14 []tfTypes.Headers
+				if authPriorData14 != nil {
+					headersPriorSlice14 = authPriorData14.Headers
+				}
 				r.Openai.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx14, headersItem14 := range resp.AIGatewayModelProviderOpenaiResponse.Config.Auth.Headers {
@@ -1182,7 +1389,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Openai.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderOpenaiResponse.Config.Auth.Params != nil {
-				paramsPriorSlice14 := r.Openai.Config.Auth.Params
+				var paramsPriorSlice14 []tfTypes.Params
+				if authPriorData14 != nil {
+					paramsPriorSlice14 = authPriorData14.Params
+				}
 				r.Openai.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx14, paramsItem14 := range resp.AIGatewayModelProviderOpenaiResponse.Config.Auth.Params {
@@ -1232,11 +1442,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Openai.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderVercelResponse != nil {
+			vercelPriorData := r.Vercel
 			r.Vercel = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData15 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if vercelPriorData != nil {
+				configPriorData15 = vercelPriorData.Config
+			}
 			r.Vercel.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData15 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData15 != nil {
+				authPriorData15 = configPriorData15.Auth
+			}
 			r.Vercel.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderVercelResponse.Config.Auth.Headers != nil {
-				headersPriorSlice15 := r.Vercel.Config.Auth.Headers
+				var headersPriorSlice15 []tfTypes.Headers
+				if authPriorData15 != nil {
+					headersPriorSlice15 = authPriorData15.Headers
+				}
 				r.Vercel.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx15, headersItem15 := range resp.AIGatewayModelProviderVercelResponse.Config.Auth.Headers {
@@ -1258,7 +1480,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Vercel.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderVercelResponse.Config.Auth.Params != nil {
-				paramsPriorSlice15 := r.Vercel.Config.Auth.Params
+				var paramsPriorSlice15 []tfTypes.Params
+				if authPriorData15 != nil {
+					paramsPriorSlice15 = authPriorData15.Params
+				}
 				r.Vercel.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx15, paramsItem15 := range resp.AIGatewayModelProviderVercelResponse.Config.Auth.Params {
@@ -1310,19 +1535,26 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 		if resp.AIGatewayModelProviderVertexResponse != nil {
 			vertexPriorData := r.Vertex
 			r.Vertex = &tfTypes.AIGatewayModelProviderVertex{}
-			var configPriorData3 *tfTypes.AIGatewayModelProviderVertexConfig
+			var configPriorData16 *tfTypes.AIGatewayModelProviderVertexConfig
 			if vertexPriorData != nil {
-				configPriorData3 = vertexPriorData.Config
+				configPriorData16 = vertexPriorData.Config
 			}
 			r.Vertex.Config = &tfTypes.AIGatewayModelProviderVertexConfig{}
-			authPriorData3 := configPriorData3.Auth
+			authPriorData16 := configPriorData16.Auth
 			if r.Vertex.Config.Auth == nil {
 				r.Vertex.Config.Auth = &tfTypes.AIGatewayModelProviderVertexAuth{}
 			}
 			if resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData3 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData16 != nil {
+					basicPriorData3 = authPriorData16.Basic
+				}
 				r.Vertex.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 				if resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers != nil {
-					headersPriorSlice16 := r.Vertex.Config.Auth.Basic.Headers
+					var headersPriorSlice16 []tfTypes.Headers
+					if basicPriorData3 != nil {
+						headersPriorSlice16 = basicPriorData3.Headers
+					}
 					r.Vertex.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
 					for headersIdx16, headersItem16 := range resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
@@ -1344,7 +1576,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Vertex.Config.Auth.Basic.Headers = nil
 				}
 				if resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params != nil {
-					paramsPriorSlice16 := r.Vertex.Config.Auth.Basic.Params
+					var paramsPriorSlice16 []tfTypes.Params
+					if basicPriorData3 != nil {
+						paramsPriorSlice16 = basicPriorData3.Params
+					}
 					r.Vertex.Config.Auth.Basic.Params = []tfTypes.Params{}
 
 					for paramsIdx16, paramsItem16 := range resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
@@ -1373,8 +1608,8 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			if resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthVertexOutput != nil {
 				var vertexPriorData1 *tfTypes.AIGatewayRedisGCPAuthentication
-				if authPriorData3 != nil {
-					vertexPriorData1 = authPriorData3.Vertex
+				if authPriorData16 != nil {
+					vertexPriorData1 = authPriorData16.Vertex
 				}
 				r.Vertex.Config.Auth.Vertex = &tfTypes.AIGatewayRedisGCPAuthentication{}
 				if vertexPriorData1 != nil {
@@ -1405,11 +1640,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Vertex.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderVllmResponse != nil {
+			vllmPriorData := r.Vllm
 			r.Vllm = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData17 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if vllmPriorData != nil {
+				configPriorData17 = vllmPriorData.Config
+			}
 			r.Vllm.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData17 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData17 != nil {
+				authPriorData17 = configPriorData17.Auth
+			}
 			r.Vllm.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderVllmResponse.Config.Auth.Headers != nil {
-				headersPriorSlice17 := r.Vllm.Config.Auth.Headers
+				var headersPriorSlice17 []tfTypes.Headers
+				if authPriorData17 != nil {
+					headersPriorSlice17 = authPriorData17.Headers
+				}
 				r.Vllm.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx17, headersItem17 := range resp.AIGatewayModelProviderVllmResponse.Config.Auth.Headers {
@@ -1431,7 +1678,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Vllm.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderVllmResponse.Config.Auth.Params != nil {
-				paramsPriorSlice17 := r.Vllm.Config.Auth.Params
+				var paramsPriorSlice17 []tfTypes.Params
+				if authPriorData17 != nil {
+					paramsPriorSlice17 = authPriorData17.Params
+				}
 				r.Vllm.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx17, paramsItem17 := range resp.AIGatewayModelProviderVllmResponse.Config.Auth.Params {
@@ -1481,11 +1731,23 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Vllm.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderXaiResponse != nil {
+			xaiPriorData := r.Xai
 			r.Xai = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData18 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if xaiPriorData != nil {
+				configPriorData18 = xaiPriorData.Config
+			}
 			r.Xai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData18 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData18 != nil {
+				authPriorData18 = configPriorData18.Auth
+			}
 			r.Xai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			if resp.AIGatewayModelProviderXaiResponse.Config.Auth.Headers != nil {
-				headersPriorSlice18 := r.Xai.Config.Auth.Headers
+				var headersPriorSlice18 []tfTypes.Headers
+				if authPriorData18 != nil {
+					headersPriorSlice18 = authPriorData18.Headers
+				}
 				r.Xai.Config.Auth.Headers = []tfTypes.Headers{}
 
 				for headersIdx18, headersItem18 := range resp.AIGatewayModelProviderXaiResponse.Config.Auth.Headers {
@@ -1507,7 +1769,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Xai.Config.Auth.Headers = nil
 			}
 			if resp.AIGatewayModelProviderXaiResponse.Config.Auth.Params != nil {
-				paramsPriorSlice18 := r.Xai.Config.Auth.Params
+				var paramsPriorSlice18 []tfTypes.Params
+				if authPriorData18 != nil {
+					paramsPriorSlice18 = authPriorData18.Params
+				}
 				r.Xai.Config.Auth.Params = []tfTypes.Params{}
 
 				for paramsIdx18, paramsItem18 := range resp.AIGatewayModelProviderXaiResponse.Config.Auth.Params {

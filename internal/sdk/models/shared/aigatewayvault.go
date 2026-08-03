@@ -167,7 +167,7 @@ type ConjurVaultConjurVaultConfig struct {
 	// If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 	// We recommend creating a separate vault for base64 secrets.
 	//
-	Base64Decode *bool `default:"null" json:"base64_decode"`
+	Base64Decode *bool `json:"base64_decode,omitempty"`
 	// Time-to-live (in seconds) for caching failed secret lookups.
 	// A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
 	//
@@ -391,7 +391,7 @@ type AzureKeyVaultAzureKeyVaultConfig struct {
 	// If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 	// We recommend creating a separate vault for base64 secrets.
 	//
-	Base64Decode *bool `default:"null" json:"base64_decode"`
+	Base64Decode *bool `json:"base64_decode,omitempty"`
 	// Time-to-live (in seconds) for caching failed secret lookups.
 	// A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
 	//
@@ -624,7 +624,7 @@ type GoogleSecretManagerVaultGoogleSecretManagerVaultConfig struct {
 	// If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 	// We recommend creating a separate vault for base64 secrets.
 	//
-	Base64Decode *bool `default:"null" json:"base64_decode"`
+	Base64Decode *bool `json:"base64_decode,omitempty"`
 	// Time-to-live (in seconds) for caching failed secret lookups.
 	// A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
 	//
@@ -806,7 +806,7 @@ type AwsSecretsManagerVaultAwsSecretsManagerVaultConfig struct {
 	// If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 	// We recommend creating a separate vault for base64 secrets.
 	//
-	Base64Decode *bool `default:"null" json:"base64_decode"`
+	Base64Decode *bool `json:"base64_decode,omitempty"`
 	// Time-to-live (in seconds) for caching failed secret lookups.
 	// A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
 	//
@@ -1029,7 +1029,7 @@ type EnvironmentVariableVaultEnvironmentVariableVaultConfig struct {
 	// If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
 	// We recommend creating a separate vault for base64 secrets.
 	//
-	Base64Decode *bool `default:"null" json:"base64_decode"`
+	Base64Decode *bool `json:"base64_decode,omitempty"`
 	// The prefix for the environment variable that the value will be stored in.
 	//
 	Prefix *string `default:"null" json:"prefix"`

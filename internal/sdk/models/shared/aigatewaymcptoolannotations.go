@@ -10,15 +10,15 @@ import (
 // This feature is currently in beta and is subject to change.
 type AIGatewayMCPToolAnnotations struct {
 	// If true, the tool may perform destructive updates
-	DestructiveHint *bool `default:"null" json:"destructive_hint"`
+	DestructiveHint *bool `json:"destructive_hint,omitempty"`
 	// If true, repeated calls with same args have no additional effect
-	IdempotentHint *bool `default:"null" json:"idempotent_hint"`
+	IdempotentHint *bool `json:"idempotent_hint,omitempty"`
 	// If true, tool interacts with external entities
-	OpenWorldHint *bool `default:"null" json:"open_world_hint"`
+	OpenWorldHint *bool `json:"open_world_hint,omitempty"`
 	// If true, the tool does not modify its environment
-	ReadOnlyHint *bool `default:"null" json:"read_only_hint"`
+	ReadOnlyHint *bool `json:"read_only_hint,omitempty"`
 	// Human-readable title for the tool
-	Title *string `default:"null" json:"title"`
+	Title *string `json:"title,omitempty"`
 }
 
 func (a AIGatewayMCPToolAnnotations) MarshalJSON() ([]byte, error) {

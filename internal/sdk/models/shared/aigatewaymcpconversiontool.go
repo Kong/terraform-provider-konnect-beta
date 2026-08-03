@@ -84,7 +84,7 @@ func (e *Scheme) IsExact() bool {
 
 // AIGatewayMCPConversionTool - A tool exposed by an MCP Server in `conversion-only` or `conversion-listener` mode.
 type AIGatewayMCPConversionTool struct {
-	Access *Access `json:"access"`
+	Access *Access `json:"access,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	Annotations *AIGatewayMCPToolAnnotations `json:"annotations,omitempty"`

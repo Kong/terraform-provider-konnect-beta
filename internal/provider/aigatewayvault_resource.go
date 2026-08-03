@@ -81,6 +81,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The ARN of the role to assume when retrieving secrets from AWS Secrets Manager.`,
 							},
 							"base64_decode": schema.BoolAttribute{
+								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 									`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -228,6 +229,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"base64_decode": schema.BoolAttribute{
+								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 									`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -410,6 +412,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The API key of the workload identity.`,
 							},
 							"base64_decode": schema.BoolAttribute{
+								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 									`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -565,6 +568,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"base64_decode": schema.BoolAttribute{
+								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 									`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -672,6 +676,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"base64_decode": schema.BoolAttribute{
+								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 									`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -810,6 +815,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -935,6 +941,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1063,6 +1070,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`If set, ` + "`" + `role_session_name` + "`" + ` must also be set.`,
 									},
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1198,6 +1206,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1308,6 +1317,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1420,6 +1430,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1530,6 +1541,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1655,6 +1667,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `Comma-separated list of OAuth2 audiences.`,
 									},
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1788,6 +1801,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `Path to the Kubernetes service account token file. Default: "/run/secrets/kubernetes.io/serviceaccount/token"`,
 									},
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +
@@ -1894,6 +1908,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"base64_decode": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Decode all secrets in this vault as base64. Useful for binary data.` + "\n" +
 											`If some of the secrets in the vault are not base64-encoded, an error will occur when using them.` + "\n" +

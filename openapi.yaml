@@ -42692,9 +42692,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayIdentityProviderReference'
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       additionalProperties: false
       x-unstable: true
     AIGatewayMCPACLs:
@@ -42819,9 +42817,7 @@ components:
                 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
                 We recommend creating a separate vault for base64 secrets.
               type: boolean
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             prefix:
               description: |
                 The prefix for the environment variable that the value will be stored in.
@@ -42880,9 +42876,7 @@ components:
                 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
                 We recommend creating a separate vault for base64 secrets.
               type: boolean
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             neg_ttl:
               description: |
                 Time-to-live (in seconds) for caching failed secret lookups.
@@ -42991,9 +42985,7 @@ components:
                 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
                 We recommend creating a separate vault for base64 secrets.
               type: boolean
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             neg_ttl:
               description: |
                 Time-to-live (in seconds) for caching failed secret lookups.
@@ -43071,9 +43063,7 @@ components:
                 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
                 We recommend creating a separate vault for base64 secrets.
               type: boolean
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             neg_ttl:
               description: |
                 Time-to-live (in seconds) for caching failed secret lookups.
@@ -43184,9 +43174,7 @@ components:
                 If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
                 We recommend creating a separate vault for base64 secrets.
               type: boolean
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             neg_ttl:
               description: |
                 Time-to-live (in seconds) for caching failed secret lookups.
@@ -43320,9 +43308,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -43407,9 +43393,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -43512,9 +43496,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -43621,9 +43603,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -43735,9 +43715,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -43832,9 +43810,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -43926,9 +43902,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -44014,9 +43988,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -44102,9 +44074,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -44194,9 +44164,7 @@ components:
             If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
             We recommend creating a separate vault for base64 secrets.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         neg_ttl:
           description: |
             Time-to-live (in seconds) for caching failed secret lookups.
@@ -45635,7 +45603,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPConversionTool'
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         display_name:
           description: The display name for the MCP Server.
           type: string
@@ -45686,7 +45654,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPConversionTool'
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
         display_name:
@@ -45739,9 +45707,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPToolBase'
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
         display_name:
@@ -45794,9 +45760,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPToolBase'
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
         display_name:
@@ -45849,9 +45813,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPUpstreamTool'
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
         display_name:
@@ -45894,9 +45856,7 @@ components:
       properties:
         access:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             acls:
               description: |-
@@ -45983,8 +45943,7 @@ components:
           description: The type of attributes that ACL is evaluated with.
           type: string
           default: consumer
-          enum:
-            - consumer
+          const: consumer
         acls:
           description: |-
             **Pre-release Feature**
@@ -46016,8 +45975,7 @@ components:
         acl_attribute_type:
           description: The type of attributes that ACL is evaluated with.
           type: string
-          enum:
-            - oauth_access_token
+          const: oauth_access_token
         access_token_claim_field:
           description: |
             The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
@@ -47122,9 +47080,7 @@ components:
       properties:
         access:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             acls:
               description: |-
@@ -47191,9 +47147,7 @@ components:
       properties:
         access:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             acls:
               description: |-
@@ -47283,32 +47237,22 @@ components:
         destructive_hint:
           description: 'If true, the tool may perform destructive updates'
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         idempotent_hint:
           description: 'If true, repeated calls with same args have no additional effect'
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         open_world_hint:
           description: 'If true, tool interacts with external entities'
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         read_only_hint:
           description: 'If true, the tool does not modify its environment'
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         title:
           description: Human-readable title for the tool
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       x-unstable: true
@@ -47382,22 +47326,16 @@ components:
           description: A description of the parameter.
           type: string
           example: The origin airport code.
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         required:
           description: Whether this parameter is required.
           type: boolean
           example: true
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         schema:
           description: 'JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.'
           type: object
-          default: null
           additionalProperties: true
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:

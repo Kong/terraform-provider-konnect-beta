@@ -38,13 +38,9 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						r.API.Access.Acls.Deny = append(r.API.Access.Acls.Deny, types.StringValue(v))
 					}
 				}
-				if resp.AIGatewayModelAPIResponse.Access.IdentityProviders != nil {
-					r.API.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Access.IdentityProviders))
-					for _, v := range resp.AIGatewayModelAPIResponse.Access.IdentityProviders {
-						r.API.Access.IdentityProviders = append(r.API.Access.IdentityProviders, types.StringValue(v))
-					}
-				} else {
-					r.API.Access.IdentityProviders = nil
+				r.API.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Access.IdentityProviders))
+				for _, v := range resp.AIGatewayModelAPIResponse.Access.IdentityProviders {
+					r.API.Access.IdentityProviders = append(r.API.Access.IdentityProviders, types.StringValue(v))
 				}
 			}
 			r.API.Capabilities = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Capabilities))
@@ -869,13 +865,9 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						r.Model.Access.Acls.Deny = append(r.Model.Access.Acls.Deny, types.StringValue(v))
 					}
 				}
-				if resp.AIGatewayModelModelResponse.Access.IdentityProviders != nil {
-					r.Model.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Access.IdentityProviders))
-					for _, v := range resp.AIGatewayModelModelResponse.Access.IdentityProviders {
-						r.Model.Access.IdentityProviders = append(r.Model.Access.IdentityProviders, types.StringValue(v))
-					}
-				} else {
-					r.Model.Access.IdentityProviders = nil
+				r.Model.Access.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Access.IdentityProviders))
+				for _, v := range resp.AIGatewayModelModelResponse.Access.IdentityProviders {
+					r.Model.Access.IdentityProviders = append(r.Model.Access.IdentityProviders, types.StringValue(v))
 				}
 			}
 			r.Model.Capabilities = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Capabilities))
@@ -1806,12 +1798,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Deny:  deny,
 				}
 			}
-			var identityProviders []string
-			if r.API.Access.IdentityProviders != nil {
-				identityProviders = make([]string, 0, len(r.API.Access.IdentityProviders))
-				for identityProvidersIndex := range r.API.Access.IdentityProviders {
-					identityProviders = append(identityProviders, r.API.Access.IdentityProviders[identityProvidersIndex].ValueString())
-				}
+			identityProviders := make([]string, 0, len(r.API.Access.IdentityProviders))
+			for identityProvidersIndex := range r.API.Access.IdentityProviders {
+				identityProviders = append(identityProviders, r.API.Access.IdentityProviders[identityProvidersIndex].ValueString())
 			}
 			access = &shared.AIGatewayModelAccess{
 				Acls:              acls,
@@ -4878,12 +4867,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					Deny:  deny1,
 				}
 			}
-			var identityProviders1 []string
-			if r.Model.Access.IdentityProviders != nil {
-				identityProviders1 = make([]string, 0, len(r.Model.Access.IdentityProviders))
-				for identityProvidersIndex1 := range r.Model.Access.IdentityProviders {
-					identityProviders1 = append(identityProviders1, r.Model.Access.IdentityProviders[identityProvidersIndex1].ValueString())
-				}
+			identityProviders1 := make([]string, 0, len(r.Model.Access.IdentityProviders))
+			for identityProvidersIndex1 := range r.Model.Access.IdentityProviders {
+				identityProviders1 = append(identityProviders1, r.Model.Access.IdentityProviders[identityProvidersIndex1].ValueString())
 			}
 			access1 = &shared.AIGatewayModelAccess{
 				Acls:              acls1,
@@ -7971,12 +7957,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Deny:  deny,
 				}
 			}
-			var identityProviders []string
-			if r.API.Access.IdentityProviders != nil {
-				identityProviders = make([]string, 0, len(r.API.Access.IdentityProviders))
-				for identityProvidersIndex := range r.API.Access.IdentityProviders {
-					identityProviders = append(identityProviders, r.API.Access.IdentityProviders[identityProvidersIndex].ValueString())
-				}
+			identityProviders := make([]string, 0, len(r.API.Access.IdentityProviders))
+			for identityProvidersIndex := range r.API.Access.IdentityProviders {
+				identityProviders = append(identityProviders, r.API.Access.IdentityProviders[identityProvidersIndex].ValueString())
 			}
 			access = &shared.AIGatewayModelAccess{
 				Acls:              acls,
@@ -11043,12 +11026,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					Deny:  deny1,
 				}
 			}
-			var identityProviders1 []string
-			if r.Model.Access.IdentityProviders != nil {
-				identityProviders1 = make([]string, 0, len(r.Model.Access.IdentityProviders))
-				for identityProvidersIndex1 := range r.Model.Access.IdentityProviders {
-					identityProviders1 = append(identityProviders1, r.Model.Access.IdentityProviders[identityProvidersIndex1].ValueString())
-				}
+			identityProviders1 := make([]string, 0, len(r.Model.Access.IdentityProviders))
+			for identityProvidersIndex1 := range r.Model.Access.IdentityProviders {
+				identityProviders1 = append(identityProviders1, r.Model.Access.IdentityProviders[identityProvidersIndex1].ValueString())
 			}
 			access1 = &shared.AIGatewayModelAccess{
 				Acls:              acls1,

@@ -38,9 +38,9 @@ type AIGatewayMCPToolParameter struct {
 	// The location of the parameter in the request.
 	In In `json:"in"`
 	// A description of the parameter.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Whether this parameter is required.
-	Required *bool `default:"null" json:"required"`
+	Required *bool `json:"required,omitempty"`
 	// JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.
 	Schema map[string]any `json:"schema,omitempty"`
 }

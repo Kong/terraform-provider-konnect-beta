@@ -84,7 +84,7 @@ func (e *AIGatewayMCPUpstreamToolScheme) IsExact() bool {
 
 // AIGatewayMCPUpstreamTool - A tool exposed by an MCP Server in `upstream-server` mode. Extends the base tool with input/output schema overrides for the upstream server's advertised tool.
 type AIGatewayMCPUpstreamTool struct {
-	Access *AIGatewayMCPUpstreamToolAccess `json:"access"`
+	Access *AIGatewayMCPUpstreamToolAccess `json:"access,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	Annotations *AIGatewayMCPToolAnnotations `json:"annotations,omitempty"`

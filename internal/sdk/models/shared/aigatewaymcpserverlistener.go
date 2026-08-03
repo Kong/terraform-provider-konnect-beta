@@ -17,7 +17,7 @@ type AIGatewayMCPServerListener struct {
 	// Routing, logging, and server configuration for the MCP Server.
 	Config AIGatewayMCPServerNoUpstreamConfig `json:"config"`
 	// List of tools exposed by this MCP Server.
-	Tools []AIGatewayMCPToolBase `json:"tools"`
+	Tools []AIGatewayMCPToolBase `json:"tools,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	Access *AIGatewayMCPServerBaseACLProperties `json:"access,omitempty"`

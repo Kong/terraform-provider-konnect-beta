@@ -28,9 +28,6 @@ type AIGatewayMCPServerBaseACLProperties struct {
 func CreateAIGatewayMCPServerBaseACLPropertiesConsumer(consumer AIGatewayMCPServerBaseACLPropertiesConsumer) AIGatewayMCPServerBaseACLProperties {
 	typ := AIGatewayMCPServerBaseACLPropertiesTypeConsumer
 
-	typStr := ACLAttributeType(typ)
-	consumer.ACLAttributeType = &typStr
-
 	return AIGatewayMCPServerBaseACLProperties{
 		AIGatewayMCPServerBaseACLPropertiesConsumer: &consumer,
 		Type: typ,
@@ -39,9 +36,6 @@ func CreateAIGatewayMCPServerBaseACLPropertiesConsumer(consumer AIGatewayMCPServ
 
 func CreateAIGatewayMCPServerBaseACLPropertiesOauthAccessToken(oauthAccessToken AIGatewayMCPServerBaseACLPropertiesOauth) AIGatewayMCPServerBaseACLProperties {
 	typ := AIGatewayMCPServerBaseACLPropertiesTypeOauthAccessToken
-
-	typStr := AIGatewayMCPServerBaseACLPropertiesOauthACLAttributeType(typ)
-	oauthAccessToken.ACLAttributeType = typStr
 
 	return AIGatewayMCPServerBaseACLProperties{
 		AIGatewayMCPServerBaseACLPropertiesOauth: &oauthAccessToken,

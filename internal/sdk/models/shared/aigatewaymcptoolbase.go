@@ -84,7 +84,7 @@ func (e *AIGatewayMCPToolBaseScheme) IsExact() bool {
 
 // AIGatewayMCPToolBase - A tool exposed by the MCP Server, mapped to a backend HTTP endpoint.
 type AIGatewayMCPToolBase struct {
-	Access *AIGatewayMCPToolBaseAccess `json:"access"`
+	Access *AIGatewayMCPToolBaseAccess `json:"access,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	Annotations *AIGatewayMCPToolAnnotations `json:"annotations,omitempty"`
