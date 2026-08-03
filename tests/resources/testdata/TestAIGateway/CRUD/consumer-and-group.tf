@@ -30,6 +30,5 @@ resource "konnect_ai_gateway_consumer_credential" "my_aigatewayconsumercredentia
   display_name = "TF Test Dev Key"
   gateway_id   = konnect_ai_gateway.my_aigateway.id
   name = "tf-test-dev-key"
-  ttl = 120
   type = "api-key"
 }

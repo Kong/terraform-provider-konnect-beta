@@ -1,4 +1,4 @@
-resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider2" {
+resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
   provider = konnect-beta
   gateway_id   = konnect_ai_gateway.my_aigateway.id
   azure = {
@@ -16,6 +16,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider2" {
     }
     display_name = "Test TF Azure AI SE"
 
-    name = "tf-test-azure-ai-se"
+    name = "tf-test-azure-ai-provider"
   }
 }
