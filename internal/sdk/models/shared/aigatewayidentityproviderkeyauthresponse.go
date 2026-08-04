@@ -32,8 +32,8 @@ func (e *AIGatewayIdentityProviderKeyAuthResponseScope) IsExact() bool {
 type AIGatewayIdentityProviderKeyAuthResponseIdentityRealms struct {
 	// A string representing a UUID (universally unique identifier).
 	ID     *string                                        `json:"id,omitempty"`
-	Region *string                                        `default:"null" json:"region"`
-	Scope  *AIGatewayIdentityProviderKeyAuthResponseScope `default:"cp" json:"scope"`
+	Region *string                                        `json:"region,omitempty"`
+	Scope  *AIGatewayIdentityProviderKeyAuthResponseScope `json:"scope,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderKeyAuthResponseIdentityRealms) MarshalJSON() ([]byte, error) {
@@ -70,11 +70,11 @@ func (a *AIGatewayIdentityProviderKeyAuthResponseIdentityRealms) GetScope() *AIG
 
 type AIGatewayIdentityProviderKeyAuthResponsePrincipals struct {
 	// The Kong Identity directory instance to authenticate against.
-	Directory *string `default:"default" json:"directory"`
+	Directory *string `json:"directory,omitempty"`
 	// When true, authenticate against Kong Identity instead of local credentials.
-	Enabled *bool `default:"false" json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead.
-	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
+	ErrorOnMiss *bool `json:"error_on_miss,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderKeyAuthResponsePrincipals) MarshalJSON() ([]byte, error) {
@@ -112,24 +112,24 @@ func (a *AIGatewayIdentityProviderKeyAuthResponsePrincipals) GetErrorOnMiss() *b
 // AIGatewayIdentityProviderKeyAuthResponseConfig - Configuration for the Kong Key auth identity provider.
 type AIGatewayIdentityProviderKeyAuthResponseConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
-	Anonymous *string `default:"null" json:"anonymous"`
+	Anonymous *string `json:"anonymous,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `json:"hide_credentials,omitempty"`
 	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
-	IdentityRealms []AIGatewayIdentityProviderKeyAuthResponseIdentityRealms `json:"identity_realms"`
+	IdentityRealms []AIGatewayIdentityProviderKeyAuthResponseIdentityRealms `json:"identity_realms,omitempty"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
-	KeyInBody *bool `default:"false" json:"key_in_body"`
+	KeyInBody *bool `json:"key_in_body,omitempty"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
-	KeyInHeader *bool `default:"true" json:"key_in_header"`
+	KeyInHeader *bool `json:"key_in_header,omitempty"`
 	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
-	KeyInQuery *bool `default:"true" json:"key_in_query"`
+	KeyInQuery *bool `json:"key_in_query,omitempty"`
 	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
 	KeyNames   []string                                            `json:"key_names,omitempty"`
-	Principals *AIGatewayIdentityProviderKeyAuthResponsePrincipals `json:"principals"`
+	Principals *AIGatewayIdentityProviderKeyAuthResponsePrincipals `json:"principals,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `default:"null" json:"realm"`
+	Realm *string `json:"realm,omitempty"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
-	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderKeyAuthResponseConfig) MarshalJSON() ([]byte, error) {
@@ -239,7 +239,7 @@ type AIGatewayIdentityProviderKeyAuthResponse struct {
 	type_ string `const:"key-auth" json:"type"`
 	// Configuration for the Kong Key auth identity provider.
 	//
-	Config *AIGatewayIdentityProviderKeyAuthResponseConfig `json:"config"`
+	Config *AIGatewayIdentityProviderKeyAuthResponseConfig `json:"config,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.

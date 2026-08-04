@@ -169,31 +169,31 @@ func (e *AIGatewayIdentityProviderOpenIDConnectResponseClientCredentialsParamTyp
 }
 
 type AIGatewayIdentityProviderOpenIDConnectResponseClientJwk struct {
-	Alg           *string  `default:"null" json:"alg"`
-	Crv           *string  `default:"null" json:"crv"`
-	D             *string  `default:"null" json:"d"`
-	Dp            *string  `default:"null" json:"dp"`
-	Dq            *string  `default:"null" json:"dq"`
-	E             *string  `default:"null" json:"e"`
-	Issuer        *string  `default:"null" json:"issuer"`
-	K             *string  `default:"null" json:"k"`
-	KeyOps        []string `json:"key_ops"`
-	Kid           *string  `default:"null" json:"kid"`
-	Kty           *string  `default:"null" json:"kty"`
-	N             *string  `default:"null" json:"n"`
-	Oth           *string  `default:"null" json:"oth"`
-	P             *string  `default:"null" json:"p"`
-	Q             *string  `default:"null" json:"q"`
-	Qi            *string  `default:"null" json:"qi"`
-	R             *string  `default:"null" json:"r"`
-	T             *string  `default:"null" json:"t"`
-	Use           *string  `default:"null" json:"use"`
-	X             *string  `default:"null" json:"x"`
-	X5c           []string `json:"x5c"`
-	X5t           *string  `default:"null" json:"x5t"`
-	X5tNumberS256 *string  `default:"null" json:"x5t#S256"`
-	X5u           *string  `default:"null" json:"x5u"`
-	Y             *string  `default:"null" json:"y"`
+	Alg           *string  `json:"alg,omitempty"`
+	Crv           *string  `json:"crv,omitempty"`
+	D             *string  `json:"d,omitempty"`
+	Dp            *string  `json:"dp,omitempty"`
+	Dq            *string  `json:"dq,omitempty"`
+	E             *string  `json:"e,omitempty"`
+	Issuer        *string  `json:"issuer,omitempty"`
+	K             *string  `json:"k,omitempty"`
+	KeyOps        []string `json:"key_ops,omitempty"`
+	Kid           *string  `json:"kid,omitempty"`
+	Kty           *string  `json:"kty,omitempty"`
+	N             *string  `json:"n,omitempty"`
+	Oth           *string  `json:"oth,omitempty"`
+	P             *string  `json:"p,omitempty"`
+	Q             *string  `json:"q,omitempty"`
+	Qi            *string  `json:"qi,omitempty"`
+	R             *string  `json:"r,omitempty"`
+	T             *string  `json:"t,omitempty"`
+	Use           *string  `json:"use,omitempty"`
+	X             *string  `json:"x,omitempty"`
+	X5c           []string `json:"x5c,omitempty"`
+	X5t           *string  `json:"x5t,omitempty"`
+	X5tNumberS256 *string  `json:"x5t#S256,omitempty"`
+	X5u           *string  `json:"x5u,omitempty"`
+	Y             *string  `json:"y,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseClientJwk) MarshalJSON() ([]byte, error) {
@@ -433,27 +433,27 @@ type AIGatewayIdentityProviderOpenIDConnectResponseCloudAuthentication struct {
 	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
 	AuthProvider *AIGatewayIdentityProviderOpenIDConnectResponseAuthProvider `json:"auth_provider,omitempty"`
 	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
-	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
-	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	AwsCacheName *string `json:"aws_cache_name,omitempty"`
 	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
-	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	AwsIsServerless *bool `json:"aws_is_serverless,omitempty"`
 	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
-	AwsRegion *string `default:"null" json:"aws_region"`
+	AwsRegion *string `json:"aws_region,omitempty"`
 	// The session name for the temporary credentials when assuming the IAM role.
-	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
-	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientID *string `default:"null" json:"azure_client_id"`
+	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
-	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -553,9 +553,9 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseCloudAuthentication) GetG
 
 type AIGatewayIdentityProviderOpenIDConnectResponseClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `default:"127.0.0.1" json:"ip"`
+	IP *string `json:"ip,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseClusterNodes) MarshalJSON() ([]byte, error) {
@@ -585,9 +585,9 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseClusterNodes) GetPort() *
 
 type AIGatewayIdentityProviderOpenIDConnectResponseSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `default:"127.0.0.1" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseSentinelNodes) MarshalJSON() ([]byte, error) {
@@ -641,49 +641,49 @@ func (e *AIGatewayIdentityProviderOpenIDConnectResponseSentinelRole) IsExact() b
 
 type AIGatewayIdentityProviderOpenIDConnectResponseClusterCacheRedis struct {
 	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
-	CloudAuthentication *AIGatewayIdentityProviderOpenIDConnectResponseCloudAuthentication `json:"cloud_authentication"`
+	CloudAuthentication *AIGatewayIdentityProviderOpenIDConnectResponseCloudAuthentication `json:"cloud_authentication,omitempty"`
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []AIGatewayIdentityProviderOpenIDConnectResponseClusterNodes `json:"cluster_nodes"`
+	ClusterNodes []AIGatewayIdentityProviderOpenIDConnectResponseClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
+	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `default:"0" json:"database"`
+	Database *int64 `json:"database,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `default:"127.0.0.1" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
+	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *string `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
+	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `default:"2000" json:"send_timeout"`
+	SendTimeout *int64 `json:"send_timeout,omitempty"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `default:"null" json:"sentinel_master"`
+	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []AIGatewayIdentityProviderOpenIDConnectResponseSentinelNodes `json:"sentinel_nodes"`
+	SentinelNodes []AIGatewayIdentityProviderOpenIDConnectResponseSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `default:"null" json:"sentinel_password"`
+	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *AIGatewayIdentityProviderOpenIDConnectResponseSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `default:"null" json:"sentinel_username"`
+	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `default:"null" json:"server_name"`
+	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `default:"false" json:"ssl"`
+	Ssl *bool `json:"ssl,omitempty"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseClusterCacheRedis) MarshalJSON() ([]byte, error) {
@@ -1223,19 +1223,19 @@ func (e *AIGatewayIdentityProviderOpenIDConnectResponsePasswordParamType) IsExac
 // AIGatewayIdentityProviderOpenIDConnectResponsePrincipals - Configuration for Kong Identity principal hydration after token verification.
 type AIGatewayIdentityProviderOpenIDConnectResponsePrincipals struct {
 	// The Kong Identity directory instance to look up against.
-	Directory *string `default:"default" json:"directory"`
+	Directory *string `json:"directory,omitempty"`
 	// When true, query Kong Identity to map a Principal after token verification.
-	Enabled *bool `default:"false" json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set.
-	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
+	ErrorOnMiss *bool `json:"error_on_miss,omitempty"`
 	// If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by.
-	MatchConsumer *bool `default:"true" json:"match_consumer"`
+	MatchConsumer *bool `json:"match_consumer,omitempty"`
 	// If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim.
-	MatchConsumerGroups *bool `default:"true" json:"match_consumer_groups"`
+	MatchConsumerGroups *bool `json:"match_consumer_groups,omitempty"`
 	// Custom identity name for a type=custom Kong Identity lookup. When absent and principal_claim is set, an OIDC lookup is performed using principal_claim as the claim name instead of 'sub'.
-	PrincipalBy *string `default:"null" json:"principal_by"`
+	PrincipalBy *string `json:"principal_by,omitempty"`
 	// Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.
-	PrincipalClaim []string `json:"principal_claim"`
+	PrincipalClaim []string `json:"principal_claim,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponsePrincipals) MarshalJSON() ([]byte, error) {
@@ -1396,31 +1396,31 @@ func (e *AIGatewayIdentityProviderOpenIDConnectResponseRevocationCheckMode) IsEx
 // AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionMtlsFromHeader - Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
 type AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionMtlsFromHeader struct {
 	// Allow certificate verification with only an intermediate certificate. When enabled, a full chain to the root CA is not required.
-	AllowPartialChain *bool `default:"false" json:"allow_partial_chain"`
+	AllowPartialChain *bool `json:"allow_partial_chain,omitempty"`
 	// List of CA Certificate UUIDs to use when validating the client certificate chain. At least one is required.
 	CaCertificates []string `json:"ca_certificates"`
 	// Time in milliseconds to cache the revocation check result for a given certificate.
-	CertCacheTTL *float64 `default:"60000" json:"cert_cache_ttl"`
+	CertCacheTTL *float64 `json:"cert_cache_ttl,omitempty"`
 	// Encoding format of the certificate in the header. Supported formats: `url_encoded`, `base64_encoded`.
-	CertificateHeaderFormat *AIGatewayIdentityProviderOpenIDConnectResponseCertificateHeaderFormat `default:"url_encoded" json:"certificate_header_format"`
+	CertificateHeaderFormat *AIGatewayIdentityProviderOpenIDConnectResponseCertificateHeaderFormat `json:"certificate_header_format,omitempty"`
 	// Name of the HTTP header that contains the injected client certificate
 	CertificateHeaderName string `json:"certificate_header_name"`
 	// A string representing a host name, such as example.com.
-	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
+	HTTPProxyHost *string `json:"http_proxy_host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPProxyPort *int64 `default:"null" json:"http_proxy_port"`
+	HTTPProxyPort *int64 `json:"http_proxy_port,omitempty"`
 	// HTTP timeout in milliseconds when communicating with the OCSP server or downloading CRL.
-	HTTPTimeout *float64 `default:"30000" json:"http_timeout"`
+	HTTPTimeout *float64 `json:"http_timeout,omitempty"`
 	// A string representing a host name, such as example.com.
-	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
+	HTTPSProxyHost *string `json:"https_proxy_host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
+	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
 	// Controls client certificate revocation check behavior. `SKIP` disables revocation checking. `IGNORE_CA_ERROR` respects revocation status when reachable but ignores network errors. `STRICT` requires a successful revocation check.
-	RevocationCheckMode *AIGatewayIdentityProviderOpenIDConnectResponseRevocationCheckMode `default:"IGNORE_CA_ERROR" json:"revocation_check_mode"`
+	RevocationCheckMode *AIGatewayIdentityProviderOpenIDConnectResponseRevocationCheckMode `json:"revocation_check_mode,omitempty"`
 	// When set to `true`, only requests from trusted IP addresses (configured in `trusted_ips` in kong.conf) are allowed to use the certificate header. This prevents direct header injection from untrusted clients.
-	SecureSource *bool `default:"true" json:"secure_source"`
+	SecureSource *bool `json:"secure_source,omitempty"`
 	// Verify the TLS certificate of the OCSP responder or CRL distribution point server.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionMtlsFromHeader) MarshalJSON() ([]byte, error) {
@@ -1582,27 +1582,27 @@ type AIGatewayIdentityProviderOpenIDConnectResponseConfigCloudAuthentication str
 	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
 	AuthProvider *AIGatewayIdentityProviderOpenIDConnectResponseConfigAuthProvider `json:"auth_provider,omitempty"`
 	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
-	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
-	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	AwsCacheName *string `json:"aws_cache_name,omitempty"`
 	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
-	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	AwsIsServerless *bool `json:"aws_is_serverless,omitempty"`
 	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
-	AwsRegion *string `default:"null" json:"aws_region"`
+	AwsRegion *string `json:"aws_region,omitempty"`
 	// The session name for the temporary credentials when assuming the IAM role.
-	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
-	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientID *string `default:"null" json:"azure_client_id"`
+	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
-	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseConfigCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -1702,9 +1702,9 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseConfigCloudAuthentication
 
 type AIGatewayIdentityProviderOpenIDConnectResponseConfigClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `default:"127.0.0.1" json:"ip"`
+	IP *string `json:"ip,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseConfigClusterNodes) MarshalJSON() ([]byte, error) {
@@ -1734,9 +1734,9 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseConfigClusterNodes) GetPo
 
 type AIGatewayIdentityProviderOpenIDConnectResponseConfigSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `default:"127.0.0.1" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseConfigSentinelNodes) MarshalJSON() ([]byte, error) {
@@ -1790,53 +1790,53 @@ func (e *AIGatewayIdentityProviderOpenIDConnectResponseConfigSentinelRole) IsExa
 
 type AIGatewayIdentityProviderOpenIDConnectResponseRedis struct {
 	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
-	CloudAuthentication *AIGatewayIdentityProviderOpenIDConnectResponseConfigCloudAuthentication `json:"cloud_authentication"`
+	CloudAuthentication *AIGatewayIdentityProviderOpenIDConnectResponseConfigCloudAuthentication `json:"cloud_authentication,omitempty"`
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []AIGatewayIdentityProviderOpenIDConnectResponseConfigClusterNodes `json:"cluster_nodes"`
+	ClusterNodes []AIGatewayIdentityProviderOpenIDConnectResponseConfigClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
+	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `default:"0" json:"database"`
+	Database *int64 `json:"database,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `default:"127.0.0.1" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
+	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *string `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// The Redis session key prefix.
-	Prefix *string `default:"null" json:"prefix"`
+	Prefix *string `json:"prefix,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
+	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `default:"2000" json:"send_timeout"`
+	SendTimeout *int64 `json:"send_timeout,omitempty"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `default:"null" json:"sentinel_master"`
+	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []AIGatewayIdentityProviderOpenIDConnectResponseConfigSentinelNodes `json:"sentinel_nodes"`
+	SentinelNodes []AIGatewayIdentityProviderOpenIDConnectResponseConfigSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `default:"null" json:"sentinel_password"`
+	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *AIGatewayIdentityProviderOpenIDConnectResponseConfigSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `default:"null" json:"sentinel_username"`
+	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `default:"null" json:"server_name"`
+	ServerName *string `json:"server_name,omitempty"`
 	// The Redis unix socket path.
-	Socket *string `default:"null" json:"socket"`
+	Socket *string `json:"socket,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `default:"false" json:"ssl"`
+	Ssl *bool `json:"ssl,omitempty"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseRedis) MarshalJSON() ([]byte, error) {
@@ -2268,9 +2268,9 @@ func (e *AIGatewayIdentityProviderOpenIDConnectResponseTokenEndpointAuthMethod) 
 // AIGatewayIdentityProviderOpenIDConnectResponseCache - Cache support for token exchange
 type AIGatewayIdentityProviderOpenIDConnectResponseCache struct {
 	// Whether to enable caching.
-	Enabled *bool `default:"true" json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// Cache ttl in seconds used when caching exchanged tokens, use it to override `conf.cache_ttl`. Token expiry will be used if shorter than this value.
-	TTL *int64 `default:"null" json:"ttl"`
+	TTL *int64 `json:"ttl,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseCache) MarshalJSON() ([]byte, error) {
@@ -2301,13 +2301,13 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseCache) GetTTL() *int64 {
 // AIGatewayIdentityProviderOpenIDConnectResponseRequest - Parameters used in the token exchange request.
 type AIGatewayIdentityProviderOpenIDConnectResponseRequest struct {
 	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
-	Audience []string `json:"audience"`
+	Audience []string `json:"audience,omitempty"`
 	// Use empty audiences. Use this field to remove audiences defined in `config.audience`.
-	EmptyAudience *bool `default:"false" json:"empty_audience"`
+	EmptyAudience *bool `json:"empty_audience,omitempty"`
 	// Use empty scopes. Use this field to remove scopes defined in `config.scopes`.
-	EmptyScopes *bool `default:"false" json:"empty_scopes"`
+	EmptyScopes *bool `json:"empty_scopes,omitempty"`
 	// Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
-	Scopes []string `json:"scopes"`
+	Scopes []string `json:"scopes,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseRequest) MarshalJSON() ([]byte, error) {
@@ -2351,10 +2351,10 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseRequest) GetScopes() []st
 
 // AIGatewayIdentityProviderOpenIDConnectResponseConditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
 type AIGatewayIdentityProviderOpenIDConnectResponseConditions struct {
-	HasAudience     []string `json:"has_audience"`
-	HasScopes       []string `json:"has_scopes"`
-	MissingAudience []string `json:"missing_audience"`
-	MissingScopes   []string `json:"missing_scopes"`
+	HasAudience     []string `json:"has_audience,omitempty"`
+	HasScopes       []string `json:"has_scopes,omitempty"`
+	MissingAudience []string `json:"missing_audience,omitempty"`
+	MissingScopes   []string `json:"missing_scopes,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseConditions) MarshalJSON() ([]byte, error) {
@@ -2398,13 +2398,13 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseConditions) GetMissingSco
 
 type AIGatewayIdentityProviderOpenIDConnectResponseSubjectTokenIssuers struct {
 	// A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
-	Conditions *AIGatewayIdentityProviderOpenIDConnectResponseConditions `json:"conditions"`
+	Conditions *AIGatewayIdentityProviderOpenIDConnectResponseConditions `json:"conditions,omitempty"`
 	// Tokens of whose iss claim matches this value will be exchanged.
 	Issuer string `json:"issuer"`
 	// An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
-	JwksURI *string `default:"null" json:"jwks_uri"`
+	JwksURI *string `json:"jwks_uri,omitempty"`
 	// When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.
-	VerifySignature *bool `default:"false" json:"verify_signature"`
+	VerifySignature *bool `json:"verify_signature,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseSubjectTokenIssuers) MarshalJSON() ([]byte, error) {
@@ -2449,9 +2449,9 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponseSubjectTokenIssuers) GetV
 // AIGatewayIdentityProviderOpenIDConnectResponseTokenExchange - Details on how to accept tokens from other identity providers.
 type AIGatewayIdentityProviderOpenIDConnectResponseTokenExchange struct {
 	// Cache support for token exchange
-	Cache *AIGatewayIdentityProviderOpenIDConnectResponseCache `json:"cache"`
+	Cache *AIGatewayIdentityProviderOpenIDConnectResponseCache `json:"cache,omitempty"`
 	// Parameters used in the token exchange request.
-	Request *AIGatewayIdentityProviderOpenIDConnectResponseRequest `json:"request"`
+	Request *AIGatewayIdentityProviderOpenIDConnectResponseRequest `json:"request,omitempty"`
 	// Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.
 	SubjectTokenIssuers []AIGatewayIdentityProviderOpenIDConnectResponseSubjectTokenIssuers `json:"subject_token_issuers"`
 }
@@ -2570,473 +2570,473 @@ func (e *AIGatewayIdentityProviderOpenIDConnectResponseUserinfoAccept) IsExact()
 // AIGatewayIdentityProviderOpenIDConnectResponseConfig - Configuration for the OpenID Connect identity provider.
 type AIGatewayIdentityProviderOpenIDConnectResponseConfig struct {
 	// An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `default:"null" json:"anonymous"`
+	Anonymous *string `json:"anonymous,omitempty"`
 	// The audience passed to the authorization endpoint.
-	Audience []string `json:"audience"`
+	Audience []string `json:"audience,omitempty"`
 	// The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	AudienceClaim []string `json:"audience_claim,omitempty"`
 	// The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	AudienceRequired []string `json:"audience_required"`
+	AudienceRequired []string `json:"audience_required,omitempty"`
 	// Types of credentials/grants to enable.
 	AuthMethods []AIGatewayIdentityProviderOpenIDConnectResponseAuthMethods `json:"auth_methods,omitempty"`
 	// The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	AuthenticatedGroupsClaim []string `json:"authenticated_groups_claim"`
+	AuthenticatedGroupsClaim []string `json:"authenticated_groups_claim,omitempty"`
 	// The authorization cookie Domain flag.
-	AuthorizationCookieDomain *string `default:"null" json:"authorization_cookie_domain"`
+	AuthorizationCookieDomain *string `json:"authorization_cookie_domain,omitempty"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	AuthorizationCookieHTTPOnly *bool `default:"true" json:"authorization_cookie_http_only"`
+	AuthorizationCookieHTTPOnly *bool `json:"authorization_cookie_http_only,omitempty"`
 	// The authorization cookie name.
-	AuthorizationCookieName *string `default:"authorization" json:"authorization_cookie_name"`
+	AuthorizationCookieName *string `json:"authorization_cookie_name,omitempty"`
 	// The authorization cookie Path flag.
-	AuthorizationCookiePath *string `default:"/" json:"authorization_cookie_path"`
+	AuthorizationCookiePath *string `json:"authorization_cookie_path,omitempty"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	AuthorizationCookieSameSite *AIGatewayIdentityProviderOpenIDConnectResponseAuthorizationCookieSameSite `default:"Default" json:"authorization_cookie_same_site"`
+	AuthorizationCookieSameSite *AIGatewayIdentityProviderOpenIDConnectResponseAuthorizationCookieSameSite `json:"authorization_cookie_same_site,omitempty"`
 	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
-	AuthorizationCookieSecure *bool `default:"null" json:"authorization_cookie_secure"`
+	AuthorizationCookieSecure *bool `json:"authorization_cookie_secure,omitempty"`
 	// The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
-	AuthorizationEndpoint *string `default:"null" json:"authorization_endpoint"`
+	AuthorizationEndpoint *string `json:"authorization_endpoint,omitempty"`
 	// Extra query arguments passed from the client to the authorization endpoint.
-	AuthorizationQueryArgsClient []string `json:"authorization_query_args_client"`
+	AuthorizationQueryArgsClient []string `json:"authorization_query_args_client,omitempty"`
 	// Extra query argument names passed to the authorization endpoint.
-	AuthorizationQueryArgsNames []string `json:"authorization_query_args_names"`
+	AuthorizationQueryArgsNames []string `json:"authorization_query_args_names,omitempty"`
 	// Extra query argument values passed to the authorization endpoint.
-	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values"`
+	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values,omitempty"`
 	// Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
-	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
+	AuthorizationRollingTimeout *float64 `json:"authorization_rolling_timeout,omitempty"`
 	// The name of the cookie in which the bearer token is passed.
-	BearerTokenCookieName *string `default:"null" json:"bearer_token_cookie_name"`
+	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
 	// The name of the HTTP header from which the bearer token is retrieved. When configured, only this header is checked for the bearer token.
-	BearerTokenHeaderName *string `default:"null" json:"bearer_token_header_name"`
+	BearerTokenHeaderName *string `json:"bearer_token_header_name,omitempty"`
 	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []AIGatewayIdentityProviderOpenIDConnectResponseBearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
-	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
+	ByUsernameIgnoreCase *bool `json:"by_username_ignore_case,omitempty"`
 	// Cache the introspection endpoint requests.
-	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
+	CacheIntrospection *bool `json:"cache_introspection,omitempty"`
 	// Cache the legacy token exchange endpoint requests.
-	CacheTokenExchange *bool `default:"true" json:"cache_token_exchange"`
+	CacheTokenExchange *bool `json:"cache_token_exchange,omitempty"`
 	// Cache the token endpoint requests.
-	CacheTokens *bool `default:"true" json:"cache_tokens"`
+	CacheTokens *bool `json:"cache_tokens,omitempty"`
 	// Salt used for generating the cache key that is used for caching the token endpoint requests.
 	CacheTokensSalt string `json:"cache_tokens_salt"`
 	// The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
-	CacheTTL *float64 `default:"3600" json:"cache_ttl"`
+	CacheTTL *float64 `json:"cache_ttl,omitempty"`
 	// The maximum cache ttl in seconds (enforced).
-	CacheTTLMax *float64 `default:"null" json:"cache_ttl_max"`
+	CacheTTLMax *float64 `json:"cache_ttl_max,omitempty"`
 	// The minimum cache ttl in seconds (enforced).
-	CacheTTLMin *float64 `default:"null" json:"cache_ttl_min"`
+	CacheTTLMin *float64 `json:"cache_ttl_min,omitempty"`
 	// The negative cache ttl in seconds.
-	CacheTTLNeg *float64 `default:"null" json:"cache_ttl_neg"`
+	CacheTTLNeg *float64 `json:"cache_ttl_neg,omitempty"`
 	// The resurrection ttl in seconds.
-	CacheTTLResurrect *float64 `default:"null" json:"cache_ttl_resurrect"`
+	CacheTTLResurrect *float64 `json:"cache_ttl_resurrect,omitempty"`
 	// Cache the user info requests.
-	CacheUserInfo *bool `default:"true" json:"cache_user_info"`
+	CacheUserInfo *bool `json:"cache_user_info,omitempty"`
 	// If given, these claims are forbidden in the token payload.
-	ClaimsForbidden []string `json:"claims_forbidden"`
+	ClaimsForbidden []string `json:"claims_forbidden,omitempty"`
 	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
-	ClientAlg []AIGatewayIdentityProviderOpenIDConnectResponseClientAlg `json:"client_alg"`
+	ClientAlg []AIGatewayIdentityProviderOpenIDConnectResponseClientAlg `json:"client_alg,omitempty"`
 	// The client to use for this request (the selection is made with a request parameter with the same name).
-	ClientArg *string `default:"client_id" json:"client_arg"`
+	ClientArg *string `json:"client_arg,omitempty"`
 	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
-	ClientAuth []AIGatewayIdentityProviderOpenIDConnectResponseClientAuth `json:"client_auth"`
+	ClientAuth []AIGatewayIdentityProviderOpenIDConnectResponseClientAuth `json:"client_auth,omitempty"`
 	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
 	ClientCredentialsParamType []AIGatewayIdentityProviderOpenIDConnectResponseClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
 	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
-	ClientID []string `json:"client_id"`
+	ClientID []string `json:"client_id,omitempty"`
 	// The JWK used for the private_key_jwt authentication.
-	ClientJwk []AIGatewayIdentityProviderOpenIDConnectResponseClientJwk `json:"client_jwk"`
+	ClientJwk []AIGatewayIdentityProviderOpenIDConnectResponseClientJwk `json:"client_jwk,omitempty"`
 	// The client secret.
-	ClientSecret []string `json:"client_secret"`
+	ClientSecret []string `json:"client_secret,omitempty"`
 	// Specifies which items are stored in the cluster cache backend configured via `cluster_cache_strategy`. Allowed values are `"introspection"` and `"tokens"`. When `"tokens"` is included, access and refresh token material is AES-encrypted before being written to the cache; enable only when your Redis deployment meets your compliance requirements. Defaults to `["introspection"]`. An empty set disables all cluster caching regardless of `cluster_cache_strategy`.
 	ClusterCacheItems []AIGatewayIdentityProviderOpenIDConnectResponseClusterCacheItems `json:"cluster_cache_items,omitempty"`
-	ClusterCacheRedis *AIGatewayIdentityProviderOpenIDConnectResponseClusterCacheRedis  `json:"cluster_cache_redis"`
+	ClusterCacheRedis *AIGatewayIdentityProviderOpenIDConnectResponseClusterCacheRedis  `json:"cluster_cache_redis,omitempty"`
 	// The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
-	ClusterCacheStrategy *AIGatewayIdentityProviderOpenIDConnectResponseClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
+	ClusterCacheStrategy *AIGatewayIdentityProviderOpenIDConnectResponseClusterCacheStrategy `json:"cluster_cache_strategy,omitempty"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
 	ConsumerBy []AIGatewayIdentityProviderOpenIDConnectResponseConsumerBy `json:"consumer_by,omitempty"`
 	// The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
-	ConsumerClaims [][]string `json:"consumer_claims"`
+	ConsumerClaims [][]string `json:"consumer_claims,omitempty"`
 	// The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	ConsumerGroupsClaim []string `json:"consumer_groups_claim"`
+	ConsumerGroupsClaim []string `json:"consumer_groups_claim,omitempty"`
 	// Do not terminate the request if consumer groups mapping fails.
-	ConsumerGroupsOptional *bool `default:"false" json:"consumer_groups_optional"`
+	ConsumerGroupsOptional *bool `json:"consumer_groups_optional,omitempty"`
 	// Do not terminate the request if consumer mapping fails.
-	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
+	ConsumerOptional *bool `json:"consumer_optional,omitempty"`
 	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	CredentialClaim []string `json:"credential_claim,omitempty"`
 	// Disable issuing the session cookie with the specified grants.
-	DisableSession []AIGatewayIdentityProviderOpenIDConnectResponseDisableSession `json:"disable_session"`
+	DisableSession []AIGatewayIdentityProviderOpenIDConnectResponseDisableSession `json:"disable_session,omitempty"`
 	// Extra header names passed to the discovery endpoint.
-	DiscoveryHeadersNames []string `json:"discovery_headers_names"`
+	DiscoveryHeadersNames []string `json:"discovery_headers_names,omitempty"`
 	// Extra header values passed to the discovery endpoint.
-	DiscoveryHeadersValues []string `json:"discovery_headers_values"`
+	DiscoveryHeadersValues []string `json:"discovery_headers_values,omitempty"`
 	// Display errors on failure responses.
-	DisplayErrors *bool `default:"false" json:"display_errors"`
+	DisplayErrors *bool `json:"display_errors,omitempty"`
 	// The allowed values for the `hd` claim.
-	Domains []string `json:"domains"`
+	Domains []string `json:"domains,omitempty"`
 	// The downstream access token header.
-	DownstreamAccessTokenHeader *string `default:"null" json:"downstream_access_token_header"`
+	DownstreamAccessTokenHeader *string `json:"downstream_access_token_header,omitempty"`
 	// The downstream access token JWK header.
-	DownstreamAccessTokenJwkHeader *string `default:"null" json:"downstream_access_token_jwk_header"`
+	DownstreamAccessTokenJwkHeader *string `json:"downstream_access_token_jwk_header,omitempty"`
 	// The downstream claim to header mappings.
-	DownstreamHeaders []AIGatewayIdentityProviderOpenIDConnectResponseDownstreamHeaders `json:"downstream_headers"`
+	DownstreamHeaders []AIGatewayIdentityProviderOpenIDConnectResponseDownstreamHeaders `json:"downstream_headers,omitempty"`
 	// The downstream header claims. Only top level claims are supported.
-	DownstreamHeadersClaims []string `json:"downstream_headers_claims"`
+	DownstreamHeadersClaims []string `json:"downstream_headers_claims,omitempty"`
 	// The downstream header names for the claim values.
-	DownstreamHeadersNames []string `json:"downstream_headers_names"`
+	DownstreamHeadersNames []string `json:"downstream_headers_names,omitempty"`
 	// The downstream id token header.
-	DownstreamIDTokenHeader *string `default:"null" json:"downstream_id_token_header"`
+	DownstreamIDTokenHeader *string `json:"downstream_id_token_header,omitempty"`
 	// The downstream id token JWK header.
-	DownstreamIDTokenJwkHeader *string `default:"null" json:"downstream_id_token_jwk_header"`
+	DownstreamIDTokenJwkHeader *string `json:"downstream_id_token_jwk_header,omitempty"`
 	// The downstream introspection header.
-	DownstreamIntrospectionHeader *string `default:"null" json:"downstream_introspection_header"`
+	DownstreamIntrospectionHeader *string `json:"downstream_introspection_header,omitempty"`
 	// The downstream introspection JWT header.
-	DownstreamIntrospectionJwtHeader *string `default:"null" json:"downstream_introspection_jwt_header"`
+	DownstreamIntrospectionJwtHeader *string `json:"downstream_introspection_jwt_header,omitempty"`
 	// The downstream refresh token header.
-	DownstreamRefreshTokenHeader *string `default:"null" json:"downstream_refresh_token_header"`
+	DownstreamRefreshTokenHeader *string `json:"downstream_refresh_token_header,omitempty"`
 	// The downstream session id header.
-	DownstreamSessionIDHeader *string `default:"null" json:"downstream_session_id_header"`
+	DownstreamSessionIDHeader *string `json:"downstream_session_id_header,omitempty"`
 	// The downstream user info header.
-	DownstreamUserInfoHeader *string `default:"null" json:"downstream_user_info_header"`
+	DownstreamUserInfoHeader *string `json:"downstream_user_info_header,omitempty"`
 	// The downstream user info JWT header (in case the user info returns a JWT response).
-	DownstreamUserInfoJwtHeader *string `default:"null" json:"downstream_user_info_jwt_header"`
+	DownstreamUserInfoJwtHeader *string `json:"downstream_user_info_jwt_header,omitempty"`
 	// Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise.
-	DpopProofLifetime *float64 `default:"300" json:"dpop_proof_lifetime"`
+	DpopProofLifetime *float64 `json:"dpop_proof_lifetime,omitempty"`
 	// Specifies whether to challenge the client with a nonce value for DPoP proof. When enabled it will also be used to calculate the DPoP proof lifetime.
-	DpopUseNonce *bool `default:"false" json:"dpop_use_nonce"`
+	DpopUseNonce *bool `json:"dpop_use_nonce,omitempty"`
 	// Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).
-	EnableHsSignatures *bool `default:"false" json:"enable_hs_signatures"`
+	EnableHsSignatures *bool `json:"enable_hs_signatures,omitempty"`
 	// The end session endpoint. If set it overrides the value in `end_session_endpoint` returned by the discovery endpoint.
-	EndSessionEndpoint *string `default:"null" json:"end_session_endpoint"`
+	EndSessionEndpoint *string `json:"end_session_endpoint,omitempty"`
 	// Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to `false` to disable.
-	ExposeErrorCode *bool `default:"true" json:"expose_error_code"`
+	ExposeErrorCode *bool `json:"expose_error_code,omitempty"`
 	// JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).
-	ExtraJwksUris []string `json:"extra_jwks_uris"`
+	ExtraJwksUris []string `json:"extra_jwks_uris,omitempty"`
 	// Destroy any active session for the forbidden requests.
-	ForbiddenDestroySession *bool `default:"true" json:"forbidden_destroy_session"`
+	ForbiddenDestroySession *bool `json:"forbidden_destroy_session,omitempty"`
 	// The error message for the forbidden requests (when not using the redirection).
-	ForbiddenErrorMessage *string `default:"Forbidden" json:"forbidden_error_message"`
+	ForbiddenErrorMessage *string `json:"forbidden_error_message,omitempty"`
 	// Where to redirect the client on forbidden requests.
-	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri"`
+	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri,omitempty"`
 	// The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	GroupsClaim []string `json:"groups_claim,omitempty"`
 	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	GroupsRequired []string `json:"groups_required"`
+	GroupsRequired []string `json:"groups_required,omitempty"`
 	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `json:"hide_credentials,omitempty"`
 	// The HTTP proxy.
-	HTTPProxy *string `default:"null" json:"http_proxy"`
+	HTTPProxy *string `json:"http_proxy,omitempty"`
 	// The HTTP proxy authorization.
-	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	HTTPProxyAuthorization *string `json:"http_proxy_authorization,omitempty"`
 	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
 	HTTPVersion *float64 `json:"http_version,omitempty"`
 	// The HTTPS proxy.
-	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	HTTPSProxy *string `json:"https_proxy,omitempty"`
 	// The HTTPS proxy authorization.
-	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	HTTPSProxyAuthorization *string `json:"https_proxy_authorization,omitempty"`
 	// The name of the parameter used to pass the id token.
-	IDTokenParamName *string `default:"null" json:"id_token_param_name"`
+	IDTokenParamName *string `json:"id_token_param_name,omitempty"`
 	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 	IDTokenParamType []AIGatewayIdentityProviderOpenIDConnectResponseIDTokenParamType `json:"id_token_param_type,omitempty"`
 	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
 	IgnoreSignature []AIGatewayIdentityProviderOpenIDConnectResponseIgnoreSignature `json:"ignore_signature,omitempty"`
 	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
-	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`
+	IntrospectJwtTokens *bool `json:"introspect_jwt_tokens,omitempty"`
 	// The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
-	IntrospectionAccept *AIGatewayIdentityProviderOpenIDConnectResponseIntrospectionAccept `default:"application/json" json:"introspection_accept"`
+	IntrospectionAccept *AIGatewayIdentityProviderOpenIDConnectResponseIntrospectionAccept `json:"introspection_accept,omitempty"`
 	// Check that the introspection response has an `active` claim with a value of `true`.
-	IntrospectionCheckActive *bool `default:"true" json:"introspection_check_active"`
+	IntrospectionCheckActive *bool `json:"introspection_check_active,omitempty"`
 	// The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
-	IntrospectionEndpoint *string `default:"null" json:"introspection_endpoint"`
+	IntrospectionEndpoint *string `json:"introspection_endpoint,omitempty"`
 	// The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	IntrospectionEndpointAuthMethod *AIGatewayIdentityProviderOpenIDConnectResponseIntrospectionEndpointAuthMethod `json:"introspection_endpoint_auth_method,omitempty"`
 	// Extra headers passed from the client to the introspection endpoint.
-	IntrospectionHeadersClient []string `json:"introspection_headers_client"`
+	IntrospectionHeadersClient []string `json:"introspection_headers_client,omitempty"`
 	// Extra header names passed to the introspection endpoint.
-	IntrospectionHeadersNames []string `json:"introspection_headers_names"`
+	IntrospectionHeadersNames []string `json:"introspection_headers_names,omitempty"`
 	// Extra header values passed to the introspection endpoint.
-	IntrospectionHeadersValues []string `json:"introspection_headers_values"`
+	IntrospectionHeadersValues []string `json:"introspection_headers_values,omitempty"`
 	// Introspection hint parameter value passed to the introspection endpoint.
-	IntrospectionHint *string `default:"access_token" json:"introspection_hint"`
+	IntrospectionHint *string `json:"introspection_hint,omitempty"`
 	// Extra post arguments passed from the client to the introspection endpoint.
-	IntrospectionPostArgsClient []string `json:"introspection_post_args_client"`
+	IntrospectionPostArgsClient []string `json:"introspection_post_args_client,omitempty"`
 	// Extra post arguments passed from the client headers to the introspection endpoint.
-	IntrospectionPostArgsClientHeaders []string `json:"introspection_post_args_client_headers"`
+	IntrospectionPostArgsClientHeaders []string `json:"introspection_post_args_client_headers,omitempty"`
 	// Extra post argument names passed to the introspection endpoint.
-	IntrospectionPostArgsNames []string `json:"introspection_post_args_names"`
+	IntrospectionPostArgsNames []string `json:"introspection_post_args_names,omitempty"`
 	// Extra post argument values passed to the introspection endpoint.
-	IntrospectionPostArgsValues []string `json:"introspection_post_args_values"`
+	IntrospectionPostArgsValues []string `json:"introspection_post_args_values,omitempty"`
 	// Designate token's parameter name for introspection.
-	IntrospectionTokenParamName *string `default:"token" json:"introspection_token_param_name"`
+	IntrospectionTokenParamName *string `json:"introspection_token_param_name,omitempty"`
 	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
 	Issuer string `json:"issuer"`
 	// The issuers allowed to be present in the tokens (`iss` claim).
-	IssuersAllowed []string `json:"issuers_allowed"`
+	IssuersAllowed []string `json:"issuers_allowed,omitempty"`
 	// Overrides the `jwks_uri` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.
-	JwksEndpoint *string `default:"null" json:"jwks_endpoint"`
+	JwksEndpoint *string `json:"jwks_endpoint,omitempty"`
 	// The claim to match against the JWT session cookie.
-	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
+	JwtSessionClaim *string `json:"jwt_session_claim,omitempty"`
 	// The name of the JWT session cookie.
-	JwtSessionCookie *string `default:"null" json:"jwt_session_cookie"`
+	JwtSessionCookie *string `json:"jwt_session_cookie,omitempty"`
 	// Use keepalive with the HTTP client.
-	Keepalive *bool `default:"true" json:"keepalive"`
+	Keepalive *bool `json:"keepalive,omitempty"`
 	// Defines leeway time (in seconds) for `auth_time`, `exp`, `iat`, and `nbf` claims
-	Leeway *float64 `default:"0" json:"leeway"`
+	Leeway *float64 `json:"leeway,omitempty"`
 	// What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
-	LoginAction *AIGatewayIdentityProviderOpenIDConnectResponseLoginAction `default:"upstream" json:"login_action"`
+	LoginAction *AIGatewayIdentityProviderOpenIDConnectResponseLoginAction `json:"login_action,omitempty"`
 	// Enable login functionality with specified grants.
 	LoginMethods []AIGatewayIdentityProviderOpenIDConnectResponseLoginMethods `json:"login_methods,omitempty"`
 	// Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
-	LoginRedirectMode *AIGatewayIdentityProviderOpenIDConnectResponseLoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
+	LoginRedirectMode *AIGatewayIdentityProviderOpenIDConnectResponseLoginRedirectMode `json:"login_redirect_mode,omitempty"`
 	// Where to redirect the client when `login_action` is set to `redirect`.
-	LoginRedirectURI []string `json:"login_redirect_uri"`
+	LoginRedirectURI []string `json:"login_redirect_uri,omitempty"`
 	// What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
 	LoginTokens []AIGatewayIdentityProviderOpenIDConnectResponseLoginTokens `json:"login_tokens,omitempty"`
 	// The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.
 	LogoutMethods []AIGatewayIdentityProviderOpenIDConnectResponseLogoutMethods `json:"logout_methods,omitempty"`
 	// The request body argument that activates the logout.
-	LogoutPostArg *string `default:"null" json:"logout_post_arg"`
+	LogoutPostArg *string `json:"logout_post_arg,omitempty"`
 	// The request query argument that activates the logout.
-	LogoutQueryArg *string `default:"null" json:"logout_query_arg"`
+	LogoutQueryArg *string `json:"logout_query_arg,omitempty"`
 	// Where to redirect the client after the logout.
-	LogoutRedirectURI []string `json:"logout_redirect_uri"`
+	LogoutRedirectURI []string `json:"logout_redirect_uri,omitempty"`
 	// Revoke tokens as part of the logout.
 	//
 	// For more granular token revocation, you can also adjust the `logout_revoke_access_token` and `logout_revoke_refresh_token` parameters.
-	LogoutRevoke *bool `default:"false" json:"logout_revoke"`
+	LogoutRevoke *bool `json:"logout_revoke,omitempty"`
 	// Revoke the access token as part of the logout. Requires `logout_revoke` to be set to `true`.
-	LogoutRevokeAccessToken *bool `default:"true" json:"logout_revoke_access_token"`
+	LogoutRevokeAccessToken *bool `json:"logout_revoke_access_token,omitempty"`
 	// Revoke the refresh token as part of the logout. Requires `logout_revoke` to be set to `true`.
-	LogoutRevokeRefreshToken *bool `default:"true" json:"logout_revoke_refresh_token"`
+	LogoutRevokeRefreshToken *bool `json:"logout_revoke_refresh_token,omitempty"`
 	// The request URI suffix that activates the logout.
-	LogoutURISuffix *string `default:"null" json:"logout_uri_suffix"`
+	LogoutURISuffix *string `json:"logout_uri_suffix,omitempty"`
 	// The maximum age (in seconds) compared to the `auth_time` claim.
-	MaxAge *float64 `default:"null" json:"max_age"`
+	MaxAge *float64 `json:"max_age,omitempty"`
 	// Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
-	MtlsIntrospectionEndpoint *string `default:"null" json:"mtls_introspection_endpoint"`
+	MtlsIntrospectionEndpoint *string `json:"mtls_introspection_endpoint,omitempty"`
 	// Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
-	MtlsRevocationEndpoint *string `default:"null" json:"mtls_revocation_endpoint"`
+	MtlsRevocationEndpoint *string `json:"mtls_revocation_endpoint,omitempty"`
 	// Alias for the token endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
-	MtlsTokenEndpoint *string `default:"null" json:"mtls_token_endpoint"`
+	MtlsTokenEndpoint *string `json:"mtls_token_endpoint,omitempty"`
 	// Do not use proxy with these hosts.
-	NoProxy *string `default:"null" json:"no_proxy"`
+	NoProxy *string `json:"no_proxy,omitempty"`
 	// Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 	PasswordParamType []AIGatewayIdentityProviderOpenIDConnectResponsePasswordParamType `json:"password_param_type,omitempty"`
 	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
-	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
+	PreserveQueryArgs *bool `json:"preserve_query_args,omitempty"`
 	// Configuration for Kong Identity principal hydration after token verification.
-	Principals *AIGatewayIdentityProviderOpenIDConnectResponsePrincipals `json:"principals"`
+	Principals *AIGatewayIdentityProviderOpenIDConnectResponsePrincipals `json:"principals,omitempty"`
 	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
-	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
+	ProofOfPossessionAuthMethodsValidation *bool `json:"proof_of_possession_auth_methods_validation,omitempty"`
 	// Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
-	ProofOfPossessionDpop *AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionDpop `default:"off" json:"proof_of_possession_dpop"`
+	ProofOfPossessionDpop *AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionDpop `json:"proof_of_possession_dpop,omitempty"`
 	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
-	ProofOfPossessionMtls *AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	ProofOfPossessionMtls *AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionMtls `json:"proof_of_possession_mtls,omitempty"`
 	// Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
-	ProofOfPossessionMtlsFromHeader *AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
+	ProofOfPossessionMtlsFromHeader *AIGatewayIdentityProviderOpenIDConnectResponseProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header,omitempty"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
-	PushedAuthorizationRequestEndpoint *string `default:"null" json:"pushed_authorization_request_endpoint"`
+	PushedAuthorizationRequestEndpoint *string `json:"pushed_authorization_request_endpoint,omitempty"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	PushedAuthorizationRequestEndpointAuthMethod *AIGatewayIdentityProviderOpenIDConnectResponsePushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
 	// The redirect URI passed to the authorization and token endpoints.
-	RedirectURI []string                                             `json:"redirect_uri"`
-	Redis       *AIGatewayIdentityProviderOpenIDConnectResponseRedis `json:"redis"`
+	RedirectURI []string                                             `json:"redirect_uri,omitempty"`
+	Redis       *AIGatewayIdentityProviderOpenIDConnectResponseRedis `json:"redis,omitempty"`
 	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
-	RediscoveryLifetime *float64 `default:"30" json:"rediscovery_lifetime"`
+	RediscoveryLifetime *float64 `json:"rediscovery_lifetime,omitempty"`
 	// The name of the parameter used to pass the refresh token.
-	RefreshTokenParamName *string `default:"null" json:"refresh_token_param_name"`
+	RefreshTokenParamName *string `json:"refresh_token_param_name,omitempty"`
 	// Where to look for the refresh token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 	RefreshTokenParamType []AIGatewayIdentityProviderOpenIDConnectResponseRefreshTokenParamType `json:"refresh_token_param_type,omitempty"`
 	// Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a `refresh_token` available.
-	RefreshTokens *bool `default:"true" json:"refresh_tokens"`
+	RefreshTokens *bool `json:"refresh_tokens,omitempty"`
 	// Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of `code_challenge_methods_supported`, and enabled automatically (in case the `code_challenge_methods_supported` is missing, the PKCE will not be enabled).
-	RequireProofKeyForCodeExchange *bool `default:"null" json:"require_proof_key_for_code_exchange"`
+	RequireProofKeyForCodeExchange *bool `json:"require_proof_key_for_code_exchange,omitempty"`
 	// Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
-	RequirePushedAuthorizationRequests *bool `default:"null" json:"require_pushed_authorization_requests"`
+	RequirePushedAuthorizationRequests *bool `json:"require_pushed_authorization_requests,omitempty"`
 	// Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of `require_signed_request_object`, and enabled automatically (in case the `require_signed_request_object` is missing, the feature will not be enabled).
-	RequireSignedRequestObject *bool `default:"null" json:"require_signed_request_object"`
+	RequireSignedRequestObject *bool `json:"require_signed_request_object,omitempty"`
 	// Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.
-	ResolveDistributedClaims *bool `default:"false" json:"resolve_distributed_claims"`
+	ResolveDistributedClaims *bool `json:"resolve_distributed_claims,omitempty"`
 	// Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
-	ResponseMode *AIGatewayIdentityProviderOpenIDConnectResponseResponseMode `default:"query" json:"response_mode"`
+	ResponseMode *AIGatewayIdentityProviderOpenIDConnectResponseResponseMode `json:"response_mode,omitempty"`
 	// The response type passed to the authorization endpoint.
 	ResponseType []string `json:"response_type,omitempty"`
 	// Specifies whether to always verify tokens stored in the session.
-	Reverify *bool `default:"false" json:"reverify"`
+	Reverify *bool `json:"reverify,omitempty"`
 	// The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
-	RevocationEndpoint *string `default:"null" json:"revocation_endpoint"`
+	RevocationEndpoint *string `json:"revocation_endpoint,omitempty"`
 	// The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	RevocationEndpointAuthMethod *AIGatewayIdentityProviderOpenIDConnectResponseRevocationEndpointAuthMethod `json:"revocation_endpoint_auth_method,omitempty"`
 	// Designate token's parameter name for revocation.
-	RevocationTokenParamName *string `default:"token" json:"revocation_token_param_name"`
+	RevocationTokenParamName *string `json:"revocation_token_param_name,omitempty"`
 	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	RolesClaim []string `json:"roles_claim,omitempty"`
 	// The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	RolesRequired []string `json:"roles_required"`
+	RolesRequired []string `json:"roles_required,omitempty"`
 	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
-	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
 	// The scopes passed to the authorization and token endpoints.
 	Scopes []string `json:"scopes,omitempty"`
 	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ScopesClaim []string `json:"scopes_claim,omitempty"`
 	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	ScopesRequired []string `json:"scopes_required"`
+	ScopesRequired []string `json:"scopes_required,omitempty"`
 	// Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
-	SearchUserInfo *bool `default:"false" json:"search_user_info"`
+	SearchUserInfo *bool `json:"search_user_info,omitempty"`
 	// Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
-	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
+	SessionAbsoluteTimeout *float64 `json:"session_absolute_timeout,omitempty"`
 	// The session audience, which is the intended target application. For example `"my-application"`.
-	SessionAudience *string `default:"default" json:"session_audience"`
+	SessionAudience *string `json:"session_audience,omitempty"`
 	// Bind the session to data acquired from the HTTP request or connection.
-	SessionBind []AIGatewayIdentityProviderOpenIDConnectResponseSessionBind `json:"session_bind"`
+	SessionBind []AIGatewayIdentityProviderOpenIDConnectResponseSessionBind `json:"session_bind,omitempty"`
 	// The session cookie Domain flag.
-	SessionCookieDomain *string `default:"null" json:"session_cookie_domain"`
+	SessionCookieDomain *string `json:"session_cookie_domain,omitempty"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	SessionCookieHTTPOnly *bool `default:"true" json:"session_cookie_http_only"`
+	SessionCookieHTTPOnly *bool `json:"session_cookie_http_only,omitempty"`
 	// The session cookie name.
-	SessionCookieName *string `default:"session" json:"session_cookie_name"`
+	SessionCookieName *string `json:"session_cookie_name,omitempty"`
 	// The session cookie Path flag.
-	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
+	SessionCookiePath *string `json:"session_cookie_path,omitempty"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	SessionCookieSameSite *AIGatewayIdentityProviderOpenIDConnectResponseSessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
+	SessionCookieSameSite *AIGatewayIdentityProviderOpenIDConnectResponseSessionCookieSameSite `json:"session_cookie_same_site,omitempty"`
 	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
-	SessionCookieSecure *bool `default:"null" json:"session_cookie_secure"`
+	SessionCookieSecure *bool `json:"session_cookie_secure,omitempty"`
 	// When set to `true`, audiences are forced to share the same subject.
-	SessionEnforceSameSubject *bool `default:"false" json:"session_enforce_same_subject"`
+	SessionEnforceSameSubject *bool `json:"session_enforce_same_subject,omitempty"`
 	// When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
-	SessionHashStorageKey *bool `default:"false" json:"session_hash_storage_key"`
+	SessionHashStorageKey *bool `json:"session_hash_storage_key,omitempty"`
 	// When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.
-	SessionHashSubject *bool `default:"false" json:"session_hash_subject"`
+	SessionHashSubject *bool `json:"session_hash_subject,omitempty"`
 	// Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.
-	SessionIdlingTimeout *float64 `default:"900" json:"session_idling_timeout"`
+	SessionIdlingTimeout *float64 `json:"session_idling_timeout,omitempty"`
 	// The memcached host.
-	SessionMemcachedHost *string `default:"127.0.0.1" json:"session_memcached_host"`
+	SessionMemcachedHost *string `json:"session_memcached_host,omitempty"`
 	// The memcached port.
-	SessionMemcachedPort *int64 `default:"11211" json:"session_memcached_port"`
+	SessionMemcachedPort *int64 `json:"session_memcached_port,omitempty"`
 	// The memcached session key prefix.
-	SessionMemcachedPrefix *string `default:"null" json:"session_memcached_prefix"`
+	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
 	// The memcached unix socket path.
-	SessionMemcachedSocket *string `default:"null" json:"session_memcached_socket"`
+	SessionMemcachedSocket *string `json:"session_memcached_socket,omitempty"`
 	// If set to true, uses SSL to connect to memcached
-	SessionMemcachedSsl *bool `default:"null" json:"session_memcached_ssl"`
+	SessionMemcachedSsl *bool `json:"session_memcached_ssl,omitempty"`
 	// If set to true, verifies the validity of the memcached server SSL certificate
-	SessionMemcachedSslVerify *bool `default:"true" json:"session_memcached_ssl_verify"`
+	SessionMemcachedSslVerify *bool `json:"session_memcached_ssl_verify,omitempty"`
 	// Enables or disables persistent sessions.
-	SessionRemember *bool `default:"false" json:"session_remember"`
+	SessionRemember *bool `json:"session_remember,omitempty"`
 	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
-	SessionRememberAbsoluteTimeout *float64 `default:"2592000" json:"session_remember_absolute_timeout"`
+	SessionRememberAbsoluteTimeout *float64 `json:"session_remember_absolute_timeout,omitempty"`
 	// Persistent session cookie name. Use with the `remember` configuration parameter.
-	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
+	SessionRememberCookieName *string `json:"session_remember_cookie_name,omitempty"`
 	// Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
-	SessionRememberRollingTimeout *float64 `default:"604800" json:"session_remember_rolling_timeout"`
+	SessionRememberRollingTimeout *float64 `json:"session_remember_rolling_timeout,omitempty"`
 	// Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.
-	SessionRequestHeaders []AIGatewayIdentityProviderOpenIDConnectResponseSessionRequestHeaders `json:"session_request_headers"`
+	SessionRequestHeaders []AIGatewayIdentityProviderOpenIDConnectResponseSessionRequestHeaders `json:"session_request_headers,omitempty"`
 	// Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
-	SessionResponseHeaders []AIGatewayIdentityProviderOpenIDConnectResponseSessionResponseHeaders `json:"session_response_headers"`
+	SessionResponseHeaders []AIGatewayIdentityProviderOpenIDConnectResponseSessionResponseHeaders `json:"session_response_headers,omitempty"`
 	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
-	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
+	SessionRollingTimeout *float64 `json:"session_rolling_timeout,omitempty"`
 	// The session secret.
-	SessionSecret *string `default:"null" json:"session_secret"`
+	SessionSecret *string `json:"session_secret,omitempty"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
-	SessionStorage *AIGatewayIdentityProviderOpenIDConnectResponseSessionStorage `default:"cookie" json:"session_storage"`
+	SessionStorage *AIGatewayIdentityProviderOpenIDConnectResponseSessionStorage `json:"session_storage,omitempty"`
 	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
-	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
+	SessionStoreMetadata *bool `json:"session_store_metadata,omitempty"`
 	// Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Network IO timeout in milliseconds.
-	Timeout *float64 `default:"10000" json:"timeout"`
+	Timeout *float64 `json:"timeout,omitempty"`
 	// ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
-	TLSClientAuthCertID *string `default:"null" json:"tls_client_auth_cert_id"`
+	TLSClientAuthCertID *string `json:"tls_client_auth_cert_id,omitempty"`
 	// Verify identity provider server certificate during mTLS client authentication.
-	TLSClientAuthSslVerify *bool `default:"true" json:"tls_client_auth_ssl_verify"`
+	TLSClientAuthSslVerify *bool `json:"tls_client_auth_ssl_verify,omitempty"`
 	// Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.
-	TokenCacheKeyIncludeScope *bool `default:"false" json:"token_cache_key_include_scope"`
+	TokenCacheKeyIncludeScope *bool `json:"token_cache_key_include_scope,omitempty"`
 	// The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
-	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	TokenEndpoint *string `json:"token_endpoint,omitempty"`
 	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	TokenEndpointAuthMethod *AIGatewayIdentityProviderOpenIDConnectResponseTokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
 	// Details on how to accept tokens from other identity providers.
-	TokenExchange *AIGatewayIdentityProviderOpenIDConnectResponseTokenExchange `json:"token_exchange"`
+	TokenExchange *AIGatewayIdentityProviderOpenIDConnectResponseTokenExchange `json:"token_exchange,omitempty"`
 	// Endpoint used to perform the legacy token exchange.
-	TokenExchangeEndpoint *string `default:"null" json:"token_exchange_endpoint"`
+	TokenExchangeEndpoint *string `json:"token_exchange_endpoint,omitempty"`
 	// Extra headers passed from the client to the token endpoint.
-	TokenHeadersClient []string `json:"token_headers_client"`
+	TokenHeadersClient []string `json:"token_headers_client,omitempty"`
 	// Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
-	TokenHeadersGrants []AIGatewayIdentityProviderOpenIDConnectResponseTokenHeadersGrants `json:"token_headers_grants"`
+	TokenHeadersGrants []AIGatewayIdentityProviderOpenIDConnectResponseTokenHeadersGrants `json:"token_headers_grants,omitempty"`
 	// Extra header names passed to the token endpoint.
-	TokenHeadersNames []string `json:"token_headers_names"`
+	TokenHeadersNames []string `json:"token_headers_names,omitempty"`
 	// Add a prefix to the token endpoint response headers before forwarding them to the downstream client.
-	TokenHeadersPrefix *string `default:"null" json:"token_headers_prefix"`
+	TokenHeadersPrefix *string `json:"token_headers_prefix,omitempty"`
 	// The names of token endpoint response headers to forward to the downstream client.
-	TokenHeadersReplay []string `json:"token_headers_replay"`
+	TokenHeadersReplay []string `json:"token_headers_replay,omitempty"`
 	// Extra header values passed to the token endpoint.
-	TokenHeadersValues []string `json:"token_headers_values"`
+	TokenHeadersValues []string `json:"token_headers_values,omitempty"`
 	// Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.
-	TokenPostArgsClient []string `json:"token_post_args_client"`
+	TokenPostArgsClient []string `json:"token_post_args_client,omitempty"`
 	// Extra post argument names passed to the token endpoint.
-	TokenPostArgsNames []string `json:"token_post_args_names"`
+	TokenPostArgsNames []string `json:"token_post_args_names,omitempty"`
 	// Extra post argument values passed to the token endpoint.
-	TokenPostArgsValues []string `json:"token_post_args_values"`
+	TokenPostArgsValues []string `json:"token_post_args_values,omitempty"`
 	// Destroy any active session for the unauthorized requests.
-	UnauthorizedDestroySession *bool `default:"true" json:"unauthorized_destroy_session"`
+	UnauthorizedDestroySession *bool `json:"unauthorized_destroy_session,omitempty"`
 	// The error message for the unauthorized requests (when not using the redirection).
-	UnauthorizedErrorMessage *string `default:"Unauthorized" json:"unauthorized_error_message"`
+	UnauthorizedErrorMessage *string `json:"unauthorized_error_message,omitempty"`
 	// Where to redirect the client on unauthorized requests.
-	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri"`
+	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri,omitempty"`
 	// Where to redirect the client when unexpected errors happen with the requests.
-	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri"`
+	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri,omitempty"`
 	// The upstream access token header.
-	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
+	UpstreamAccessTokenHeader *string `json:"upstream_access_token_header,omitempty"`
 	// The upstream access token JWK header.
-	UpstreamAccessTokenJwkHeader *string `default:"null" json:"upstream_access_token_jwk_header"`
+	UpstreamAccessTokenJwkHeader *string `json:"upstream_access_token_jwk_header,omitempty"`
 	// The upstream claim to header mappings.
-	UpstreamHeaders []AIGatewayIdentityProviderOpenIDConnectResponseUpstreamHeaders `json:"upstream_headers"`
+	UpstreamHeaders []AIGatewayIdentityProviderOpenIDConnectResponseUpstreamHeaders `json:"upstream_headers,omitempty"`
 	// The upstream header claims. Only top level claims are supported.
-	UpstreamHeadersClaims []string `json:"upstream_headers_claims"`
+	UpstreamHeadersClaims []string `json:"upstream_headers_claims,omitempty"`
 	// The upstream header names for the claim values.
-	UpstreamHeadersNames []string `json:"upstream_headers_names"`
+	UpstreamHeadersNames []string `json:"upstream_headers_names,omitempty"`
 	// The upstream id token header.
-	UpstreamIDTokenHeader *string `default:"null" json:"upstream_id_token_header"`
+	UpstreamIDTokenHeader *string `json:"upstream_id_token_header,omitempty"`
 	// The upstream id token JWK header.
-	UpstreamIDTokenJwkHeader *string `default:"null" json:"upstream_id_token_jwk_header"`
+	UpstreamIDTokenJwkHeader *string `json:"upstream_id_token_jwk_header,omitempty"`
 	// The upstream introspection header.
-	UpstreamIntrospectionHeader *string `default:"null" json:"upstream_introspection_header"`
+	UpstreamIntrospectionHeader *string `json:"upstream_introspection_header,omitempty"`
 	// The upstream introspection JWT header.
-	UpstreamIntrospectionJwtHeader *string `default:"null" json:"upstream_introspection_jwt_header"`
+	UpstreamIntrospectionJwtHeader *string `json:"upstream_introspection_jwt_header,omitempty"`
 	// The upstream refresh token header.
-	UpstreamRefreshTokenHeader *string `default:"null" json:"upstream_refresh_token_header"`
+	UpstreamRefreshTokenHeader *string `json:"upstream_refresh_token_header,omitempty"`
 	// The upstream session id header.
-	UpstreamSessionIDHeader *string `default:"null" json:"upstream_session_id_header"`
+	UpstreamSessionIDHeader *string `json:"upstream_session_id_header,omitempty"`
 	// The upstream user info header.
-	UpstreamUserInfoHeader *string `default:"null" json:"upstream_user_info_header"`
+	UpstreamUserInfoHeader *string `json:"upstream_user_info_header,omitempty"`
 	// The upstream user info JWT header (in case the user info returns a JWT response).
-	UpstreamUserInfoJwtHeader *string `default:"null" json:"upstream_user_info_jwt_header"`
+	UpstreamUserInfoJwtHeader *string `json:"upstream_user_info_jwt_header,omitempty"`
 	// The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
-	UserinfoAccept *AIGatewayIdentityProviderOpenIDConnectResponseUserinfoAccept `default:"application/json" json:"userinfo_accept"`
+	UserinfoAccept *AIGatewayIdentityProviderOpenIDConnectResponseUserinfoAccept `json:"userinfo_accept,omitempty"`
 	// The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
-	UserinfoEndpoint *string `default:"null" json:"userinfo_endpoint"`
+	UserinfoEndpoint *string `json:"userinfo_endpoint,omitempty"`
 	// Extra headers passed from the client to the user info endpoint.
-	UserinfoHeadersClient []string `json:"userinfo_headers_client"`
+	UserinfoHeadersClient []string `json:"userinfo_headers_client,omitempty"`
 	// Extra header names passed to the user info endpoint.
-	UserinfoHeadersNames []string `json:"userinfo_headers_names"`
+	UserinfoHeadersNames []string `json:"userinfo_headers_names,omitempty"`
 	// Extra header values passed to the user info endpoint.
-	UserinfoHeadersValues []string `json:"userinfo_headers_values"`
+	UserinfoHeadersValues []string `json:"userinfo_headers_values,omitempty"`
 	// Extra query arguments passed from the client to the user info endpoint.
-	UserinfoQueryArgsClient []string `json:"userinfo_query_args_client"`
+	UserinfoQueryArgsClient []string `json:"userinfo_query_args_client,omitempty"`
 	// Extra query argument names passed to the user info endpoint.
-	UserinfoQueryArgsNames []string `json:"userinfo_query_args_names"`
+	UserinfoQueryArgsNames []string `json:"userinfo_query_args_names,omitempty"`
 	// Extra query argument values passed to the user info endpoint.
-	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values"`
+	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values,omitempty"`
 	// If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with `config.issuer`.
-	UsingPseudoIssuer *bool `default:"false" json:"using_pseudo_issuer"`
+	UsingPseudoIssuer *bool `json:"using_pseudo_issuer,omitempty"`
 	// Verify tokens for standard claims.
-	VerifyClaims *bool `default:"true" json:"verify_claims"`
+	VerifyClaims *bool `json:"verify_claims,omitempty"`
 	// Verify nonce on authorization code flow.
-	VerifyNonce *bool `default:"true" json:"verify_nonce"`
+	VerifyNonce *bool `json:"verify_nonce,omitempty"`
 	// Verify plugin configuration against discovery.
-	VerifyParameters *bool `default:"false" json:"verify_parameters"`
+	VerifyParameters *bool `json:"verify_parameters,omitempty"`
 	// Verify signature of tokens.
-	VerifySignature *bool `default:"true" json:"verify_signature"`
+	VerifySignature *bool `json:"verify_signature,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectResponseConfig) MarshalJSON() ([]byte, error) {
@@ -4714,7 +4714,7 @@ type AIGatewayIdentityProviderOpenIDConnectResponse struct {
 	type_ string `const:"openid-connect" json:"type"`
 	// Configuration for the OpenID Connect identity provider.
 	//
-	Config *AIGatewayIdentityProviderOpenIDConnectResponseConfig `json:"config"`
+	Config *AIGatewayIdentityProviderOpenIDConnectResponseConfig `json:"config,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.

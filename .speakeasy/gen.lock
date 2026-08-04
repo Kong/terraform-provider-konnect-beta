@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 7858eca8eb533e8da399b703d3efb3b1
+  docChecksum: c1490c55476a84b4b88c36f91630831d
   docVersion: 2.0.0
   speakeasyVersion: 1.791.1
   generationVersion: 2.926.2
   releaseVersion: 0.20.0
   configChecksum: e1ff1a03d861f4cd090a01223ac64ea9
 persistentEdits:
-  generation_id: 0ae77075-5f05-49f6-8cdd-3fa213656083
-  pristine_commit_hash: fca7f892d904538a42b3d6441a721b634171d366
-  pristine_tree_hash: ad06344607c53a59da2e02c16ded1c02fbecae3f
+  generation_id: 3f823321-b81a-4f75-8c27-57b916dbfd3f
+  pristine_commit_hash: 3817ad890d4509b01e9559fee3a5d866ba074f4f
+  pristine_tree_hash: 51d3c77deeeeee1ecd3682efac99456bb32398f5
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -164,8 +164,8 @@ trackedFiles:
     pristine_git_object: 965406f6cc94a47272322e1e1c2128142d9798c6
   examples/resources/konnect-beta_ai_gateway_identity_provider/resource.tf:
     id: e54ef91b66e8
-    last_write_checksum: sha1:50da8eafb9da4d3ae55ad8fdefb324b0fea3be67
-    pristine_git_object: fd2b4382951749bdefff974adb3b83c5efa38db5
+    last_write_checksum: sha1:65fcfce7a758aeba66fe8c885c291e66bac710a2
+    pristine_git_object: 950ce3631544f2025cf01255e8f9bba8f8f9e21e
   examples/resources/konnect-beta_ai_gateway_mcp_server/import-by-string-id.tf:
     id: 18665893b01d
     last_write_checksum: sha1:cabecae49db95c561d9e0405897909632379338e
@@ -1492,12 +1492,12 @@ trackedFiles:
     pristine_git_object: 6132cf94dc61e44477b71334efad13edefa0908e
   internal/provider/aigatewayidentityprovider_resource.go:
     id: 6bbb25464c8b
-    last_write_checksum: sha1:c7d17cbe2a3c4565dbf2739d65f4aae37e0b5fb1
-    pristine_git_object: 5c7f68162204a6877c5356665f27156dab78b163
+    last_write_checksum: sha1:34f5019734f2185d4e04b39668df5d1261a62457
+    pristine_git_object: bf1d05938a1592e2051211967bc63b4cb8803e8c
   internal/provider/aigatewayidentityprovider_resource_sdk.go:
     id: 98ed3c773c8d
-    last_write_checksum: sha1:71e356a4216ff3862289b06a5824ed91b1132775
-    pristine_git_object: 5ea260cfda591dc84963e44c4f2bb1b9795eaf9c
+    last_write_checksum: sha1:49ac9b50878179c9373ebf3474d9c3853e4d9062
+    pristine_git_object: 80e3b3ac0613fd328254087a34583ec64fc7cfce
   internal/provider/aigatewaymcpserver_resource.go:
     id: dad702e127aa
     last_write_checksum: sha1:3d243f586dc87ab5a7d6cc9bf134c3c6a5239e5c
@@ -4961,7 +4961,7 @@ trackedFiles:
   internal/sdk/konnectbeta.go:
     id: 34b8a82d72ce
     last_write_checksum: sha1:49743be5313a6024a270d1026dd5cf200177e676
-    pristine_git_object: 08b33b7eb58ab2d19f0e1a073e04d38465321a34
+    pristine_git_object: 83e79a4134c1aed5b3e87bb85ad09402ea683808
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:8ebf7afb1e0baa8fde373eff36037b4ca1391d0a
@@ -6820,20 +6820,20 @@ trackedFiles:
     pristine_git_object: 1d0b731e22921ba36bd94df5a2a7e4c3d5385358
   internal/sdk/models/shared/aigatewayidentityproviderkeyauth.go:
     id: ef59e58cf438
-    last_write_checksum: sha1:38f99a055ac7f5f9410634f2ec88959692d0096b
-    pristine_git_object: 7f50bde0ee2294321ebb0464450fe9529228c6d8
+    last_write_checksum: sha1:f4ca6976f258ff423cd2a5a47385862bf1a0e01a
+    pristine_git_object: 6ae4486f77c30e80df42900eec57292c6b72ce9b
   internal/sdk/models/shared/aigatewayidentityproviderkeyauthresponse.go:
     id: 0a12b6623088
-    last_write_checksum: sha1:9c6bb489ce40c0a756121ae0a831c43b1ff28bae
-    pristine_git_object: 7f5df204a74e000ecbd192accf961dfa06e281c1
+    last_write_checksum: sha1:762e2d5aacc1e933af09fa111817bf3c8e1a11cd
+    pristine_git_object: fa043d62f8bc0dea557ad59f015a7f0dc82d1281
   internal/sdk/models/shared/aigatewayidentityprovideropenidconnect.go:
     id: 023e503867b9
-    last_write_checksum: sha1:08591a819e478c0b1a84b56faf3251529b0adcf7
-    pristine_git_object: bb25f802f9e22b2a3283206921f78879816c917b
+    last_write_checksum: sha1:d2ba7401c617a7b4728d6cf12bc9cca10eff218d
+    pristine_git_object: 63b4136c89ffe2c7132b6b55f6b2554376c47bbb
   internal/sdk/models/shared/aigatewayidentityprovideropenidconnectresponse.go:
     id: d33845759d47
-    last_write_checksum: sha1:2966590d440be9cf9d794594c83d82c827a54d92
-    pristine_git_object: eedbda3496986ed3aaa1f8178b52c492ce7261ac
+    last_write_checksum: sha1:37b5883fbd8fdb9e300849563c6899a4f656ebf1
+    pristine_git_object: ce2a75a98c49e80078d2dd19dd6eb718847a8271
   internal/sdk/models/shared/aigatewayloggingconfig.go:
     id: be5c520519ca
     last_write_checksum: sha1:03a3596e18b598649edf060d2a3371307215a5e0
@@ -17374,10 +17374,10 @@ examples:
         path:
           gatewayId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       requestBody:
-        application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": null}
+        application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": {}}
       responses:
         "201":
-          application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": null, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": {}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 200822, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -17396,7 +17396,7 @@ examples:
           identityProviderIdOrName: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       responses:
         "200":
-          application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": null, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": {}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -17412,10 +17412,10 @@ examples:
           gatewayId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
           identityProviderIdOrName: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       requestBody:
-        application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": null}
+        application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "key-auth", "config": {}}
       responses:
         "200":
-          application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "openid-connect", "config": null, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"display_name": "Okta AI SE", "name": "okta-ai-se", "type": "openid-connect", "config": {"cache_tokens_salt": "<value>", "issuer": "diners_club"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 991108, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":

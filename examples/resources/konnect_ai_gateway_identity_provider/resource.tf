@@ -9,7 +9,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
         {
           id     = "...my_id..."
           region = "...my_region..."
-          scope  = "cp"
+          scope  = "realm"
         }
       ]
       key_in_body   = false
@@ -19,12 +19,12 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
         "..."
       ]
       principals = {
-        directory     = "default"
-        enabled       = false
+        directory     = "...my_directory..."
+        enabled       = true
         error_on_miss = true
       }
       realm            = "...my_realm..."
-      run_on_preflight = true
+      run_on_preflight = false
     }
     display_name = "Okta AI SE"
     labels = {
@@ -55,9 +55,9 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       ]
       authorization_cookie_domain    = "...my_authorization_cookie_domain..."
       authorization_cookie_http_only = true
-      authorization_cookie_name      = "authorization"
-      authorization_cookie_path      = "/"
-      authorization_cookie_same_site = "Default"
+      authorization_cookie_name      = "...my_authorization_cookie_name..."
+      authorization_cookie_path      = "...my_authorization_cookie_path..."
+      authorization_cookie_same_site = "Lax"
       authorization_cookie_secure    = false
       authorization_endpoint         = "...my_authorization_endpoint..."
       authorization_query_args_client = [
@@ -69,7 +69,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       authorization_query_args_values = [
         "..."
       ]
-      authorization_rolling_timeout = 600
+      authorization_rolling_timeout = 4.95
       bearer_token_cookie_name      = "...my_bearer_token_cookie_name..."
       bearer_token_header_name      = "...my_bearer_token_header_name..."
       bearer_token_param_type = [
@@ -77,10 +77,10 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       ]
       by_username_ignore_case = false
       cache_introspection     = true
-      cache_token_exchange    = true
-      cache_tokens            = true
+      cache_token_exchange    = false
+      cache_tokens            = false
       cache_tokens_salt       = "...my_cache_tokens_salt..."
-      cache_ttl               = 3600
+      cache_ttl               = 0.89
       cache_ttl_max           = 7.18
       cache_ttl_min           = 0.73
       cache_ttl_neg           = 6.44
@@ -92,7 +92,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       client_alg = [
         "HS256"
       ]
-      client_arg = "client_id"
+      client_arg = "...my_client_arg..."
       client_auth = [
         "self_signed_tls_client_auth"
       ]
@@ -147,7 +147,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
           aws_access_key_id        = "...my_aws_access_key_id..."
           aws_assume_role_arn      = "...my_aws_assume_role_arn..."
           aws_cache_name           = "...my_aws_cache_name..."
-          aws_is_serverless        = true
+          aws_is_serverless        = false
           aws_region               = "...my_aws_region..."
           aws_role_session_name    = "...my_aws_role_session_name..."
           aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -156,39 +156,39 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 5
+        cluster_max_redirections = 8
         cluster_nodes = [
           {
-            ip   = "127.0.0.1"
-            port = 6379
+            ip   = "...my_ip..."
+            port = 23504
           }
         ]
-        connect_timeout       = 2000
-        connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
+        connect_timeout       = 389588841
+        connection_is_proxied = true
+        database              = 5
+        host                  = "...my_host..."
         keepalive_backlog     = 23143264
-        keepalive_pool_size   = 256
+        keepalive_pool_size   = 522008638
         password              = "...my_password..."
-        port                  = "6379"
-        read_timeout          = 2000
-        send_timeout          = 2000
+        port                  = "...my_port..."
+        read_timeout          = 2070681451
+        send_timeout          = 903880050
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "127.0.0.1"
-            port = 6379
+            host = "...my_host..."
+            port = 32196
           }
         ]
         sentinel_password = "...my_sentinel_password..."
         sentinel_role     = "slave"
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
-        ssl               = false
-        ssl_verify        = true
+        ssl               = true
+        ssl_verify        = false
         username          = "...my_username..."
       }
-      cluster_cache_strategy = "off"
+      cluster_cache_strategy = "redis"
       consumer_by = [
         "username"
       ]
@@ -201,7 +201,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
         "..."
       ]
       consumer_groups_optional = false
-      consumer_optional        = false
+      consumer_optional        = true
       credential_claim = [
         "..."
       ]
@@ -214,7 +214,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       discovery_headers_values = [
         "..."
       ]
-      display_errors = false
+      display_errors = true
       domains = [
         "..."
       ]
@@ -242,7 +242,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       downstream_session_id_header        = "...my_downstream_session_id_header..."
       downstream_user_info_header         = "...my_downstream_user_info_header..."
       downstream_user_info_jwt_header     = "...my_downstream_user_info_jwt_header..."
-      dpop_proof_lifetime                 = 300
+      dpop_proof_lifetime                 = 8.5
       dpop_use_nonce                      = false
       enable_hs_signatures                = false
       end_session_endpoint                = "...my_end_session_endpoint..."
@@ -250,8 +250,8 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       extra_jwks_uris = [
         "..."
       ]
-      forbidden_destroy_session = true
-      forbidden_error_message   = "Forbidden"
+      forbidden_destroy_session = false
+      forbidden_error_message   = "...my_forbidden_error_message..."
       forbidden_redirect_uri = [
         "..."
       ]
@@ -288,7 +288,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       introspection_headers_values = [
         "..."
       ]
-      introspection_hint = "access_token"
+      introspection_hint = "...my_introspection_hint..."
       introspection_post_args_client = [
         "..."
       ]
@@ -301,21 +301,21 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       introspection_post_args_values = [
         "..."
       ]
-      introspection_token_param_name = "token"
+      introspection_token_param_name = "...my_introspection_token_param_name..."
       issuer                         = "...my_issuer..."
       issuers_allowed = [
         "..."
       ]
       jwks_endpoint      = "...my_jwks_endpoint..."
-      jwt_session_claim  = "sid"
+      jwt_session_claim  = "...my_jwt_session_claim..."
       jwt_session_cookie = "...my_jwt_session_cookie..."
-      keepalive          = true
-      leeway             = 0
-      login_action       = "upstream"
+      keepalive          = false
+      leeway             = 8.81
+      login_action       = "response"
       login_methods = [
         "client_credentials"
       ]
-      login_redirect_mode = "fragment"
+      login_redirect_mode = "query"
       login_redirect_uri = [
         "..."
       ]
@@ -330,9 +330,9 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       logout_redirect_uri = [
         "..."
       ]
-      logout_revoke               = false
+      logout_revoke               = true
       logout_revoke_access_token  = true
-      logout_revoke_refresh_token = true
+      logout_revoke_refresh_token = false
       logout_uri_suffix           = "...my_logout_uri_suffix..."
       max_age                     = 9.27
       mtls_introspection_endpoint = "...my_mtls_introspection_endpoint..."
@@ -344,10 +344,10 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       ]
       preserve_query_args = false
       principals = {
-        directory             = "default"
-        enabled               = false
-        error_on_miss         = true
-        match_consumer        = true
+        directory             = "...my_directory..."
+        enabled               = true
+        error_on_miss         = false
+        match_consumer        = false
         match_consumer_groups = true
         principal_by          = "...my_principal_by..."
         principal_claim = [
@@ -362,12 +362,12 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
         ca_certificates = [
           "..."
         ]
-        cert_cache_ttl            = 60000
+        cert_cache_ttl            = 2.81
         certificate_header_format = "url_encoded"
         certificate_header_name   = "...my_certificate_header_name..."
         http_proxy_host           = "...my_http_proxy_host..."
         http_proxy_port           = 358
-        http_timeout              = 30000
+        http_timeout              = 3.21
         https_proxy_host          = "...my_https_proxy_host..."
         https_proxy_port          = 26146
         revocation_check_mode     = "IGNORE_CA_ERROR"
@@ -394,29 +394,29 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 5
+        cluster_max_redirections = 6
         cluster_nodes = [
           {
-            ip   = "127.0.0.1"
-            port = 6379
+            ip   = "...my_ip..."
+            port = 22648
           }
         ]
-        connect_timeout       = 2000
+        connect_timeout       = 1281691808
         connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
+        database              = 3
+        host                  = "...my_host..."
         keepalive_backlog     = 1535934402
-        keepalive_pool_size   = 256
+        keepalive_pool_size   = 281030404
         password              = "...my_password..."
-        port                  = "6379"
+        port                  = "...my_port..."
         prefix                = "...my_prefix..."
-        read_timeout          = 2000
-        send_timeout          = 2000
+        read_timeout          = 1033518283
+        send_timeout          = 1612129646
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "127.0.0.1"
-            port = 6379
+            host = "...my_host..."
+            port = 24150
           }
         ]
         sentinel_password = "...my_sentinel_password..."
@@ -428,7 +428,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
         ssl_verify        = true
         username          = "...my_username..."
       }
-      rediscovery_lifetime     = 30
+      rediscovery_lifetime     = 0.31
       refresh_token_param_name = "...my_refresh_token_param_name..."
       refresh_token_param_type = [
         "header"
@@ -437,22 +437,22 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       require_proof_key_for_code_exchange   = false
       require_pushed_authorization_requests = false
       require_signed_request_object         = false
-      resolve_distributed_claims            = false
-      response_mode                         = "query"
+      resolve_distributed_claims            = true
+      response_mode                         = "fragment"
       response_type = [
         "..."
       ]
-      reverify                        = false
+      reverify                        = true
       revocation_endpoint             = "...my_revocation_endpoint..."
       revocation_endpoint_auth_method = "private_key_jwt"
-      revocation_token_param_name     = "token"
+      revocation_token_param_name     = "...my_revocation_token_param_name..."
       roles_claim = [
         "..."
       ]
       roles_required = [
         "..."
       ]
-      run_on_preflight = true
+      run_on_preflight = false
       scopes = [
         "..."
       ]
@@ -463,58 +463,58 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
         "..."
       ]
       search_user_info         = false
-      session_absolute_timeout = 86400
-      session_audience         = "default"
+      session_absolute_timeout = 9.21
+      session_audience         = "...my_session_audience..."
       session_bind = [
         "user-agent"
       ]
       session_cookie_domain             = "...my_session_cookie_domain..."
       session_cookie_http_only          = true
-      session_cookie_name               = "session"
-      session_cookie_path               = "/"
-      session_cookie_same_site          = "Lax"
+      session_cookie_name               = "...my_session_cookie_name..."
+      session_cookie_path               = "...my_session_cookie_path..."
+      session_cookie_same_site          = "Default"
       session_cookie_secure             = true
       session_enforce_same_subject      = false
       session_hash_storage_key          = false
       session_hash_subject              = false
-      session_idling_timeout            = 900
-      session_memcached_host            = "127.0.0.1"
-      session_memcached_port            = 11211
+      session_idling_timeout            = 7.05
+      session_memcached_host            = "...my_session_memcached_host..."
+      session_memcached_port            = 1687
       session_memcached_prefix          = "...my_session_memcached_prefix..."
       session_memcached_socket          = "...my_session_memcached_socket..."
       session_memcached_ssl             = true
-      session_memcached_ssl_verify      = true
-      session_remember                  = false
-      session_remember_absolute_timeout = 2592000
-      session_remember_cookie_name      = "remember"
-      session_remember_rolling_timeout  = 604800
+      session_memcached_ssl_verify      = false
+      session_remember                  = true
+      session_remember_absolute_timeout = 9.29
+      session_remember_cookie_name      = "...my_session_remember_cookie_name..."
+      session_remember_rolling_timeout  = 7.44
       session_request_headers = [
         "audience"
       ]
       session_response_headers = [
         "idling-timeout"
       ]
-      session_rolling_timeout       = 3600
+      session_rolling_timeout       = 3.66
       session_secret                = "...my_session_secret..."
-      session_storage               = "cookie"
-      session_store_metadata        = false
+      session_storage               = "memcached"
+      session_store_metadata        = true
       ssl_verify                    = true
-      timeout                       = 10000
+      timeout                       = 1.86
       tls_client_auth_cert_id       = "...my_tls_client_auth_cert_id..."
-      tls_client_auth_ssl_verify    = true
-      token_cache_key_include_scope = false
+      tls_client_auth_ssl_verify    = false
+      token_cache_key_include_scope = true
       token_endpoint                = "...my_token_endpoint..."
       token_endpoint_auth_method    = "private_key_jwt"
       token_exchange = {
         cache = {
-          enabled = true
+          enabled = false
           ttl     = 1
         }
         request = {
           audience = [
             "..."
           ]
-          empty_audience = false
+          empty_audience = true
           empty_scopes   = false
           scopes = [
             "..."
@@ -538,7 +538,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
             }
             issuer           = "...my_issuer..."
             jwks_uri         = "...my_jwks_uri..."
-            verify_signature = false
+            verify_signature = true
           }
         ]
       }
@@ -568,15 +568,15 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       token_post_args_values = [
         "..."
       ]
-      unauthorized_destroy_session = true
-      unauthorized_error_message   = "Unauthorized"
+      unauthorized_destroy_session = false
+      unauthorized_error_message   = "...my_unauthorized_error_message..."
       unauthorized_redirect_uri = [
         "..."
       ]
       unexpected_redirect_uri = [
         "..."
       ]
-      upstream_access_token_header     = "authorization:bearer"
+      upstream_access_token_header     = "...my_upstream_access_token_header..."
       upstream_access_token_jwk_header = "...my_upstream_access_token_jwk_header..."
       upstream_headers = [
         {
@@ -600,7 +600,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       upstream_session_id_header        = "...my_upstream_session_id_header..."
       upstream_user_info_header         = "...my_upstream_user_info_header..."
       upstream_user_info_jwt_header     = "...my_upstream_user_info_jwt_header..."
-      userinfo_accept                   = "application/json"
+      userinfo_accept                   = "application/jwt"
       userinfo_endpoint                 = "...my_userinfo_endpoint..."
       userinfo_headers_client = [
         "..."
@@ -620,11 +620,11 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       userinfo_query_args_values = [
         "..."
       ]
-      using_pseudo_issuer = false
+      using_pseudo_issuer = true
       verify_claims       = true
-      verify_nonce        = true
-      verify_parameters   = false
-      verify_signature    = true
+      verify_nonce        = false
+      verify_parameters   = true
+      verify_signature    = false
     }
     display_name = "Okta AI SE"
     labels = {

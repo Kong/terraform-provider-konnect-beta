@@ -24,24 +24,20 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				r.KeyAuth.Config = &tfTypes.AIGatewayIdentityProviderKeyAuthConfig{}
 				r.KeyAuth.Config.Anonymous = types.StringPointerValue(resp.AIGatewayIdentityProviderKeyAuthResponse.Config.Anonymous)
 				r.KeyAuth.Config.HideCredentials = types.BoolPointerValue(resp.AIGatewayIdentityProviderKeyAuthResponse.Config.HideCredentials)
-				if resp.AIGatewayIdentityProviderKeyAuthResponse.Config.IdentityRealms != nil {
-					r.KeyAuth.Config.IdentityRealms = []tfTypes.IdentityRealms{}
+				r.KeyAuth.Config.IdentityRealms = []tfTypes.IdentityRealms{}
 
-					for _, identityRealmsItem := range resp.AIGatewayIdentityProviderKeyAuthResponse.Config.IdentityRealms {
-						var identityRealms tfTypes.IdentityRealms
+				for _, identityRealmsItem := range resp.AIGatewayIdentityProviderKeyAuthResponse.Config.IdentityRealms {
+					var identityRealms tfTypes.IdentityRealms
 
-						identityRealms.ID = types.StringPointerValue(identityRealmsItem.ID)
-						identityRealms.Region = types.StringPointerValue(identityRealmsItem.Region)
-						if identityRealmsItem.Scope != nil {
-							identityRealms.Scope = types.StringValue(string(*identityRealmsItem.Scope))
-						} else {
-							identityRealms.Scope = types.StringNull()
-						}
-
-						r.KeyAuth.Config.IdentityRealms = append(r.KeyAuth.Config.IdentityRealms, identityRealms)
+					identityRealms.ID = types.StringPointerValue(identityRealmsItem.ID)
+					identityRealms.Region = types.StringPointerValue(identityRealmsItem.Region)
+					if identityRealmsItem.Scope != nil {
+						identityRealms.Scope = types.StringValue(string(*identityRealmsItem.Scope))
+					} else {
+						identityRealms.Scope = types.StringNull()
 					}
-				} else {
-					r.KeyAuth.Config.IdentityRealms = nil
+
+					r.KeyAuth.Config.IdentityRealms = append(r.KeyAuth.Config.IdentityRealms, identityRealms)
 				}
 				r.KeyAuth.Config.KeyInBody = types.BoolPointerValue(resp.AIGatewayIdentityProviderKeyAuthResponse.Config.KeyInBody)
 				r.KeyAuth.Config.KeyInHeader = types.BoolPointerValue(resp.AIGatewayIdentityProviderKeyAuthResponse.Config.KeyInHeader)
@@ -91,37 +87,25 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 			} else {
 				r.OpenidConnect.Config = &tfTypes.AIGatewayIdentityProviderOpenIDConnectConfig{}
 				r.OpenidConnect.Config.Anonymous = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Anonymous)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Audience != nil {
-					r.OpenidConnect.Config.Audience = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Audience))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Audience {
-						r.OpenidConnect.Config.Audience = append(r.OpenidConnect.Config.Audience, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.Audience = nil
+				r.OpenidConnect.Config.Audience = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Audience))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Audience {
+					r.OpenidConnect.Config.Audience = append(r.OpenidConnect.Config.Audience, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.AudienceClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AudienceClaim))
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AudienceClaim {
 					r.OpenidConnect.Config.AudienceClaim = append(r.OpenidConnect.Config.AudienceClaim, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AudienceRequired != nil {
-					r.OpenidConnect.Config.AudienceRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AudienceRequired))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AudienceRequired {
-						r.OpenidConnect.Config.AudienceRequired = append(r.OpenidConnect.Config.AudienceRequired, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.AudienceRequired = nil
+				r.OpenidConnect.Config.AudienceRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AudienceRequired))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AudienceRequired {
+					r.OpenidConnect.Config.AudienceRequired = append(r.OpenidConnect.Config.AudienceRequired, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.AuthMethods = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthMethods))
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthMethods {
 					r.OpenidConnect.Config.AuthMethods = append(r.OpenidConnect.Config.AuthMethods, types.StringValue(string(v)))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthenticatedGroupsClaim != nil {
-					r.OpenidConnect.Config.AuthenticatedGroupsClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthenticatedGroupsClaim))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthenticatedGroupsClaim {
-						r.OpenidConnect.Config.AuthenticatedGroupsClaim = append(r.OpenidConnect.Config.AuthenticatedGroupsClaim, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.AuthenticatedGroupsClaim = nil
+				r.OpenidConnect.Config.AuthenticatedGroupsClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthenticatedGroupsClaim))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthenticatedGroupsClaim {
+					r.OpenidConnect.Config.AuthenticatedGroupsClaim = append(r.OpenidConnect.Config.AuthenticatedGroupsClaim, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.AuthorizationCookieDomain = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationCookieDomain)
 				r.OpenidConnect.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationCookieHTTPOnly)
@@ -134,29 +118,17 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				}
 				r.OpenidConnect.Config.AuthorizationCookieSecure = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationCookieSecure)
 				r.OpenidConnect.Config.AuthorizationEndpoint = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationEndpoint)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsClient != nil {
-					r.OpenidConnect.Config.AuthorizationQueryArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsClient))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsClient {
-						r.OpenidConnect.Config.AuthorizationQueryArgsClient = append(r.OpenidConnect.Config.AuthorizationQueryArgsClient, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.AuthorizationQueryArgsClient = nil
+				r.OpenidConnect.Config.AuthorizationQueryArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsClient))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsClient {
+					r.OpenidConnect.Config.AuthorizationQueryArgsClient = append(r.OpenidConnect.Config.AuthorizationQueryArgsClient, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsNames != nil {
-					r.OpenidConnect.Config.AuthorizationQueryArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsNames {
-						r.OpenidConnect.Config.AuthorizationQueryArgsNames = append(r.OpenidConnect.Config.AuthorizationQueryArgsNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.AuthorizationQueryArgsNames = nil
+				r.OpenidConnect.Config.AuthorizationQueryArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsNames {
+					r.OpenidConnect.Config.AuthorizationQueryArgsNames = append(r.OpenidConnect.Config.AuthorizationQueryArgsNames, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsValues != nil {
-					r.OpenidConnect.Config.AuthorizationQueryArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsValues {
-						r.OpenidConnect.Config.AuthorizationQueryArgsValues = append(r.OpenidConnect.Config.AuthorizationQueryArgsValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.AuthorizationQueryArgsValues = nil
+				r.OpenidConnect.Config.AuthorizationQueryArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationQueryArgsValues {
+					r.OpenidConnect.Config.AuthorizationQueryArgsValues = append(r.OpenidConnect.Config.AuthorizationQueryArgsValues, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.AuthorizationRollingTimeout = types.Float64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.AuthorizationRollingTimeout)
 				r.OpenidConnect.Config.BearerTokenCookieName = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.BearerTokenCookieName)
@@ -176,101 +148,69 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				r.OpenidConnect.Config.CacheTTLNeg = types.Float64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.CacheTTLNeg)
 				r.OpenidConnect.Config.CacheTTLResurrect = types.Float64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.CacheTTLResurrect)
 				r.OpenidConnect.Config.CacheUserInfo = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.CacheUserInfo)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClaimsForbidden != nil {
-					r.OpenidConnect.Config.ClaimsForbidden = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClaimsForbidden))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClaimsForbidden {
-						r.OpenidConnect.Config.ClaimsForbidden = append(r.OpenidConnect.Config.ClaimsForbidden, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ClaimsForbidden = nil
+				r.OpenidConnect.Config.ClaimsForbidden = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClaimsForbidden))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClaimsForbidden {
+					r.OpenidConnect.Config.ClaimsForbidden = append(r.OpenidConnect.Config.ClaimsForbidden, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAlg != nil {
-					r.OpenidConnect.Config.ClientAlg = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAlg))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAlg {
-						r.OpenidConnect.Config.ClientAlg = append(r.OpenidConnect.Config.ClientAlg, types.StringValue(string(v)))
-					}
-				} else {
-					r.OpenidConnect.Config.ClientAlg = nil
+				r.OpenidConnect.Config.ClientAlg = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAlg))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAlg {
+					r.OpenidConnect.Config.ClientAlg = append(r.OpenidConnect.Config.ClientAlg, types.StringValue(string(v)))
 				}
 				r.OpenidConnect.Config.ClientArg = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientArg)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAuth != nil {
-					r.OpenidConnect.Config.ClientAuth = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAuth))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAuth {
-						r.OpenidConnect.Config.ClientAuth = append(r.OpenidConnect.Config.ClientAuth, types.StringValue(string(v)))
-					}
-				} else {
-					r.OpenidConnect.Config.ClientAuth = nil
+				r.OpenidConnect.Config.ClientAuth = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAuth))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientAuth {
+					r.OpenidConnect.Config.ClientAuth = append(r.OpenidConnect.Config.ClientAuth, types.StringValue(string(v)))
 				}
 				r.OpenidConnect.Config.ClientCredentialsParamType = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientCredentialsParamType))
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientCredentialsParamType {
 					r.OpenidConnect.Config.ClientCredentialsParamType = append(r.OpenidConnect.Config.ClientCredentialsParamType, types.StringValue(string(v)))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID != nil {
-					r.OpenidConnect.Config.ClientID = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID {
-						r.OpenidConnect.Config.ClientID = append(r.OpenidConnect.Config.ClientID, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ClientID = nil
+				r.OpenidConnect.Config.ClientID = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID {
+					r.OpenidConnect.Config.ClientID = append(r.OpenidConnect.Config.ClientID, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientJwk != nil {
-					r.OpenidConnect.Config.ClientJwk = []tfTypes.ClientJwk{}
+				r.OpenidConnect.Config.ClientJwk = []tfTypes.ClientJwk{}
 
-					for _, clientJwkItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientJwk {
-						var clientJwk tfTypes.ClientJwk
+				for _, clientJwkItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientJwk {
+					var clientJwk tfTypes.ClientJwk
 
-						clientJwk.Alg = types.StringPointerValue(clientJwkItem.Alg)
-						clientJwk.Crv = types.StringPointerValue(clientJwkItem.Crv)
-						clientJwk.D = types.StringPointerValue(clientJwkItem.D)
-						clientJwk.Dp = types.StringPointerValue(clientJwkItem.Dp)
-						clientJwk.Dq = types.StringPointerValue(clientJwkItem.Dq)
-						clientJwk.E = types.StringPointerValue(clientJwkItem.E)
-						clientJwk.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
-						clientJwk.K = types.StringPointerValue(clientJwkItem.K)
-						if clientJwkItem.KeyOps != nil {
-							clientJwk.KeyOps = make([]types.String, 0, len(clientJwkItem.KeyOps))
-							for _, v := range clientJwkItem.KeyOps {
-								clientJwk.KeyOps = append(clientJwk.KeyOps, types.StringValue(v))
-							}
-						} else {
-							clientJwk.KeyOps = nil
-						}
-						clientJwk.Kid = types.StringPointerValue(clientJwkItem.Kid)
-						clientJwk.Kty = types.StringPointerValue(clientJwkItem.Kty)
-						clientJwk.N = types.StringPointerValue(clientJwkItem.N)
-						clientJwk.Oth = types.StringPointerValue(clientJwkItem.Oth)
-						clientJwk.P = types.StringPointerValue(clientJwkItem.P)
-						clientJwk.Q = types.StringPointerValue(clientJwkItem.Q)
-						clientJwk.Qi = types.StringPointerValue(clientJwkItem.Qi)
-						clientJwk.R = types.StringPointerValue(clientJwkItem.R)
-						clientJwk.T = types.StringPointerValue(clientJwkItem.T)
-						clientJwk.Use = types.StringPointerValue(clientJwkItem.Use)
-						clientJwk.X = types.StringPointerValue(clientJwkItem.X)
-						if clientJwkItem.X5c != nil {
-							clientJwk.X5c = make([]types.String, 0, len(clientJwkItem.X5c))
-							for _, v := range clientJwkItem.X5c {
-								clientJwk.X5c = append(clientJwk.X5c, types.StringValue(v))
-							}
-						} else {
-							clientJwk.X5c = nil
-						}
-						clientJwk.X5t = types.StringPointerValue(clientJwkItem.X5t)
-						clientJwk.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
-						clientJwk.X5u = types.StringPointerValue(clientJwkItem.X5u)
-						clientJwk.Y = types.StringPointerValue(clientJwkItem.Y)
-
-						r.OpenidConnect.Config.ClientJwk = append(r.OpenidConnect.Config.ClientJwk, clientJwk)
+					clientJwk.Alg = types.StringPointerValue(clientJwkItem.Alg)
+					clientJwk.Crv = types.StringPointerValue(clientJwkItem.Crv)
+					clientJwk.D = types.StringPointerValue(clientJwkItem.D)
+					clientJwk.Dp = types.StringPointerValue(clientJwkItem.Dp)
+					clientJwk.Dq = types.StringPointerValue(clientJwkItem.Dq)
+					clientJwk.E = types.StringPointerValue(clientJwkItem.E)
+					clientJwk.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
+					clientJwk.K = types.StringPointerValue(clientJwkItem.K)
+					clientJwk.KeyOps = make([]types.String, 0, len(clientJwkItem.KeyOps))
+					for _, v := range clientJwkItem.KeyOps {
+						clientJwk.KeyOps = append(clientJwk.KeyOps, types.StringValue(v))
 					}
-				} else {
-					r.OpenidConnect.Config.ClientJwk = nil
+					clientJwk.Kid = types.StringPointerValue(clientJwkItem.Kid)
+					clientJwk.Kty = types.StringPointerValue(clientJwkItem.Kty)
+					clientJwk.N = types.StringPointerValue(clientJwkItem.N)
+					clientJwk.Oth = types.StringPointerValue(clientJwkItem.Oth)
+					clientJwk.P = types.StringPointerValue(clientJwkItem.P)
+					clientJwk.Q = types.StringPointerValue(clientJwkItem.Q)
+					clientJwk.Qi = types.StringPointerValue(clientJwkItem.Qi)
+					clientJwk.R = types.StringPointerValue(clientJwkItem.R)
+					clientJwk.T = types.StringPointerValue(clientJwkItem.T)
+					clientJwk.Use = types.StringPointerValue(clientJwkItem.Use)
+					clientJwk.X = types.StringPointerValue(clientJwkItem.X)
+					clientJwk.X5c = make([]types.String, 0, len(clientJwkItem.X5c))
+					for _, v := range clientJwkItem.X5c {
+						clientJwk.X5c = append(clientJwk.X5c, types.StringValue(v))
+					}
+					clientJwk.X5t = types.StringPointerValue(clientJwkItem.X5t)
+					clientJwk.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
+					clientJwk.X5u = types.StringPointerValue(clientJwkItem.X5u)
+					clientJwk.Y = types.StringPointerValue(clientJwkItem.Y)
+
+					r.OpenidConnect.Config.ClientJwk = append(r.OpenidConnect.Config.ClientJwk, clientJwk)
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientSecret != nil {
-					r.OpenidConnect.Config.ClientSecret = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientSecret))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientSecret {
-						r.OpenidConnect.Config.ClientSecret = append(r.OpenidConnect.Config.ClientSecret, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ClientSecret = nil
+				r.OpenidConnect.Config.ClientSecret = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientSecret))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientSecret {
+					r.OpenidConnect.Config.ClientSecret = append(r.OpenidConnect.Config.ClientSecret, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.ClusterCacheItems = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheItems))
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheItems {
@@ -302,19 +242,15 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 						r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.CloudAuthentication.GcpServiceAccountJSON)
 					}
 					r.OpenidConnect.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.ClusterMaxRedirections)
-					if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.ClusterNodes != nil {
-						r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
 
-						for _, clusterNodesItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.ClusterNodes {
-							var clusterNodes tfTypes.ClusterNodes
+					for _, clusterNodesItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.ClusterNodes {
+						var clusterNodes tfTypes.ClusterNodes
 
-							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-							r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes = append(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes, clusterNodes)
-						}
-					} else {
-						r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes = nil
+						r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes = append(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes, clusterNodes)
 					}
 					r.OpenidConnect.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.ConnectTimeout)
 					r.OpenidConnect.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.ConnectionIsProxied)
@@ -327,19 +263,15 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 					r.OpenidConnect.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.ReadTimeout)
 					r.OpenidConnect.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.SendTimeout)
 					r.OpenidConnect.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelMaster)
-					if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelNodes != nil {
-						r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
 
-						for _, sentinelNodesItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelNodes {
-							var sentinelNodes tfTypes.SentinelNodes
+					for _, sentinelNodesItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelNodes {
+						var sentinelNodes tfTypes.SentinelNodes
 
-							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-							r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes = append(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes)
-						}
-					} else {
-						r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes = nil
+						r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes = append(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes)
 					}
 					r.OpenidConnect.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelPassword)
 					if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelRole != nil {
@@ -362,26 +294,18 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerBy {
 					r.OpenidConnect.Config.ConsumerBy = append(r.OpenidConnect.Config.ConsumerBy, types.StringValue(string(v)))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerClaims != nil {
-					r.OpenidConnect.Config.ConsumerClaims = nil
-					for _, consumerClaimsItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerClaims {
-						var consumerClaims []types.String
-						consumerClaims = make([]types.String, 0, len(consumerClaimsItem))
-						for _, v := range consumerClaimsItem {
-							consumerClaims = append(consumerClaims, types.StringValue(v))
-						}
-						r.OpenidConnect.Config.ConsumerClaims = append(r.OpenidConnect.Config.ConsumerClaims, consumerClaims)
+				r.OpenidConnect.Config.ConsumerClaims = nil
+				for _, consumerClaimsItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerClaims {
+					var consumerClaims []types.String
+					consumerClaims = make([]types.String, 0, len(consumerClaimsItem))
+					for _, v := range consumerClaimsItem {
+						consumerClaims = append(consumerClaims, types.StringValue(v))
 					}
-				} else {
-					r.OpenidConnect.Config.ConsumerClaims = nil
+					r.OpenidConnect.Config.ConsumerClaims = append(r.OpenidConnect.Config.ConsumerClaims, consumerClaims)
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim != nil {
-					r.OpenidConnect.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim {
-						r.OpenidConnect.Config.ConsumerGroupsClaim = append(r.OpenidConnect.Config.ConsumerGroupsClaim, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ConsumerGroupsClaim = nil
+				r.OpenidConnect.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim {
+					r.OpenidConnect.Config.ConsumerGroupsClaim = append(r.OpenidConnect.Config.ConsumerGroupsClaim, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.ConsumerGroupsOptional = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsOptional)
 				r.OpenidConnect.Config.ConsumerOptional = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerOptional)
@@ -389,73 +313,45 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.CredentialClaim {
 					r.OpenidConnect.Config.CredentialClaim = append(r.OpenidConnect.Config.CredentialClaim, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DisableSession != nil {
-					r.OpenidConnect.Config.DisableSession = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DisableSession))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DisableSession {
-						r.OpenidConnect.Config.DisableSession = append(r.OpenidConnect.Config.DisableSession, types.StringValue(string(v)))
-					}
-				} else {
-					r.OpenidConnect.Config.DisableSession = nil
+				r.OpenidConnect.Config.DisableSession = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DisableSession))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DisableSession {
+					r.OpenidConnect.Config.DisableSession = append(r.OpenidConnect.Config.DisableSession, types.StringValue(string(v)))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersNames != nil {
-					r.OpenidConnect.Config.DiscoveryHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersNames {
-						r.OpenidConnect.Config.DiscoveryHeadersNames = append(r.OpenidConnect.Config.DiscoveryHeadersNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.DiscoveryHeadersNames = nil
+				r.OpenidConnect.Config.DiscoveryHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersNames {
+					r.OpenidConnect.Config.DiscoveryHeadersNames = append(r.OpenidConnect.Config.DiscoveryHeadersNames, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersValues != nil {
-					r.OpenidConnect.Config.DiscoveryHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersValues {
-						r.OpenidConnect.Config.DiscoveryHeadersValues = append(r.OpenidConnect.Config.DiscoveryHeadersValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.DiscoveryHeadersValues = nil
+				r.OpenidConnect.Config.DiscoveryHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DiscoveryHeadersValues {
+					r.OpenidConnect.Config.DiscoveryHeadersValues = append(r.OpenidConnect.Config.DiscoveryHeadersValues, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.DisplayErrors = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DisplayErrors)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Domains != nil {
-					r.OpenidConnect.Config.Domains = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Domains))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Domains {
-						r.OpenidConnect.Config.Domains = append(r.OpenidConnect.Config.Domains, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.Domains = nil
+				r.OpenidConnect.Config.Domains = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Domains))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Domains {
+					r.OpenidConnect.Config.Domains = append(r.OpenidConnect.Config.Domains, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.DownstreamAccessTokenHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamAccessTokenHeader)
 				r.OpenidConnect.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamAccessTokenJwkHeader)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeaders != nil {
-					r.OpenidConnect.Config.DownstreamHeaders = []tfTypes.DownstreamHeaders{}
+				r.OpenidConnect.Config.DownstreamHeaders = []tfTypes.DownstreamHeaders{}
 
-					for _, downstreamHeadersItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeaders {
-						var downstreamHeaders tfTypes.DownstreamHeaders
+				for _, downstreamHeadersItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeaders {
+					var downstreamHeaders tfTypes.DownstreamHeaders
 
-						downstreamHeaders.Header = types.StringValue(downstreamHeadersItem.Header)
-						downstreamHeaders.Path = make([]types.String, 0, len(downstreamHeadersItem.Path))
-						for _, v := range downstreamHeadersItem.Path {
-							downstreamHeaders.Path = append(downstreamHeaders.Path, types.StringValue(v))
-						}
-
-						r.OpenidConnect.Config.DownstreamHeaders = append(r.OpenidConnect.Config.DownstreamHeaders, downstreamHeaders)
+					downstreamHeaders.Header = types.StringValue(downstreamHeadersItem.Header)
+					downstreamHeaders.Path = make([]types.String, 0, len(downstreamHeadersItem.Path))
+					for _, v := range downstreamHeadersItem.Path {
+						downstreamHeaders.Path = append(downstreamHeaders.Path, types.StringValue(v))
 					}
-				} else {
-					r.OpenidConnect.Config.DownstreamHeaders = nil
+
+					r.OpenidConnect.Config.DownstreamHeaders = append(r.OpenidConnect.Config.DownstreamHeaders, downstreamHeaders)
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersClaims != nil {
-					r.OpenidConnect.Config.DownstreamHeadersClaims = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersClaims))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersClaims {
-						r.OpenidConnect.Config.DownstreamHeadersClaims = append(r.OpenidConnect.Config.DownstreamHeadersClaims, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.DownstreamHeadersClaims = nil
+				r.OpenidConnect.Config.DownstreamHeadersClaims = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersClaims))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersClaims {
+					r.OpenidConnect.Config.DownstreamHeadersClaims = append(r.OpenidConnect.Config.DownstreamHeadersClaims, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersNames != nil {
-					r.OpenidConnect.Config.DownstreamHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersNames {
-						r.OpenidConnect.Config.DownstreamHeadersNames = append(r.OpenidConnect.Config.DownstreamHeadersNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.DownstreamHeadersNames = nil
+				r.OpenidConnect.Config.DownstreamHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamHeadersNames {
+					r.OpenidConnect.Config.DownstreamHeadersNames = append(r.OpenidConnect.Config.DownstreamHeadersNames, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.DownstreamIDTokenHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamIDTokenHeader)
 				r.OpenidConnect.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.DownstreamIDTokenJwkHeader)
@@ -470,35 +366,23 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				r.OpenidConnect.Config.EnableHsSignatures = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.EnableHsSignatures)
 				r.OpenidConnect.Config.EndSessionEndpoint = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.EndSessionEndpoint)
 				r.OpenidConnect.Config.ExposeErrorCode = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ExposeErrorCode)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ExtraJwksUris != nil {
-					r.OpenidConnect.Config.ExtraJwksUris = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ExtraJwksUris))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ExtraJwksUris {
-						r.OpenidConnect.Config.ExtraJwksUris = append(r.OpenidConnect.Config.ExtraJwksUris, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ExtraJwksUris = nil
+				r.OpenidConnect.Config.ExtraJwksUris = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ExtraJwksUris))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ExtraJwksUris {
+					r.OpenidConnect.Config.ExtraJwksUris = append(r.OpenidConnect.Config.ExtraJwksUris, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.ForbiddenDestroySession = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ForbiddenDestroySession)
 				r.OpenidConnect.Config.ForbiddenErrorMessage = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ForbiddenErrorMessage)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ForbiddenRedirectURI != nil {
-					r.OpenidConnect.Config.ForbiddenRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ForbiddenRedirectURI))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ForbiddenRedirectURI {
-						r.OpenidConnect.Config.ForbiddenRedirectURI = append(r.OpenidConnect.Config.ForbiddenRedirectURI, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ForbiddenRedirectURI = nil
+				r.OpenidConnect.Config.ForbiddenRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ForbiddenRedirectURI))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ForbiddenRedirectURI {
+					r.OpenidConnect.Config.ForbiddenRedirectURI = append(r.OpenidConnect.Config.ForbiddenRedirectURI, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.GroupsClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.GroupsClaim))
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.GroupsClaim {
 					r.OpenidConnect.Config.GroupsClaim = append(r.OpenidConnect.Config.GroupsClaim, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.GroupsRequired != nil {
-					r.OpenidConnect.Config.GroupsRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.GroupsRequired))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.GroupsRequired {
-						r.OpenidConnect.Config.GroupsRequired = append(r.OpenidConnect.Config.GroupsRequired, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.GroupsRequired = nil
+				r.OpenidConnect.Config.GroupsRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.GroupsRequired))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.GroupsRequired {
+					r.OpenidConnect.Config.GroupsRequired = append(r.OpenidConnect.Config.GroupsRequired, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.HideCredentials = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.HideCredentials)
 				r.OpenidConnect.Config.HTTPProxy = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.HTTPProxy)
@@ -528,72 +412,40 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				} else {
 					r.OpenidConnect.Config.IntrospectionEndpointAuthMethod = types.StringNull()
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersClient != nil {
-					r.OpenidConnect.Config.IntrospectionHeadersClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersClient))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersClient {
-						r.OpenidConnect.Config.IntrospectionHeadersClient = append(r.OpenidConnect.Config.IntrospectionHeadersClient, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IntrospectionHeadersClient = nil
+				r.OpenidConnect.Config.IntrospectionHeadersClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersClient))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersClient {
+					r.OpenidConnect.Config.IntrospectionHeadersClient = append(r.OpenidConnect.Config.IntrospectionHeadersClient, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersNames != nil {
-					r.OpenidConnect.Config.IntrospectionHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersNames {
-						r.OpenidConnect.Config.IntrospectionHeadersNames = append(r.OpenidConnect.Config.IntrospectionHeadersNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IntrospectionHeadersNames = nil
+				r.OpenidConnect.Config.IntrospectionHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersNames {
+					r.OpenidConnect.Config.IntrospectionHeadersNames = append(r.OpenidConnect.Config.IntrospectionHeadersNames, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersValues != nil {
-					r.OpenidConnect.Config.IntrospectionHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersValues {
-						r.OpenidConnect.Config.IntrospectionHeadersValues = append(r.OpenidConnect.Config.IntrospectionHeadersValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IntrospectionHeadersValues = nil
+				r.OpenidConnect.Config.IntrospectionHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHeadersValues {
+					r.OpenidConnect.Config.IntrospectionHeadersValues = append(r.OpenidConnect.Config.IntrospectionHeadersValues, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.IntrospectionHint = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionHint)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClient != nil {
-					r.OpenidConnect.Config.IntrospectionPostArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClient))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClient {
-						r.OpenidConnect.Config.IntrospectionPostArgsClient = append(r.OpenidConnect.Config.IntrospectionPostArgsClient, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IntrospectionPostArgsClient = nil
+				r.OpenidConnect.Config.IntrospectionPostArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClient))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClient {
+					r.OpenidConnect.Config.IntrospectionPostArgsClient = append(r.OpenidConnect.Config.IntrospectionPostArgsClient, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClientHeaders != nil {
-					r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClientHeaders))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClientHeaders {
-						r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders = append(r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders = nil
+				r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClientHeaders))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsClientHeaders {
+					r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders = append(r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsNames != nil {
-					r.OpenidConnect.Config.IntrospectionPostArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsNames {
-						r.OpenidConnect.Config.IntrospectionPostArgsNames = append(r.OpenidConnect.Config.IntrospectionPostArgsNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IntrospectionPostArgsNames = nil
+				r.OpenidConnect.Config.IntrospectionPostArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsNames {
+					r.OpenidConnect.Config.IntrospectionPostArgsNames = append(r.OpenidConnect.Config.IntrospectionPostArgsNames, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsValues != nil {
-					r.OpenidConnect.Config.IntrospectionPostArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsValues {
-						r.OpenidConnect.Config.IntrospectionPostArgsValues = append(r.OpenidConnect.Config.IntrospectionPostArgsValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IntrospectionPostArgsValues = nil
+				r.OpenidConnect.Config.IntrospectionPostArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionPostArgsValues {
+					r.OpenidConnect.Config.IntrospectionPostArgsValues = append(r.OpenidConnect.Config.IntrospectionPostArgsValues, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.IntrospectionTokenParamName = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IntrospectionTokenParamName)
 				r.OpenidConnect.Config.Issuer = types.StringValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Issuer)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IssuersAllowed != nil {
-					r.OpenidConnect.Config.IssuersAllowed = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IssuersAllowed))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IssuersAllowed {
-						r.OpenidConnect.Config.IssuersAllowed = append(r.OpenidConnect.Config.IssuersAllowed, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.IssuersAllowed = nil
+				r.OpenidConnect.Config.IssuersAllowed = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IssuersAllowed))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.IssuersAllowed {
+					r.OpenidConnect.Config.IssuersAllowed = append(r.OpenidConnect.Config.IssuersAllowed, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.JwksEndpoint = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.JwksEndpoint)
 				r.OpenidConnect.Config.JwtSessionClaim = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.JwtSessionClaim)
@@ -614,13 +466,9 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				} else {
 					r.OpenidConnect.Config.LoginRedirectMode = types.StringNull()
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LoginRedirectURI != nil {
-					r.OpenidConnect.Config.LoginRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LoginRedirectURI))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LoginRedirectURI {
-						r.OpenidConnect.Config.LoginRedirectURI = append(r.OpenidConnect.Config.LoginRedirectURI, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.LoginRedirectURI = nil
+				r.OpenidConnect.Config.LoginRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LoginRedirectURI))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LoginRedirectURI {
+					r.OpenidConnect.Config.LoginRedirectURI = append(r.OpenidConnect.Config.LoginRedirectURI, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.LoginTokens = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LoginTokens))
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LoginTokens {
@@ -632,13 +480,9 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				}
 				r.OpenidConnect.Config.LogoutPostArg = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutPostArg)
 				r.OpenidConnect.Config.LogoutQueryArg = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutQueryArg)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutRedirectURI != nil {
-					r.OpenidConnect.Config.LogoutRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutRedirectURI))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutRedirectURI {
-						r.OpenidConnect.Config.LogoutRedirectURI = append(r.OpenidConnect.Config.LogoutRedirectURI, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.LogoutRedirectURI = nil
+				r.OpenidConnect.Config.LogoutRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutRedirectURI))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutRedirectURI {
+					r.OpenidConnect.Config.LogoutRedirectURI = append(r.OpenidConnect.Config.LogoutRedirectURI, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.LogoutRevoke = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutRevoke)
 				r.OpenidConnect.Config.LogoutRevokeAccessToken = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.LogoutRevokeAccessToken)
@@ -664,13 +508,9 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 					r.OpenidConnect.Config.Principals.MatchConsumer = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.MatchConsumer)
 					r.OpenidConnect.Config.Principals.MatchConsumerGroups = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.MatchConsumerGroups)
 					r.OpenidConnect.Config.Principals.PrincipalBy = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.PrincipalBy)
-					if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.PrincipalClaim != nil {
-						r.OpenidConnect.Config.Principals.PrincipalClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.PrincipalClaim))
-						for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.PrincipalClaim {
-							r.OpenidConnect.Config.Principals.PrincipalClaim = append(r.OpenidConnect.Config.Principals.PrincipalClaim, types.StringValue(v))
-						}
-					} else {
-						r.OpenidConnect.Config.Principals.PrincipalClaim = nil
+					r.OpenidConnect.Config.Principals.PrincipalClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.PrincipalClaim))
+					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Principals.PrincipalClaim {
+						r.OpenidConnect.Config.Principals.PrincipalClaim = append(r.OpenidConnect.Config.Principals.PrincipalClaim, types.StringValue(v))
 					}
 				}
 				r.OpenidConnect.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ProofOfPossessionAuthMethodsValidation)
@@ -719,13 +559,9 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				} else {
 					r.OpenidConnect.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RedirectURI != nil {
-					r.OpenidConnect.Config.RedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RedirectURI))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RedirectURI {
-						r.OpenidConnect.Config.RedirectURI = append(r.OpenidConnect.Config.RedirectURI, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.RedirectURI = nil
+				r.OpenidConnect.Config.RedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RedirectURI))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RedirectURI {
+					r.OpenidConnect.Config.RedirectURI = append(r.OpenidConnect.Config.RedirectURI, types.StringValue(v))
 				}
 				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis == nil {
 					r.OpenidConnect.Config.Redis = nil
@@ -753,19 +589,15 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 						r.OpenidConnect.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
 					}
 					r.OpenidConnect.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.ClusterMaxRedirections)
-					if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.ClusterNodes != nil {
-						r.OpenidConnect.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.OpenidConnect.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
-						for _, clusterNodesItem1 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.ClusterNodes {
-							var clusterNodes1 tfTypes.ClusterNodes
+					for _, clusterNodesItem1 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.ClusterNodes {
+						var clusterNodes1 tfTypes.ClusterNodes
 
-							clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
-							clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
+						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 
-							r.OpenidConnect.Config.Redis.ClusterNodes = append(r.OpenidConnect.Config.Redis.ClusterNodes, clusterNodes1)
-						}
-					} else {
-						r.OpenidConnect.Config.Redis.ClusterNodes = nil
+						r.OpenidConnect.Config.Redis.ClusterNodes = append(r.OpenidConnect.Config.Redis.ClusterNodes, clusterNodes1)
 					}
 					r.OpenidConnect.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.ConnectTimeout)
 					r.OpenidConnect.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.ConnectionIsProxied)
@@ -779,19 +611,15 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 					r.OpenidConnect.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.ReadTimeout)
 					r.OpenidConnect.Config.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.SendTimeout)
 					r.OpenidConnect.Config.Redis.SentinelMaster = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.SentinelMaster)
-					if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.SentinelNodes != nil {
-						r.OpenidConnect.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.OpenidConnect.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
-						for _, sentinelNodesItem1 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.SentinelNodes {
-							var sentinelNodes1 tfTypes.SentinelNodes
+					for _, sentinelNodesItem1 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.SentinelNodes {
+						var sentinelNodes1 tfTypes.SentinelNodes
 
-							sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
-							sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 
-							r.OpenidConnect.Config.Redis.SentinelNodes = append(r.OpenidConnect.Config.Redis.SentinelNodes, sentinelNodes1)
-						}
-					} else {
-						r.OpenidConnect.Config.Redis.SentinelNodes = nil
+						r.OpenidConnect.Config.Redis.SentinelNodes = append(r.OpenidConnect.Config.Redis.SentinelNodes, sentinelNodes1)
 					}
 					r.OpenidConnect.Config.Redis.SentinelPassword = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.SentinelPassword)
 					if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Redis.SentinelRole != nil {
@@ -838,13 +666,9 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RolesClaim {
 					r.OpenidConnect.Config.RolesClaim = append(r.OpenidConnect.Config.RolesClaim, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RolesRequired != nil {
-					r.OpenidConnect.Config.RolesRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RolesRequired))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RolesRequired {
-						r.OpenidConnect.Config.RolesRequired = append(r.OpenidConnect.Config.RolesRequired, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.RolesRequired = nil
+				r.OpenidConnect.Config.RolesRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RolesRequired))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RolesRequired {
+					r.OpenidConnect.Config.RolesRequired = append(r.OpenidConnect.Config.RolesRequired, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.RunOnPreflight = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.RunOnPreflight)
 				r.OpenidConnect.Config.Scopes = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.Scopes))
@@ -855,24 +679,16 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ScopesClaim {
 					r.OpenidConnect.Config.ScopesClaim = append(r.OpenidConnect.Config.ScopesClaim, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ScopesRequired != nil {
-					r.OpenidConnect.Config.ScopesRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ScopesRequired))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ScopesRequired {
-						r.OpenidConnect.Config.ScopesRequired = append(r.OpenidConnect.Config.ScopesRequired, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ScopesRequired = nil
+				r.OpenidConnect.Config.ScopesRequired = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ScopesRequired))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ScopesRequired {
+					r.OpenidConnect.Config.ScopesRequired = append(r.OpenidConnect.Config.ScopesRequired, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.SearchUserInfo = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SearchUserInfo)
 				r.OpenidConnect.Config.SessionAbsoluteTimeout = types.Float64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionAbsoluteTimeout)
 				r.OpenidConnect.Config.SessionAudience = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionAudience)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionBind != nil {
-					r.OpenidConnect.Config.SessionBind = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionBind))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionBind {
-						r.OpenidConnect.Config.SessionBind = append(r.OpenidConnect.Config.SessionBind, types.StringValue(string(v)))
-					}
-				} else {
-					r.OpenidConnect.Config.SessionBind = nil
+				r.OpenidConnect.Config.SessionBind = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionBind))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionBind {
+					r.OpenidConnect.Config.SessionBind = append(r.OpenidConnect.Config.SessionBind, types.StringValue(string(v)))
 				}
 				r.OpenidConnect.Config.SessionCookieDomain = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionCookieDomain)
 				r.OpenidConnect.Config.SessionCookieHTTPOnly = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionCookieHTTPOnly)
@@ -898,21 +714,13 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 				r.OpenidConnect.Config.SessionRememberAbsoluteTimeout = types.Float64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRememberAbsoluteTimeout)
 				r.OpenidConnect.Config.SessionRememberCookieName = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRememberCookieName)
 				r.OpenidConnect.Config.SessionRememberRollingTimeout = types.Float64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRememberRollingTimeout)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRequestHeaders != nil {
-					r.OpenidConnect.Config.SessionRequestHeaders = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRequestHeaders))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRequestHeaders {
-						r.OpenidConnect.Config.SessionRequestHeaders = append(r.OpenidConnect.Config.SessionRequestHeaders, types.StringValue(string(v)))
-					}
-				} else {
-					r.OpenidConnect.Config.SessionRequestHeaders = nil
+				r.OpenidConnect.Config.SessionRequestHeaders = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRequestHeaders))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRequestHeaders {
+					r.OpenidConnect.Config.SessionRequestHeaders = append(r.OpenidConnect.Config.SessionRequestHeaders, types.StringValue(string(v)))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionResponseHeaders != nil {
-					r.OpenidConnect.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionResponseHeaders))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionResponseHeaders {
-						r.OpenidConnect.Config.SessionResponseHeaders = append(r.OpenidConnect.Config.SessionResponseHeaders, types.StringValue(string(v)))
-					}
-				} else {
-					r.OpenidConnect.Config.SessionResponseHeaders = nil
+				r.OpenidConnect.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionResponseHeaders))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionResponseHeaders {
+					r.OpenidConnect.Config.SessionResponseHeaders = append(r.OpenidConnect.Config.SessionResponseHeaders, types.StringValue(string(v)))
 				}
 				r.OpenidConnect.Config.SessionRollingTimeout = types.Float64PointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionRollingTimeout)
 				r.OpenidConnect.Config.SessionSecret = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.SessionSecret)
@@ -948,23 +756,15 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 						r.OpenidConnect.Config.TokenExchange.Request = nil
 					} else {
 						r.OpenidConnect.Config.TokenExchange.Request = &tfTypes.Request{}
-						if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Audience != nil {
-							r.OpenidConnect.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Audience))
-							for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Audience {
-								r.OpenidConnect.Config.TokenExchange.Request.Audience = append(r.OpenidConnect.Config.TokenExchange.Request.Audience, types.StringValue(v))
-							}
-						} else {
-							r.OpenidConnect.Config.TokenExchange.Request.Audience = nil
+						r.OpenidConnect.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Audience))
+						for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Audience {
+							r.OpenidConnect.Config.TokenExchange.Request.Audience = append(r.OpenidConnect.Config.TokenExchange.Request.Audience, types.StringValue(v))
 						}
 						r.OpenidConnect.Config.TokenExchange.Request.EmptyAudience = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.EmptyAudience)
 						r.OpenidConnect.Config.TokenExchange.Request.EmptyScopes = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.EmptyScopes)
-						if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Scopes != nil {
-							r.OpenidConnect.Config.TokenExchange.Request.Scopes = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Scopes))
-							for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Scopes {
-								r.OpenidConnect.Config.TokenExchange.Request.Scopes = append(r.OpenidConnect.Config.TokenExchange.Request.Scopes, types.StringValue(v))
-							}
-						} else {
-							r.OpenidConnect.Config.TokenExchange.Request.Scopes = nil
+						r.OpenidConnect.Config.TokenExchange.Request.Scopes = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Scopes))
+						for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchange.Request.Scopes {
+							r.OpenidConnect.Config.TokenExchange.Request.Scopes = append(r.OpenidConnect.Config.TokenExchange.Request.Scopes, types.StringValue(v))
 						}
 					}
 					r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers = []tfTypes.SubjectTokenIssuers{}
@@ -976,37 +776,21 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 							subjectTokenIssuers.Conditions = nil
 						} else {
 							subjectTokenIssuers.Conditions = &tfTypes.AIGatewayIdentityProviderOpenIDConnectConditions{}
-							if subjectTokenIssuersItem.Conditions.HasAudience != nil {
-								subjectTokenIssuers.Conditions.HasAudience = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.HasAudience))
-								for _, v := range subjectTokenIssuersItem.Conditions.HasAudience {
-									subjectTokenIssuers.Conditions.HasAudience = append(subjectTokenIssuers.Conditions.HasAudience, types.StringValue(v))
-								}
-							} else {
-								subjectTokenIssuers.Conditions.HasAudience = nil
+							subjectTokenIssuers.Conditions.HasAudience = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.HasAudience))
+							for _, v := range subjectTokenIssuersItem.Conditions.HasAudience {
+								subjectTokenIssuers.Conditions.HasAudience = append(subjectTokenIssuers.Conditions.HasAudience, types.StringValue(v))
 							}
-							if subjectTokenIssuersItem.Conditions.HasScopes != nil {
-								subjectTokenIssuers.Conditions.HasScopes = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.HasScopes))
-								for _, v := range subjectTokenIssuersItem.Conditions.HasScopes {
-									subjectTokenIssuers.Conditions.HasScopes = append(subjectTokenIssuers.Conditions.HasScopes, types.StringValue(v))
-								}
-							} else {
-								subjectTokenIssuers.Conditions.HasScopes = nil
+							subjectTokenIssuers.Conditions.HasScopes = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.HasScopes))
+							for _, v := range subjectTokenIssuersItem.Conditions.HasScopes {
+								subjectTokenIssuers.Conditions.HasScopes = append(subjectTokenIssuers.Conditions.HasScopes, types.StringValue(v))
 							}
-							if subjectTokenIssuersItem.Conditions.MissingAudience != nil {
-								subjectTokenIssuers.Conditions.MissingAudience = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.MissingAudience))
-								for _, v := range subjectTokenIssuersItem.Conditions.MissingAudience {
-									subjectTokenIssuers.Conditions.MissingAudience = append(subjectTokenIssuers.Conditions.MissingAudience, types.StringValue(v))
-								}
-							} else {
-								subjectTokenIssuers.Conditions.MissingAudience = nil
+							subjectTokenIssuers.Conditions.MissingAudience = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.MissingAudience))
+							for _, v := range subjectTokenIssuersItem.Conditions.MissingAudience {
+								subjectTokenIssuers.Conditions.MissingAudience = append(subjectTokenIssuers.Conditions.MissingAudience, types.StringValue(v))
 							}
-							if subjectTokenIssuersItem.Conditions.MissingScopes != nil {
-								subjectTokenIssuers.Conditions.MissingScopes = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.MissingScopes))
-								for _, v := range subjectTokenIssuersItem.Conditions.MissingScopes {
-									subjectTokenIssuers.Conditions.MissingScopes = append(subjectTokenIssuers.Conditions.MissingScopes, types.StringValue(v))
-								}
-							} else {
-								subjectTokenIssuers.Conditions.MissingScopes = nil
+							subjectTokenIssuers.Conditions.MissingScopes = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.MissingScopes))
+							for _, v := range subjectTokenIssuersItem.Conditions.MissingScopes {
+								subjectTokenIssuers.Conditions.MissingScopes = append(subjectTokenIssuers.Conditions.MissingScopes, types.StringValue(v))
 							}
 						}
 						subjectTokenIssuers.Issuer = types.StringValue(subjectTokenIssuersItem.Issuer)
@@ -1017,123 +801,71 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 					}
 				}
 				r.OpenidConnect.Config.TokenExchangeEndpoint = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenExchangeEndpoint)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersClient != nil {
-					r.OpenidConnect.Config.TokenHeadersClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersClient))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersClient {
-						r.OpenidConnect.Config.TokenHeadersClient = append(r.OpenidConnect.Config.TokenHeadersClient, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenHeadersClient = nil
+				r.OpenidConnect.Config.TokenHeadersClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersClient))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersClient {
+					r.OpenidConnect.Config.TokenHeadersClient = append(r.OpenidConnect.Config.TokenHeadersClient, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersGrants != nil {
-					r.OpenidConnect.Config.TokenHeadersGrants = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersGrants))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersGrants {
-						r.OpenidConnect.Config.TokenHeadersGrants = append(r.OpenidConnect.Config.TokenHeadersGrants, types.StringValue(string(v)))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenHeadersGrants = nil
+				r.OpenidConnect.Config.TokenHeadersGrants = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersGrants))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersGrants {
+					r.OpenidConnect.Config.TokenHeadersGrants = append(r.OpenidConnect.Config.TokenHeadersGrants, types.StringValue(string(v)))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersNames != nil {
-					r.OpenidConnect.Config.TokenHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersNames {
-						r.OpenidConnect.Config.TokenHeadersNames = append(r.OpenidConnect.Config.TokenHeadersNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenHeadersNames = nil
+				r.OpenidConnect.Config.TokenHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersNames {
+					r.OpenidConnect.Config.TokenHeadersNames = append(r.OpenidConnect.Config.TokenHeadersNames, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.TokenHeadersPrefix = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersPrefix)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersReplay != nil {
-					r.OpenidConnect.Config.TokenHeadersReplay = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersReplay))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersReplay {
-						r.OpenidConnect.Config.TokenHeadersReplay = append(r.OpenidConnect.Config.TokenHeadersReplay, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenHeadersReplay = nil
+				r.OpenidConnect.Config.TokenHeadersReplay = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersReplay))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersReplay {
+					r.OpenidConnect.Config.TokenHeadersReplay = append(r.OpenidConnect.Config.TokenHeadersReplay, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersValues != nil {
-					r.OpenidConnect.Config.TokenHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersValues {
-						r.OpenidConnect.Config.TokenHeadersValues = append(r.OpenidConnect.Config.TokenHeadersValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenHeadersValues = nil
+				r.OpenidConnect.Config.TokenHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenHeadersValues {
+					r.OpenidConnect.Config.TokenHeadersValues = append(r.OpenidConnect.Config.TokenHeadersValues, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsClient != nil {
-					r.OpenidConnect.Config.TokenPostArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsClient))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsClient {
-						r.OpenidConnect.Config.TokenPostArgsClient = append(r.OpenidConnect.Config.TokenPostArgsClient, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenPostArgsClient = nil
+				r.OpenidConnect.Config.TokenPostArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsClient))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsClient {
+					r.OpenidConnect.Config.TokenPostArgsClient = append(r.OpenidConnect.Config.TokenPostArgsClient, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsNames != nil {
-					r.OpenidConnect.Config.TokenPostArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsNames {
-						r.OpenidConnect.Config.TokenPostArgsNames = append(r.OpenidConnect.Config.TokenPostArgsNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenPostArgsNames = nil
+				r.OpenidConnect.Config.TokenPostArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsNames {
+					r.OpenidConnect.Config.TokenPostArgsNames = append(r.OpenidConnect.Config.TokenPostArgsNames, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsValues != nil {
-					r.OpenidConnect.Config.TokenPostArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsValues {
-						r.OpenidConnect.Config.TokenPostArgsValues = append(r.OpenidConnect.Config.TokenPostArgsValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.TokenPostArgsValues = nil
+				r.OpenidConnect.Config.TokenPostArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.TokenPostArgsValues {
+					r.OpenidConnect.Config.TokenPostArgsValues = append(r.OpenidConnect.Config.TokenPostArgsValues, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.UnauthorizedDestroySession = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnauthorizedDestroySession)
 				r.OpenidConnect.Config.UnauthorizedErrorMessage = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnauthorizedErrorMessage)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnauthorizedRedirectURI != nil {
-					r.OpenidConnect.Config.UnauthorizedRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnauthorizedRedirectURI))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnauthorizedRedirectURI {
-						r.OpenidConnect.Config.UnauthorizedRedirectURI = append(r.OpenidConnect.Config.UnauthorizedRedirectURI, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UnauthorizedRedirectURI = nil
+				r.OpenidConnect.Config.UnauthorizedRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnauthorizedRedirectURI))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnauthorizedRedirectURI {
+					r.OpenidConnect.Config.UnauthorizedRedirectURI = append(r.OpenidConnect.Config.UnauthorizedRedirectURI, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnexpectedRedirectURI != nil {
-					r.OpenidConnect.Config.UnexpectedRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnexpectedRedirectURI))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnexpectedRedirectURI {
-						r.OpenidConnect.Config.UnexpectedRedirectURI = append(r.OpenidConnect.Config.UnexpectedRedirectURI, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UnexpectedRedirectURI = nil
+				r.OpenidConnect.Config.UnexpectedRedirectURI = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnexpectedRedirectURI))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UnexpectedRedirectURI {
+					r.OpenidConnect.Config.UnexpectedRedirectURI = append(r.OpenidConnect.Config.UnexpectedRedirectURI, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.UpstreamAccessTokenHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamAccessTokenHeader)
 				r.OpenidConnect.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamAccessTokenJwkHeader)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeaders != nil {
-					r.OpenidConnect.Config.UpstreamHeaders = []tfTypes.DownstreamHeaders{}
+				r.OpenidConnect.Config.UpstreamHeaders = []tfTypes.DownstreamHeaders{}
 
-					for _, upstreamHeadersItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeaders {
-						var upstreamHeaders tfTypes.DownstreamHeaders
+				for _, upstreamHeadersItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeaders {
+					var upstreamHeaders tfTypes.DownstreamHeaders
 
-						upstreamHeaders.Header = types.StringValue(upstreamHeadersItem.Header)
-						upstreamHeaders.Path = make([]types.String, 0, len(upstreamHeadersItem.Path))
-						for _, v := range upstreamHeadersItem.Path {
-							upstreamHeaders.Path = append(upstreamHeaders.Path, types.StringValue(v))
-						}
-
-						r.OpenidConnect.Config.UpstreamHeaders = append(r.OpenidConnect.Config.UpstreamHeaders, upstreamHeaders)
+					upstreamHeaders.Header = types.StringValue(upstreamHeadersItem.Header)
+					upstreamHeaders.Path = make([]types.String, 0, len(upstreamHeadersItem.Path))
+					for _, v := range upstreamHeadersItem.Path {
+						upstreamHeaders.Path = append(upstreamHeaders.Path, types.StringValue(v))
 					}
-				} else {
-					r.OpenidConnect.Config.UpstreamHeaders = nil
+
+					r.OpenidConnect.Config.UpstreamHeaders = append(r.OpenidConnect.Config.UpstreamHeaders, upstreamHeaders)
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersClaims != nil {
-					r.OpenidConnect.Config.UpstreamHeadersClaims = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersClaims))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersClaims {
-						r.OpenidConnect.Config.UpstreamHeadersClaims = append(r.OpenidConnect.Config.UpstreamHeadersClaims, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UpstreamHeadersClaims = nil
+				r.OpenidConnect.Config.UpstreamHeadersClaims = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersClaims))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersClaims {
+					r.OpenidConnect.Config.UpstreamHeadersClaims = append(r.OpenidConnect.Config.UpstreamHeadersClaims, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersNames != nil {
-					r.OpenidConnect.Config.UpstreamHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersNames {
-						r.OpenidConnect.Config.UpstreamHeadersNames = append(r.OpenidConnect.Config.UpstreamHeadersNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UpstreamHeadersNames = nil
+				r.OpenidConnect.Config.UpstreamHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamHeadersNames {
+					r.OpenidConnect.Config.UpstreamHeadersNames = append(r.OpenidConnect.Config.UpstreamHeadersNames, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.UpstreamIDTokenHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamIDTokenHeader)
 				r.OpenidConnect.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UpstreamIDTokenJwkHeader)
@@ -1149,53 +881,29 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 					r.OpenidConnect.Config.UserinfoAccept = types.StringNull()
 				}
 				r.OpenidConnect.Config.UserinfoEndpoint = types.StringPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoEndpoint)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersClient != nil {
-					r.OpenidConnect.Config.UserinfoHeadersClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersClient))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersClient {
-						r.OpenidConnect.Config.UserinfoHeadersClient = append(r.OpenidConnect.Config.UserinfoHeadersClient, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UserinfoHeadersClient = nil
+				r.OpenidConnect.Config.UserinfoHeadersClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersClient))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersClient {
+					r.OpenidConnect.Config.UserinfoHeadersClient = append(r.OpenidConnect.Config.UserinfoHeadersClient, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersNames != nil {
-					r.OpenidConnect.Config.UserinfoHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersNames {
-						r.OpenidConnect.Config.UserinfoHeadersNames = append(r.OpenidConnect.Config.UserinfoHeadersNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UserinfoHeadersNames = nil
+				r.OpenidConnect.Config.UserinfoHeadersNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersNames {
+					r.OpenidConnect.Config.UserinfoHeadersNames = append(r.OpenidConnect.Config.UserinfoHeadersNames, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersValues != nil {
-					r.OpenidConnect.Config.UserinfoHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersValues {
-						r.OpenidConnect.Config.UserinfoHeadersValues = append(r.OpenidConnect.Config.UserinfoHeadersValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UserinfoHeadersValues = nil
+				r.OpenidConnect.Config.UserinfoHeadersValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoHeadersValues {
+					r.OpenidConnect.Config.UserinfoHeadersValues = append(r.OpenidConnect.Config.UserinfoHeadersValues, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsClient != nil {
-					r.OpenidConnect.Config.UserinfoQueryArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsClient))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsClient {
-						r.OpenidConnect.Config.UserinfoQueryArgsClient = append(r.OpenidConnect.Config.UserinfoQueryArgsClient, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UserinfoQueryArgsClient = nil
+				r.OpenidConnect.Config.UserinfoQueryArgsClient = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsClient))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsClient {
+					r.OpenidConnect.Config.UserinfoQueryArgsClient = append(r.OpenidConnect.Config.UserinfoQueryArgsClient, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsNames != nil {
-					r.OpenidConnect.Config.UserinfoQueryArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsNames))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsNames {
-						r.OpenidConnect.Config.UserinfoQueryArgsNames = append(r.OpenidConnect.Config.UserinfoQueryArgsNames, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UserinfoQueryArgsNames = nil
+				r.OpenidConnect.Config.UserinfoQueryArgsNames = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsNames))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsNames {
+					r.OpenidConnect.Config.UserinfoQueryArgsNames = append(r.OpenidConnect.Config.UserinfoQueryArgsNames, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsValues != nil {
-					r.OpenidConnect.Config.UserinfoQueryArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsValues))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsValues {
-						r.OpenidConnect.Config.UserinfoQueryArgsValues = append(r.OpenidConnect.Config.UserinfoQueryArgsValues, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.UserinfoQueryArgsValues = nil
+				r.OpenidConnect.Config.UserinfoQueryArgsValues = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsValues))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UserinfoQueryArgsValues {
+					r.OpenidConnect.Config.UserinfoQueryArgsValues = append(r.OpenidConnect.Config.UserinfoQueryArgsValues, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.UsingPseudoIssuer = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.UsingPseudoIssuer)
 				r.OpenidConnect.Config.VerifyClaims = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.VerifyClaims)
@@ -1351,34 +1059,31 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				hideCredentials = nil
 			}
-			var identityRealms []shared.IdentityRealms
-			if r.KeyAuth.Config.IdentityRealms != nil {
-				identityRealms = make([]shared.IdentityRealms, 0, len(r.KeyAuth.Config.IdentityRealms))
-				for identityRealmsIndex := range r.KeyAuth.Config.IdentityRealms {
-					id := new(string)
-					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsNull() {
-						*id = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.ValueString()
-					} else {
-						id = nil
-					}
-					region := new(string)
-					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsNull() {
-						*region = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.ValueString()
-					} else {
-						region = nil
-					}
-					scope := new(shared.AIGatewayIdentityProviderKeyAuthScope)
-					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-						*scope = shared.AIGatewayIdentityProviderKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
-					} else {
-						scope = nil
-					}
-					identityRealms = append(identityRealms, shared.IdentityRealms{
-						ID:     id,
-						Region: region,
-						Scope:  scope,
-					})
+			identityRealms := make([]shared.IdentityRealms, 0, len(r.KeyAuth.Config.IdentityRealms))
+			for identityRealmsIndex := range r.KeyAuth.Config.IdentityRealms {
+				id := new(string)
+				if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsNull() {
+					*id = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.ValueString()
+				} else {
+					id = nil
 				}
+				region := new(string)
+				if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsNull() {
+					*region = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.ValueString()
+				} else {
+					region = nil
+				}
+				scope := new(shared.AIGatewayIdentityProviderKeyAuthScope)
+				if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
+					*scope = shared.AIGatewayIdentityProviderKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+				} else {
+					scope = nil
+				}
+				identityRealms = append(identityRealms, shared.IdentityRealms{
+					ID:     id,
+					Region: region,
+					Scope:  scope,
+				})
 			}
 			keyInBody := new(bool)
 			if !r.KeyAuth.Config.KeyInBody.IsUnknown() && !r.KeyAuth.Config.KeyInBody.IsNull() {
@@ -1496,34 +1201,25 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				anonymous1 = nil
 			}
-			var audience []string
-			if r.OpenidConnect.Config.Audience != nil {
-				audience = make([]string, 0, len(r.OpenidConnect.Config.Audience))
-				for audienceIndex := range r.OpenidConnect.Config.Audience {
-					audience = append(audience, r.OpenidConnect.Config.Audience[audienceIndex].ValueString())
-				}
+			audience := make([]string, 0, len(r.OpenidConnect.Config.Audience))
+			for audienceIndex := range r.OpenidConnect.Config.Audience {
+				audience = append(audience, r.OpenidConnect.Config.Audience[audienceIndex].ValueString())
 			}
 			audienceClaim := make([]string, 0, len(r.OpenidConnect.Config.AudienceClaim))
 			for audienceClaimIndex := range r.OpenidConnect.Config.AudienceClaim {
 				audienceClaim = append(audienceClaim, r.OpenidConnect.Config.AudienceClaim[audienceClaimIndex].ValueString())
 			}
-			var audienceRequired []string
-			if r.OpenidConnect.Config.AudienceRequired != nil {
-				audienceRequired = make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
-				for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
-					audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
-				}
+			audienceRequired := make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
+			for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
+				audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
 			}
 			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
 			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
 				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
 			}
-			var authenticatedGroupsClaim []string
-			if r.OpenidConnect.Config.AuthenticatedGroupsClaim != nil {
-				authenticatedGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.AuthenticatedGroupsClaim))
-				for authenticatedGroupsClaimIndex := range r.OpenidConnect.Config.AuthenticatedGroupsClaim {
-					authenticatedGroupsClaim = append(authenticatedGroupsClaim, r.OpenidConnect.Config.AuthenticatedGroupsClaim[authenticatedGroupsClaimIndex].ValueString())
-				}
+			authenticatedGroupsClaim := make([]string, 0, len(r.OpenidConnect.Config.AuthenticatedGroupsClaim))
+			for authenticatedGroupsClaimIndex := range r.OpenidConnect.Config.AuthenticatedGroupsClaim {
+				authenticatedGroupsClaim = append(authenticatedGroupsClaim, r.OpenidConnect.Config.AuthenticatedGroupsClaim[authenticatedGroupsClaimIndex].ValueString())
 			}
 			authorizationCookieDomain := new(string)
 			if !r.OpenidConnect.Config.AuthorizationCookieDomain.IsUnknown() && !r.OpenidConnect.Config.AuthorizationCookieDomain.IsNull() {
@@ -1567,26 +1263,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				authorizationEndpoint = nil
 			}
-			var authorizationQueryArgsClient []string
-			if r.OpenidConnect.Config.AuthorizationQueryArgsClient != nil {
-				authorizationQueryArgsClient = make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsClient))
-				for authorizationQueryArgsClientIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsClient {
-					authorizationQueryArgsClient = append(authorizationQueryArgsClient, r.OpenidConnect.Config.AuthorizationQueryArgsClient[authorizationQueryArgsClientIndex].ValueString())
-				}
+			authorizationQueryArgsClient := make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsClient))
+			for authorizationQueryArgsClientIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsClient {
+				authorizationQueryArgsClient = append(authorizationQueryArgsClient, r.OpenidConnect.Config.AuthorizationQueryArgsClient[authorizationQueryArgsClientIndex].ValueString())
 			}
-			var authorizationQueryArgsNames []string
-			if r.OpenidConnect.Config.AuthorizationQueryArgsNames != nil {
-				authorizationQueryArgsNames = make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsNames))
-				for authorizationQueryArgsNamesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsNames {
-					authorizationQueryArgsNames = append(authorizationQueryArgsNames, r.OpenidConnect.Config.AuthorizationQueryArgsNames[authorizationQueryArgsNamesIndex].ValueString())
-				}
+			authorizationQueryArgsNames := make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsNames))
+			for authorizationQueryArgsNamesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsNames {
+				authorizationQueryArgsNames = append(authorizationQueryArgsNames, r.OpenidConnect.Config.AuthorizationQueryArgsNames[authorizationQueryArgsNamesIndex].ValueString())
 			}
-			var authorizationQueryArgsValues []string
-			if r.OpenidConnect.Config.AuthorizationQueryArgsValues != nil {
-				authorizationQueryArgsValues = make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsValues))
-				for authorizationQueryArgsValuesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsValues {
-					authorizationQueryArgsValues = append(authorizationQueryArgsValues, r.OpenidConnect.Config.AuthorizationQueryArgsValues[authorizationQueryArgsValuesIndex].ValueString())
-				}
+			authorizationQueryArgsValues := make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsValues))
+			for authorizationQueryArgsValuesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsValues {
+				authorizationQueryArgsValues = append(authorizationQueryArgsValues, r.OpenidConnect.Config.AuthorizationQueryArgsValues[authorizationQueryArgsValuesIndex].ValueString())
 			}
 			authorizationRollingTimeout := new(float64)
 			if !r.OpenidConnect.Config.AuthorizationRollingTimeout.IsUnknown() && !r.OpenidConnect.Config.AuthorizationRollingTimeout.IsNull() {
@@ -1673,19 +1360,13 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				cacheUserInfo = nil
 			}
-			var claimsForbidden []string
-			if r.OpenidConnect.Config.ClaimsForbidden != nil {
-				claimsForbidden = make([]string, 0, len(r.OpenidConnect.Config.ClaimsForbidden))
-				for claimsForbiddenIndex := range r.OpenidConnect.Config.ClaimsForbidden {
-					claimsForbidden = append(claimsForbidden, r.OpenidConnect.Config.ClaimsForbidden[claimsForbiddenIndex].ValueString())
-				}
+			claimsForbidden := make([]string, 0, len(r.OpenidConnect.Config.ClaimsForbidden))
+			for claimsForbiddenIndex := range r.OpenidConnect.Config.ClaimsForbidden {
+				claimsForbidden = append(claimsForbidden, r.OpenidConnect.Config.ClaimsForbidden[claimsForbiddenIndex].ValueString())
 			}
-			var clientAlg []shared.ClientAlg
-			if r.OpenidConnect.Config.ClientAlg != nil {
-				clientAlg = make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
-				for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
-					clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
-				}
+			clientAlg := make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
+			for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
+				clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
 			}
 			clientArg := new(string)
 			if !r.OpenidConnect.Config.ClientArg.IsUnknown() && !r.OpenidConnect.Config.ClientArg.IsNull() {
@@ -1693,215 +1374,197 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				clientArg = nil
 			}
-			var clientAuth []shared.ClientAuth
-			if r.OpenidConnect.Config.ClientAuth != nil {
-				clientAuth = make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
-				for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
-					clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
-				}
+			clientAuth := make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
+			for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
+				clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
 			}
 			clientCredentialsParamType := make([]shared.ClientCredentialsParamType, 0, len(r.OpenidConnect.Config.ClientCredentialsParamType))
 			for _, clientCredentialsParamTypeItem := range r.OpenidConnect.Config.ClientCredentialsParamType {
 				clientCredentialsParamType = append(clientCredentialsParamType, shared.ClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
 			}
-			var clientID []string
-			if r.OpenidConnect.Config.ClientID != nil {
-				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
-				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
-					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
-				}
+			clientID := make([]string, 0, len(r.OpenidConnect.Config.ClientID))
+			for clientIDIndex := range r.OpenidConnect.Config.ClientID {
+				clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
 			}
-			var clientJwk []shared.ClientJwk
-			if r.OpenidConnect.Config.ClientJwk != nil {
-				clientJwk = make([]shared.ClientJwk, 0, len(r.OpenidConnect.Config.ClientJwk))
-				for clientJwkIndex := range r.OpenidConnect.Config.ClientJwk {
-					alg := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsNull() {
-						*alg = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.ValueString()
-					} else {
-						alg = nil
-					}
-					crv := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsNull() {
-						*crv = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.ValueString()
-					} else {
-						crv = nil
-					}
-					d := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsNull() {
-						*d = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.ValueString()
-					} else {
-						d = nil
-					}
-					dp := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsNull() {
-						*dp = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.ValueString()
-					} else {
-						dp = nil
-					}
-					dq := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsNull() {
-						*dq = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.ValueString()
-					} else {
-						dq = nil
-					}
-					e := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsNull() {
-						*e = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.ValueString()
-					} else {
-						e = nil
-					}
-					issuer := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsNull() {
-						*issuer = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
-					} else {
-						issuer = nil
-					}
-					k := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsNull() {
-						*k = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.ValueString()
-					} else {
-						k = nil
-					}
-					var keyOps []string
-					if r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps != nil {
-						keyOps = make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps))
-						for keyOpsIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps {
-							keyOps = append(keyOps, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps[keyOpsIndex].ValueString())
-						}
-					}
-					kid := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsNull() {
-						*kid = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.ValueString()
-					} else {
-						kid = nil
-					}
-					kty := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsNull() {
-						*kty = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.ValueString()
-					} else {
-						kty = nil
-					}
-					n := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsNull() {
-						*n = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.ValueString()
-					} else {
-						n = nil
-					}
-					oth := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsNull() {
-						*oth = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.ValueString()
-					} else {
-						oth = nil
-					}
-					p := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsNull() {
-						*p = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.ValueString()
-					} else {
-						p = nil
-					}
-					q := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsNull() {
-						*q = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.ValueString()
-					} else {
-						q = nil
-					}
-					qi := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsNull() {
-						*qi = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.ValueString()
-					} else {
-						qi = nil
-					}
-					r1 := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsNull() {
-						*r1 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.ValueString()
-					} else {
-						r1 = nil
-					}
-					t := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsNull() {
-						*t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.ValueString()
-					} else {
-						t = nil
-					}
-					use := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsNull() {
-						*use = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.ValueString()
-					} else {
-						use = nil
-					}
-					x := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsNull() {
-						*x = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.ValueString()
-					} else {
-						x = nil
-					}
-					var x5c []string
-					if r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c != nil {
-						x5c = make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c))
-						for x5cIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c {
-							x5c = append(x5c, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c[x5cIndex].ValueString())
-						}
-					}
-					x5t := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsNull() {
-						*x5t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.ValueString()
-					} else {
-						x5t = nil
-					}
-					x5tNumberS256 := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsNull() {
-						*x5tNumberS256 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.ValueString()
-					} else {
-						x5tNumberS256 = nil
-					}
-					x5u := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsNull() {
-						*x5u = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.ValueString()
-					} else {
-						x5u = nil
-					}
-					y := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsNull() {
-						*y = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.ValueString()
-					} else {
-						y = nil
-					}
-					clientJwk = append(clientJwk, shared.ClientJwk{
-						Alg:           alg,
-						Crv:           crv,
-						D:             d,
-						Dp:            dp,
-						Dq:            dq,
-						E:             e,
-						Issuer:        issuer,
-						K:             k,
-						KeyOps:        keyOps,
-						Kid:           kid,
-						Kty:           kty,
-						N:             n,
-						Oth:           oth,
-						P:             p,
-						Q:             q,
-						Qi:            qi,
-						R:             r1,
-						T:             t,
-						Use:           use,
-						X:             x,
-						X5c:           x5c,
-						X5t:           x5t,
-						X5tNumberS256: x5tNumberS256,
-						X5u:           x5u,
-						Y:             y,
-					})
+			clientJwk := make([]shared.ClientJwk, 0, len(r.OpenidConnect.Config.ClientJwk))
+			for clientJwkIndex := range r.OpenidConnect.Config.ClientJwk {
+				alg := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsNull() {
+					*alg = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.ValueString()
+				} else {
+					alg = nil
 				}
+				crv := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsNull() {
+					*crv = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.ValueString()
+				} else {
+					crv = nil
+				}
+				d := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsNull() {
+					*d = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.ValueString()
+				} else {
+					d = nil
+				}
+				dp := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsNull() {
+					*dp = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.ValueString()
+				} else {
+					dp = nil
+				}
+				dq := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsNull() {
+					*dq = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.ValueString()
+				} else {
+					dq = nil
+				}
+				e := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsNull() {
+					*e = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.ValueString()
+				} else {
+					e = nil
+				}
+				issuer := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsNull() {
+					*issuer = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
+				} else {
+					issuer = nil
+				}
+				k := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsNull() {
+					*k = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.ValueString()
+				} else {
+					k = nil
+				}
+				keyOps := make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps))
+				for keyOpsIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps {
+					keyOps = append(keyOps, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps[keyOpsIndex].ValueString())
+				}
+				kid := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsNull() {
+					*kid = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.ValueString()
+				} else {
+					kid = nil
+				}
+				kty := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsNull() {
+					*kty = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.ValueString()
+				} else {
+					kty = nil
+				}
+				n := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsNull() {
+					*n = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.ValueString()
+				} else {
+					n = nil
+				}
+				oth := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsNull() {
+					*oth = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.ValueString()
+				} else {
+					oth = nil
+				}
+				p := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsNull() {
+					*p = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.ValueString()
+				} else {
+					p = nil
+				}
+				q := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsNull() {
+					*q = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.ValueString()
+				} else {
+					q = nil
+				}
+				qi := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsNull() {
+					*qi = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.ValueString()
+				} else {
+					qi = nil
+				}
+				r1 := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsNull() {
+					*r1 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.ValueString()
+				} else {
+					r1 = nil
+				}
+				t := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsNull() {
+					*t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.ValueString()
+				} else {
+					t = nil
+				}
+				use := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsNull() {
+					*use = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.ValueString()
+				} else {
+					use = nil
+				}
+				x := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsNull() {
+					*x = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.ValueString()
+				} else {
+					x = nil
+				}
+				x5c := make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c))
+				for x5cIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c {
+					x5c = append(x5c, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c[x5cIndex].ValueString())
+				}
+				x5t := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsNull() {
+					*x5t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.ValueString()
+				} else {
+					x5t = nil
+				}
+				x5tNumberS256 := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsNull() {
+					*x5tNumberS256 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.ValueString()
+				} else {
+					x5tNumberS256 = nil
+				}
+				x5u := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsNull() {
+					*x5u = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.ValueString()
+				} else {
+					x5u = nil
+				}
+				y := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsNull() {
+					*y = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.ValueString()
+				} else {
+					y = nil
+				}
+				clientJwk = append(clientJwk, shared.ClientJwk{
+					Alg:           alg,
+					Crv:           crv,
+					D:             d,
+					Dp:            dp,
+					Dq:            dq,
+					E:             e,
+					Issuer:        issuer,
+					K:             k,
+					KeyOps:        keyOps,
+					Kid:           kid,
+					Kty:           kty,
+					N:             n,
+					Oth:           oth,
+					P:             p,
+					Q:             q,
+					Qi:            qi,
+					R:             r1,
+					T:             t,
+					Use:           use,
+					X:             x,
+					X5c:           x5c,
+					X5t:           x5t,
+					X5tNumberS256: x5tNumberS256,
+					X5u:           x5u,
+					Y:             y,
+				})
 			}
-			var clientSecret []string
-			if r.OpenidConnect.Config.ClientSecret != nil {
-				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
-				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
-					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
-				}
+			clientSecret := make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
+			for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
+				clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
 			}
 			clusterCacheItems := make([]shared.ClusterCacheItems, 0, len(r.OpenidConnect.Config.ClusterCacheItems))
 			for _, clusterCacheItemsItem := range r.OpenidConnect.Config.ClusterCacheItems {
@@ -2004,27 +1667,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.ClusterNodes
-				if r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes != nil {
-					clusterNodes = make([]shared.ClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
-					for clusterNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes {
-						ip := new(string)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
-							*ip = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.ValueString()
-						} else {
-							ip = nil
-						}
-						port := new(int64)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
-							*port = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
-						} else {
-							port = nil
-						}
-						clusterNodes = append(clusterNodes, shared.ClusterNodes{
-							IP:   ip,
-							Port: port,
-						})
+				clusterNodes := make([]shared.ClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
+				for clusterNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes {
+					ip := new(string)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+						*ip = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.ValueString()
+					} else {
+						ip = nil
 					}
+					port := new(int64)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+						*port = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
+					} else {
+						port = nil
+					}
+					clusterNodes = append(clusterNodes, shared.ClusterNodes{
+						IP:   ip,
+						Port: port,
+					})
 				}
 				connectTimeout := new(int64)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.ConnectTimeout.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ConnectTimeout.IsNull() {
@@ -2092,27 +1752,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.SentinelNodes
-				if r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes != nil {
-					sentinelNodes = make([]shared.SentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
-					for sentinelNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes {
-						host1 := new(string)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
-							*host1 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
-						} else {
-							host1 = nil
-						}
-						port2 := new(int64)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
-							*port2 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
-						} else {
-							port2 = nil
-						}
-						sentinelNodes = append(sentinelNodes, shared.SentinelNodes{
-							Host: host1,
-							Port: port2,
-						})
+				sentinelNodes := make([]shared.SentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
+				for sentinelNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes {
+					host1 := new(string)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+						*host1 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
+					} else {
+						host1 = nil
 					}
+					port2 := new(int64)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+						*port2 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
+					} else {
+						port2 = nil
+					}
+					sentinelNodes = append(sentinelNodes, shared.SentinelNodes{
+						Host: host1,
+						Port: port2,
+					})
 				}
 				sentinelPassword := new(string)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelPassword.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelPassword.IsNull() {
@@ -2191,23 +1848,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			for _, consumerByItem := range r.OpenidConnect.Config.ConsumerBy {
 				consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
 			}
-			var consumerClaims [][]string
-			if r.OpenidConnect.Config.ConsumerClaims != nil {
-				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
-				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
-					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
-					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
-						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
-					}
-					consumerClaims = append(consumerClaims, consumerClaimsTmp)
+			consumerClaims := make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
+			for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
+				consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
+				for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
+					consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
 				}
+				consumerClaims = append(consumerClaims, consumerClaimsTmp)
 			}
-			var consumerGroupsClaim []string
-			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
-				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
-				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
-					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
-				}
+			consumerGroupsClaim := make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
+			for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
+				consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
 			}
 			consumerGroupsOptional := new(bool)
 			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
@@ -2225,26 +1876,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
 				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
 			}
-			var disableSession []shared.DisableSession
-			if r.OpenidConnect.Config.DisableSession != nil {
-				disableSession = make([]shared.DisableSession, 0, len(r.OpenidConnect.Config.DisableSession))
-				for _, disableSessionItem := range r.OpenidConnect.Config.DisableSession {
-					disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
-				}
+			disableSession := make([]shared.DisableSession, 0, len(r.OpenidConnect.Config.DisableSession))
+			for _, disableSessionItem := range r.OpenidConnect.Config.DisableSession {
+				disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
 			}
-			var discoveryHeadersNames []string
-			if r.OpenidConnect.Config.DiscoveryHeadersNames != nil {
-				discoveryHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersNames))
-				for discoveryHeadersNamesIndex := range r.OpenidConnect.Config.DiscoveryHeadersNames {
-					discoveryHeadersNames = append(discoveryHeadersNames, r.OpenidConnect.Config.DiscoveryHeadersNames[discoveryHeadersNamesIndex].ValueString())
-				}
+			discoveryHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersNames))
+			for discoveryHeadersNamesIndex := range r.OpenidConnect.Config.DiscoveryHeadersNames {
+				discoveryHeadersNames = append(discoveryHeadersNames, r.OpenidConnect.Config.DiscoveryHeadersNames[discoveryHeadersNamesIndex].ValueString())
 			}
-			var discoveryHeadersValues []string
-			if r.OpenidConnect.Config.DiscoveryHeadersValues != nil {
-				discoveryHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersValues))
-				for discoveryHeadersValuesIndex := range r.OpenidConnect.Config.DiscoveryHeadersValues {
-					discoveryHeadersValues = append(discoveryHeadersValues, r.OpenidConnect.Config.DiscoveryHeadersValues[discoveryHeadersValuesIndex].ValueString())
-				}
+			discoveryHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersValues))
+			for discoveryHeadersValuesIndex := range r.OpenidConnect.Config.DiscoveryHeadersValues {
+				discoveryHeadersValues = append(discoveryHeadersValues, r.OpenidConnect.Config.DiscoveryHeadersValues[discoveryHeadersValuesIndex].ValueString())
 			}
 			displayErrors := new(bool)
 			if !r.OpenidConnect.Config.DisplayErrors.IsUnknown() && !r.OpenidConnect.Config.DisplayErrors.IsNull() {
@@ -2252,12 +1894,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				displayErrors = nil
 			}
-			var domains []string
-			if r.OpenidConnect.Config.Domains != nil {
-				domains = make([]string, 0, len(r.OpenidConnect.Config.Domains))
-				for domainsIndex := range r.OpenidConnect.Config.Domains {
-					domains = append(domains, r.OpenidConnect.Config.Domains[domainsIndex].ValueString())
-				}
+			domains := make([]string, 0, len(r.OpenidConnect.Config.Domains))
+			for domainsIndex := range r.OpenidConnect.Config.Domains {
+				domains = append(domains, r.OpenidConnect.Config.Domains[domainsIndex].ValueString())
 			}
 			downstreamAccessTokenHeader := new(string)
 			if !r.OpenidConnect.Config.DownstreamAccessTokenHeader.IsUnknown() && !r.OpenidConnect.Config.DownstreamAccessTokenHeader.IsNull() {
@@ -2271,36 +1910,27 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				downstreamAccessTokenJwkHeader = nil
 			}
-			var downstreamHeaders []shared.DownstreamHeaders
-			if r.OpenidConnect.Config.DownstreamHeaders != nil {
-				downstreamHeaders = make([]shared.DownstreamHeaders, 0, len(r.OpenidConnect.Config.DownstreamHeaders))
-				for downstreamHeadersIndex := range r.OpenidConnect.Config.DownstreamHeaders {
-					var header string
-					header = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
+			downstreamHeaders := make([]shared.DownstreamHeaders, 0, len(r.OpenidConnect.Config.DownstreamHeaders))
+			for downstreamHeadersIndex := range r.OpenidConnect.Config.DownstreamHeaders {
+				var header string
+				header = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
 
-					path := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
-					for pathIndex := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
-						path = append(path, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
-					}
-					downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
-						Header: header,
-						Path:   path,
-					})
+				path := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
+				for pathIndex := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
+					path = append(path, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
 				}
+				downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
+					Header: header,
+					Path:   path,
+				})
 			}
-			var downstreamHeadersClaims []string
-			if r.OpenidConnect.Config.DownstreamHeadersClaims != nil {
-				downstreamHeadersClaims = make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersClaims))
-				for downstreamHeadersClaimsIndex := range r.OpenidConnect.Config.DownstreamHeadersClaims {
-					downstreamHeadersClaims = append(downstreamHeadersClaims, r.OpenidConnect.Config.DownstreamHeadersClaims[downstreamHeadersClaimsIndex].ValueString())
-				}
+			downstreamHeadersClaims := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersClaims))
+			for downstreamHeadersClaimsIndex := range r.OpenidConnect.Config.DownstreamHeadersClaims {
+				downstreamHeadersClaims = append(downstreamHeadersClaims, r.OpenidConnect.Config.DownstreamHeadersClaims[downstreamHeadersClaimsIndex].ValueString())
 			}
-			var downstreamHeadersNames []string
-			if r.OpenidConnect.Config.DownstreamHeadersNames != nil {
-				downstreamHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersNames))
-				for downstreamHeadersNamesIndex := range r.OpenidConnect.Config.DownstreamHeadersNames {
-					downstreamHeadersNames = append(downstreamHeadersNames, r.OpenidConnect.Config.DownstreamHeadersNames[downstreamHeadersNamesIndex].ValueString())
-				}
+			downstreamHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersNames))
+			for downstreamHeadersNamesIndex := range r.OpenidConnect.Config.DownstreamHeadersNames {
+				downstreamHeadersNames = append(downstreamHeadersNames, r.OpenidConnect.Config.DownstreamHeadersNames[downstreamHeadersNamesIndex].ValueString())
 			}
 			downstreamIDTokenHeader := new(string)
 			if !r.OpenidConnect.Config.DownstreamIDTokenHeader.IsUnknown() && !r.OpenidConnect.Config.DownstreamIDTokenHeader.IsNull() {
@@ -2380,12 +2010,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				exposeErrorCode = nil
 			}
-			var extraJwksUris []string
-			if r.OpenidConnect.Config.ExtraJwksUris != nil {
-				extraJwksUris = make([]string, 0, len(r.OpenidConnect.Config.ExtraJwksUris))
-				for extraJwksUrisIndex := range r.OpenidConnect.Config.ExtraJwksUris {
-					extraJwksUris = append(extraJwksUris, r.OpenidConnect.Config.ExtraJwksUris[extraJwksUrisIndex].ValueString())
-				}
+			extraJwksUris := make([]string, 0, len(r.OpenidConnect.Config.ExtraJwksUris))
+			for extraJwksUrisIndex := range r.OpenidConnect.Config.ExtraJwksUris {
+				extraJwksUris = append(extraJwksUris, r.OpenidConnect.Config.ExtraJwksUris[extraJwksUrisIndex].ValueString())
 			}
 			forbiddenDestroySession := new(bool)
 			if !r.OpenidConnect.Config.ForbiddenDestroySession.IsUnknown() && !r.OpenidConnect.Config.ForbiddenDestroySession.IsNull() {
@@ -2399,23 +2026,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				forbiddenErrorMessage = nil
 			}
-			var forbiddenRedirectURI []string
-			if r.OpenidConnect.Config.ForbiddenRedirectURI != nil {
-				forbiddenRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.ForbiddenRedirectURI))
-				for forbiddenRedirectURIIndex := range r.OpenidConnect.Config.ForbiddenRedirectURI {
-					forbiddenRedirectURI = append(forbiddenRedirectURI, r.OpenidConnect.Config.ForbiddenRedirectURI[forbiddenRedirectURIIndex].ValueString())
-				}
+			forbiddenRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.ForbiddenRedirectURI))
+			for forbiddenRedirectURIIndex := range r.OpenidConnect.Config.ForbiddenRedirectURI {
+				forbiddenRedirectURI = append(forbiddenRedirectURI, r.OpenidConnect.Config.ForbiddenRedirectURI[forbiddenRedirectURIIndex].ValueString())
 			}
 			groupsClaim := make([]string, 0, len(r.OpenidConnect.Config.GroupsClaim))
 			for groupsClaimIndex := range r.OpenidConnect.Config.GroupsClaim {
 				groupsClaim = append(groupsClaim, r.OpenidConnect.Config.GroupsClaim[groupsClaimIndex].ValueString())
 			}
-			var groupsRequired []string
-			if r.OpenidConnect.Config.GroupsRequired != nil {
-				groupsRequired = make([]string, 0, len(r.OpenidConnect.Config.GroupsRequired))
-				for groupsRequiredIndex := range r.OpenidConnect.Config.GroupsRequired {
-					groupsRequired = append(groupsRequired, r.OpenidConnect.Config.GroupsRequired[groupsRequiredIndex].ValueString())
-				}
+			groupsRequired := make([]string, 0, len(r.OpenidConnect.Config.GroupsRequired))
+			for groupsRequiredIndex := range r.OpenidConnect.Config.GroupsRequired {
+				groupsRequired = append(groupsRequired, r.OpenidConnect.Config.GroupsRequired[groupsRequiredIndex].ValueString())
 			}
 			hideCredentials1 := new(bool)
 			if !r.OpenidConnect.Config.HideCredentials.IsUnknown() && !r.OpenidConnect.Config.HideCredentials.IsNull() {
@@ -2497,26 +2118,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				introspectionEndpointAuthMethod = nil
 			}
-			var introspectionHeadersClient []string
-			if r.OpenidConnect.Config.IntrospectionHeadersClient != nil {
-				introspectionHeadersClient = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersClient))
-				for introspectionHeadersClientIndex := range r.OpenidConnect.Config.IntrospectionHeadersClient {
-					introspectionHeadersClient = append(introspectionHeadersClient, r.OpenidConnect.Config.IntrospectionHeadersClient[introspectionHeadersClientIndex].ValueString())
-				}
+			introspectionHeadersClient := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersClient))
+			for introspectionHeadersClientIndex := range r.OpenidConnect.Config.IntrospectionHeadersClient {
+				introspectionHeadersClient = append(introspectionHeadersClient, r.OpenidConnect.Config.IntrospectionHeadersClient[introspectionHeadersClientIndex].ValueString())
 			}
-			var introspectionHeadersNames []string
-			if r.OpenidConnect.Config.IntrospectionHeadersNames != nil {
-				introspectionHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersNames))
-				for introspectionHeadersNamesIndex := range r.OpenidConnect.Config.IntrospectionHeadersNames {
-					introspectionHeadersNames = append(introspectionHeadersNames, r.OpenidConnect.Config.IntrospectionHeadersNames[introspectionHeadersNamesIndex].ValueString())
-				}
+			introspectionHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersNames))
+			for introspectionHeadersNamesIndex := range r.OpenidConnect.Config.IntrospectionHeadersNames {
+				introspectionHeadersNames = append(introspectionHeadersNames, r.OpenidConnect.Config.IntrospectionHeadersNames[introspectionHeadersNamesIndex].ValueString())
 			}
-			var introspectionHeadersValues []string
-			if r.OpenidConnect.Config.IntrospectionHeadersValues != nil {
-				introspectionHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersValues))
-				for introspectionHeadersValuesIndex := range r.OpenidConnect.Config.IntrospectionHeadersValues {
-					introspectionHeadersValues = append(introspectionHeadersValues, r.OpenidConnect.Config.IntrospectionHeadersValues[introspectionHeadersValuesIndex].ValueString())
-				}
+			introspectionHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersValues))
+			for introspectionHeadersValuesIndex := range r.OpenidConnect.Config.IntrospectionHeadersValues {
+				introspectionHeadersValues = append(introspectionHeadersValues, r.OpenidConnect.Config.IntrospectionHeadersValues[introspectionHeadersValuesIndex].ValueString())
 			}
 			introspectionHint := new(string)
 			if !r.OpenidConnect.Config.IntrospectionHint.IsUnknown() && !r.OpenidConnect.Config.IntrospectionHint.IsNull() {
@@ -2524,33 +2136,21 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				introspectionHint = nil
 			}
-			var introspectionPostArgsClient []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsClient != nil {
-				introspectionPostArgsClient = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClient))
-				for introspectionPostArgsClientIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClient {
-					introspectionPostArgsClient = append(introspectionPostArgsClient, r.OpenidConnect.Config.IntrospectionPostArgsClient[introspectionPostArgsClientIndex].ValueString())
-				}
+			introspectionPostArgsClient := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClient))
+			for introspectionPostArgsClientIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClient {
+				introspectionPostArgsClient = append(introspectionPostArgsClient, r.OpenidConnect.Config.IntrospectionPostArgsClient[introspectionPostArgsClientIndex].ValueString())
 			}
-			var introspectionPostArgsClientHeaders []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders != nil {
-				introspectionPostArgsClientHeaders = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders))
-				for introspectionPostArgsClientHeadersIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders {
-					introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders[introspectionPostArgsClientHeadersIndex].ValueString())
-				}
+			introspectionPostArgsClientHeaders := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders))
+			for introspectionPostArgsClientHeadersIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders {
+				introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders[introspectionPostArgsClientHeadersIndex].ValueString())
 			}
-			var introspectionPostArgsNames []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsNames != nil {
-				introspectionPostArgsNames = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsNames))
-				for introspectionPostArgsNamesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsNames {
-					introspectionPostArgsNames = append(introspectionPostArgsNames, r.OpenidConnect.Config.IntrospectionPostArgsNames[introspectionPostArgsNamesIndex].ValueString())
-				}
+			introspectionPostArgsNames := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsNames))
+			for introspectionPostArgsNamesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsNames {
+				introspectionPostArgsNames = append(introspectionPostArgsNames, r.OpenidConnect.Config.IntrospectionPostArgsNames[introspectionPostArgsNamesIndex].ValueString())
 			}
-			var introspectionPostArgsValues []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsValues != nil {
-				introspectionPostArgsValues = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsValues))
-				for introspectionPostArgsValuesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsValues {
-					introspectionPostArgsValues = append(introspectionPostArgsValues, r.OpenidConnect.Config.IntrospectionPostArgsValues[introspectionPostArgsValuesIndex].ValueString())
-				}
+			introspectionPostArgsValues := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsValues))
+			for introspectionPostArgsValuesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsValues {
+				introspectionPostArgsValues = append(introspectionPostArgsValues, r.OpenidConnect.Config.IntrospectionPostArgsValues[introspectionPostArgsValuesIndex].ValueString())
 			}
 			introspectionTokenParamName := new(string)
 			if !r.OpenidConnect.Config.IntrospectionTokenParamName.IsUnknown() && !r.OpenidConnect.Config.IntrospectionTokenParamName.IsNull() {
@@ -2561,12 +2161,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			var issuer1 string
 			issuer1 = r.OpenidConnect.Config.Issuer.ValueString()
 
-			var issuersAllowed []string
-			if r.OpenidConnect.Config.IssuersAllowed != nil {
-				issuersAllowed = make([]string, 0, len(r.OpenidConnect.Config.IssuersAllowed))
-				for issuersAllowedIndex := range r.OpenidConnect.Config.IssuersAllowed {
-					issuersAllowed = append(issuersAllowed, r.OpenidConnect.Config.IssuersAllowed[issuersAllowedIndex].ValueString())
-				}
+			issuersAllowed := make([]string, 0, len(r.OpenidConnect.Config.IssuersAllowed))
+			for issuersAllowedIndex := range r.OpenidConnect.Config.IssuersAllowed {
+				issuersAllowed = append(issuersAllowed, r.OpenidConnect.Config.IssuersAllowed[issuersAllowedIndex].ValueString())
 			}
 			jwksEndpoint := new(string)
 			if !r.OpenidConnect.Config.JwksEndpoint.IsUnknown() && !r.OpenidConnect.Config.JwksEndpoint.IsNull() {
@@ -2614,12 +2211,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				loginRedirectMode = nil
 			}
-			var loginRedirectURI []string
-			if r.OpenidConnect.Config.LoginRedirectURI != nil {
-				loginRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.LoginRedirectURI))
-				for loginRedirectURIIndex := range r.OpenidConnect.Config.LoginRedirectURI {
-					loginRedirectURI = append(loginRedirectURI, r.OpenidConnect.Config.LoginRedirectURI[loginRedirectURIIndex].ValueString())
-				}
+			loginRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.LoginRedirectURI))
+			for loginRedirectURIIndex := range r.OpenidConnect.Config.LoginRedirectURI {
+				loginRedirectURI = append(loginRedirectURI, r.OpenidConnect.Config.LoginRedirectURI[loginRedirectURIIndex].ValueString())
 			}
 			loginTokens := make([]shared.LoginTokens, 0, len(r.OpenidConnect.Config.LoginTokens))
 			for _, loginTokensItem := range r.OpenidConnect.Config.LoginTokens {
@@ -2641,12 +2235,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				logoutQueryArg = nil
 			}
-			var logoutRedirectURI []string
-			if r.OpenidConnect.Config.LogoutRedirectURI != nil {
-				logoutRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.LogoutRedirectURI))
-				for logoutRedirectURIIndex := range r.OpenidConnect.Config.LogoutRedirectURI {
-					logoutRedirectURI = append(logoutRedirectURI, r.OpenidConnect.Config.LogoutRedirectURI[logoutRedirectURIIndex].ValueString())
-				}
+			logoutRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.LogoutRedirectURI))
+			for logoutRedirectURIIndex := range r.OpenidConnect.Config.LogoutRedirectURI {
+				logoutRedirectURI = append(logoutRedirectURI, r.OpenidConnect.Config.LogoutRedirectURI[logoutRedirectURIIndex].ValueString())
 			}
 			logoutRevoke := new(bool)
 			if !r.OpenidConnect.Config.LogoutRevoke.IsUnknown() && !r.OpenidConnect.Config.LogoutRevoke.IsNull() {
@@ -2750,12 +2341,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 				} else {
 					principalBy = nil
 				}
-				var principalClaim []string
-				if r.OpenidConnect.Config.Principals.PrincipalClaim != nil {
-					principalClaim = make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
-					for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
-						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
-					}
+				principalClaim := make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
+				for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
+					principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
 				}
 				principals1 = &shared.AIGatewayIdentityProviderOpenIDConnectPrincipals{
 					Directory:           directory1,
@@ -2888,12 +2476,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				pushedAuthorizationRequestEndpointAuthMethod = nil
 			}
-			var redirectURI []string
-			if r.OpenidConnect.Config.RedirectURI != nil {
-				redirectURI = make([]string, 0, len(r.OpenidConnect.Config.RedirectURI))
-				for redirectURIIndex := range r.OpenidConnect.Config.RedirectURI {
-					redirectURI = append(redirectURI, r.OpenidConnect.Config.RedirectURI[redirectURIIndex].ValueString())
-				}
+			redirectURI := make([]string, 0, len(r.OpenidConnect.Config.RedirectURI))
+			for redirectURIIndex := range r.OpenidConnect.Config.RedirectURI {
+				redirectURI = append(redirectURI, r.OpenidConnect.Config.RedirectURI[redirectURIIndex].ValueString())
 			}
 			var redis *shared.Redis
 			if r.OpenidConnect.Config.Redis != nil {
@@ -2992,27 +2577,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 				} else {
 					clusterMaxRedirections1 = nil
 				}
-				var clusterNodes1 []shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes
-				if r.OpenidConnect.Config.Redis.ClusterNodes != nil {
-					clusterNodes1 = make([]shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
-					for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
-						ip1 := new(string)
-						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
-							*ip1 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
-						} else {
-							ip1 = nil
-						}
-						port3 := new(int64)
-						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
-							*port3 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
-						} else {
-							port3 = nil
-						}
-						clusterNodes1 = append(clusterNodes1, shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes{
-							IP:   ip1,
-							Port: port3,
-						})
+				clusterNodes1 := make([]shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
+				for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
+					ip1 := new(string)
+					if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
+						*ip1 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
+					} else {
+						ip1 = nil
 					}
+					port3 := new(int64)
+					if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
+						*port3 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
+					} else {
+						port3 = nil
+					}
+					clusterNodes1 = append(clusterNodes1, shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes{
+						IP:   ip1,
+						Port: port3,
+					})
 				}
 				connectTimeout1 := new(int64)
 				if !r.OpenidConnect.Config.Redis.ConnectTimeout.IsUnknown() && !r.OpenidConnect.Config.Redis.ConnectTimeout.IsNull() {
@@ -3086,27 +2668,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 				} else {
 					sentinelMaster1 = nil
 				}
-				var sentinelNodes1 []shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes
-				if r.OpenidConnect.Config.Redis.SentinelNodes != nil {
-					sentinelNodes1 = make([]shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
-					for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
-						host3 := new(string)
-						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
-							*host3 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
-						} else {
-							host3 = nil
-						}
-						port5 := new(int64)
-						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
-							*port5 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
-						} else {
-							port5 = nil
-						}
-						sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes{
-							Host: host3,
-							Port: port5,
-						})
+				sentinelNodes1 := make([]shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
+				for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
+					host3 := new(string)
+					if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
+						*host3 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
+					} else {
+						host3 = nil
 					}
+					port5 := new(int64)
+					if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
+						*port5 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
+					} else {
+						port5 = nil
+					}
+					sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes{
+						Host: host3,
+						Port: port5,
+					})
 				}
 				sentinelPassword1 := new(string)
 				if !r.OpenidConnect.Config.Redis.SentinelPassword.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelPassword.IsNull() {
@@ -3267,12 +2846,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			for rolesClaimIndex := range r.OpenidConnect.Config.RolesClaim {
 				rolesClaim = append(rolesClaim, r.OpenidConnect.Config.RolesClaim[rolesClaimIndex].ValueString())
 			}
-			var rolesRequired []string
-			if r.OpenidConnect.Config.RolesRequired != nil {
-				rolesRequired = make([]string, 0, len(r.OpenidConnect.Config.RolesRequired))
-				for rolesRequiredIndex := range r.OpenidConnect.Config.RolesRequired {
-					rolesRequired = append(rolesRequired, r.OpenidConnect.Config.RolesRequired[rolesRequiredIndex].ValueString())
-				}
+			rolesRequired := make([]string, 0, len(r.OpenidConnect.Config.RolesRequired))
+			for rolesRequiredIndex := range r.OpenidConnect.Config.RolesRequired {
+				rolesRequired = append(rolesRequired, r.OpenidConnect.Config.RolesRequired[rolesRequiredIndex].ValueString())
 			}
 			runOnPreflight1 := new(bool)
 			if !r.OpenidConnect.Config.RunOnPreflight.IsUnknown() && !r.OpenidConnect.Config.RunOnPreflight.IsNull() {
@@ -3288,12 +2864,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			for scopesClaimIndex := range r.OpenidConnect.Config.ScopesClaim {
 				scopesClaim = append(scopesClaim, r.OpenidConnect.Config.ScopesClaim[scopesClaimIndex].ValueString())
 			}
-			var scopesRequired []string
-			if r.OpenidConnect.Config.ScopesRequired != nil {
-				scopesRequired = make([]string, 0, len(r.OpenidConnect.Config.ScopesRequired))
-				for scopesRequiredIndex := range r.OpenidConnect.Config.ScopesRequired {
-					scopesRequired = append(scopesRequired, r.OpenidConnect.Config.ScopesRequired[scopesRequiredIndex].ValueString())
-				}
+			scopesRequired := make([]string, 0, len(r.OpenidConnect.Config.ScopesRequired))
+			for scopesRequiredIndex := range r.OpenidConnect.Config.ScopesRequired {
+				scopesRequired = append(scopesRequired, r.OpenidConnect.Config.ScopesRequired[scopesRequiredIndex].ValueString())
 			}
 			searchUserInfo := new(bool)
 			if !r.OpenidConnect.Config.SearchUserInfo.IsUnknown() && !r.OpenidConnect.Config.SearchUserInfo.IsNull() {
@@ -3313,12 +2886,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				sessionAudience = nil
 			}
-			var sessionBind []shared.SessionBind
-			if r.OpenidConnect.Config.SessionBind != nil {
-				sessionBind = make([]shared.SessionBind, 0, len(r.OpenidConnect.Config.SessionBind))
-				for _, sessionBindItem := range r.OpenidConnect.Config.SessionBind {
-					sessionBind = append(sessionBind, shared.SessionBind(sessionBindItem.ValueString()))
-				}
+			sessionBind := make([]shared.SessionBind, 0, len(r.OpenidConnect.Config.SessionBind))
+			for _, sessionBindItem := range r.OpenidConnect.Config.SessionBind {
+				sessionBind = append(sessionBind, shared.SessionBind(sessionBindItem.ValueString()))
 			}
 			sessionCookieDomain := new(string)
 			if !r.OpenidConnect.Config.SessionCookieDomain.IsUnknown() && !r.OpenidConnect.Config.SessionCookieDomain.IsNull() {
@@ -3440,19 +3010,13 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				sessionRememberRollingTimeout = nil
 			}
-			var sessionRequestHeaders []shared.SessionRequestHeaders
-			if r.OpenidConnect.Config.SessionRequestHeaders != nil {
-				sessionRequestHeaders = make([]shared.SessionRequestHeaders, 0, len(r.OpenidConnect.Config.SessionRequestHeaders))
-				for _, sessionRequestHeadersItem := range r.OpenidConnect.Config.SessionRequestHeaders {
-					sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
-				}
+			sessionRequestHeaders := make([]shared.SessionRequestHeaders, 0, len(r.OpenidConnect.Config.SessionRequestHeaders))
+			for _, sessionRequestHeadersItem := range r.OpenidConnect.Config.SessionRequestHeaders {
+				sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
 			}
-			var sessionResponseHeaders []shared.SessionResponseHeaders
-			if r.OpenidConnect.Config.SessionResponseHeaders != nil {
-				sessionResponseHeaders = make([]shared.SessionResponseHeaders, 0, len(r.OpenidConnect.Config.SessionResponseHeaders))
-				for _, sessionResponseHeadersItem := range r.OpenidConnect.Config.SessionResponseHeaders {
-					sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
-				}
+			sessionResponseHeaders := make([]shared.SessionResponseHeaders, 0, len(r.OpenidConnect.Config.SessionResponseHeaders))
+			for _, sessionResponseHeadersItem := range r.OpenidConnect.Config.SessionResponseHeaders {
+				sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
 			}
 			sessionRollingTimeout := new(float64)
 			if !r.OpenidConnect.Config.SessionRollingTimeout.IsUnknown() && !r.OpenidConnect.Config.SessionRollingTimeout.IsNull() {
@@ -3543,12 +3107,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 				}
 				var request *shared.Request
 				if r.OpenidConnect.Config.TokenExchange.Request != nil {
-					var audience1 []string
-					if r.OpenidConnect.Config.TokenExchange.Request.Audience != nil {
-						audience1 = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Audience))
-						for audienceIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Audience {
-							audience1 = append(audience1, r.OpenidConnect.Config.TokenExchange.Request.Audience[audienceIndex1].ValueString())
-						}
+					audience1 := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Audience))
+					for audienceIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Audience {
+						audience1 = append(audience1, r.OpenidConnect.Config.TokenExchange.Request.Audience[audienceIndex1].ValueString())
 					}
 					emptyAudience := new(bool)
 					if !r.OpenidConnect.Config.TokenExchange.Request.EmptyAudience.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Request.EmptyAudience.IsNull() {
@@ -3562,12 +3123,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 					} else {
 						emptyScopes = nil
 					}
-					var scopes1 []string
-					if r.OpenidConnect.Config.TokenExchange.Request.Scopes != nil {
-						scopes1 = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Scopes))
-						for scopesIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Scopes {
-							scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
-						}
+					scopes1 := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Scopes))
+					for scopesIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Scopes {
+						scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
 					}
 					request = &shared.Request{
 						Audience:      audience1,
@@ -3580,33 +3138,21 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 				for subjectTokenIssuersIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers {
 					var conditions *shared.AIGatewayIdentityProviderOpenIDConnectConditions
 					if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions != nil {
-						var hasAudience []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience != nil {
-							hasAudience = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience))
-							for hasAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience {
-								hasAudience = append(hasAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience[hasAudienceIndex].ValueString())
-							}
+						hasAudience := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience))
+						for hasAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience {
+							hasAudience = append(hasAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience[hasAudienceIndex].ValueString())
 						}
-						var hasScopes []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes != nil {
-							hasScopes = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes))
-							for hasScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes {
-								hasScopes = append(hasScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes[hasScopesIndex].ValueString())
-							}
+						hasScopes := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes))
+						for hasScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes {
+							hasScopes = append(hasScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes[hasScopesIndex].ValueString())
 						}
-						var missingAudience []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience != nil {
-							missingAudience = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience))
-							for missingAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience {
-								missingAudience = append(missingAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience[missingAudienceIndex].ValueString())
-							}
+						missingAudience := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience))
+						for missingAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience {
+							missingAudience = append(missingAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience[missingAudienceIndex].ValueString())
 						}
-						var missingScopes []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes != nil {
-							missingScopes = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes))
-							for missingScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes {
-								missingScopes = append(missingScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes[missingScopesIndex].ValueString())
-							}
+						missingScopes := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes))
+						for missingScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes {
+							missingScopes = append(missingScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes[missingScopesIndex].ValueString())
 						}
 						conditions = &shared.AIGatewayIdentityProviderOpenIDConnectConditions{
 							HasAudience:     hasAudience,
@@ -3649,26 +3195,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				tokenExchangeEndpoint = nil
 			}
-			var tokenHeadersClient []string
-			if r.OpenidConnect.Config.TokenHeadersClient != nil {
-				tokenHeadersClient = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersClient))
-				for tokenHeadersClientIndex := range r.OpenidConnect.Config.TokenHeadersClient {
-					tokenHeadersClient = append(tokenHeadersClient, r.OpenidConnect.Config.TokenHeadersClient[tokenHeadersClientIndex].ValueString())
-				}
+			tokenHeadersClient := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersClient))
+			for tokenHeadersClientIndex := range r.OpenidConnect.Config.TokenHeadersClient {
+				tokenHeadersClient = append(tokenHeadersClient, r.OpenidConnect.Config.TokenHeadersClient[tokenHeadersClientIndex].ValueString())
 			}
-			var tokenHeadersGrants []shared.TokenHeadersGrants
-			if r.OpenidConnect.Config.TokenHeadersGrants != nil {
-				tokenHeadersGrants = make([]shared.TokenHeadersGrants, 0, len(r.OpenidConnect.Config.TokenHeadersGrants))
-				for _, tokenHeadersGrantsItem := range r.OpenidConnect.Config.TokenHeadersGrants {
-					tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
-				}
+			tokenHeadersGrants := make([]shared.TokenHeadersGrants, 0, len(r.OpenidConnect.Config.TokenHeadersGrants))
+			for _, tokenHeadersGrantsItem := range r.OpenidConnect.Config.TokenHeadersGrants {
+				tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
 			}
-			var tokenHeadersNames []string
-			if r.OpenidConnect.Config.TokenHeadersNames != nil {
-				tokenHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersNames))
-				for tokenHeadersNamesIndex := range r.OpenidConnect.Config.TokenHeadersNames {
-					tokenHeadersNames = append(tokenHeadersNames, r.OpenidConnect.Config.TokenHeadersNames[tokenHeadersNamesIndex].ValueString())
-				}
+			tokenHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersNames))
+			for tokenHeadersNamesIndex := range r.OpenidConnect.Config.TokenHeadersNames {
+				tokenHeadersNames = append(tokenHeadersNames, r.OpenidConnect.Config.TokenHeadersNames[tokenHeadersNamesIndex].ValueString())
 			}
 			tokenHeadersPrefix := new(string)
 			if !r.OpenidConnect.Config.TokenHeadersPrefix.IsUnknown() && !r.OpenidConnect.Config.TokenHeadersPrefix.IsNull() {
@@ -3676,40 +3213,25 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				tokenHeadersPrefix = nil
 			}
-			var tokenHeadersReplay []string
-			if r.OpenidConnect.Config.TokenHeadersReplay != nil {
-				tokenHeadersReplay = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersReplay))
-				for tokenHeadersReplayIndex := range r.OpenidConnect.Config.TokenHeadersReplay {
-					tokenHeadersReplay = append(tokenHeadersReplay, r.OpenidConnect.Config.TokenHeadersReplay[tokenHeadersReplayIndex].ValueString())
-				}
+			tokenHeadersReplay := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersReplay))
+			for tokenHeadersReplayIndex := range r.OpenidConnect.Config.TokenHeadersReplay {
+				tokenHeadersReplay = append(tokenHeadersReplay, r.OpenidConnect.Config.TokenHeadersReplay[tokenHeadersReplayIndex].ValueString())
 			}
-			var tokenHeadersValues []string
-			if r.OpenidConnect.Config.TokenHeadersValues != nil {
-				tokenHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersValues))
-				for tokenHeadersValuesIndex := range r.OpenidConnect.Config.TokenHeadersValues {
-					tokenHeadersValues = append(tokenHeadersValues, r.OpenidConnect.Config.TokenHeadersValues[tokenHeadersValuesIndex].ValueString())
-				}
+			tokenHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersValues))
+			for tokenHeadersValuesIndex := range r.OpenidConnect.Config.TokenHeadersValues {
+				tokenHeadersValues = append(tokenHeadersValues, r.OpenidConnect.Config.TokenHeadersValues[tokenHeadersValuesIndex].ValueString())
 			}
-			var tokenPostArgsClient []string
-			if r.OpenidConnect.Config.TokenPostArgsClient != nil {
-				tokenPostArgsClient = make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsClient))
-				for tokenPostArgsClientIndex := range r.OpenidConnect.Config.TokenPostArgsClient {
-					tokenPostArgsClient = append(tokenPostArgsClient, r.OpenidConnect.Config.TokenPostArgsClient[tokenPostArgsClientIndex].ValueString())
-				}
+			tokenPostArgsClient := make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsClient))
+			for tokenPostArgsClientIndex := range r.OpenidConnect.Config.TokenPostArgsClient {
+				tokenPostArgsClient = append(tokenPostArgsClient, r.OpenidConnect.Config.TokenPostArgsClient[tokenPostArgsClientIndex].ValueString())
 			}
-			var tokenPostArgsNames []string
-			if r.OpenidConnect.Config.TokenPostArgsNames != nil {
-				tokenPostArgsNames = make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsNames))
-				for tokenPostArgsNamesIndex := range r.OpenidConnect.Config.TokenPostArgsNames {
-					tokenPostArgsNames = append(tokenPostArgsNames, r.OpenidConnect.Config.TokenPostArgsNames[tokenPostArgsNamesIndex].ValueString())
-				}
+			tokenPostArgsNames := make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsNames))
+			for tokenPostArgsNamesIndex := range r.OpenidConnect.Config.TokenPostArgsNames {
+				tokenPostArgsNames = append(tokenPostArgsNames, r.OpenidConnect.Config.TokenPostArgsNames[tokenPostArgsNamesIndex].ValueString())
 			}
-			var tokenPostArgsValues []string
-			if r.OpenidConnect.Config.TokenPostArgsValues != nil {
-				tokenPostArgsValues = make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsValues))
-				for tokenPostArgsValuesIndex := range r.OpenidConnect.Config.TokenPostArgsValues {
-					tokenPostArgsValues = append(tokenPostArgsValues, r.OpenidConnect.Config.TokenPostArgsValues[tokenPostArgsValuesIndex].ValueString())
-				}
+			tokenPostArgsValues := make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsValues))
+			for tokenPostArgsValuesIndex := range r.OpenidConnect.Config.TokenPostArgsValues {
+				tokenPostArgsValues = append(tokenPostArgsValues, r.OpenidConnect.Config.TokenPostArgsValues[tokenPostArgsValuesIndex].ValueString())
 			}
 			unauthorizedDestroySession := new(bool)
 			if !r.OpenidConnect.Config.UnauthorizedDestroySession.IsUnknown() && !r.OpenidConnect.Config.UnauthorizedDestroySession.IsNull() {
@@ -3723,19 +3245,13 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				unauthorizedErrorMessage = nil
 			}
-			var unauthorizedRedirectURI []string
-			if r.OpenidConnect.Config.UnauthorizedRedirectURI != nil {
-				unauthorizedRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.UnauthorizedRedirectURI))
-				for unauthorizedRedirectURIIndex := range r.OpenidConnect.Config.UnauthorizedRedirectURI {
-					unauthorizedRedirectURI = append(unauthorizedRedirectURI, r.OpenidConnect.Config.UnauthorizedRedirectURI[unauthorizedRedirectURIIndex].ValueString())
-				}
+			unauthorizedRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.UnauthorizedRedirectURI))
+			for unauthorizedRedirectURIIndex := range r.OpenidConnect.Config.UnauthorizedRedirectURI {
+				unauthorizedRedirectURI = append(unauthorizedRedirectURI, r.OpenidConnect.Config.UnauthorizedRedirectURI[unauthorizedRedirectURIIndex].ValueString())
 			}
-			var unexpectedRedirectURI []string
-			if r.OpenidConnect.Config.UnexpectedRedirectURI != nil {
-				unexpectedRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.UnexpectedRedirectURI))
-				for unexpectedRedirectURIIndex := range r.OpenidConnect.Config.UnexpectedRedirectURI {
-					unexpectedRedirectURI = append(unexpectedRedirectURI, r.OpenidConnect.Config.UnexpectedRedirectURI[unexpectedRedirectURIIndex].ValueString())
-				}
+			unexpectedRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.UnexpectedRedirectURI))
+			for unexpectedRedirectURIIndex := range r.OpenidConnect.Config.UnexpectedRedirectURI {
+				unexpectedRedirectURI = append(unexpectedRedirectURI, r.OpenidConnect.Config.UnexpectedRedirectURI[unexpectedRedirectURIIndex].ValueString())
 			}
 			upstreamAccessTokenHeader := new(string)
 			if !r.OpenidConnect.Config.UpstreamAccessTokenHeader.IsUnknown() && !r.OpenidConnect.Config.UpstreamAccessTokenHeader.IsNull() {
@@ -3749,36 +3265,27 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				upstreamAccessTokenJwkHeader = nil
 			}
-			var upstreamHeaders []shared.UpstreamHeaders
-			if r.OpenidConnect.Config.UpstreamHeaders != nil {
-				upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
-				for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
-					var header1 string
-					header1 = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
+			upstreamHeaders := make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
+			for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
+				var header1 string
+				header1 = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
 
-					path1 := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
-					for pathIndex1 := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
-						path1 = append(path1, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex1].ValueString())
-					}
-					upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
-						Header: header1,
-						Path:   path1,
-					})
+				path1 := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
+				for pathIndex1 := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
+					path1 = append(path1, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex1].ValueString())
 				}
+				upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
+					Header: header1,
+					Path:   path1,
+				})
 			}
-			var upstreamHeadersClaims []string
-			if r.OpenidConnect.Config.UpstreamHeadersClaims != nil {
-				upstreamHeadersClaims = make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersClaims))
-				for upstreamHeadersClaimsIndex := range r.OpenidConnect.Config.UpstreamHeadersClaims {
-					upstreamHeadersClaims = append(upstreamHeadersClaims, r.OpenidConnect.Config.UpstreamHeadersClaims[upstreamHeadersClaimsIndex].ValueString())
-				}
+			upstreamHeadersClaims := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersClaims))
+			for upstreamHeadersClaimsIndex := range r.OpenidConnect.Config.UpstreamHeadersClaims {
+				upstreamHeadersClaims = append(upstreamHeadersClaims, r.OpenidConnect.Config.UpstreamHeadersClaims[upstreamHeadersClaimsIndex].ValueString())
 			}
-			var upstreamHeadersNames []string
-			if r.OpenidConnect.Config.UpstreamHeadersNames != nil {
-				upstreamHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersNames))
-				for upstreamHeadersNamesIndex := range r.OpenidConnect.Config.UpstreamHeadersNames {
-					upstreamHeadersNames = append(upstreamHeadersNames, r.OpenidConnect.Config.UpstreamHeadersNames[upstreamHeadersNamesIndex].ValueString())
-				}
+			upstreamHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersNames))
+			for upstreamHeadersNamesIndex := range r.OpenidConnect.Config.UpstreamHeadersNames {
+				upstreamHeadersNames = append(upstreamHeadersNames, r.OpenidConnect.Config.UpstreamHeadersNames[upstreamHeadersNamesIndex].ValueString())
 			}
 			upstreamIDTokenHeader := new(string)
 			if !r.OpenidConnect.Config.UpstreamIDTokenHeader.IsUnknown() && !r.OpenidConnect.Config.UpstreamIDTokenHeader.IsNull() {
@@ -3840,47 +3347,29 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			} else {
 				userinfoEndpoint = nil
 			}
-			var userinfoHeadersClient []string
-			if r.OpenidConnect.Config.UserinfoHeadersClient != nil {
-				userinfoHeadersClient = make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersClient))
-				for userinfoHeadersClientIndex := range r.OpenidConnect.Config.UserinfoHeadersClient {
-					userinfoHeadersClient = append(userinfoHeadersClient, r.OpenidConnect.Config.UserinfoHeadersClient[userinfoHeadersClientIndex].ValueString())
-				}
+			userinfoHeadersClient := make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersClient))
+			for userinfoHeadersClientIndex := range r.OpenidConnect.Config.UserinfoHeadersClient {
+				userinfoHeadersClient = append(userinfoHeadersClient, r.OpenidConnect.Config.UserinfoHeadersClient[userinfoHeadersClientIndex].ValueString())
 			}
-			var userinfoHeadersNames []string
-			if r.OpenidConnect.Config.UserinfoHeadersNames != nil {
-				userinfoHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersNames))
-				for userinfoHeadersNamesIndex := range r.OpenidConnect.Config.UserinfoHeadersNames {
-					userinfoHeadersNames = append(userinfoHeadersNames, r.OpenidConnect.Config.UserinfoHeadersNames[userinfoHeadersNamesIndex].ValueString())
-				}
+			userinfoHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersNames))
+			for userinfoHeadersNamesIndex := range r.OpenidConnect.Config.UserinfoHeadersNames {
+				userinfoHeadersNames = append(userinfoHeadersNames, r.OpenidConnect.Config.UserinfoHeadersNames[userinfoHeadersNamesIndex].ValueString())
 			}
-			var userinfoHeadersValues []string
-			if r.OpenidConnect.Config.UserinfoHeadersValues != nil {
-				userinfoHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersValues))
-				for userinfoHeadersValuesIndex := range r.OpenidConnect.Config.UserinfoHeadersValues {
-					userinfoHeadersValues = append(userinfoHeadersValues, r.OpenidConnect.Config.UserinfoHeadersValues[userinfoHeadersValuesIndex].ValueString())
-				}
+			userinfoHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersValues))
+			for userinfoHeadersValuesIndex := range r.OpenidConnect.Config.UserinfoHeadersValues {
+				userinfoHeadersValues = append(userinfoHeadersValues, r.OpenidConnect.Config.UserinfoHeadersValues[userinfoHeadersValuesIndex].ValueString())
 			}
-			var userinfoQueryArgsClient []string
-			if r.OpenidConnect.Config.UserinfoQueryArgsClient != nil {
-				userinfoQueryArgsClient = make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsClient))
-				for userinfoQueryArgsClientIndex := range r.OpenidConnect.Config.UserinfoQueryArgsClient {
-					userinfoQueryArgsClient = append(userinfoQueryArgsClient, r.OpenidConnect.Config.UserinfoQueryArgsClient[userinfoQueryArgsClientIndex].ValueString())
-				}
+			userinfoQueryArgsClient := make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsClient))
+			for userinfoQueryArgsClientIndex := range r.OpenidConnect.Config.UserinfoQueryArgsClient {
+				userinfoQueryArgsClient = append(userinfoQueryArgsClient, r.OpenidConnect.Config.UserinfoQueryArgsClient[userinfoQueryArgsClientIndex].ValueString())
 			}
-			var userinfoQueryArgsNames []string
-			if r.OpenidConnect.Config.UserinfoQueryArgsNames != nil {
-				userinfoQueryArgsNames = make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsNames))
-				for userinfoQueryArgsNamesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsNames {
-					userinfoQueryArgsNames = append(userinfoQueryArgsNames, r.OpenidConnect.Config.UserinfoQueryArgsNames[userinfoQueryArgsNamesIndex].ValueString())
-				}
+			userinfoQueryArgsNames := make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsNames))
+			for userinfoQueryArgsNamesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsNames {
+				userinfoQueryArgsNames = append(userinfoQueryArgsNames, r.OpenidConnect.Config.UserinfoQueryArgsNames[userinfoQueryArgsNamesIndex].ValueString())
 			}
-			var userinfoQueryArgsValues []string
-			if r.OpenidConnect.Config.UserinfoQueryArgsValues != nil {
-				userinfoQueryArgsValues = make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsValues))
-				for userinfoQueryArgsValuesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsValues {
-					userinfoQueryArgsValues = append(userinfoQueryArgsValues, r.OpenidConnect.Config.UserinfoQueryArgsValues[userinfoQueryArgsValuesIndex].ValueString())
-				}
+			userinfoQueryArgsValues := make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsValues))
+			for userinfoQueryArgsValuesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsValues {
+				userinfoQueryArgsValues = append(userinfoQueryArgsValues, r.OpenidConnect.Config.UserinfoQueryArgsValues[userinfoQueryArgsValuesIndex].ValueString())
 			}
 			usingPseudoIssuer := new(bool)
 			if !r.OpenidConnect.Config.UsingPseudoIssuer.IsUnknown() && !r.OpenidConnect.Config.UsingPseudoIssuer.IsNull() {
@@ -4206,34 +3695,31 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				hideCredentials = nil
 			}
-			var identityRealms []shared.IdentityRealms
-			if r.KeyAuth.Config.IdentityRealms != nil {
-				identityRealms = make([]shared.IdentityRealms, 0, len(r.KeyAuth.Config.IdentityRealms))
-				for identityRealmsIndex := range r.KeyAuth.Config.IdentityRealms {
-					id := new(string)
-					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsNull() {
-						*id = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.ValueString()
-					} else {
-						id = nil
-					}
-					region := new(string)
-					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsNull() {
-						*region = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.ValueString()
-					} else {
-						region = nil
-					}
-					scope := new(shared.AIGatewayIdentityProviderKeyAuthScope)
-					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-						*scope = shared.AIGatewayIdentityProviderKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
-					} else {
-						scope = nil
-					}
-					identityRealms = append(identityRealms, shared.IdentityRealms{
-						ID:     id,
-						Region: region,
-						Scope:  scope,
-					})
+			identityRealms := make([]shared.IdentityRealms, 0, len(r.KeyAuth.Config.IdentityRealms))
+			for identityRealmsIndex := range r.KeyAuth.Config.IdentityRealms {
+				id := new(string)
+				if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.IsNull() {
+					*id = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].ID.ValueString()
+				} else {
+					id = nil
 				}
+				region := new(string)
+				if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.IsNull() {
+					*region = r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Region.ValueString()
+				} else {
+					region = nil
+				}
+				scope := new(shared.AIGatewayIdentityProviderKeyAuthScope)
+				if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
+					*scope = shared.AIGatewayIdentityProviderKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+				} else {
+					scope = nil
+				}
+				identityRealms = append(identityRealms, shared.IdentityRealms{
+					ID:     id,
+					Region: region,
+					Scope:  scope,
+				})
 			}
 			keyInBody := new(bool)
 			if !r.KeyAuth.Config.KeyInBody.IsUnknown() && !r.KeyAuth.Config.KeyInBody.IsNull() {
@@ -4351,34 +3837,25 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				anonymous1 = nil
 			}
-			var audience []string
-			if r.OpenidConnect.Config.Audience != nil {
-				audience = make([]string, 0, len(r.OpenidConnect.Config.Audience))
-				for audienceIndex := range r.OpenidConnect.Config.Audience {
-					audience = append(audience, r.OpenidConnect.Config.Audience[audienceIndex].ValueString())
-				}
+			audience := make([]string, 0, len(r.OpenidConnect.Config.Audience))
+			for audienceIndex := range r.OpenidConnect.Config.Audience {
+				audience = append(audience, r.OpenidConnect.Config.Audience[audienceIndex].ValueString())
 			}
 			audienceClaim := make([]string, 0, len(r.OpenidConnect.Config.AudienceClaim))
 			for audienceClaimIndex := range r.OpenidConnect.Config.AudienceClaim {
 				audienceClaim = append(audienceClaim, r.OpenidConnect.Config.AudienceClaim[audienceClaimIndex].ValueString())
 			}
-			var audienceRequired []string
-			if r.OpenidConnect.Config.AudienceRequired != nil {
-				audienceRequired = make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
-				for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
-					audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
-				}
+			audienceRequired := make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
+			for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
+				audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
 			}
 			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
 			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
 				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
 			}
-			var authenticatedGroupsClaim []string
-			if r.OpenidConnect.Config.AuthenticatedGroupsClaim != nil {
-				authenticatedGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.AuthenticatedGroupsClaim))
-				for authenticatedGroupsClaimIndex := range r.OpenidConnect.Config.AuthenticatedGroupsClaim {
-					authenticatedGroupsClaim = append(authenticatedGroupsClaim, r.OpenidConnect.Config.AuthenticatedGroupsClaim[authenticatedGroupsClaimIndex].ValueString())
-				}
+			authenticatedGroupsClaim := make([]string, 0, len(r.OpenidConnect.Config.AuthenticatedGroupsClaim))
+			for authenticatedGroupsClaimIndex := range r.OpenidConnect.Config.AuthenticatedGroupsClaim {
+				authenticatedGroupsClaim = append(authenticatedGroupsClaim, r.OpenidConnect.Config.AuthenticatedGroupsClaim[authenticatedGroupsClaimIndex].ValueString())
 			}
 			authorizationCookieDomain := new(string)
 			if !r.OpenidConnect.Config.AuthorizationCookieDomain.IsUnknown() && !r.OpenidConnect.Config.AuthorizationCookieDomain.IsNull() {
@@ -4422,26 +3899,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				authorizationEndpoint = nil
 			}
-			var authorizationQueryArgsClient []string
-			if r.OpenidConnect.Config.AuthorizationQueryArgsClient != nil {
-				authorizationQueryArgsClient = make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsClient))
-				for authorizationQueryArgsClientIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsClient {
-					authorizationQueryArgsClient = append(authorizationQueryArgsClient, r.OpenidConnect.Config.AuthorizationQueryArgsClient[authorizationQueryArgsClientIndex].ValueString())
-				}
+			authorizationQueryArgsClient := make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsClient))
+			for authorizationQueryArgsClientIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsClient {
+				authorizationQueryArgsClient = append(authorizationQueryArgsClient, r.OpenidConnect.Config.AuthorizationQueryArgsClient[authorizationQueryArgsClientIndex].ValueString())
 			}
-			var authorizationQueryArgsNames []string
-			if r.OpenidConnect.Config.AuthorizationQueryArgsNames != nil {
-				authorizationQueryArgsNames = make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsNames))
-				for authorizationQueryArgsNamesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsNames {
-					authorizationQueryArgsNames = append(authorizationQueryArgsNames, r.OpenidConnect.Config.AuthorizationQueryArgsNames[authorizationQueryArgsNamesIndex].ValueString())
-				}
+			authorizationQueryArgsNames := make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsNames))
+			for authorizationQueryArgsNamesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsNames {
+				authorizationQueryArgsNames = append(authorizationQueryArgsNames, r.OpenidConnect.Config.AuthorizationQueryArgsNames[authorizationQueryArgsNamesIndex].ValueString())
 			}
-			var authorizationQueryArgsValues []string
-			if r.OpenidConnect.Config.AuthorizationQueryArgsValues != nil {
-				authorizationQueryArgsValues = make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsValues))
-				for authorizationQueryArgsValuesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsValues {
-					authorizationQueryArgsValues = append(authorizationQueryArgsValues, r.OpenidConnect.Config.AuthorizationQueryArgsValues[authorizationQueryArgsValuesIndex].ValueString())
-				}
+			authorizationQueryArgsValues := make([]string, 0, len(r.OpenidConnect.Config.AuthorizationQueryArgsValues))
+			for authorizationQueryArgsValuesIndex := range r.OpenidConnect.Config.AuthorizationQueryArgsValues {
+				authorizationQueryArgsValues = append(authorizationQueryArgsValues, r.OpenidConnect.Config.AuthorizationQueryArgsValues[authorizationQueryArgsValuesIndex].ValueString())
 			}
 			authorizationRollingTimeout := new(float64)
 			if !r.OpenidConnect.Config.AuthorizationRollingTimeout.IsUnknown() && !r.OpenidConnect.Config.AuthorizationRollingTimeout.IsNull() {
@@ -4528,19 +3996,13 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				cacheUserInfo = nil
 			}
-			var claimsForbidden []string
-			if r.OpenidConnect.Config.ClaimsForbidden != nil {
-				claimsForbidden = make([]string, 0, len(r.OpenidConnect.Config.ClaimsForbidden))
-				for claimsForbiddenIndex := range r.OpenidConnect.Config.ClaimsForbidden {
-					claimsForbidden = append(claimsForbidden, r.OpenidConnect.Config.ClaimsForbidden[claimsForbiddenIndex].ValueString())
-				}
+			claimsForbidden := make([]string, 0, len(r.OpenidConnect.Config.ClaimsForbidden))
+			for claimsForbiddenIndex := range r.OpenidConnect.Config.ClaimsForbidden {
+				claimsForbidden = append(claimsForbidden, r.OpenidConnect.Config.ClaimsForbidden[claimsForbiddenIndex].ValueString())
 			}
-			var clientAlg []shared.ClientAlg
-			if r.OpenidConnect.Config.ClientAlg != nil {
-				clientAlg = make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
-				for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
-					clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
-				}
+			clientAlg := make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
+			for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
+				clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
 			}
 			clientArg := new(string)
 			if !r.OpenidConnect.Config.ClientArg.IsUnknown() && !r.OpenidConnect.Config.ClientArg.IsNull() {
@@ -4548,215 +4010,197 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				clientArg = nil
 			}
-			var clientAuth []shared.ClientAuth
-			if r.OpenidConnect.Config.ClientAuth != nil {
-				clientAuth = make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
-				for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
-					clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
-				}
+			clientAuth := make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
+			for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
+				clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
 			}
 			clientCredentialsParamType := make([]shared.ClientCredentialsParamType, 0, len(r.OpenidConnect.Config.ClientCredentialsParamType))
 			for _, clientCredentialsParamTypeItem := range r.OpenidConnect.Config.ClientCredentialsParamType {
 				clientCredentialsParamType = append(clientCredentialsParamType, shared.ClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
 			}
-			var clientID []string
-			if r.OpenidConnect.Config.ClientID != nil {
-				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
-				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
-					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
-				}
+			clientID := make([]string, 0, len(r.OpenidConnect.Config.ClientID))
+			for clientIDIndex := range r.OpenidConnect.Config.ClientID {
+				clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
 			}
-			var clientJwk []shared.ClientJwk
-			if r.OpenidConnect.Config.ClientJwk != nil {
-				clientJwk = make([]shared.ClientJwk, 0, len(r.OpenidConnect.Config.ClientJwk))
-				for clientJwkIndex := range r.OpenidConnect.Config.ClientJwk {
-					alg := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsNull() {
-						*alg = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.ValueString()
-					} else {
-						alg = nil
-					}
-					crv := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsNull() {
-						*crv = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.ValueString()
-					} else {
-						crv = nil
-					}
-					d := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsNull() {
-						*d = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.ValueString()
-					} else {
-						d = nil
-					}
-					dp := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsNull() {
-						*dp = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.ValueString()
-					} else {
-						dp = nil
-					}
-					dq := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsNull() {
-						*dq = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.ValueString()
-					} else {
-						dq = nil
-					}
-					e := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsNull() {
-						*e = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.ValueString()
-					} else {
-						e = nil
-					}
-					issuer := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsNull() {
-						*issuer = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
-					} else {
-						issuer = nil
-					}
-					k := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsNull() {
-						*k = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.ValueString()
-					} else {
-						k = nil
-					}
-					var keyOps []string
-					if r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps != nil {
-						keyOps = make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps))
-						for keyOpsIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps {
-							keyOps = append(keyOps, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps[keyOpsIndex].ValueString())
-						}
-					}
-					kid := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsNull() {
-						*kid = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.ValueString()
-					} else {
-						kid = nil
-					}
-					kty := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsNull() {
-						*kty = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.ValueString()
-					} else {
-						kty = nil
-					}
-					n := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsNull() {
-						*n = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.ValueString()
-					} else {
-						n = nil
-					}
-					oth := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsNull() {
-						*oth = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.ValueString()
-					} else {
-						oth = nil
-					}
-					p := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsNull() {
-						*p = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.ValueString()
-					} else {
-						p = nil
-					}
-					q := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsNull() {
-						*q = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.ValueString()
-					} else {
-						q = nil
-					}
-					qi := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsNull() {
-						*qi = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.ValueString()
-					} else {
-						qi = nil
-					}
-					r1 := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsNull() {
-						*r1 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.ValueString()
-					} else {
-						r1 = nil
-					}
-					t := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsNull() {
-						*t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.ValueString()
-					} else {
-						t = nil
-					}
-					use := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsNull() {
-						*use = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.ValueString()
-					} else {
-						use = nil
-					}
-					x := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsNull() {
-						*x = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.ValueString()
-					} else {
-						x = nil
-					}
-					var x5c []string
-					if r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c != nil {
-						x5c = make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c))
-						for x5cIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c {
-							x5c = append(x5c, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c[x5cIndex].ValueString())
-						}
-					}
-					x5t := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsNull() {
-						*x5t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.ValueString()
-					} else {
-						x5t = nil
-					}
-					x5tNumberS256 := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsNull() {
-						*x5tNumberS256 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.ValueString()
-					} else {
-						x5tNumberS256 = nil
-					}
-					x5u := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsNull() {
-						*x5u = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.ValueString()
-					} else {
-						x5u = nil
-					}
-					y := new(string)
-					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsNull() {
-						*y = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.ValueString()
-					} else {
-						y = nil
-					}
-					clientJwk = append(clientJwk, shared.ClientJwk{
-						Alg:           alg,
-						Crv:           crv,
-						D:             d,
-						Dp:            dp,
-						Dq:            dq,
-						E:             e,
-						Issuer:        issuer,
-						K:             k,
-						KeyOps:        keyOps,
-						Kid:           kid,
-						Kty:           kty,
-						N:             n,
-						Oth:           oth,
-						P:             p,
-						Q:             q,
-						Qi:            qi,
-						R:             r1,
-						T:             t,
-						Use:           use,
-						X:             x,
-						X5c:           x5c,
-						X5t:           x5t,
-						X5tNumberS256: x5tNumberS256,
-						X5u:           x5u,
-						Y:             y,
-					})
+			clientJwk := make([]shared.ClientJwk, 0, len(r.OpenidConnect.Config.ClientJwk))
+			for clientJwkIndex := range r.OpenidConnect.Config.ClientJwk {
+				alg := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.IsNull() {
+					*alg = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Alg.ValueString()
+				} else {
+					alg = nil
 				}
+				crv := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.IsNull() {
+					*crv = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Crv.ValueString()
+				} else {
+					crv = nil
+				}
+				d := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.IsNull() {
+					*d = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].D.ValueString()
+				} else {
+					d = nil
+				}
+				dp := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.IsNull() {
+					*dp = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dp.ValueString()
+				} else {
+					dp = nil
+				}
+				dq := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.IsNull() {
+					*dq = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Dq.ValueString()
+				} else {
+					dq = nil
+				}
+				e := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.IsNull() {
+					*e = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].E.ValueString()
+				} else {
+					e = nil
+				}
+				issuer := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsNull() {
+					*issuer = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
+				} else {
+					issuer = nil
+				}
+				k := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsNull() {
+					*k = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.ValueString()
+				} else {
+					k = nil
+				}
+				keyOps := make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps))
+				for keyOpsIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps {
+					keyOps = append(keyOps, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].KeyOps[keyOpsIndex].ValueString())
+				}
+				kid := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.IsNull() {
+					*kid = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kid.ValueString()
+				} else {
+					kid = nil
+				}
+				kty := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.IsNull() {
+					*kty = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Kty.ValueString()
+				} else {
+					kty = nil
+				}
+				n := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.IsNull() {
+					*n = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].N.ValueString()
+				} else {
+					n = nil
+				}
+				oth := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.IsNull() {
+					*oth = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Oth.ValueString()
+				} else {
+					oth = nil
+				}
+				p := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.IsNull() {
+					*p = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].P.ValueString()
+				} else {
+					p = nil
+				}
+				q := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.IsNull() {
+					*q = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Q.ValueString()
+				} else {
+					q = nil
+				}
+				qi := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.IsNull() {
+					*qi = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Qi.ValueString()
+				} else {
+					qi = nil
+				}
+				r1 := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.IsNull() {
+					*r1 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].R.ValueString()
+				} else {
+					r1 = nil
+				}
+				t := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.IsNull() {
+					*t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].T.ValueString()
+				} else {
+					t = nil
+				}
+				use := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.IsNull() {
+					*use = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Use.ValueString()
+				} else {
+					use = nil
+				}
+				x := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.IsNull() {
+					*x = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X.ValueString()
+				} else {
+					x = nil
+				}
+				x5c := make([]string, 0, len(r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c))
+				for x5cIndex := range r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c {
+					x5c = append(x5c, r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5c[x5cIndex].ValueString())
+				}
+				x5t := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.IsNull() {
+					*x5t = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5t.ValueString()
+				} else {
+					x5t = nil
+				}
+				x5tNumberS256 := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.IsNull() {
+					*x5tNumberS256 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5tNumberS256.ValueString()
+				} else {
+					x5tNumberS256 = nil
+				}
+				x5u := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.IsNull() {
+					*x5u = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].X5u.ValueString()
+				} else {
+					x5u = nil
+				}
+				y := new(string)
+				if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.IsNull() {
+					*y = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Y.ValueString()
+				} else {
+					y = nil
+				}
+				clientJwk = append(clientJwk, shared.ClientJwk{
+					Alg:           alg,
+					Crv:           crv,
+					D:             d,
+					Dp:            dp,
+					Dq:            dq,
+					E:             e,
+					Issuer:        issuer,
+					K:             k,
+					KeyOps:        keyOps,
+					Kid:           kid,
+					Kty:           kty,
+					N:             n,
+					Oth:           oth,
+					P:             p,
+					Q:             q,
+					Qi:            qi,
+					R:             r1,
+					T:             t,
+					Use:           use,
+					X:             x,
+					X5c:           x5c,
+					X5t:           x5t,
+					X5tNumberS256: x5tNumberS256,
+					X5u:           x5u,
+					Y:             y,
+				})
 			}
-			var clientSecret []string
-			if r.OpenidConnect.Config.ClientSecret != nil {
-				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
-				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
-					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
-				}
+			clientSecret := make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
+			for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
+				clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
 			}
 			clusterCacheItems := make([]shared.ClusterCacheItems, 0, len(r.OpenidConnect.Config.ClusterCacheItems))
 			for _, clusterCacheItemsItem := range r.OpenidConnect.Config.ClusterCacheItems {
@@ -4859,27 +4303,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.ClusterNodes
-				if r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes != nil {
-					clusterNodes = make([]shared.ClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
-					for clusterNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes {
-						ip := new(string)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
-							*ip = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.ValueString()
-						} else {
-							ip = nil
-						}
-						port := new(int64)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
-							*port = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
-						} else {
-							port = nil
-						}
-						clusterNodes = append(clusterNodes, shared.ClusterNodes{
-							IP:   ip,
-							Port: port,
-						})
+				clusterNodes := make([]shared.ClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
+				for clusterNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes {
+					ip := new(string)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+						*ip = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.ValueString()
+					} else {
+						ip = nil
 					}
+					port := new(int64)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+						*port = r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
+					} else {
+						port = nil
+					}
+					clusterNodes = append(clusterNodes, shared.ClusterNodes{
+						IP:   ip,
+						Port: port,
+					})
 				}
 				connectTimeout := new(int64)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.ConnectTimeout.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ConnectTimeout.IsNull() {
@@ -4947,27 +4388,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.SentinelNodes
-				if r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes != nil {
-					sentinelNodes = make([]shared.SentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
-					for sentinelNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes {
-						host1 := new(string)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
-							*host1 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
-						} else {
-							host1 = nil
-						}
-						port2 := new(int64)
-						if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
-							*port2 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
-						} else {
-							port2 = nil
-						}
-						sentinelNodes = append(sentinelNodes, shared.SentinelNodes{
-							Host: host1,
-							Port: port2,
-						})
+				sentinelNodes := make([]shared.SentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
+				for sentinelNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes {
+					host1 := new(string)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+						*host1 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
+					} else {
+						host1 = nil
 					}
+					port2 := new(int64)
+					if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+						*port2 = r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
+					} else {
+						port2 = nil
+					}
+					sentinelNodes = append(sentinelNodes, shared.SentinelNodes{
+						Host: host1,
+						Port: port2,
+					})
 				}
 				sentinelPassword := new(string)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelPassword.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelPassword.IsNull() {
@@ -5046,23 +4484,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			for _, consumerByItem := range r.OpenidConnect.Config.ConsumerBy {
 				consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
 			}
-			var consumerClaims [][]string
-			if r.OpenidConnect.Config.ConsumerClaims != nil {
-				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
-				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
-					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
-					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
-						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
-					}
-					consumerClaims = append(consumerClaims, consumerClaimsTmp)
+			consumerClaims := make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
+			for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
+				consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
+				for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
+					consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
 				}
+				consumerClaims = append(consumerClaims, consumerClaimsTmp)
 			}
-			var consumerGroupsClaim []string
-			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
-				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
-				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
-					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
-				}
+			consumerGroupsClaim := make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
+			for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
+				consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
 			}
 			consumerGroupsOptional := new(bool)
 			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
@@ -5080,26 +4512,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
 				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
 			}
-			var disableSession []shared.DisableSession
-			if r.OpenidConnect.Config.DisableSession != nil {
-				disableSession = make([]shared.DisableSession, 0, len(r.OpenidConnect.Config.DisableSession))
-				for _, disableSessionItem := range r.OpenidConnect.Config.DisableSession {
-					disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
-				}
+			disableSession := make([]shared.DisableSession, 0, len(r.OpenidConnect.Config.DisableSession))
+			for _, disableSessionItem := range r.OpenidConnect.Config.DisableSession {
+				disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
 			}
-			var discoveryHeadersNames []string
-			if r.OpenidConnect.Config.DiscoveryHeadersNames != nil {
-				discoveryHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersNames))
-				for discoveryHeadersNamesIndex := range r.OpenidConnect.Config.DiscoveryHeadersNames {
-					discoveryHeadersNames = append(discoveryHeadersNames, r.OpenidConnect.Config.DiscoveryHeadersNames[discoveryHeadersNamesIndex].ValueString())
-				}
+			discoveryHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersNames))
+			for discoveryHeadersNamesIndex := range r.OpenidConnect.Config.DiscoveryHeadersNames {
+				discoveryHeadersNames = append(discoveryHeadersNames, r.OpenidConnect.Config.DiscoveryHeadersNames[discoveryHeadersNamesIndex].ValueString())
 			}
-			var discoveryHeadersValues []string
-			if r.OpenidConnect.Config.DiscoveryHeadersValues != nil {
-				discoveryHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersValues))
-				for discoveryHeadersValuesIndex := range r.OpenidConnect.Config.DiscoveryHeadersValues {
-					discoveryHeadersValues = append(discoveryHeadersValues, r.OpenidConnect.Config.DiscoveryHeadersValues[discoveryHeadersValuesIndex].ValueString())
-				}
+			discoveryHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.DiscoveryHeadersValues))
+			for discoveryHeadersValuesIndex := range r.OpenidConnect.Config.DiscoveryHeadersValues {
+				discoveryHeadersValues = append(discoveryHeadersValues, r.OpenidConnect.Config.DiscoveryHeadersValues[discoveryHeadersValuesIndex].ValueString())
 			}
 			displayErrors := new(bool)
 			if !r.OpenidConnect.Config.DisplayErrors.IsUnknown() && !r.OpenidConnect.Config.DisplayErrors.IsNull() {
@@ -5107,12 +4530,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				displayErrors = nil
 			}
-			var domains []string
-			if r.OpenidConnect.Config.Domains != nil {
-				domains = make([]string, 0, len(r.OpenidConnect.Config.Domains))
-				for domainsIndex := range r.OpenidConnect.Config.Domains {
-					domains = append(domains, r.OpenidConnect.Config.Domains[domainsIndex].ValueString())
-				}
+			domains := make([]string, 0, len(r.OpenidConnect.Config.Domains))
+			for domainsIndex := range r.OpenidConnect.Config.Domains {
+				domains = append(domains, r.OpenidConnect.Config.Domains[domainsIndex].ValueString())
 			}
 			downstreamAccessTokenHeader := new(string)
 			if !r.OpenidConnect.Config.DownstreamAccessTokenHeader.IsUnknown() && !r.OpenidConnect.Config.DownstreamAccessTokenHeader.IsNull() {
@@ -5126,36 +4546,27 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				downstreamAccessTokenJwkHeader = nil
 			}
-			var downstreamHeaders []shared.DownstreamHeaders
-			if r.OpenidConnect.Config.DownstreamHeaders != nil {
-				downstreamHeaders = make([]shared.DownstreamHeaders, 0, len(r.OpenidConnect.Config.DownstreamHeaders))
-				for downstreamHeadersIndex := range r.OpenidConnect.Config.DownstreamHeaders {
-					var header string
-					header = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
+			downstreamHeaders := make([]shared.DownstreamHeaders, 0, len(r.OpenidConnect.Config.DownstreamHeaders))
+			for downstreamHeadersIndex := range r.OpenidConnect.Config.DownstreamHeaders {
+				var header string
+				header = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
 
-					path := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
-					for pathIndex := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
-						path = append(path, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
-					}
-					downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
-						Header: header,
-						Path:   path,
-					})
+				path := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
+				for pathIndex := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
+					path = append(path, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
 				}
+				downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
+					Header: header,
+					Path:   path,
+				})
 			}
-			var downstreamHeadersClaims []string
-			if r.OpenidConnect.Config.DownstreamHeadersClaims != nil {
-				downstreamHeadersClaims = make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersClaims))
-				for downstreamHeadersClaimsIndex := range r.OpenidConnect.Config.DownstreamHeadersClaims {
-					downstreamHeadersClaims = append(downstreamHeadersClaims, r.OpenidConnect.Config.DownstreamHeadersClaims[downstreamHeadersClaimsIndex].ValueString())
-				}
+			downstreamHeadersClaims := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersClaims))
+			for downstreamHeadersClaimsIndex := range r.OpenidConnect.Config.DownstreamHeadersClaims {
+				downstreamHeadersClaims = append(downstreamHeadersClaims, r.OpenidConnect.Config.DownstreamHeadersClaims[downstreamHeadersClaimsIndex].ValueString())
 			}
-			var downstreamHeadersNames []string
-			if r.OpenidConnect.Config.DownstreamHeadersNames != nil {
-				downstreamHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersNames))
-				for downstreamHeadersNamesIndex := range r.OpenidConnect.Config.DownstreamHeadersNames {
-					downstreamHeadersNames = append(downstreamHeadersNames, r.OpenidConnect.Config.DownstreamHeadersNames[downstreamHeadersNamesIndex].ValueString())
-				}
+			downstreamHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeadersNames))
+			for downstreamHeadersNamesIndex := range r.OpenidConnect.Config.DownstreamHeadersNames {
+				downstreamHeadersNames = append(downstreamHeadersNames, r.OpenidConnect.Config.DownstreamHeadersNames[downstreamHeadersNamesIndex].ValueString())
 			}
 			downstreamIDTokenHeader := new(string)
 			if !r.OpenidConnect.Config.DownstreamIDTokenHeader.IsUnknown() && !r.OpenidConnect.Config.DownstreamIDTokenHeader.IsNull() {
@@ -5235,12 +4646,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				exposeErrorCode = nil
 			}
-			var extraJwksUris []string
-			if r.OpenidConnect.Config.ExtraJwksUris != nil {
-				extraJwksUris = make([]string, 0, len(r.OpenidConnect.Config.ExtraJwksUris))
-				for extraJwksUrisIndex := range r.OpenidConnect.Config.ExtraJwksUris {
-					extraJwksUris = append(extraJwksUris, r.OpenidConnect.Config.ExtraJwksUris[extraJwksUrisIndex].ValueString())
-				}
+			extraJwksUris := make([]string, 0, len(r.OpenidConnect.Config.ExtraJwksUris))
+			for extraJwksUrisIndex := range r.OpenidConnect.Config.ExtraJwksUris {
+				extraJwksUris = append(extraJwksUris, r.OpenidConnect.Config.ExtraJwksUris[extraJwksUrisIndex].ValueString())
 			}
 			forbiddenDestroySession := new(bool)
 			if !r.OpenidConnect.Config.ForbiddenDestroySession.IsUnknown() && !r.OpenidConnect.Config.ForbiddenDestroySession.IsNull() {
@@ -5254,23 +4662,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				forbiddenErrorMessage = nil
 			}
-			var forbiddenRedirectURI []string
-			if r.OpenidConnect.Config.ForbiddenRedirectURI != nil {
-				forbiddenRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.ForbiddenRedirectURI))
-				for forbiddenRedirectURIIndex := range r.OpenidConnect.Config.ForbiddenRedirectURI {
-					forbiddenRedirectURI = append(forbiddenRedirectURI, r.OpenidConnect.Config.ForbiddenRedirectURI[forbiddenRedirectURIIndex].ValueString())
-				}
+			forbiddenRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.ForbiddenRedirectURI))
+			for forbiddenRedirectURIIndex := range r.OpenidConnect.Config.ForbiddenRedirectURI {
+				forbiddenRedirectURI = append(forbiddenRedirectURI, r.OpenidConnect.Config.ForbiddenRedirectURI[forbiddenRedirectURIIndex].ValueString())
 			}
 			groupsClaim := make([]string, 0, len(r.OpenidConnect.Config.GroupsClaim))
 			for groupsClaimIndex := range r.OpenidConnect.Config.GroupsClaim {
 				groupsClaim = append(groupsClaim, r.OpenidConnect.Config.GroupsClaim[groupsClaimIndex].ValueString())
 			}
-			var groupsRequired []string
-			if r.OpenidConnect.Config.GroupsRequired != nil {
-				groupsRequired = make([]string, 0, len(r.OpenidConnect.Config.GroupsRequired))
-				for groupsRequiredIndex := range r.OpenidConnect.Config.GroupsRequired {
-					groupsRequired = append(groupsRequired, r.OpenidConnect.Config.GroupsRequired[groupsRequiredIndex].ValueString())
-				}
+			groupsRequired := make([]string, 0, len(r.OpenidConnect.Config.GroupsRequired))
+			for groupsRequiredIndex := range r.OpenidConnect.Config.GroupsRequired {
+				groupsRequired = append(groupsRequired, r.OpenidConnect.Config.GroupsRequired[groupsRequiredIndex].ValueString())
 			}
 			hideCredentials1 := new(bool)
 			if !r.OpenidConnect.Config.HideCredentials.IsUnknown() && !r.OpenidConnect.Config.HideCredentials.IsNull() {
@@ -5352,26 +4754,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				introspectionEndpointAuthMethod = nil
 			}
-			var introspectionHeadersClient []string
-			if r.OpenidConnect.Config.IntrospectionHeadersClient != nil {
-				introspectionHeadersClient = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersClient))
-				for introspectionHeadersClientIndex := range r.OpenidConnect.Config.IntrospectionHeadersClient {
-					introspectionHeadersClient = append(introspectionHeadersClient, r.OpenidConnect.Config.IntrospectionHeadersClient[introspectionHeadersClientIndex].ValueString())
-				}
+			introspectionHeadersClient := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersClient))
+			for introspectionHeadersClientIndex := range r.OpenidConnect.Config.IntrospectionHeadersClient {
+				introspectionHeadersClient = append(introspectionHeadersClient, r.OpenidConnect.Config.IntrospectionHeadersClient[introspectionHeadersClientIndex].ValueString())
 			}
-			var introspectionHeadersNames []string
-			if r.OpenidConnect.Config.IntrospectionHeadersNames != nil {
-				introspectionHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersNames))
-				for introspectionHeadersNamesIndex := range r.OpenidConnect.Config.IntrospectionHeadersNames {
-					introspectionHeadersNames = append(introspectionHeadersNames, r.OpenidConnect.Config.IntrospectionHeadersNames[introspectionHeadersNamesIndex].ValueString())
-				}
+			introspectionHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersNames))
+			for introspectionHeadersNamesIndex := range r.OpenidConnect.Config.IntrospectionHeadersNames {
+				introspectionHeadersNames = append(introspectionHeadersNames, r.OpenidConnect.Config.IntrospectionHeadersNames[introspectionHeadersNamesIndex].ValueString())
 			}
-			var introspectionHeadersValues []string
-			if r.OpenidConnect.Config.IntrospectionHeadersValues != nil {
-				introspectionHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersValues))
-				for introspectionHeadersValuesIndex := range r.OpenidConnect.Config.IntrospectionHeadersValues {
-					introspectionHeadersValues = append(introspectionHeadersValues, r.OpenidConnect.Config.IntrospectionHeadersValues[introspectionHeadersValuesIndex].ValueString())
-				}
+			introspectionHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionHeadersValues))
+			for introspectionHeadersValuesIndex := range r.OpenidConnect.Config.IntrospectionHeadersValues {
+				introspectionHeadersValues = append(introspectionHeadersValues, r.OpenidConnect.Config.IntrospectionHeadersValues[introspectionHeadersValuesIndex].ValueString())
 			}
 			introspectionHint := new(string)
 			if !r.OpenidConnect.Config.IntrospectionHint.IsUnknown() && !r.OpenidConnect.Config.IntrospectionHint.IsNull() {
@@ -5379,33 +4772,21 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				introspectionHint = nil
 			}
-			var introspectionPostArgsClient []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsClient != nil {
-				introspectionPostArgsClient = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClient))
-				for introspectionPostArgsClientIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClient {
-					introspectionPostArgsClient = append(introspectionPostArgsClient, r.OpenidConnect.Config.IntrospectionPostArgsClient[introspectionPostArgsClientIndex].ValueString())
-				}
+			introspectionPostArgsClient := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClient))
+			for introspectionPostArgsClientIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClient {
+				introspectionPostArgsClient = append(introspectionPostArgsClient, r.OpenidConnect.Config.IntrospectionPostArgsClient[introspectionPostArgsClientIndex].ValueString())
 			}
-			var introspectionPostArgsClientHeaders []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders != nil {
-				introspectionPostArgsClientHeaders = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders))
-				for introspectionPostArgsClientHeadersIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders {
-					introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders[introspectionPostArgsClientHeadersIndex].ValueString())
-				}
+			introspectionPostArgsClientHeaders := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders))
+			for introspectionPostArgsClientHeadersIndex := range r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders {
+				introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, r.OpenidConnect.Config.IntrospectionPostArgsClientHeaders[introspectionPostArgsClientHeadersIndex].ValueString())
 			}
-			var introspectionPostArgsNames []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsNames != nil {
-				introspectionPostArgsNames = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsNames))
-				for introspectionPostArgsNamesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsNames {
-					introspectionPostArgsNames = append(introspectionPostArgsNames, r.OpenidConnect.Config.IntrospectionPostArgsNames[introspectionPostArgsNamesIndex].ValueString())
-				}
+			introspectionPostArgsNames := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsNames))
+			for introspectionPostArgsNamesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsNames {
+				introspectionPostArgsNames = append(introspectionPostArgsNames, r.OpenidConnect.Config.IntrospectionPostArgsNames[introspectionPostArgsNamesIndex].ValueString())
 			}
-			var introspectionPostArgsValues []string
-			if r.OpenidConnect.Config.IntrospectionPostArgsValues != nil {
-				introspectionPostArgsValues = make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsValues))
-				for introspectionPostArgsValuesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsValues {
-					introspectionPostArgsValues = append(introspectionPostArgsValues, r.OpenidConnect.Config.IntrospectionPostArgsValues[introspectionPostArgsValuesIndex].ValueString())
-				}
+			introspectionPostArgsValues := make([]string, 0, len(r.OpenidConnect.Config.IntrospectionPostArgsValues))
+			for introspectionPostArgsValuesIndex := range r.OpenidConnect.Config.IntrospectionPostArgsValues {
+				introspectionPostArgsValues = append(introspectionPostArgsValues, r.OpenidConnect.Config.IntrospectionPostArgsValues[introspectionPostArgsValuesIndex].ValueString())
 			}
 			introspectionTokenParamName := new(string)
 			if !r.OpenidConnect.Config.IntrospectionTokenParamName.IsUnknown() && !r.OpenidConnect.Config.IntrospectionTokenParamName.IsNull() {
@@ -5416,12 +4797,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			var issuer1 string
 			issuer1 = r.OpenidConnect.Config.Issuer.ValueString()
 
-			var issuersAllowed []string
-			if r.OpenidConnect.Config.IssuersAllowed != nil {
-				issuersAllowed = make([]string, 0, len(r.OpenidConnect.Config.IssuersAllowed))
-				for issuersAllowedIndex := range r.OpenidConnect.Config.IssuersAllowed {
-					issuersAllowed = append(issuersAllowed, r.OpenidConnect.Config.IssuersAllowed[issuersAllowedIndex].ValueString())
-				}
+			issuersAllowed := make([]string, 0, len(r.OpenidConnect.Config.IssuersAllowed))
+			for issuersAllowedIndex := range r.OpenidConnect.Config.IssuersAllowed {
+				issuersAllowed = append(issuersAllowed, r.OpenidConnect.Config.IssuersAllowed[issuersAllowedIndex].ValueString())
 			}
 			jwksEndpoint := new(string)
 			if !r.OpenidConnect.Config.JwksEndpoint.IsUnknown() && !r.OpenidConnect.Config.JwksEndpoint.IsNull() {
@@ -5469,12 +4847,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				loginRedirectMode = nil
 			}
-			var loginRedirectURI []string
-			if r.OpenidConnect.Config.LoginRedirectURI != nil {
-				loginRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.LoginRedirectURI))
-				for loginRedirectURIIndex := range r.OpenidConnect.Config.LoginRedirectURI {
-					loginRedirectURI = append(loginRedirectURI, r.OpenidConnect.Config.LoginRedirectURI[loginRedirectURIIndex].ValueString())
-				}
+			loginRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.LoginRedirectURI))
+			for loginRedirectURIIndex := range r.OpenidConnect.Config.LoginRedirectURI {
+				loginRedirectURI = append(loginRedirectURI, r.OpenidConnect.Config.LoginRedirectURI[loginRedirectURIIndex].ValueString())
 			}
 			loginTokens := make([]shared.LoginTokens, 0, len(r.OpenidConnect.Config.LoginTokens))
 			for _, loginTokensItem := range r.OpenidConnect.Config.LoginTokens {
@@ -5496,12 +4871,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				logoutQueryArg = nil
 			}
-			var logoutRedirectURI []string
-			if r.OpenidConnect.Config.LogoutRedirectURI != nil {
-				logoutRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.LogoutRedirectURI))
-				for logoutRedirectURIIndex := range r.OpenidConnect.Config.LogoutRedirectURI {
-					logoutRedirectURI = append(logoutRedirectURI, r.OpenidConnect.Config.LogoutRedirectURI[logoutRedirectURIIndex].ValueString())
-				}
+			logoutRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.LogoutRedirectURI))
+			for logoutRedirectURIIndex := range r.OpenidConnect.Config.LogoutRedirectURI {
+				logoutRedirectURI = append(logoutRedirectURI, r.OpenidConnect.Config.LogoutRedirectURI[logoutRedirectURIIndex].ValueString())
 			}
 			logoutRevoke := new(bool)
 			if !r.OpenidConnect.Config.LogoutRevoke.IsUnknown() && !r.OpenidConnect.Config.LogoutRevoke.IsNull() {
@@ -5605,12 +4977,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 				} else {
 					principalBy = nil
 				}
-				var principalClaim []string
-				if r.OpenidConnect.Config.Principals.PrincipalClaim != nil {
-					principalClaim = make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
-					for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
-						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
-					}
+				principalClaim := make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
+				for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
+					principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
 				}
 				principals1 = &shared.AIGatewayIdentityProviderOpenIDConnectPrincipals{
 					Directory:           directory1,
@@ -5743,12 +5112,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				pushedAuthorizationRequestEndpointAuthMethod = nil
 			}
-			var redirectURI []string
-			if r.OpenidConnect.Config.RedirectURI != nil {
-				redirectURI = make([]string, 0, len(r.OpenidConnect.Config.RedirectURI))
-				for redirectURIIndex := range r.OpenidConnect.Config.RedirectURI {
-					redirectURI = append(redirectURI, r.OpenidConnect.Config.RedirectURI[redirectURIIndex].ValueString())
-				}
+			redirectURI := make([]string, 0, len(r.OpenidConnect.Config.RedirectURI))
+			for redirectURIIndex := range r.OpenidConnect.Config.RedirectURI {
+				redirectURI = append(redirectURI, r.OpenidConnect.Config.RedirectURI[redirectURIIndex].ValueString())
 			}
 			var redis *shared.Redis
 			if r.OpenidConnect.Config.Redis != nil {
@@ -5847,27 +5213,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 				} else {
 					clusterMaxRedirections1 = nil
 				}
-				var clusterNodes1 []shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes
-				if r.OpenidConnect.Config.Redis.ClusterNodes != nil {
-					clusterNodes1 = make([]shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
-					for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
-						ip1 := new(string)
-						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
-							*ip1 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
-						} else {
-							ip1 = nil
-						}
-						port3 := new(int64)
-						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
-							*port3 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
-						} else {
-							port3 = nil
-						}
-						clusterNodes1 = append(clusterNodes1, shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes{
-							IP:   ip1,
-							Port: port3,
-						})
+				clusterNodes1 := make([]shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
+				for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
+					ip1 := new(string)
+					if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
+						*ip1 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
+					} else {
+						ip1 = nil
 					}
+					port3 := new(int64)
+					if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
+						*port3 = r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
+					} else {
+						port3 = nil
+					}
+					clusterNodes1 = append(clusterNodes1, shared.AIGatewayIdentityProviderOpenIDConnectClusterNodes{
+						IP:   ip1,
+						Port: port3,
+					})
 				}
 				connectTimeout1 := new(int64)
 				if !r.OpenidConnect.Config.Redis.ConnectTimeout.IsUnknown() && !r.OpenidConnect.Config.Redis.ConnectTimeout.IsNull() {
@@ -5941,27 +5304,24 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 				} else {
 					sentinelMaster1 = nil
 				}
-				var sentinelNodes1 []shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes
-				if r.OpenidConnect.Config.Redis.SentinelNodes != nil {
-					sentinelNodes1 = make([]shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
-					for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
-						host3 := new(string)
-						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
-							*host3 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
-						} else {
-							host3 = nil
-						}
-						port5 := new(int64)
-						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
-							*port5 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
-						} else {
-							port5 = nil
-						}
-						sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes{
-							Host: host3,
-							Port: port5,
-						})
+				sentinelNodes1 := make([]shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
+				for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
+					host3 := new(string)
+					if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
+						*host3 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
+					} else {
+						host3 = nil
 					}
+					port5 := new(int64)
+					if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
+						*port5 = r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
+					} else {
+						port5 = nil
+					}
+					sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayIdentityProviderOpenIDConnectSentinelNodes{
+						Host: host3,
+						Port: port5,
+					})
 				}
 				sentinelPassword1 := new(string)
 				if !r.OpenidConnect.Config.Redis.SentinelPassword.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelPassword.IsNull() {
@@ -6122,12 +5482,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			for rolesClaimIndex := range r.OpenidConnect.Config.RolesClaim {
 				rolesClaim = append(rolesClaim, r.OpenidConnect.Config.RolesClaim[rolesClaimIndex].ValueString())
 			}
-			var rolesRequired []string
-			if r.OpenidConnect.Config.RolesRequired != nil {
-				rolesRequired = make([]string, 0, len(r.OpenidConnect.Config.RolesRequired))
-				for rolesRequiredIndex := range r.OpenidConnect.Config.RolesRequired {
-					rolesRequired = append(rolesRequired, r.OpenidConnect.Config.RolesRequired[rolesRequiredIndex].ValueString())
-				}
+			rolesRequired := make([]string, 0, len(r.OpenidConnect.Config.RolesRequired))
+			for rolesRequiredIndex := range r.OpenidConnect.Config.RolesRequired {
+				rolesRequired = append(rolesRequired, r.OpenidConnect.Config.RolesRequired[rolesRequiredIndex].ValueString())
 			}
 			runOnPreflight1 := new(bool)
 			if !r.OpenidConnect.Config.RunOnPreflight.IsUnknown() && !r.OpenidConnect.Config.RunOnPreflight.IsNull() {
@@ -6143,12 +5500,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			for scopesClaimIndex := range r.OpenidConnect.Config.ScopesClaim {
 				scopesClaim = append(scopesClaim, r.OpenidConnect.Config.ScopesClaim[scopesClaimIndex].ValueString())
 			}
-			var scopesRequired []string
-			if r.OpenidConnect.Config.ScopesRequired != nil {
-				scopesRequired = make([]string, 0, len(r.OpenidConnect.Config.ScopesRequired))
-				for scopesRequiredIndex := range r.OpenidConnect.Config.ScopesRequired {
-					scopesRequired = append(scopesRequired, r.OpenidConnect.Config.ScopesRequired[scopesRequiredIndex].ValueString())
-				}
+			scopesRequired := make([]string, 0, len(r.OpenidConnect.Config.ScopesRequired))
+			for scopesRequiredIndex := range r.OpenidConnect.Config.ScopesRequired {
+				scopesRequired = append(scopesRequired, r.OpenidConnect.Config.ScopesRequired[scopesRequiredIndex].ValueString())
 			}
 			searchUserInfo := new(bool)
 			if !r.OpenidConnect.Config.SearchUserInfo.IsUnknown() && !r.OpenidConnect.Config.SearchUserInfo.IsNull() {
@@ -6168,12 +5522,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				sessionAudience = nil
 			}
-			var sessionBind []shared.SessionBind
-			if r.OpenidConnect.Config.SessionBind != nil {
-				sessionBind = make([]shared.SessionBind, 0, len(r.OpenidConnect.Config.SessionBind))
-				for _, sessionBindItem := range r.OpenidConnect.Config.SessionBind {
-					sessionBind = append(sessionBind, shared.SessionBind(sessionBindItem.ValueString()))
-				}
+			sessionBind := make([]shared.SessionBind, 0, len(r.OpenidConnect.Config.SessionBind))
+			for _, sessionBindItem := range r.OpenidConnect.Config.SessionBind {
+				sessionBind = append(sessionBind, shared.SessionBind(sessionBindItem.ValueString()))
 			}
 			sessionCookieDomain := new(string)
 			if !r.OpenidConnect.Config.SessionCookieDomain.IsUnknown() && !r.OpenidConnect.Config.SessionCookieDomain.IsNull() {
@@ -6295,19 +5646,13 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				sessionRememberRollingTimeout = nil
 			}
-			var sessionRequestHeaders []shared.SessionRequestHeaders
-			if r.OpenidConnect.Config.SessionRequestHeaders != nil {
-				sessionRequestHeaders = make([]shared.SessionRequestHeaders, 0, len(r.OpenidConnect.Config.SessionRequestHeaders))
-				for _, sessionRequestHeadersItem := range r.OpenidConnect.Config.SessionRequestHeaders {
-					sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
-				}
+			sessionRequestHeaders := make([]shared.SessionRequestHeaders, 0, len(r.OpenidConnect.Config.SessionRequestHeaders))
+			for _, sessionRequestHeadersItem := range r.OpenidConnect.Config.SessionRequestHeaders {
+				sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
 			}
-			var sessionResponseHeaders []shared.SessionResponseHeaders
-			if r.OpenidConnect.Config.SessionResponseHeaders != nil {
-				sessionResponseHeaders = make([]shared.SessionResponseHeaders, 0, len(r.OpenidConnect.Config.SessionResponseHeaders))
-				for _, sessionResponseHeadersItem := range r.OpenidConnect.Config.SessionResponseHeaders {
-					sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
-				}
+			sessionResponseHeaders := make([]shared.SessionResponseHeaders, 0, len(r.OpenidConnect.Config.SessionResponseHeaders))
+			for _, sessionResponseHeadersItem := range r.OpenidConnect.Config.SessionResponseHeaders {
+				sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
 			}
 			sessionRollingTimeout := new(float64)
 			if !r.OpenidConnect.Config.SessionRollingTimeout.IsUnknown() && !r.OpenidConnect.Config.SessionRollingTimeout.IsNull() {
@@ -6398,12 +5743,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 				}
 				var request *shared.Request
 				if r.OpenidConnect.Config.TokenExchange.Request != nil {
-					var audience1 []string
-					if r.OpenidConnect.Config.TokenExchange.Request.Audience != nil {
-						audience1 = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Audience))
-						for audienceIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Audience {
-							audience1 = append(audience1, r.OpenidConnect.Config.TokenExchange.Request.Audience[audienceIndex1].ValueString())
-						}
+					audience1 := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Audience))
+					for audienceIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Audience {
+						audience1 = append(audience1, r.OpenidConnect.Config.TokenExchange.Request.Audience[audienceIndex1].ValueString())
 					}
 					emptyAudience := new(bool)
 					if !r.OpenidConnect.Config.TokenExchange.Request.EmptyAudience.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Request.EmptyAudience.IsNull() {
@@ -6417,12 +5759,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 					} else {
 						emptyScopes = nil
 					}
-					var scopes1 []string
-					if r.OpenidConnect.Config.TokenExchange.Request.Scopes != nil {
-						scopes1 = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Scopes))
-						for scopesIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Scopes {
-							scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
-						}
+					scopes1 := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.Request.Scopes))
+					for scopesIndex1 := range r.OpenidConnect.Config.TokenExchange.Request.Scopes {
+						scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
 					}
 					request = &shared.Request{
 						Audience:      audience1,
@@ -6435,33 +5774,21 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 				for subjectTokenIssuersIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers {
 					var conditions *shared.AIGatewayIdentityProviderOpenIDConnectConditions
 					if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions != nil {
-						var hasAudience []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience != nil {
-							hasAudience = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience))
-							for hasAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience {
-								hasAudience = append(hasAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience[hasAudienceIndex].ValueString())
-							}
+						hasAudience := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience))
+						for hasAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience {
+							hasAudience = append(hasAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience[hasAudienceIndex].ValueString())
 						}
-						var hasScopes []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes != nil {
-							hasScopes = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes))
-							for hasScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes {
-								hasScopes = append(hasScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes[hasScopesIndex].ValueString())
-							}
+						hasScopes := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes))
+						for hasScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes {
+							hasScopes = append(hasScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes[hasScopesIndex].ValueString())
 						}
-						var missingAudience []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience != nil {
-							missingAudience = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience))
-							for missingAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience {
-								missingAudience = append(missingAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience[missingAudienceIndex].ValueString())
-							}
+						missingAudience := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience))
+						for missingAudienceIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience {
+							missingAudience = append(missingAudience, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience[missingAudienceIndex].ValueString())
 						}
-						var missingScopes []string
-						if r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes != nil {
-							missingScopes = make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes))
-							for missingScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes {
-								missingScopes = append(missingScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes[missingScopesIndex].ValueString())
-							}
+						missingScopes := make([]string, 0, len(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes))
+						for missingScopesIndex := range r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes {
+							missingScopes = append(missingScopes, r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes[missingScopesIndex].ValueString())
 						}
 						conditions = &shared.AIGatewayIdentityProviderOpenIDConnectConditions{
 							HasAudience:     hasAudience,
@@ -6504,26 +5831,17 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				tokenExchangeEndpoint = nil
 			}
-			var tokenHeadersClient []string
-			if r.OpenidConnect.Config.TokenHeadersClient != nil {
-				tokenHeadersClient = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersClient))
-				for tokenHeadersClientIndex := range r.OpenidConnect.Config.TokenHeadersClient {
-					tokenHeadersClient = append(tokenHeadersClient, r.OpenidConnect.Config.TokenHeadersClient[tokenHeadersClientIndex].ValueString())
-				}
+			tokenHeadersClient := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersClient))
+			for tokenHeadersClientIndex := range r.OpenidConnect.Config.TokenHeadersClient {
+				tokenHeadersClient = append(tokenHeadersClient, r.OpenidConnect.Config.TokenHeadersClient[tokenHeadersClientIndex].ValueString())
 			}
-			var tokenHeadersGrants []shared.TokenHeadersGrants
-			if r.OpenidConnect.Config.TokenHeadersGrants != nil {
-				tokenHeadersGrants = make([]shared.TokenHeadersGrants, 0, len(r.OpenidConnect.Config.TokenHeadersGrants))
-				for _, tokenHeadersGrantsItem := range r.OpenidConnect.Config.TokenHeadersGrants {
-					tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
-				}
+			tokenHeadersGrants := make([]shared.TokenHeadersGrants, 0, len(r.OpenidConnect.Config.TokenHeadersGrants))
+			for _, tokenHeadersGrantsItem := range r.OpenidConnect.Config.TokenHeadersGrants {
+				tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
 			}
-			var tokenHeadersNames []string
-			if r.OpenidConnect.Config.TokenHeadersNames != nil {
-				tokenHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersNames))
-				for tokenHeadersNamesIndex := range r.OpenidConnect.Config.TokenHeadersNames {
-					tokenHeadersNames = append(tokenHeadersNames, r.OpenidConnect.Config.TokenHeadersNames[tokenHeadersNamesIndex].ValueString())
-				}
+			tokenHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersNames))
+			for tokenHeadersNamesIndex := range r.OpenidConnect.Config.TokenHeadersNames {
+				tokenHeadersNames = append(tokenHeadersNames, r.OpenidConnect.Config.TokenHeadersNames[tokenHeadersNamesIndex].ValueString())
 			}
 			tokenHeadersPrefix := new(string)
 			if !r.OpenidConnect.Config.TokenHeadersPrefix.IsUnknown() && !r.OpenidConnect.Config.TokenHeadersPrefix.IsNull() {
@@ -6531,40 +5849,25 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				tokenHeadersPrefix = nil
 			}
-			var tokenHeadersReplay []string
-			if r.OpenidConnect.Config.TokenHeadersReplay != nil {
-				tokenHeadersReplay = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersReplay))
-				for tokenHeadersReplayIndex := range r.OpenidConnect.Config.TokenHeadersReplay {
-					tokenHeadersReplay = append(tokenHeadersReplay, r.OpenidConnect.Config.TokenHeadersReplay[tokenHeadersReplayIndex].ValueString())
-				}
+			tokenHeadersReplay := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersReplay))
+			for tokenHeadersReplayIndex := range r.OpenidConnect.Config.TokenHeadersReplay {
+				tokenHeadersReplay = append(tokenHeadersReplay, r.OpenidConnect.Config.TokenHeadersReplay[tokenHeadersReplayIndex].ValueString())
 			}
-			var tokenHeadersValues []string
-			if r.OpenidConnect.Config.TokenHeadersValues != nil {
-				tokenHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersValues))
-				for tokenHeadersValuesIndex := range r.OpenidConnect.Config.TokenHeadersValues {
-					tokenHeadersValues = append(tokenHeadersValues, r.OpenidConnect.Config.TokenHeadersValues[tokenHeadersValuesIndex].ValueString())
-				}
+			tokenHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.TokenHeadersValues))
+			for tokenHeadersValuesIndex := range r.OpenidConnect.Config.TokenHeadersValues {
+				tokenHeadersValues = append(tokenHeadersValues, r.OpenidConnect.Config.TokenHeadersValues[tokenHeadersValuesIndex].ValueString())
 			}
-			var tokenPostArgsClient []string
-			if r.OpenidConnect.Config.TokenPostArgsClient != nil {
-				tokenPostArgsClient = make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsClient))
-				for tokenPostArgsClientIndex := range r.OpenidConnect.Config.TokenPostArgsClient {
-					tokenPostArgsClient = append(tokenPostArgsClient, r.OpenidConnect.Config.TokenPostArgsClient[tokenPostArgsClientIndex].ValueString())
-				}
+			tokenPostArgsClient := make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsClient))
+			for tokenPostArgsClientIndex := range r.OpenidConnect.Config.TokenPostArgsClient {
+				tokenPostArgsClient = append(tokenPostArgsClient, r.OpenidConnect.Config.TokenPostArgsClient[tokenPostArgsClientIndex].ValueString())
 			}
-			var tokenPostArgsNames []string
-			if r.OpenidConnect.Config.TokenPostArgsNames != nil {
-				tokenPostArgsNames = make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsNames))
-				for tokenPostArgsNamesIndex := range r.OpenidConnect.Config.TokenPostArgsNames {
-					tokenPostArgsNames = append(tokenPostArgsNames, r.OpenidConnect.Config.TokenPostArgsNames[tokenPostArgsNamesIndex].ValueString())
-				}
+			tokenPostArgsNames := make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsNames))
+			for tokenPostArgsNamesIndex := range r.OpenidConnect.Config.TokenPostArgsNames {
+				tokenPostArgsNames = append(tokenPostArgsNames, r.OpenidConnect.Config.TokenPostArgsNames[tokenPostArgsNamesIndex].ValueString())
 			}
-			var tokenPostArgsValues []string
-			if r.OpenidConnect.Config.TokenPostArgsValues != nil {
-				tokenPostArgsValues = make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsValues))
-				for tokenPostArgsValuesIndex := range r.OpenidConnect.Config.TokenPostArgsValues {
-					tokenPostArgsValues = append(tokenPostArgsValues, r.OpenidConnect.Config.TokenPostArgsValues[tokenPostArgsValuesIndex].ValueString())
-				}
+			tokenPostArgsValues := make([]string, 0, len(r.OpenidConnect.Config.TokenPostArgsValues))
+			for tokenPostArgsValuesIndex := range r.OpenidConnect.Config.TokenPostArgsValues {
+				tokenPostArgsValues = append(tokenPostArgsValues, r.OpenidConnect.Config.TokenPostArgsValues[tokenPostArgsValuesIndex].ValueString())
 			}
 			unauthorizedDestroySession := new(bool)
 			if !r.OpenidConnect.Config.UnauthorizedDestroySession.IsUnknown() && !r.OpenidConnect.Config.UnauthorizedDestroySession.IsNull() {
@@ -6578,19 +5881,13 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				unauthorizedErrorMessage = nil
 			}
-			var unauthorizedRedirectURI []string
-			if r.OpenidConnect.Config.UnauthorizedRedirectURI != nil {
-				unauthorizedRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.UnauthorizedRedirectURI))
-				for unauthorizedRedirectURIIndex := range r.OpenidConnect.Config.UnauthorizedRedirectURI {
-					unauthorizedRedirectURI = append(unauthorizedRedirectURI, r.OpenidConnect.Config.UnauthorizedRedirectURI[unauthorizedRedirectURIIndex].ValueString())
-				}
+			unauthorizedRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.UnauthorizedRedirectURI))
+			for unauthorizedRedirectURIIndex := range r.OpenidConnect.Config.UnauthorizedRedirectURI {
+				unauthorizedRedirectURI = append(unauthorizedRedirectURI, r.OpenidConnect.Config.UnauthorizedRedirectURI[unauthorizedRedirectURIIndex].ValueString())
 			}
-			var unexpectedRedirectURI []string
-			if r.OpenidConnect.Config.UnexpectedRedirectURI != nil {
-				unexpectedRedirectURI = make([]string, 0, len(r.OpenidConnect.Config.UnexpectedRedirectURI))
-				for unexpectedRedirectURIIndex := range r.OpenidConnect.Config.UnexpectedRedirectURI {
-					unexpectedRedirectURI = append(unexpectedRedirectURI, r.OpenidConnect.Config.UnexpectedRedirectURI[unexpectedRedirectURIIndex].ValueString())
-				}
+			unexpectedRedirectURI := make([]string, 0, len(r.OpenidConnect.Config.UnexpectedRedirectURI))
+			for unexpectedRedirectURIIndex := range r.OpenidConnect.Config.UnexpectedRedirectURI {
+				unexpectedRedirectURI = append(unexpectedRedirectURI, r.OpenidConnect.Config.UnexpectedRedirectURI[unexpectedRedirectURIIndex].ValueString())
 			}
 			upstreamAccessTokenHeader := new(string)
 			if !r.OpenidConnect.Config.UpstreamAccessTokenHeader.IsUnknown() && !r.OpenidConnect.Config.UpstreamAccessTokenHeader.IsNull() {
@@ -6604,36 +5901,27 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				upstreamAccessTokenJwkHeader = nil
 			}
-			var upstreamHeaders []shared.UpstreamHeaders
-			if r.OpenidConnect.Config.UpstreamHeaders != nil {
-				upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
-				for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
-					var header1 string
-					header1 = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
+			upstreamHeaders := make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
+			for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
+				var header1 string
+				header1 = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
 
-					path1 := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
-					for pathIndex1 := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
-						path1 = append(path1, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex1].ValueString())
-					}
-					upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
-						Header: header1,
-						Path:   path1,
-					})
+				path1 := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
+				for pathIndex1 := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
+					path1 = append(path1, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex1].ValueString())
 				}
+				upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
+					Header: header1,
+					Path:   path1,
+				})
 			}
-			var upstreamHeadersClaims []string
-			if r.OpenidConnect.Config.UpstreamHeadersClaims != nil {
-				upstreamHeadersClaims = make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersClaims))
-				for upstreamHeadersClaimsIndex := range r.OpenidConnect.Config.UpstreamHeadersClaims {
-					upstreamHeadersClaims = append(upstreamHeadersClaims, r.OpenidConnect.Config.UpstreamHeadersClaims[upstreamHeadersClaimsIndex].ValueString())
-				}
+			upstreamHeadersClaims := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersClaims))
+			for upstreamHeadersClaimsIndex := range r.OpenidConnect.Config.UpstreamHeadersClaims {
+				upstreamHeadersClaims = append(upstreamHeadersClaims, r.OpenidConnect.Config.UpstreamHeadersClaims[upstreamHeadersClaimsIndex].ValueString())
 			}
-			var upstreamHeadersNames []string
-			if r.OpenidConnect.Config.UpstreamHeadersNames != nil {
-				upstreamHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersNames))
-				for upstreamHeadersNamesIndex := range r.OpenidConnect.Config.UpstreamHeadersNames {
-					upstreamHeadersNames = append(upstreamHeadersNames, r.OpenidConnect.Config.UpstreamHeadersNames[upstreamHeadersNamesIndex].ValueString())
-				}
+			upstreamHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeadersNames))
+			for upstreamHeadersNamesIndex := range r.OpenidConnect.Config.UpstreamHeadersNames {
+				upstreamHeadersNames = append(upstreamHeadersNames, r.OpenidConnect.Config.UpstreamHeadersNames[upstreamHeadersNamesIndex].ValueString())
 			}
 			upstreamIDTokenHeader := new(string)
 			if !r.OpenidConnect.Config.UpstreamIDTokenHeader.IsUnknown() && !r.OpenidConnect.Config.UpstreamIDTokenHeader.IsNull() {
@@ -6695,47 +5983,29 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			} else {
 				userinfoEndpoint = nil
 			}
-			var userinfoHeadersClient []string
-			if r.OpenidConnect.Config.UserinfoHeadersClient != nil {
-				userinfoHeadersClient = make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersClient))
-				for userinfoHeadersClientIndex := range r.OpenidConnect.Config.UserinfoHeadersClient {
-					userinfoHeadersClient = append(userinfoHeadersClient, r.OpenidConnect.Config.UserinfoHeadersClient[userinfoHeadersClientIndex].ValueString())
-				}
+			userinfoHeadersClient := make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersClient))
+			for userinfoHeadersClientIndex := range r.OpenidConnect.Config.UserinfoHeadersClient {
+				userinfoHeadersClient = append(userinfoHeadersClient, r.OpenidConnect.Config.UserinfoHeadersClient[userinfoHeadersClientIndex].ValueString())
 			}
-			var userinfoHeadersNames []string
-			if r.OpenidConnect.Config.UserinfoHeadersNames != nil {
-				userinfoHeadersNames = make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersNames))
-				for userinfoHeadersNamesIndex := range r.OpenidConnect.Config.UserinfoHeadersNames {
-					userinfoHeadersNames = append(userinfoHeadersNames, r.OpenidConnect.Config.UserinfoHeadersNames[userinfoHeadersNamesIndex].ValueString())
-				}
+			userinfoHeadersNames := make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersNames))
+			for userinfoHeadersNamesIndex := range r.OpenidConnect.Config.UserinfoHeadersNames {
+				userinfoHeadersNames = append(userinfoHeadersNames, r.OpenidConnect.Config.UserinfoHeadersNames[userinfoHeadersNamesIndex].ValueString())
 			}
-			var userinfoHeadersValues []string
-			if r.OpenidConnect.Config.UserinfoHeadersValues != nil {
-				userinfoHeadersValues = make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersValues))
-				for userinfoHeadersValuesIndex := range r.OpenidConnect.Config.UserinfoHeadersValues {
-					userinfoHeadersValues = append(userinfoHeadersValues, r.OpenidConnect.Config.UserinfoHeadersValues[userinfoHeadersValuesIndex].ValueString())
-				}
+			userinfoHeadersValues := make([]string, 0, len(r.OpenidConnect.Config.UserinfoHeadersValues))
+			for userinfoHeadersValuesIndex := range r.OpenidConnect.Config.UserinfoHeadersValues {
+				userinfoHeadersValues = append(userinfoHeadersValues, r.OpenidConnect.Config.UserinfoHeadersValues[userinfoHeadersValuesIndex].ValueString())
 			}
-			var userinfoQueryArgsClient []string
-			if r.OpenidConnect.Config.UserinfoQueryArgsClient != nil {
-				userinfoQueryArgsClient = make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsClient))
-				for userinfoQueryArgsClientIndex := range r.OpenidConnect.Config.UserinfoQueryArgsClient {
-					userinfoQueryArgsClient = append(userinfoQueryArgsClient, r.OpenidConnect.Config.UserinfoQueryArgsClient[userinfoQueryArgsClientIndex].ValueString())
-				}
+			userinfoQueryArgsClient := make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsClient))
+			for userinfoQueryArgsClientIndex := range r.OpenidConnect.Config.UserinfoQueryArgsClient {
+				userinfoQueryArgsClient = append(userinfoQueryArgsClient, r.OpenidConnect.Config.UserinfoQueryArgsClient[userinfoQueryArgsClientIndex].ValueString())
 			}
-			var userinfoQueryArgsNames []string
-			if r.OpenidConnect.Config.UserinfoQueryArgsNames != nil {
-				userinfoQueryArgsNames = make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsNames))
-				for userinfoQueryArgsNamesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsNames {
-					userinfoQueryArgsNames = append(userinfoQueryArgsNames, r.OpenidConnect.Config.UserinfoQueryArgsNames[userinfoQueryArgsNamesIndex].ValueString())
-				}
+			userinfoQueryArgsNames := make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsNames))
+			for userinfoQueryArgsNamesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsNames {
+				userinfoQueryArgsNames = append(userinfoQueryArgsNames, r.OpenidConnect.Config.UserinfoQueryArgsNames[userinfoQueryArgsNamesIndex].ValueString())
 			}
-			var userinfoQueryArgsValues []string
-			if r.OpenidConnect.Config.UserinfoQueryArgsValues != nil {
-				userinfoQueryArgsValues = make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsValues))
-				for userinfoQueryArgsValuesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsValues {
-					userinfoQueryArgsValues = append(userinfoQueryArgsValues, r.OpenidConnect.Config.UserinfoQueryArgsValues[userinfoQueryArgsValuesIndex].ValueString())
-				}
+			userinfoQueryArgsValues := make([]string, 0, len(r.OpenidConnect.Config.UserinfoQueryArgsValues))
+			for userinfoQueryArgsValuesIndex := range r.OpenidConnect.Config.UserinfoQueryArgsValues {
+				userinfoQueryArgsValues = append(userinfoQueryArgsValues, r.OpenidConnect.Config.UserinfoQueryArgsValues[userinfoQueryArgsValuesIndex].ValueString())
 			}
 			usingPseudoIssuer := new(bool)
 			if !r.OpenidConnect.Config.UsingPseudoIssuer.IsUnknown() && !r.OpenidConnect.Config.UsingPseudoIssuer.IsNull() {
