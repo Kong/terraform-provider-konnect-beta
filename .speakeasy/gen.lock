@@ -4961,7 +4961,7 @@ trackedFiles:
   internal/sdk/konnectbeta.go:
     id: 34b8a82d72ce
     last_write_checksum: sha1:49743be5313a6024a270d1026dd5cf200177e676
-    pristine_git_object: 83e79a4134c1aed5b3e87bb85ad09402ea683808
+    pristine_git_object: 08b33b7eb58ab2d19f0e1a073e04d38465321a34
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:8ebf7afb1e0baa8fde373eff36037b4ca1391d0a
