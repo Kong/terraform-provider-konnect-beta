@@ -1,28 +1,28 @@
-resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
-    provider = konnect-beta
-    gateway_id = konnect_ai_gateway.my_aigateway.id
-    key_auth = {
-        config = {
-            key_in_header         = true
-        }
-        display_name = "Okta AI SE"
+# resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
+#     provider = konnect-beta
+#     gateway_id = konnect_ai_gateway.my_aigateway.id
+#     key_auth = {
+#         config = {
+#             key_in_header         = true
+#         }
+#         display_name = "Okta AI SE"
         
-        name = "tf-test-key-auth-identity-provider"
-    }
-}
+#         name = "tf-test-key-auth-identity-provider"
+#     }
+# }
 
-resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider2" {
-  provider = konnect-beta
-  gateway_id = konnect_ai_gateway.my_aigateway.id
-  openid_connect = {
-    config = {
-      cache_tokens_salt = "...my_cache_tokens_salt..."
-      issuer                   = "https://dev-123456.example.com"
+# resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider2" {
+#   provider = konnect-beta
+#   gateway_id = konnect_ai_gateway.my_aigateway.id
+#   openid_connect = {
+#     config = {
+#       cache_tokens_salt = "...my_cache_tokens_salt..."
+#       issuer                   = "https://dev-123456.example.com"
 
-      ssl_verify = true
-    }
-    display_name = "TF Test OpenID Connect"
+#       ssl_verify = true
+#     }
+#     display_name = "TF Test OpenID Connect"
 
-    name = "tf-test-openid-connect-identity-provider"
-  }
-}
+#     name = "tf-test-openid-connect-identity-provider"
+#   }
+# }

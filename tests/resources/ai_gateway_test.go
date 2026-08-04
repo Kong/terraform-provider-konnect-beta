@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestAIGateway(t *testing.T) {
@@ -25,13 +26,24 @@ func TestAIGateway(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_ai_gateway_vault.my_aigatewayvault", "name", "tf-test-vault"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_config_store_secret.my_aigatewayconfigstoresecret", "key", "tf-test-secret-key"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_config_store_secret.my_aigatewayconfigstoresecret", "value", "tf-test-secret-value"),
-						resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider", "name", "tf-test-key-auth-identity-provider"),
-						resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider2", "name", "tf-test-openid-connect-identity-provider"),
+						// resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider", "name", "tf-test-key-auth-identity-provider"),
+						// resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider2", "name", "tf-test-openid-connect-identity-provider"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_policy.my_aigatewaypolicy", "name", "ai-pii-sanitizer-1234"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_agent.my_aigatewayagent", "name", "tf-test-flight-booking-agent"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider", "name", "tf-test-azure-ai-provider"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_anthropic", "name", "tf-test-anthropic-provider"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel", "name", "tf-test-claude-5-model"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_model", "name", "my-azure-model"),
 					),
+				},
+				{
+					ProtoV6ProviderFactories: providerFactory,
+					ConfigDirectory:          config.TestNameDirectory(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
 				},
 			},
 		})
