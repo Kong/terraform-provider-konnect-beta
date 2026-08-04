@@ -1,6 +1,12 @@
+resource "konnect_ai_gateway" "my_aigateway" {
+  provider     = konnect-beta
+  display_name = "TF Test AIGW - data-plane-certificate"
+  name         = "tf-test-aigw-dp-cert"
+}
+
 resource "konnect_ai_gateway_data_plane_certificate" "my_aigatewaydataplanecertificate" {
   provider = konnect-beta
-  cert        = <<EOF
+  cert     = <<EOF
 -----BEGIN CERTIFICATE-----
 MIIB4TCCAYugAwIBAgIUAenxUyPjkSLCe2BQXoBMBacqgLowDQYJKoZIhvcNAQEL
 BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
@@ -16,6 +22,6 @@ qKjBs0k=
 -----END CERTIFICATE-----
 EOF
 
-  gateway_id  = konnect_ai_gateway.my_aigateway.id
-  title       = "tf-test-dp-cert"
+  gateway_id = konnect_ai_gateway.my_aigateway.id
+  title      = "tf-test-dp-cert"
 }
