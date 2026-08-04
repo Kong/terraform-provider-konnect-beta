@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -92,6 +93,16 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 							`This feature is currently in beta and is subject to change.` + "\n" +
 							`` + "\n" +
 							`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
+					},
+					"identity_providers": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `List of identity providers for granting access to the agent.` + "\n" +
+							`At most 1 identity provider of each identity provider type can be referenced.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtMost(1),
+						},
 					},
 				},
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +

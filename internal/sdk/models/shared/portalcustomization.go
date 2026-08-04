@@ -244,7 +244,7 @@ type PortalCustomization struct {
 	Menu         *Menu         `json:"menu,omitempty"`
 	SpecRenderer *SpecRenderer `json:"spec_renderer,omitempty"`
 	Robots       *string       `default:"null" json:"robots"`
-	PortalLayout *PortalLayout `json:"portal_layout"`
+	PortalLayout *PortalLayout `json:"portal_layout,omitempty"`
 }
 
 func (p PortalCustomization) MarshalJSON() ([]byte, error) {

@@ -6,6 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 )
 
-type AIGatewayModelAliasConfigBody struct {
-	Body map[string]jsontypes.Normalized `tfsdk:"body"`
+type HeadersSelector struct {
+	Headers map[string]jsontypes.Normalized `tfsdk:"headers"`
 }

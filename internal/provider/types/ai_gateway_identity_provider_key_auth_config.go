@@ -3,15 +3,18 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type AIGatewayIdentityProviderKeyAuthConfig struct {
-	AdditionalProperties jsontypes.Normalized `tfsdk:"additional_properties"`
-	HideCredentials      types.Bool           `tfsdk:"hide_credentials"`
-	KeyInBody            types.Bool           `tfsdk:"key_in_body"`
-	KeyInHeader          types.Bool           `tfsdk:"key_in_header"`
-	KeyInQuery           types.Bool           `tfsdk:"key_in_query"`
-	KeyNames             []types.String       `tfsdk:"key_names"`
+	Anonymous       types.String     `tfsdk:"anonymous"`
+	HideCredentials types.Bool       `tfsdk:"hide_credentials"`
+	IdentityRealms  []IdentityRealms `tfsdk:"identity_realms"`
+	KeyInBody       types.Bool       `tfsdk:"key_in_body"`
+	KeyInHeader     types.Bool       `tfsdk:"key_in_header"`
+	KeyInQuery      types.Bool       `tfsdk:"key_in_query"`
+	KeyNames        []types.String   `tfsdk:"key_names"`
+	Principals      *Principals      `tfsdk:"principals"`
+	Realm           types.String     `tfsdk:"realm"`
+	RunOnPreflight  types.Bool       `tfsdk:"run_on_preflight"`
 }

@@ -66,7 +66,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_path = {
+          path_selector = {
             path_aliases = [
               "@azure/claude-sonnet-5"
             ]
@@ -230,7 +230,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_body = {
+          body_selector = {
             body = {
               key = jsonencode("value")
             }

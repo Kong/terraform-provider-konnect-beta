@@ -1676,16 +1676,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
 							},
 							"proxy": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"password": types.StringType,
-											"username": types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
 												Optional: true,
@@ -1701,12 +1695,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `Credentials used to authenticate to the proxy server.`,
 									},
 									"http_proxy": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"host": types.StringType,
-											"port": types.Int64Type,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"host": schema.StringAttribute{
 												Optional:    true,
@@ -1723,12 +1712,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `HTTP proxy server to route plaintext outbound requests through.`,
 									},
 									"https_proxy": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"host": types.StringType,
-											"port": types.Int64Type,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"host": schema.StringAttribute{
 												Optional:    true,
@@ -1800,7 +1784,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"ai_gateway_model_alias_config_body": schema.SingleNestedAttribute{
+											"body_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"body": schema.MapAttribute{
@@ -1817,12 +1801,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Description: `Configuration for routing requests to a specific model using a request body property.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+														path.MatchRelative().AtParent().AtName("headers_selector"),
+														path.MatchRelative().AtParent().AtName("path_selector"),
 													}...),
 												},
 											},
-											"ai_gateway_model_alias_config_headers": schema.SingleNestedAttribute{
+											"headers_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"headers": schema.MapAttribute{
@@ -1839,12 +1823,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Description: `Configuration for routing requests to a specific model using a header.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+														path.MatchRelative().AtParent().AtName("body_selector"),
+														path.MatchRelative().AtParent().AtName("path_selector"),
 													}...),
 												},
 											},
-											"ai_gateway_model_alias_config_path": schema.SingleNestedAttribute{
+											"path_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"path_aliases": schema.ListAttribute{
@@ -1858,16 +1842,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														},
 													},
 												},
-												Description: `Configuration for routing requests to a specific model using a path alias.`,
+												Description: `Configuration for routing requests to a specific model using a path selector.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
+														path.MatchRelative().AtParent().AtName("body_selector"),
+														path.MatchRelative().AtParent().AtName("headers_selector"),
 													}...),
 												},
 											},
 										},
-										Description: `Configuration for routing to this model using an alias.`,
+										MarkdownDescription: `Configuration for overriding routing to this model using a selector.` + "\n" +
+											`When not set, a default model selector will be created using the model's name and format.`,
 									},
 									"paths": schema.ListAttribute{
 										Computed:    true,
@@ -5289,16 +5274,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									`This feature is currently in beta and is subject to change.`,
 							},
 							"proxy": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"password": types.StringType,
-											"username": types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
 												Optional: true,
@@ -5314,12 +5293,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `Credentials used to authenticate to the proxy server.`,
 									},
 									"http_proxy": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"host": types.StringType,
-											"port": types.Int64Type,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"host": schema.StringAttribute{
 												Optional:    true,
@@ -5336,12 +5310,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `HTTP proxy server to route plaintext outbound requests through.`,
 									},
 									"https_proxy": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"host": types.StringType,
-											"port": types.Int64Type,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"host": schema.StringAttribute{
 												Optional:    true,
@@ -5413,7 +5382,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"ai_gateway_model_alias_config_body": schema.SingleNestedAttribute{
+											"body_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"body": schema.MapAttribute{
@@ -5430,12 +5399,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Description: `Configuration for routing requests to a specific model using a request body property.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+														path.MatchRelative().AtParent().AtName("headers_selector"),
+														path.MatchRelative().AtParent().AtName("path_selector"),
 													}...),
 												},
 											},
-											"ai_gateway_model_alias_config_headers": schema.SingleNestedAttribute{
+											"headers_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"headers": schema.MapAttribute{
@@ -5452,12 +5421,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Description: `Configuration for routing requests to a specific model using a header.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
+														path.MatchRelative().AtParent().AtName("body_selector"),
+														path.MatchRelative().AtParent().AtName("path_selector"),
 													}...),
 												},
 											},
-											"ai_gateway_model_alias_config_path": schema.SingleNestedAttribute{
+											"path_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"path_aliases": schema.ListAttribute{
@@ -5471,16 +5440,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														},
 													},
 												},
-												Description: `Configuration for routing requests to a specific model using a path alias.`,
+												Description: `Configuration for routing requests to a specific model using a path selector.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
+														path.MatchRelative().AtParent().AtName("body_selector"),
+														path.MatchRelative().AtParent().AtName("headers_selector"),
 													}...),
 												},
 											},
 										},
-										Description: `Configuration for routing to this model using an alias.`,
+										MarkdownDescription: `Configuration for overriding routing to this model using a selector.` + "\n" +
+											`When not set, a default model selector will be created using the model's name and format.`,
 									},
 									"paths": schema.ListAttribute{
 										Computed:    true,

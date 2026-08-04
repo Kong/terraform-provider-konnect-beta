@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayRedisCloudConfigurationSentinelNodes struct {
-	Host types.String `tfsdk:"host"`
-	Port types.Int64  `tfsdk:"port"`
+type AIGatewayModelProviderConfigAuthVertex struct {
+	ServiceAccountJSON types.String `tfsdk:"service_account_json"`
 }

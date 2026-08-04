@@ -9,6 +9,9 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
         "..."
       ]
     }
+    identity_providers = [
+      "okta-ai-se"
+    ]
   }
   config = {
     logging = {

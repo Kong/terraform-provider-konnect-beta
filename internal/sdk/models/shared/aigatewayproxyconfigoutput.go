@@ -127,15 +127,15 @@ func (a *AIGatewayProxyConfigAuth) GetUsername() *string {
 // AIGatewayProxyConfigOutput - HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
 type AIGatewayProxyConfigOutput struct {
 	// HTTP proxy server to route plaintext outbound requests through.
-	HTTPProxy *HTTPProxy `json:"http_proxy"`
+	HTTPProxy *HTTPProxy `json:"http_proxy,omitempty"`
 	// HTTPS proxy server to route TLS outbound requests through.
-	HTTPSProxy *HTTPSProxy `json:"https_proxy"`
+	HTTPSProxy *HTTPSProxy `json:"https_proxy,omitempty"`
 	// The proxy scheme to use when connecting to the proxy server.
 	ProxyScheme *ProxyScheme `default:"http" json:"proxy_scheme"`
 	// Credentials used to authenticate to the proxy server.
-	Auth *AIGatewayProxyConfigAuth `json:"auth"`
+	Auth *AIGatewayProxyConfigAuth `json:"auth,omitempty"`
 	// Comma-separated list of hosts that should not be proxied.
-	NoProxy *string `default:"null" json:"no_proxy"`
+	NoProxy *string `json:"no_proxy,omitempty"`
 }
 
 func (a AIGatewayProxyConfigOutput) MarshalJSON() ([]byte, error) {
@@ -224,15 +224,15 @@ func (a *Auth) GetPassword() *string {
 // AIGatewayProxyConfig - HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
 type AIGatewayProxyConfig struct {
 	// HTTP proxy server to route plaintext outbound requests through.
-	HTTPProxy *HTTPProxy `json:"http_proxy"`
+	HTTPProxy *HTTPProxy `json:"http_proxy,omitempty"`
 	// HTTPS proxy server to route TLS outbound requests through.
-	HTTPSProxy *HTTPSProxy `json:"https_proxy"`
+	HTTPSProxy *HTTPSProxy `json:"https_proxy,omitempty"`
 	// The proxy scheme to use when connecting to the proxy server.
 	ProxyScheme *ProxyScheme `default:"http" json:"proxy_scheme"`
 	// Credentials used to authenticate to the proxy server.
-	Auth *Auth `json:"auth"`
+	Auth *Auth `json:"auth,omitempty"`
 	// Comma-separated list of hosts that should not be proxied.
-	NoProxy *string `default:"null" json:"no_proxy"`
+	NoProxy *string `json:"no_proxy,omitempty"`
 }
 
 func (a AIGatewayProxyConfig) MarshalJSON() ([]byte, error) {

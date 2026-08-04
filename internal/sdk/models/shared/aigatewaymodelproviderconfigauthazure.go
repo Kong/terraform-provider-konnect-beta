@@ -16,17 +16,17 @@ type AIGatewayModelProviderConfigAuthAzure struct {
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ClientID *string `default:"null" json:"client_id"`
+	ClientID *string `json:"client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ClientSecret *string `default:"null" json:"client_secret"`
+	ClientSecret *string `json:"client_secret,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	TenantID *string `default:"null" json:"tenant_id"`
+	TenantID *string `json:"tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	UseManagedIdentity *bool `default:"null" json:"use_managed_identity"`
+	UseManagedIdentity *bool `json:"use_managed_identity,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthAzure) MarshalJSON() ([]byte, error) {

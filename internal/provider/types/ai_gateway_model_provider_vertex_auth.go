@@ -3,6 +3,6 @@
 package types
 
 type AIGatewayModelProviderVertexAuth struct {
-	Basic  *AIGatewayModelProviderConfigAuthBasic `queryParam:"inline" tfsdk:"basic"`
-	Vertex *AIGatewayRedisGCPAuthentication       `queryParam:"inline" tfsdk:"vertex"`
+	Basic  *AIGatewayModelProviderConfigAuthBasic  `queryParam:"inline" tfsdk:"basic"`
+	Vertex *AIGatewayModelProviderConfigAuthVertex `queryParam:"inline" tfsdk:"vertex"`
 }

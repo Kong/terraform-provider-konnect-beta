@@ -16,7 +16,7 @@ type EnvironmentVariableVaultConfig struct {
 	Base64Decode *bool `json:"base64_decode,omitempty"`
 	// The prefix for the environment variable that the value will be stored in.
 	//
-	Prefix *string `default:"null" json:"prefix"`
+	Prefix *string `json:"prefix,omitempty"`
 }
 
 func (e EnvironmentVariableVaultConfig) MarshalJSON() ([]byte, error) {

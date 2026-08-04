@@ -20,7 +20,7 @@ type AIGatewayModelProviderConfigAuthVertex struct {
 	// Full JSON string of the GCP service account to authenticate. If not set, the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ServiceAccountJSON *string `default:"null" json:"service_account_json"`
+	ServiceAccountJSON *string `json:"service_account_json,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthVertex) MarshalJSON() ([]byte, error) {

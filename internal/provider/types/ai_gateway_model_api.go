@@ -7,7 +7,7 @@ import (
 )
 
 type AIGatewayModelAPI struct {
-	Access       *AIGatewayModelAccess    `tfsdk:"access"`
+	Access       *AIGatewayAgentAccess    `tfsdk:"access"`
 	Capabilities []types.String           `tfsdk:"capabilities"`
 	Config       *AIGatewayModelAPIConfig `tfsdk:"config"`
 	CreatedAt    types.String             `tfsdk:"created_at"`

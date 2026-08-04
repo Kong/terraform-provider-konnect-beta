@@ -420,11 +420,11 @@ type AzureKeyVaultAzureKeyVaultConfig struct {
 	// The client ID for your registered application.
 	// You can find this in the Azure Dashboard under App Registrations.
 	//
-	ClientID *string `default:"null" json:"client_id"`
+	ClientID *string `json:"client_id,omitempty"`
 	// The DirectoryId and TenantId are the same: both refer to the GUID representing your Azure Active Directory tenant.
 	// Microsoft documentation and products may use either term depending on context.
 	//
-	TenantID *string                          `default:"null" json:"tenant_id"`
+	TenantID *string                          `json:"tenant_id,omitempty"`
 	Type     *AzureKeyVaultAIGatewayVaultType `default:"secrets" json:"type"`
 }
 
@@ -823,21 +823,21 @@ type AwsSecretsManagerVaultAwsSecretsManagerVaultConfig struct {
 	TTL *int64 `default:"0" json:"ttl"`
 	// The ARN of the role to assume when retrieving secrets from AWS Secrets Manager.
 	//
-	AssumeRoleArn *string `default:"null" json:"assume_role_arn"`
+	AssumeRoleArn *string `json:"assume_role_arn,omitempty"`
 	// The endpoint URL of the AWS Secrets Manager service.
 	// If not specified, the default is https://secretsmanager.{region}.amazonaws.com.
 	// You can override this by specifying a complete URL including the http/https scheme.
 	//
-	EndpointURL *string `default:"null" json:"endpoint_url"`
+	EndpointURL *string `json:"endpoint_url,omitempty"`
 	// The AWS region where your vault is located.
-	Region *string `default:"null" json:"region"`
+	Region *string `json:"region,omitempty"`
 	// The session name used when assuming a role.
 	RoleSessionName *string `default:"KongVault" json:"role_session_name"`
 	// A custom STS endpoint URL used for IAM role assumption.
 	// Overrides the default https://sts.amazonaws.com or regional variant https://sts.<region>.amazonaws.com.
 	// Include the full http/https scheme. Only specify this if using a private VPC endpoint for STS.
 	//
-	StsEndpointURL *string `default:"null" json:"sts_endpoint_url"`
+	StsEndpointURL *string `json:"sts_endpoint_url,omitempty"`
 }
 
 func (a AwsSecretsManagerVaultAwsSecretsManagerVaultConfig) MarshalJSON() ([]byte, error) {
@@ -1032,7 +1032,7 @@ type EnvironmentVariableVaultEnvironmentVariableVaultConfig struct {
 	Base64Decode *bool `json:"base64_decode,omitempty"`
 	// The prefix for the environment variable that the value will be stored in.
 	//
-	Prefix *string `default:"null" json:"prefix"`
+	Prefix *string `json:"prefix,omitempty"`
 }
 
 func (e EnvironmentVariableVaultEnvironmentVariableVaultConfig) MarshalJSON() ([]byte, error) {

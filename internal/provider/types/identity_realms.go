@@ -6,7 +6,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayModelAccess struct {
-	Acls              *AIGatewayACLS `tfsdk:"acls"`
-	IdentityProviders []types.String `tfsdk:"identity_providers"`
+type IdentityRealms struct {
+	ID     types.String `tfsdk:"id"`
+	Region types.String `tfsdk:"region"`
+	Scope  types.String `tfsdk:"scope"`
 }

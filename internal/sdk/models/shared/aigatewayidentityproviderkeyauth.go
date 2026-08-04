@@ -6,28 +6,129 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
+type AIGatewayIdentityProviderKeyAuthScope string
+
+const (
+	AIGatewayIdentityProviderKeyAuthScopeCp    AIGatewayIdentityProviderKeyAuthScope = "cp"
+	AIGatewayIdentityProviderKeyAuthScopeRealm AIGatewayIdentityProviderKeyAuthScope = "realm"
+)
+
+func (e AIGatewayIdentityProviderKeyAuthScope) ToPointer() *AIGatewayIdentityProviderKeyAuthScope {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayIdentityProviderKeyAuthScope) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cp", "realm":
+			return true
+		}
+	}
+	return false
+}
+
+type IdentityRealms struct {
+	// A string representing a UUID (universally unique identifier).
+	ID     *string                                `json:"id,omitempty"`
+	Region *string                                `default:"null" json:"region"`
+	Scope  *AIGatewayIdentityProviderKeyAuthScope `default:"cp" json:"scope"`
+}
+
+func (i IdentityRealms) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IdentityRealms) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *IdentityRealms) GetID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ID
+}
+
+func (i *IdentityRealms) GetRegion() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Region
+}
+
+func (i *IdentityRealms) GetScope() *AIGatewayIdentityProviderKeyAuthScope {
+	if i == nil {
+		return nil
+	}
+	return i.Scope
+}
+
+type Principals struct {
+	// The Kong Identity directory instance to authenticate against.
+	Directory *string `default:"default" json:"directory"`
+	// When true, authenticate against Kong Identity instead of local credentials.
+	Enabled *bool `default:"false" json:"enabled"`
+	// When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead.
+	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
+}
+
+func (p Principals) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Principals) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Principals) GetDirectory() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Directory
+}
+
+func (p *Principals) GetEnabled() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.Enabled
+}
+
+func (p *Principals) GetErrorOnMiss() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.ErrorOnMiss
+}
+
 // AIGatewayIdentityProviderKeyAuthConfig - Configuration for the Kong Key auth identity provider.
-// For advanced use cases, additional config properties can be sent in the request body.
-// See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
 type AIGatewayIdentityProviderKeyAuthConfig struct {
-	// An optional boolean value telling the plugin to show or hide the credential from the upstream service.
-	// If true, the plugin strips the credential from the request.
-	//
+	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
+	Anonymous *string `default:"null" json:"anonymous"`
+	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
 	HideCredentials *bool `default:"true" json:"hide_credentials"`
-	// If enabled, reads the request body.
-	// Supported MIME types: application/www-form-urlencoded, application/json, and multipart/form-data.
-	//
+	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
+	IdentityRealms []IdentityRealms `json:"identity_realms"`
+	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	KeyInBody *bool `default:"false" json:"key_in_body"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
-	//
 	KeyInHeader *bool `default:"true" json:"key_in_header"`
 	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
-	//
 	KeyInQuery *bool `default:"true" json:"key_in_query"`
-	// An array of strings containing the names of the keys to look for in the request.
-	//
-	KeyNames             []string `json:"key_names,omitempty"`
-	AdditionalProperties any      `additionalProperties:"true" json:"-"`
+	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
+	KeyNames   []string    `json:"key_names,omitempty"`
+	Principals *Principals `json:"principals"`
+	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
+	Realm *string `default:"null" json:"realm"`
+	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
+	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 }
 
 func (a AIGatewayIdentityProviderKeyAuthConfig) MarshalJSON() ([]byte, error) {
@@ -41,11 +142,25 @@ func (a *AIGatewayIdentityProviderKeyAuthConfig) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
+func (a *AIGatewayIdentityProviderKeyAuthConfig) GetAnonymous() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Anonymous
+}
+
 func (a *AIGatewayIdentityProviderKeyAuthConfig) GetHideCredentials() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.HideCredentials
+}
+
+func (a *AIGatewayIdentityProviderKeyAuthConfig) GetIdentityRealms() []IdentityRealms {
+	if a == nil {
+		return nil
+	}
+	return a.IdentityRealms
 }
 
 func (a *AIGatewayIdentityProviderKeyAuthConfig) GetKeyInBody() *bool {
@@ -76,11 +191,25 @@ func (a *AIGatewayIdentityProviderKeyAuthConfig) GetKeyNames() []string {
 	return a.KeyNames
 }
 
-func (a *AIGatewayIdentityProviderKeyAuthConfig) GetAdditionalProperties() any {
+func (a *AIGatewayIdentityProviderKeyAuthConfig) GetPrincipals() *Principals {
 	if a == nil {
 		return nil
 	}
-	return a.AdditionalProperties
+	return a.Principals
+}
+
+func (a *AIGatewayIdentityProviderKeyAuthConfig) GetRealm() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Realm
+}
+
+func (a *AIGatewayIdentityProviderKeyAuthConfig) GetRunOnPreflight() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RunOnPreflight
 }
 
 // AIGatewayIdentityProviderKeyAuth - **Pre-release Feature**
@@ -110,8 +239,6 @@ type AIGatewayIdentityProviderKeyAuth struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"key-auth" json:"type"`
 	// Configuration for the Kong Key auth identity provider.
-	// For advanced use cases, additional config properties can be sent in the request body.
-	// See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
 	//
 	Config *AIGatewayIdentityProviderKeyAuthConfig `json:"config"`
 }

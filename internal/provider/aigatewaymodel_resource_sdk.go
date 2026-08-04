@@ -24,7 +24,7 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 			if resp.AIGatewayModelAPIResponse.Access == nil {
 				r.API.Access = nil
 			} else {
-				r.API.Access = &tfTypes.AIGatewayModelAccess{}
+				r.API.Access = &tfTypes.AIGatewayAgentAccess{}
 				if resp.AIGatewayModelAPIResponse.Access.Acls == nil {
 					r.API.Access.Acls = nil
 				} else {
@@ -322,10 +322,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
 							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
 
 								for _, nodesItem := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
-									var nodes tfTypes.AIGatewayRedisCloudConfigurationNodes
+									var nodes tfTypes.ClusterNodes
 
 									nodes.IP = types.StringPointerValue(nodesItem.IP)
 									nodes.Port = types.Int64PointerValue(nodesItem.Port)
@@ -359,10 +359,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
 							if resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
 
 								for _, nodesItem1 := range resp.AIGatewayModelAPIResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
-									var nodes1 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
+									var nodes1 tfTypes.SentinelNodes
 
 									nodes1.Host = types.StringPointerValue(nodesItem1.Host)
 									nodes1.Port = types.Int64PointerValue(nodesItem1.Port)
@@ -461,32 +461,32 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				r.API.Config.Route.Methods = append(r.API.Config.Route.Methods, types.StringValue(v))
 			}
 			if resp.AIGatewayModelAPIResponse.Config.Route.Model != nil {
-				r.API.Config.Route.Model = &tfTypes.AIGatewayModelAliasConfig{}
-				if resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
-					r.API.Config.Route.Model.AIGatewayModelAliasConfigBody = &tfTypes.AIGatewayModelAliasConfigBody{}
-					if len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body) > 0 {
-						r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body))
-						for key1, value1 := range resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+				r.API.Config.Route.Model = &tfTypes.AIGatewayModelSelectorConfig{}
+				if resp.AIGatewayModelAPIResponse.Config.Route.Model.BodySelector != nil {
+					r.API.Config.Route.Model.BodySelector = &tfTypes.BodySelector{}
+					if len(resp.AIGatewayModelAPIResponse.Config.Route.Model.BodySelector.Body) > 0 {
+						r.API.Config.Route.Model.BodySelector.Body = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.BodySelector.Body))
+						for key1, value1 := range resp.AIGatewayModelAPIResponse.Config.Route.Model.BodySelector.Body {
 							result1, _ := json.Marshal(value1)
-							r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[key1] = jsontypes.NewNormalizedValue(string(result1))
+							r.API.Config.Route.Model.BodySelector.Body[key1] = jsontypes.NewNormalizedValue(string(result1))
 						}
 					}
 				}
-				if resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
-					r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders = &tfTypes.AIGatewayModelAliasConfigHeaders{}
-					if len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers) > 0 {
-						r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers))
-						for key2, value2 := range resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+				if resp.AIGatewayModelAPIResponse.Config.Route.Model.HeadersSelector != nil {
+					r.API.Config.Route.Model.HeadersSelector = &tfTypes.HeadersSelector{}
+					if len(resp.AIGatewayModelAPIResponse.Config.Route.Model.HeadersSelector.Headers) > 0 {
+						r.API.Config.Route.Model.HeadersSelector.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.HeadersSelector.Headers))
+						for key2, value2 := range resp.AIGatewayModelAPIResponse.Config.Route.Model.HeadersSelector.Headers {
 							result2, _ := json.Marshal(value2)
-							r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[key2] = jsontypes.NewNormalizedValue(string(result2))
+							r.API.Config.Route.Model.HeadersSelector.Headers[key2] = jsontypes.NewNormalizedValue(string(result2))
 						}
 					}
 				}
-				if resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
-					r.API.Config.Route.Model.AIGatewayModelAliasConfigPath = &tfTypes.AIGatewayModelAliasConfigPath{}
-					r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-					for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
-						r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = append(r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases, types.StringValue(v))
+				if resp.AIGatewayModelAPIResponse.Config.Route.Model.PathSelector != nil {
+					r.API.Config.Route.Model.PathSelector = &tfTypes.PathSelector{}
+					r.API.Config.Route.Model.PathSelector.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelAPIResponse.Config.Route.Model.PathSelector.PathAliases))
+					for _, v := range resp.AIGatewayModelAPIResponse.Config.Route.Model.PathSelector.PathAliases {
+						r.API.Config.Route.Model.PathSelector.PathAliases = append(r.API.Config.Route.Model.PathSelector.PathAliases, types.StringValue(v))
 					}
 				}
 			}
@@ -851,7 +851,7 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 			if resp.AIGatewayModelModelResponse.Access == nil {
 				r.Model.Access = nil
 			} else {
-				r.Model.Access = &tfTypes.AIGatewayModelAccess{}
+				r.Model.Access = &tfTypes.AIGatewayAgentAccess{}
 				if resp.AIGatewayModelModelResponse.Access.Acls == nil {
 					r.Model.Access.Acls = nil
 				} else {
@@ -1149,10 +1149,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
 							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
 
 								for _, nodesItem2 := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
-									var nodes2 tfTypes.AIGatewayRedisCloudConfigurationNodes
+									var nodes2 tfTypes.ClusterNodes
 
 									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
 									nodes2.Port = types.Int64PointerValue(nodesItem2.Port)
@@ -1186,10 +1186,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
 							if resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
 
 								for _, nodesItem3 := range resp.AIGatewayModelModelResponse.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
-									var nodes3 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
+									var nodes3 tfTypes.SentinelNodes
 
 									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
 									nodes3.Port = types.Int64PointerValue(nodesItem3.Port)
@@ -1294,32 +1294,32 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				r.Model.Config.Route.Methods = append(r.Model.Config.Route.Methods, types.StringValue(v))
 			}
 			if resp.AIGatewayModelModelResponse.Config.Route.Model != nil {
-				r.Model.Config.Route.Model = &tfTypes.AIGatewayModelAliasConfig{}
-				if resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
-					r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody = &tfTypes.AIGatewayModelAliasConfigBody{}
-					if len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body) > 0 {
-						r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body))
-						for key6, value6 := range resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+				r.Model.Config.Route.Model = &tfTypes.AIGatewayModelSelectorConfig{}
+				if resp.AIGatewayModelModelResponse.Config.Route.Model.BodySelector != nil {
+					r.Model.Config.Route.Model.BodySelector = &tfTypes.BodySelector{}
+					if len(resp.AIGatewayModelModelResponse.Config.Route.Model.BodySelector.Body) > 0 {
+						r.Model.Config.Route.Model.BodySelector.Body = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelModelResponse.Config.Route.Model.BodySelector.Body))
+						for key6, value6 := range resp.AIGatewayModelModelResponse.Config.Route.Model.BodySelector.Body {
 							result4, _ := json.Marshal(value6)
-							r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[key6] = jsontypes.NewNormalizedValue(string(result4))
+							r.Model.Config.Route.Model.BodySelector.Body[key6] = jsontypes.NewNormalizedValue(string(result4))
 						}
 					}
 				}
-				if resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
-					r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders = &tfTypes.AIGatewayModelAliasConfigHeaders{}
-					if len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers) > 0 {
-						r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers))
-						for key7, value7 := range resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+				if resp.AIGatewayModelModelResponse.Config.Route.Model.HeadersSelector != nil {
+					r.Model.Config.Route.Model.HeadersSelector = &tfTypes.HeadersSelector{}
+					if len(resp.AIGatewayModelModelResponse.Config.Route.Model.HeadersSelector.Headers) > 0 {
+						r.Model.Config.Route.Model.HeadersSelector.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayModelModelResponse.Config.Route.Model.HeadersSelector.Headers))
+						for key7, value7 := range resp.AIGatewayModelModelResponse.Config.Route.Model.HeadersSelector.Headers {
 							result5, _ := json.Marshal(value7)
-							r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[key7] = jsontypes.NewNormalizedValue(string(result5))
+							r.Model.Config.Route.Model.HeadersSelector.Headers[key7] = jsontypes.NewNormalizedValue(string(result5))
 						}
 					}
 				}
-				if resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
-					r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath = &tfTypes.AIGatewayModelAliasConfigPath{}
-					r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-					for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
-						r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases = append(r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases, types.StringValue(v))
+				if resp.AIGatewayModelModelResponse.Config.Route.Model.PathSelector != nil {
+					r.Model.Config.Route.Model.PathSelector = &tfTypes.PathSelector{}
+					r.Model.Config.Route.Model.PathSelector.PathAliases = make([]types.String, 0, len(resp.AIGatewayModelModelResponse.Config.Route.Model.PathSelector.PathAliases))
+					for _, v := range resp.AIGatewayModelModelResponse.Config.Route.Model.PathSelector.PathAliases {
+						r.Model.Config.Route.Model.PathSelector.PathAliases = append(r.Model.Config.Route.Model.PathSelector.PathAliases, types.StringValue(v))
 					}
 				}
 			}
@@ -3463,55 +3463,55 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 		for tagsIndex := range r.API.Config.Route.Tags {
 			tags = append(tags, r.API.Config.Route.Tags[tagsIndex].ValueString())
 		}
-		var model1 *shared.AIGatewayModelAliasConfig
+		var model1 *shared.AIGatewayModelSelectorConfig
 		if r.API.Config.Route.Model != nil {
-			var aiGatewayModelAliasConfigBody *shared.AIGatewayModelAliasConfigBody
-			if r.API.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+			var bodySelector *shared.BodySelector
+			if r.API.Config.Route.Model.BodySelector != nil {
 				body := make(map[string]interface{})
-				for bodyKey := range r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+				for bodyKey := range r.API.Config.Route.Model.BodySelector.Body {
 					var bodyInst interface{}
-					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey].ValueString()), &bodyInst)
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.BodySelector.Body[bodyKey].ValueString()), &bodyInst)
 					body[bodyKey] = bodyInst
 				}
-				aiGatewayModelAliasConfigBody = &shared.AIGatewayModelAliasConfigBody{
+				bodySelector = &shared.BodySelector{
 					Body: body,
 				}
 			}
-			if aiGatewayModelAliasConfigBody != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody,
+			if bodySelector != nil {
+				model1 = &shared.AIGatewayModelSelectorConfig{
+					BodySelector: bodySelector,
 				}
 			}
-			var aiGatewayModelAliasConfigHeaders *shared.AIGatewayModelAliasConfigHeaders
-			if r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+			var headersSelector *shared.HeadersSelector
+			if r.API.Config.Route.Model.HeadersSelector != nil {
 				headers1 := make(map[string]interface{})
-				for headersKey1 := range r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+				for headersKey1 := range r.API.Config.Route.Model.HeadersSelector.Headers {
 					var headersInst1 interface{}
-					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey1].ValueString()), &headersInst1)
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.HeadersSelector.Headers[headersKey1].ValueString()), &headersInst1)
 					headers1[headersKey1] = headersInst1
 				}
-				aiGatewayModelAliasConfigHeaders = &shared.AIGatewayModelAliasConfigHeaders{
+				headersSelector = &shared.HeadersSelector{
 					Headers: headers1,
 				}
 			}
-			if aiGatewayModelAliasConfigHeaders != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders,
+			if headersSelector != nil {
+				model1 = &shared.AIGatewayModelSelectorConfig{
+					HeadersSelector: headersSelector,
 				}
 			}
-			var aiGatewayModelAliasConfigPath *shared.AIGatewayModelAliasConfigPath
-			if r.API.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
-				pathAliases := make([]string, 0, len(r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-				for pathAliasesIndex := range r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
-					pathAliases = append(pathAliases, r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases[pathAliasesIndex].ValueString())
+			var pathSelector *shared.PathSelector
+			if r.API.Config.Route.Model.PathSelector != nil {
+				pathAliases := make([]string, 0, len(r.API.Config.Route.Model.PathSelector.PathAliases))
+				for pathAliasesIndex := range r.API.Config.Route.Model.PathSelector.PathAliases {
+					pathAliases = append(pathAliases, r.API.Config.Route.Model.PathSelector.PathAliases[pathAliasesIndex].ValueString())
 				}
-				aiGatewayModelAliasConfigPath = &shared.AIGatewayModelAliasConfigPath{
+				pathSelector = &shared.PathSelector{
 					PathAliases: pathAliases,
 				}
 			}
-			if aiGatewayModelAliasConfigPath != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath,
+			if pathSelector != nil {
+				model1 = &shared.AIGatewayModelSelectorConfig{
+					PathSelector: pathSelector,
 				}
 			}
 		}
@@ -6532,55 +6532,55 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 		for tagsIndex1 := range r.Model.Config.Route.Tags {
 			tags1 = append(tags1, r.Model.Config.Route.Tags[tagsIndex1].ValueString())
 		}
-		var model3 *shared.AIGatewayModelAliasConfig
+		var model3 *shared.AIGatewayModelSelectorConfig
 		if r.Model.Config.Route.Model != nil {
-			var aiGatewayModelAliasConfigBody1 *shared.AIGatewayModelAliasConfigBody
-			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+			var bodySelector1 *shared.BodySelector
+			if r.Model.Config.Route.Model.BodySelector != nil {
 				body1 := make(map[string]interface{})
-				for bodyKey1 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+				for bodyKey1 := range r.Model.Config.Route.Model.BodySelector.Body {
 					var bodyInst1 interface{}
-					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey1].ValueString()), &bodyInst1)
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.BodySelector.Body[bodyKey1].ValueString()), &bodyInst1)
 					body1[bodyKey1] = bodyInst1
 				}
-				aiGatewayModelAliasConfigBody1 = &shared.AIGatewayModelAliasConfigBody{
+				bodySelector1 = &shared.BodySelector{
 					Body: body1,
 				}
 			}
-			if aiGatewayModelAliasConfigBody1 != nil {
-				model3 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody1,
+			if bodySelector1 != nil {
+				model3 = &shared.AIGatewayModelSelectorConfig{
+					BodySelector: bodySelector1,
 				}
 			}
-			var aiGatewayModelAliasConfigHeaders1 *shared.AIGatewayModelAliasConfigHeaders
-			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+			var headersSelector1 *shared.HeadersSelector
+			if r.Model.Config.Route.Model.HeadersSelector != nil {
 				headers3 := make(map[string]interface{})
-				for headersKey3 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+				for headersKey3 := range r.Model.Config.Route.Model.HeadersSelector.Headers {
 					var headersInst3 interface{}
-					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey3].ValueString()), &headersInst3)
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.HeadersSelector.Headers[headersKey3].ValueString()), &headersInst3)
 					headers3[headersKey3] = headersInst3
 				}
-				aiGatewayModelAliasConfigHeaders1 = &shared.AIGatewayModelAliasConfigHeaders{
+				headersSelector1 = &shared.HeadersSelector{
 					Headers: headers3,
 				}
 			}
-			if aiGatewayModelAliasConfigHeaders1 != nil {
-				model3 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders1,
+			if headersSelector1 != nil {
+				model3 = &shared.AIGatewayModelSelectorConfig{
+					HeadersSelector: headersSelector1,
 				}
 			}
-			var aiGatewayModelAliasConfigPath1 *shared.AIGatewayModelAliasConfigPath
-			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
-				pathAliases1 := make([]string, 0, len(r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-				for pathAliasesIndex1 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
-					pathAliases1 = append(pathAliases1, r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases[pathAliasesIndex1].ValueString())
+			var pathSelector1 *shared.PathSelector
+			if r.Model.Config.Route.Model.PathSelector != nil {
+				pathAliases1 := make([]string, 0, len(r.Model.Config.Route.Model.PathSelector.PathAliases))
+				for pathAliasesIndex1 := range r.Model.Config.Route.Model.PathSelector.PathAliases {
+					pathAliases1 = append(pathAliases1, r.Model.Config.Route.Model.PathSelector.PathAliases[pathAliasesIndex1].ValueString())
 				}
-				aiGatewayModelAliasConfigPath1 = &shared.AIGatewayModelAliasConfigPath{
+				pathSelector1 = &shared.PathSelector{
 					PathAliases: pathAliases1,
 				}
 			}
-			if aiGatewayModelAliasConfigPath1 != nil {
-				model3 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath1,
+			if pathSelector1 != nil {
+				model3 = &shared.AIGatewayModelSelectorConfig{
+					PathSelector: pathSelector1,
 				}
 			}
 		}
@@ -9622,55 +9622,55 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 		for tagsIndex := range r.API.Config.Route.Tags {
 			tags = append(tags, r.API.Config.Route.Tags[tagsIndex].ValueString())
 		}
-		var model1 *shared.AIGatewayModelAliasConfig
+		var model1 *shared.AIGatewayModelSelectorConfig
 		if r.API.Config.Route.Model != nil {
-			var aiGatewayModelAliasConfigBody *shared.AIGatewayModelAliasConfigBody
-			if r.API.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+			var bodySelector *shared.BodySelector
+			if r.API.Config.Route.Model.BodySelector != nil {
 				body := make(map[string]interface{})
-				for bodyKey := range r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+				for bodyKey := range r.API.Config.Route.Model.BodySelector.Body {
 					var bodyInst interface{}
-					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey].ValueString()), &bodyInst)
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.BodySelector.Body[bodyKey].ValueString()), &bodyInst)
 					body[bodyKey] = bodyInst
 				}
-				aiGatewayModelAliasConfigBody = &shared.AIGatewayModelAliasConfigBody{
+				bodySelector = &shared.BodySelector{
 					Body: body,
 				}
 			}
-			if aiGatewayModelAliasConfigBody != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody,
+			if bodySelector != nil {
+				model1 = &shared.AIGatewayModelSelectorConfig{
+					BodySelector: bodySelector,
 				}
 			}
-			var aiGatewayModelAliasConfigHeaders *shared.AIGatewayModelAliasConfigHeaders
-			if r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+			var headersSelector *shared.HeadersSelector
+			if r.API.Config.Route.Model.HeadersSelector != nil {
 				headers1 := make(map[string]interface{})
-				for headersKey1 := range r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+				for headersKey1 := range r.API.Config.Route.Model.HeadersSelector.Headers {
 					var headersInst1 interface{}
-					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey1].ValueString()), &headersInst1)
+					_ = json.Unmarshal([]byte(r.API.Config.Route.Model.HeadersSelector.Headers[headersKey1].ValueString()), &headersInst1)
 					headers1[headersKey1] = headersInst1
 				}
-				aiGatewayModelAliasConfigHeaders = &shared.AIGatewayModelAliasConfigHeaders{
+				headersSelector = &shared.HeadersSelector{
 					Headers: headers1,
 				}
 			}
-			if aiGatewayModelAliasConfigHeaders != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders,
+			if headersSelector != nil {
+				model1 = &shared.AIGatewayModelSelectorConfig{
+					HeadersSelector: headersSelector,
 				}
 			}
-			var aiGatewayModelAliasConfigPath *shared.AIGatewayModelAliasConfigPath
-			if r.API.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
-				pathAliases := make([]string, 0, len(r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-				for pathAliasesIndex := range r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
-					pathAliases = append(pathAliases, r.API.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases[pathAliasesIndex].ValueString())
+			var pathSelector *shared.PathSelector
+			if r.API.Config.Route.Model.PathSelector != nil {
+				pathAliases := make([]string, 0, len(r.API.Config.Route.Model.PathSelector.PathAliases))
+				for pathAliasesIndex := range r.API.Config.Route.Model.PathSelector.PathAliases {
+					pathAliases = append(pathAliases, r.API.Config.Route.Model.PathSelector.PathAliases[pathAliasesIndex].ValueString())
 				}
-				aiGatewayModelAliasConfigPath = &shared.AIGatewayModelAliasConfigPath{
+				pathSelector = &shared.PathSelector{
 					PathAliases: pathAliases,
 				}
 			}
-			if aiGatewayModelAliasConfigPath != nil {
-				model1 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath,
+			if pathSelector != nil {
+				model1 = &shared.AIGatewayModelSelectorConfig{
+					PathSelector: pathSelector,
 				}
 			}
 		}
@@ -12691,55 +12691,55 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 		for tagsIndex1 := range r.Model.Config.Route.Tags {
 			tags1 = append(tags1, r.Model.Config.Route.Tags[tagsIndex1].ValueString())
 		}
-		var model3 *shared.AIGatewayModelAliasConfig
+		var model3 *shared.AIGatewayModelSelectorConfig
 		if r.Model.Config.Route.Model != nil {
-			var aiGatewayModelAliasConfigBody1 *shared.AIGatewayModelAliasConfigBody
-			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody != nil {
+			var bodySelector1 *shared.BodySelector
+			if r.Model.Config.Route.Model.BodySelector != nil {
 				body1 := make(map[string]interface{})
-				for bodyKey1 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body {
+				for bodyKey1 := range r.Model.Config.Route.Model.BodySelector.Body {
 					var bodyInst1 interface{}
-					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigBody.Body[bodyKey1].ValueString()), &bodyInst1)
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.BodySelector.Body[bodyKey1].ValueString()), &bodyInst1)
 					body1[bodyKey1] = bodyInst1
 				}
-				aiGatewayModelAliasConfigBody1 = &shared.AIGatewayModelAliasConfigBody{
+				bodySelector1 = &shared.BodySelector{
 					Body: body1,
 				}
 			}
-			if aiGatewayModelAliasConfigBody1 != nil {
-				model3 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigBody: aiGatewayModelAliasConfigBody1,
+			if bodySelector1 != nil {
+				model3 = &shared.AIGatewayModelSelectorConfig{
+					BodySelector: bodySelector1,
 				}
 			}
-			var aiGatewayModelAliasConfigHeaders1 *shared.AIGatewayModelAliasConfigHeaders
-			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders != nil {
+			var headersSelector1 *shared.HeadersSelector
+			if r.Model.Config.Route.Model.HeadersSelector != nil {
 				headers3 := make(map[string]interface{})
-				for headersKey3 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers {
+				for headersKey3 := range r.Model.Config.Route.Model.HeadersSelector.Headers {
 					var headersInst3 interface{}
-					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.AIGatewayModelAliasConfigHeaders.Headers[headersKey3].ValueString()), &headersInst3)
+					_ = json.Unmarshal([]byte(r.Model.Config.Route.Model.HeadersSelector.Headers[headersKey3].ValueString()), &headersInst3)
 					headers3[headersKey3] = headersInst3
 				}
-				aiGatewayModelAliasConfigHeaders1 = &shared.AIGatewayModelAliasConfigHeaders{
+				headersSelector1 = &shared.HeadersSelector{
 					Headers: headers3,
 				}
 			}
-			if aiGatewayModelAliasConfigHeaders1 != nil {
-				model3 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigHeaders: aiGatewayModelAliasConfigHeaders1,
+			if headersSelector1 != nil {
+				model3 = &shared.AIGatewayModelSelectorConfig{
+					HeadersSelector: headersSelector1,
 				}
 			}
-			var aiGatewayModelAliasConfigPath1 *shared.AIGatewayModelAliasConfigPath
-			if r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath != nil {
-				pathAliases1 := make([]string, 0, len(r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases))
-				for pathAliasesIndex1 := range r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases {
-					pathAliases1 = append(pathAliases1, r.Model.Config.Route.Model.AIGatewayModelAliasConfigPath.PathAliases[pathAliasesIndex1].ValueString())
+			var pathSelector1 *shared.PathSelector
+			if r.Model.Config.Route.Model.PathSelector != nil {
+				pathAliases1 := make([]string, 0, len(r.Model.Config.Route.Model.PathSelector.PathAliases))
+				for pathAliasesIndex1 := range r.Model.Config.Route.Model.PathSelector.PathAliases {
+					pathAliases1 = append(pathAliases1, r.Model.Config.Route.Model.PathSelector.PathAliases[pathAliasesIndex1].ValueString())
 				}
-				aiGatewayModelAliasConfigPath1 = &shared.AIGatewayModelAliasConfigPath{
+				pathSelector1 = &shared.PathSelector{
 					PathAliases: pathAliases1,
 				}
 			}
-			if aiGatewayModelAliasConfigPath1 != nil {
-				model3 = &shared.AIGatewayModelAliasConfig{
-					AIGatewayModelAliasConfigPath: aiGatewayModelAliasConfigPath1,
+			if pathSelector1 != nil {
+				model3 = &shared.AIGatewayModelSelectorConfig{
+					PathSelector: pathSelector1,
 				}
 			}
 		}

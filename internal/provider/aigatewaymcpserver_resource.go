@@ -2810,16 +2810,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
 							},
 							"proxy": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"password": types.StringType,
-											"username": types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
 												Optional: true,
@@ -2835,12 +2829,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Credentials used to authenticate to the proxy server.`,
 									},
 									"http_proxy": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"host": types.StringType,
-											"port": types.Int64Type,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"host": schema.StringAttribute{
 												Optional:    true,
@@ -2857,12 +2846,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `HTTP proxy server to route plaintext outbound requests through.`,
 									},
 									"https_proxy": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"host": types.StringType,
-											"port": types.Int64Type,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"host": schema.StringAttribute{
 												Optional:    true,

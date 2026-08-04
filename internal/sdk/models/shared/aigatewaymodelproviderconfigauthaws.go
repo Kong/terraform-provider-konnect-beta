@@ -16,23 +16,23 @@ type AIGatewayModelProviderConfigAuthAWS struct {
 	// The access key id for authenticating with static IAM User credentials.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	AccessKeyID *string `default:"null" json:"access_key_id"`
+	AccessKeyID *string `json:"access_key_id,omitempty"`
 	// The secret access key for authenticating with static IAM User credentials.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	SecretAccessKey *string `default:"null" json:"secret_access_key"`
+	SecretAccessKey *string `json:"secret_access_key,omitempty"`
 	// The ARN of the IAM role to assume for generating authentication tokens.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	AssumeRoleArn *string `default:"null" json:"assume_role_arn"`
+	AssumeRoleArn *string `json:"assume_role_arn,omitempty"`
 	// The session name for the temporary credentials when assuming the IAM role.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	RoleSessionName *string `default:"null" json:"role_session_name"`
+	RoleSessionName *string `json:"role_session_name,omitempty"`
 	// The STS endpoint URL to use for generating authentication tokens. If not specified, the default AWS STS endpoint will be used.
-	StsEndpointURL *string `default:"null" json:"sts_endpoint_url"`
+	StsEndpointURL *string `json:"sts_endpoint_url,omitempty"`
 	// AWS role arn to use when calling the batch API.
-	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
+	BatchRoleArn *string `json:"batch_role_arn,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthAWS) MarshalJSON() ([]byte, error) {

@@ -7,6 +7,6 @@ import (
 )
 
 type AIGatewayRedisCloudConfigurationCluster struct {
-	MaxRedirections types.Int64                             `tfsdk:"max_redirections"`
-	Nodes           []AIGatewayRedisCloudConfigurationNodes `tfsdk:"nodes"`
+	MaxRedirections types.Int64    `tfsdk:"max_redirections"`
+	Nodes           []ClusterNodes `tfsdk:"nodes"`
 }

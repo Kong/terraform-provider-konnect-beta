@@ -33,7 +33,7 @@ type ConjurVaultConfig struct {
 	Account string `json:"account"`
 	// The API key of the workload identity.
 	//
-	APIKey *string `default:"null" json:"api_key"`
+	APIKey *string `json:"api_key,omitempty"`
 	// The CyberArk Secrets Manager backend URL to connect with. Accepts http or https protocols.
 	//
 	EndpointURL string `json:"endpoint_url"`

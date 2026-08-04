@@ -35,44 +35,3007 @@ func (e *AuthMethods) IsExact() bool {
 	return false
 }
 
+// AuthorizationCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+type AuthorizationCookieSameSite string
+
+const (
+	AuthorizationCookieSameSiteDefault AuthorizationCookieSameSite = "Default"
+	AuthorizationCookieSameSiteLax     AuthorizationCookieSameSite = "Lax"
+	AuthorizationCookieSameSiteNone    AuthorizationCookieSameSite = "None"
+	AuthorizationCookieSameSiteStrict  AuthorizationCookieSameSite = "Strict"
+)
+
+func (e AuthorizationCookieSameSite) ToPointer() *AuthorizationCookieSameSite {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthorizationCookieSameSite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Default", "Lax", "None", "Strict":
+			return true
+		}
+	}
+	return false
+}
+
+type BearerTokenParamType string
+
+const (
+	BearerTokenParamTypeBody   BearerTokenParamType = "body"
+	BearerTokenParamTypeCookie BearerTokenParamType = "cookie"
+	BearerTokenParamTypeHeader BearerTokenParamType = "header"
+	BearerTokenParamTypeQuery  BearerTokenParamType = "query"
+)
+
+func (e BearerTokenParamType) ToPointer() *BearerTokenParamType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BearerTokenParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "cookie", "header", "query":
+			return true
+		}
+	}
+	return false
+}
+
+type ClientAlg string
+
+const (
+	ClientAlgEs256 ClientAlg = "ES256"
+	ClientAlgEs384 ClientAlg = "ES384"
+	ClientAlgEs512 ClientAlg = "ES512"
+	ClientAlgEdDsa ClientAlg = "EdDSA"
+	ClientAlgHs256 ClientAlg = "HS256"
+	ClientAlgHs384 ClientAlg = "HS384"
+	ClientAlgHs512 ClientAlg = "HS512"
+	ClientAlgPs256 ClientAlg = "PS256"
+	ClientAlgPs384 ClientAlg = "PS384"
+	ClientAlgPs512 ClientAlg = "PS512"
+	ClientAlgRs256 ClientAlg = "RS256"
+	ClientAlgRs384 ClientAlg = "RS384"
+	ClientAlgRs512 ClientAlg = "RS512"
+)
+
+func (e ClientAlg) ToPointer() *ClientAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
+	}
+	return false
+}
+
+type ClientAuth string
+
+const (
+	ClientAuthClientSecretBasic       ClientAuth = "client_secret_basic"
+	ClientAuthClientSecretJwt         ClientAuth = "client_secret_jwt"
+	ClientAuthClientSecretPost        ClientAuth = "client_secret_post"
+	ClientAuthNone                    ClientAuth = "none"
+	ClientAuthPrivateKeyJwt           ClientAuth = "private_key_jwt"
+	ClientAuthSelfSignedTLSClientAuth ClientAuth = "self_signed_tls_client_auth"
+	ClientAuthTLSClientAuth           ClientAuth = "tls_client_auth"
+)
+
+func (e ClientAuth) ToPointer() *ClientAuth {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientAuth) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
+	}
+	return false
+}
+
+type ClientCredentialsParamType string
+
+const (
+	ClientCredentialsParamTypeBody   ClientCredentialsParamType = "body"
+	ClientCredentialsParamTypeHeader ClientCredentialsParamType = "header"
+	ClientCredentialsParamTypeQuery  ClientCredentialsParamType = "query"
+)
+
+func (e ClientCredentialsParamType) ToPointer() *ClientCredentialsParamType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientCredentialsParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
+	}
+	return false
+}
+
+type ClientJwk struct {
+	Alg           *string  `default:"null" json:"alg"`
+	Crv           *string  `default:"null" json:"crv"`
+	D             *string  `default:"null" json:"d"`
+	Dp            *string  `default:"null" json:"dp"`
+	Dq            *string  `default:"null" json:"dq"`
+	E             *string  `default:"null" json:"e"`
+	Issuer        *string  `default:"null" json:"issuer"`
+	K             *string  `default:"null" json:"k"`
+	KeyOps        []string `json:"key_ops"`
+	Kid           *string  `default:"null" json:"kid"`
+	Kty           *string  `default:"null" json:"kty"`
+	N             *string  `default:"null" json:"n"`
+	Oth           *string  `default:"null" json:"oth"`
+	P             *string  `default:"null" json:"p"`
+	Q             *string  `default:"null" json:"q"`
+	Qi            *string  `default:"null" json:"qi"`
+	R             *string  `default:"null" json:"r"`
+	T             *string  `default:"null" json:"t"`
+	Use           *string  `default:"null" json:"use"`
+	X             *string  `default:"null" json:"x"`
+	X5c           []string `json:"x5c"`
+	X5t           *string  `default:"null" json:"x5t"`
+	X5tNumberS256 *string  `default:"null" json:"x5t#S256"`
+	X5u           *string  `default:"null" json:"x5u"`
+	Y             *string  `default:"null" json:"y"`
+}
+
+func (c ClientJwk) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ClientJwk) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ClientJwk) GetAlg() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Alg
+}
+
+func (c *ClientJwk) GetCrv() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Crv
+}
+
+func (c *ClientJwk) GetD() *string {
+	if c == nil {
+		return nil
+	}
+	return c.D
+}
+
+func (c *ClientJwk) GetDp() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Dp
+}
+
+func (c *ClientJwk) GetDq() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Dq
+}
+
+func (c *ClientJwk) GetE() *string {
+	if c == nil {
+		return nil
+	}
+	return c.E
+}
+
+func (c *ClientJwk) GetIssuer() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Issuer
+}
+
+func (c *ClientJwk) GetK() *string {
+	if c == nil {
+		return nil
+	}
+	return c.K
+}
+
+func (c *ClientJwk) GetKeyOps() []string {
+	if c == nil {
+		return nil
+	}
+	return c.KeyOps
+}
+
+func (c *ClientJwk) GetKid() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Kid
+}
+
+func (c *ClientJwk) GetKty() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Kty
+}
+
+func (c *ClientJwk) GetN() *string {
+	if c == nil {
+		return nil
+	}
+	return c.N
+}
+
+func (c *ClientJwk) GetOth() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Oth
+}
+
+func (c *ClientJwk) GetP() *string {
+	if c == nil {
+		return nil
+	}
+	return c.P
+}
+
+func (c *ClientJwk) GetQ() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Q
+}
+
+func (c *ClientJwk) GetQi() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Qi
+}
+
+func (c *ClientJwk) GetR() *string {
+	if c == nil {
+		return nil
+	}
+	return c.R
+}
+
+func (c *ClientJwk) GetT() *string {
+	if c == nil {
+		return nil
+	}
+	return c.T
+}
+
+func (c *ClientJwk) GetUse() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Use
+}
+
+func (c *ClientJwk) GetX() *string {
+	if c == nil {
+		return nil
+	}
+	return c.X
+}
+
+func (c *ClientJwk) GetX5c() []string {
+	if c == nil {
+		return nil
+	}
+	return c.X5c
+}
+
+func (c *ClientJwk) GetX5t() *string {
+	if c == nil {
+		return nil
+	}
+	return c.X5t
+}
+
+func (c *ClientJwk) GetX5tNumberS256() *string {
+	if c == nil {
+		return nil
+	}
+	return c.X5tNumberS256
+}
+
+func (c *ClientJwk) GetX5u() *string {
+	if c == nil {
+		return nil
+	}
+	return c.X5u
+}
+
+func (c *ClientJwk) GetY() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Y
+}
+
+type ClusterCacheItems string
+
+const (
+	ClusterCacheItemsIntrospection ClusterCacheItems = "introspection"
+	ClusterCacheItemsTokens        ClusterCacheItems = "tokens"
+)
+
+func (e ClusterCacheItems) ToPointer() *ClusterCacheItems {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClusterCacheItems) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "introspection", "tokens":
+			return true
+		}
+	}
+	return false
+}
+
+// AuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AuthProvider string
+
+const (
+	AuthProviderAws   AuthProvider = "aws"
+	AuthProviderAzure AuthProvider = "azure"
+	AuthProviderGcp   AuthProvider = "gcp"
+)
+
+func (e AuthProvider) ToPointer() *AuthProvider {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayIdentityProviderOpenIDConnectCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AIGatewayIdentityProviderOpenIDConnectCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (a AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAuthProvider() *AuthProvider {
+	if a == nil {
+		return nil
+	}
+	return a.AuthProvider
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAccessKeyID
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsCacheName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AwsIsServerless
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRegion
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsSecretAccessKey
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientID
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientSecret
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureTenantID
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpServiceAccountJSON
+}
+
+type ClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `default:"127.0.0.1" json:"ip"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (c ClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ClusterNodes) GetIP() *string {
+	if c == nil {
+		return nil
+	}
+	return c.IP
+}
+
+func (c *ClusterNodes) GetPort() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.Port
+}
+
+type SentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `default:"127.0.0.1" json:"host"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (s SentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SentinelNodes) GetHost() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Host
+}
+
+func (s *SentinelNodes) GetPort() *int64 {
+	if s == nil {
+		return nil
+	}
+	return s.Port
+}
+
+// SentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type SentinelRole string
+
+const (
+	SentinelRoleAny    SentinelRole = "any"
+	SentinelRoleMaster SentinelRole = "master"
+	SentinelRoleSlave  SentinelRole = "slave"
+)
+
+func (e SentinelRole) ToPointer() *SentinelRole {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
+	}
+	return false
+}
+
+type ClusterCacheRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication `json:"cloud_authentication"`
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []ClusterNodes `json:"cluster_nodes"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `default:"0" json:"database"`
+	// A string representing a host name, such as example.com.
+	Host *string `default:"127.0.0.1" json:"host"`
+	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
+	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `default:"null" json:"password"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *string `default:"6379" json:"port"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
+	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+	SentinelMaster *string `default:"null" json:"sentinel_master"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []SentinelNodes `json:"sentinel_nodes"`
+	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	SentinelPassword *string `default:"null" json:"sentinel_password"`
+	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+	SentinelRole *SentinelRole `json:"sentinel_role,omitempty"`
+	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	SentinelUsername *string `default:"null" json:"sentinel_username"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `default:"null" json:"server_name"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `default:"false" json:"ssl"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (c ClusterCacheRedis) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(c, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ClusterCacheRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ClusterCacheRedis) GetCloudAuthentication() *AIGatewayIdentityProviderOpenIDConnectCloudAuthentication {
+	if c == nil {
+		return nil
+	}
+	return c.CloudAuthentication
+}
+
+func (c *ClusterCacheRedis) GetClusterMaxRedirections() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.ClusterMaxRedirections
+}
+
+func (c *ClusterCacheRedis) GetClusterNodes() []ClusterNodes {
+	if c == nil {
+		return nil
+	}
+	return c.ClusterNodes
+}
+
+func (c *ClusterCacheRedis) GetConnectTimeout() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectTimeout
+}
+
+func (c *ClusterCacheRedis) GetConnectionIsProxied() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectionIsProxied
+}
+
+func (c *ClusterCacheRedis) GetDatabase() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.Database
+}
+
+func (c *ClusterCacheRedis) GetHost() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Host
+}
+
+func (c *ClusterCacheRedis) GetKeepaliveBacklog() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.KeepaliveBacklog
+}
+
+func (c *ClusterCacheRedis) GetKeepalivePoolSize() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.KeepalivePoolSize
+}
+
+func (c *ClusterCacheRedis) GetPassword() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Password
+}
+
+func (c *ClusterCacheRedis) GetPort() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Port
+}
+
+func (c *ClusterCacheRedis) GetReadTimeout() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.ReadTimeout
+}
+
+func (c *ClusterCacheRedis) GetSendTimeout() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.SendTimeout
+}
+
+func (c *ClusterCacheRedis) GetSentinelMaster() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SentinelMaster
+}
+
+func (c *ClusterCacheRedis) GetSentinelNodes() []SentinelNodes {
+	if c == nil {
+		return nil
+	}
+	return c.SentinelNodes
+}
+
+func (c *ClusterCacheRedis) GetSentinelPassword() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SentinelPassword
+}
+
+func (c *ClusterCacheRedis) GetSentinelRole() *SentinelRole {
+	if c == nil {
+		return nil
+	}
+	return c.SentinelRole
+}
+
+func (c *ClusterCacheRedis) GetSentinelUsername() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SentinelUsername
+}
+
+func (c *ClusterCacheRedis) GetServerName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ServerName
+}
+
+func (c *ClusterCacheRedis) GetSsl() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Ssl
+}
+
+func (c *ClusterCacheRedis) GetSslVerify() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SslVerify
+}
+
+func (c *ClusterCacheRedis) GetUsername() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Username
+}
+
+// ClusterCacheStrategy - The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
+type ClusterCacheStrategy string
+
+const (
+	ClusterCacheStrategyOff   ClusterCacheStrategy = "off"
+	ClusterCacheStrategyRedis ClusterCacheStrategy = "redis"
+)
+
+func (e ClusterCacheStrategy) ToPointer() *ClusterCacheStrategy {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClusterCacheStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "off", "redis":
+			return true
+		}
+	}
+	return false
+}
+
+type ConsumerBy string
+
+const (
+	ConsumerByCustomID ConsumerBy = "custom_id"
+	ConsumerByID       ConsumerBy = "id"
+	ConsumerByUsername ConsumerBy = "username"
+)
+
+func (e ConsumerBy) ToPointer() *ConsumerBy {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
+	}
+	return false
+}
+
+type DisableSession string
+
+const (
+	DisableSessionAuthorizationCode DisableSession = "authorization_code"
+	DisableSessionBearer            DisableSession = "bearer"
+	DisableSessionClientCredentials DisableSession = "client_credentials"
+	DisableSessionIntrospection     DisableSession = "introspection"
+	DisableSessionKongOauth2        DisableSession = "kong_oauth2"
+	DisableSessionPassword          DisableSession = "password"
+	DisableSessionRefreshToken      DisableSession = "refresh_token"
+	DisableSessionSession           DisableSession = "session"
+	DisableSessionUserinfo          DisableSession = "userinfo"
+)
+
+func (e DisableSession) ToPointer() *DisableSession {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DisableSession) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
+			return true
+		}
+	}
+	return false
+}
+
+type DownstreamHeaders struct {
+	// The name of the header.
+	Header string `json:"header"`
+	// The path of the header value.
+	Path []string `json:"path"`
+}
+
+func (d DownstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DownstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DownstreamHeaders) GetHeader() string {
+	if d == nil {
+		return ""
+	}
+	return d.Header
+}
+
+func (d *DownstreamHeaders) GetPath() []string {
+	if d == nil {
+		return []string{}
+	}
+	return d.Path
+}
+
+type IDTokenParamType string
+
+const (
+	IDTokenParamTypeBody   IDTokenParamType = "body"
+	IDTokenParamTypeHeader IDTokenParamType = "header"
+	IDTokenParamTypeQuery  IDTokenParamType = "query"
+)
+
+func (e IDTokenParamType) ToPointer() *IDTokenParamType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IDTokenParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
+	}
+	return false
+}
+
+type IgnoreSignature string
+
+const (
+	IgnoreSignatureAuthorizationCode IgnoreSignature = "authorization_code"
+	IgnoreSignatureClientCredentials IgnoreSignature = "client_credentials"
+	IgnoreSignatureIntrospection     IgnoreSignature = "introspection"
+	IgnoreSignaturePassword          IgnoreSignature = "password"
+	IgnoreSignatureRefreshToken      IgnoreSignature = "refresh_token"
+	IgnoreSignatureSession           IgnoreSignature = "session"
+	IgnoreSignatureUserinfo          IgnoreSignature = "userinfo"
+)
+
+func (e IgnoreSignature) ToPointer() *IgnoreSignature {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IgnoreSignature) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "client_credentials", "introspection", "password", "refresh_token", "session", "userinfo":
+			return true
+		}
+	}
+	return false
+}
+
+// IntrospectionAccept - The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
+type IntrospectionAccept string
+
+const (
+	IntrospectionAcceptApplicationJSON                      IntrospectionAccept = "application/json"
+	IntrospectionAcceptApplicationJwt                       IntrospectionAccept = "application/jwt"
+	IntrospectionAcceptApplicationTokenIntrospectionPlusJwt IntrospectionAccept = "application/token-introspection+jwt"
+)
+
+func (e IntrospectionAccept) ToPointer() *IntrospectionAccept {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IntrospectionAccept) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "application/json", "application/jwt", "application/token-introspection+jwt":
+			return true
+		}
+	}
+	return false
+}
+
+// IntrospectionEndpointAuthMethod - The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type IntrospectionEndpointAuthMethod string
+
+const (
+	IntrospectionEndpointAuthMethodClientSecretBasic       IntrospectionEndpointAuthMethod = "client_secret_basic"
+	IntrospectionEndpointAuthMethodClientSecretJwt         IntrospectionEndpointAuthMethod = "client_secret_jwt"
+	IntrospectionEndpointAuthMethodClientSecretPost        IntrospectionEndpointAuthMethod = "client_secret_post"
+	IntrospectionEndpointAuthMethodNone                    IntrospectionEndpointAuthMethod = "none"
+	IntrospectionEndpointAuthMethodPrivateKeyJwt           IntrospectionEndpointAuthMethod = "private_key_jwt"
+	IntrospectionEndpointAuthMethodSelfSignedTLSClientAuth IntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
+	IntrospectionEndpointAuthMethodTLSClientAuth           IntrospectionEndpointAuthMethod = "tls_client_auth"
+)
+
+func (e IntrospectionEndpointAuthMethod) ToPointer() *IntrospectionEndpointAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IntrospectionEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
+	}
+	return false
+}
+
+// LoginAction - What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
+type LoginAction string
+
+const (
+	LoginActionRedirect LoginAction = "redirect"
+	LoginActionResponse LoginAction = "response"
+	LoginActionUpstream LoginAction = "upstream"
+)
+
+func (e LoginAction) ToPointer() *LoginAction {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "redirect", "response", "upstream":
+			return true
+		}
+	}
+	return false
+}
+
+type LoginMethods string
+
+const (
+	LoginMethodsAuthorizationCode LoginMethods = "authorization_code"
+	LoginMethodsBearer            LoginMethods = "bearer"
+	LoginMethodsClientCredentials LoginMethods = "client_credentials"
+	LoginMethodsIntrospection     LoginMethods = "introspection"
+	LoginMethodsKongOauth2        LoginMethods = "kong_oauth2"
+	LoginMethodsPassword          LoginMethods = "password"
+	LoginMethodsRefreshToken      LoginMethods = "refresh_token"
+	LoginMethodsSession           LoginMethods = "session"
+	LoginMethodsUserinfo          LoginMethods = "userinfo"
+)
+
+func (e LoginMethods) ToPointer() *LoginMethods {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginMethods) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
+			return true
+		}
+	}
+	return false
+}
+
+// LoginRedirectMode - Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
+type LoginRedirectMode string
+
+const (
+	LoginRedirectModeFragment LoginRedirectMode = "fragment"
+	LoginRedirectModeQuery    LoginRedirectMode = "query"
+)
+
+func (e LoginRedirectMode) ToPointer() *LoginRedirectMode {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginRedirectMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fragment", "query":
+			return true
+		}
+	}
+	return false
+}
+
+type LoginTokens string
+
+const (
+	LoginTokensAccessToken   LoginTokens = "access_token"
+	LoginTokensIDToken       LoginTokens = "id_token"
+	LoginTokensIntrospection LoginTokens = "introspection"
+	LoginTokensRefreshToken  LoginTokens = "refresh_token"
+	LoginTokensTokens        LoginTokens = "tokens"
+)
+
+func (e LoginTokens) ToPointer() *LoginTokens {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginTokens) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "access_token", "id_token", "introspection", "refresh_token", "tokens":
+			return true
+		}
+	}
+	return false
+}
+
+type LogoutMethods string
+
+const (
+	LogoutMethodsDelete LogoutMethods = "DELETE"
+	LogoutMethodsGet    LogoutMethods = "GET"
+	LogoutMethodsPost   LogoutMethods = "POST"
+)
+
+func (e LogoutMethods) ToPointer() *LogoutMethods {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LogoutMethods) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DELETE", "GET", "POST":
+			return true
+		}
+	}
+	return false
+}
+
+type PasswordParamType string
+
+const (
+	PasswordParamTypeBody   PasswordParamType = "body"
+	PasswordParamTypeHeader PasswordParamType = "header"
+	PasswordParamTypeQuery  PasswordParamType = "query"
+)
+
+func (e PasswordParamType) ToPointer() *PasswordParamType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PasswordParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayIdentityProviderOpenIDConnectPrincipals - Configuration for Kong Identity principal hydration after token verification.
+type AIGatewayIdentityProviderOpenIDConnectPrincipals struct {
+	// The Kong Identity directory instance to look up against.
+	Directory *string `default:"default" json:"directory"`
+	// When true, query Kong Identity to map a Principal after token verification.
+	Enabled *bool `default:"false" json:"enabled"`
+	// When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set.
+	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
+	// If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by.
+	MatchConsumer *bool `default:"true" json:"match_consumer"`
+	// If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim.
+	MatchConsumerGroups *bool `default:"true" json:"match_consumer_groups"`
+	// Custom identity name for a type=custom Kong Identity lookup. When absent and principal_claim is set, an OIDC lookup is performed using principal_claim as the claim name instead of 'sub'.
+	PrincipalBy *string `default:"null" json:"principal_by"`
+	// Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.
+	PrincipalClaim []string `json:"principal_claim"`
+}
+
+func (a AIGatewayIdentityProviderOpenIDConnectPrincipals) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) GetDirectory() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Directory
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) GetEnabled() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.Enabled
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) GetErrorOnMiss() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ErrorOnMiss
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) GetMatchConsumer() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.MatchConsumer
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) GetMatchConsumerGroups() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.MatchConsumerGroups
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) GetPrincipalBy() *string {
+	if a == nil {
+		return nil
+	}
+	return a.PrincipalBy
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectPrincipals) GetPrincipalClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.PrincipalClaim
+}
+
+// ProofOfPossessionDpop - Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
+type ProofOfPossessionDpop string
+
+const (
+	ProofOfPossessionDpopOff      ProofOfPossessionDpop = "off"
+	ProofOfPossessionDpopOptional ProofOfPossessionDpop = "optional"
+	ProofOfPossessionDpopStrict   ProofOfPossessionDpop = "strict"
+)
+
+func (e ProofOfPossessionDpop) ToPointer() *ProofOfPossessionDpop {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProofOfPossessionDpop) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "off", "optional", "strict":
+			return true
+		}
+	}
+	return false
+}
+
+// ProofOfPossessionMtls - Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
+type ProofOfPossessionMtls string
+
+const (
+	ProofOfPossessionMtlsOff      ProofOfPossessionMtls = "off"
+	ProofOfPossessionMtlsOptional ProofOfPossessionMtls = "optional"
+	ProofOfPossessionMtlsStrict   ProofOfPossessionMtls = "strict"
+)
+
+func (e ProofOfPossessionMtls) ToPointer() *ProofOfPossessionMtls {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProofOfPossessionMtls) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "off", "optional", "strict":
+			return true
+		}
+	}
+	return false
+}
+
+// CertificateHeaderFormat - Encoding format of the certificate in the header. Supported formats: `url_encoded`, `base64_encoded`.
+type CertificateHeaderFormat string
+
+const (
+	CertificateHeaderFormatBase64Encoded CertificateHeaderFormat = "base64_encoded"
+	CertificateHeaderFormatURLEncoded    CertificateHeaderFormat = "url_encoded"
+)
+
+func (e CertificateHeaderFormat) ToPointer() *CertificateHeaderFormat {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CertificateHeaderFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "base64_encoded", "url_encoded":
+			return true
+		}
+	}
+	return false
+}
+
+// RevocationCheckMode - Controls client certificate revocation check behavior. `SKIP` disables revocation checking. `IGNORE_CA_ERROR` respects revocation status when reachable but ignores network errors. `STRICT` requires a successful revocation check.
+type RevocationCheckMode string
+
+const (
+	RevocationCheckModeIgnoreCaError RevocationCheckMode = "IGNORE_CA_ERROR"
+	RevocationCheckModeSkip          RevocationCheckMode = "SKIP"
+	RevocationCheckModeStrict        RevocationCheckMode = "STRICT"
+)
+
+func (e RevocationCheckMode) ToPointer() *RevocationCheckMode {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RevocationCheckMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "IGNORE_CA_ERROR", "SKIP", "STRICT":
+			return true
+		}
+	}
+	return false
+}
+
+// ProofOfPossessionMtlsFromHeader - Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
+type ProofOfPossessionMtlsFromHeader struct {
+	// Allow certificate verification with only an intermediate certificate. When enabled, a full chain to the root CA is not required.
+	AllowPartialChain *bool `default:"false" json:"allow_partial_chain"`
+	// List of CA Certificate UUIDs to use when validating the client certificate chain. At least one is required.
+	CaCertificates []string `json:"ca_certificates"`
+	// Time in milliseconds to cache the revocation check result for a given certificate.
+	CertCacheTTL *float64 `default:"60000" json:"cert_cache_ttl"`
+	// Encoding format of the certificate in the header. Supported formats: `url_encoded`, `base64_encoded`.
+	CertificateHeaderFormat *CertificateHeaderFormat `default:"url_encoded" json:"certificate_header_format"`
+	// Name of the HTTP header that contains the injected client certificate
+	CertificateHeaderName string `json:"certificate_header_name"`
+	// A string representing a host name, such as example.com.
+	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	HTTPProxyPort *int64 `default:"null" json:"http_proxy_port"`
+	// HTTP timeout in milliseconds when communicating with the OCSP server or downloading CRL.
+	HTTPTimeout *float64 `default:"30000" json:"http_timeout"`
+	// A string representing a host name, such as example.com.
+	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
+	// Controls client certificate revocation check behavior. `SKIP` disables revocation checking. `IGNORE_CA_ERROR` respects revocation status when reachable but ignores network errors. `STRICT` requires a successful revocation check.
+	RevocationCheckMode *RevocationCheckMode `default:"IGNORE_CA_ERROR" json:"revocation_check_mode"`
+	// When set to `true`, only requests from trusted IP addresses (configured in `trusted_ips` in kong.conf) are allowed to use the certificate header. This prevents direct header injection from untrusted clients.
+	SecureSource *bool `default:"true" json:"secure_source"`
+	// Verify the TLS certificate of the OCSP responder or CRL distribution point server.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+}
+
+func (p ProofOfPossessionMtlsFromHeader) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetAllowPartialChain() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AllowPartialChain
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCaCertificates() []string {
+	if p == nil {
+		return []string{}
+	}
+	return p.CaCertificates
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCertCacheTTL() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.CertCacheTTL
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderFormat() *CertificateHeaderFormat {
+	if p == nil {
+		return nil
+	}
+	return p.CertificateHeaderFormat
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderName() string {
+	if p == nil {
+		return ""
+	}
+	return p.CertificateHeaderName
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyHost() *string {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPProxyHost
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyPort() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPProxyPort
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPTimeout() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPTimeout
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyHost() *string {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPSProxyHost
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyPort() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPSProxyPort
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetRevocationCheckMode() *RevocationCheckMode {
+	if p == nil {
+		return nil
+	}
+	return p.RevocationCheckMode
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetSecureSource() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.SecureSource
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.SslVerify
+}
+
+// PushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type PushedAuthorizationRequestEndpointAuthMethod string
+
+const (
+	PushedAuthorizationRequestEndpointAuthMethodClientSecretBasic       PushedAuthorizationRequestEndpointAuthMethod = "client_secret_basic"
+	PushedAuthorizationRequestEndpointAuthMethodClientSecretJwt         PushedAuthorizationRequestEndpointAuthMethod = "client_secret_jwt"
+	PushedAuthorizationRequestEndpointAuthMethodClientSecretPost        PushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
+	PushedAuthorizationRequestEndpointAuthMethodNone                    PushedAuthorizationRequestEndpointAuthMethod = "none"
+	PushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           PushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
+	PushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth PushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
+	PushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           PushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
+)
+
+func (e PushedAuthorizationRequestEndpointAuthMethod) ToPointer() *PushedAuthorizationRequestEndpointAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PushedAuthorizationRequestEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayIdentityProviderOpenIDConnectAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AIGatewayIdentityProviderOpenIDConnectAuthProvider string
+
+const (
+	AIGatewayIdentityProviderOpenIDConnectAuthProviderAws   AIGatewayIdentityProviderOpenIDConnectAuthProvider = "aws"
+	AIGatewayIdentityProviderOpenIDConnectAuthProviderAzure AIGatewayIdentityProviderOpenIDConnectAuthProvider = "azure"
+	AIGatewayIdentityProviderOpenIDConnectAuthProviderGcp   AIGatewayIdentityProviderOpenIDConnectAuthProvider = "gcp"
+)
+
+func (e AIGatewayIdentityProviderOpenIDConnectAuthProvider) ToPointer() *AIGatewayIdentityProviderOpenIDConnectAuthProvider {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayIdentityProviderOpenIDConnectAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AIGatewayIdentityProviderOpenIDConnectAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (a AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAuthProvider() *AIGatewayIdentityProviderOpenIDConnectAuthProvider {
+	if a == nil {
+		return nil
+	}
+	return a.AuthProvider
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAccessKeyID
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsCacheName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AwsIsServerless
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRegion
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsSecretAccessKey
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientID
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientSecret
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureTenantID
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpServiceAccountJSON
+}
+
+type AIGatewayIdentityProviderOpenIDConnectClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `default:"127.0.0.1" json:"ip"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AIGatewayIdentityProviderOpenIDConnectClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectClusterNodes) GetIP() *string {
+	if a == nil {
+		return nil
+	}
+	return a.IP
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectClusterNodes) GetPort() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Port
+}
+
+type AIGatewayIdentityProviderOpenIDConnectSentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `default:"127.0.0.1" json:"host"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AIGatewayIdentityProviderOpenIDConnectSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectSentinelNodes) GetHost() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Host
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectSentinelNodes) GetPort() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Port
+}
+
+// AIGatewayIdentityProviderOpenIDConnectSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type AIGatewayIdentityProviderOpenIDConnectSentinelRole string
+
+const (
+	AIGatewayIdentityProviderOpenIDConnectSentinelRoleAny    AIGatewayIdentityProviderOpenIDConnectSentinelRole = "any"
+	AIGatewayIdentityProviderOpenIDConnectSentinelRoleMaster AIGatewayIdentityProviderOpenIDConnectSentinelRole = "master"
+	AIGatewayIdentityProviderOpenIDConnectSentinelRoleSlave  AIGatewayIdentityProviderOpenIDConnectSentinelRole = "slave"
+)
+
+func (e AIGatewayIdentityProviderOpenIDConnectSentinelRole) ToPointer() *AIGatewayIdentityProviderOpenIDConnectSentinelRole {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayIdentityProviderOpenIDConnectSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
+	}
+	return false
+}
+
+type Redis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication `json:"cloud_authentication"`
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []AIGatewayIdentityProviderOpenIDConnectClusterNodes `json:"cluster_nodes"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `default:"0" json:"database"`
+	// A string representing a host name, such as example.com.
+	Host *string `default:"127.0.0.1" json:"host"`
+	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
+	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `default:"null" json:"password"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *string `default:"6379" json:"port"`
+	// The Redis session key prefix.
+	Prefix *string `default:"null" json:"prefix"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
+	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+	SentinelMaster *string `default:"null" json:"sentinel_master"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []AIGatewayIdentityProviderOpenIDConnectSentinelNodes `json:"sentinel_nodes"`
+	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	SentinelPassword *string `default:"null" json:"sentinel_password"`
+	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+	SentinelRole *AIGatewayIdentityProviderOpenIDConnectSentinelRole `json:"sentinel_role,omitempty"`
+	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	SentinelUsername *string `default:"null" json:"sentinel_username"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `default:"null" json:"server_name"`
+	// The Redis unix socket path.
+	Socket *string `default:"null" json:"socket"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `default:"false" json:"ssl"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (r Redis) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(r, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (r *Redis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Redis) GetCloudAuthentication() *AIGatewayIdentityProviderOpenIDConnectConfigCloudAuthentication {
+	if r == nil {
+		return nil
+	}
+	return r.CloudAuthentication
+}
+
+func (r *Redis) GetClusterMaxRedirections() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.ClusterMaxRedirections
+}
+
+func (r *Redis) GetClusterNodes() []AIGatewayIdentityProviderOpenIDConnectClusterNodes {
+	if r == nil {
+		return nil
+	}
+	return r.ClusterNodes
+}
+
+func (r *Redis) GetConnectTimeout() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.ConnectTimeout
+}
+
+func (r *Redis) GetConnectionIsProxied() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.ConnectionIsProxied
+}
+
+func (r *Redis) GetDatabase() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.Database
+}
+
+func (r *Redis) GetHost() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Host
+}
+
+func (r *Redis) GetKeepaliveBacklog() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.KeepaliveBacklog
+}
+
+func (r *Redis) GetKeepalivePoolSize() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.KeepalivePoolSize
+}
+
+func (r *Redis) GetPassword() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Password
+}
+
+func (r *Redis) GetPort() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Port
+}
+
+func (r *Redis) GetPrefix() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Prefix
+}
+
+func (r *Redis) GetReadTimeout() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.ReadTimeout
+}
+
+func (r *Redis) GetSendTimeout() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.SendTimeout
+}
+
+func (r *Redis) GetSentinelMaster() *string {
+	if r == nil {
+		return nil
+	}
+	return r.SentinelMaster
+}
+
+func (r *Redis) GetSentinelNodes() []AIGatewayIdentityProviderOpenIDConnectSentinelNodes {
+	if r == nil {
+		return nil
+	}
+	return r.SentinelNodes
+}
+
+func (r *Redis) GetSentinelPassword() *string {
+	if r == nil {
+		return nil
+	}
+	return r.SentinelPassword
+}
+
+func (r *Redis) GetSentinelRole() *AIGatewayIdentityProviderOpenIDConnectSentinelRole {
+	if r == nil {
+		return nil
+	}
+	return r.SentinelRole
+}
+
+func (r *Redis) GetSentinelUsername() *string {
+	if r == nil {
+		return nil
+	}
+	return r.SentinelUsername
+}
+
+func (r *Redis) GetServerName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ServerName
+}
+
+func (r *Redis) GetSocket() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Socket
+}
+
+func (r *Redis) GetSsl() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.Ssl
+}
+
+func (r *Redis) GetSslVerify() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.SslVerify
+}
+
+func (r *Redis) GetUsername() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Username
+}
+
+type RefreshTokenParamType string
+
+const (
+	RefreshTokenParamTypeBody   RefreshTokenParamType = "body"
+	RefreshTokenParamTypeHeader RefreshTokenParamType = "header"
+	RefreshTokenParamTypeQuery  RefreshTokenParamType = "query"
+)
+
+func (e RefreshTokenParamType) ToPointer() *RefreshTokenParamType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RefreshTokenParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
+	}
+	return false
+}
+
+// ResponseMode - Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
+type ResponseMode string
+
+const (
+	ResponseModeFormPost    ResponseMode = "form_post"
+	ResponseModeFormPostJwt ResponseMode = "form_post.jwt"
+	ResponseModeFragment    ResponseMode = "fragment"
+	ResponseModeFragmentJwt ResponseMode = "fragment.jwt"
+	ResponseModeJwt         ResponseMode = "jwt"
+	ResponseModeQuery       ResponseMode = "query"
+	ResponseModeQueryJwt    ResponseMode = "query.jwt"
+)
+
+func (e ResponseMode) ToPointer() *ResponseMode {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt":
+			return true
+		}
+	}
+	return false
+}
+
+// RevocationEndpointAuthMethod - The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type RevocationEndpointAuthMethod string
+
+const (
+	RevocationEndpointAuthMethodClientSecretBasic       RevocationEndpointAuthMethod = "client_secret_basic"
+	RevocationEndpointAuthMethodClientSecretJwt         RevocationEndpointAuthMethod = "client_secret_jwt"
+	RevocationEndpointAuthMethodClientSecretPost        RevocationEndpointAuthMethod = "client_secret_post"
+	RevocationEndpointAuthMethodNone                    RevocationEndpointAuthMethod = "none"
+	RevocationEndpointAuthMethodPrivateKeyJwt           RevocationEndpointAuthMethod = "private_key_jwt"
+	RevocationEndpointAuthMethodSelfSignedTLSClientAuth RevocationEndpointAuthMethod = "self_signed_tls_client_auth"
+	RevocationEndpointAuthMethodTLSClientAuth           RevocationEndpointAuthMethod = "tls_client_auth"
+)
+
+func (e RevocationEndpointAuthMethod) ToPointer() *RevocationEndpointAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RevocationEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
+	}
+	return false
+}
+
+type SessionBind string
+
+const (
+	SessionBindIP        SessionBind = "ip"
+	SessionBindScheme    SessionBind = "scheme"
+	SessionBindUserAgent SessionBind = "user-agent"
+)
+
+func (e SessionBind) ToPointer() *SessionBind {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionBind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ip", "scheme", "user-agent":
+			return true
+		}
+	}
+	return false
+}
+
+// SessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+type SessionCookieSameSite string
+
+const (
+	SessionCookieSameSiteDefault SessionCookieSameSite = "Default"
+	SessionCookieSameSiteLax     SessionCookieSameSite = "Lax"
+	SessionCookieSameSiteNone    SessionCookieSameSite = "None"
+	SessionCookieSameSiteStrict  SessionCookieSameSite = "Strict"
+)
+
+func (e SessionCookieSameSite) ToPointer() *SessionCookieSameSite {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionCookieSameSite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Default", "Lax", "None", "Strict":
+			return true
+		}
+	}
+	return false
+}
+
+type SessionRequestHeaders string
+
+const (
+	SessionRequestHeadersAbsoluteTimeout SessionRequestHeaders = "absolute-timeout"
+	SessionRequestHeadersAudience        SessionRequestHeaders = "audience"
+	SessionRequestHeadersID              SessionRequestHeaders = "id"
+	SessionRequestHeadersIdlingTimeout   SessionRequestHeaders = "idling-timeout"
+	SessionRequestHeadersRollingTimeout  SessionRequestHeaders = "rolling-timeout"
+	SessionRequestHeadersSubject         SessionRequestHeaders = "subject"
+	SessionRequestHeadersTimeout         SessionRequestHeaders = "timeout"
+)
+
+func (e SessionRequestHeaders) ToPointer() *SessionRequestHeaders {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionRequestHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
+	}
+	return false
+}
+
+type SessionResponseHeaders string
+
+const (
+	SessionResponseHeadersAbsoluteTimeout SessionResponseHeaders = "absolute-timeout"
+	SessionResponseHeadersAudience        SessionResponseHeaders = "audience"
+	SessionResponseHeadersID              SessionResponseHeaders = "id"
+	SessionResponseHeadersIdlingTimeout   SessionResponseHeaders = "idling-timeout"
+	SessionResponseHeadersRollingTimeout  SessionResponseHeaders = "rolling-timeout"
+	SessionResponseHeadersSubject         SessionResponseHeaders = "subject"
+	SessionResponseHeadersTimeout         SessionResponseHeaders = "timeout"
+)
+
+func (e SessionResponseHeaders) ToPointer() *SessionResponseHeaders {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionResponseHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
+	}
+	return false
+}
+
+// SessionStorage - The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
+type SessionStorage string
+
+const (
+	SessionStorageCookie    SessionStorage = "cookie"
+	SessionStorageMemcache  SessionStorage = "memcache"
+	SessionStorageMemcached SessionStorage = "memcached"
+	SessionStorageRedis     SessionStorage = "redis"
+)
+
+func (e SessionStorage) ToPointer() *SessionStorage {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionStorage) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cookie", "memcache", "memcached", "redis":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod - The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod string
+
+const (
+	AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethodClientSecretBasic       AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod = "client_secret_basic"
+	AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethodClientSecretJwt         AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod = "client_secret_jwt"
+	AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethodClientSecretPost        AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod = "client_secret_post"
+	AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethodNone                    AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod = "none"
+	AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethodPrivateKeyJwt           AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod = "private_key_jwt"
+	AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethodSelfSignedTLSClientAuth AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethodTLSClientAuth           AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod = "tls_client_auth"
+)
+
+func (e AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod) ToPointer() *AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
+	}
+	return false
+}
+
+// Cache support for token exchange
+type Cache struct {
+	// Whether to enable caching.
+	Enabled *bool `default:"true" json:"enabled"`
+	// Cache ttl in seconds used when caching exchanged tokens, use it to override `conf.cache_ttl`. Token expiry will be used if shorter than this value.
+	TTL *int64 `default:"null" json:"ttl"`
+}
+
+func (c Cache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Cache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Cache) GetEnabled() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Enabled
+}
+
+func (c *Cache) GetTTL() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.TTL
+}
+
+// Request - Parameters used in the token exchange request.
+type Request struct {
+	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
+	Audience []string `json:"audience"`
+	// Use empty audiences. Use this field to remove audiences defined in `config.audience`.
+	EmptyAudience *bool `default:"false" json:"empty_audience"`
+	// Use empty scopes. Use this field to remove scopes defined in `config.scopes`.
+	EmptyScopes *bool `default:"false" json:"empty_scopes"`
+	// Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
+	Scopes []string `json:"scopes"`
+}
+
+func (r Request) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Request) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Request) GetAudience() []string {
+	if r == nil {
+		return nil
+	}
+	return r.Audience
+}
+
+func (r *Request) GetEmptyAudience() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.EmptyAudience
+}
+
+func (r *Request) GetEmptyScopes() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.EmptyScopes
+}
+
+func (r *Request) GetScopes() []string {
+	if r == nil {
+		return nil
+	}
+	return r.Scopes
+}
+
+// AIGatewayIdentityProviderOpenIDConnectConditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
+type AIGatewayIdentityProviderOpenIDConnectConditions struct {
+	HasAudience     []string `json:"has_audience"`
+	HasScopes       []string `json:"has_scopes"`
+	MissingAudience []string `json:"missing_audience"`
+	MissingScopes   []string `json:"missing_scopes"`
+}
+
+func (a AIGatewayIdentityProviderOpenIDConnectConditions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConditions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConditions) GetHasAudience() []string {
+	if a == nil {
+		return nil
+	}
+	return a.HasAudience
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConditions) GetHasScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.HasScopes
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConditions) GetMissingAudience() []string {
+	if a == nil {
+		return nil
+	}
+	return a.MissingAudience
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConditions) GetMissingScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.MissingScopes
+}
+
+type SubjectTokenIssuers struct {
+	// A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
+	Conditions *AIGatewayIdentityProviderOpenIDConnectConditions `json:"conditions"`
+	// Tokens of whose iss claim matches this value will be exchanged.
+	Issuer string `json:"issuer"`
+	// An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
+	JwksURI *string `default:"null" json:"jwks_uri"`
+	// When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.
+	VerifySignature *bool `default:"false" json:"verify_signature"`
+}
+
+func (s SubjectTokenIssuers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SubjectTokenIssuers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SubjectTokenIssuers) GetConditions() *AIGatewayIdentityProviderOpenIDConnectConditions {
+	if s == nil {
+		return nil
+	}
+	return s.Conditions
+}
+
+func (s *SubjectTokenIssuers) GetIssuer() string {
+	if s == nil {
+		return ""
+	}
+	return s.Issuer
+}
+
+func (s *SubjectTokenIssuers) GetJwksURI() *string {
+	if s == nil {
+		return nil
+	}
+	return s.JwksURI
+}
+
+func (s *SubjectTokenIssuers) GetVerifySignature() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.VerifySignature
+}
+
+// TokenExchange - Details on how to accept tokens from other identity providers.
+type TokenExchange struct {
+	// Cache support for token exchange
+	Cache *Cache `json:"cache"`
+	// Parameters used in the token exchange request.
+	Request *Request `json:"request"`
+	// Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.
+	SubjectTokenIssuers []SubjectTokenIssuers `json:"subject_token_issuers"`
+}
+
+func (t TokenExchange) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TokenExchange) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TokenExchange) GetCache() *Cache {
+	if t == nil {
+		return nil
+	}
+	return t.Cache
+}
+
+func (t *TokenExchange) GetRequest() *Request {
+	if t == nil {
+		return nil
+	}
+	return t.Request
+}
+
+func (t *TokenExchange) GetSubjectTokenIssuers() []SubjectTokenIssuers {
+	if t == nil {
+		return []SubjectTokenIssuers{}
+	}
+	return t.SubjectTokenIssuers
+}
+
+type TokenHeadersGrants string
+
+const (
+	TokenHeadersGrantsAuthorizationCode TokenHeadersGrants = "authorization_code"
+	TokenHeadersGrantsClientCredentials TokenHeadersGrants = "client_credentials"
+	TokenHeadersGrantsPassword          TokenHeadersGrants = "password"
+	TokenHeadersGrantsRefreshToken      TokenHeadersGrants = "refresh_token"
+)
+
+func (e TokenHeadersGrants) ToPointer() *TokenHeadersGrants {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TokenHeadersGrants) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "client_credentials", "password", "refresh_token":
+			return true
+		}
+	}
+	return false
+}
+
+type UpstreamHeaders struct {
+	// The name of the header.
+	Header string `json:"header"`
+	// The path of the header value.
+	Path []string `json:"path"`
+}
+
+func (u UpstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpstreamHeaders) GetHeader() string {
+	if u == nil {
+		return ""
+	}
+	return u.Header
+}
+
+func (u *UpstreamHeaders) GetPath() []string {
+	if u == nil {
+		return []string{}
+	}
+	return u.Path
+}
+
+// UserinfoAccept - The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
+type UserinfoAccept string
+
+const (
+	UserinfoAcceptApplicationJSON UserinfoAccept = "application/json"
+	UserinfoAcceptApplicationJwt  UserinfoAccept = "application/jwt"
+)
+
+func (e UserinfoAccept) ToPointer() *UserinfoAccept {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UserinfoAccept) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "application/json", "application/jwt":
+			return true
+		}
+	}
+	return false
+}
+
 // AIGatewayIdentityProviderOpenIDConnectConfig - Configuration for the OpenID Connect identity provider.
-// For advanced use cases, additional config properties can be sent in the request body.
-// See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
 type AIGatewayIdentityProviderOpenIDConnectConfig struct {
+	// An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
+	Anonymous *string `default:"null" json:"anonymous"`
+	// The audience passed to the authorization endpoint.
+	Audience []string `json:"audience"`
+	// The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	AudienceClaim []string `json:"audience_claim,omitempty"`
+	// The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	AudienceRequired []string `json:"audience_required"`
 	// Types of credentials/grants to enable.
 	AuthMethods []AuthMethods `json:"auth_methods,omitempty"`
-	// An array of strings representing the client id for the OpenID Connect provider.
-	// When multiple values are provided, the client ID and secrets pairs correspond based on their locations in the array.
-	//
-	ClientID []string `json:"client_id,omitempty"`
-	// An array of strings representing the client secret for the OpenID Connect provider.
-	// When multiple values are provided, the client ID and secrets pairs correspond based on their locations in the array.
-	//
-	ClientSecret []string `json:"client_secret,omitempty"`
-	// An array containing an array of string paths representing the location of the claim in a nested object.
-	// For example, to map to user.info.id, set [ "user", "info", "id" ].
-	//
-	ConsumerClaims [][]string `json:"consumer_claims,omitempty"`
-	// The claim used for consumer groups mapping.
-	// If multiple values are set, it means the claim is inside a nested object of the token payload.
-	//
-	ConsumerGroupsClaim []string `json:"consumer_groups_claim,omitempty"`
+	// The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	AuthenticatedGroupsClaim []string `json:"authenticated_groups_claim"`
+	// The authorization cookie Domain flag.
+	AuthorizationCookieDomain *string `default:"null" json:"authorization_cookie_domain"`
+	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
+	AuthorizationCookieHTTPOnly *bool `default:"true" json:"authorization_cookie_http_only"`
+	// The authorization cookie name.
+	AuthorizationCookieName *string `default:"authorization" json:"authorization_cookie_name"`
+	// The authorization cookie Path flag.
+	AuthorizationCookiePath *string `default:"/" json:"authorization_cookie_path"`
+	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+	AuthorizationCookieSameSite *AuthorizationCookieSameSite `default:"Default" json:"authorization_cookie_same_site"`
+	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
+	AuthorizationCookieSecure *bool `default:"null" json:"authorization_cookie_secure"`
+	// The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
+	AuthorizationEndpoint *string `default:"null" json:"authorization_endpoint"`
+	// Extra query arguments passed from the client to the authorization endpoint.
+	AuthorizationQueryArgsClient []string `json:"authorization_query_args_client"`
+	// Extra query argument names passed to the authorization endpoint.
+	AuthorizationQueryArgsNames []string `json:"authorization_query_args_names"`
+	// Extra query argument values passed to the authorization endpoint.
+	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values"`
+	// Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
+	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
+	// The name of the cookie in which the bearer token is passed.
+	BearerTokenCookieName *string `default:"null" json:"bearer_token_cookie_name"`
+	// The name of the HTTP header from which the bearer token is retrieved. When configured, only this header is checked for the bearer token.
+	BearerTokenHeaderName *string `default:"null" json:"bearer_token_header_name"`
+	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
+	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
+	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
+	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
+	// Cache the introspection endpoint requests.
+	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
+	// Cache the legacy token exchange endpoint requests.
+	CacheTokenExchange *bool `default:"true" json:"cache_token_exchange"`
+	// Cache the token endpoint requests.
+	CacheTokens *bool `default:"true" json:"cache_tokens"`
+	// Salt used for generating the cache key that is used for caching the token endpoint requests.
+	CacheTokensSalt string `json:"cache_tokens_salt"`
+	// The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
+	CacheTTL *float64 `default:"3600" json:"cache_ttl"`
+	// The maximum cache ttl in seconds (enforced).
+	CacheTTLMax *float64 `default:"null" json:"cache_ttl_max"`
+	// The minimum cache ttl in seconds (enforced).
+	CacheTTLMin *float64 `default:"null" json:"cache_ttl_min"`
+	// The negative cache ttl in seconds.
+	CacheTTLNeg *float64 `default:"null" json:"cache_ttl_neg"`
+	// The resurrection ttl in seconds.
+	CacheTTLResurrect *float64 `default:"null" json:"cache_ttl_resurrect"`
+	// Cache the user info requests.
+	CacheUserInfo *bool `default:"true" json:"cache_user_info"`
+	// If given, these claims are forbidden in the token payload.
+	ClaimsForbidden []string `json:"claims_forbidden"`
+	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
+	ClientAlg []ClientAlg `json:"client_alg"`
+	// The client to use for this request (the selection is made with a request parameter with the same name).
+	ClientArg *string `default:"client_id" json:"client_arg"`
+	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
+	ClientAuth []ClientAuth `json:"client_auth"`
+	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
+	ClientCredentialsParamType []ClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
+	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
+	ClientID []string `json:"client_id"`
+	// The JWK used for the private_key_jwt authentication.
+	ClientJwk []ClientJwk `json:"client_jwk"`
+	// The client secret.
+	ClientSecret []string `json:"client_secret"`
+	// Specifies which items are stored in the cluster cache backend configured via `cluster_cache_strategy`. Allowed values are `"introspection"` and `"tokens"`. When `"tokens"` is included, access and refresh token material is AES-encrypted before being written to the cache; enable only when your Redis deployment meets your compliance requirements. Defaults to `["introspection"]`. An empty set disables all cluster caching regardless of `cluster_cache_strategy`.
+	ClusterCacheItems []ClusterCacheItems `json:"cluster_cache_items,omitempty"`
+	ClusterCacheRedis *ClusterCacheRedis  `json:"cluster_cache_redis"`
+	// The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
+	ClusterCacheStrategy *ClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
+	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
+	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
+	// The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
+	ConsumerClaims [][]string `json:"consumer_claims"`
+	// The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ConsumerGroupsClaim []string `json:"consumer_groups_claim"`
 	// Do not terminate the request if consumer groups mapping fails.
-	//
 	ConsumerGroupsOptional *bool `default:"false" json:"consumer_groups_optional"`
 	// Do not terminate the request if consumer mapping fails.
-	//
 	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
-	// URL that identifies the OpenID Provider
-	Issuer *string `default:"null" json:"issuer"`
-	// This field is referenceable.
+	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	CredentialClaim []string `json:"credential_claim,omitempty"`
+	// Disable issuing the session cookie with the specified grants.
+	DisableSession []DisableSession `json:"disable_session"`
+	// Extra header names passed to the discovery endpoint.
+	DiscoveryHeadersNames []string `json:"discovery_headers_names"`
+	// Extra header values passed to the discovery endpoint.
+	DiscoveryHeadersValues []string `json:"discovery_headers_values"`
+	// Display errors on failure responses.
+	DisplayErrors *bool `default:"false" json:"display_errors"`
+	// The allowed values for the `hd` claim.
+	Domains []string `json:"domains"`
+	// The downstream access token header.
+	DownstreamAccessTokenHeader *string `default:"null" json:"downstream_access_token_header"`
+	// The downstream access token JWK header.
+	DownstreamAccessTokenJwkHeader *string `default:"null" json:"downstream_access_token_jwk_header"`
+	// The downstream claim to header mappings.
+	DownstreamHeaders []DownstreamHeaders `json:"downstream_headers"`
+	// The downstream header claims. Only top level claims are supported.
+	DownstreamHeadersClaims []string `json:"downstream_headers_claims"`
+	// The downstream header names for the claim values.
+	DownstreamHeadersNames []string `json:"downstream_headers_names"`
+	// The downstream id token header.
+	DownstreamIDTokenHeader *string `default:"null" json:"downstream_id_token_header"`
+	// The downstream id token JWK header.
+	DownstreamIDTokenJwkHeader *string `default:"null" json:"downstream_id_token_jwk_header"`
+	// The downstream introspection header.
+	DownstreamIntrospectionHeader *string `default:"null" json:"downstream_introspection_header"`
+	// The downstream introspection JWT header.
+	DownstreamIntrospectionJwtHeader *string `default:"null" json:"downstream_introspection_jwt_header"`
+	// The downstream refresh token header.
+	DownstreamRefreshTokenHeader *string `default:"null" json:"downstream_refresh_token_header"`
+	// The downstream session id header.
+	DownstreamSessionIDHeader *string `default:"null" json:"downstream_session_id_header"`
+	// The downstream user info header.
+	DownstreamUserInfoHeader *string `default:"null" json:"downstream_user_info_header"`
+	// The downstream user info JWT header (in case the user info returns a JWT response).
+	DownstreamUserInfoJwtHeader *string `default:"null" json:"downstream_user_info_jwt_header"`
+	// Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise.
+	DpopProofLifetime *float64 `default:"300" json:"dpop_proof_lifetime"`
+	// Specifies whether to challenge the client with a nonce value for DPoP proof. When enabled it will also be used to calculate the DPoP proof lifetime.
+	DpopUseNonce *bool `default:"false" json:"dpop_use_nonce"`
+	// Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).
+	EnableHsSignatures *bool `default:"false" json:"enable_hs_signatures"`
+	// The end session endpoint. If set it overrides the value in `end_session_endpoint` returned by the discovery endpoint.
+	EndSessionEndpoint *string `default:"null" json:"end_session_endpoint"`
+	// Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to `false` to disable.
+	ExposeErrorCode *bool `default:"true" json:"expose_error_code"`
+	// JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).
+	ExtraJwksUris []string `json:"extra_jwks_uris"`
+	// Destroy any active session for the forbidden requests.
+	ForbiddenDestroySession *bool `default:"true" json:"forbidden_destroy_session"`
+	// The error message for the forbidden requests (when not using the redirection).
+	ForbiddenErrorMessage *string `default:"Forbidden" json:"forbidden_error_message"`
+	// Where to redirect the client on forbidden requests.
+	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri"`
+	// The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	GroupsClaim []string `json:"groups_claim,omitempty"`
+	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	GroupsRequired []string `json:"groups_required"`
+	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
+	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	// The HTTP proxy.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The HTTP proxy authorization.
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
+	HTTPVersion *float64 `json:"http_version,omitempty"`
+	// The HTTPS proxy.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The HTTPS proxy authorization.
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	// The name of the parameter used to pass the id token.
+	IDTokenParamName *string `default:"null" json:"id_token_param_name"`
+	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
+	IDTokenParamType []IDTokenParamType `json:"id_token_param_type,omitempty"`
+	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
+	IgnoreSignature []IgnoreSignature `json:"ignore_signature,omitempty"`
+	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
+	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`
+	// The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
+	IntrospectionAccept *IntrospectionAccept `default:"application/json" json:"introspection_accept"`
+	// Check that the introspection response has an `active` claim with a value of `true`.
+	IntrospectionCheckActive *bool `default:"true" json:"introspection_check_active"`
+	// The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
+	IntrospectionEndpoint *string `default:"null" json:"introspection_endpoint"`
+	// The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	IntrospectionEndpointAuthMethod *IntrospectionEndpointAuthMethod `json:"introspection_endpoint_auth_method,omitempty"`
+	// Extra headers passed from the client to the introspection endpoint.
+	IntrospectionHeadersClient []string `json:"introspection_headers_client"`
+	// Extra header names passed to the introspection endpoint.
+	IntrospectionHeadersNames []string `json:"introspection_headers_names"`
+	// Extra header values passed to the introspection endpoint.
+	IntrospectionHeadersValues []string `json:"introspection_headers_values"`
+	// Introspection hint parameter value passed to the introspection endpoint.
+	IntrospectionHint *string `default:"access_token" json:"introspection_hint"`
+	// Extra post arguments passed from the client to the introspection endpoint.
+	IntrospectionPostArgsClient []string `json:"introspection_post_args_client"`
+	// Extra post arguments passed from the client headers to the introspection endpoint.
+	IntrospectionPostArgsClientHeaders []string `json:"introspection_post_args_client_headers"`
+	// Extra post argument names passed to the introspection endpoint.
+	IntrospectionPostArgsNames []string `json:"introspection_post_args_names"`
+	// Extra post argument values passed to the introspection endpoint.
+	IntrospectionPostArgsValues []string `json:"introspection_post_args_values"`
+	// Designate token's parameter name for introspection.
+	IntrospectionTokenParamName *string `default:"token" json:"introspection_token_param_name"`
+	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
+	Issuer string `json:"issuer"`
+	// The issuers allowed to be present in the tokens (`iss` claim).
+	IssuersAllowed []string `json:"issuers_allowed"`
+	// Overrides the `jwks_uri` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.
+	JwksEndpoint *string `default:"null" json:"jwks_endpoint"`
+	// The claim to match against the JWT session cookie.
+	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
+	// The name of the JWT session cookie.
+	JwtSessionCookie *string `default:"null" json:"jwt_session_cookie"`
+	// Use keepalive with the HTTP client.
+	Keepalive *bool `default:"true" json:"keepalive"`
+	// Defines leeway time (in seconds) for `auth_time`, `exp`, `iat`, and `nbf` claims
+	Leeway *float64 `default:"0" json:"leeway"`
+	// What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
+	LoginAction *LoginAction `default:"upstream" json:"login_action"`
+	// Enable login functionality with specified grants.
+	LoginMethods []LoginMethods `json:"login_methods,omitempty"`
+	// Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
+	LoginRedirectMode *LoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
+	// Where to redirect the client when `login_action` is set to `redirect`.
+	LoginRedirectURI []string `json:"login_redirect_uri"`
+	// What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
+	LoginTokens []LoginTokens `json:"login_tokens,omitempty"`
+	// The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.
+	LogoutMethods []LogoutMethods `json:"logout_methods,omitempty"`
+	// The request body argument that activates the logout.
+	LogoutPostArg *string `default:"null" json:"logout_post_arg"`
+	// The request query argument that activates the logout.
+	LogoutQueryArg *string `default:"null" json:"logout_query_arg"`
+	// Where to redirect the client after the logout.
+	LogoutRedirectURI []string `json:"logout_redirect_uri"`
+	// Revoke tokens as part of the logout.
 	//
-	Scopes    []string `json:"scopes,omitempty"`
-	SslVerify *bool    `default:"true" json:"ssl_verify"`
-	// Salt used for generating the cache key that is used for caching the token endpoint requests.
-	//
-	CacheTokensSalt      string `json:"cache_tokens_salt"`
-	AdditionalProperties any    `additionalProperties:"true" json:"-"`
+	// For more granular token revocation, you can also adjust the `logout_revoke_access_token` and `logout_revoke_refresh_token` parameters.
+	LogoutRevoke *bool `default:"false" json:"logout_revoke"`
+	// Revoke the access token as part of the logout. Requires `logout_revoke` to be set to `true`.
+	LogoutRevokeAccessToken *bool `default:"true" json:"logout_revoke_access_token"`
+	// Revoke the refresh token as part of the logout. Requires `logout_revoke` to be set to `true`.
+	LogoutRevokeRefreshToken *bool `default:"true" json:"logout_revoke_refresh_token"`
+	// The request URI suffix that activates the logout.
+	LogoutURISuffix *string `default:"null" json:"logout_uri_suffix"`
+	// The maximum age (in seconds) compared to the `auth_time` claim.
+	MaxAge *float64 `default:"null" json:"max_age"`
+	// Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
+	MtlsIntrospectionEndpoint *string `default:"null" json:"mtls_introspection_endpoint"`
+	// Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
+	MtlsRevocationEndpoint *string `default:"null" json:"mtls_revocation_endpoint"`
+	// Alias for the token endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
+	MtlsTokenEndpoint *string `default:"null" json:"mtls_token_endpoint"`
+	// Do not use proxy with these hosts.
+	NoProxy *string `default:"null" json:"no_proxy"`
+	// Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
+	PasswordParamType []PasswordParamType `json:"password_param_type,omitempty"`
+	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
+	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
+	// Configuration for Kong Identity principal hydration after token verification.
+	Principals *AIGatewayIdentityProviderOpenIDConnectPrincipals `json:"principals"`
+	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
+	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
+	// Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
+	ProofOfPossessionDpop *ProofOfPossessionDpop `default:"off" json:"proof_of_possession_dpop"`
+	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
+	ProofOfPossessionMtls *ProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	// Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
+	ProofOfPossessionMtlsFromHeader *ProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
+	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
+	PushedAuthorizationRequestEndpoint *string `default:"null" json:"pushed_authorization_request_endpoint"`
+	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	PushedAuthorizationRequestEndpointAuthMethod *PushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
+	// The redirect URI passed to the authorization and token endpoints.
+	RedirectURI []string `json:"redirect_uri"`
+	Redis       *Redis   `json:"redis"`
+	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
+	RediscoveryLifetime *float64 `default:"30" json:"rediscovery_lifetime"`
+	// The name of the parameter used to pass the refresh token.
+	RefreshTokenParamName *string `default:"null" json:"refresh_token_param_name"`
+	// Where to look for the refresh token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
+	RefreshTokenParamType []RefreshTokenParamType `json:"refresh_token_param_type,omitempty"`
+	// Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a `refresh_token` available.
+	RefreshTokens *bool `default:"true" json:"refresh_tokens"`
+	// Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of `code_challenge_methods_supported`, and enabled automatically (in case the `code_challenge_methods_supported` is missing, the PKCE will not be enabled).
+	RequireProofKeyForCodeExchange *bool `default:"null" json:"require_proof_key_for_code_exchange"`
+	// Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
+	RequirePushedAuthorizationRequests *bool `default:"null" json:"require_pushed_authorization_requests"`
+	// Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of `require_signed_request_object`, and enabled automatically (in case the `require_signed_request_object` is missing, the feature will not be enabled).
+	RequireSignedRequestObject *bool `default:"null" json:"require_signed_request_object"`
+	// Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.
+	ResolveDistributedClaims *bool `default:"false" json:"resolve_distributed_claims"`
+	// Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
+	ResponseMode *ResponseMode `default:"query" json:"response_mode"`
+	// The response type passed to the authorization endpoint.
+	ResponseType []string `json:"response_type,omitempty"`
+	// Specifies whether to always verify tokens stored in the session.
+	Reverify *bool `default:"false" json:"reverify"`
+	// The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
+	RevocationEndpoint *string `default:"null" json:"revocation_endpoint"`
+	// The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	RevocationEndpointAuthMethod *RevocationEndpointAuthMethod `json:"revocation_endpoint_auth_method,omitempty"`
+	// Designate token's parameter name for revocation.
+	RevocationTokenParamName *string `default:"token" json:"revocation_token_param_name"`
+	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	RolesClaim []string `json:"roles_claim,omitempty"`
+	// The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	RolesRequired []string `json:"roles_required"`
+	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
+	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+	// The scopes passed to the authorization and token endpoints.
+	Scopes []string `json:"scopes,omitempty"`
+	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ScopesClaim []string `json:"scopes_claim,omitempty"`
+	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	ScopesRequired []string `json:"scopes_required"`
+	// Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
+	SearchUserInfo *bool `default:"false" json:"search_user_info"`
+	// Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
+	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
+	// The session audience, which is the intended target application. For example `"my-application"`.
+	SessionAudience *string `default:"default" json:"session_audience"`
+	// Bind the session to data acquired from the HTTP request or connection.
+	SessionBind []SessionBind `json:"session_bind"`
+	// The session cookie Domain flag.
+	SessionCookieDomain *string `default:"null" json:"session_cookie_domain"`
+	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
+	SessionCookieHTTPOnly *bool `default:"true" json:"session_cookie_http_only"`
+	// The session cookie name.
+	SessionCookieName *string `default:"session" json:"session_cookie_name"`
+	// The session cookie Path flag.
+	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
+	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+	SessionCookieSameSite *SessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
+	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
+	SessionCookieSecure *bool `default:"null" json:"session_cookie_secure"`
+	// When set to `true`, audiences are forced to share the same subject.
+	SessionEnforceSameSubject *bool `default:"false" json:"session_enforce_same_subject"`
+	// When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
+	SessionHashStorageKey *bool `default:"false" json:"session_hash_storage_key"`
+	// When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.
+	SessionHashSubject *bool `default:"false" json:"session_hash_subject"`
+	// Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.
+	SessionIdlingTimeout *float64 `default:"900" json:"session_idling_timeout"`
+	// The memcached host.
+	SessionMemcachedHost *string `default:"127.0.0.1" json:"session_memcached_host"`
+	// The memcached port.
+	SessionMemcachedPort *int64 `default:"11211" json:"session_memcached_port"`
+	// The memcached session key prefix.
+	SessionMemcachedPrefix *string `default:"null" json:"session_memcached_prefix"`
+	// The memcached unix socket path.
+	SessionMemcachedSocket *string `default:"null" json:"session_memcached_socket"`
+	// If set to true, uses SSL to connect to memcached
+	SessionMemcachedSsl *bool `default:"null" json:"session_memcached_ssl"`
+	// If set to true, verifies the validity of the memcached server SSL certificate
+	SessionMemcachedSslVerify *bool `default:"true" json:"session_memcached_ssl_verify"`
+	// Enables or disables persistent sessions.
+	SessionRemember *bool `default:"false" json:"session_remember"`
+	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
+	SessionRememberAbsoluteTimeout *float64 `default:"2592000" json:"session_remember_absolute_timeout"`
+	// Persistent session cookie name. Use with the `remember` configuration parameter.
+	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
+	// Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
+	SessionRememberRollingTimeout *float64 `default:"604800" json:"session_remember_rolling_timeout"`
+	// Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.
+	SessionRequestHeaders []SessionRequestHeaders `json:"session_request_headers"`
+	// Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
+	SessionResponseHeaders []SessionResponseHeaders `json:"session_response_headers"`
+	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
+	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
+	// The session secret.
+	SessionSecret *string `default:"null" json:"session_secret"`
+	// The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
+	SessionStorage *SessionStorage `default:"cookie" json:"session_storage"`
+	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
+	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
+	// Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Network IO timeout in milliseconds.
+	Timeout *float64 `default:"10000" json:"timeout"`
+	// ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
+	TLSClientAuthCertID *string `default:"null" json:"tls_client_auth_cert_id"`
+	// Verify identity provider server certificate during mTLS client authentication.
+	TLSClientAuthSslVerify *bool `default:"true" json:"tls_client_auth_ssl_verify"`
+	// Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.
+	TokenCacheKeyIncludeScope *bool `default:"false" json:"token_cache_key_include_scope"`
+	// The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	TokenEndpointAuthMethod *AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
+	// Details on how to accept tokens from other identity providers.
+	TokenExchange *TokenExchange `json:"token_exchange"`
+	// Endpoint used to perform the legacy token exchange.
+	TokenExchangeEndpoint *string `default:"null" json:"token_exchange_endpoint"`
+	// Extra headers passed from the client to the token endpoint.
+	TokenHeadersClient []string `json:"token_headers_client"`
+	// Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
+	TokenHeadersGrants []TokenHeadersGrants `json:"token_headers_grants"`
+	// Extra header names passed to the token endpoint.
+	TokenHeadersNames []string `json:"token_headers_names"`
+	// Add a prefix to the token endpoint response headers before forwarding them to the downstream client.
+	TokenHeadersPrefix *string `default:"null" json:"token_headers_prefix"`
+	// The names of token endpoint response headers to forward to the downstream client.
+	TokenHeadersReplay []string `json:"token_headers_replay"`
+	// Extra header values passed to the token endpoint.
+	TokenHeadersValues []string `json:"token_headers_values"`
+	// Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.
+	TokenPostArgsClient []string `json:"token_post_args_client"`
+	// Extra post argument names passed to the token endpoint.
+	TokenPostArgsNames []string `json:"token_post_args_names"`
+	// Extra post argument values passed to the token endpoint.
+	TokenPostArgsValues []string `json:"token_post_args_values"`
+	// Destroy any active session for the unauthorized requests.
+	UnauthorizedDestroySession *bool `default:"true" json:"unauthorized_destroy_session"`
+	// The error message for the unauthorized requests (when not using the redirection).
+	UnauthorizedErrorMessage *string `default:"Unauthorized" json:"unauthorized_error_message"`
+	// Where to redirect the client on unauthorized requests.
+	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri"`
+	// Where to redirect the client when unexpected errors happen with the requests.
+	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri"`
+	// The upstream access token header.
+	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
+	// The upstream access token JWK header.
+	UpstreamAccessTokenJwkHeader *string `default:"null" json:"upstream_access_token_jwk_header"`
+	// The upstream claim to header mappings.
+	UpstreamHeaders []UpstreamHeaders `json:"upstream_headers"`
+	// The upstream header claims. Only top level claims are supported.
+	UpstreamHeadersClaims []string `json:"upstream_headers_claims"`
+	// The upstream header names for the claim values.
+	UpstreamHeadersNames []string `json:"upstream_headers_names"`
+	// The upstream id token header.
+	UpstreamIDTokenHeader *string `default:"null" json:"upstream_id_token_header"`
+	// The upstream id token JWK header.
+	UpstreamIDTokenJwkHeader *string `default:"null" json:"upstream_id_token_jwk_header"`
+	// The upstream introspection header.
+	UpstreamIntrospectionHeader *string `default:"null" json:"upstream_introspection_header"`
+	// The upstream introspection JWT header.
+	UpstreamIntrospectionJwtHeader *string `default:"null" json:"upstream_introspection_jwt_header"`
+	// The upstream refresh token header.
+	UpstreamRefreshTokenHeader *string `default:"null" json:"upstream_refresh_token_header"`
+	// The upstream session id header.
+	UpstreamSessionIDHeader *string `default:"null" json:"upstream_session_id_header"`
+	// The upstream user info header.
+	UpstreamUserInfoHeader *string `default:"null" json:"upstream_user_info_header"`
+	// The upstream user info JWT header (in case the user info returns a JWT response).
+	UpstreamUserInfoJwtHeader *string `default:"null" json:"upstream_user_info_jwt_header"`
+	// The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
+	UserinfoAccept *UserinfoAccept `default:"application/json" json:"userinfo_accept"`
+	// The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
+	UserinfoEndpoint *string `default:"null" json:"userinfo_endpoint"`
+	// Extra headers passed from the client to the user info endpoint.
+	UserinfoHeadersClient []string `json:"userinfo_headers_client"`
+	// Extra header names passed to the user info endpoint.
+	UserinfoHeadersNames []string `json:"userinfo_headers_names"`
+	// Extra header values passed to the user info endpoint.
+	UserinfoHeadersValues []string `json:"userinfo_headers_values"`
+	// Extra query arguments passed from the client to the user info endpoint.
+	UserinfoQueryArgsClient []string `json:"userinfo_query_args_client"`
+	// Extra query argument names passed to the user info endpoint.
+	UserinfoQueryArgsNames []string `json:"userinfo_query_args_names"`
+	// Extra query argument values passed to the user info endpoint.
+	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values"`
+	// If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with `config.issuer`.
+	UsingPseudoIssuer *bool `default:"false" json:"using_pseudo_issuer"`
+	// Verify tokens for standard claims.
+	VerifyClaims *bool `default:"true" json:"verify_claims"`
+	// Verify nonce on authorization code flow.
+	VerifyNonce *bool `default:"true" json:"verify_nonce"`
+	// Verify plugin configuration against discovery.
+	VerifyParameters *bool `default:"false" json:"verify_parameters"`
+	// Verify signature of tokens.
+	VerifySignature *bool `default:"true" json:"verify_signature"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnectConfig) MarshalJSON() ([]byte, error) {
@@ -86,11 +3049,256 @@ func (a *AIGatewayIdentityProviderOpenIDConnectConfig) UnmarshalJSON(data []byte
 	return nil
 }
 
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAnonymous() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Anonymous
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAudience() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Audience
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAudienceClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AudienceClaim
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAudienceRequired() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AudienceRequired
+}
+
 func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthMethods() []AuthMethods {
 	if a == nil {
 		return nil
 	}
 	return a.AuthMethods
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthenticatedGroupsClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthenticatedGroupsClaim
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationCookieDomain() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationCookieDomain
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationCookieHTTPOnly() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationCookieHTTPOnly
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationCookieName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationCookieName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationCookiePath() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationCookiePath
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationCookieSameSite() *AuthorizationCookieSameSite {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationCookieSameSite
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationCookieSecure() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationCookieSecure
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationQueryArgsClient() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationQueryArgsClient
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationQueryArgsNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationQueryArgsNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationQueryArgsValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationQueryArgsValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAuthorizationRollingTimeout() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.AuthorizationRollingTimeout
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetBearerTokenCookieName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BearerTokenCookieName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetBearerTokenHeaderName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BearerTokenHeaderName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetBearerTokenParamType() []BearerTokenParamType {
+	if a == nil {
+		return nil
+	}
+	return a.BearerTokenParamType
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetByUsernameIgnoreCase() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ByUsernameIgnoreCase
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheIntrospection() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.CacheIntrospection
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTokenExchange() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.CacheTokenExchange
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTokens() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.CacheTokens
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTokensSalt() string {
+	if a == nil {
+		return ""
+	}
+	return a.CacheTokensSalt
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTTL() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheTTL
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTTLMax() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheTTLMax
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTTLMin() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheTTLMin
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTTLNeg() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheTTLNeg
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTTLResurrect() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheTTLResurrect
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheUserInfo() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.CacheUserInfo
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClaimsForbidden() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ClaimsForbidden
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientAlg() []ClientAlg {
+	if a == nil {
+		return nil
+	}
+	return a.ClientAlg
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientArg() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientArg
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientAuth() []ClientAuth {
+	if a == nil {
+		return nil
+	}
+	return a.ClientAuth
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientCredentialsParamType() []ClientCredentialsParamType {
+	if a == nil {
+		return nil
+	}
+	return a.ClientCredentialsParamType
 }
 
 func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientID() []string {
@@ -100,11 +3308,46 @@ func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientID() []string {
 	return a.ClientID
 }
 
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientJwk() []ClientJwk {
+	if a == nil {
+		return nil
+	}
+	return a.ClientJwk
+}
+
 func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClientSecret() []string {
 	if a == nil {
 		return nil
 	}
 	return a.ClientSecret
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClusterCacheItems() []ClusterCacheItems {
+	if a == nil {
+		return nil
+	}
+	return a.ClusterCacheItems
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClusterCacheRedis() *ClusterCacheRedis {
+	if a == nil {
+		return nil
+	}
+	return a.ClusterCacheRedis
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetClusterCacheStrategy() *ClusterCacheStrategy {
+	if a == nil {
+		return nil
+	}
+	return a.ClusterCacheStrategy
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetConsumerBy() []ConsumerBy {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerBy
 }
 
 func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetConsumerClaims() [][]string {
@@ -135,11 +3378,746 @@ func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetConsumerOptional() *bo
 	return a.ConsumerOptional
 }
 
-func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIssuer() *string {
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCredentialClaim() []string {
 	if a == nil {
 		return nil
 	}
+	return a.CredentialClaim
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDisableSession() []DisableSession {
+	if a == nil {
+		return nil
+	}
+	return a.DisableSession
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDiscoveryHeadersNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.DiscoveryHeadersNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDiscoveryHeadersValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.DiscoveryHeadersValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDisplayErrors() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.DisplayErrors
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDomains() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Domains
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamAccessTokenHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamAccessTokenHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamAccessTokenJwkHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamAccessTokenJwkHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamHeaders() []DownstreamHeaders {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamHeaders
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamHeadersClaims() []string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamHeadersClaims
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamHeadersNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamHeadersNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamIDTokenHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamIDTokenHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamIDTokenJwkHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamIDTokenJwkHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamIntrospectionHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamIntrospectionHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamIntrospectionJwtHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamIntrospectionJwtHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamRefreshTokenHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamRefreshTokenHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamSessionIDHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamSessionIDHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamUserInfoHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamUserInfoHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDownstreamUserInfoJwtHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DownstreamUserInfoJwtHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDpopProofLifetime() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.DpopProofLifetime
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetDpopUseNonce() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.DpopUseNonce
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetEnableHsSignatures() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.EnableHsSignatures
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetEndSessionEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.EndSessionEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetExposeErrorCode() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ExposeErrorCode
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetExtraJwksUris() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ExtraJwksUris
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetForbiddenDestroySession() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ForbiddenDestroySession
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetForbiddenErrorMessage() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ForbiddenErrorMessage
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetForbiddenRedirectURI() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ForbiddenRedirectURI
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetGroupsClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.GroupsClaim
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetGroupsRequired() []string {
+	if a == nil {
+		return nil
+	}
+	return a.GroupsRequired
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetHideCredentials() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.HideCredentials
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetHTTPProxy() *string {
+	if a == nil {
+		return nil
+	}
+	return a.HTTPProxy
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetHTTPProxyAuthorization() *string {
+	if a == nil {
+		return nil
+	}
+	return a.HTTPProxyAuthorization
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetHTTPVersion() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.HTTPVersion
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetHTTPSProxy() *string {
+	if a == nil {
+		return nil
+	}
+	return a.HTTPSProxy
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetHTTPSProxyAuthorization() *string {
+	if a == nil {
+		return nil
+	}
+	return a.HTTPSProxyAuthorization
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIDTokenParamName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.IDTokenParamName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIDTokenParamType() []IDTokenParamType {
+	if a == nil {
+		return nil
+	}
+	return a.IDTokenParamType
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIgnoreSignature() []IgnoreSignature {
+	if a == nil {
+		return nil
+	}
+	return a.IgnoreSignature
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectJwtTokens() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectJwtTokens
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionAccept() *IntrospectionAccept {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionAccept
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionCheckActive() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionCheckActive
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionEndpointAuthMethod() *IntrospectionEndpointAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionEndpointAuthMethod
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionHeadersClient() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionHeadersClient
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionHeadersNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionHeadersNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionHeadersValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionHeadersValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionHint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionHint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionPostArgsClient() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionPostArgsClient
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionPostArgsClientHeaders() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionPostArgsClientHeaders
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionPostArgsNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionPostArgsNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionPostArgsValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionPostArgsValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIntrospectionTokenParamName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.IntrospectionTokenParamName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIssuer() string {
+	if a == nil {
+		return ""
+	}
 	return a.Issuer
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetIssuersAllowed() []string {
+	if a == nil {
+		return nil
+	}
+	return a.IssuersAllowed
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetJwksEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.JwksEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetJwtSessionClaim() *string {
+	if a == nil {
+		return nil
+	}
+	return a.JwtSessionClaim
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetJwtSessionCookie() *string {
+	if a == nil {
+		return nil
+	}
+	return a.JwtSessionCookie
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetKeepalive() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.Keepalive
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLeeway() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.Leeway
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLoginAction() *LoginAction {
+	if a == nil {
+		return nil
+	}
+	return a.LoginAction
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLoginMethods() []LoginMethods {
+	if a == nil {
+		return nil
+	}
+	return a.LoginMethods
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLoginRedirectMode() *LoginRedirectMode {
+	if a == nil {
+		return nil
+	}
+	return a.LoginRedirectMode
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLoginRedirectURI() []string {
+	if a == nil {
+		return nil
+	}
+	return a.LoginRedirectURI
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLoginTokens() []LoginTokens {
+	if a == nil {
+		return nil
+	}
+	return a.LoginTokens
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutMethods() []LogoutMethods {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutMethods
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutPostArg() *string {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutPostArg
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutQueryArg() *string {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutQueryArg
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutRedirectURI() []string {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutRedirectURI
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutRevoke() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutRevoke
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutRevokeAccessToken() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutRevokeAccessToken
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutRevokeRefreshToken() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutRevokeRefreshToken
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetLogoutURISuffix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.LogoutURISuffix
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetMaxAge() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.MaxAge
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetMtlsIntrospectionEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.MtlsIntrospectionEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetMtlsRevocationEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.MtlsRevocationEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetMtlsTokenEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.MtlsTokenEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetNoProxy() *string {
+	if a == nil {
+		return nil
+	}
+	return a.NoProxy
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetPasswordParamType() []PasswordParamType {
+	if a == nil {
+		return nil
+	}
+	return a.PasswordParamType
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetPreserveQueryArgs() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.PreserveQueryArgs
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetPrincipals() *AIGatewayIdentityProviderOpenIDConnectPrincipals {
+	if a == nil {
+		return nil
+	}
+	return a.Principals
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetProofOfPossessionAuthMethodsValidation() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ProofOfPossessionAuthMethodsValidation
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetProofOfPossessionDpop() *ProofOfPossessionDpop {
+	if a == nil {
+		return nil
+	}
+	return a.ProofOfPossessionDpop
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetProofOfPossessionMtls() *ProofOfPossessionMtls {
+	if a == nil {
+		return nil
+	}
+	return a.ProofOfPossessionMtls
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetProofOfPossessionMtlsFromHeader() *ProofOfPossessionMtlsFromHeader {
+	if a == nil {
+		return nil
+	}
+	return a.ProofOfPossessionMtlsFromHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetPushedAuthorizationRequestEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.PushedAuthorizationRequestEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetPushedAuthorizationRequestEndpointAuthMethod() *PushedAuthorizationRequestEndpointAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.PushedAuthorizationRequestEndpointAuthMethod
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRedirectURI() []string {
+	if a == nil {
+		return nil
+	}
+	return a.RedirectURI
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRedis() *Redis {
+	if a == nil {
+		return nil
+	}
+	return a.Redis
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRediscoveryLifetime() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.RediscoveryLifetime
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRefreshTokenParamName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RefreshTokenParamName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRefreshTokenParamType() []RefreshTokenParamType {
+	if a == nil {
+		return nil
+	}
+	return a.RefreshTokenParamType
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRefreshTokens() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RefreshTokens
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRequireProofKeyForCodeExchange() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RequireProofKeyForCodeExchange
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRequirePushedAuthorizationRequests() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RequirePushedAuthorizationRequests
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRequireSignedRequestObject() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RequireSignedRequestObject
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetResolveDistributedClaims() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ResolveDistributedClaims
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetResponseMode() *ResponseMode {
+	if a == nil {
+		return nil
+	}
+	return a.ResponseMode
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetResponseType() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ResponseType
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetReverify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.Reverify
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRevocationEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RevocationEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRevocationEndpointAuthMethod() *RevocationEndpointAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.RevocationEndpointAuthMethod
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRevocationTokenParamName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RevocationTokenParamName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRolesClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.RolesClaim
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRolesRequired() []string {
+	if a == nil {
+		return nil
+	}
+	return a.RolesRequired
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetRunOnPreflight() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RunOnPreflight
 }
 
 func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetScopes() []string {
@@ -149,6 +4127,230 @@ func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetScopes() []string {
 	return a.Scopes
 }
 
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetScopesClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ScopesClaim
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetScopesRequired() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ScopesRequired
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSearchUserInfo() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SearchUserInfo
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionAbsoluteTimeout() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SessionAbsoluteTimeout
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionAudience() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionAudience
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionBind() []SessionBind {
+	if a == nil {
+		return nil
+	}
+	return a.SessionBind
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionCookieDomain() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionCookieDomain
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionCookieHTTPOnly() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionCookieHTTPOnly
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionCookieName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionCookieName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionCookiePath() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionCookiePath
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionCookieSameSite() *SessionCookieSameSite {
+	if a == nil {
+		return nil
+	}
+	return a.SessionCookieSameSite
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionCookieSecure() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionCookieSecure
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionEnforceSameSubject() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionEnforceSameSubject
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionHashStorageKey() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionHashStorageKey
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionHashSubject() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionHashSubject
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionIdlingTimeout() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SessionIdlingTimeout
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionMemcachedHost() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionMemcachedHost
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionMemcachedPort() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.SessionMemcachedPort
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionMemcachedPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionMemcachedPrefix
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionMemcachedSocket() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionMemcachedSocket
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionMemcachedSsl() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionMemcachedSsl
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionMemcachedSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionMemcachedSslVerify
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionRemember() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionRemember
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionRememberAbsoluteTimeout() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SessionRememberAbsoluteTimeout
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionRememberCookieName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionRememberCookieName
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionRememberRollingTimeout() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SessionRememberRollingTimeout
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionRequestHeaders() []SessionRequestHeaders {
+	if a == nil {
+		return nil
+	}
+	return a.SessionRequestHeaders
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionResponseHeaders() []SessionResponseHeaders {
+	if a == nil {
+		return nil
+	}
+	return a.SessionResponseHeaders
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionRollingTimeout() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SessionRollingTimeout
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SessionSecret
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionStorage() *SessionStorage {
+	if a == nil {
+		return nil
+	}
+	return a.SessionStorage
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSessionStoreMetadata() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SessionStoreMetadata
+}
+
 func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSslVerify() *bool {
 	if a == nil {
 		return nil
@@ -156,18 +4358,333 @@ func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetSslVerify() *bool {
 	return a.SslVerify
 }
 
-func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetCacheTokensSalt() string {
-	if a == nil {
-		return ""
-	}
-	return a.CacheTokensSalt
-}
-
-func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetAdditionalProperties() any {
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTimeout() *float64 {
 	if a == nil {
 		return nil
 	}
-	return a.AdditionalProperties
+	return a.Timeout
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTLSClientAuthCertID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TLSClientAuthCertID
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTLSClientAuthSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.TLSClientAuthSslVerify
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenCacheKeyIncludeScope() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.TokenCacheKeyIncludeScope
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenEndpointAuthMethod() *AIGatewayIdentityProviderOpenIDConnectTokenEndpointAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.TokenEndpointAuthMethod
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenExchange() *TokenExchange {
+	if a == nil {
+		return nil
+	}
+	return a.TokenExchange
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenExchangeEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenExchangeEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenHeadersClient() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeadersClient
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenHeadersGrants() []TokenHeadersGrants {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeadersGrants
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenHeadersNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeadersNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenHeadersPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeadersPrefix
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenHeadersReplay() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeadersReplay
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenHeadersValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeadersValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenPostArgsClient() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgsClient
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenPostArgsNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgsNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetTokenPostArgsValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgsValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUnauthorizedDestroySession() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.UnauthorizedDestroySession
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUnauthorizedErrorMessage() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UnauthorizedErrorMessage
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUnauthorizedRedirectURI() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UnauthorizedRedirectURI
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUnexpectedRedirectURI() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UnexpectedRedirectURI
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamAccessTokenHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamAccessTokenHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamAccessTokenJwkHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamAccessTokenJwkHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamHeaders() []UpstreamHeaders {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamHeaders
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamHeadersClaims() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamHeadersClaims
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamHeadersNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamHeadersNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamIDTokenHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamIDTokenHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamIDTokenJwkHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamIDTokenJwkHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamIntrospectionHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamIntrospectionHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamIntrospectionJwtHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamIntrospectionJwtHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamRefreshTokenHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamRefreshTokenHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamSessionIDHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamSessionIDHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamUserInfoHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamUserInfoHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUpstreamUserInfoJwtHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamUserInfoJwtHeader
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoAccept() *UserinfoAccept {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoAccept
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoEndpoint
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoHeadersClient() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoHeadersClient
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoHeadersNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoHeadersNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoHeadersValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoHeadersValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoQueryArgsClient() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoQueryArgsClient
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoQueryArgsNames() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoQueryArgsNames
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUserinfoQueryArgsValues() []string {
+	if a == nil {
+		return nil
+	}
+	return a.UserinfoQueryArgsValues
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetUsingPseudoIssuer() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.UsingPseudoIssuer
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetVerifyClaims() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.VerifyClaims
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetVerifyNonce() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.VerifyNonce
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetVerifyParameters() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.VerifyParameters
+}
+
+func (a *AIGatewayIdentityProviderOpenIDConnectConfig) GetVerifySignature() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.VerifySignature
 }
 
 // AIGatewayIdentityProviderOpenIDConnect - **Pre-release Feature**
@@ -197,8 +4714,6 @@ type AIGatewayIdentityProviderOpenIDConnect struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"openid-connect" json:"type"`
 	// Configuration for the OpenID Connect identity provider.
-	// For advanced use cases, additional config properties can be sent in the request body.
-	// See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
 	//
 	Config *AIGatewayIdentityProviderOpenIDConnectConfig `json:"config"`
 }

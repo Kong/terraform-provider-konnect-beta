@@ -16,13 +16,13 @@ type AIGatewayModelProviderConfigAuthGCPOutput struct {
 	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If not set, Kong will use the default Google metadata endpoint.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	MetadataURL *string `default:"null" json:"metadata_url"`
+	MetadataURL *string `json:"metadata_url,omitempty"`
 	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If not set, Kong will use the default Google OAuth token endpoint.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	OauthTokenURL *string `default:"null" json:"oauth_token_url"`
+	OauthTokenURL *string `json:"oauth_token_url,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	UseGcpServiceAccount *bool `default:"null" json:"use_gcp_service_account"`
+	UseGcpServiceAccount *bool `json:"use_gcp_service_account,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthGCPOutput) MarshalJSON() ([]byte, error) {

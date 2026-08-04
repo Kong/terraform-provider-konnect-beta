@@ -2,6 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type AIGatewayAgentAccess struct {
-	Acls *AIGatewayACLS `tfsdk:"acls"`
+	Acls              *AIGatewayACLS `tfsdk:"acls"`
+	IdentityProviders []types.String `tfsdk:"identity_providers"`
 }

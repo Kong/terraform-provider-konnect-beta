@@ -67,11 +67,11 @@ type AzureKeyVaultConfig struct {
 	// The client ID for your registered application.
 	// You can find this in the Azure Dashboard under App Registrations.
 	//
-	ClientID *string `default:"null" json:"client_id"`
+	ClientID *string `json:"client_id,omitempty"`
 	// The DirectoryId and TenantId are the same: both refer to the GUID representing your Azure Active Directory tenant.
 	// Microsoft documentation and products may use either term depending on context.
 	//
-	TenantID *string            `default:"null" json:"tenant_id"`
+	TenantID *string            `json:"tenant_id,omitempty"`
 	Type     *AzureKeyVaultType `default:"secrets" json:"type"`
 }
 

@@ -12,7 +12,7 @@ type AIGatewayModelRouteConfig struct {
 	Hosts                   []types.String                  `tfsdk:"hosts"`
 	HTTPSRedirectStatusCode types.Int64                     `tfsdk:"https_redirect_status_code"`
 	Methods                 []types.String                  `tfsdk:"methods"`
-	Model                   *AIGatewayModelAliasConfig      `tfsdk:"model"`
+	Model                   *AIGatewayModelSelectorConfig   `tfsdk:"model"`
 	Paths                   []types.String                  `tfsdk:"paths"`
 	PreserveHost            types.Bool                      `tfsdk:"preserve_host"`
 	Protocols               []types.String                  `tfsdk:"protocols"`

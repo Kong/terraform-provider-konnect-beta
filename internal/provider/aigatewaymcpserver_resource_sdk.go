@@ -222,10 +222,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.ConversionListener.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
+								r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
 
 								for _, nodesItem := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes tfTypes.AIGatewayRedisCloudConfigurationNodes
+									var nodes tfTypes.ClusterNodes
 
 									nodes.IP = types.StringPointerValue(nodesItem.IP)
 									nodes.Port = types.Int64PointerValue(nodesItem.Port)
@@ -257,10 +257,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.ConversionListener.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
+								r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
 
 								for _, nodesItem1 := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes1 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
+									var nodes1 tfTypes.SentinelNodes
 
 									nodes1.Host = types.StringPointerValue(nodesItem1.Host)
 									nodes1.Port = types.Int64PointerValue(nodesItem1.Port)
@@ -327,7 +327,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if toolsItem.Access == nil {
 					tools.Access = nil
 				} else {
-					tools.Access = &tfTypes.AIGatewayAgentAccess{}
+					tools.Access = &tfTypes.Access{}
 					if toolsItem.Access.Acls == nil {
 						tools.Access.Acls = nil
 					} else {
@@ -495,7 +495,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if toolsItem1.Access == nil {
 					tools1.Access = nil
 				} else {
-					tools1.Access = &tfTypes.AIGatewayAgentAccess{}
+					tools1.Access = &tfTypes.Access{}
 					if toolsItem1.Access.Acls == nil {
 						tools1.Access.Acls = nil
 					} else {
@@ -783,10 +783,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.Listener.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.Listener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
+								r.Listener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
 
 								for _, nodesItem2 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes2 tfTypes.AIGatewayRedisCloudConfigurationNodes
+									var nodes2 tfTypes.ClusterNodes
 
 									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
 									nodes2.Port = types.Int64PointerValue(nodesItem2.Port)
@@ -818,10 +818,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.Listener.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.Listener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
+								r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
 
 								for _, nodesItem3 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes3 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
+									var nodes3 tfTypes.SentinelNodes
 
 									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
 									nodes3.Port = types.Int64PointerValue(nodesItem3.Port)
@@ -887,7 +887,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if toolsItem2.Access == nil {
 					tools2.Access = nil
 				} else {
-					tools2.Access = &tfTypes.AIGatewayAgentAccess{}
+					tools2.Access = &tfTypes.Access{}
 					if toolsItem2.Access.Acls == nil {
 						tools2.Access.Acls = nil
 					} else {
@@ -1221,10 +1221,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.PassthroughListener.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
+								r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
 
 								for _, nodesItem4 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes4 tfTypes.AIGatewayRedisCloudConfigurationNodes
+									var nodes4 tfTypes.ClusterNodes
 
 									nodes4.IP = types.StringPointerValue(nodesItem4.IP)
 									nodes4.Port = types.Int64PointerValue(nodesItem4.Port)
@@ -1256,10 +1256,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.PassthroughListener.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
+								r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
 
 								for _, nodesItem5 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes5 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
+									var nodes5 tfTypes.SentinelNodes
 
 									nodes5.Host = types.StringPointerValue(nodesItem5.Host)
 									nodes5.Port = types.Int64PointerValue(nodesItem5.Port)
@@ -1326,7 +1326,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if toolsItem3.Access == nil {
 					tools3.Access = nil
 				} else {
-					tools3.Access = &tfTypes.AIGatewayAgentAccess{}
+					tools3.Access = &tfTypes.Access{}
 					if toolsItem3.Access.Acls == nil {
 						tools3.Access.Acls = nil
 					} else {
@@ -1619,10 +1619,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.UpstreamServer.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationNodes{}
+								r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
 
 								for _, nodesItem6 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes6 tfTypes.AIGatewayRedisCloudConfigurationNodes
+									var nodes6 tfTypes.ClusterNodes
 
 									nodes6.IP = types.StringPointerValue(nodesItem6.IP)
 									nodes6.Port = types.Int64PointerValue(nodesItem6.Port)
@@ -1654,10 +1654,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 							r.UpstreamServer.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes{}
+								r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
 
 								for _, nodesItem7 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes7 tfTypes.AIGatewayRedisCloudConfigurationSentinelNodes
+									var nodes7 tfTypes.SentinelNodes
 
 									nodes7.Host = types.StringPointerValue(nodesItem7.Host)
 									nodes7.Port = types.Int64PointerValue(nodesItem7.Port)
@@ -1750,7 +1750,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServerRes
 				if toolsItem4.Access == nil {
 					tools4.Access = nil
 				} else {
-					tools4.Access = &tfTypes.AIGatewayAgentAccess{}
+					tools4.Access = &tfTypes.Access{}
 					if toolsItem4.Access.Acls == nil {
 						tools4.Access.Acls = nil
 					} else {

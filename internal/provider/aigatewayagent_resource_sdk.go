@@ -35,6 +35,10 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 					r.Access.Acls.Deny = append(r.Access.Acls.Deny, types.StringValue(v))
 				}
 			}
+			r.Access.IdentityProviders = make([]types.String, 0, len(resp.Access.IdentityProviders))
+			for _, v := range resp.Access.IdentityProviders {
+				r.Access.IdentityProviders = append(r.Access.IdentityProviders, types.StringValue(v))
+			}
 		}
 		r.Config = &tfTypes.CreateAIGatewayAgentRequestConfig{}
 		if resp.Config.Logging == nil {
@@ -229,8 +233,13 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 				Deny:  deny,
 			}
 		}
+		identityProviders := make([]string, 0, len(r.Access.IdentityProviders))
+		for identityProvidersIndex := range r.Access.IdentityProviders {
+			identityProviders = append(identityProviders, r.Access.IdentityProviders[identityProvidersIndex].ValueString())
+		}
 		access = &shared.AIGatewayAgentAccess{
-			Acls: acls,
+			Acls:              acls,
+			IdentityProviders: identityProviders,
 		}
 	}
 	var url string
@@ -412,8 +421,13 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 				Deny:  deny,
 			}
 		}
+		identityProviders := make([]string, 0, len(r.Access.IdentityProviders))
+		for identityProvidersIndex := range r.Access.IdentityProviders {
+			identityProviders = append(identityProviders, r.Access.IdentityProviders[identityProvidersIndex].ValueString())
+		}
 		access = &shared.AIGatewayAgentAccess{
-			Acls: acls,
+			Acls:              acls,
+			IdentityProviders: identityProviders,
 		}
 	}
 	var url string

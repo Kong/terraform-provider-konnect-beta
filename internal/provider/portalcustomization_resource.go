@@ -244,15 +244,7 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Description: `The Portal identifier`,
 			},
 			"portal_layout": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"footer": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`snippet_name`: types.StringType,
-						},
-					},
-				})),
 				Attributes: map[string]schema.Attribute{
 					"footer": schema.SingleNestedAttribute{
 						Computed: true,

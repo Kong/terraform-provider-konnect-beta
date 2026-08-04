@@ -81,7 +81,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_path = {
+          path_selector = {
             path_aliases = [
               "@azure/claude-sonnet-5"
             ]
@@ -245,7 +245,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_body = {
+          body_selector = {
             body = {
               key = jsonencode("value")
             }
@@ -952,7 +952,8 @@ Optional:
 - `hosts` (List of String) A list of domain names that match this route. Note that the hosts value is case sensitive.
 - `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol. Default: 426
 - `methods` (List of String) A list of HTTP methods that match this route.
-- `model` (Attributes) Configuration for routing to this model using an alias. (see [below for nested schema](#nestedatt--api--config--route--model))
+- `model` (Attributes) Configuration for overriding routing to this model using a selector.
+When not set, a default model selector will be created using the model's name and format. (see [below for nested schema](#nestedatt--api--config--route--model))
 - `paths` (List of String) A list of paths that match this route.
 - `preserve_host` (Boolean) When matching a route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the service's `host`. Default: false
 - `protocols` (List of String) An array of the protocols this route should allow. See the [route Object](#route-object) section for a list of accepted protocols. When set to only `https`, HTTP requests are answered with an upgrade error. When set to only `http`, HTTPS requests are answered with an error. Default: ["http","https"]
@@ -967,28 +968,28 @@ Optional:
 
 Optional:
 
-- `ai_gateway_model_alias_config_body` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_body))
-- `ai_gateway_model_alias_config_headers` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_headers))
-- `ai_gateway_model_alias_config_path` (Attributes) Configuration for routing requests to a specific model using a path alias. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_path))
+- `body_selector` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--api--config--route--model--body_selector))
+- `headers_selector` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--api--config--route--model--headers_selector))
+- `path_selector` (Attributes) Configuration for routing requests to a specific model using a path selector. (see [below for nested schema](#nestedatt--api--config--route--model--path_selector))
 
-<a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_body"></a>
-### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_body`
+<a id="nestedatt--api--config--route--model--body_selector"></a>
+### Nested Schema for `api.config.route.model.body_selector`
 
 Optional:
 
 - `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
 
 
-<a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_headers"></a>
-### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_headers`
+<a id="nestedatt--api--config--route--model--headers_selector"></a>
+### Nested Schema for `api.config.route.model.headers_selector`
 
 Optional:
 
 - `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
 
 
-<a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_path"></a>
-### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_path`
+<a id="nestedatt--api--config--route--model--path_selector"></a>
+### Nested Schema for `api.config.route.model.path_selector`
 
 Optional:
 
@@ -2121,7 +2122,8 @@ Optional:
 - `hosts` (List of String) A list of domain names that match this route. Note that the hosts value is case sensitive.
 - `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol. Default: 426
 - `methods` (List of String) A list of HTTP methods that match this route.
-- `model` (Attributes) Configuration for routing to this model using an alias. (see [below for nested schema](#nestedatt--model--config--route--model))
+- `model` (Attributes) Configuration for overriding routing to this model using a selector.
+When not set, a default model selector will be created using the model's name and format. (see [below for nested schema](#nestedatt--model--config--route--model))
 - `paths` (List of String) A list of paths that match this route.
 - `preserve_host` (Boolean) When matching a route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the service's `host`. Default: false
 - `protocols` (List of String) An array of the protocols this route should allow. See the [route Object](#route-object) section for a list of accepted protocols. When set to only `https`, HTTP requests are answered with an upgrade error. When set to only `http`, HTTPS requests are answered with an error. Default: ["http","https"]
@@ -2136,28 +2138,28 @@ Optional:
 
 Optional:
 
-- `ai_gateway_model_alias_config_body` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_body))
-- `ai_gateway_model_alias_config_headers` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_headers))
-- `ai_gateway_model_alias_config_path` (Attributes) Configuration for routing requests to a specific model using a path alias. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_path))
+- `body_selector` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--model--config--route--model--body_selector))
+- `headers_selector` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--model--config--route--model--headers_selector))
+- `path_selector` (Attributes) Configuration for routing requests to a specific model using a path selector. (see [below for nested schema](#nestedatt--model--config--route--model--path_selector))
 
-<a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_body"></a>
-### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_body`
+<a id="nestedatt--model--config--route--model--body_selector"></a>
+### Nested Schema for `model.config.route.model.body_selector`
 
 Optional:
 
 - `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
 
 
-<a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_headers"></a>
-### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_headers`
+<a id="nestedatt--model--config--route--model--headers_selector"></a>
+### Nested Schema for `model.config.route.model.headers_selector`
 
 Optional:
 
 - `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
 
 
-<a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_path"></a>
-### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_path`
+<a id="nestedatt--model--config--route--model--path_selector"></a>
+### Nested Schema for `model.config.route.model.path_selector`
 
 Optional:
 

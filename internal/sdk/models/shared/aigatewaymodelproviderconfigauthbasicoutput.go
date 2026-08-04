@@ -94,8 +94,8 @@ func (a *AIGatewayModelProviderConfigAuthBasicParams) GetLocation() *Location {
 type AIGatewayModelProviderConfigAuthBasicOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_   string                                         `const:"basic" json:"type"`
-	Headers []AIGatewayModelProviderConfigAuthBasicHeaders `json:"headers"`
-	Params  []AIGatewayModelProviderConfigAuthBasicParams  `json:"params"`
+	Headers []AIGatewayModelProviderConfigAuthBasicHeaders `json:"headers,omitempty"`
+	Params  []AIGatewayModelProviderConfigAuthBasicParams  `json:"params,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthBasicOutput) MarshalJSON() ([]byte, error) {
@@ -213,8 +213,8 @@ func (p *Params) GetLocation() *Location {
 type AIGatewayModelProviderConfigAuthBasic struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_   string    `const:"basic" json:"type"`
-	Headers []Headers `json:"headers"`
-	Params  []Params  `json:"params"`
+	Headers []Headers `json:"headers,omitempty"`
+	Params  []Params  `json:"params,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthBasic) MarshalJSON() ([]byte, error) {

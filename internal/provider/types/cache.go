@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayModelAliasConfigPath struct {
-	PathAliases []types.String `tfsdk:"path_aliases"`
+type Cache struct {
+	Enabled types.Bool  `tfsdk:"enabled"`
+	TTL     types.Int64 `tfsdk:"ttl"`
 }

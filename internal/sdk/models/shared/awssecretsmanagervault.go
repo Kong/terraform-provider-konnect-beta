@@ -30,21 +30,21 @@ type AwsSecretsManagerVaultConfig struct {
 	TTL *int64 `default:"0" json:"ttl"`
 	// The ARN of the role to assume when retrieving secrets from AWS Secrets Manager.
 	//
-	AssumeRoleArn *string `default:"null" json:"assume_role_arn"`
+	AssumeRoleArn *string `json:"assume_role_arn,omitempty"`
 	// The endpoint URL of the AWS Secrets Manager service.
 	// If not specified, the default is https://secretsmanager.{region}.amazonaws.com.
 	// You can override this by specifying a complete URL including the http/https scheme.
 	//
-	EndpointURL *string `default:"null" json:"endpoint_url"`
+	EndpointURL *string `json:"endpoint_url,omitempty"`
 	// The AWS region where your vault is located.
-	Region *string `default:"null" json:"region"`
+	Region *string `json:"region,omitempty"`
 	// The session name used when assuming a role.
 	RoleSessionName *string `default:"KongVault" json:"role_session_name"`
 	// A custom STS endpoint URL used for IAM role assumption.
 	// Overrides the default https://sts.amazonaws.com or regional variant https://sts.<region>.amazonaws.com.
 	// Include the full http/https scheme. Only specify this if using a private VPC endpoint for STS.
 	//
-	StsEndpointURL *string `default:"null" json:"sts_endpoint_url"`
+	StsEndpointURL *string `json:"sts_endpoint_url,omitempty"`
 }
 
 func (a AwsSecretsManagerVaultConfig) MarshalJSON() ([]byte, error) {

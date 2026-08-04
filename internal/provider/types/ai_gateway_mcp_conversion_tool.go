@@ -8,7 +8,7 @@ import (
 )
 
 type AIGatewayMCPConversionTool struct {
-	Access      *AIGatewayAgentAccess        `tfsdk:"access"`
+	Access      *Access                      `tfsdk:"access"`
 	Annotations *AIGatewayMCPToolAnnotations `tfsdk:"annotations"`
 	Description types.String                 `tfsdk:"description"`
 	Headers     jsontypes.Normalized         `tfsdk:"headers"`
