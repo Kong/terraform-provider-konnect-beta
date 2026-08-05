@@ -18,13 +18,13 @@ func TestCheckMatchingFeatures(t *testing.T) {
 	testCases := []testCase{
 		{
 			name:           "konnect matches",
-			input:          "/v1/mesh/control-planes",
+			input:          "/v3/mesh/control-planes",
 			matchingFn:     konnectMatchFeatures,
 			expectedOutput: true,
 		},
 		{
 			name:           "konnect does not match",
-			input:          "/v0/mesh/control-planes",
+			input:          "/v1/mesh/control-planes",
 			matchingFn:     konnectMatchFeatures,
 			expectedOutput: false,
 		},
@@ -55,13 +55,13 @@ func TestCheckMatchingPolicies(t *testing.T) {
 	testCases := []testCase{
 		{
 			name:           "konnect matches",
-			input:          "/v1/mesh/control-planes/d15693a7-ed2e-4b77-a54d-9c3675c49c3f/api/meshes/default",
+			input:          "/v3/mesh/control-planes/d15693a7-ed2e-4b77-a54d-9c3675c49c3f/meshes/default",
 			matchingFn:     konnectMatchPolicies,
 			expectedOutput: true,
 		},
 		{
 			name:           "konnect does not match",
-			input:          "/v1/mesh/control-planes/d15693a7-ed2e-4b77-a54d-9c3675c49c3f/api/meshtrafficpermissions/default",
+			input:          "/v3/mesh/control-planes/d15693a7-ed2e-4b77-a54d-9c3675c49c3f/meshtrafficpermissions/default",
 			matchingFn:     konnectMatchPolicies,
 			expectedOutput: false,
 		},
