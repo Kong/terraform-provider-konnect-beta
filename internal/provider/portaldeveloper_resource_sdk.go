@@ -18,7 +18,7 @@ func (r *PortalDeveloperResourceModel) RefreshFromSharedPortalDeveloper(ctx cont
 	if resp != nil {
 		if len(resp.AdditionalData) > 0 {
 			r.AdditionalData = make(map[string]tfTypes.FormResponseInput, len(resp.AdditionalData))
-			for formResponseInputKey, formResponseInputValue := range resp.AdditionalData {
+			for formResponseInputKey := range resp.AdditionalData {
 				var formResponseInputResult tfTypes.FormResponseInput
 
 				r.AdditionalData[formResponseInputKey] = formResponseInputResult

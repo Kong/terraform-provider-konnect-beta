@@ -15,7 +15,6 @@ func (r *IdentityAuthServerTrustedIdpResourceModel) RefreshFromSharedTrustedIdp(
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.AuthServerID = types.StringValue(resp.AuthServerID)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DirectoryID = types.StringValue(resp.DirectoryID)
 		r.ID = types.StringValue(resp.ID)

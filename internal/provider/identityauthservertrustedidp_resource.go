@@ -351,7 +351,6 @@ func (r *IdentityAuthServerTrustedIdpResource) ImportState(ctx context.Context, 
 	dec.DisallowUnknownFields()
 	var data struct {
 		ID string `json:"id"`
-		ID string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
