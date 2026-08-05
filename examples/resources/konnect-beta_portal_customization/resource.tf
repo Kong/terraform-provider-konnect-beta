@@ -1,0 +1,64 @@
+resource "konnect-beta_portal_customization" "my_portalcustomization" {
+  css = "...my_css..."
+  js = {
+    custom = "...my_custom..."
+    scripts = [
+      "..."
+    ]
+  }
+  layout = "...my_layout..."
+  menu = {
+    footer_bottom = [
+      {
+        external   = false
+        path       = "/about/company"
+        title      = "My Page"
+        visibility = "public"
+      }
+    ]
+    footer_sections = [
+      {
+        items = [
+          {
+            external   = true
+            path       = "/about/company"
+            title      = "My Page"
+            visibility = "public"
+          }
+        ]
+        title = "...my_title..."
+      }
+    ]
+    main = [
+      {
+        external   = true
+        path       = "/about/company"
+        title      = "My Page"
+        visibility = "public"
+      }
+    ]
+  }
+  portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+  portal_layout = {
+    footer = {
+      snippet_name = "my-snippet"
+    }
+  }
+  robots = "...my_robots..."
+  spec_renderer = {
+    allow_custom_server_urls = true
+    hide_deprecated          = false
+    hide_internal            = false
+    infinite_scroll          = true
+    show_schemas             = true
+    try_it_insomnia          = true
+    try_it_ui                = true
+  }
+  theme = {
+    colors = {
+      primary = "#000000"
+    }
+    mode = "system"
+    name = "...my_name..."
+  }
+}

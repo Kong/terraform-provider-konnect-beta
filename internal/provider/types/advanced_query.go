@@ -11,6 +11,7 @@ type AdvancedQuery struct {
 	Dimensions  []types.String   `tfsdk:"dimensions"`
 	Filters     []AllFilterItems `tfsdk:"filters"`
 	Granularity types.String     `tfsdk:"granularity"`
+	Limit       types.Float64    `tfsdk:"limit"`
 	Metrics     []types.String   `tfsdk:"metrics"`
 	TimeRange   *TimeRange       `tfsdk:"time_range"`
 }

@@ -8,4 +8,5 @@ type Chart struct {
 	Donut          *ChoroplethMapChart `queryParam:"inline" tfsdk:"donut"`
 	SingleValue    *SingleValueChart   `queryParam:"inline" tfsdk:"single_value"`
 	TimeseriesLine *BarChart           `queryParam:"inline" tfsdk:"timeseries_line"`
+	TopN           *ChoroplethMapChart `queryParam:"inline" tfsdk:"top_n"`
 }

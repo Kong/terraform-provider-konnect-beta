@@ -791,10 +791,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 						},
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`Topic aliases allow exposing backend topics under additional names.` + "\n" +
+				MarkdownDescription: `Topic aliases allow exposing backend topics under additional names.` + "\n" +
 					`An alias creates a new entry point to the same physical data.` + "\n" +
 					`The alias ` + "`" + `topic` + "`" + ` field references namespace-visible names (if namespace is configured).` + "\n" +
 					`Aliases are independent of namespace and can be used without it.` + "\n" +

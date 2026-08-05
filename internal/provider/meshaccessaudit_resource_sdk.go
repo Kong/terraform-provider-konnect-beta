@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -28,12 +29,15 @@ func (r *MeshAccessAuditResourceModel) RefreshFromSharedAccessAuditItem(ctx cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
+		r.Kri = types.StringPointerValue(resp.Kri)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
 		}
+		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		if resp.Rules != nil {
 			r.Rules = []tfTypes.Rules{}
@@ -42,10 +46,10 @@ func (r *MeshAccessAuditResourceModel) RefreshFromSharedAccessAuditItem(ctx cont
 				var rules tfTypes.Rules
 
 				if rulesItem.Access != nil {
-					rules.Access = []tfTypes.MeshItemMode{}
+					rules.Access = []tfTypes.AuthType{}
 
 					for _, accessItem := range rulesItem.Access {
-						var access tfTypes.MeshItemMode
+						var access tfTypes.AuthType
 
 						if accessItem.Str != nil {
 							access.Str = types.StringPointerValue(accessItem.Str)
@@ -124,7 +128,7 @@ func (r *MeshAccessAuditResourceModel) ToOperationsPutAccessAuditRequest(ctx con
 	var name string
 	name = r.Name.ValueString()
 
-	accessAuditItem, accessAuditItemDiags := r.ToSharedAccessAuditItem(ctx)
+	accessAuditItem, accessAuditItemDiags := r.ToSharedAccessAuditItemInput(ctx)
 	diags.Append(accessAuditItemDiags...)
 
 	if diags.HasError() {
@@ -140,7 +144,7 @@ func (r *MeshAccessAuditResourceModel) ToOperationsPutAccessAuditRequest(ctx con
 	return &out, diags
 }
 
-func (r *MeshAccessAuditResourceModel) ToSharedAccessAuditItem(ctx context.Context) (*shared.AccessAuditItem, diag.Diagnostics) {
+func (r *MeshAccessAuditResourceModel) ToSharedAccessAuditItemInput(ctx context.Context) (*shared.AccessAuditItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	labels := make(map[string]string)
@@ -209,7 +213,7 @@ func (r *MeshAccessAuditResourceModel) ToSharedAccessAuditItem(ctx context.Conte
 	var typeVar string
 	typeVar = r.Type.ValueString()
 
-	out := shared.AccessAuditItem{
+	out := shared.AccessAuditItemInput{
 		Labels: labels,
 		Name:   name,
 		Rules:  rules,

@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -52,6 +53,7 @@ type MeshControlPlaneResourceModel struct {
 	Labels      map[string]types.String           `tfsdk:"labels"`
 	Name        types.String                      `tfsdk:"name"`
 	UpdatedAt   types.String                      `tfsdk:"updated_at"`
+	Version     types.String                      `tfsdk:"version"`
 }
 
 func (r *MeshControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -178,6 +180,15 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+			},
+			"version": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`v2`),
+				Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. Default: "v2"`,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^v[0-9]{1,9}$`), "must match pattern "+regexp.MustCompile(`^v[0-9]{1,9}$`).String()),
 				},
 			},
 		},

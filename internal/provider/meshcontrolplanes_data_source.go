@@ -29,7 +29,8 @@ type MeshControlPlanesDataSource struct {
 
 // MeshControlPlanesDataSourceModel describes the data model.
 type MeshControlPlanesDataSourceModel struct {
-	Data []tfTypes.MeshControlPlane `tfsdk:"data"`
+	Data   []tfTypes.MeshControlPlane                `tfsdk:"data"`
+	Filter *tfTypes.MeshControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 }
 
 // Metadata returns the data source type name.
@@ -95,8 +96,58 @@ func (r *MeshControlPlanesDataSource) Schema(ctx context.Context, req datasource
 						"updated_at": schema.StringAttribute{
 							Computed: true,
 						},
+						"version": schema.StringAttribute{
+							Computed:    true,
+							Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions.`,
+						},
 					},
 				},
+			},
+			"filter": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"labels": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"contains": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field contains the provided value.`,
+							},
+							"eq": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
+							},
+							"neq": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
+							},
+							"ocontains": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field contains any of the provided values.`,
+							},
+							"oeq": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
+							},
+						},
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + `, ` + "`" + `ocontains` + "`" + ``,
+					},
+					"name": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"contains": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field contains the provided value.`,
+							},
+							"eq": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
+							},
+						},
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `contains` + "`" + ``,
+					},
+				},
+				Description: `Filters a collection of control planes.`,
 			},
 		},
 	}

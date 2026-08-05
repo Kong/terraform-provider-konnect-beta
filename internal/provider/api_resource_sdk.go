@@ -164,7 +164,7 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 			var provider shared.APISpecProviderPayloadProvider
 			var urlProvider *shared.URLProvider
 			if r.Spec.ProviderPayload.Provider.URLProvider != nil {
-				typeVar := shared.Type(r.Spec.ProviderPayload.Provider.URLProvider.Type.ValueString())
+				typeVar := shared.URLProviderType(r.Spec.ProviderPayload.Provider.URLProvider.Type.ValueString())
 				var url string
 				url = r.Spec.ProviderPayload.Provider.URLProvider.Config.URL.ValueString()
 

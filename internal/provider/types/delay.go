@@ -7,6 +7,6 @@ import (
 )
 
 type Delay struct {
-	Percentage *MeshItemMode `tfsdk:"percentage"`
-	Value      types.String  `tfsdk:"value"`
+	Percentage *AuthType    `tfsdk:"percentage"`
+	Value      types.String `tfsdk:"value"`
 }

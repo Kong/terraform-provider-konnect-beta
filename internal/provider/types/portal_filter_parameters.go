@@ -10,13 +10,13 @@ type PortalFilterParameters struct {
 	AuthenticationEnabled            types.Bool         `queryParam:"name=authentication_enabled" tfsdk:"authentication_enabled"`
 	AutoApproveApplications          types.Bool         `queryParam:"name=auto_approve_applications" tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers            types.Bool         `queryParam:"name=auto_approve_developers" tfsdk:"auto_approve_developers"`
-	CanonicalDomain                  *StringFieldFilter `queryParam:"name=canonical_domain" tfsdk:"canonical_domain"`
-	DefaultAPIVisibility             *StringFieldFilter `queryParam:"name=default_api_visibility" tfsdk:"default_api_visibility"`
+	CanonicalDomain                  *LabelsFieldFilter `queryParam:"name=canonical_domain" tfsdk:"canonical_domain"`
+	DefaultAPIVisibility             *LabelsFieldFilter `queryParam:"name=default_api_visibility" tfsdk:"default_api_visibility"`
 	DefaultApplicationAuthStrategyID *UUIDFieldFilter   `queryParam:"name=default_application_auth_strategy_id" tfsdk:"default_application_auth_strategy_id"`
-	DefaultDomain                    *StringFieldFilter `queryParam:"name=default_domain" tfsdk:"default_domain"`
-	DefaultPageVisibility            *StringFieldFilter `queryParam:"name=default_page_visibility" tfsdk:"default_page_visibility"`
-	Description                      *StringFieldFilter `queryParam:"name=description" tfsdk:"description"`
+	DefaultDomain                    *LabelsFieldFilter `queryParam:"name=default_domain" tfsdk:"default_domain"`
+	DefaultPageVisibility            *LabelsFieldFilter `queryParam:"name=default_page_visibility" tfsdk:"default_page_visibility"`
+	Description                      *LabelsFieldFilter `queryParam:"name=description" tfsdk:"description"`
 	ID                               *UUIDFieldFilter   `queryParam:"name=id" tfsdk:"id"`
-	Name                             *StringFieldFilter `queryParam:"name=name" tfsdk:"name"`
+	Name                             *LabelsFieldFilter `queryParam:"name=name" tfsdk:"name"`
 	RbacEnabled                      types.Bool         `queryParam:"name=rbac_enabled" tfsdk:"rbac_enabled"`
 }

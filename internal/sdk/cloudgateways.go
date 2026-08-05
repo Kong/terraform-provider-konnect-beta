@@ -32,8 +32,10 @@ func newCloudGateways(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, h
 }
 
 // CreateAddOn - Create Add-On
-// Creates a new add-on. Specific add-on types (e.g., managed cache)
-// are defined by the sub-kind configuration.
+// Creates a new add-on for a control plane or control plane group. The add-on type is
+// determined by the `config.kind` field — currently only `managed-cache.v0` is supported,
+// which provisions a Redis-compatible cache co-located with your data planes. After it's created,
+// the add-on transitions through `initializing → ready` as it deploys across data plane groups.
 func (s *CloudGateways) CreateAddOn(ctx context.Context, request shared.CreateAddOnRequest, opts ...operations.Option) (*operations.CreateAddOnResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -349,7 +351,7 @@ func (s *CloudGateways) CreateAddOn(ctx context.Context, request shared.CreateAd
 }
 
 // GetAddOn - Get Add-On
-// Retrieves an add-on by ID.
+// Retrieves a single add-on by ID, including its current lifecycle state and per data plane group deployment status.
 func (s *CloudGateways) GetAddOn(ctx context.Context, request operations.GetAddOnRequest, opts ...operations.Option) (*operations.GetAddOnResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -616,7 +618,8 @@ func (s *CloudGateways) GetAddOn(ctx context.Context, request operations.GetAddO
 }
 
 // DeleteAddOn - Delete Add-On
-// Deletes an add-on by ID. The request will be rejected if the managed cache partial is still in use by some plugins.
+// Deletes an add-on by ID. The request is rejected if any Kong plugins are still referencing
+// the managed cache add-on — remove those plugin references before deleting.
 func (s *CloudGateways) DeleteAddOn(ctx context.Context, request operations.DeleteAddOnRequest, opts ...operations.Option) (*operations.DeleteAddOnResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -879,7 +882,8 @@ func (s *CloudGateways) DeleteAddOn(ctx context.Context, request operations.Dele
 }
 
 // UpdateAddOn - Update Add-On
-// Updates the configuration of an existing add-on.
+// Updates the configuration of an existing add-on, such as changing the managed cache
+// capacity tier. Tier upgrades are supported; downgrades are not.
 func (s *CloudGateways) UpdateAddOn(ctx context.Context, request operations.UpdateAddOnRequest, opts ...operations.Option) (*operations.UpdateAddOnResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
