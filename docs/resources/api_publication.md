@@ -50,6 +50,8 @@ possible known values include one of ["public", "private"]; Default: "private"
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `environment` (String) The name of the environment this record is scoped to. Present only for APIs
+configured across multiple environments.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 - `warnings` (List of String) Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
 

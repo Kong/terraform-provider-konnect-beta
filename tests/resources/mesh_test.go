@@ -25,6 +25,7 @@ resource "konnect_mesh_control_plane" "e2e-test" {
 
   name = "e2e-test"
   description = "e2e test cp"
+  version = "v3"
 }
 `
 
@@ -89,7 +90,7 @@ func TestMesh(t *testing.T) {
 
 		builder.Upsert(cp)
 
-		resource.ParallelTest(t, hclbuilder.CreateMeshAndModifyFields(providerFactory, builder, mesh))
+		resource.ParallelTest(t, hclbuilder.CreateMeshWithMtlsAndModifyFields(providerFactory, builder, mesh))
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
@@ -122,7 +123,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 
 		builder.Upsert(cp)
 
-		resource.ParallelTest(t, hclbuilder.CreatePolicyAndModifyFields(providerFactory, builder, mesh, mtp))
+		resource.ParallelTest(t, hclbuilder.CreatePolicyWithRulesAndModifyFields(providerFactory, builder, mesh, mtp))
 	})
 
 	t.Run("create mesh with oneOf", func(t *testing.T) {
@@ -389,6 +390,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"allow": knownvalue.ListExact([]knownvalue.Check{
 										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"sni": knownvalue.Null(),
 											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
 												"type":  knownvalue.StringExact("Exact"),
 												"value": knownvalue.StringExact("spiffe://hello/world"),
@@ -422,6 +424,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"deny": knownvalue.ListExact([]knownvalue.Check{
 										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"sni": knownvalue.Null(),
 											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
 												"type":  knownvalue.StringExact("Exact"),
 												"value": knownvalue.StringExact("spiffe://hello/world"),
@@ -461,6 +464,7 @@ resource "konnect_mesh_control_plane" "e2e-test" {
 
   name = "%s"
   description = "e2e test cp"
+  version = "v3"
 }
 `, cpName))
 		require.NoError(t, err)
@@ -496,7 +500,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 
 		builder.Upsert(cp)
 
-		resource.ParallelTest(t, hclbuilder.NotImportedResourceShouldError(providerFactory, builder, mesh, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
+		resource.ParallelTest(t, hclbuilder.NotImportedResourceWithRulesShouldError(providerFactory, builder, mesh, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
 	})
 
 	t.Run("should be able to store secrets", func(t *testing.T) {
@@ -512,6 +516,7 @@ resource "konnect_mesh_control_plane" "e2e-test" {
 
   name = "%s"
   description = "e2e test cp"
+  version = "v3"
 }
 `, cpName))
 		require.NoError(t, err)
@@ -591,7 +596,6 @@ func createAnMTP(t *testing.T, cpName, meshName, mtpName string) {
 	}
 	require.NotNil(t, myCp)
 
-	action := shared.MeshTrafficPermissionItemActionAllow
 	resp, err := client.MeshTrafficPermission.PutMeshTrafficPermission(ctx, operations.PutMeshTrafficPermissionRequest{
 		Mesh: meshName,
 		Name: mtpName,
@@ -601,10 +605,18 @@ func createAnMTP(t *testing.T, cpName, meshName, mtpName string) {
 			Name: mtpName,
 			Type: shared.MeshTrafficPermissionItemTypeMeshTrafficPermission,
 			Spec: shared.MeshTrafficPermissionItemSpec{
-				From: []shared.MeshTrafficPermissionItemFrom{
+				Rules: []shared.MeshTrafficPermissionItemRules{
 					{
-						TargetRef: shared.MeshTrafficPermissionItemSpecTargetRef{Kind: shared.MeshTrafficPermissionItemSpecKindMesh},
-						Default:   &shared.MeshTrafficPermissionItemDefault{Action: &action},
+						Default: shared.MeshTrafficPermissionItemDefault{
+							Allow: []shared.Allow{
+								{
+									SpiffeID: &shared.MeshTrafficPermissionItemSpiffeID{
+										Type:  shared.MeshTrafficPermissionItemSpecRulesTypePrefix,
+										Value: "spiffe://hello/world",
+									},
+								},
+							},
+						},
 					},
 				},
 			},

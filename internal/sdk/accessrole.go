@@ -50,7 +50,7 @@ func (s *AccessRole) GetAccessRoleList(ctx context.Context, request operations.G
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/access-roles", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/access-roles", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -103,10 +103,10 @@ func (s *AccessRole) GetAccessRoleList(ctx context.Context, request operations.G
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -118,13 +118,7 @@ func (s *AccessRole) GetAccessRoleList(ctx context.Context, request operations.G
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -261,7 +255,7 @@ func (s *AccessRole) DeleteAccessRole(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/access-roles/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/access-roles/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -315,10 +309,10 @@ func (s *AccessRole) DeleteAccessRole(ctx context.Context, request operations.De
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -330,13 +324,7 @@ func (s *AccessRole) DeleteAccessRole(ctx context.Context, request operations.De
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -492,7 +480,7 @@ func (s *AccessRole) GetAccessRole(ctx context.Context, request operations.GetAc
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/access-roles/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/access-roles/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -546,10 +534,10 @@ func (s *AccessRole) GetAccessRole(ctx context.Context, request operations.GetAc
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -561,13 +549,7 @@ func (s *AccessRole) GetAccessRole(ctx context.Context, request operations.GetAc
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -722,7 +704,7 @@ func (s *AccessRole) PutAccessRole(ctx context.Context, request operations.PutAc
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/access-roles/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/access-roles/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -778,10 +760,10 @@ func (s *AccessRole) PutAccessRole(ctx context.Context, request operations.PutAc
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -793,13 +775,7 @@ func (s *AccessRole) PutAccessRole(ctx context.Context, request operations.PutAc
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {

@@ -30,7 +30,8 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
   labels = {
     key = "value"
   }
-  name = "Test control plane"
+  name    = "Test control plane"
+  version = "v3"
 }
 ```
 
@@ -46,6 +47,7 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
 - `description` (String)
 - `features` (Attributes List) Requires replacement if changed. (see [below for nested schema](#nestedatt--features))
 - `labels` (Map of String) Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
+- `version` (String) The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. Default: "v2"
 
 ### Read-Only
 

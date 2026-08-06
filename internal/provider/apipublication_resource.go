@@ -41,6 +41,7 @@ type APIPublicationResourceModel struct {
 	AuthStrategyIds          []types.String `tfsdk:"auth_strategy_ids"`
 	AutoApproveRegistrations types.Bool     `tfsdk:"auto_approve_registrations"`
 	CreatedAt                types.String   `tfsdk:"created_at"`
+	Environment              types.String   `tfsdk:"environment"`
 	FormID                   types.String   `tfsdk:"form_id"`
 	PortalID                 types.String   `tfsdk:"portal_id"`
 	UpdatedAt                types.String   `tfsdk:"updated_at"`
@@ -83,6 +84,11 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
+			"environment": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The name of the environment this record is scoped to. Present only for APIs` + "\n" +
+					`configured across multiple environments.`,
 			},
 			"form_id": schema.StringAttribute{
 				Computed:    true,

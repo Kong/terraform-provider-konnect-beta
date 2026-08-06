@@ -121,7 +121,7 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,
@@ -135,23 +135,13 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 							},
 							"name": schema.StringAttribute{
 								Optional: true,
-								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
-									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
+								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `` + "\n" +
+									`and ` + "`" + `MeshServiceSubset` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
-							},
-							"proxy_types": schema.ListAttribute{
-								Computed: true,
-								Optional: true,
-								PlanModifiers: []planmodifier.List{
-									custom_listplanmodifier.SupressZeroNullModifier(),
-								},
-								ElementType: types.StringType,
-								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
-									`all data plane types are targeted by the policy.`,
 							},
 							"section_name": schema.StringAttribute{
 								Optional: true,
@@ -207,7 +197,7 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 															Attributes: map[string]schema.Attribute{
 																"kind": schema.StringAttribute{
 																	Optional:    true,
-																	Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
+																	Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
 																	},
@@ -224,8 +214,8 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 																},
 																"name": schema.StringAttribute{
 																	Optional: true,
-																	MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
-																		`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
+																	MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `` + "\n" +
+																		`and ` + "`" + `MeshServiceSubset` + "`" + ``,
 																},
 																"namespace": schema.StringAttribute{
 																	Optional: true,
@@ -235,16 +225,6 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 																"port": schema.Int32Attribute{
 																	Optional:    true,
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
-																},
-																"proxy_types": schema.ListAttribute{
-																	Computed: true,
-																	Optional: true,
-																	PlanModifiers: []planmodifier.List{
-																		custom_listplanmodifier.SupressZeroNullModifier(),
-																	},
-																	ElementType: types.StringType,
-																	MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
-																		`all data plane types are targeted by the policy.`,
 																},
 																"section_name": schema.StringAttribute{
 																	Optional: true,
@@ -292,7 +272,7 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
 											Optional:    true,
-											Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
+											Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
 											},
@@ -309,23 +289,13 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 										},
 										"name": schema.StringAttribute{
 											Optional: true,
-											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
-												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
+											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `` + "\n" +
+												`and ` + "`" + `MeshServiceSubset` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
-										},
-										"proxy_types": schema.ListAttribute{
-											Computed: true,
-											Optional: true,
-											PlanModifiers: []planmodifier.List{
-												custom_listplanmodifier.SupressZeroNullModifier(),
-											},
-											ElementType: types.StringType,
-											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
-												`all data plane types are targeted by the policy.`,
 										},
 										"section_name": schema.StringAttribute{
 											Optional: true,

@@ -9,6 +9,10 @@ import (
 
 // APIPublicationResponse - An API publication in a portal
 type APIPublicationResponse struct {
+	// The name of the environment this record is scoped to. Present only for APIs
+	// configured across multiple environments.
+	//
+	Environment *string `default:"null" json:"environment"`
 	// Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal's auto_approve_applications value.
 	AutoApproveRegistrations *bool `json:"auto_approve_registrations,omitempty"`
 	// The auth strategy the API enforces for applications in the portal.
@@ -41,6 +45,13 @@ func (a *APIPublicationResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *APIPublicationResponse) GetEnvironment() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Environment
 }
 
 func (a *APIPublicationResponse) GetAutoApproveRegistrations() *bool {

@@ -9,13 +9,15 @@ import (
 
 // PortalTeamResponse - Details about a developer team.
 type PortalTeamResponse struct {
-	ID          *string    `json:"id,omitempty"`
-	Name        *string    `default:"null" json:"name"`
-	Description *string    `default:"null" json:"description"`
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 	// Whether the team is allowed to own applications.
 	CanOwnApplications *bool `default:"null" json:"can_own_applications"`
+	// Indicates whether the team is managed by Konnect.
+	KonnectManaged *bool `default:"false" json:"konnect_managed"`
 }
 
 func (p PortalTeamResponse) MarshalJSON() ([]byte, error) {
@@ -29,37 +31,37 @@ func (p *PortalTeamResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PortalTeamResponse) GetID() *string {
+func (p *PortalTeamResponse) GetID() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ID
 }
 
-func (p *PortalTeamResponse) GetName() *string {
+func (p *PortalTeamResponse) GetName() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.Name
 }
 
-func (p *PortalTeamResponse) GetDescription() *string {
+func (p *PortalTeamResponse) GetDescription() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.Description
 }
 
-func (p *PortalTeamResponse) GetCreatedAt() *time.Time {
+func (p *PortalTeamResponse) GetCreatedAt() time.Time {
 	if p == nil {
-		return nil
+		return time.Time{}
 	}
 	return p.CreatedAt
 }
 
-func (p *PortalTeamResponse) GetUpdatedAt() *time.Time {
+func (p *PortalTeamResponse) GetUpdatedAt() time.Time {
 	if p == nil {
-		return nil
+		return time.Time{}
 	}
 	return p.UpdatedAt
 }
@@ -69,4 +71,11 @@ func (p *PortalTeamResponse) GetCanOwnApplications() *bool {
 		return nil
 	}
 	return p.CanOwnApplications
+}
+
+func (p *PortalTeamResponse) GetKonnectManaged() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.KonnectManaged
 }

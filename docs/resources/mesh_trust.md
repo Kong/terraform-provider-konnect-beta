@@ -30,9 +30,6 @@ resource "konnect_mesh_trust" "my_meshtrust" {
         type = "Pem"
       }
     ]
-    origin = {
-      kri = "...my_kri..."
-    }
     trust_domain = "...my_trust_domain..."
   }
   type = "MeshTrust"
@@ -72,12 +69,6 @@ Required:
 At least one CA bundle must be specified. (see [below for nested schema](#nestedatt--spec--ca_bundles))
 - `trust_domain` (String) TrustDomain is the trust domain associated with this resource.
 
-Optional:
-
-- `origin` (Attributes) Origin specifies whether the resource was created from a MeshIdentity.
-
-Deprecated: use Status.Origin instead (see [below for nested schema](#nestedatt--spec--origin))
-
 <a id="nestedatt--spec--ca_bundles"></a>
 ### Nested Schema for `spec.ca_bundles`
 
@@ -93,14 +84,6 @@ Optional:
 
 - `value` (String) Value holds the PEM-encoded CA bundle as a string. Not Null
 
-
-
-<a id="nestedatt--spec--origin"></a>
-### Nested Schema for `spec.origin`
-
-Optional:
-
-- `kri` (String) Resource identifier
 
 
 

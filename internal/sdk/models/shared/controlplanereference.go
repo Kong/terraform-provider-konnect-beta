@@ -8,6 +8,13 @@ import (
 
 // ControlPlaneReference - A control plane that implements an API
 type ControlPlaneReference struct {
+	// The environment this implementation is scoped to, by name. On write, selects the
+	// target environment: required when the API is configured across multiple
+	// environments, and optional otherwise (accepted only if it matches the API's sole
+	// environment). On read, the resolved environment name. Present only for APIs
+	// configured across multiple environments.
+	//
+	Environment *string `default:"null" json:"environment"`
 	// A Control plane that implements an API
 	ControlPlane *APIImplementationControlPlaneInput `json:"control_plane,omitempty"`
 }
@@ -21,6 +28,13 @@ func (c *ControlPlaneReference) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (c *ControlPlaneReference) GetEnvironment() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Environment
 }
 
 func (c *ControlPlaneReference) GetControlPlane() *APIImplementationControlPlaneInput {

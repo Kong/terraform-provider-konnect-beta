@@ -28,9 +28,10 @@ resource "konnect_dashboard" "my_dashboard" {
         chart = {
           definition = {
             chart = {
-              choropleth_map = {
-                chart_title = "...my_chart_title..."
-                type        = "choropleth_map"
+              single_value = {
+                chart_title    = "...my_chart_title..."
+                decimal_points = 7.86
+                type           = "single_value"
               }
             }
             query = {
@@ -47,6 +48,7 @@ resource "konnect_dashboard" "my_dashboard" {
                   }
                 ]
                 granularity = "tenMinutely"
+                limit       = 50
                 metrics = [
                   "ai_request_count"
                 ]
@@ -174,6 +176,8 @@ This type of chart can support:
 - One metric plus one non-time dimension: `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` 
 
 Either way, ensure that `time` is in the list of query dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--timeseries_line))
+- `top_n` (Attributes) A chart that ranks dimension values by a metric and renders them as a table, showing
+the top results.  This type of chart supports up to 3 dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--top_n))
 
 <a id="nestedatt--definition--tiles--chart--definition--chart--choropleth_map"></a>
 ### Nested Schema for `definition.tiles.chart.definition.chart.choropleth_map`
@@ -223,6 +227,15 @@ Optional:
 - `type` (String) possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null
 
 
+<a id="nestedatt--definition--tiles--chart--definition--chart--top_n"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart.top_n`
+
+Optional:
+
+- `chart_title` (String) The title of the chart, which is displayed in the tile's header.
+- `type` (String) Not Null; must be "top_n"
+
+
 
 <a id="nestedatt--definition--tiles--chart--definition--query"></a>
 ### Nested Schema for `definition.tiles.chart.definition.query`
@@ -263,6 +276,7 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range))
 
@@ -271,7 +285,7 @@ possible known values include one of ["tenSecondly", "thirtySecondly", "minutely
 
 Optional:
 
-- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
@@ -336,6 +350,7 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range))
 
@@ -344,7 +359,7 @@ possible known values include one of ["tenSecondly", "thirtySecondly", "minutely
 
 Optional:
 
-- `field` (String) possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
@@ -409,6 +424,7 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range))
 
@@ -417,7 +433,7 @@ possible known values include one of ["tenSecondly", "thirtySecondly", "minutely
 
 Optional:
 
-- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "principal", "realm", "route", "status_code", "status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
@@ -479,7 +495,7 @@ Granularity values:
   - `weekly`: Groups data into 7-day buckets.
   - `monthly`: Groups data into calendar month buckets.
 possible known values include one of ["daily", "weekly", "monthly"]
-- `limit` (Number) Maximum number of group_by buckets to return. Defaults to 50, capped at 1000. Only applies when a group_by dimension is requested. Default: 50
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["control_plane_count"]
 - `time_range` (Attributes) The time range to query for platform data. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--platform_usage--time_range))
 
@@ -488,7 +504,7 @@ possible known values include one of ["daily", "weekly", "monthly"]
 
 Optional:
 
-- `field` (String) The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "gateway_service", "plugin", "plugin_name", "plugin_scope", "realm", "route"]; Not Null
+- `field` (String) The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to filter by. Not Null
 
@@ -560,7 +576,7 @@ Optional:
 
 Optional:
 
-- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 

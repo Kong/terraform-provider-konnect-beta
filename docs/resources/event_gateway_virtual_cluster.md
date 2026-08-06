@@ -114,10 +114,7 @@ The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `namespace` (Attributes) Namespace allows to implement multitenancy using a single backend cluster.
 It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs). (see [below for nested schema](#nestedatt--namespace))
-- `topic_aliases` (Attributes List) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Topic aliases allow exposing backend topics under additional names.
+- `topic_aliases` (Attributes List) Topic aliases allow exposing backend topics under additional names.
 An alias creates a new entry point to the same physical data.
 The alias `topic` field references namespace-visible names (if namespace is configured).
 Aliases are independent of namespace and can be used without it.

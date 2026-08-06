@@ -151,7 +151,7 @@ func (u APISpecProvider) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type APISpecProvider: all fields are null")
 }
 
-type Spec struct {
+type APIVersionSummarySpec struct {
 	// The type of specification being stored. This allows us to render the specification correctly.
 	//
 	Type *APISpecType `json:"type,omitempty"`
@@ -159,26 +159,26 @@ type Spec struct {
 	Provider *APISpecProvider `json:"provider,omitempty"`
 }
 
-func (s *Spec) GetType() *APISpecType {
-	if s == nil {
+func (a *APIVersionSummarySpec) GetType() *APISpecType {
+	if a == nil {
 		return nil
 	}
-	return s.Type
+	return a.Type
 }
 
-func (s *Spec) GetProvider() *APISpecProvider {
-	if s == nil {
+func (a *APIVersionSummarySpec) GetProvider() *APISpecProvider {
+	if a == nil {
 		return nil
 	}
-	return s.Provider
+	return a.Provider
 }
 
 type APIVersionSummary struct {
 	// The API version identifier.
 	ID *string `json:"id,omitempty"`
 	// The version of this api spec.
-	Version *string `json:"version,omitempty"`
-	Spec    *Spec   `json:"spec,omitempty"`
+	Version *string                `json:"version,omitempty"`
+	Spec    *APIVersionSummarySpec `json:"spec,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -210,7 +210,7 @@ func (a *APIVersionSummary) GetVersion() *string {
 	return a.Version
 }
 
-func (a *APIVersionSummary) GetSpec() *Spec {
+func (a *APIVersionSummary) GetSpec() *APIVersionSummarySpec {
 	if a == nil {
 		return nil
 	}

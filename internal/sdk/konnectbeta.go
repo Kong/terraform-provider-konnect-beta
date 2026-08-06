@@ -54,31 +54,7 @@ func Pointer[T any](v T) *T { return &v }
 
 // KonnectBeta - Konnect API (BETA): This is a BETA specification. Endpoints in this specification may change with zero notice
 type KonnectBeta struct {
-	SDKVersion string
-	// APIs related to configuration of Konnect Developer Portals.
-	Portals *Portals
-	// APIs related to configuration of Konnect Developer Portals custom domains.
-	PortalCustomDomains *PortalCustomDomains
-	// APIs for managing static assets for Konnect Developer Portals.
-	Assets *Assets
-	// APIs related to customization of Konnect Developer Portals.
-	PortalCustomization *PortalCustomization
-	PortalPages         *PortalPages
-	// APIs related to Konnect Developer Portal Custom Snippets.
-	Snippets *Snippets
-	// APIs related to configuration of Konnect Developer Portal auth settings.
-	PortalAuthSettings *PortalAuthSettings
-	// APIs related to configuration of Konnect Developer Portal developer teams.
-	PortalTeams     *PortalTeams
-	PortalAuditLogs *PortalAuditLogs
-	// APIs related to Konnect Portal IP Allow List.
-	PortalsIPAllowList        *PortalsIPAllowList
-	API                       *API
-	APIDocumentation          *APIDocumentation
-	APISpecification          *APISpecification
-	APIVersion                *APIVersion
-	APIPublication            *APIPublication
-	APIImplementation         *APIImplementation
+	SDKVersion                string
 	MeshAccessLog             *MeshAccessLog
 	MeshCircuitBreaker        *MeshCircuitBreaker
 	MeshFaultInjection        *MeshFaultInjection
@@ -96,7 +72,6 @@ type KonnectBeta struct {
 	MeshTrace                 *MeshTrace
 	MeshTrafficPermission     *MeshTrafficPermission
 	Mesh                      *Mesh
-	MeshGateway               *MeshGateway
 	Secret                    *Secret
 	ZoneEgress                *ZoneEgress
 	ZoneIngress               *ZoneIngress
@@ -104,14 +79,48 @@ type KonnectBeta struct {
 	MeshExternalService       *MeshExternalService
 	MeshIdentity              *MeshIdentity
 	MeshMultiZoneService      *MeshMultiZoneService
+	MeshOpenTelemetryBackend  *MeshOpenTelemetryBackend
 	MeshService               *MeshService
 	MeshTrust                 *MeshTrust
+	MeshZoneAddress           *MeshZoneAddress
 	Workload                  *Workload
-	MeshGlobalRateLimit       *MeshGlobalRateLimit
+	Tenants                   *Tenants
 	MeshOPA                   *MeshOPA
 	AccessAudit               *AccessAudit
 	AccessRole                *AccessRole
 	AccessRoleBinding         *AccessRoleBinding
+	// APIs related to configuration of Konnect Developer Portals.
+	Portals *Portals
+	// APIs related to configuration of Konnect Developer Portals custom domains.
+	PortalCustomDomains *PortalCustomDomains
+	// APIs for managing static assets for Konnect Developer Portals.
+	Assets *Assets
+	// APIs related to customization of Konnect Developer Portals.
+	PortalCustomization *PortalCustomization
+	PortalPages         *PortalPages
+	// APIs related to Konnect Developer Portal Custom Snippets.
+	Snippets *Snippets
+	// APIs related to Konnect Developer Portal Applications.
+	Applications *Applications
+	// APIs related to Konnect Developer Portal Application Registrations.
+	ApplicationRegistrations *ApplicationRegistrations
+	// APIs related to configuration of Konnect Developer Portal auth settings.
+	PortalAuthSettings *PortalAuthSettings
+	// APIs related to configuration of Konnect Developer Portal developer teams.
+	PortalTeams *PortalTeams
+	// APIs related to Konnect Developer Portal developer team roles.
+	PortalTeamRoles *PortalTeamRoles
+	// APIs related to Konnect Developer Portal developers.
+	PortalDevelopers *PortalDevelopers
+	PortalAuditLogs  *PortalAuditLogs
+	// APIs related to Konnect Portal IP Allow List.
+	PortalsIPAllowList *PortalsIPAllowList
+	API                *API
+	APIDocumentation   *APIDocumentation
+	APISpecification   *APISpecification
+	APIVersion         *APIVersion
+	APIPublication     *APIPublication
+	APIImplementation  *APIImplementation
 	// Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
 	AuthServer *AuthServer
 	// Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.
@@ -120,7 +129,10 @@ type KonnectBeta struct {
 	AuthServerScopes *AuthServerScopes
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
 	AuthServerClients *AuthServerClients
-	Dashboards        *Dashboards
+	// Trusted IdPs allow an Auth Server to accept identity assertions from an external identity provider and exchange them for Konnect-issued tokens. The management API will give you the ability to configure the trusted IdP for an Auth Server.
+	AuthServerTrustedIDPs *AuthServerTrustedIDPs
+	Dashboards            *Dashboards
+	PersonalAccessTokens  *PersonalAccessTokens
 	// Create an Event Gateway Control Plane, used to store Event Gateway configuration
 	//
 	EventGateways *EventGateways
@@ -277,22 +289,6 @@ func New(opts ...SDKOption) *KonnectBeta {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
-	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshAccessLog = newMeshAccessLog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshCircuitBreaker = newMeshCircuitBreaker(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshFaultInjection = newMeshFaultInjection(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -310,7 +306,6 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshTrace = newMeshTrace(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshTrafficPermission = newMeshTrafficPermission(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.MeshGateway = newMeshGateway(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Secret = newSecret(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ZoneEgress = newZoneEgress(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ZoneIngress = newZoneIngress(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -318,19 +313,43 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshIdentity = newMeshIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshOpenTelemetryBackend = newMeshOpenTelemetryBackend(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshTrust = newMeshTrust(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshZoneAddress = newMeshZoneAddress(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Workload = newWorkload(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Tenants = newTenants(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessAudit = newAccessAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessRole = newAccessRole(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessRoleBinding = newAccessRoleBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Applications = newApplications(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ApplicationRegistrations = newApplicationRegistrations(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClaims = newAuthServerClaims(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AuthServerTrustedIDPs = newAuthServerTrustedIDPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGateways = newEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListeners = newEventGatewayListeners(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)

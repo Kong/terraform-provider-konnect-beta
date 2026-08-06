@@ -24,7 +24,7 @@ func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx contex
 			r.Spec = &tfTypes.CreateAPIVersionRequestSpec{}
 			r.Spec.Content = types.StringPointerValue(resp.Spec.Content)
 			if resp.Spec.Provider != nil {
-				r.Spec.Provider = &tfTypes.Provider{}
+				r.Spec.Provider = &tfTypes.CreateAPIVersionRequestProvider{}
 				if resp.Spec.Provider.IntegrationProvider != nil {
 					r.Spec.Provider.IntegrationProvider = &tfTypes.IntegrationProvider{}
 					if len(resp.Spec.Provider.IntegrationProvider.Config) > 0 {
@@ -177,7 +177,7 @@ func (r *APIVersionResourceModel) ToSharedAPIVersionRequest(ctx context.Context)
 	if r.Spec.Provider != nil {
 		var urlProvider *shared.URLProvider
 		if r.Spec.Provider.URLProvider != nil {
-			typeVar := shared.Type(r.Spec.Provider.URLProvider.Type.ValueString())
+			typeVar := shared.URLProviderType(r.Spec.Provider.URLProvider.Type.ValueString())
 			var url string
 			url = r.Spec.Provider.URLProvider.Config.URL.ValueString()
 
@@ -268,11 +268,11 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 	} else {
 		content = nil
 	}
-	var provider *shared.Provider
+	var provider *shared.CreateAPIVersionRequestProvider
 	if r.Spec.Provider != nil {
 		var urlProvider *shared.URLProvider
 		if r.Spec.Provider.URLProvider != nil {
-			typeVar := shared.Type(r.Spec.Provider.URLProvider.Type.ValueString())
+			typeVar := shared.URLProviderType(r.Spec.Provider.URLProvider.Type.ValueString())
 			var url string
 			url = r.Spec.Provider.URLProvider.Config.URL.ValueString()
 
@@ -285,7 +285,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 			}
 		}
 		if urlProvider != nil {
-			provider = &shared.Provider{
+			provider = &shared.CreateAPIVersionRequestProvider{
 				URLProvider: urlProvider,
 			}
 		}
@@ -310,7 +310,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 			}
 		}
 		if integrationProvider != nil {
-			provider = &shared.Provider{
+			provider = &shared.CreateAPIVersionRequestProvider{
 				IntegrationProvider: integrationProvider,
 			}
 		}
@@ -331,7 +331,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 			}
 		}
 		if resourceBoundIntegrationProvider != nil {
-			provider = &shared.Provider{
+			provider = &shared.CreateAPIVersionRequestProvider{
 				ResourceBoundIntegrationProvider: resourceBoundIntegrationProvider,
 			}
 		}

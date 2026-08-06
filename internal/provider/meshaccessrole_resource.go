@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
@@ -40,12 +41,15 @@ type MeshAccessRoleResource struct {
 
 // MeshAccessRoleResourceModel describes the resource data model.
 type MeshAccessRoleResourceModel struct {
-	CpID     types.String                  `tfsdk:"cp_id"`
-	Labels   map[string]types.String       `tfsdk:"labels"`
-	Name     types.String                  `tfsdk:"name"`
-	Rules    []tfTypes.AccessRoleItemRules `tfsdk:"rules"`
-	Type     types.String                  `tfsdk:"type"`
-	Warnings []types.String                `tfsdk:"warnings"`
+	CpID             types.String                  `tfsdk:"cp_id"`
+	CreationTime     types.String                  `tfsdk:"creation_time"`
+	Kri              types.String                  `tfsdk:"kri"`
+	Labels           map[string]types.String       `tfsdk:"labels"`
+	ModificationTime types.String                  `tfsdk:"modification_time"`
+	Name             types.String                  `tfsdk:"name"`
+	Rules            []tfTypes.AccessRoleItemRules `tfsdk:"rules"`
+	Type             types.String                  `tfsdk:"type"`
+	Warnings         []types.String                `tfsdk:"warnings"`
 }
 
 func (r *MeshAccessRoleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,9 +67,27 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 				},
 				Description: `Id of the Konnect resource. Requires replacement if changed.`,
 			},
+			"creation_time": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Time at which the resource was created`,
+			},
+			"kri": schema.StringAttribute{
+				Computed:    true,
+				Description: `Kuma Resource Identifier (KRI) of the given resource`,
+			},
 			"labels": schema.MapAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
+			},
+			"modification_time": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Time at which the resource was updated`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -180,6 +202,10 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 													"kind": schema.StringAttribute{
 														Optional: true,
 													},
+													"labels": schema.MapAttribute{
+														Optional:    true,
+														ElementType: types.StringType,
+													},
 													"mesh": schema.StringAttribute{
 														Optional: true,
 													},
@@ -220,6 +246,10 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 											"kind": schema.StringAttribute{
 												Optional: true,
 											},
+											"labels": schema.MapAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+											},
 											"mesh": schema.StringAttribute{
 												Optional: true,
 											},
@@ -240,6 +270,10 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 												Attributes: map[string]schema.Attribute{
 													"kind": schema.StringAttribute{
 														Optional: true,
+													},
+													"labels": schema.MapAttribute{
+														Optional:    true,
+														ElementType: types.StringType,
 													},
 													"mesh": schema.StringAttribute{
 														Optional: true,
@@ -345,6 +379,43 @@ func (r *MeshAccessRoleResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleCreateOrUpdateSuccessResponse(ctx, res.AccessRoleCreateOrUpdateSuccessResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetAccessRoleRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.AccessRole.GetAccessRole(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.AccessRoleItem != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleItem(ctx, res1.AccessRoleItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -462,6 +533,43 @@ func (r *MeshAccessRoleResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleCreateOrUpdateSuccessResponse(ctx, res.AccessRoleCreateOrUpdateSuccessResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetAccessRoleRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.AccessRole.GetAccessRole(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.AccessRoleItem != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleItem(ctx, res1.AccessRoleItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return

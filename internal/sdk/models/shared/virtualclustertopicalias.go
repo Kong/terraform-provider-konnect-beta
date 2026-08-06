@@ -6,10 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// VirtualClusterTopicAlias - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// A topic alias maps an alias name to a namespace-visible topic name.
+// VirtualClusterTopicAlias - A topic alias maps an alias name to a namespace-visible topic name.
 // Clients can produce to, consume from, and discover the topic under the alias name.
 // The original topic name remains accessible.
 //

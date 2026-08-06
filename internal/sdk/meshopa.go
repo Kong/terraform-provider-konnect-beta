@@ -51,7 +51,7 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -105,10 +105,10 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -120,13 +120,7 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -281,7 +275,7 @@ func (s *MeshOPA) PutMeshOPA(ctx context.Context, request operations.PutMeshOPAR
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -337,10 +331,10 @@ func (s *MeshOPA) PutMeshOPA(ctx context.Context, request operations.PutMeshOPAR
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -352,13 +346,7 @@ func (s *MeshOPA) PutMeshOPA(ctx context.Context, request operations.PutMeshOPAR
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -495,7 +483,7 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -549,10 +537,10 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -564,13 +552,7 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -725,7 +707,7 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -778,10 +760,10 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -793,13 +775,7 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
