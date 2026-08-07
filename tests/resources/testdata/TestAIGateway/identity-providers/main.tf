@@ -15,6 +15,13 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
         
         name = "tf-test-key-auth-identity-provider"
     }
+
+    // config is free form, and the API can add more keys to it, so we ignore changes to it to avoid unnecessary diff in tests.
+    lifecycle {
+        ignore_changes = [
+            key_auth.config
+        ]
+    }
 }
 
 resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider_oidc" {
@@ -22,13 +29,19 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider_oi
   gateway_id = konnect_ai_gateway.my_aigateway.id
   openid_connect = {
     config = {
-      cache_tokens_salt = "...my_cache_tokens_salt..."
-      issuer                   = "https://dev-123456.example.com"
-
+      cache_tokens_salt = jsonencode("my_cache_tokens_salt")
+      issuer                   = jsonencode("https://dev-123456.example.com")
       ssl_verify = true
     }
     display_name = "TF Test OpenID Connect"
 
     name = "tf-test-openid-connect-identity-provider"
   }
+
+// config is free form, and the API can add more keys to it, so we ignore changes to it to avoid unnecessary diff in tests.
+  lifecycle {
+        ignore_changes = [
+            openid_connect.config
+        ]
+    }
 }

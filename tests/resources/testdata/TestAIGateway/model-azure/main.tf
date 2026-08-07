@@ -36,8 +36,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel_model" {
         hosts = []
         model = {
           path_selector = {
-            path_aliases = [
-              "my model model"
+            path_param = "model"
+            values = [
+              "my-azure-model"
             ]
           }
         }
