@@ -7,7 +7,7 @@ import (
 )
 
 type AIGatewayMCPServerConversionListener struct {
-	Access      *AIGatewayMCPServerBaseACLProperties         `tfsdk:"access"`
+	Access      *AIGatewayMCPServerListenerAccess            `tfsdk:"access"`
 	Config      *AIGatewayMCPServerWithUpstreamNoProxyConfig `tfsdk:"config"`
 	CreatedAt   types.String                                 `tfsdk:"created_at"`
 	DisplayName types.String                                 `tfsdk:"display_name"`

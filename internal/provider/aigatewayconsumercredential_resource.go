@@ -150,7 +150,7 @@ func (r *AIGatewayConsumerCredentialResource) Schema(ctx context.Context, req re
 					`Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 				},
 			},
 			"ttl": schema.Int64Attribute{

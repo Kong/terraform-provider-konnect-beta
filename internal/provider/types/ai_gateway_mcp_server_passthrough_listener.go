@@ -7,7 +7,7 @@ import (
 )
 
 type AIGatewayMCPServerPassthroughListener struct {
-	Access      *AIGatewayMCPServerBaseACLProperties  `tfsdk:"access"`
+	Access      *AIGatewayMCPServerListenerAccess     `tfsdk:"access"`
 	Config      *AIGatewayMCPServerWithUpstreamConfig `tfsdk:"config"`
 	CreatedAt   types.String                          `tfsdk:"created_at"`
 	DisplayName types.String                          `tfsdk:"display_name"`

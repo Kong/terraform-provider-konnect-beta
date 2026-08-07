@@ -130,9 +130,50 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`` + "\n" +
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
+									"identity_providers": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
+											`At most 1 identity provider of each identity provider type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+									"metadata": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"authorization_servers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of authorization server issuer URLs that can issue tokens for this resource.`,
+											},
+											"discovery_endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The URL where the protected resource metadata is served.`,
+											},
+											"endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource endpoint the metadata describes.`,
+											},
+											"resource": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource's identifier (resource URI).`,
+											},
+											"scopes_supported": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of OAuth scopes supported by the protected resource.`,
+											},
+										},
+										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
+									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("oauth_access_token"),
@@ -196,9 +237,50 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`` + "\n" +
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
+									"identity_providers": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
+											`At most 1 identity provider of each identity provider type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+									"metadata": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"authorization_servers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of authorization server issuer URLs that can issue tokens for this resource.`,
+											},
+											"discovery_endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The URL where the protected resource metadata is served.`,
+											},
+											"endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource endpoint the metadata describes.`,
+											},
+											"resource": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource's identifier (resource URI).`,
+											},
+											"scopes_supported": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of OAuth scopes supported by the protected resource.`,
+											},
+										},
+										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
+									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("consumer"),
@@ -918,7 +1000,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -1337,7 +1419,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -1641,9 +1723,50 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`` + "\n" +
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
+									"identity_providers": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
+											`At most 1 identity provider of each identity provider type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+									"metadata": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"authorization_servers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of authorization server issuer URLs that can issue tokens for this resource.`,
+											},
+											"discovery_endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The URL where the protected resource metadata is served.`,
+											},
+											"endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource endpoint the metadata describes.`,
+											},
+											"resource": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource's identifier (resource URI).`,
+											},
+											"scopes_supported": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of OAuth scopes supported by the protected resource.`,
+											},
+										},
+										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
+									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("oauth_access_token"),
@@ -1707,9 +1830,50 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`` + "\n" +
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
+									"identity_providers": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
+											`At most 1 identity provider of each identity provider type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+									"metadata": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"authorization_servers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of authorization server issuer URLs that can issue tokens for this resource.`,
+											},
+											"discovery_endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The URL where the protected resource metadata is served.`,
+											},
+											"endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource endpoint the metadata describes.`,
+											},
+											"resource": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource's identifier (resource URI).`,
+											},
+											"scopes_supported": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of OAuth scopes supported by the protected resource.`,
+											},
+										},
+										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
+									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("consumer"),
@@ -2419,7 +2583,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -2698,9 +2862,50 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`` + "\n" +
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
+									"identity_providers": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
+											`At most 1 identity provider of each identity provider type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+									"metadata": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"authorization_servers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of authorization server issuer URLs that can issue tokens for this resource.`,
+											},
+											"discovery_endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The URL where the protected resource metadata is served.`,
+											},
+											"endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource endpoint the metadata describes.`,
+											},
+											"resource": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource's identifier (resource URI).`,
+											},
+											"scopes_supported": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of OAuth scopes supported by the protected resource.`,
+											},
+										},
+										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
+									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("oauth_access_token"),
@@ -2764,9 +2969,50 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`` + "\n" +
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
+									"identity_providers": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
+											`At most 1 identity provider of each identity provider type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+									"metadata": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"authorization_servers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of authorization server issuer URLs that can issue tokens for this resource.`,
+											},
+											"discovery_endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The URL where the protected resource metadata is served.`,
+											},
+											"endpoint": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource endpoint the metadata describes.`,
+											},
+											"resource": schema.StringAttribute{
+												Optional:    true,
+												Description: `The protected resource's identifier (resource URI).`,
+											},
+											"scopes_supported": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of OAuth scopes supported by the protected resource.`,
+											},
+										},
+										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
+									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("consumer"),
@@ -3555,7 +3801,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -4733,7 +4979,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -5033,11 +5279,11 @@ func (r *AIGatewayMCPServerResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIGatewayMCPServerResponseTFOnly != nil) {
+	if !(res.AIGatewayMCPServer != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServerResponseTFOnly(ctx, res.AIGatewayMCPServerResponseTFOnly)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServer(ctx, res.AIGatewayMCPServer)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -5097,11 +5343,11 @@ func (r *AIGatewayMCPServerResource) Read(ctx context.Context, req resource.Read
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIGatewayMCPServerResponseTFOnly != nil) {
+	if !(res.AIGatewayMCPServer != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServerResponseTFOnly(ctx, res.AIGatewayMCPServerResponseTFOnly)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServer(ctx, res.AIGatewayMCPServer)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -5147,11 +5393,11 @@ func (r *AIGatewayMCPServerResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIGatewayMCPServerResponseTFOnly != nil) {
+	if !(res.AIGatewayMCPServer != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServerResponseTFOnly(ctx, res.AIGatewayMCPServerResponseTFOnly)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAIGatewayMCPServer(ctx, res.AIGatewayMCPServer)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -3,9 +3,10 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type HeadersSelector struct {
-	Headers map[string]jsontypes.Normalized `tfsdk:"headers"`
+	HeaderParam types.String   `tfsdk:"header_param"`
+	Values      []types.String `tfsdk:"values"`
 }

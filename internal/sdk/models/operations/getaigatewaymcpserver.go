@@ -36,7 +36,7 @@ type GetAiGatewayMcpServerResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A successful response returning an MCP Server.
-	AIGatewayMCPServerResponseTFOnly *shared.AIGatewayMCPServerResponseTFOnly
+	AIGatewayMCPServer *shared.AIGatewayMCPServer
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -68,44 +68,44 @@ func (g *GetAiGatewayMcpServerResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerResponseTFOnly() *shared.AIGatewayMCPServerResponseTFOnly {
+func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServer() *shared.AIGatewayMCPServer {
 	if g == nil {
 		return nil
 	}
-	return g.AIGatewayMCPServerResponseTFOnly
+	return g.AIGatewayMCPServer
 }
 
-func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerResponseTFOnlyConversionOnly() *shared.AIGatewayMCPServerConversionOnlyResponse {
-	if v := g.GetAIGatewayMCPServerResponseTFOnly(); v != nil {
-		return v.AIGatewayMCPServerConversionOnlyResponse
+func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionOnly() *shared.AIGatewayMCPServerAIGatewayMCPServerConversionOnly {
+	if v := g.GetAIGatewayMCPServer(); v != nil {
+		return v.AIGatewayMCPServerAIGatewayMCPServerConversionOnly
 	}
 	return nil
 }
 
-func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerResponseTFOnlyConversionListener() *shared.AIGatewayMCPServerConversionListenerResponse {
-	if v := g.GetAIGatewayMCPServerResponseTFOnly(); v != nil {
-		return v.AIGatewayMCPServerConversionListenerResponse
+func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionListener() *shared.AIGatewayMCPServerAIGatewayMCPServerConversionListener {
+	if v := g.GetAIGatewayMCPServer(); v != nil {
+		return v.AIGatewayMCPServerAIGatewayMCPServerConversionListener
 	}
 	return nil
 }
 
-func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerResponseTFOnlyListener() *shared.AIGatewayMCPServerListenerResponse {
-	if v := g.GetAIGatewayMCPServerResponseTFOnly(); v != nil {
-		return v.AIGatewayMCPServerListenerResponse
+func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerListener() *shared.AIGatewayMCPServerAIGatewayMCPServerListener {
+	if v := g.GetAIGatewayMCPServer(); v != nil {
+		return v.AIGatewayMCPServerAIGatewayMCPServerListener
 	}
 	return nil
 }
 
-func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerResponseTFOnlyPassthroughListener() *shared.AIGatewayMCPServerPassthroughListenerResponse {
-	if v := g.GetAIGatewayMCPServerResponseTFOnly(); v != nil {
-		return v.AIGatewayMCPServerPassthroughListenerResponse
+func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerPassthroughListener() *shared.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener {
+	if v := g.GetAIGatewayMCPServer(); v != nil {
+		return v.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener
 	}
 	return nil
 }
 
-func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerResponseTFOnlyUpstreamServer() *shared.AIGatewayMCPServerUpstreamServerResponse {
-	if v := g.GetAIGatewayMCPServerResponseTFOnly(); v != nil {
-		return v.AIGatewayMCPServerUpstreamServerResponse
+func (g *GetAiGatewayMcpServerResponse) GetAIGatewayMCPServerUpstreamServer() *shared.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer {
+	if v := g.GetAIGatewayMCPServer(); v != nil {
+		return v.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer
 	}
 	return nil
 }

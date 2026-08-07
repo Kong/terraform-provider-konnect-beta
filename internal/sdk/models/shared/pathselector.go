@@ -8,9 +8,12 @@ import (
 
 // PathSelector - Configuration for routing requests to a specific model using a path selector.
 type PathSelector struct {
-	// Value that will cause this route to match if present in the request path.
+	// The path param name to match for routing.
+	PathParam string `json:"path_param"`
+	// The list of values that are matched against the path param value.
+	// If the path param value matches any of the specified values, the request will be routed to the corresponding model.
 	//
-	PathAliases []string `json:"path_aliases"`
+	Values []string `json:"values"`
 }
 
 func (p PathSelector) MarshalJSON() ([]byte, error) {
@@ -24,9 +27,16 @@ func (p *PathSelector) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PathSelector) GetPathAliases() []string {
+func (p *PathSelector) GetPathParam() string {
+	if p == nil {
+		return ""
+	}
+	return p.PathParam
+}
+
+func (p *PathSelector) GetValues() []string {
 	if p == nil {
 		return []string{}
 	}
-	return p.PathAliases
+	return p.Values
 }

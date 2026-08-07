@@ -35,6 +35,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        identity_providers = [
+          "okta-ai-se"
+        ]
+        metadata = {
+          authorization_servers = [
+            "..."
+          ]
+          discovery_endpoint = "...my_discovery_endpoint..."
+          endpoint           = "...my_endpoint..."
+          resource           = "...my_resource..."
+          scopes_supported = [
+            "..."
+          ]
+        }
       }
     }
     config = {
@@ -298,6 +312,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        identity_providers = [
+          "okta-ai-se"
+        ]
+        metadata = {
+          authorization_servers = [
+            "..."
+          ]
+          discovery_endpoint = "...my_discovery_endpoint..."
+          endpoint           = "...my_endpoint..."
+          resource           = "...my_resource..."
+          scopes_supported = [
+            "..."
+          ]
+        }
       }
     }
     config = {
@@ -463,6 +491,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
           deny = [
+            "..."
+          ]
+        }
+        identity_providers = [
+          "okta-ai-se"
+        ]
+        metadata = {
+          authorization_servers = [
+            "..."
+          ]
+          discovery_endpoint = "...my_discovery_endpoint..."
+          endpoint           = "...my_endpoint..."
+          resource           = "...my_resource..."
+          scopes_supported = [
             "..."
           ]
         }
@@ -891,9 +933,15 @@ Read-Only:
 Optional:
 
 - `consumer` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer))
+This feature is currently in beta and is subject to change.
+
+Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+for granting access to an MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer))
 - `oauth_access_token` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token))
+This feature is currently in beta and is subject to change.
+
+Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+for granting access to an MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token))
 
 <a id="nestedatt--conversion_listener--access--consumer"></a>
 ### Nested Schema for `conversion_listener.access.consumer`
@@ -908,6 +956,9 @@ Access control rules for allowing or denying consumer groups. (see [below for ne
 This feature is currently in beta and is subject to change.
 
 Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--default_tool_acls))
+- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+At most 1 identity provider of each identity provider type can be referenced.
+- `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--metadata))
 
 <a id="nestedatt--conversion_listener--access--consumer--acls"></a>
 ### Nested Schema for `conversion_listener.access.consumer.acls`
@@ -927,6 +978,18 @@ Optional:
 - `deny` (List of String) List of consumer groups that are denied access.
 
 
+<a id="nestedatt--conversion_listener--access--consumer--metadata"></a>
+### Nested Schema for `conversion_listener.access.consumer.metadata`
+
+Optional:
+
+- `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
+- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
+- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `resource` (String) The protected resource's identifier (resource URI).
+- `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
+
+
 
 <a id="nestedatt--conversion_listener--access--oauth_access_token"></a>
 ### Nested Schema for `conversion_listener.access.oauth_access_token`
@@ -944,6 +1007,9 @@ Access control rules for allowing or denying consumer groups. (see [below for ne
 This feature is currently in beta and is subject to change.
 
 Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--default_tool_acls))
+- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+At most 1 identity provider of each identity provider type can be referenced.
+- `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--metadata))
 
 <a id="nestedatt--conversion_listener--access--oauth_access_token--acls"></a>
 ### Nested Schema for `conversion_listener.access.oauth_access_token.acls`
@@ -961,6 +1027,18 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `deny` (List of String) List of consumer groups that are denied access.
+
+
+<a id="nestedatt--conversion_listener--access--oauth_access_token--metadata"></a>
+### Nested Schema for `conversion_listener.access.oauth_access_token.metadata`
+
+Optional:
+
+- `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
+- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
+- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `resource` (String) The protected resource's identifier (resource URI).
+- `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
 
 
@@ -1484,9 +1562,15 @@ Read-Only:
 Optional:
 
 - `consumer` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--listener--access--consumer))
+This feature is currently in beta and is subject to change.
+
+Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+for granting access to an MCP server. (see [below for nested schema](#nestedatt--listener--access--consumer))
 - `oauth_access_token` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token))
+This feature is currently in beta and is subject to change.
+
+Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+for granting access to an MCP server. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token))
 
 <a id="nestedatt--listener--access--consumer"></a>
 ### Nested Schema for `listener.access.consumer`
@@ -1501,6 +1585,9 @@ Access control rules for allowing or denying consumer groups. (see [below for ne
 This feature is currently in beta and is subject to change.
 
 Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--listener--access--consumer--default_tool_acls))
+- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+At most 1 identity provider of each identity provider type can be referenced.
+- `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--listener--access--consumer--metadata))
 
 <a id="nestedatt--listener--access--consumer--acls"></a>
 ### Nested Schema for `listener.access.consumer.acls`
@@ -1520,6 +1607,18 @@ Optional:
 - `deny` (List of String) List of consumer groups that are denied access.
 
 
+<a id="nestedatt--listener--access--consumer--metadata"></a>
+### Nested Schema for `listener.access.consumer.metadata`
+
+Optional:
+
+- `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
+- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
+- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `resource` (String) The protected resource's identifier (resource URI).
+- `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
+
+
 
 <a id="nestedatt--listener--access--oauth_access_token"></a>
 ### Nested Schema for `listener.access.oauth_access_token`
@@ -1537,6 +1636,9 @@ Access control rules for allowing or denying consumer groups. (see [below for ne
 This feature is currently in beta and is subject to change.
 
 Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--default_tool_acls))
+- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+At most 1 identity provider of each identity provider type can be referenced.
+- `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--metadata))
 
 <a id="nestedatt--listener--access--oauth_access_token--acls"></a>
 ### Nested Schema for `listener.access.oauth_access_token.acls`
@@ -1554,6 +1656,18 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `deny` (List of String) List of consumer groups that are denied access.
+
+
+<a id="nestedatt--listener--access--oauth_access_token--metadata"></a>
+### Nested Schema for `listener.access.oauth_access_token.metadata`
+
+Optional:
+
+- `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
+- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
+- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `resource` (String) The protected resource's identifier (resource URI).
+- `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
 
 
@@ -1909,9 +2023,15 @@ Read-Only:
 Optional:
 
 - `consumer` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer))
+This feature is currently in beta and is subject to change.
+
+Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+for granting access to an MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer))
 - `oauth_access_token` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token))
+This feature is currently in beta and is subject to change.
+
+Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+for granting access to an MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token))
 
 <a id="nestedatt--passthrough_listener--access--consumer"></a>
 ### Nested Schema for `passthrough_listener.access.consumer`
@@ -1926,6 +2046,9 @@ Access control rules for allowing or denying consumer groups. (see [below for ne
 This feature is currently in beta and is subject to change.
 
 Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--default_tool_acls))
+- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+At most 1 identity provider of each identity provider type can be referenced.
+- `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--metadata))
 
 <a id="nestedatt--passthrough_listener--access--consumer--acls"></a>
 ### Nested Schema for `passthrough_listener.access.consumer.acls`
@@ -1945,6 +2068,18 @@ Optional:
 - `deny` (List of String) List of consumer groups that are denied access.
 
 
+<a id="nestedatt--passthrough_listener--access--consumer--metadata"></a>
+### Nested Schema for `passthrough_listener.access.consumer.metadata`
+
+Optional:
+
+- `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
+- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
+- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `resource` (String) The protected resource's identifier (resource URI).
+- `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
+
+
 
 <a id="nestedatt--passthrough_listener--access--oauth_access_token"></a>
 ### Nested Schema for `passthrough_listener.access.oauth_access_token`
@@ -1962,6 +2097,9 @@ Access control rules for allowing or denying consumer groups. (see [below for ne
 This feature is currently in beta and is subject to change.
 
 Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--default_tool_acls))
+- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+At most 1 identity provider of each identity provider type can be referenced.
+- `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--metadata))
 
 <a id="nestedatt--passthrough_listener--access--oauth_access_token--acls"></a>
 ### Nested Schema for `passthrough_listener.access.oauth_access_token.acls`
@@ -1979,6 +2117,18 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `deny` (List of String) List of consumer groups that are denied access.
+
+
+<a id="nestedatt--passthrough_listener--access--oauth_access_token--metadata"></a>
+### Nested Schema for `passthrough_listener.access.oauth_access_token.metadata`
+
+Optional:
+
+- `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
+- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
+- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `resource` (String) The protected resource's identifier (resource URI).
+- `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
 
 

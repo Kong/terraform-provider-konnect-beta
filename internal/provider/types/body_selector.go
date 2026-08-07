@@ -3,9 +3,10 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type BodySelector struct {
-	Body map[string]jsontypes.Normalized `tfsdk:"body"`
+	BodyParam types.String   `tfsdk:"body_param"`
+	Values    []types.String `tfsdk:"values"`
 }

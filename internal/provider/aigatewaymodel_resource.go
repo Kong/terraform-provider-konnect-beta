@@ -35,7 +35,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
-	speakeasy_mapvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/mapvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -1787,14 +1786,24 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											"body_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"body": schema.MapAttribute{
+													"body_param": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request body. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														Description: `The body property name to match for routing. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														MarkdownDescription: `The list of values that are matched against the body property value.` + "\n" +
+															`If the body property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
+															`Not Null`,
+														Validators: []validator.List{
+															speakeasy_listvalidators.NotNull(),
+															listvalidator.SizeAtMost(1),
 														},
 													},
 												},
@@ -1809,14 +1818,24 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											"headers_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"headers": schema.MapAttribute{
+													"header_param": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request headers. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														Description: `The header property name to match for routing. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														MarkdownDescription: `The list of values that are matched against the header property value.` + "\n" +
+															`If the header property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
+															`Not Null`,
+														Validators: []validator.List{
+															speakeasy_listvalidators.NotNull(),
+															listvalidator.SizeAtMost(1),
 														},
 													},
 												},
@@ -1831,11 +1850,21 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											"path_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"path_aliases": schema.ListAttribute{
+													"path_param": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The path param name to match for routing. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
-														Description: `Value that will cause this route to match if present in the request path. Not Null`,
+														MarkdownDescription: `The list of values that are matched against the path param value.` + "\n" +
+															`If the path param value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
+															`Not Null`,
 														Validators: []validator.List{
 															speakeasy_listvalidators.NotNull(),
 															listvalidator.SizeAtMost(1),
@@ -2002,7 +2031,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -5385,14 +5414,24 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											"body_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"body": schema.MapAttribute{
+													"body_param": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request body. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														Description: `The body property name to match for routing. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														MarkdownDescription: `The list of values that are matched against the body property value.` + "\n" +
+															`If the body property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
+															`Not Null`,
+														Validators: []validator.List{
+															speakeasy_listvalidators.NotNull(),
+															listvalidator.SizeAtMost(1),
 														},
 													},
 												},
@@ -5407,14 +5446,24 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											"headers_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"headers": schema.MapAttribute{
+													"header_param": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request headers. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+														Description: `The header property name to match for routing. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														MarkdownDescription: `The list of values that are matched against the header property value.` + "\n" +
+															`If the header property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
+															`Not Null`,
+														Validators: []validator.List{
+															speakeasy_listvalidators.NotNull(),
+															listvalidator.SizeAtMost(1),
 														},
 													},
 												},
@@ -5429,11 +5478,21 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											"path_selector": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"path_aliases": schema.ListAttribute{
+													"path_param": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The path param name to match for routing. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
-														Description: `Value that will cause this route to match if present in the request path. Not Null`,
+														MarkdownDescription: `The list of values that are matched against the path param value.` + "\n" +
+															`If the path param value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
+															`Not Null`,
 														Validators: []validator.List{
 															speakeasy_listvalidators.NotNull(),
 															listvalidator.SizeAtMost(1),
@@ -5600,7 +5659,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{

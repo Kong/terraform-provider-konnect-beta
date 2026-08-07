@@ -235,9 +235,6 @@ func CreateCreateAIGatewayModelProviderRequestVertex(vertex AIGatewayModelProvid
 func CreateCreateAIGatewayModelProviderRequestSagemaker(sagemaker AIGatewayModelProviderSagemaker) CreateAIGatewayModelProviderRequest {
 	typ := CreateAIGatewayModelProviderRequestTypeSagemaker
 
-	typStr := AIGatewayModelProviderSagemakerType(typ)
-	sagemaker.Type = typStr
-
 	return CreateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderSagemaker: &sagemaker,
 		Type:                            typ,

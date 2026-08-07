@@ -132,777 +132,1016 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
-												"chart": schema.SingleNestedAttribute{
-													Computed: true,
+												"chart_tile_definition": schema.SingleNestedAttribute{
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
-														"choropleth_map": schema.SingleNestedAttribute{
+														"chart": schema.SingleNestedAttribute{
+															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
-																"chart_title": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The title of the chart, which is displayed in the tile's header.`,
+																"choropleth_map": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"chart_title": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `The title of the chart, which is displayed in the tile's header.`,
+																		},
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "choropleth_map"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"choropleth_map",
+																				),
+																			},
+																		},
+																	},
+																	MarkdownDescription: `A chart that displays data on a world map. Each region on the map is colored based on the metric value.` + "\n" +
+																		`This chart works only with the ` + "`" + `api_usage` + "`" + ` datasource and requires a single metric and a single dimension of ` + "`" + `country_code` + "`" + `.` + "\n" +
+																		`No additional dimensions are supported.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																			path.MatchRelative().AtParent().AtName("donut"),
+																			path.MatchRelative().AtParent().AtName("single_value"),
+																			path.MatchRelative().AtParent().AtName("timeseries_line"),
+																			path.MatchRelative().AtParent().AtName("top_n"),
+																		}...),
+																	},
 																},
-																"type": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Not Null; must be "choropleth_map"`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"choropleth_map",
-																		),
+																"donut": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"chart_title": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `The title of the chart, which is displayed in the tile's header.`,
+																		},
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "donut"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf("donut"),
+																			},
+																		},
+																	},
+																	MarkdownDescription: `A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that` + "\n" +
+																		`the query includes only one dimension (not ` + "`" + `time` + "`" + `).`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																			path.MatchRelative().AtParent().AtName("choropleth_map"),
+																			path.MatchRelative().AtParent().AtName("single_value"),
+																			path.MatchRelative().AtParent().AtName("timeseries_line"),
+																			path.MatchRelative().AtParent().AtName("top_n"),
+																		}...),
+																	},
+																},
+																"horizontal_bar": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"chart_title": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `The title of the chart, which is displayed in the tile's header.`,
+																		},
+																		"stacked": schema.BoolAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.`,
+																		},
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `possible known values include one of ["horizontal_bar", "vertical_bar"]; Not Null`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																			},
+																		},
+																	},
+																	MarkdownDescription: `A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not ` + "`" + `time` + "`" + `).` + "\n" +
+																		`To render a bar chart of timeseries data, use a ` + "`" + `timeseries_bar` + "`" + ` chart instead.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("choropleth_map"),
+																			path.MatchRelative().AtParent().AtName("donut"),
+																			path.MatchRelative().AtParent().AtName("single_value"),
+																			path.MatchRelative().AtParent().AtName("timeseries_line"),
+																			path.MatchRelative().AtParent().AtName("top_n"),
+																		}...),
+																	},
+																},
+																"single_value": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"chart_title": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `The title of the chart, which is displayed in the tile's header.`,
+																		},
+																		"decimal_points": schema.Float64Attribute{
+																			Optional:    true,
+																			Description: `The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.`,
+																		},
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "single_value"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"single_value",
+																				),
+																			},
+																		},
+																	},
+																	Description: `A chart that can render a single number.  This chart works with a single metric and no dimensions.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																			path.MatchRelative().AtParent().AtName("choropleth_map"),
+																			path.MatchRelative().AtParent().AtName("donut"),
+																			path.MatchRelative().AtParent().AtName("timeseries_line"),
+																			path.MatchRelative().AtParent().AtName("top_n"),
+																		}...),
+																	},
+																},
+																"timeseries_line": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"chart_title": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `The title of the chart, which is displayed in the tile's header.`,
+																		},
+																		"stacked": schema.BoolAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.`,
+																		},
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																			},
+																		},
+																	},
+																	MarkdownDescription: `A chart that can render timeseries data -- data from a query that has ` + "`" + `time` + "`" + ` as a dimension -- as lines or bars.` + "\n" +
+																		`` + "\n" +
+																		`This type of chart can support:` + "\n" +
+																		`` + "\n" +
+																		`- One or more metrics: ` + "`" + `{ metrics: ["response_latency_p99", "response_latency_p95"], dimensions: ["time"] }` + "`" + `` + "\n" +
+																		`- One metric plus one non-time dimension: ` + "`" + `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` + "`" + ` ` + "\n" +
+																		`` + "\n" +
+																		`Either way, ensure that ` + "`" + `time` + "`" + ` is in the list of query dimensions.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																			path.MatchRelative().AtParent().AtName("choropleth_map"),
+																			path.MatchRelative().AtParent().AtName("donut"),
+																			path.MatchRelative().AtParent().AtName("single_value"),
+																			path.MatchRelative().AtParent().AtName("top_n"),
+																		}...),
+																	},
+																},
+																"top_n": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"chart_title": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `The title of the chart, which is displayed in the tile's header.`,
+																		},
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "top_n"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf("top_n"),
+																			},
+																		},
+																	},
+																	MarkdownDescription: `A chart that ranks dimension values by a metric and renders them as a table, showing` + "\n" +
+																		`the top results.  This type of chart supports up to 3 dimensions.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																			path.MatchRelative().AtParent().AtName("choropleth_map"),
+																			path.MatchRelative().AtParent().AtName("donut"),
+																			path.MatchRelative().AtParent().AtName("single_value"),
+																			path.MatchRelative().AtParent().AtName("timeseries_line"),
+																		}...),
 																	},
 																},
 															},
-															MarkdownDescription: `A chart that displays data on a world map. Each region on the map is colored based on the metric value.` + "\n" +
-																`This chart works only with the ` + "`" + `api_usage` + "`" + ` datasource and requires a single metric and a single dimension of ` + "`" + `country_code` + "`" + `.` + "\n" +
-																`No additional dimensions are supported.`,
+															Description: `The type of chart to render. Not Null`,
 															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
-																	path.MatchRelative().AtParent().AtName("donut"),
-																	path.MatchRelative().AtParent().AtName("single_value"),
-																	path.MatchRelative().AtParent().AtName("timeseries_line"),
-																	path.MatchRelative().AtParent().AtName("top_n"),
-																}...),
+																speakeasy_objectvalidators.NotNull(),
 															},
 														},
-														"donut": schema.SingleNestedAttribute{
+														"query": schema.SingleNestedAttribute{
+															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
-																"chart_title": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The title of the chart, which is displayed in the tile's header.`,
+																"agentic_usage": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"datasource": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "agentic_usage"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"agentic_usage",
+																				),
+																			},
+																		},
+																		"dimensions": schema.ListAttribute{
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Description: `List of attributes or entity types to group by.`,
+																			Validators: []validator.List{
+																				listvalidator.SizeAtMost(2),
+																			},
+																		},
+																		"filters": schema.ListNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Validators: []validator.Object{
+																					speakeasy_objectvalidators.NotNull(),
+																				},
+																				Attributes: map[string]schema.Attribute{
+																					"field": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"operator": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"value": schema.StringAttribute{
+																						CustomType:  jsontypes.NormalizedType{},
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `Parsed as JSON.`,
+																					},
+																				},
+																			},
+																			Description: `A list of filters to apply to the query.`,
+																		},
+																		"granularity": schema.StringAttribute{
+																			Computed: true,
+																			Optional: true,
+																			MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
+																				`` + "\n" +
+																				`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
+																				`` + "\n" +
+																				`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
+																				`` + "\n" +
+																				`Different relative times support different granularities:` + "\n" +
+																				`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
+																				`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
+																				`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For special time ranges:` + "\n" +
+																				`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For absolute time ranges, daily will be used.` + "\n" +
+																				`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																		},
+																		"limit": schema.Float64Attribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     float64default.StaticFloat64(50),
+																			Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																			Validators: []validator.Float64{
+																				float64validator.AtMost(1000),
+																			},
+																		},
+																		"metrics": schema.ListAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("request_count")})),
+																			ElementType: types.StringType,
+																			Description: `List of aggregated metrics to collect across the requested time span. Default: ["request_count"]`,
+																		},
+																		"time_range": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			Attributes: map[string]schema.Attribute{
+																				"absolute": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"end": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"start": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "absolute"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("absolute"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing an exact start and end time.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("relative"),
+																						}...),
+																					},
+																				},
+																				"relative": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"time_range": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`1h`),
+																							Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "relative"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("relative"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("absolute"),
+																						}...),
+																					},
+																				},
+																			},
+																			Description: `The time range to query.`,
+																		},
+																	},
+																	Description: `A query targeting the agentic usage analytics datasource.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("api_usage"),
+																			path.MatchRelative().AtParent().AtName("llm_usage"),
+																			path.MatchRelative().AtParent().AtName("platform_usage"),
+																		}...),
+																	},
 																},
-																"type": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Not Null; must be "donut"`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf("donut"),
+																"api_usage": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"datasource": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "api_usage"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"api_usage",
+																				),
+																			},
+																		},
+																		"dimensions": schema.ListAttribute{
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Description: `List of attributes or entity types to group by.`,
+																			Validators: []validator.List{
+																				listvalidator.SizeAtMost(2),
+																			},
+																		},
+																		"filters": schema.ListNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Validators: []validator.Object{
+																					speakeasy_objectvalidators.NotNull(),
+																				},
+																				Attributes: map[string]schema.Attribute{
+																					"field": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"operator": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"value": schema.StringAttribute{
+																						CustomType:  jsontypes.NormalizedType{},
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `Parsed as JSON.`,
+																					},
+																				},
+																			},
+																			Description: `A list of filters to apply to the query.`,
+																		},
+																		"granularity": schema.StringAttribute{
+																			Computed: true,
+																			Optional: true,
+																			MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
+																				`` + "\n" +
+																				`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
+																				`` + "\n" +
+																				`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
+																				`` + "\n" +
+																				`Different relative times support different granularities:` + "\n" +
+																				`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
+																				`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
+																				`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For special time ranges:` + "\n" +
+																				`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For absolute time ranges, daily will be used.` + "\n" +
+																				`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																		},
+																		"limit": schema.Float64Attribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     float64default.StaticFloat64(50),
+																			Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																			Validators: []validator.Float64{
+																				float64validator.AtMost(1000),
+																			},
+																		},
+																		"metrics": schema.ListAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("request_count")})),
+																			ElementType: types.StringType,
+																			Description: `List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]`,
+																		},
+																		"time_range": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			Attributes: map[string]schema.Attribute{
+																				"absolute": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"end": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"start": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "absolute"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("absolute"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing an exact start and end time.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("relative"),
+																						}...),
+																					},
+																				},
+																				"relative": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"time_range": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`1h`),
+																							Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "relative"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("relative"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("absolute"),
+																						}...),
+																					},
+																				},
+																			},
+																			Description: `The time range to query.`,
+																		},
+																	},
+																	Description: `A query targeting the API usage analytics datasource.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("agentic_usage"),
+																			path.MatchRelative().AtParent().AtName("llm_usage"),
+																			path.MatchRelative().AtParent().AtName("platform_usage"),
+																		}...),
+																	},
+																},
+																"llm_usage": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"datasource": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "llm_usage"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"llm_usage",
+																				),
+																			},
+																		},
+																		"dimensions": schema.ListAttribute{
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Description: `List of attributes or entity types to group by.`,
+																			Validators: []validator.List{
+																				listvalidator.SizeAtMost(2),
+																			},
+																		},
+																		"filters": schema.ListNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Validators: []validator.Object{
+																					speakeasy_objectvalidators.NotNull(),
+																				},
+																				Attributes: map[string]schema.Attribute{
+																					"field": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "principal", "realm", "route", "status_code", "status_code_grouped"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"operator": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"value": schema.StringAttribute{
+																						CustomType:  jsontypes.NormalizedType{},
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `Parsed as JSON.`,
+																					},
+																				},
+																			},
+																			Description: `A list of filters to apply to the query.`,
+																		},
+																		"granularity": schema.StringAttribute{
+																			Computed: true,
+																			Optional: true,
+																			MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
+																				`` + "\n" +
+																				`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
+																				`` + "\n" +
+																				`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
+																				`` + "\n" +
+																				`Different relative times support different granularities:` + "\n" +
+																				`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
+																				`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
+																				`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For special time ranges:` + "\n" +
+																				`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For absolute time ranges, daily will be used.` + "\n" +
+																				`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																		},
+																		"limit": schema.Float64Attribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     float64default.StaticFloat64(50),
+																			Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																			Validators: []validator.Float64{
+																				float64validator.AtMost(1000),
+																			},
+																		},
+																		"metrics": schema.ListAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("ai_request_count")})),
+																			ElementType: types.StringType,
+																			Description: `List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]`,
+																		},
+																		"time_range": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			Attributes: map[string]schema.Attribute{
+																				"absolute": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"end": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"start": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "absolute"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("absolute"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing an exact start and end time.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("relative"),
+																						}...),
+																					},
+																				},
+																				"relative": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"time_range": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`1h`),
+																							Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "relative"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("relative"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("absolute"),
+																						}...),
+																					},
+																				},
+																			},
+																			Description: `The time range to query.`,
+																		},
+																	},
+																	Description: `A query targeting the LLM usage analytics datasource.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("api_usage"),
+																			path.MatchRelative().AtParent().AtName("agentic_usage"),
+																			path.MatchRelative().AtParent().AtName("platform_usage"),
+																		}...),
+																	},
+																},
+																"platform_usage": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"datasource": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "platform_usage"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"platform_usage",
+																				),
+																			},
+																		},
+																		"dimensions": schema.ListAttribute{
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Description: `List of attributes or entity types to group by.`,
+																			Validators: []validator.List{
+																				listvalidator.SizeAtMost(2),
+																			},
+																		},
+																		"filters": schema.ListNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Validators: []validator.Object{
+																					speakeasy_objectvalidators.NotNull(),
+																				},
+																				Attributes: map[string]schema.Attribute{
+																					"field": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"operator": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["in", "not_in"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"value": schema.ListAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						ElementType: types.StringType,
+																						Description: `The values to filter by. Not Null`,
+																						Validators: []validator.List{
+																							speakeasy_listvalidators.NotNull(),
+																							listvalidator.SizeAtLeast(1),
+																						},
+																					},
+																				},
+																			},
+																			Description: `A list of filters to apply to the query.`,
+																		},
+																		"granularity": schema.StringAttribute{
+																			Computed: true,
+																			Optional: true,
+																			MarkdownDescription: `Force time grouping into buckets of the specified duration. Only has an effect if "time" is in the "dimensions" list.` + "\n" +
+																				`` + "\n" +
+																				`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
+																				`` + "\n" +
+																				`Different relative times support different granularities:` + "\n" +
+																				`  - 24h                                          => daily` + "\n" +
+																				`  - 7d, current_week, previous_week              => daily, weekly` + "\n" +
+																				`  - 30d, current_month, previous_month           => daily, weekly, monthly` + "\n" +
+																				`  - 90d, 180d, 365d, current_quarter,` + "\n" +
+																				`    previous_quarter                             => daily, weekly, monthly` + "\n" +
+																				`` + "\n" +
+																				`For absolute time ranges, daily will be used.` + "\n" +
+																				`` + "\n" +
+																				`Granularity values:` + "\n" +
+																				`  - ` + "`" + `daily` + "`" + `: Groups data into 24-hour buckets.` + "\n" +
+																				`  - ` + "`" + `weekly` + "`" + `: Groups data into 7-day buckets.` + "\n" +
+																				`  - ` + "`" + `monthly` + "`" + `: Groups data into calendar month buckets.` + "\n" +
+																				`possible known values include one of ["daily", "weekly", "monthly"]`,
+																		},
+																		"limit": schema.Float64Attribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     float64default.StaticFloat64(50),
+																			Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																			Validators: []validator.Float64{
+																				float64validator.AtMost(1000),
+																			},
+																		},
+																		"metrics": schema.ListAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("control_plane_count")})),
+																			ElementType: types.StringType,
+																			Description: `List of aggregated metrics to collect across the requested time span. Default: ["control_plane_count"]`,
+																		},
+																		"time_range": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			Attributes: map[string]schema.Attribute{
+																				"absolute": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"end": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"start": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "absolute"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("absolute"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing an exact start and end time.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("relative"),
+																						}...),
+																					},
+																				},
+																				"relative": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"time_range": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`30d`),
+																							Description: `possible known values include one of ["24h", "7d", "30d", "90d", "180d", "365d", "current_week", "current_month", "current_quarter", "previous_week", "previous_month", "previous_quarter"]; Default: "30d"`,
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "relative"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("relative"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing a relative-to-now span of time for platform queries.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("absolute"),
+																						}...),
+																					},
+																				},
+																			},
+																			Description: `The time range to query for platform data.`,
+																		},
+																	},
+																	Description: `A query targeting the platform usage analytics datasource.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("api_usage"),
+																			path.MatchRelative().AtParent().AtName("agentic_usage"),
+																			path.MatchRelative().AtParent().AtName("llm_usage"),
+																		}...),
 																	},
 																},
 															},
-															MarkdownDescription: `A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that` + "\n" +
-																`the query includes only one dimension (not ` + "`" + `time` + "`" + `).`,
+															Description: `Not Null`,
 															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
-																	path.MatchRelative().AtParent().AtName("choropleth_map"),
-																	path.MatchRelative().AtParent().AtName("single_value"),
-																	path.MatchRelative().AtParent().AtName("timeseries_line"),
-																	path.MatchRelative().AtParent().AtName("top_n"),
-																}...),
-															},
-														},
-														"horizontal_bar": schema.SingleNestedAttribute{
-															Optional: true,
-															Attributes: map[string]schema.Attribute{
-																"chart_title": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The title of the chart, which is displayed in the tile's header.`,
-																},
-																"stacked": schema.BoolAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.`,
-																},
-																"type": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `possible known values include one of ["horizontal_bar", "vertical_bar"]; Not Null`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																	},
-																},
-															},
-															MarkdownDescription: `A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not ` + "`" + `time` + "`" + `).` + "\n" +
-																`To render a bar chart of timeseries data, use a ` + "`" + `timeseries_bar` + "`" + ` chart instead.`,
-															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("choropleth_map"),
-																	path.MatchRelative().AtParent().AtName("donut"),
-																	path.MatchRelative().AtParent().AtName("single_value"),
-																	path.MatchRelative().AtParent().AtName("timeseries_line"),
-																	path.MatchRelative().AtParent().AtName("top_n"),
-																}...),
-															},
-														},
-														"single_value": schema.SingleNestedAttribute{
-															Optional: true,
-															Attributes: map[string]schema.Attribute{
-																"chart_title": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The title of the chart, which is displayed in the tile's header.`,
-																},
-																"decimal_points": schema.Float64Attribute{
-																	Optional:    true,
-																	Description: `The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.`,
-																},
-																"type": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Not Null; must be "single_value"`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"single_value",
-																		),
-																	},
-																},
-															},
-															Description: `A chart that can render a single number.  This chart works with a single metric and no dimensions.`,
-															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
-																	path.MatchRelative().AtParent().AtName("choropleth_map"),
-																	path.MatchRelative().AtParent().AtName("donut"),
-																	path.MatchRelative().AtParent().AtName("timeseries_line"),
-																	path.MatchRelative().AtParent().AtName("top_n"),
-																}...),
-															},
-														},
-														"timeseries_line": schema.SingleNestedAttribute{
-															Optional: true,
-															Attributes: map[string]schema.Attribute{
-																"chart_title": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The title of the chart, which is displayed in the tile's header.`,
-																},
-																"stacked": schema.BoolAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.`,
-																},
-																"type": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																	},
-																},
-															},
-															MarkdownDescription: `A chart that can render timeseries data -- data from a query that has ` + "`" + `time` + "`" + ` as a dimension -- as lines or bars.` + "\n" +
-																`` + "\n" +
-																`This type of chart can support:` + "\n" +
-																`` + "\n" +
-																`- One or more metrics: ` + "`" + `{ metrics: ["response_latency_p99", "response_latency_p95"], dimensions: ["time"] }` + "`" + `` + "\n" +
-																`- One metric plus one non-time dimension: ` + "`" + `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` + "`" + ` ` + "\n" +
-																`` + "\n" +
-																`Either way, ensure that ` + "`" + `time` + "`" + ` is in the list of query dimensions.`,
-															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
-																	path.MatchRelative().AtParent().AtName("choropleth_map"),
-																	path.MatchRelative().AtParent().AtName("donut"),
-																	path.MatchRelative().AtParent().AtName("single_value"),
-																	path.MatchRelative().AtParent().AtName("top_n"),
-																}...),
-															},
-														},
-														"top_n": schema.SingleNestedAttribute{
-															Optional: true,
-															Attributes: map[string]schema.Attribute{
-																"chart_title": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The title of the chart, which is displayed in the tile's header.`,
-																},
-																"type": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Not Null; must be "top_n"`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf("top_n"),
-																	},
-																},
-															},
-															MarkdownDescription: `A chart that ranks dimension values by a metric and renders them as a table, showing` + "\n" +
-																`the top results.  This type of chart supports up to 3 dimensions.`,
-															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
-																	path.MatchRelative().AtParent().AtName("choropleth_map"),
-																	path.MatchRelative().AtParent().AtName("donut"),
-																	path.MatchRelative().AtParent().AtName("single_value"),
-																	path.MatchRelative().AtParent().AtName("timeseries_line"),
-																}...),
+																speakeasy_objectvalidators.NotNull(),
 															},
 														},
 													},
-													Description: `The type of chart to render. Not Null`,
 													Validators: []validator.Object{
-														speakeasy_objectvalidators.NotNull(),
+														objectvalidator.ConflictsWith(path.Expressions{
+															path.MatchRelative().AtParent().AtName("table_chart_tile_definition"),
+														}...),
 													},
 												},
-												"query": schema.SingleNestedAttribute{
-													Computed: true,
+												"table_chart_tile_definition": schema.SingleNestedAttribute{
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
-														"agentic_usage": schema.SingleNestedAttribute{
+														"chart": schema.SingleNestedAttribute{
+															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
-																"datasource": schema.StringAttribute{
+																"chart_title": schema.StringAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Description: `Not Null; must be "agentic_usage"`,
+																	Description: `The title of the chart, which is displayed in the tile's header.`,
+																},
+																"type": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null; must be "table"`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"agentic_usage",
-																		),
+																		stringvalidator.OneOf("table"),
 																	},
-																},
-																"dimensions": schema.ListAttribute{
-																	Optional:    true,
-																	ElementType: types.StringType,
-																	Description: `List of attributes or entity types to group by.`,
-																	Validators: []validator.List{
-																		listvalidator.SizeAtMost(2),
-																	},
-																},
-																"filters": schema.ListNestedAttribute{
-																	Computed: true,
-																	Optional: true,
-																	NestedObject: schema.NestedAttributeObject{
-																		Validators: []validator.Object{
-																			speakeasy_objectvalidators.NotNull(),
-																		},
-																		Attributes: map[string]schema.Attribute{
-																			"field": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"operator": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"value": schema.StringAttribute{
-																				CustomType:  jsontypes.NormalizedType{},
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Parsed as JSON.`,
-																			},
-																		},
-																	},
-																	Description: `A list of filters to apply to the query.`,
-																},
-																"granularity": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
-																	MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
-																		`` + "\n" +
-																		`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
-																		`` + "\n" +
-																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
-																		`` + "\n" +
-																		`Different relative times support different granularities:` + "\n" +
-																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
-																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
-																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
-																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
-																		`` + "\n" +
-																		`For special time ranges:` + "\n" +
-																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
-																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
-																		`` + "\n" +
-																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																},
-																"limit": schema.Float64Attribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     float64default.StaticFloat64(50),
-																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
-																	Validators: []validator.Float64{
-																		float64validator.AtMost(1000),
-																	},
-																},
-																"metrics": schema.ListAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("request_count")})),
-																	ElementType: types.StringType,
-																	Description: `List of aggregated metrics to collect across the requested time span. Default: ["request_count"]`,
-																},
-																"time_range": schema.SingleNestedAttribute{
-																	Computed: true,
-																	Optional: true,
-																	Attributes: map[string]schema.Attribute{
-																		"absolute": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"end": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"start": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "absolute"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("absolute"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing an exact start and end time.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("relative"),
-																				}...),
-																			},
-																		},
-																		"relative": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"time_range": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "relative"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("relative"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("absolute"),
-																				}...),
-																			},
-																		},
-																	},
-																	Description: `The time range to query.`,
 																},
 															},
-															Description: `A query targeting the agentic usage analytics datasource.`,
+															Description: `A table that displays tabular platform usage data. Not Null`,
 															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("api_usage"),
-																	path.MatchRelative().AtParent().AtName("llm_usage"),
-																	path.MatchRelative().AtParent().AtName("platform_usage"),
-																}...),
+																speakeasy_objectvalidators.NotNull(),
 															},
 														},
-														"api_usage": schema.SingleNestedAttribute{
+														"query": schema.SingleNestedAttribute{
+															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
-																"datasource": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Not Null; must be "api_usage"`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"api_usage",
-																		),
-																	},
-																},
-																"dimensions": schema.ListAttribute{
+																"columns": schema.ListAttribute{
 																	Optional:    true,
 																	ElementType: types.StringType,
-																	Description: `List of attributes or entity types to group by.`,
 																	Validators: []validator.List{
-																		listvalidator.SizeAtMost(2),
+																		listvalidator.SizeAtLeast(1),
 																	},
 																},
-																"filters": schema.ListNestedAttribute{
-																	Computed: true,
+																"cursor": schema.StringAttribute{
 																	Optional: true,
-																	NestedObject: schema.NestedAttributeObject{
-																		Validators: []validator.Object{
-																			speakeasy_objectvalidators.NotNull(),
-																		},
-																		Attributes: map[string]schema.Attribute{
-																			"field": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"operator": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"value": schema.StringAttribute{
-																				CustomType:  jsontypes.NormalizedType{},
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Parsed as JSON.`,
-																			},
-																		},
-																	},
-																	Description: `A list of filters to apply to the query.`,
 																},
-																"granularity": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
-																	MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
-																		`` + "\n" +
-																		`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
-																		`` + "\n" +
-																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
-																		`` + "\n" +
-																		`Different relative times support different granularities:` + "\n" +
-																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
-																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
-																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
-																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
-																		`` + "\n" +
-																		`For special time ranges:` + "\n" +
-																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
-																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
-																		`` + "\n" +
-																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																},
-																"limit": schema.Float64Attribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     float64default.StaticFloat64(50),
-																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
-																	Validators: []validator.Float64{
-																		float64validator.AtMost(1000),
-																	},
-																},
-																"metrics": schema.ListAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("request_count")})),
-																	ElementType: types.StringType,
-																	Description: `List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]`,
-																},
-																"time_range": schema.SingleNestedAttribute{
-																	Computed: true,
-																	Optional: true,
-																	Attributes: map[string]schema.Attribute{
-																		"absolute": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"end": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"start": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "absolute"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("absolute"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing an exact start and end time.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("relative"),
-																				}...),
-																			},
-																		},
-																		"relative": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"time_range": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "relative"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("relative"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("absolute"),
-																				}...),
-																			},
-																		},
-																	},
-																	Description: `The time range to query.`,
-																},
-															},
-															Description: `A query targeting the API usage analytics datasource.`,
-															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("agentic_usage"),
-																	path.MatchRelative().AtParent().AtName("llm_usage"),
-																	path.MatchRelative().AtParent().AtName("platform_usage"),
-																}...),
-															},
-														},
-														"llm_usage": schema.SingleNestedAttribute{
-															Optional: true,
-															Attributes: map[string]schema.Attribute{
-																"datasource": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Not Null; must be "llm_usage"`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"llm_usage",
-																		),
-																	},
-																},
-																"dimensions": schema.ListAttribute{
-																	Optional:    true,
-																	ElementType: types.StringType,
-																	Description: `List of attributes or entity types to group by.`,
-																	Validators: []validator.List{
-																		listvalidator.SizeAtMost(2),
-																	},
-																},
-																"filters": schema.ListNestedAttribute{
-																	Computed: true,
-																	Optional: true,
-																	NestedObject: schema.NestedAttributeObject{
-																		Validators: []validator.Object{
-																			speakeasy_objectvalidators.NotNull(),
-																		},
-																		Attributes: map[string]schema.Attribute{
-																			"field": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "principal", "realm", "route", "status_code", "status_code_grouped"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"operator": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"value": schema.StringAttribute{
-																				CustomType:  jsontypes.NormalizedType{},
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `Parsed as JSON.`,
-																			},
-																		},
-																	},
-																	Description: `A list of filters to apply to the query.`,
-																},
-																"granularity": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
-																	MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
-																		`` + "\n" +
-																		`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
-																		`` + "\n" +
-																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
-																		`` + "\n" +
-																		`Different relative times support different granularities:` + "\n" +
-																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
-																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
-																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
-																		`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
-																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
-																		`` + "\n" +
-																		`For special time ranges:` + "\n" +
-																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
-																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
-																		`` + "\n" +
-																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																},
-																"limit": schema.Float64Attribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     float64default.StaticFloat64(50),
-																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
-																	Validators: []validator.Float64{
-																		float64validator.AtMost(1000),
-																	},
-																},
-																"metrics": schema.ListAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("ai_request_count")})),
-																	ElementType: types.StringType,
-																	Description: `List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]`,
-																},
-																"time_range": schema.SingleNestedAttribute{
-																	Computed: true,
-																	Optional: true,
-																	Attributes: map[string]schema.Attribute{
-																		"absolute": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"end": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"start": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "absolute"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("absolute"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing an exact start and end time.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("relative"),
-																				}...),
-																			},
-																		},
-																		"relative": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"time_range": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "relative"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("relative"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("absolute"),
-																				}...),
-																			},
-																		},
-																	},
-																	Description: `The time range to query.`,
-																},
-															},
-															Description: `A query targeting the LLM usage analytics datasource.`,
-															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("api_usage"),
-																	path.MatchRelative().AtParent().AtName("agentic_usage"),
-																	path.MatchRelative().AtParent().AtName("platform_usage"),
-																}...),
-															},
-														},
-														"platform_usage": schema.SingleNestedAttribute{
-															Optional: true,
-															Attributes: map[string]schema.Attribute{
 																"datasource": schema.StringAttribute{
 																	Computed:    true,
 																	Optional:    true,
@@ -914,13 +1153,8 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		),
 																	},
 																},
-																"dimensions": schema.ListAttribute{
-																	Optional:    true,
-																	ElementType: types.StringType,
-																	Description: `List of attributes or entity types to group by.`,
-																	Validators: []validator.List{
-																		listvalidator.SizeAtMost(2),
-																	},
+																"entity": schema.StringAttribute{
+																	Optional: true,
 																},
 																"filters": schema.ListNestedAttribute{
 																	Computed: true,
@@ -960,140 +1194,25 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	},
 																	Description: `A list of filters to apply to the query.`,
 																},
-																"granularity": schema.StringAttribute{
-																	Computed: true,
+																"page_size": schema.Int64Attribute{
 																	Optional: true,
-																	MarkdownDescription: `Force time grouping into buckets of the specified duration. Only has an effect if "time" is in the "dimensions" list.` + "\n" +
-																		`` + "\n" +
-																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
-																		`` + "\n" +
-																		`Different relative times support different granularities:` + "\n" +
-																		`  - 24h                                          => daily` + "\n" +
-																		`  - 7d, current_week, previous_week              => daily, weekly` + "\n" +
-																		`  - 30d, current_month, previous_month           => daily, weekly, monthly` + "\n" +
-																		`  - 90d, 180d, 365d, current_quarter,` + "\n" +
-																		`    previous_quarter                             => daily, weekly, monthly` + "\n" +
-																		`` + "\n" +
-																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`` + "\n" +
-																		`Granularity values:` + "\n" +
-																		`  - ` + "`" + `daily` + "`" + `: Groups data into 24-hour buckets.` + "\n" +
-																		`  - ` + "`" + `weekly` + "`" + `: Groups data into 7-day buckets.` + "\n" +
-																		`  - ` + "`" + `monthly` + "`" + `: Groups data into calendar month buckets.` + "\n" +
-																		`possible known values include one of ["daily", "weekly", "monthly"]`,
-																},
-																"limit": schema.Float64Attribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     float64default.StaticFloat64(50),
-																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
-																	Validators: []validator.Float64{
-																		float64validator.AtMost(1000),
-																	},
-																},
-																"metrics": schema.ListAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("control_plane_count")})),
-																	ElementType: types.StringType,
-																	Description: `List of aggregated metrics to collect across the requested time span. Default: ["control_plane_count"]`,
-																},
-																"time_range": schema.SingleNestedAttribute{
-																	Computed: true,
-																	Optional: true,
-																	Attributes: map[string]schema.Attribute{
-																		"absolute": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"end": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"start": schema.StringAttribute{
-																					Optional: true,
-																					Validators: []validator.String{
-																						validators.IsRFC3339(),
-																					},
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "absolute"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("absolute"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing an exact start and end time.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("relative"),
-																				}...),
-																			},
-																		},
-																		"relative": schema.SingleNestedAttribute{
-																			Optional: true,
-																			Attributes: map[string]schema.Attribute{
-																				"time_range": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`30d`),
-																					Description: `possible known values include one of ["24h", "7d", "30d", "90d", "180d", "365d", "current_week", "current_month", "current_quarter", "previous_week", "previous_month", "previous_quarter"]; Default: "30d"`,
-																				},
-																				"type": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Description: `Not Null; must be "relative"`,
-																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
-																						stringvalidator.OneOf("relative"),
-																					},
-																				},
-																				"tz": schema.StringAttribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     stringdefault.StaticString(`Etc/UTC`),
-																					Description: `Default: "Etc/UTC"`,
-																				},
-																			},
-																			Description: `A duration representing a relative-to-now span of time for platform queries.`,
-																			Validators: []validator.Object{
-																				objectvalidator.ConflictsWith(path.Expressions{
-																					path.MatchRelative().AtParent().AtName("absolute"),
-																				}...),
-																			},
-																		},
-																	},
-																	Description: `The time range to query for platform data.`,
 																},
 															},
-															Description: `A query targeting the platform usage analytics datasource.`,
+															Description: `A query targeting tabular platform usage analytics data. Not Null`,
 															Validators: []validator.Object{
-																objectvalidator.ConflictsWith(path.Expressions{
-																	path.MatchRelative().AtParent().AtName("api_usage"),
-																	path.MatchRelative().AtParent().AtName("agentic_usage"),
-																	path.MatchRelative().AtParent().AtName("llm_usage"),
-																}...),
+																speakeasy_objectvalidators.NotNull(),
 															},
 														},
 													},
-													Description: `Not Null`,
 													Validators: []validator.Object{
-														speakeasy_objectvalidators.NotNull(),
+														objectvalidator.ConflictsWith(path.Expressions{
+															path.MatchRelative().AtParent().AtName("chart_tile_definition"),
+														}...),
 													},
 												},
 											},
-											MarkdownDescription: `The tile's definition, which consists of a query to fetch data and a chart to render the data.` + "\n" +
-												`Note that some charts expect certain types of queries to render properly.  The documentation for the individual chart types has more information.` + "\n" +
+											MarkdownDescription: `The tile's definition, which consists of a query to fetch data and a visualization to render the data.` + "\n" +
+												`Charts and tables expect certain query types to render properly. The documentation for the individual visualization types has more information.` + "\n" +
 												`Not Null`,
 											Validators: []validator.Object{
 												speakeasy_objectvalidators.NotNull(),
@@ -1180,7 +1299,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 											},
 										},
 									},
-									Description: `A tile that queries data and renders a chart.`,
+									Description: `A tile that queries data and renders a visualization.`,
 								},
 							},
 						},
@@ -1189,7 +1308,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 				MarkdownDescription: `A JSON object describing a dashboard.` + "\n" +
 					`` + "\n" +
-					`A dashboard is an array of tiles.  All tiles are of type 'chart', which query data and render a chart displaying that data.` + "\n" +
+					`A dashboard is an array of tiles.  All tiles are of type 'chart', which query data and render a visualization, either a chart or table.` + "\n" +
 					`` + "\n" +
 					`Dashboards have 6 columns and as many rows as necessary to display their tiles.`,
 			},

@@ -416,7 +416,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "sagemaker"
   }
   vercel = {
     config = {

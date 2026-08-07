@@ -156,135 +156,142 @@ func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProvider() *shar
 	return c.AIGatewayModelProvider
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAnthropic() *shared.AIGatewayModelProviderAnthropicResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAnthropic() *shared.AIGatewayModelProviderAIGatewayModelProviderAnthropic {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderAnthropicResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderAnthropic
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAzure() *shared.AIGatewayModelProviderAzureResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAzure() *shared.AIGatewayModelProviderAIGatewayModelProviderAzure {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderAzureResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderAzure
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderBedrock() *shared.AIGatewayModelProviderBedrockResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderBedrock() *shared.AIGatewayModelProviderAIGatewayModelProviderBedrock {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderBedrockResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderBedrock
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderCerebras() *shared.AIGatewayModelProviderCerebrasResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderCerebras() *shared.AIGatewayModelProviderAIGatewayModelProviderCerebras {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderCerebrasResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderCerebras
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderCohere() *shared.AIGatewayModelProviderCohereResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderCohere() *shared.AIGatewayModelProviderAIGatewayModelProviderCohere {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderCohereResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderCohere
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDashscope() *shared.AIGatewayModelProviderDashscopeResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDashscope() *shared.AIGatewayModelProviderAIGatewayModelProviderDashscope {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderDashscopeResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderDashscope
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDatabricks() *shared.AIGatewayModelProviderDatabricksResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDatabricks() *shared.AIGatewayModelProviderAIGatewayModelProviderDatabricks {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderDatabricksResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderDatabricks
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDeepseek() *shared.AIGatewayModelProviderDeepseekResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDeepseek() *shared.AIGatewayModelProviderAIGatewayModelProviderDeepseek {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderDeepseekResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderDeepseek
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderGemini() *shared.AIGatewayModelProviderGeminiResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderGemini() *shared.AIGatewayModelProviderAIGatewayModelProviderGemini {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderGeminiResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderGemini
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderHuggingface() *shared.AIGatewayModelProviderHuggingfaceResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderHuggingface() *shared.AIGatewayModelProviderAIGatewayModelProviderHuggingface {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderHuggingfaceResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderHuggingface
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderKimi() *shared.AIGatewayModelProviderKimiResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderKimi() *shared.AIGatewayModelProviderAIGatewayModelProviderKimi {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderKimiResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderKimi
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderLlama2() *shared.AIGatewayModelProviderLlama2Response {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderLlama2() *shared.AIGatewayModelProviderAIGatewayModelProviderLlama2 {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderLlama2Response
+		return v.AIGatewayModelProviderAIGatewayModelProviderLlama2
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderMistral() *shared.AIGatewayModelProviderMistralResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderMistral() *shared.AIGatewayModelProviderAIGatewayModelProviderMistral {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderMistralResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderMistral
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderOllama() *shared.AIGatewayModelProviderOllamaResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderOllama() *shared.AIGatewayModelProviderAIGatewayModelProviderOllama {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderOllamaResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderOllama
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderOpenai() *shared.AIGatewayModelProviderOpenaiResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderOpenai() *shared.AIGatewayModelProviderAIGatewayModelProviderOpenai {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderOpenaiResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderOpenai
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVercel() *shared.AIGatewayModelProviderVercelResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVercel() *shared.AIGatewayModelProviderAIGatewayModelProviderVercel {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderVercelResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderVercel
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVllm() *shared.AIGatewayModelProviderVllmResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVllm() *shared.AIGatewayModelProviderAIGatewayModelProviderVllm {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderVllmResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderVllm
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *shared.AIGatewayModelProviderXaiResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *shared.AIGatewayModelProviderAIGatewayModelProviderXai {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderXaiResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderXai
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVertex() *shared.AIGatewayModelProviderVertexResponse {
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVertex() *shared.AIGatewayModelProviderAIGatewayModelProviderVertex {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderVertexResponse
+		return v.AIGatewayModelProviderAIGatewayModelProviderVertex
+	}
+	return nil
+}
+
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker() *shared.AIGatewayModelProviderAIGatewayModelProviderSagemaker {
+	if v := c.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderSagemaker
 	}
 	return nil
 }

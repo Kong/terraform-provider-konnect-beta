@@ -16,7 +16,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AIGatewayModelProviderAnthropicResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic != nil {
 			anthropicPriorData := r.Anthropic
 			r.Anthropic = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -35,7 +35,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Anthropic.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx, headersItem := range resp.AIGatewayModelProviderAnthropicResponse.Config.Auth.Headers {
+			for headersIdx, headersItem := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Config.Auth.Headers {
 				var headers tfTypes.Headers
 
 				var headersPriorItem *tfTypes.Headers
@@ -56,7 +56,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Anthropic.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx, paramsItem := range resp.AIGatewayModelProviderAnthropicResponse.Config.Auth.Params {
+			for paramsIdx, paramsItem := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Config.Auth.Params {
 				var params tfTypes.Params
 
 				var paramsPriorItem *tfTypes.Params
@@ -76,30 +76,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Anthropic.Config.Auth.Params = append(r.Anthropic.Config.Auth.Params, params)
 			}
-			r.Anthropic.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAnthropicResponse.CreatedAt))
+			r.Anthropic.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.CreatedAt))
 			r.CreatedAt = r.Anthropic.CreatedAt
-			r.Anthropic.DisplayName = types.StringValue(resp.AIGatewayModelProviderAnthropicResponse.DisplayName)
+			r.Anthropic.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.DisplayName)
 			r.DisplayName = r.Anthropic.DisplayName
-			r.Anthropic.ID = types.StringValue(resp.AIGatewayModelProviderAnthropicResponse.ID)
+			r.Anthropic.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.ID)
 			r.ID = r.Anthropic.ID
-			if len(resp.AIGatewayModelProviderAnthropicResponse.Labels) > 0 {
-				r.Anthropic.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAnthropicResponse.Labels))
-				for key, value := range resp.AIGatewayModelProviderAnthropicResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Labels) > 0 {
+				r.Anthropic.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Labels))
+				for key, value := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Labels {
 					r.Anthropic.Labels[key] = types.StringValue(value)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAnthropicResponse.ManagedBy) > 0 {
-				r.Anthropic.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAnthropicResponse.ManagedBy))
-				for key1, value1 := range resp.AIGatewayModelProviderAnthropicResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.ManagedBy) > 0 {
+				r.Anthropic.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.ManagedBy))
+				for key1, value1 := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.ManagedBy {
 					r.Anthropic.ManagedBy[key1] = types.StringValue(value1)
 				}
 			}
-			r.Anthropic.Name = types.StringValue(resp.AIGatewayModelProviderAnthropicResponse.Name)
+			r.Anthropic.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Name)
 			r.Name = r.Anthropic.Name
-			r.Anthropic.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAnthropicResponse.UpdatedAt))
+			r.Anthropic.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.UpdatedAt))
 			r.UpdatedAt = r.Anthropic.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAzureResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderAzure != nil {
 			azurePriorData := r.Azure
 			r.Azure = &tfTypes.AIGatewayModelProviderAzure{}
 			var configPriorData1 *tfTypes.AIGatewayModelProviderAzureConfig
@@ -111,20 +111,20 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			if r.Azure.Config.Auth == nil {
 				r.Azure.Config.Auth = &tfTypes.AIGatewayModelProviderAzureAuth{}
 			}
-			if resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput != nil {
+			if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput != nil {
 				var azurePriorData1 *tfTypes.AIGatewayModelProviderConfigAuthAzure
 				if authPriorData1 != nil {
 					azurePriorData1 = authPriorData1.Azure
 				}
 				r.Azure.Config.Auth.Azure = &tfTypes.AIGatewayModelProviderConfigAuthAzure{}
-				r.Azure.Config.Auth.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.ClientID)
-				r.Azure.Config.Auth.Azure.TenantID = types.StringPointerValue(resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.TenantID)
-				r.Azure.Config.Auth.Azure.UseManagedIdentity = types.BoolPointerValue(resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.UseManagedIdentity)
+				r.Azure.Config.Auth.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.ClientID)
+				r.Azure.Config.Auth.Azure.TenantID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.TenantID)
+				r.Azure.Config.Auth.Azure.UseManagedIdentity = types.BoolPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.UseManagedIdentity)
 				if azurePriorData1 != nil {
 					r.Azure.Config.Auth.Azure.ClientSecret = azurePriorData1.ClientSecret
 				}
 			}
-			if resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+			if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
 				var basicPriorData *tfTypes.AIGatewayModelProviderConfigAuthBasic
 				if authPriorData1 != nil {
 					basicPriorData = authPriorData1.Basic
@@ -136,7 +136,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 				r.Azure.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
-				for headersIdx1, headersItem1 := range resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+				for headersIdx1, headersItem1 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
 					var headers1 tfTypes.Headers
 
 					var headersPriorItem1 *tfTypes.Headers
@@ -157,7 +157,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 				r.Azure.Config.Auth.Basic.Params = []tfTypes.Params{}
 
-				for paramsIdx1, paramsItem1 := range resp.AIGatewayModelProviderAzureResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+				for paramsIdx1, paramsItem1 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
 					var params1 tfTypes.Params
 
 					var paramsPriorItem1 *tfTypes.Params
@@ -178,31 +178,31 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Azure.Config.Auth.Basic.Params = append(r.Azure.Config.Auth.Basic.Params, params1)
 				}
 			}
-			r.Azure.Config.Instance = types.StringValue(resp.AIGatewayModelProviderAzureResponse.Config.Instance)
-			r.Azure.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAzureResponse.CreatedAt))
+			r.Azure.Config.Instance = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Instance)
+			r.Azure.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.CreatedAt))
 			r.CreatedAt = r.Azure.CreatedAt
-			r.Azure.DisplayName = types.StringValue(resp.AIGatewayModelProviderAzureResponse.DisplayName)
+			r.Azure.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.DisplayName)
 			r.DisplayName = r.Azure.DisplayName
-			r.Azure.ID = types.StringValue(resp.AIGatewayModelProviderAzureResponse.ID)
+			r.Azure.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.ID)
 			r.ID = r.Azure.ID
-			if len(resp.AIGatewayModelProviderAzureResponse.Labels) > 0 {
-				r.Azure.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAzureResponse.Labels))
-				for key2, value2 := range resp.AIGatewayModelProviderAzureResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Labels) > 0 {
+				r.Azure.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Labels))
+				for key2, value2 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Labels {
 					r.Azure.Labels[key2] = types.StringValue(value2)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAzureResponse.ManagedBy) > 0 {
-				r.Azure.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAzureResponse.ManagedBy))
-				for key3, value3 := range resp.AIGatewayModelProviderAzureResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.ManagedBy) > 0 {
+				r.Azure.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.ManagedBy))
+				for key3, value3 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.ManagedBy {
 					r.Azure.ManagedBy[key3] = types.StringValue(value3)
 				}
 			}
-			r.Azure.Name = types.StringValue(resp.AIGatewayModelProviderAzureResponse.Name)
+			r.Azure.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Name)
 			r.Name = r.Azure.Name
-			r.Azure.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAzureResponse.UpdatedAt))
+			r.Azure.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.UpdatedAt))
 			r.UpdatedAt = r.Azure.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderBedrockResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock != nil {
 			bedrockPriorData := r.Bedrock
 			r.Bedrock = &tfTypes.AIGatewayModelProviderBedrock{}
 			var configPriorData2 *tfTypes.AIGatewayModelProviderBedrockConfig
@@ -214,22 +214,22 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			if r.Bedrock.Config.Auth == nil {
 				r.Bedrock.Config.Auth = &tfTypes.AIGatewayModelProviderBedrockAuth{}
 			}
-			if resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput != nil {
+			if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput != nil {
 				var awsPriorData *tfTypes.AIGatewayModelProviderConfigAuthAWS
 				if authPriorData2 != nil {
 					awsPriorData = authPriorData2.Aws
 				}
 				r.Bedrock.Config.Auth.Aws = &tfTypes.AIGatewayModelProviderConfigAuthAWS{}
-				r.Bedrock.Config.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.AccessKeyID)
-				r.Bedrock.Config.Auth.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.AssumeRoleArn)
-				r.Bedrock.Config.Auth.Aws.BatchRoleArn = types.StringPointerValue(resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.BatchRoleArn)
-				r.Bedrock.Config.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.RoleSessionName)
-				r.Bedrock.Config.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.StsEndpointURL)
+				r.Bedrock.Config.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.AccessKeyID)
+				r.Bedrock.Config.Auth.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.AssumeRoleArn)
+				r.Bedrock.Config.Auth.Aws.BatchRoleArn = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.BatchRoleArn)
+				r.Bedrock.Config.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.RoleSessionName)
+				r.Bedrock.Config.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.StsEndpointURL)
 				if awsPriorData != nil {
 					r.Bedrock.Config.Auth.Aws.SecretAccessKey = awsPriorData.SecretAccessKey
 				}
 			}
-			if resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+			if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
 				var basicPriorData1 *tfTypes.AIGatewayModelProviderConfigAuthBasic
 				if authPriorData2 != nil {
 					basicPriorData1 = authPriorData2.Basic
@@ -241,7 +241,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 				r.Bedrock.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
-				for headersIdx2, headersItem2 := range resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+				for headersIdx2, headersItem2 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
 					var headers2 tfTypes.Headers
 
 					var headersPriorItem2 *tfTypes.Headers
@@ -262,7 +262,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 				r.Bedrock.Config.Auth.Basic.Params = []tfTypes.Params{}
 
-				for paramsIdx2, paramsItem2 := range resp.AIGatewayModelProviderBedrockResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+				for paramsIdx2, paramsItem2 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
 					var params2 tfTypes.Params
 
 					var paramsPriorItem2 *tfTypes.Params
@@ -283,30 +283,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Bedrock.Config.Auth.Basic.Params = append(r.Bedrock.Config.Auth.Basic.Params, params2)
 				}
 			}
-			r.Bedrock.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderBedrockResponse.CreatedAt))
+			r.Bedrock.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.CreatedAt))
 			r.CreatedAt = r.Bedrock.CreatedAt
-			r.Bedrock.DisplayName = types.StringValue(resp.AIGatewayModelProviderBedrockResponse.DisplayName)
+			r.Bedrock.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.DisplayName)
 			r.DisplayName = r.Bedrock.DisplayName
-			r.Bedrock.ID = types.StringValue(resp.AIGatewayModelProviderBedrockResponse.ID)
+			r.Bedrock.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ID)
 			r.ID = r.Bedrock.ID
-			if len(resp.AIGatewayModelProviderBedrockResponse.Labels) > 0 {
-				r.Bedrock.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderBedrockResponse.Labels))
-				for key4, value4 := range resp.AIGatewayModelProviderBedrockResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Labels) > 0 {
+				r.Bedrock.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Labels))
+				for key4, value4 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Labels {
 					r.Bedrock.Labels[key4] = types.StringValue(value4)
 				}
 			}
-			if len(resp.AIGatewayModelProviderBedrockResponse.ManagedBy) > 0 {
-				r.Bedrock.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderBedrockResponse.ManagedBy))
-				for key5, value5 := range resp.AIGatewayModelProviderBedrockResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ManagedBy) > 0 {
+				r.Bedrock.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ManagedBy))
+				for key5, value5 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ManagedBy {
 					r.Bedrock.ManagedBy[key5] = types.StringValue(value5)
 				}
 			}
-			r.Bedrock.Name = types.StringValue(resp.AIGatewayModelProviderBedrockResponse.Name)
+			r.Bedrock.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Name)
 			r.Name = r.Bedrock.Name
-			r.Bedrock.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderBedrockResponse.UpdatedAt))
+			r.Bedrock.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.UpdatedAt))
 			r.UpdatedAt = r.Bedrock.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderCerebrasResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderCerebras != nil {
 			cerebrasPriorData := r.Cerebras
 			r.Cerebras = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData3 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -325,7 +325,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Cerebras.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx3, headersItem3 := range resp.AIGatewayModelProviderCerebrasResponse.Config.Auth.Headers {
+			for headersIdx3, headersItem3 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Config.Auth.Headers {
 				var headers3 tfTypes.Headers
 
 				var headersPriorItem3 *tfTypes.Headers
@@ -346,7 +346,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Cerebras.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx3, paramsItem3 := range resp.AIGatewayModelProviderCerebrasResponse.Config.Auth.Params {
+			for paramsIdx3, paramsItem3 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Config.Auth.Params {
 				var params3 tfTypes.Params
 
 				var paramsPriorItem3 *tfTypes.Params
@@ -366,30 +366,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Cerebras.Config.Auth.Params = append(r.Cerebras.Config.Auth.Params, params3)
 			}
-			r.Cerebras.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderCerebrasResponse.CreatedAt))
+			r.Cerebras.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.CreatedAt))
 			r.CreatedAt = r.Cerebras.CreatedAt
-			r.Cerebras.DisplayName = types.StringValue(resp.AIGatewayModelProviderCerebrasResponse.DisplayName)
+			r.Cerebras.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.DisplayName)
 			r.DisplayName = r.Cerebras.DisplayName
-			r.Cerebras.ID = types.StringValue(resp.AIGatewayModelProviderCerebrasResponse.ID)
+			r.Cerebras.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ID)
 			r.ID = r.Cerebras.ID
-			if len(resp.AIGatewayModelProviderCerebrasResponse.Labels) > 0 {
-				r.Cerebras.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderCerebrasResponse.Labels))
-				for key6, value6 := range resp.AIGatewayModelProviderCerebrasResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels) > 0 {
+				r.Cerebras.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels))
+				for key6, value6 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels {
 					r.Cerebras.Labels[key6] = types.StringValue(value6)
 				}
 			}
-			if len(resp.AIGatewayModelProviderCerebrasResponse.ManagedBy) > 0 {
-				r.Cerebras.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderCerebrasResponse.ManagedBy))
-				for key7, value7 := range resp.AIGatewayModelProviderCerebrasResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy) > 0 {
+				r.Cerebras.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy))
+				for key7, value7 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy {
 					r.Cerebras.ManagedBy[key7] = types.StringValue(value7)
 				}
 			}
-			r.Cerebras.Name = types.StringValue(resp.AIGatewayModelProviderCerebrasResponse.Name)
+			r.Cerebras.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Name)
 			r.Name = r.Cerebras.Name
-			r.Cerebras.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderCerebrasResponse.UpdatedAt))
+			r.Cerebras.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.UpdatedAt))
 			r.UpdatedAt = r.Cerebras.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderCohereResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderCohere != nil {
 			coherePriorData := r.Cohere
 			r.Cohere = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData4 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -408,7 +408,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Cohere.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx4, headersItem4 := range resp.AIGatewayModelProviderCohereResponse.Config.Auth.Headers {
+			for headersIdx4, headersItem4 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Config.Auth.Headers {
 				var headers4 tfTypes.Headers
 
 				var headersPriorItem4 *tfTypes.Headers
@@ -429,7 +429,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Cohere.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx4, paramsItem4 := range resp.AIGatewayModelProviderCohereResponse.Config.Auth.Params {
+			for paramsIdx4, paramsItem4 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Config.Auth.Params {
 				var params4 tfTypes.Params
 
 				var paramsPriorItem4 *tfTypes.Params
@@ -449,30 +449,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Cohere.Config.Auth.Params = append(r.Cohere.Config.Auth.Params, params4)
 			}
-			r.Cohere.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderCohereResponse.CreatedAt))
+			r.Cohere.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.CreatedAt))
 			r.CreatedAt = r.Cohere.CreatedAt
-			r.Cohere.DisplayName = types.StringValue(resp.AIGatewayModelProviderCohereResponse.DisplayName)
+			r.Cohere.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.DisplayName)
 			r.DisplayName = r.Cohere.DisplayName
-			r.Cohere.ID = types.StringValue(resp.AIGatewayModelProviderCohereResponse.ID)
+			r.Cohere.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ID)
 			r.ID = r.Cohere.ID
-			if len(resp.AIGatewayModelProviderCohereResponse.Labels) > 0 {
-				r.Cohere.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderCohereResponse.Labels))
-				for key8, value8 := range resp.AIGatewayModelProviderCohereResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels) > 0 {
+				r.Cohere.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels))
+				for key8, value8 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels {
 					r.Cohere.Labels[key8] = types.StringValue(value8)
 				}
 			}
-			if len(resp.AIGatewayModelProviderCohereResponse.ManagedBy) > 0 {
-				r.Cohere.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderCohereResponse.ManagedBy))
-				for key9, value9 := range resp.AIGatewayModelProviderCohereResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy) > 0 {
+				r.Cohere.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy))
+				for key9, value9 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy {
 					r.Cohere.ManagedBy[key9] = types.StringValue(value9)
 				}
 			}
-			r.Cohere.Name = types.StringValue(resp.AIGatewayModelProviderCohereResponse.Name)
+			r.Cohere.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Name)
 			r.Name = r.Cohere.Name
-			r.Cohere.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderCohereResponse.UpdatedAt))
+			r.Cohere.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.UpdatedAt))
 			r.UpdatedAt = r.Cohere.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderDashscopeResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderDashscope != nil {
 			dashscopePriorData := r.Dashscope
 			r.Dashscope = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData5 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -491,7 +491,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Dashscope.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx5, headersItem5 := range resp.AIGatewayModelProviderDashscopeResponse.Config.Auth.Headers {
+			for headersIdx5, headersItem5 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Config.Auth.Headers {
 				var headers5 tfTypes.Headers
 
 				var headersPriorItem5 *tfTypes.Headers
@@ -512,7 +512,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Dashscope.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx5, paramsItem5 := range resp.AIGatewayModelProviderDashscopeResponse.Config.Auth.Params {
+			for paramsIdx5, paramsItem5 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Config.Auth.Params {
 				var params5 tfTypes.Params
 
 				var paramsPriorItem5 *tfTypes.Params
@@ -532,30 +532,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Dashscope.Config.Auth.Params = append(r.Dashscope.Config.Auth.Params, params5)
 			}
-			r.Dashscope.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderDashscopeResponse.CreatedAt))
+			r.Dashscope.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.CreatedAt))
 			r.CreatedAt = r.Dashscope.CreatedAt
-			r.Dashscope.DisplayName = types.StringValue(resp.AIGatewayModelProviderDashscopeResponse.DisplayName)
+			r.Dashscope.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.DisplayName)
 			r.DisplayName = r.Dashscope.DisplayName
-			r.Dashscope.ID = types.StringValue(resp.AIGatewayModelProviderDashscopeResponse.ID)
+			r.Dashscope.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ID)
 			r.ID = r.Dashscope.ID
-			if len(resp.AIGatewayModelProviderDashscopeResponse.Labels) > 0 {
-				r.Dashscope.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderDashscopeResponse.Labels))
-				for key10, value10 := range resp.AIGatewayModelProviderDashscopeResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels) > 0 {
+				r.Dashscope.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels))
+				for key10, value10 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels {
 					r.Dashscope.Labels[key10] = types.StringValue(value10)
 				}
 			}
-			if len(resp.AIGatewayModelProviderDashscopeResponse.ManagedBy) > 0 {
-				r.Dashscope.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderDashscopeResponse.ManagedBy))
-				for key11, value11 := range resp.AIGatewayModelProviderDashscopeResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy) > 0 {
+				r.Dashscope.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy))
+				for key11, value11 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy {
 					r.Dashscope.ManagedBy[key11] = types.StringValue(value11)
 				}
 			}
-			r.Dashscope.Name = types.StringValue(resp.AIGatewayModelProviderDashscopeResponse.Name)
+			r.Dashscope.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Name)
 			r.Name = r.Dashscope.Name
-			r.Dashscope.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderDashscopeResponse.UpdatedAt))
+			r.Dashscope.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.UpdatedAt))
 			r.UpdatedAt = r.Dashscope.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderDatabricksResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks != nil {
 			databricksPriorData := r.Databricks
 			r.Databricks = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData6 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -574,7 +574,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Databricks.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx6, headersItem6 := range resp.AIGatewayModelProviderDatabricksResponse.Config.Auth.Headers {
+			for headersIdx6, headersItem6 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Config.Auth.Headers {
 				var headers6 tfTypes.Headers
 
 				var headersPriorItem6 *tfTypes.Headers
@@ -595,7 +595,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Databricks.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx6, paramsItem6 := range resp.AIGatewayModelProviderDatabricksResponse.Config.Auth.Params {
+			for paramsIdx6, paramsItem6 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Config.Auth.Params {
 				var params6 tfTypes.Params
 
 				var paramsPriorItem6 *tfTypes.Params
@@ -615,30 +615,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Databricks.Config.Auth.Params = append(r.Databricks.Config.Auth.Params, params6)
 			}
-			r.Databricks.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderDatabricksResponse.CreatedAt))
+			r.Databricks.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.CreatedAt))
 			r.CreatedAt = r.Databricks.CreatedAt
-			r.Databricks.DisplayName = types.StringValue(resp.AIGatewayModelProviderDatabricksResponse.DisplayName)
+			r.Databricks.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.DisplayName)
 			r.DisplayName = r.Databricks.DisplayName
-			r.Databricks.ID = types.StringValue(resp.AIGatewayModelProviderDatabricksResponse.ID)
+			r.Databricks.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ID)
 			r.ID = r.Databricks.ID
-			if len(resp.AIGatewayModelProviderDatabricksResponse.Labels) > 0 {
-				r.Databricks.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderDatabricksResponse.Labels))
-				for key12, value12 := range resp.AIGatewayModelProviderDatabricksResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels) > 0 {
+				r.Databricks.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels))
+				for key12, value12 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels {
 					r.Databricks.Labels[key12] = types.StringValue(value12)
 				}
 			}
-			if len(resp.AIGatewayModelProviderDatabricksResponse.ManagedBy) > 0 {
-				r.Databricks.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderDatabricksResponse.ManagedBy))
-				for key13, value13 := range resp.AIGatewayModelProviderDatabricksResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy) > 0 {
+				r.Databricks.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy))
+				for key13, value13 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy {
 					r.Databricks.ManagedBy[key13] = types.StringValue(value13)
 				}
 			}
-			r.Databricks.Name = types.StringValue(resp.AIGatewayModelProviderDatabricksResponse.Name)
+			r.Databricks.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Name)
 			r.Name = r.Databricks.Name
-			r.Databricks.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderDatabricksResponse.UpdatedAt))
+			r.Databricks.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.UpdatedAt))
 			r.UpdatedAt = r.Databricks.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderDeepseekResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek != nil {
 			deepseekPriorData := r.Deepseek
 			r.Deepseek = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData7 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -657,7 +657,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Deepseek.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx7, headersItem7 := range resp.AIGatewayModelProviderDeepseekResponse.Config.Auth.Headers {
+			for headersIdx7, headersItem7 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Config.Auth.Headers {
 				var headers7 tfTypes.Headers
 
 				var headersPriorItem7 *tfTypes.Headers
@@ -678,7 +678,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Deepseek.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx7, paramsItem7 := range resp.AIGatewayModelProviderDeepseekResponse.Config.Auth.Params {
+			for paramsIdx7, paramsItem7 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Config.Auth.Params {
 				var params7 tfTypes.Params
 
 				var paramsPriorItem7 *tfTypes.Params
@@ -698,30 +698,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Deepseek.Config.Auth.Params = append(r.Deepseek.Config.Auth.Params, params7)
 			}
-			r.Deepseek.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderDeepseekResponse.CreatedAt))
+			r.Deepseek.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.CreatedAt))
 			r.CreatedAt = r.Deepseek.CreatedAt
-			r.Deepseek.DisplayName = types.StringValue(resp.AIGatewayModelProviderDeepseekResponse.DisplayName)
+			r.Deepseek.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.DisplayName)
 			r.DisplayName = r.Deepseek.DisplayName
-			r.Deepseek.ID = types.StringValue(resp.AIGatewayModelProviderDeepseekResponse.ID)
+			r.Deepseek.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ID)
 			r.ID = r.Deepseek.ID
-			if len(resp.AIGatewayModelProviderDeepseekResponse.Labels) > 0 {
-				r.Deepseek.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderDeepseekResponse.Labels))
-				for key14, value14 := range resp.AIGatewayModelProviderDeepseekResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Labels) > 0 {
+				r.Deepseek.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Labels))
+				for key14, value14 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Labels {
 					r.Deepseek.Labels[key14] = types.StringValue(value14)
 				}
 			}
-			if len(resp.AIGatewayModelProviderDeepseekResponse.ManagedBy) > 0 {
-				r.Deepseek.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderDeepseekResponse.ManagedBy))
-				for key15, value15 := range resp.AIGatewayModelProviderDeepseekResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ManagedBy) > 0 {
+				r.Deepseek.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ManagedBy))
+				for key15, value15 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ManagedBy {
 					r.Deepseek.ManagedBy[key15] = types.StringValue(value15)
 				}
 			}
-			r.Deepseek.Name = types.StringValue(resp.AIGatewayModelProviderDeepseekResponse.Name)
+			r.Deepseek.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Name)
 			r.Name = r.Deepseek.Name
-			r.Deepseek.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderDeepseekResponse.UpdatedAt))
+			r.Deepseek.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.UpdatedAt))
 			r.UpdatedAt = r.Deepseek.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderGeminiResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderGemini != nil {
 			geminiPriorData := r.Gemini
 			r.Gemini = &tfTypes.AIGatewayModelProviderGemini{}
 			var configPriorData8 *tfTypes.AIGatewayModelProviderGeminiConfig
@@ -733,7 +733,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			if r.Gemini.Config.Auth == nil {
 				r.Gemini.Config.Auth = &tfTypes.AIGatewayModelProviderGeminiAuth{}
 			}
-			if resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+			if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
 				var basicPriorData2 *tfTypes.AIGatewayModelProviderConfigAuthBasic
 				if authPriorData8 != nil {
 					basicPriorData2 = authPriorData8.Basic
@@ -745,7 +745,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 				r.Gemini.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
-				for headersIdx8, headersItem8 := range resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+				for headersIdx8, headersItem8 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
 					var headers8 tfTypes.Headers
 
 					var headersPriorItem8 *tfTypes.Headers
@@ -766,7 +766,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 				r.Gemini.Config.Auth.Basic.Params = []tfTypes.Params{}
 
-				for paramsIdx8, paramsItem8 := range resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+				for paramsIdx8, paramsItem8 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
 					var params8 tfTypes.Params
 
 					var paramsPriorItem8 *tfTypes.Params
@@ -787,43 +787,43 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Gemini.Config.Auth.Basic.Params = append(r.Gemini.Config.Auth.Basic.Params, params8)
 				}
 			}
-			if resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput != nil {
+			if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput != nil {
 				var gcpPriorData *tfTypes.AIGatewayModelProviderConfigAuthGCP
 				if authPriorData8 != nil {
 					gcpPriorData = authPriorData8.Gcp
 				}
 				r.Gemini.Config.Auth.Gcp = &tfTypes.AIGatewayModelProviderConfigAuthGCP{}
-				r.Gemini.Config.Auth.Gcp.MetadataURL = types.StringPointerValue(resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.MetadataURL)
-				r.Gemini.Config.Auth.Gcp.OauthTokenURL = types.StringPointerValue(resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.OauthTokenURL)
-				r.Gemini.Config.Auth.Gcp.UseGcpServiceAccount = types.BoolPointerValue(resp.AIGatewayModelProviderGeminiResponse.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.UseGcpServiceAccount)
+				r.Gemini.Config.Auth.Gcp.MetadataURL = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.MetadataURL)
+				r.Gemini.Config.Auth.Gcp.OauthTokenURL = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.OauthTokenURL)
+				r.Gemini.Config.Auth.Gcp.UseGcpServiceAccount = types.BoolPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.UseGcpServiceAccount)
 				if gcpPriorData != nil {
 					r.Gemini.Config.Auth.Gcp.ServiceAccountJSON = gcpPriorData.ServiceAccountJSON
 				}
 			}
-			r.Gemini.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderGeminiResponse.CreatedAt))
+			r.Gemini.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.CreatedAt))
 			r.CreatedAt = r.Gemini.CreatedAt
-			r.Gemini.DisplayName = types.StringValue(resp.AIGatewayModelProviderGeminiResponse.DisplayName)
+			r.Gemini.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.DisplayName)
 			r.DisplayName = r.Gemini.DisplayName
-			r.Gemini.ID = types.StringValue(resp.AIGatewayModelProviderGeminiResponse.ID)
+			r.Gemini.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ID)
 			r.ID = r.Gemini.ID
-			if len(resp.AIGatewayModelProviderGeminiResponse.Labels) > 0 {
-				r.Gemini.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderGeminiResponse.Labels))
-				for key16, value16 := range resp.AIGatewayModelProviderGeminiResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Labels) > 0 {
+				r.Gemini.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Labels))
+				for key16, value16 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Labels {
 					r.Gemini.Labels[key16] = types.StringValue(value16)
 				}
 			}
-			if len(resp.AIGatewayModelProviderGeminiResponse.ManagedBy) > 0 {
-				r.Gemini.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderGeminiResponse.ManagedBy))
-				for key17, value17 := range resp.AIGatewayModelProviderGeminiResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ManagedBy) > 0 {
+				r.Gemini.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ManagedBy))
+				for key17, value17 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ManagedBy {
 					r.Gemini.ManagedBy[key17] = types.StringValue(value17)
 				}
 			}
-			r.Gemini.Name = types.StringValue(resp.AIGatewayModelProviderGeminiResponse.Name)
+			r.Gemini.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Name)
 			r.Name = r.Gemini.Name
-			r.Gemini.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderGeminiResponse.UpdatedAt))
+			r.Gemini.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.UpdatedAt))
 			r.UpdatedAt = r.Gemini.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderHuggingfaceResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface != nil {
 			huggingfacePriorData := r.Huggingface
 			r.Huggingface = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData9 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -842,7 +842,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Huggingface.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx9, headersItem9 := range resp.AIGatewayModelProviderHuggingfaceResponse.Config.Auth.Headers {
+			for headersIdx9, headersItem9 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Config.Auth.Headers {
 				var headers9 tfTypes.Headers
 
 				var headersPriorItem9 *tfTypes.Headers
@@ -863,7 +863,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Huggingface.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx9, paramsItem9 := range resp.AIGatewayModelProviderHuggingfaceResponse.Config.Auth.Params {
+			for paramsIdx9, paramsItem9 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Config.Auth.Params {
 				var params9 tfTypes.Params
 
 				var paramsPriorItem9 *tfTypes.Params
@@ -883,30 +883,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Huggingface.Config.Auth.Params = append(r.Huggingface.Config.Auth.Params, params9)
 			}
-			r.Huggingface.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderHuggingfaceResponse.CreatedAt))
+			r.Huggingface.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.CreatedAt))
 			r.CreatedAt = r.Huggingface.CreatedAt
-			r.Huggingface.DisplayName = types.StringValue(resp.AIGatewayModelProviderHuggingfaceResponse.DisplayName)
+			r.Huggingface.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.DisplayName)
 			r.DisplayName = r.Huggingface.DisplayName
-			r.Huggingface.ID = types.StringValue(resp.AIGatewayModelProviderHuggingfaceResponse.ID)
+			r.Huggingface.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ID)
 			r.ID = r.Huggingface.ID
-			if len(resp.AIGatewayModelProviderHuggingfaceResponse.Labels) > 0 {
-				r.Huggingface.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderHuggingfaceResponse.Labels))
-				for key18, value18 := range resp.AIGatewayModelProviderHuggingfaceResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels) > 0 {
+				r.Huggingface.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels))
+				for key18, value18 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels {
 					r.Huggingface.Labels[key18] = types.StringValue(value18)
 				}
 			}
-			if len(resp.AIGatewayModelProviderHuggingfaceResponse.ManagedBy) > 0 {
-				r.Huggingface.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderHuggingfaceResponse.ManagedBy))
-				for key19, value19 := range resp.AIGatewayModelProviderHuggingfaceResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy) > 0 {
+				r.Huggingface.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy))
+				for key19, value19 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy {
 					r.Huggingface.ManagedBy[key19] = types.StringValue(value19)
 				}
 			}
-			r.Huggingface.Name = types.StringValue(resp.AIGatewayModelProviderHuggingfaceResponse.Name)
+			r.Huggingface.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Name)
 			r.Name = r.Huggingface.Name
-			r.Huggingface.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderHuggingfaceResponse.UpdatedAt))
+			r.Huggingface.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.UpdatedAt))
 			r.UpdatedAt = r.Huggingface.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderKimiResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderKimi != nil {
 			kimiPriorData := r.Kimi
 			r.Kimi = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData10 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -925,7 +925,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Kimi.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx10, headersItem10 := range resp.AIGatewayModelProviderKimiResponse.Config.Auth.Headers {
+			for headersIdx10, headersItem10 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Config.Auth.Headers {
 				var headers10 tfTypes.Headers
 
 				var headersPriorItem10 *tfTypes.Headers
@@ -946,7 +946,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Kimi.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx10, paramsItem10 := range resp.AIGatewayModelProviderKimiResponse.Config.Auth.Params {
+			for paramsIdx10, paramsItem10 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Config.Auth.Params {
 				var params10 tfTypes.Params
 
 				var paramsPriorItem10 *tfTypes.Params
@@ -966,30 +966,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Kimi.Config.Auth.Params = append(r.Kimi.Config.Auth.Params, params10)
 			}
-			r.Kimi.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderKimiResponse.CreatedAt))
+			r.Kimi.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.CreatedAt))
 			r.CreatedAt = r.Kimi.CreatedAt
-			r.Kimi.DisplayName = types.StringValue(resp.AIGatewayModelProviderKimiResponse.DisplayName)
+			r.Kimi.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.DisplayName)
 			r.DisplayName = r.Kimi.DisplayName
-			r.Kimi.ID = types.StringValue(resp.AIGatewayModelProviderKimiResponse.ID)
+			r.Kimi.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ID)
 			r.ID = r.Kimi.ID
-			if len(resp.AIGatewayModelProviderKimiResponse.Labels) > 0 {
-				r.Kimi.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderKimiResponse.Labels))
-				for key20, value20 := range resp.AIGatewayModelProviderKimiResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels) > 0 {
+				r.Kimi.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels))
+				for key20, value20 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels {
 					r.Kimi.Labels[key20] = types.StringValue(value20)
 				}
 			}
-			if len(resp.AIGatewayModelProviderKimiResponse.ManagedBy) > 0 {
-				r.Kimi.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderKimiResponse.ManagedBy))
-				for key21, value21 := range resp.AIGatewayModelProviderKimiResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy) > 0 {
+				r.Kimi.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy))
+				for key21, value21 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy {
 					r.Kimi.ManagedBy[key21] = types.StringValue(value21)
 				}
 			}
-			r.Kimi.Name = types.StringValue(resp.AIGatewayModelProviderKimiResponse.Name)
+			r.Kimi.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Name)
 			r.Name = r.Kimi.Name
-			r.Kimi.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderKimiResponse.UpdatedAt))
+			r.Kimi.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.UpdatedAt))
 			r.UpdatedAt = r.Kimi.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderLlama2Response != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderLlama2 != nil {
 			llama2PriorData := r.Llama2
 			r.Llama2 = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData11 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -1008,7 +1008,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Llama2.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx11, headersItem11 := range resp.AIGatewayModelProviderLlama2Response.Config.Auth.Headers {
+			for headersIdx11, headersItem11 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Config.Auth.Headers {
 				var headers11 tfTypes.Headers
 
 				var headersPriorItem11 *tfTypes.Headers
@@ -1029,7 +1029,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Llama2.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx11, paramsItem11 := range resp.AIGatewayModelProviderLlama2Response.Config.Auth.Params {
+			for paramsIdx11, paramsItem11 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Config.Auth.Params {
 				var params11 tfTypes.Params
 
 				var paramsPriorItem11 *tfTypes.Params
@@ -1049,30 +1049,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Llama2.Config.Auth.Params = append(r.Llama2.Config.Auth.Params, params11)
 			}
-			r.Llama2.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderLlama2Response.CreatedAt))
+			r.Llama2.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.CreatedAt))
 			r.CreatedAt = r.Llama2.CreatedAt
-			r.Llama2.DisplayName = types.StringValue(resp.AIGatewayModelProviderLlama2Response.DisplayName)
+			r.Llama2.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.DisplayName)
 			r.DisplayName = r.Llama2.DisplayName
-			r.Llama2.ID = types.StringValue(resp.AIGatewayModelProviderLlama2Response.ID)
+			r.Llama2.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ID)
 			r.ID = r.Llama2.ID
-			if len(resp.AIGatewayModelProviderLlama2Response.Labels) > 0 {
-				r.Llama2.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderLlama2Response.Labels))
-				for key22, value22 := range resp.AIGatewayModelProviderLlama2Response.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels) > 0 {
+				r.Llama2.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels))
+				for key22, value22 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels {
 					r.Llama2.Labels[key22] = types.StringValue(value22)
 				}
 			}
-			if len(resp.AIGatewayModelProviderLlama2Response.ManagedBy) > 0 {
-				r.Llama2.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderLlama2Response.ManagedBy))
-				for key23, value23 := range resp.AIGatewayModelProviderLlama2Response.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy) > 0 {
+				r.Llama2.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy))
+				for key23, value23 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy {
 					r.Llama2.ManagedBy[key23] = types.StringValue(value23)
 				}
 			}
-			r.Llama2.Name = types.StringValue(resp.AIGatewayModelProviderLlama2Response.Name)
+			r.Llama2.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Name)
 			r.Name = r.Llama2.Name
-			r.Llama2.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderLlama2Response.UpdatedAt))
+			r.Llama2.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.UpdatedAt))
 			r.UpdatedAt = r.Llama2.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderMistralResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderMistral != nil {
 			mistralPriorData := r.Mistral
 			r.Mistral = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData12 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -1091,7 +1091,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Mistral.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx12, headersItem12 := range resp.AIGatewayModelProviderMistralResponse.Config.Auth.Headers {
+			for headersIdx12, headersItem12 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Config.Auth.Headers {
 				var headers12 tfTypes.Headers
 
 				var headersPriorItem12 *tfTypes.Headers
@@ -1112,7 +1112,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Mistral.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx12, paramsItem12 := range resp.AIGatewayModelProviderMistralResponse.Config.Auth.Params {
+			for paramsIdx12, paramsItem12 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Config.Auth.Params {
 				var params12 tfTypes.Params
 
 				var paramsPriorItem12 *tfTypes.Params
@@ -1132,30 +1132,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Mistral.Config.Auth.Params = append(r.Mistral.Config.Auth.Params, params12)
 			}
-			r.Mistral.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderMistralResponse.CreatedAt))
+			r.Mistral.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.CreatedAt))
 			r.CreatedAt = r.Mistral.CreatedAt
-			r.Mistral.DisplayName = types.StringValue(resp.AIGatewayModelProviderMistralResponse.DisplayName)
+			r.Mistral.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.DisplayName)
 			r.DisplayName = r.Mistral.DisplayName
-			r.Mistral.ID = types.StringValue(resp.AIGatewayModelProviderMistralResponse.ID)
+			r.Mistral.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ID)
 			r.ID = r.Mistral.ID
-			if len(resp.AIGatewayModelProviderMistralResponse.Labels) > 0 {
-				r.Mistral.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderMistralResponse.Labels))
-				for key24, value24 := range resp.AIGatewayModelProviderMistralResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels) > 0 {
+				r.Mistral.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels))
+				for key24, value24 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels {
 					r.Mistral.Labels[key24] = types.StringValue(value24)
 				}
 			}
-			if len(resp.AIGatewayModelProviderMistralResponse.ManagedBy) > 0 {
-				r.Mistral.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderMistralResponse.ManagedBy))
-				for key25, value25 := range resp.AIGatewayModelProviderMistralResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy) > 0 {
+				r.Mistral.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy))
+				for key25, value25 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy {
 					r.Mistral.ManagedBy[key25] = types.StringValue(value25)
 				}
 			}
-			r.Mistral.Name = types.StringValue(resp.AIGatewayModelProviderMistralResponse.Name)
+			r.Mistral.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Name)
 			r.Name = r.Mistral.Name
-			r.Mistral.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderMistralResponse.UpdatedAt))
+			r.Mistral.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.UpdatedAt))
 			r.UpdatedAt = r.Mistral.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderOllamaResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderOllama != nil {
 			ollamaPriorData := r.Ollama
 			r.Ollama = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData13 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -1174,7 +1174,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Ollama.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx13, headersItem13 := range resp.AIGatewayModelProviderOllamaResponse.Config.Auth.Headers {
+			for headersIdx13, headersItem13 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Config.Auth.Headers {
 				var headers13 tfTypes.Headers
 
 				var headersPriorItem13 *tfTypes.Headers
@@ -1195,7 +1195,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Ollama.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx13, paramsItem13 := range resp.AIGatewayModelProviderOllamaResponse.Config.Auth.Params {
+			for paramsIdx13, paramsItem13 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Config.Auth.Params {
 				var params13 tfTypes.Params
 
 				var paramsPriorItem13 *tfTypes.Params
@@ -1215,30 +1215,30 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Ollama.Config.Auth.Params = append(r.Ollama.Config.Auth.Params, params13)
 			}
-			r.Ollama.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderOllamaResponse.CreatedAt))
+			r.Ollama.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.CreatedAt))
 			r.CreatedAt = r.Ollama.CreatedAt
-			r.Ollama.DisplayName = types.StringValue(resp.AIGatewayModelProviderOllamaResponse.DisplayName)
+			r.Ollama.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.DisplayName)
 			r.DisplayName = r.Ollama.DisplayName
-			r.Ollama.ID = types.StringValue(resp.AIGatewayModelProviderOllamaResponse.ID)
+			r.Ollama.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ID)
 			r.ID = r.Ollama.ID
-			if len(resp.AIGatewayModelProviderOllamaResponse.Labels) > 0 {
-				r.Ollama.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderOllamaResponse.Labels))
-				for key26, value26 := range resp.AIGatewayModelProviderOllamaResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels) > 0 {
+				r.Ollama.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels))
+				for key26, value26 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels {
 					r.Ollama.Labels[key26] = types.StringValue(value26)
 				}
 			}
-			if len(resp.AIGatewayModelProviderOllamaResponse.ManagedBy) > 0 {
-				r.Ollama.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderOllamaResponse.ManagedBy))
-				for key27, value27 := range resp.AIGatewayModelProviderOllamaResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy) > 0 {
+				r.Ollama.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy))
+				for key27, value27 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy {
 					r.Ollama.ManagedBy[key27] = types.StringValue(value27)
 				}
 			}
-			r.Ollama.Name = types.StringValue(resp.AIGatewayModelProviderOllamaResponse.Name)
+			r.Ollama.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Name)
 			r.Name = r.Ollama.Name
-			r.Ollama.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderOllamaResponse.UpdatedAt))
+			r.Ollama.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.UpdatedAt))
 			r.UpdatedAt = r.Ollama.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderOpenaiResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderOpenai != nil {
 			openaiPriorData := r.Openai
 			r.Openai = &tfTypes.AIGatewayModelProviderAnthropic{}
 			var configPriorData14 *tfTypes.AIGatewayModelProviderAnthropicConfig
@@ -1257,7 +1257,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Openai.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx14, headersItem14 := range resp.AIGatewayModelProviderOpenaiResponse.Config.Auth.Headers {
+			for headersIdx14, headersItem14 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Config.Auth.Headers {
 				var headers14 tfTypes.Headers
 
 				var headersPriorItem14 *tfTypes.Headers
@@ -1278,7 +1278,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			}
 			r.Openai.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx14, paramsItem14 := range resp.AIGatewayModelProviderOpenaiResponse.Config.Auth.Params {
+			for paramsIdx14, paramsItem14 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Config.Auth.Params {
 				var params14 tfTypes.Params
 
 				var paramsPriorItem14 *tfTypes.Params
@@ -1298,314 +1298,332 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Openai.Config.Auth.Params = append(r.Openai.Config.Auth.Params, params14)
 			}
-			r.Openai.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderOpenaiResponse.CreatedAt))
+			r.Openai.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.CreatedAt))
 			r.CreatedAt = r.Openai.CreatedAt
-			r.Openai.DisplayName = types.StringValue(resp.AIGatewayModelProviderOpenaiResponse.DisplayName)
+			r.Openai.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.DisplayName)
 			r.DisplayName = r.Openai.DisplayName
-			r.Openai.ID = types.StringValue(resp.AIGatewayModelProviderOpenaiResponse.ID)
+			r.Openai.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ID)
 			r.ID = r.Openai.ID
-			if len(resp.AIGatewayModelProviderOpenaiResponse.Labels) > 0 {
-				r.Openai.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderOpenaiResponse.Labels))
-				for key28, value28 := range resp.AIGatewayModelProviderOpenaiResponse.Labels {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Labels) > 0 {
+				r.Openai.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Labels))
+				for key28, value28 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Labels {
 					r.Openai.Labels[key28] = types.StringValue(value28)
 				}
 			}
-			if len(resp.AIGatewayModelProviderOpenaiResponse.ManagedBy) > 0 {
-				r.Openai.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderOpenaiResponse.ManagedBy))
-				for key29, value29 := range resp.AIGatewayModelProviderOpenaiResponse.ManagedBy {
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ManagedBy) > 0 {
+				r.Openai.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ManagedBy))
+				for key29, value29 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ManagedBy {
 					r.Openai.ManagedBy[key29] = types.StringValue(value29)
 				}
 			}
-			r.Openai.Name = types.StringValue(resp.AIGatewayModelProviderOpenaiResponse.Name)
+			r.Openai.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Name)
 			r.Name = r.Openai.Name
-			r.Openai.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderOpenaiResponse.UpdatedAt))
+			r.Openai.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.UpdatedAt))
 			r.UpdatedAt = r.Openai.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderVercelResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker != nil {
+			sagemakerPriorData := r.Sagemaker
+			r.Sagemaker = &tfTypes.AIGatewayModelProviderSagemaker{}
+			var configPriorData15 *tfTypes.AIGatewayModelProviderSagemakerConfig
+			if sagemakerPriorData != nil {
+				configPriorData15 = sagemakerPriorData.Config
+			}
+			r.Sagemaker.Config = &tfTypes.AIGatewayModelProviderSagemakerConfig{}
+			authPriorData15 := configPriorData15.Auth
+			if r.Sagemaker.Config.Auth == nil {
+				r.Sagemaker.Config.Auth = &tfTypes.AIGatewayModelProviderSagemakerAuth{}
+			}
+			if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData3 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData15 != nil {
+					basicPriorData3 = authPriorData15.Basic
+				}
+				r.Sagemaker.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+				var headersPriorSlice15 []tfTypes.Headers
+				if basicPriorData3 != nil {
+					headersPriorSlice15 = basicPriorData3.Headers
+				}
+				r.Sagemaker.Config.Auth.Basic.Headers = []tfTypes.Headers{}
+
+				for headersIdx15, headersItem15 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+					var headers15 tfTypes.Headers
+
+					var headersPriorItem15 *tfTypes.Headers
+					if headersIdx15 < len(headersPriorSlice15) {
+						headersPriorItem15 = &headersPriorSlice15[headersIdx15]
+					}
+
+					headers15.Name = types.StringValue(headersItem15.Name)
+					if headersPriorItem15 != nil {
+						headers15.Value = headersPriorItem15.Value
+					}
+
+					r.Sagemaker.Config.Auth.Basic.Headers = append(r.Sagemaker.Config.Auth.Basic.Headers, headers15)
+				}
+				var paramsPriorSlice15 []tfTypes.Params
+				if basicPriorData3 != nil {
+					paramsPriorSlice15 = basicPriorData3.Params
+				}
+				r.Sagemaker.Config.Auth.Basic.Params = []tfTypes.Params{}
+
+				for paramsIdx15, paramsItem15 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+					var params15 tfTypes.Params
+
+					var paramsPriorItem15 *tfTypes.Params
+					if paramsIdx15 < len(paramsPriorSlice15) {
+						paramsPriorItem15 = &paramsPriorSlice15[paramsIdx15]
+					}
+
+					if paramsItem15.Location != nil {
+						params15.Location = types.StringValue(string(*paramsItem15.Location))
+					} else {
+						params15.Location = types.StringNull()
+					}
+					params15.Name = types.StringValue(paramsItem15.Name)
+					if paramsPriorItem15 != nil {
+						params15.Value = paramsPriorItem15.Value
+					}
+
+					r.Sagemaker.Config.Auth.Basic.Params = append(r.Sagemaker.Config.Auth.Basic.Params, params15)
+				}
+			}
+			if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker != nil {
+				r.Sagemaker.Config.Auth.Sagemaker = &tfTypes.AIGatewayModelProviderConfigAuthSagemaker{}
+				if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws == nil {
+					r.Sagemaker.Config.Auth.Sagemaker.Aws = nil
+				} else {
+					r.Sagemaker.Config.Auth.Sagemaker.Aws = &tfTypes.AIGatewayModelProviderConfigAuthSagemakerAws{}
+					r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws.AccessKeyID)
+					r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws.SecretAccessKey)
+					r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws.SessionToken)
+				}
+				r.Sagemaker.Config.Auth.Sagemaker.Type = types.StringValue(string(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Type))
+			}
+			r.Sagemaker.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.CreatedAt))
+			r.CreatedAt = r.Sagemaker.CreatedAt
+			r.Sagemaker.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.DisplayName)
+			r.DisplayName = r.Sagemaker.DisplayName
+			r.Sagemaker.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ID)
+			r.ID = r.Sagemaker.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Labels) > 0 {
+				r.Sagemaker.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Labels))
+				for key30, value30 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Labels {
+					r.Sagemaker.Labels[key30] = types.StringValue(value30)
+				}
+			}
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ManagedBy) > 0 {
+				r.Sagemaker.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ManagedBy))
+				for key31, value31 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ManagedBy {
+					r.Sagemaker.ManagedBy[key31] = types.StringValue(value31)
+				}
+			}
+			r.Sagemaker.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Name)
+			r.Name = r.Sagemaker.Name
+			r.Sagemaker.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.UpdatedAt))
+			r.UpdatedAt = r.Sagemaker.UpdatedAt
+		}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderVercel != nil {
 			vercelPriorData := r.Vercel
 			r.Vercel = &tfTypes.AIGatewayModelProviderAnthropic{}
-			var configPriorData15 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			var configPriorData16 *tfTypes.AIGatewayModelProviderAnthropicConfig
 			if vercelPriorData != nil {
-				configPriorData15 = vercelPriorData.Config
+				configPriorData16 = vercelPriorData.Config
 			}
 			r.Vercel.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			var authPriorData15 *tfTypes.AIGatewayModelProviderConfigAuthBasic
-			if configPriorData15 != nil {
-				authPriorData15 = configPriorData15.Auth
+			var authPriorData16 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData16 != nil {
+				authPriorData16 = configPriorData16.Auth
 			}
 			r.Vercel.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			var headersPriorSlice15 []tfTypes.Headers
-			if authPriorData15 != nil {
-				headersPriorSlice15 = authPriorData15.Headers
+			var headersPriorSlice16 []tfTypes.Headers
+			if authPriorData16 != nil {
+				headersPriorSlice16 = authPriorData16.Headers
 			}
 			r.Vercel.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx15, headersItem15 := range resp.AIGatewayModelProviderVercelResponse.Config.Auth.Headers {
-				var headers15 tfTypes.Headers
+			for headersIdx16, headersItem16 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Config.Auth.Headers {
+				var headers16 tfTypes.Headers
 
-				var headersPriorItem15 *tfTypes.Headers
-				if headersIdx15 < len(headersPriorSlice15) {
-					headersPriorItem15 = &headersPriorSlice15[headersIdx15]
+				var headersPriorItem16 *tfTypes.Headers
+				if headersIdx16 < len(headersPriorSlice16) {
+					headersPriorItem16 = &headersPriorSlice16[headersIdx16]
 				}
 
-				headers15.Name = types.StringValue(headersItem15.Name)
-				if headersPriorItem15 != nil {
-					headers15.Value = headersPriorItem15.Value
+				headers16.Name = types.StringValue(headersItem16.Name)
+				if headersPriorItem16 != nil {
+					headers16.Value = headersPriorItem16.Value
 				}
 
-				r.Vercel.Config.Auth.Headers = append(r.Vercel.Config.Auth.Headers, headers15)
+				r.Vercel.Config.Auth.Headers = append(r.Vercel.Config.Auth.Headers, headers16)
 			}
-			var paramsPriorSlice15 []tfTypes.Params
-			if authPriorData15 != nil {
-				paramsPriorSlice15 = authPriorData15.Params
+			var paramsPriorSlice16 []tfTypes.Params
+			if authPriorData16 != nil {
+				paramsPriorSlice16 = authPriorData16.Params
 			}
 			r.Vercel.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx15, paramsItem15 := range resp.AIGatewayModelProviderVercelResponse.Config.Auth.Params {
-				var params15 tfTypes.Params
+			for paramsIdx16, paramsItem16 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Config.Auth.Params {
+				var params16 tfTypes.Params
 
-				var paramsPriorItem15 *tfTypes.Params
-				if paramsIdx15 < len(paramsPriorSlice15) {
-					paramsPriorItem15 = &paramsPriorSlice15[paramsIdx15]
+				var paramsPriorItem16 *tfTypes.Params
+				if paramsIdx16 < len(paramsPriorSlice16) {
+					paramsPriorItem16 = &paramsPriorSlice16[paramsIdx16]
 				}
 
-				if paramsItem15.Location != nil {
-					params15.Location = types.StringValue(string(*paramsItem15.Location))
+				if paramsItem16.Location != nil {
+					params16.Location = types.StringValue(string(*paramsItem16.Location))
 				} else {
-					params15.Location = types.StringNull()
+					params16.Location = types.StringNull()
 				}
-				params15.Name = types.StringValue(paramsItem15.Name)
-				if paramsPriorItem15 != nil {
-					params15.Value = paramsPriorItem15.Value
+				params16.Name = types.StringValue(paramsItem16.Name)
+				if paramsPriorItem16 != nil {
+					params16.Value = paramsPriorItem16.Value
 				}
 
-				r.Vercel.Config.Auth.Params = append(r.Vercel.Config.Auth.Params, params15)
+				r.Vercel.Config.Auth.Params = append(r.Vercel.Config.Auth.Params, params16)
 			}
-			r.Vercel.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderVercelResponse.CreatedAt))
+			r.Vercel.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.CreatedAt))
 			r.CreatedAt = r.Vercel.CreatedAt
-			r.Vercel.DisplayName = types.StringValue(resp.AIGatewayModelProviderVercelResponse.DisplayName)
+			r.Vercel.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.DisplayName)
 			r.DisplayName = r.Vercel.DisplayName
-			r.Vercel.ID = types.StringValue(resp.AIGatewayModelProviderVercelResponse.ID)
+			r.Vercel.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ID)
 			r.ID = r.Vercel.ID
-			if len(resp.AIGatewayModelProviderVercelResponse.Labels) > 0 {
-				r.Vercel.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderVercelResponse.Labels))
-				for key30, value30 := range resp.AIGatewayModelProviderVercelResponse.Labels {
-					r.Vercel.Labels[key30] = types.StringValue(value30)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels) > 0 {
+				r.Vercel.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels))
+				for key32, value32 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels {
+					r.Vercel.Labels[key32] = types.StringValue(value32)
 				}
 			}
-			if len(resp.AIGatewayModelProviderVercelResponse.ManagedBy) > 0 {
-				r.Vercel.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderVercelResponse.ManagedBy))
-				for key31, value31 := range resp.AIGatewayModelProviderVercelResponse.ManagedBy {
-					r.Vercel.ManagedBy[key31] = types.StringValue(value31)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy) > 0 {
+				r.Vercel.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy))
+				for key33, value33 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy {
+					r.Vercel.ManagedBy[key33] = types.StringValue(value33)
 				}
 			}
-			r.Vercel.Name = types.StringValue(resp.AIGatewayModelProviderVercelResponse.Name)
+			r.Vercel.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Name)
 			r.Name = r.Vercel.Name
-			r.Vercel.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderVercelResponse.UpdatedAt))
+			r.Vercel.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.UpdatedAt))
 			r.UpdatedAt = r.Vercel.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderVertexResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderVertex != nil {
 			vertexPriorData := r.Vertex
 			r.Vertex = &tfTypes.AIGatewayModelProviderVertex{}
-			var configPriorData16 *tfTypes.AIGatewayModelProviderVertexConfig
+			var configPriorData17 *tfTypes.AIGatewayModelProviderVertexConfig
 			if vertexPriorData != nil {
-				configPriorData16 = vertexPriorData.Config
+				configPriorData17 = vertexPriorData.Config
 			}
 			r.Vertex.Config = &tfTypes.AIGatewayModelProviderVertexConfig{}
-			authPriorData16 := configPriorData16.Auth
+			authPriorData17 := configPriorData17.Auth
 			if r.Vertex.Config.Auth == nil {
 				r.Vertex.Config.Auth = &tfTypes.AIGatewayModelProviderVertexAuth{}
 			}
-			if resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
-				var basicPriorData3 *tfTypes.AIGatewayModelProviderConfigAuthBasic
-				if authPriorData16 != nil {
-					basicPriorData3 = authPriorData16.Basic
+			if resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData4 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData17 != nil {
+					basicPriorData4 = authPriorData17.Basic
 				}
 				r.Vertex.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-				var headersPriorSlice16 []tfTypes.Headers
-				if basicPriorData3 != nil {
-					headersPriorSlice16 = basicPriorData3.Headers
+				var headersPriorSlice17 []tfTypes.Headers
+				if basicPriorData4 != nil {
+					headersPriorSlice17 = basicPriorData4.Headers
 				}
 				r.Vertex.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
-				for headersIdx16, headersItem16 := range resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
-					var headers16 tfTypes.Headers
+				for headersIdx17, headersItem17 := range resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+					var headers17 tfTypes.Headers
 
-					var headersPriorItem16 *tfTypes.Headers
-					if headersIdx16 < len(headersPriorSlice16) {
-						headersPriorItem16 = &headersPriorSlice16[headersIdx16]
+					var headersPriorItem17 *tfTypes.Headers
+					if headersIdx17 < len(headersPriorSlice17) {
+						headersPriorItem17 = &headersPriorSlice17[headersIdx17]
 					}
 
-					headers16.Name = types.StringValue(headersItem16.Name)
-					if headersPriorItem16 != nil {
-						headers16.Value = headersPriorItem16.Value
+					headers17.Name = types.StringValue(headersItem17.Name)
+					if headersPriorItem17 != nil {
+						headers17.Value = headersPriorItem17.Value
 					}
 
-					r.Vertex.Config.Auth.Basic.Headers = append(r.Vertex.Config.Auth.Basic.Headers, headers16)
+					r.Vertex.Config.Auth.Basic.Headers = append(r.Vertex.Config.Auth.Basic.Headers, headers17)
 				}
-				var paramsPriorSlice16 []tfTypes.Params
-				if basicPriorData3 != nil {
-					paramsPriorSlice16 = basicPriorData3.Params
+				var paramsPriorSlice17 []tfTypes.Params
+				if basicPriorData4 != nil {
+					paramsPriorSlice17 = basicPriorData4.Params
 				}
 				r.Vertex.Config.Auth.Basic.Params = []tfTypes.Params{}
 
-				for paramsIdx16, paramsItem16 := range resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
-					var params16 tfTypes.Params
+				for paramsIdx17, paramsItem17 := range resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+					var params17 tfTypes.Params
 
-					var paramsPriorItem16 *tfTypes.Params
-					if paramsIdx16 < len(paramsPriorSlice16) {
-						paramsPriorItem16 = &paramsPriorSlice16[paramsIdx16]
+					var paramsPriorItem17 *tfTypes.Params
+					if paramsIdx17 < len(paramsPriorSlice17) {
+						paramsPriorItem17 = &paramsPriorSlice17[paramsIdx17]
 					}
 
-					if paramsItem16.Location != nil {
-						params16.Location = types.StringValue(string(*paramsItem16.Location))
+					if paramsItem17.Location != nil {
+						params17.Location = types.StringValue(string(*paramsItem17.Location))
 					} else {
-						params16.Location = types.StringNull()
+						params17.Location = types.StringNull()
 					}
-					params16.Name = types.StringValue(paramsItem16.Name)
-					if paramsPriorItem16 != nil {
-						params16.Value = paramsPriorItem16.Value
+					params17.Name = types.StringValue(paramsItem17.Name)
+					if paramsPriorItem17 != nil {
+						params17.Value = paramsPriorItem17.Value
 					}
 
-					r.Vertex.Config.Auth.Basic.Params = append(r.Vertex.Config.Auth.Basic.Params, params16)
+					r.Vertex.Config.Auth.Basic.Params = append(r.Vertex.Config.Auth.Basic.Params, params17)
 				}
 			}
-			if resp.AIGatewayModelProviderVertexResponse.Config.Auth.AIGatewayModelProviderConfigAuthVertexOutput != nil {
+			if resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Config.Auth.AIGatewayModelProviderConfigAuthVertexOutput != nil {
 				var vertexPriorData1 *tfTypes.AIGatewayModelProviderConfigAuthVertex
-				if authPriorData16 != nil {
-					vertexPriorData1 = authPriorData16.Vertex
+				if authPriorData17 != nil {
+					vertexPriorData1 = authPriorData17.Vertex
 				}
 				r.Vertex.Config.Auth.Vertex = &tfTypes.AIGatewayModelProviderConfigAuthVertex{}
 				if vertexPriorData1 != nil {
 					r.Vertex.Config.Auth.Vertex.ServiceAccountJSON = vertexPriorData1.ServiceAccountJSON
 				}
 			}
-			r.Vertex.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderVertexResponse.CreatedAt))
+			r.Vertex.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.CreatedAt))
 			r.CreatedAt = r.Vertex.CreatedAt
-			r.Vertex.DisplayName = types.StringValue(resp.AIGatewayModelProviderVertexResponse.DisplayName)
+			r.Vertex.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.DisplayName)
 			r.DisplayName = r.Vertex.DisplayName
-			r.Vertex.ID = types.StringValue(resp.AIGatewayModelProviderVertexResponse.ID)
+			r.Vertex.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.ID)
 			r.ID = r.Vertex.ID
-			if len(resp.AIGatewayModelProviderVertexResponse.Labels) > 0 {
-				r.Vertex.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderVertexResponse.Labels))
-				for key32, value32 := range resp.AIGatewayModelProviderVertexResponse.Labels {
-					r.Vertex.Labels[key32] = types.StringValue(value32)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Labels) > 0 {
+				r.Vertex.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Labels))
+				for key34, value34 := range resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Labels {
+					r.Vertex.Labels[key34] = types.StringValue(value34)
 				}
 			}
-			if len(resp.AIGatewayModelProviderVertexResponse.ManagedBy) > 0 {
-				r.Vertex.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderVertexResponse.ManagedBy))
-				for key33, value33 := range resp.AIGatewayModelProviderVertexResponse.ManagedBy {
-					r.Vertex.ManagedBy[key33] = types.StringValue(value33)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.ManagedBy) > 0 {
+				r.Vertex.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.ManagedBy))
+				for key35, value35 := range resp.AIGatewayModelProviderAIGatewayModelProviderVertex.ManagedBy {
+					r.Vertex.ManagedBy[key35] = types.StringValue(value35)
 				}
 			}
-			r.Vertex.Name = types.StringValue(resp.AIGatewayModelProviderVertexResponse.Name)
+			r.Vertex.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.Name)
 			r.Name = r.Vertex.Name
-			r.Vertex.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderVertexResponse.UpdatedAt))
+			r.Vertex.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVertex.UpdatedAt))
 			r.UpdatedAt = r.Vertex.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderVllmResponse != nil {
+		if resp.AIGatewayModelProviderAIGatewayModelProviderVllm != nil {
 			vllmPriorData := r.Vllm
 			r.Vllm = &tfTypes.AIGatewayModelProviderAnthropic{}
-			var configPriorData17 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			var configPriorData18 *tfTypes.AIGatewayModelProviderAnthropicConfig
 			if vllmPriorData != nil {
-				configPriorData17 = vllmPriorData.Config
+				configPriorData18 = vllmPriorData.Config
 			}
 			r.Vllm.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			var authPriorData17 *tfTypes.AIGatewayModelProviderConfigAuthBasic
-			if configPriorData17 != nil {
-				authPriorData17 = configPriorData17.Auth
-			}
-			r.Vllm.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			var headersPriorSlice17 []tfTypes.Headers
-			if authPriorData17 != nil {
-				headersPriorSlice17 = authPriorData17.Headers
-			}
-			r.Vllm.Config.Auth.Headers = []tfTypes.Headers{}
-
-			for headersIdx17, headersItem17 := range resp.AIGatewayModelProviderVllmResponse.Config.Auth.Headers {
-				var headers17 tfTypes.Headers
-
-				var headersPriorItem17 *tfTypes.Headers
-				if headersIdx17 < len(headersPriorSlice17) {
-					headersPriorItem17 = &headersPriorSlice17[headersIdx17]
-				}
-
-				headers17.Name = types.StringValue(headersItem17.Name)
-				if headersPriorItem17 != nil {
-					headers17.Value = headersPriorItem17.Value
-				}
-
-				r.Vllm.Config.Auth.Headers = append(r.Vllm.Config.Auth.Headers, headers17)
-			}
-			var paramsPriorSlice17 []tfTypes.Params
-			if authPriorData17 != nil {
-				paramsPriorSlice17 = authPriorData17.Params
-			}
-			r.Vllm.Config.Auth.Params = []tfTypes.Params{}
-
-			for paramsIdx17, paramsItem17 := range resp.AIGatewayModelProviderVllmResponse.Config.Auth.Params {
-				var params17 tfTypes.Params
-
-				var paramsPriorItem17 *tfTypes.Params
-				if paramsIdx17 < len(paramsPriorSlice17) {
-					paramsPriorItem17 = &paramsPriorSlice17[paramsIdx17]
-				}
-
-				if paramsItem17.Location != nil {
-					params17.Location = types.StringValue(string(*paramsItem17.Location))
-				} else {
-					params17.Location = types.StringNull()
-				}
-				params17.Name = types.StringValue(paramsItem17.Name)
-				if paramsPriorItem17 != nil {
-					params17.Value = paramsPriorItem17.Value
-				}
-
-				r.Vllm.Config.Auth.Params = append(r.Vllm.Config.Auth.Params, params17)
-			}
-			r.Vllm.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderVllmResponse.CreatedAt))
-			r.CreatedAt = r.Vllm.CreatedAt
-			r.Vllm.DisplayName = types.StringValue(resp.AIGatewayModelProviderVllmResponse.DisplayName)
-			r.DisplayName = r.Vllm.DisplayName
-			r.Vllm.ID = types.StringValue(resp.AIGatewayModelProviderVllmResponse.ID)
-			r.ID = r.Vllm.ID
-			if len(resp.AIGatewayModelProviderVllmResponse.Labels) > 0 {
-				r.Vllm.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderVllmResponse.Labels))
-				for key34, value34 := range resp.AIGatewayModelProviderVllmResponse.Labels {
-					r.Vllm.Labels[key34] = types.StringValue(value34)
-				}
-			}
-			if len(resp.AIGatewayModelProviderVllmResponse.ManagedBy) > 0 {
-				r.Vllm.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderVllmResponse.ManagedBy))
-				for key35, value35 := range resp.AIGatewayModelProviderVllmResponse.ManagedBy {
-					r.Vllm.ManagedBy[key35] = types.StringValue(value35)
-				}
-			}
-			r.Vllm.Name = types.StringValue(resp.AIGatewayModelProviderVllmResponse.Name)
-			r.Name = r.Vllm.Name
-			r.Vllm.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderVllmResponse.UpdatedAt))
-			r.UpdatedAt = r.Vllm.UpdatedAt
-		}
-		if resp.AIGatewayModelProviderXaiResponse != nil {
-			xaiPriorData := r.Xai
-			r.Xai = &tfTypes.AIGatewayModelProviderAnthropic{}
-			var configPriorData18 *tfTypes.AIGatewayModelProviderAnthropicConfig
-			if xaiPriorData != nil {
-				configPriorData18 = xaiPriorData.Config
-			}
-			r.Xai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
 			var authPriorData18 *tfTypes.AIGatewayModelProviderConfigAuthBasic
 			if configPriorData18 != nil {
 				authPriorData18 = configPriorData18.Auth
 			}
-			r.Xai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			r.Vllm.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
 			var headersPriorSlice18 []tfTypes.Headers
 			if authPriorData18 != nil {
 				headersPriorSlice18 = authPriorData18.Headers
 			}
-			r.Xai.Config.Auth.Headers = []tfTypes.Headers{}
+			r.Vllm.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx18, headersItem18 := range resp.AIGatewayModelProviderXaiResponse.Config.Auth.Headers {
+			for headersIdx18, headersItem18 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Config.Auth.Headers {
 				var headers18 tfTypes.Headers
 
 				var headersPriorItem18 *tfTypes.Headers
@@ -1618,15 +1636,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers18.Value = headersPriorItem18.Value
 				}
 
-				r.Xai.Config.Auth.Headers = append(r.Xai.Config.Auth.Headers, headers18)
+				r.Vllm.Config.Auth.Headers = append(r.Vllm.Config.Auth.Headers, headers18)
 			}
 			var paramsPriorSlice18 []tfTypes.Params
 			if authPriorData18 != nil {
 				paramsPriorSlice18 = authPriorData18.Params
 			}
-			r.Xai.Config.Auth.Params = []tfTypes.Params{}
+			r.Vllm.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx18, paramsItem18 := range resp.AIGatewayModelProviderXaiResponse.Config.Auth.Params {
+			for paramsIdx18, paramsItem18 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Config.Auth.Params {
 				var params18 tfTypes.Params
 
 				var paramsPriorItem18 *tfTypes.Params
@@ -1644,29 +1662,112 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params18.Value = paramsPriorItem18.Value
 				}
 
-				r.Xai.Config.Auth.Params = append(r.Xai.Config.Auth.Params, params18)
+				r.Vllm.Config.Auth.Params = append(r.Vllm.Config.Auth.Params, params18)
 			}
-			r.Xai.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderXaiResponse.CreatedAt))
+			r.Vllm.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.CreatedAt))
+			r.CreatedAt = r.Vllm.CreatedAt
+			r.Vllm.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.DisplayName)
+			r.DisplayName = r.Vllm.DisplayName
+			r.Vllm.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ID)
+			r.ID = r.Vllm.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels) > 0 {
+				r.Vllm.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels))
+				for key36, value36 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels {
+					r.Vllm.Labels[key36] = types.StringValue(value36)
+				}
+			}
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy) > 0 {
+				r.Vllm.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy))
+				for key37, value37 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy {
+					r.Vllm.ManagedBy[key37] = types.StringValue(value37)
+				}
+			}
+			r.Vllm.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Name)
+			r.Name = r.Vllm.Name
+			r.Vllm.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.UpdatedAt))
+			r.UpdatedAt = r.Vllm.UpdatedAt
+		}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderXai != nil {
+			xaiPriorData := r.Xai
+			r.Xai = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData19 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if xaiPriorData != nil {
+				configPriorData19 = xaiPriorData.Config
+			}
+			r.Xai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData19 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData19 != nil {
+				authPriorData19 = configPriorData19.Auth
+			}
+			r.Xai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice19 []tfTypes.Headers
+			if authPriorData19 != nil {
+				headersPriorSlice19 = authPriorData19.Headers
+			}
+			r.Xai.Config.Auth.Headers = []tfTypes.Headers{}
+
+			for headersIdx19, headersItem19 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Config.Auth.Headers {
+				var headers19 tfTypes.Headers
+
+				var headersPriorItem19 *tfTypes.Headers
+				if headersIdx19 < len(headersPriorSlice19) {
+					headersPriorItem19 = &headersPriorSlice19[headersIdx19]
+				}
+
+				headers19.Name = types.StringValue(headersItem19.Name)
+				if headersPriorItem19 != nil {
+					headers19.Value = headersPriorItem19.Value
+				}
+
+				r.Xai.Config.Auth.Headers = append(r.Xai.Config.Auth.Headers, headers19)
+			}
+			var paramsPriorSlice19 []tfTypes.Params
+			if authPriorData19 != nil {
+				paramsPriorSlice19 = authPriorData19.Params
+			}
+			r.Xai.Config.Auth.Params = []tfTypes.Params{}
+
+			for paramsIdx19, paramsItem19 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Config.Auth.Params {
+				var params19 tfTypes.Params
+
+				var paramsPriorItem19 *tfTypes.Params
+				if paramsIdx19 < len(paramsPriorSlice19) {
+					paramsPriorItem19 = &paramsPriorSlice19[paramsIdx19]
+				}
+
+				if paramsItem19.Location != nil {
+					params19.Location = types.StringValue(string(*paramsItem19.Location))
+				} else {
+					params19.Location = types.StringNull()
+				}
+				params19.Name = types.StringValue(paramsItem19.Name)
+				if paramsPriorItem19 != nil {
+					params19.Value = paramsPriorItem19.Value
+				}
+
+				r.Xai.Config.Auth.Params = append(r.Xai.Config.Auth.Params, params19)
+			}
+			r.Xai.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderXai.CreatedAt))
 			r.CreatedAt = r.Xai.CreatedAt
-			r.Xai.DisplayName = types.StringValue(resp.AIGatewayModelProviderXaiResponse.DisplayName)
+			r.Xai.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.DisplayName)
 			r.DisplayName = r.Xai.DisplayName
-			r.Xai.ID = types.StringValue(resp.AIGatewayModelProviderXaiResponse.ID)
+			r.Xai.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.ID)
 			r.ID = r.Xai.ID
-			if len(resp.AIGatewayModelProviderXaiResponse.Labels) > 0 {
-				r.Xai.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderXaiResponse.Labels))
-				for key36, value36 := range resp.AIGatewayModelProviderXaiResponse.Labels {
-					r.Xai.Labels[key36] = types.StringValue(value36)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.Labels) > 0 {
+				r.Xai.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.Labels))
+				for key38, value38 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Labels {
+					r.Xai.Labels[key38] = types.StringValue(value38)
 				}
 			}
-			if len(resp.AIGatewayModelProviderXaiResponse.ManagedBy) > 0 {
-				r.Xai.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderXaiResponse.ManagedBy))
-				for key37, value37 := range resp.AIGatewayModelProviderXaiResponse.ManagedBy {
-					r.Xai.ManagedBy[key37] = types.StringValue(value37)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.ManagedBy) > 0 {
+				r.Xai.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.ManagedBy))
+				for key39, value39 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.ManagedBy {
+					r.Xai.ManagedBy[key39] = types.StringValue(value39)
 				}
 			}
-			r.Xai.Name = types.StringValue(resp.AIGatewayModelProviderXaiResponse.Name)
+			r.Xai.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.Name)
 			r.Name = r.Xai.Name
-			r.Xai.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderXaiResponse.UpdatedAt))
+			r.Xai.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderXai.UpdatedAt))
 			r.UpdatedAt = r.Xai.UpdatedAt
 		}
 	}
@@ -3484,7 +3585,6 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderSagemaker *shared.AIGatewayModelProviderSagemaker
 	if r.Sagemaker != nil {
-		typeVar := shared.AIGatewayModelProviderSagemakerType(r.Sagemaker.Type.ValueString())
 		var displayName19 string
 		displayName19 = r.Sagemaker.DisplayName.ValueString()
 
@@ -3559,7 +3659,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 		}
 		var aiGatewayModelProviderConfigAuthSagemaker *shared.AIGatewayModelProviderConfigAuthSagemaker
 		if r.Sagemaker.Config.Auth.Sagemaker != nil {
-			typeVar1 := shared.AIGatewayModelProviderConfigAuthSagemakerType(r.Sagemaker.Config.Auth.Sagemaker.Type.ValueString())
+			typeVar := shared.AIGatewayModelProviderConfigAuthSagemakerType(r.Sagemaker.Config.Auth.Sagemaker.Type.ValueString())
 			var aws *shared.AIGatewayModelProviderConfigAuthSagemakerAws
 			if r.Sagemaker.Config.Auth.Sagemaker.Aws != nil {
 				accessKeyId1 := new(string)
@@ -3587,7 +3687,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				}
 			}
 			aiGatewayModelProviderConfigAuthSagemaker = &shared.AIGatewayModelProviderConfigAuthSagemaker{
-				Type: typeVar1,
+				Type: typeVar,
 				Aws:  aws,
 			}
 		}
@@ -3600,7 +3700,6 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Auth: auth19,
 		}
 		aiGatewayModelProviderSagemaker = &shared.AIGatewayModelProviderSagemaker{
-			Type:        typeVar,
 			DisplayName: displayName19,
 			Name:        name57,
 			Labels:      labels19,
@@ -5347,7 +5446,6 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderSagemaker *shared.AIGatewayModelProviderSagemaker
 	if r.Sagemaker != nil {
-		typeVar := shared.AIGatewayModelProviderSagemakerType(r.Sagemaker.Type.ValueString())
 		var displayName19 string
 		displayName19 = r.Sagemaker.DisplayName.ValueString()
 
@@ -5422,7 +5520,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 		}
 		var aiGatewayModelProviderConfigAuthSagemaker *shared.AIGatewayModelProviderConfigAuthSagemaker
 		if r.Sagemaker.Config.Auth.Sagemaker != nil {
-			typeVar1 := shared.AIGatewayModelProviderConfigAuthSagemakerType(r.Sagemaker.Config.Auth.Sagemaker.Type.ValueString())
+			typeVar := shared.AIGatewayModelProviderConfigAuthSagemakerType(r.Sagemaker.Config.Auth.Sagemaker.Type.ValueString())
 			var aws *shared.AIGatewayModelProviderConfigAuthSagemakerAws
 			if r.Sagemaker.Config.Auth.Sagemaker.Aws != nil {
 				accessKeyId1 := new(string)
@@ -5450,7 +5548,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				}
 			}
 			aiGatewayModelProviderConfigAuthSagemaker = &shared.AIGatewayModelProviderConfigAuthSagemaker{
-				Type: typeVar1,
+				Type: typeVar,
 				Aws:  aws,
 			}
 		}
@@ -5463,7 +5561,6 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Auth: auth19,
 		}
 		aiGatewayModelProviderSagemaker = &shared.AIGatewayModelProviderSagemaker{
-			Type:        typeVar,
 			DisplayName: displayName19,
 			Name:        name57,
 			Labels:      labels19,

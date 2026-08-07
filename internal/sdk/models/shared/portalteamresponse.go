@@ -16,6 +16,8 @@ type PortalTeamResponse struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 	// Whether the team is allowed to own applications.
 	CanOwnApplications *bool `default:"null" json:"can_own_applications"`
+	// Indicates whether the team is managed by Konnect.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (p PortalTeamResponse) MarshalJSON() ([]byte, error) {
@@ -69,4 +71,11 @@ func (p *PortalTeamResponse) GetCanOwnApplications() *bool {
 		return nil
 	}
 	return p.CanOwnApplications
+}
+
+func (p *PortalTeamResponse) GetKonnectManaged() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.KonnectManaged
 }

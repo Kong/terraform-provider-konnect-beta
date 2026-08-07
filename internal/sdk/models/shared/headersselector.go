@@ -8,9 +8,12 @@ import (
 
 // HeadersSelector - Configuration for routing requests to a specific model using a header.
 type HeadersSelector struct {
-	// Value indexed by property name that will cause this route to match if present in the request headers.
+	// The header property name to match for routing.
+	HeaderParam string `json:"header_param"`
+	// The list of values that are matched against the header property value.
+	// If the header property value matches any of the specified values, the request will be routed to the corresponding model.
 	//
-	Headers map[string]any `json:"headers"`
+	Values []string `json:"values"`
 }
 
 func (h HeadersSelector) MarshalJSON() ([]byte, error) {
@@ -24,9 +27,16 @@ func (h *HeadersSelector) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (h *HeadersSelector) GetHeaders() map[string]any {
+func (h *HeadersSelector) GetHeaderParam() string {
 	if h == nil {
-		return map[string]any{}
+		return ""
 	}
-	return h.Headers
+	return h.HeaderParam
+}
+
+func (h *HeadersSelector) GetValues() []string {
+	if h == nil {
+		return []string{}
+	}
+	return h.Values
 }

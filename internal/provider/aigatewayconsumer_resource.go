@@ -112,7 +112,7 @@ func (r *AIGatewayConsumerResource) Schema(ctx context.Context, req resource.Sch
 					`A user-defined unique identifier for this consumer, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 				},
 			},
 			"policies": schema.ListAttribute{

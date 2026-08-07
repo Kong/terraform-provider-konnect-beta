@@ -12,39 +12,28 @@ resource "konnect_dashboard" "my_dashboard" {
       {
         chart = {
           definition = {
-            chart = {
-              single_value = {
-                chart_title    = "...my_chart_title..."
-                decimal_points = 7.86
-                type           = "single_value"
+            table_chart_tile_definition = {
+              chart = {
+                chart_title = "...my_chart_title..."
+                type        = "table"
               }
-            }
-            query = {
-              llm_usage = {
-                datasource = "llm_usage"
-                dimensions = [
-                  "consumer"
+              query = {
+                columns = [
+                  "..."
                 ]
+                cursor     = "...my_cursor..."
+                datasource = "platform_usage"
+                entity     = "...my_entity..."
                 filters = [
                   {
-                    field    = "application"
-                    operator = "empty"
-                    value    = "{ \"see\": \"documentation\" }"
+                    field    = "hostname"
+                    operator = "not_in"
+                    value = [
+                      "..."
+                    ]
                   }
                 ]
-                granularity = "tenMinutely"
-                limit       = 50
-                metrics = [
-                  "ai_request_count"
-                ]
-                time_range = {
-                  absolute = {
-                    end   = "2022-11-26T07:30:44.592Z"
-                    start = "2022-01-09T02:25:36.303Z"
-                    type  = "absolute"
-                    tz    = "Etc/UTC"
-                  }
-                }
+                page_size = 4
               }
             }
           }

@@ -7,5 +7,6 @@ import (
 )
 
 type PathSelector struct {
-	PathAliases []types.String `tfsdk:"path_aliases"`
+	PathParam types.String   `tfsdk:"path_param"`
+	Values    []types.String `tfsdk:"values"`
 }

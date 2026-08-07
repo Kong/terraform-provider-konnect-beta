@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -69,12 +70,11 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 		}
 		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
 		r.Kri = types.StringPointerValue(resp.Kri)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key2, value2 := range resp.Labels {
-				r.Labels[key2] = types.StringValue(value2)
-			}
-		}
+		labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, resp.Labels)
+		diags.Append(labelsDiags...)
+		labelsValuable, labelsDiags := kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}}.ValueFromMap(ctx, labelsValue)
+		diags.Append(labelsDiags...)
+		r.Labels, _ = labelsValuable.(kumalabels.KumaLabelsMapValue)
 		if resp.Logging == nil {
 			r.Logging = nil
 		} else {
@@ -155,8 +155,8 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						backends1.Conf.PrometheusMetricsBackendConfig.SkipMTLS = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS)
 						if len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags) > 0 {
 							backends1.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String, len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags))
-							for key3, value3 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
-								backends1.Conf.PrometheusMetricsBackendConfig.Tags[key3] = types.StringValue(value3)
+							for key2, value2 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
+								backends1.Conf.PrometheusMetricsBackendConfig.Tags[key2] = types.StringValue(value2)
 							}
 						}
 						if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS == nil {
@@ -700,12 +700,9 @@ func (r *MeshResourceModel) ToSharedMeshItemInput(ctx context.Context) (*shared.
 			DataplaneProxy: dataplaneProxy,
 		}
 	}
-	labels := make(map[string]string)
-	for labelsKey := range r.Labels {
-		var labelsInst string
-		labelsInst = r.Labels[labelsKey].ValueString()
-
-		labels[labelsKey] = labelsInst
+	var labels map[string]string
+	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
+		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
 	}
 	var logging *shared.Logging
 	if r.Logging != nil {

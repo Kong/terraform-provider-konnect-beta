@@ -86,16 +86,16 @@ func (c *CreateAiGatewayModelResponse) GetAIGatewayModel() *shared.AIGatewayMode
 	return c.AIGatewayModel
 }
 
-func (c *CreateAiGatewayModelResponse) GetAIGatewayModelAPI() *shared.AIGatewayModelAPIResponse {
+func (c *CreateAiGatewayModelResponse) GetAIGatewayModelAPI() *shared.AIGatewayModelAIGatewayModelAPI {
 	if v := c.GetAIGatewayModel(); v != nil {
-		return v.AIGatewayModelAPIResponse
+		return v.AIGatewayModelAIGatewayModelAPI
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayModelResponse) GetAIGatewayModelModel() *shared.AIGatewayModelModelResponse {
+func (c *CreateAiGatewayModelResponse) GetAIGatewayModelModel() *shared.AIGatewayModelAIGatewayModelModel {
 	if v := c.GetAIGatewayModel(); v != nil {
-		return v.AIGatewayModelModelResponse
+		return v.AIGatewayModelAIGatewayModelModel
 	}
 	return nil
 }

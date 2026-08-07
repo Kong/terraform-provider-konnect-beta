@@ -57,6 +57,11 @@ Defaults to `slugify(name + version)`
 
 - `api_spec_ids` (List of String, Deprecated) The list of API specification ids for the API.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `environments` (Attributes Map) Map of this API's associated environments, keyed by environment name. Each entry
+includes the API's current version in that environment. A single-environment API
+has exactly one key (its sole association, which may or may not be the
+organization default). A multi-environment API has one key per association.
+Clients can infer mode from the number of keys. (see [below for nested schema](#nestedatt--environments))
 - `id` (String) The API identifier.
 - `implementation_mode` (String) the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
 - `portals` (Attributes List) The list of portals which this API is published to. (see [below for nested schema](#nestedatt--portals))
@@ -157,6 +162,14 @@ Requires replacement if changed.
 
 
 
+
+
+<a id="nestedatt--environments"></a>
+### Nested Schema for `environments`
+
+Read-Only:
+
+- `version` (String) The API's current version string in this environment.
 
 
 <a id="nestedatt--portals"></a>

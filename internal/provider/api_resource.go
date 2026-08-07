@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/mapplanmodifier"
 	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -44,20 +45,21 @@ type APIResource struct {
 
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
-	APISpecIds         []types.String          `tfsdk:"api_spec_ids"`
-	Attributes         jsontypes.Normalized    `tfsdk:"attributes"`
-	CreatedAt          types.String            `tfsdk:"created_at"`
-	Description        types.String            `tfsdk:"description"`
-	ID                 types.String            `tfsdk:"id"`
-	ImplementationMode types.String            `tfsdk:"implementation_mode"`
-	Labels             map[string]types.String `tfsdk:"labels"`
-	Name               types.String            `tfsdk:"name"`
-	Portals            []tfTypes.Portals       `tfsdk:"portals"`
-	Slug               types.String            `tfsdk:"slug"`
-	Spec               *tfTypes.APISpecPayload `tfsdk:"spec"`
-	SpecContent        types.String            `tfsdk:"spec_content"`
-	UpdatedAt          types.String            `tfsdk:"updated_at"`
-	Version            types.String            `tfsdk:"version"`
+	APISpecIds         []types.String                                  `tfsdk:"api_spec_ids"`
+	Attributes         jsontypes.Normalized                            `tfsdk:"attributes"`
+	CreatedAt          types.String                                    `tfsdk:"created_at"`
+	Description        types.String                                    `tfsdk:"description"`
+	Environments       map[string]tfTypes.APIEnvironmentVersionSummary `tfsdk:"environments"`
+	ID                 types.String                                    `tfsdk:"id"`
+	ImplementationMode types.String                                    `tfsdk:"implementation_mode"`
+	Labels             map[string]types.String                         `tfsdk:"labels"`
+	Name               types.String                                    `tfsdk:"name"`
+	Portals            []tfTypes.Portals                               `tfsdk:"portals"`
+	Slug               types.String                                    `tfsdk:"slug"`
+	Spec               *tfTypes.APISpecPayload                         `tfsdk:"spec"`
+	SpecContent        types.String                                    `tfsdk:"spec_content"`
+	UpdatedAt          types.String                                    `tfsdk:"updated_at"`
+	Version            types.String                                    `tfsdk:"version"`
 }
 
 func (r *APIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,6 +95,31 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"description": schema.StringAttribute{
 				Optional:    true,
 				Description: `A description of your API. Will be visible on your live Portal.`,
+			},
+			"environments": schema.MapNestedAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Map{
+					speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
+				},
+				NestedObject: schema.NestedAttributeObject{
+					PlanModifiers: []planmodifier.Object{
+						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+					},
+					Attributes: map[string]schema.Attribute{
+						"version": schema.StringAttribute{
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The API's current version string in this environment.`,
+						},
+					},
+				},
+				MarkdownDescription: `Map of this API's associated environments, keyed by environment name. Each entry` + "\n" +
+					`includes the API's current version in that environment. A single-environment API` + "\n" +
+					`has exactly one key (its sole association, which may or may not be the` + "\n" +
+					`organization default). A multi-environment API has one key per association.` + "\n" +
+					`Clients can infer mode from the number of keys.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

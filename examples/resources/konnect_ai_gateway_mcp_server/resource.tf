@@ -20,6 +20,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        identity_providers = [
+          "okta-ai-se"
+        ]
+        metadata = {
+          authorization_servers = [
+            "..."
+          ]
+          discovery_endpoint = "...my_discovery_endpoint..."
+          endpoint           = "...my_endpoint..."
+          resource           = "...my_resource..."
+          scopes_supported = [
+            "..."
+          ]
+        }
       }
     }
     config = {
@@ -283,6 +297,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        identity_providers = [
+          "okta-ai-se"
+        ]
+        metadata = {
+          authorization_servers = [
+            "..."
+          ]
+          discovery_endpoint = "...my_discovery_endpoint..."
+          endpoint           = "...my_endpoint..."
+          resource           = "...my_resource..."
+          scopes_supported = [
+            "..."
+          ]
+        }
       }
     }
     config = {
@@ -448,6 +476,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
           deny = [
+            "..."
+          ]
+        }
+        identity_providers = [
+          "okta-ai-se"
+        ]
+        metadata = {
+          authorization_servers = [
+            "..."
+          ]
+          discovery_endpoint = "...my_discovery_endpoint..."
+          endpoint           = "...my_endpoint..."
+          resource           = "...my_resource..."
+          scopes_supported = [
             "..."
           ]
         }

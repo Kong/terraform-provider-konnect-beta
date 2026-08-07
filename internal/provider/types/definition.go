@@ -3,6 +3,6 @@
 package types
 
 type Definition struct {
-	Chart *Chart `tfsdk:"chart"`
-	Query *Query `tfsdk:"query"`
+	ChartTileDefinition      *ChartTileDefinition      `queryParam:"inline" tfsdk:"chart_tile_definition"`
+	TableChartTileDefinition *TableChartTileDefinition `queryParam:"inline" tfsdk:"table_chart_tile_definition"`
 }

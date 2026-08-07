@@ -8,9 +8,12 @@ import (
 
 // BodySelector - Configuration for routing requests to a specific model using a request body property.
 type BodySelector struct {
-	// Value indexed by property name that will cause this route to match if present in the request body.
+	// The body property name to match for routing.
+	BodyParam string `json:"body_param"`
+	// The list of values that are matched against the body property value.
+	// If the body property value matches any of the specified values, the request will be routed to the corresponding model.
 	//
-	Body map[string]any `json:"body"`
+	Values []string `json:"values"`
 }
 
 func (b BodySelector) MarshalJSON() ([]byte, error) {
@@ -24,9 +27,16 @@ func (b *BodySelector) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *BodySelector) GetBody() map[string]any {
+func (b *BodySelector) GetBodyParam() string {
 	if b == nil {
-		return map[string]any{}
+		return ""
 	}
-	return b.Body
+	return b.BodyParam
+}
+
+func (b *BodySelector) GetValues() []string {
+	if b == nil {
+		return []string{}
+	}
+	return b.Values
 }

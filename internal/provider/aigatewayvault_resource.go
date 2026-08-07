@@ -197,7 +197,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -368,7 +368,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -522,7 +522,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -640,7 +640,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -780,7 +780,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2069,7 +2069,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2175,7 +2175,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{

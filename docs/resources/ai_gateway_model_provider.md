@@ -431,7 +431,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       key = "value"
     }
     name = "azure-ai-se"
-    type = "sagemaker"
   }
   vercel = {
     config = {
@@ -1752,19 +1751,12 @@ Optional:
 <a id="nestedatt--sagemaker"></a>
 ### Nested Schema for `sagemaker`
 
-Required:
-
-- `config` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--sagemaker--config))
-- `display_name` (String) The display name for this model provider instance.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
-- `type` (String) must be "sagemaker"
-
 Optional:
 
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+Not Null (see [below for nested schema](#nestedatt--sagemaker--config))
+- `display_name` (String) The display name for this model provider instance. Not Null
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
 Public labels are intended to store **PUBLIC** metadata. 
@@ -1773,13 +1765,24 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
+
+Read-Only:
+
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `id` (String) Contains a unique identifier used for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--sagemaker--config"></a>
 ### Nested Schema for `sagemaker.config`
 
-Required:
+Optional:
 
-- `auth` (Attributes) (see [below for nested schema](#nestedatt--sagemaker--config--auth))
+- `auth` (Attributes) Not Null (see [below for nested schema](#nestedatt--sagemaker--config--auth))
 
 <a id="nestedatt--sagemaker--config--auth"></a>
 ### Nested Schema for `sagemaker.config.auth`
@@ -1829,13 +1832,10 @@ Optional:
 <a id="nestedatt--sagemaker--config--auth--sagemaker"></a>
 ### Nested Schema for `sagemaker.config.auth.sagemaker`
 
-Required:
-
-- `type` (String) must be "sagemaker"
-
 Optional:
 
 - `aws` (Attributes) (see [below for nested schema](#nestedatt--sagemaker--config--auth--sagemaker--aws))
+- `type` (String) Not Null; must be "sagemaker"
 
 <a id="nestedatt--sagemaker--config--auth--sagemaker--aws"></a>
 ### Nested Schema for `sagemaker.config.auth.sagemaker.aws`

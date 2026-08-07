@@ -82,8 +82,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
         model = {
           path_selector = {
-            path_aliases = [
-              "@azure/claude-sonnet-5"
+            path_param = "x-model"
+            values = [
+              "@azure/claude-sonnet-5",
             ]
           }
         }
@@ -246,9 +247,10 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
         model = {
           body_selector = {
-            body = {
-              key = jsonencode("value")
-            }
+            body_param = "model"
+            values = [
+              "gpt-3.5-turbo",
+            ]
           }
         }
         paths = [
@@ -977,7 +979,10 @@ Optional:
 
 Optional:
 
-- `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
+- `body_param` (String) The body property name to match for routing. Not Null
+- `values` (List of String) The list of values that are matched against the body property value.
+If the body property value matches any of the specified values, the request will be routed to the corresponding model.
+Not Null
 
 
 <a id="nestedatt--api--config--route--model--headers_selector"></a>
@@ -985,7 +990,10 @@ Optional:
 
 Optional:
 
-- `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
+- `header_param` (String) The header property name to match for routing. Not Null
+- `values` (List of String) The list of values that are matched against the header property value.
+If the header property value matches any of the specified values, the request will be routed to the corresponding model.
+Not Null
 
 
 <a id="nestedatt--api--config--route--model--path_selector"></a>
@@ -993,7 +1001,10 @@ Optional:
 
 Optional:
 
-- `path_aliases` (List of String) Value that will cause this route to match if present in the request path. Not Null
+- `path_param` (String) The path param name to match for routing. Not Null
+- `values` (List of String) The list of values that are matched against the path param value.
+If the path param value matches any of the specified values, the request will be routed to the corresponding model.
+Not Null
 
 
 
@@ -2147,7 +2158,10 @@ Optional:
 
 Optional:
 
-- `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
+- `body_param` (String) The body property name to match for routing. Not Null
+- `values` (List of String) The list of values that are matched against the body property value.
+If the body property value matches any of the specified values, the request will be routed to the corresponding model.
+Not Null
 
 
 <a id="nestedatt--model--config--route--model--headers_selector"></a>
@@ -2155,7 +2169,10 @@ Optional:
 
 Optional:
 
-- `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
+- `header_param` (String) The header property name to match for routing. Not Null
+- `values` (List of String) The list of values that are matched against the header property value.
+If the header property value matches any of the specified values, the request will be routed to the corresponding model.
+Not Null
 
 
 <a id="nestedatt--model--config--route--model--path_selector"></a>
@@ -2163,7 +2180,10 @@ Optional:
 
 Optional:
 
-- `path_aliases` (List of String) Value that will cause this route to match if present in the request path. Not Null
+- `path_param` (String) The path param name to match for routing. Not Null
+- `values` (List of String) The list of values that are matched against the path param value.
+If the path param value matches any of the specified values, the request will be routed to the corresponding model.
+Not Null
 
 
 

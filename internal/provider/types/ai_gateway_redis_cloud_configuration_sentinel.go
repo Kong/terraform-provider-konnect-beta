@@ -7,9 +7,9 @@ import (
 )
 
 type AIGatewayRedisCloudConfigurationSentinel struct {
-	Master   types.String    `tfsdk:"master"`
-	Nodes    []SentinelNodes `tfsdk:"nodes"`
-	Password types.String    `tfsdk:"password"`
-	Role     types.String    `tfsdk:"role"`
-	Username types.String    `tfsdk:"username"`
+	Master   types.String                                    `tfsdk:"master"`
+	Nodes    []AIGatewayRedisCloudConfigurationSentinelNodes `tfsdk:"nodes"`
+	Password types.String                                    `tfsdk:"password"`
+	Role     types.String                                    `tfsdk:"role"`
+	Username types.String                                    `tfsdk:"username"`
 }

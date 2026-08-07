@@ -8,9 +8,11 @@ import (
 
 type AIGatewayModelProviderSagemaker struct {
 	Config      *AIGatewayModelProviderSagemakerConfig `tfsdk:"config"`
+	CreatedAt   types.String                           `tfsdk:"created_at"`
 	DisplayName types.String                           `tfsdk:"display_name"`
+	ID          types.String                           `tfsdk:"id"`
 	Labels      map[string]types.String                `tfsdk:"labels"`
 	ManagedBy   map[string]types.String                `tfsdk:"managed_by"`
 	Name        types.String                           `tfsdk:"name"`
-	Type        types.String                           `tfsdk:"type"`
+	UpdatedAt   types.String                           `tfsdk:"updated_at"`
 }

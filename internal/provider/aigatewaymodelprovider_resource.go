@@ -92,6 +92,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -123,6 +124,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -223,7 +225,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -308,6 +310,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"headers": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -339,6 +342,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 											},
 											"params": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -454,7 +458,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -550,6 +554,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"headers": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -581,6 +586,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 											},
 											"params": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -688,7 +694,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -739,6 +745,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -770,6 +777,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -870,7 +878,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -919,6 +927,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -950,6 +959,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1050,7 +1060,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -1090,7 +1100,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("created_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("created_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
@@ -1106,6 +1116,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1137,6 +1148,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1237,7 +1249,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -1286,6 +1298,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1317,6 +1330,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1417,7 +1431,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -1466,6 +1480,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1497,6 +1512,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1597,7 +1613,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -1637,7 +1653,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"display_name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("display_name")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("display_name")}}),
 				},
 				Description: `The display name for this model provider instance.`,
 			},
@@ -1660,6 +1676,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"headers": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -1691,6 +1708,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 											},
 											"params": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -1831,7 +1849,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -1882,6 +1900,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -1913,6 +1932,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2013,7 +2033,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2053,7 +2073,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("id")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
@@ -2069,6 +2089,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2100,6 +2121,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2200,7 +2222,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2249,6 +2271,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2280,6 +2303,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2380,7 +2404,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2429,6 +2453,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2460,6 +2485,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2560,7 +2586,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2600,7 +2626,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("name")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("name")}}),
 				},
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +
 					`This feature is currently in beta and is subject to change.` + "\n" +
@@ -2619,6 +2645,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2650,6 +2677,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2750,7 +2778,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2799,6 +2827,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2830,6 +2859,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -2930,7 +2960,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -2971,15 +3001,18 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"config": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
-								Required: true,
+								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"basic": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"headers": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -3011,6 +3044,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 											},
 											"params": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -3081,9 +3115,11 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 											},
 											"type": schema.StringAttribute{
-												Required:    true,
-												Description: `must be "sagemaker"`,
+												Computed:    true,
+												Optional:    true,
+												Description: `Not Null; must be "sagemaker"`,
 												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.OneOf(
 														"sagemaker",
 													),
@@ -3101,19 +3137,44 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 								},
+								Description: `Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 						},
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.`,
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"display_name": schema.StringAttribute{
-						Required:    true,
-						Description: `The display name for this model provider instance.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The display name for this model provider instance. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
+					"id": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Contains a unique identifier used for this resource.`,
+					},
 					"labels": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
@@ -3123,6 +3184,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"managed_by": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
@@ -3130,24 +3192,25 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
 							`This feature is currently in beta and is subject to change.` + "\n" +
 							`` + "\n" +
-							`A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.`,
+							`A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
+							`Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Required:    true,
-						Description: `must be "sagemaker"`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"sagemaker",
-							),
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -3181,7 +3244,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("updated_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("updated_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
@@ -3197,6 +3260,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -3228,6 +3292,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -3328,7 +3393,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -3380,6 +3445,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"headers": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -3411,6 +3477,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												},
 											},
 											"params": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -3537,7 +3604,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -3588,6 +3655,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -3619,6 +3687,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -3719,7 +3788,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -3768,6 +3837,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -3799,6 +3869,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"params": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -3899,7 +3970,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{

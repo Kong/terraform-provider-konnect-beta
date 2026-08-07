@@ -7,7 +7,3084 @@ import (
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+	"time"
 )
+
+type AIGatewayModelProviderSagemakerAuthOutputType string
+
+const (
+	AIGatewayModelProviderSagemakerAuthOutputTypeBasic     AIGatewayModelProviderSagemakerAuthOutputType = "basic"
+	AIGatewayModelProviderSagemakerAuthOutputTypeSagemaker AIGatewayModelProviderSagemakerAuthOutputType = "sagemaker"
+)
+
+type AIGatewayModelProviderSagemakerAuthOutput struct {
+	AIGatewayModelProviderConfigAuthBasicOutput *AIGatewayModelProviderConfigAuthBasicOutput `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderConfigAuthSagemaker   *AIGatewayModelProviderConfigAuthSagemaker   `queryParam:"inline" union:"member"`
+
+	Type AIGatewayModelProviderSagemakerAuthOutputType
+}
+
+func CreateAIGatewayModelProviderSagemakerAuthOutputBasic(basic AIGatewayModelProviderConfigAuthBasicOutput) AIGatewayModelProviderSagemakerAuthOutput {
+	typ := AIGatewayModelProviderSagemakerAuthOutputTypeBasic
+
+	return AIGatewayModelProviderSagemakerAuthOutput{
+		AIGatewayModelProviderConfigAuthBasicOutput: &basic,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderSagemakerAuthOutputSagemaker(sagemaker AIGatewayModelProviderConfigAuthSagemaker) AIGatewayModelProviderSagemakerAuthOutput {
+	typ := AIGatewayModelProviderSagemakerAuthOutputTypeSagemaker
+
+	typStr := AIGatewayModelProviderConfigAuthSagemakerType(typ)
+	sagemaker.Type = typStr
+
+	return AIGatewayModelProviderSagemakerAuthOutput{
+		AIGatewayModelProviderConfigAuthSagemaker: &sagemaker,
+		Type: typ,
+	}
+}
+
+func (u *AIGatewayModelProviderSagemakerAuthOutput) UnmarshalJSON(data []byte) error {
+
+	type discriminator struct {
+		Type string `json:"type"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Type {
+	case "basic":
+		aiGatewayModelProviderConfigAuthBasicOutput := new(AIGatewayModelProviderConfigAuthBasicOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthBasicOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == basic) type AIGatewayModelProviderConfigAuthBasicOutput within AIGatewayModelProviderSagemakerAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthBasicOutput = aiGatewayModelProviderConfigAuthBasicOutput
+		u.Type = AIGatewayModelProviderSagemakerAuthOutputTypeBasic
+		return nil
+	case "sagemaker":
+		aiGatewayModelProviderConfigAuthSagemaker := new(AIGatewayModelProviderConfigAuthSagemaker)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthSagemaker, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sagemaker) type AIGatewayModelProviderConfigAuthSagemaker within AIGatewayModelProviderSagemakerAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthSagemaker = aiGatewayModelProviderConfigAuthSagemaker
+		u.Type = AIGatewayModelProviderSagemakerAuthOutputTypeSagemaker
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelProviderSagemakerAuthOutput", string(data))
+}
+
+func (u AIGatewayModelProviderSagemakerAuthOutput) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthBasicOutput, "", true)
+	}
+
+	if u.AIGatewayModelProviderConfigAuthSagemaker != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthSagemaker, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AIGatewayModelProviderSagemakerAuthOutput: all fields are null")
+}
+
+// AIGatewayModelProviderSagemakerConfigOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderSagemakerConfigOutput struct {
+	Auth AIGatewayModelProviderSagemakerAuthOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderSagemakerConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderSagemakerConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderSagemakerConfigOutput) GetAuth() AIGatewayModelProviderSagemakerAuthOutput {
+	if a == nil {
+		return AIGatewayModelProviderSagemakerAuthOutput{}
+	}
+	return a.Auth
+}
+
+func (a *AIGatewayModelProviderSagemakerConfigOutput) GetAuthBasic() *AIGatewayModelProviderConfigAuthBasicOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthBasicOutput
+}
+
+func (a *AIGatewayModelProviderSagemakerConfigOutput) GetAuthSagemaker() *AIGatewayModelProviderConfigAuthSagemaker {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthSagemaker
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderSagemaker - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for Sagemaker model provider.
+type AIGatewayModelProviderAIGatewayModelProviderSagemaker struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"sagemaker" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	Config AIGatewayModelProviderSagemakerConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderSagemaker) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetType() string {
+	return "sagemaker"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetConfig() AIGatewayModelProviderSagemakerConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderSagemakerConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+type AIGatewayModelProviderVertexAuthOutputType string
+
+const (
+	AIGatewayModelProviderVertexAuthOutputTypeBasic  AIGatewayModelProviderVertexAuthOutputType = "basic"
+	AIGatewayModelProviderVertexAuthOutputTypeVertex AIGatewayModelProviderVertexAuthOutputType = "vertex"
+)
+
+type AIGatewayModelProviderVertexAuthOutput struct {
+	AIGatewayModelProviderConfigAuthBasicOutput  *AIGatewayModelProviderConfigAuthBasicOutput  `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderConfigAuthVertexOutput *AIGatewayModelProviderConfigAuthVertexOutput `queryParam:"inline" union:"member"`
+
+	Type AIGatewayModelProviderVertexAuthOutputType
+}
+
+func CreateAIGatewayModelProviderVertexAuthOutputBasic(basic AIGatewayModelProviderConfigAuthBasicOutput) AIGatewayModelProviderVertexAuthOutput {
+	typ := AIGatewayModelProviderVertexAuthOutputTypeBasic
+
+	return AIGatewayModelProviderVertexAuthOutput{
+		AIGatewayModelProviderConfigAuthBasicOutput: &basic,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderVertexAuthOutputVertex(vertex AIGatewayModelProviderConfigAuthVertexOutput) AIGatewayModelProviderVertexAuthOutput {
+	typ := AIGatewayModelProviderVertexAuthOutputTypeVertex
+
+	return AIGatewayModelProviderVertexAuthOutput{
+		AIGatewayModelProviderConfigAuthVertexOutput: &vertex,
+		Type: typ,
+	}
+}
+
+func (u *AIGatewayModelProviderVertexAuthOutput) UnmarshalJSON(data []byte) error {
+
+	type discriminator struct {
+		Type string `json:"type"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Type {
+	case "basic":
+		aiGatewayModelProviderConfigAuthBasicOutput := new(AIGatewayModelProviderConfigAuthBasicOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthBasicOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == basic) type AIGatewayModelProviderConfigAuthBasicOutput within AIGatewayModelProviderVertexAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthBasicOutput = aiGatewayModelProviderConfigAuthBasicOutput
+		u.Type = AIGatewayModelProviderVertexAuthOutputTypeBasic
+		return nil
+	case "vertex":
+		aiGatewayModelProviderConfigAuthVertexOutput := new(AIGatewayModelProviderConfigAuthVertexOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthVertexOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vertex) type AIGatewayModelProviderConfigAuthVertexOutput within AIGatewayModelProviderVertexAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthVertexOutput = aiGatewayModelProviderConfigAuthVertexOutput
+		u.Type = AIGatewayModelProviderVertexAuthOutputTypeVertex
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelProviderVertexAuthOutput", string(data))
+}
+
+func (u AIGatewayModelProviderVertexAuthOutput) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthBasicOutput, "", true)
+	}
+
+	if u.AIGatewayModelProviderConfigAuthVertexOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthVertexOutput, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AIGatewayModelProviderVertexAuthOutput: all fields are null")
+}
+
+type AIGatewayModelProviderVertexConfigOutput struct {
+	Auth AIGatewayModelProviderVertexAuthOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderVertexConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderVertexConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderVertexConfigOutput) GetAuth() AIGatewayModelProviderVertexAuthOutput {
+	if a == nil {
+		return AIGatewayModelProviderVertexAuthOutput{}
+	}
+	return a.Auth
+}
+
+func (a *AIGatewayModelProviderVertexConfigOutput) GetAuthBasic() *AIGatewayModelProviderConfigAuthBasicOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthBasicOutput
+}
+
+func (a *AIGatewayModelProviderVertexConfigOutput) GetAuthVertex() *AIGatewayModelProviderConfigAuthVertexOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthVertexOutput
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderVertex - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for Vertex model provider.
+type AIGatewayModelProviderAIGatewayModelProviderVertex struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"vertex" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string                        `json:"managed_by,omitempty"`
+	Config    AIGatewayModelProviderVertexConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderVertex) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetType() string {
+	return "vertex"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetConfig() AIGatewayModelProviderVertexConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderVertexConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVertex) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderXaiConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderXaiConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderXaiConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderXaiConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderXaiConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderXai - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderXai struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"xai" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderXaiConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderXai) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetType() string {
+	return "xai"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetConfig() AIGatewayModelProviderXaiConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderXaiConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderVllmConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderVllmConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderVllmConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderVllmConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderVllmConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderVllm - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderVllm struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"vllm" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderVllmConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderVllm) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetType() string {
+	return "vllm"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetConfig() AIGatewayModelProviderVllmConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderVllmConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderVercelConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderVercelConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderVercelConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderVercelConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderVercelConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderVercel - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderVercel struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"vercel" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderVercelConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderVercel) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetType() string {
+	return "vercel"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetConfig() AIGatewayModelProviderVercelConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderVercelConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderOpenaiConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderOpenaiConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderOpenaiConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderOpenaiConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderOpenaiConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderOpenai - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderOpenai struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"openai" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderOpenaiConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderOpenai) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetType() string {
+	return "openai"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetConfig() AIGatewayModelProviderOpenaiConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderOpenaiConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderOllamaConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderOllamaConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderOllamaConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderOllamaConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderOllamaConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderOllama - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderOllama struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"ollama" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderOllamaConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderOllama) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetType() string {
+	return "ollama"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetConfig() AIGatewayModelProviderOllamaConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderOllamaConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderMistralConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderMistralConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderMistralConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderMistralConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderMistralConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderMistral - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderMistral struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"mistral" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderMistralConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderMistral) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetType() string {
+	return "mistral"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetConfig() AIGatewayModelProviderMistralConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderMistralConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderLlama2ConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderLlama2ConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderLlama2ConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderLlama2ConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderLlama2ConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// #region class-body-aigatewaymodelproviderllama2configoutput
+// #endregion class-body-aigatewaymodelproviderllama2configoutput
+
+// AIGatewayModelProviderAIGatewayModelProviderLlama2 - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderLlama2 struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"llama2" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderLlama2ConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderLlama2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetType() string {
+	return "llama2"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetConfig() AIGatewayModelProviderLlama2ConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderLlama2ConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// #region class-body-aigatewaymodelprovideraigatewaymodelproviderllama2
+// #endregion class-body-aigatewaymodelprovideraigatewaymodelproviderllama2
+
+// AIGatewayModelProviderKimiConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderKimiConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderKimiConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderKimiConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderKimiConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderKimi - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderKimi struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"kimi" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderKimiConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderKimi) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetType() string {
+	return "kimi"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetConfig() AIGatewayModelProviderKimiConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderKimiConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderHuggingfaceConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderHuggingfaceConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderHuggingfaceConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderHuggingfaceConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderHuggingfaceConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderHuggingface - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderHuggingface struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"huggingface" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderHuggingfaceConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderHuggingface) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetType() string {
+	return "huggingface"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetConfig() AIGatewayModelProviderHuggingfaceConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderHuggingfaceConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+type AIGatewayModelProviderGeminiAuthOutputType string
+
+const (
+	AIGatewayModelProviderGeminiAuthOutputTypeBasic AIGatewayModelProviderGeminiAuthOutputType = "basic"
+	AIGatewayModelProviderGeminiAuthOutputTypeGcp   AIGatewayModelProviderGeminiAuthOutputType = "gcp"
+)
+
+type AIGatewayModelProviderGeminiAuthOutput struct {
+	AIGatewayModelProviderConfigAuthBasicOutput *AIGatewayModelProviderConfigAuthBasicOutput `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderConfigAuthGCPOutput   *AIGatewayModelProviderConfigAuthGCPOutput   `queryParam:"inline" union:"member"`
+
+	Type AIGatewayModelProviderGeminiAuthOutputType
+}
+
+func CreateAIGatewayModelProviderGeminiAuthOutputBasic(basic AIGatewayModelProviderConfigAuthBasicOutput) AIGatewayModelProviderGeminiAuthOutput {
+	typ := AIGatewayModelProviderGeminiAuthOutputTypeBasic
+
+	return AIGatewayModelProviderGeminiAuthOutput{
+		AIGatewayModelProviderConfigAuthBasicOutput: &basic,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderGeminiAuthOutputGcp(gcp AIGatewayModelProviderConfigAuthGCPOutput) AIGatewayModelProviderGeminiAuthOutput {
+	typ := AIGatewayModelProviderGeminiAuthOutputTypeGcp
+
+	return AIGatewayModelProviderGeminiAuthOutput{
+		AIGatewayModelProviderConfigAuthGCPOutput: &gcp,
+		Type: typ,
+	}
+}
+
+func (u *AIGatewayModelProviderGeminiAuthOutput) UnmarshalJSON(data []byte) error {
+
+	type discriminator struct {
+		Type string `json:"type"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Type {
+	case "basic":
+		aiGatewayModelProviderConfigAuthBasicOutput := new(AIGatewayModelProviderConfigAuthBasicOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthBasicOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == basic) type AIGatewayModelProviderConfigAuthBasicOutput within AIGatewayModelProviderGeminiAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthBasicOutput = aiGatewayModelProviderConfigAuthBasicOutput
+		u.Type = AIGatewayModelProviderGeminiAuthOutputTypeBasic
+		return nil
+	case "gcp":
+		aiGatewayModelProviderConfigAuthGCPOutput := new(AIGatewayModelProviderConfigAuthGCPOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthGCPOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == gcp) type AIGatewayModelProviderConfigAuthGCPOutput within AIGatewayModelProviderGeminiAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthGCPOutput = aiGatewayModelProviderConfigAuthGCPOutput
+		u.Type = AIGatewayModelProviderGeminiAuthOutputTypeGcp
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelProviderGeminiAuthOutput", string(data))
+}
+
+func (u AIGatewayModelProviderGeminiAuthOutput) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthBasicOutput, "", true)
+	}
+
+	if u.AIGatewayModelProviderConfigAuthGCPOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthGCPOutput, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AIGatewayModelProviderGeminiAuthOutput: all fields are null")
+}
+
+type AIGatewayModelProviderGeminiConfigOutput struct {
+	Auth AIGatewayModelProviderGeminiAuthOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderGeminiConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderGeminiConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderGeminiConfigOutput) GetAuth() AIGatewayModelProviderGeminiAuthOutput {
+	if a == nil {
+		return AIGatewayModelProviderGeminiAuthOutput{}
+	}
+	return a.Auth
+}
+
+func (a *AIGatewayModelProviderGeminiConfigOutput) GetAuthBasic() *AIGatewayModelProviderConfigAuthBasicOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthBasicOutput
+}
+
+func (a *AIGatewayModelProviderGeminiConfigOutput) GetAuthGcp() *AIGatewayModelProviderConfigAuthGCPOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthGCPOutput
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderGemini - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for GCP model provider.
+type AIGatewayModelProviderAIGatewayModelProviderGemini struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"gemini" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string                        `json:"managed_by,omitempty"`
+	Config    AIGatewayModelProviderGeminiConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderGemini) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetType() string {
+	return "gemini"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetConfig() AIGatewayModelProviderGeminiConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderGeminiConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderDeepseekConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderDeepseekConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderDeepseekConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderDeepseekConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderDeepseekConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderDeepseek - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderDeepseek struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"deepseek" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderDeepseekConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderDeepseek) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetType() string {
+	return "deepseek"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetConfig() AIGatewayModelProviderDeepseekConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderDeepseekConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderDatabricksConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderDatabricksConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderDatabricksConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderDatabricksConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderDatabricksConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderDatabricks - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderDatabricks struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"databricks" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderDatabricksConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderDatabricks) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetType() string {
+	return "databricks"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetConfig() AIGatewayModelProviderDatabricksConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderDatabricksConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderDashscopeConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderDashscopeConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderDashscopeConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderDashscopeConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderDashscopeConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderDashscope - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderDashscope struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"dashscope" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderDashscopeConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderDashscope) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetType() string {
+	return "dashscope"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetConfig() AIGatewayModelProviderDashscopeConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderDashscopeConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderCohereConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderCohereConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderCohereConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderCohereConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderCohereConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderCohere - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderCohere struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"cohere" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderCohereConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderCohere) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetType() string {
+	return "cohere"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetConfig() AIGatewayModelProviderCohereConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderCohereConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderCerebrasConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderCerebrasConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderCerebrasConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderCerebrasConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderCerebrasConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderCerebras - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderCerebras struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"cerebras" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderCerebrasConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderCerebras) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetType() string {
+	return "cerebras"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetConfig() AIGatewayModelProviderCerebrasConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderCerebrasConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+type AIGatewayModelProviderBedrockAuthOutputType string
+
+const (
+	AIGatewayModelProviderBedrockAuthOutputTypeBasic AIGatewayModelProviderBedrockAuthOutputType = "basic"
+	AIGatewayModelProviderBedrockAuthOutputTypeAws   AIGatewayModelProviderBedrockAuthOutputType = "aws"
+)
+
+type AIGatewayModelProviderBedrockAuthOutput struct {
+	AIGatewayModelProviderConfigAuthBasicOutput *AIGatewayModelProviderConfigAuthBasicOutput `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderConfigAuthAWSOutput   *AIGatewayModelProviderConfigAuthAWSOutput   `queryParam:"inline" union:"member"`
+
+	Type AIGatewayModelProviderBedrockAuthOutputType
+}
+
+func CreateAIGatewayModelProviderBedrockAuthOutputBasic(basic AIGatewayModelProviderConfigAuthBasicOutput) AIGatewayModelProviderBedrockAuthOutput {
+	typ := AIGatewayModelProviderBedrockAuthOutputTypeBasic
+
+	return AIGatewayModelProviderBedrockAuthOutput{
+		AIGatewayModelProviderConfigAuthBasicOutput: &basic,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderBedrockAuthOutputAws(aws AIGatewayModelProviderConfigAuthAWSOutput) AIGatewayModelProviderBedrockAuthOutput {
+	typ := AIGatewayModelProviderBedrockAuthOutputTypeAws
+
+	return AIGatewayModelProviderBedrockAuthOutput{
+		AIGatewayModelProviderConfigAuthAWSOutput: &aws,
+		Type: typ,
+	}
+}
+
+func (u *AIGatewayModelProviderBedrockAuthOutput) UnmarshalJSON(data []byte) error {
+
+	type discriminator struct {
+		Type string `json:"type"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Type {
+	case "basic":
+		aiGatewayModelProviderConfigAuthBasicOutput := new(AIGatewayModelProviderConfigAuthBasicOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthBasicOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == basic) type AIGatewayModelProviderConfigAuthBasicOutput within AIGatewayModelProviderBedrockAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthBasicOutput = aiGatewayModelProviderConfigAuthBasicOutput
+		u.Type = AIGatewayModelProviderBedrockAuthOutputTypeBasic
+		return nil
+	case "aws":
+		aiGatewayModelProviderConfigAuthAWSOutput := new(AIGatewayModelProviderConfigAuthAWSOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthAWSOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == aws) type AIGatewayModelProviderConfigAuthAWSOutput within AIGatewayModelProviderBedrockAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthAWSOutput = aiGatewayModelProviderConfigAuthAWSOutput
+		u.Type = AIGatewayModelProviderBedrockAuthOutputTypeAws
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelProviderBedrockAuthOutput", string(data))
+}
+
+func (u AIGatewayModelProviderBedrockAuthOutput) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthBasicOutput, "", true)
+	}
+
+	if u.AIGatewayModelProviderConfigAuthAWSOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthAWSOutput, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AIGatewayModelProviderBedrockAuthOutput: all fields are null")
+}
+
+type AIGatewayModelProviderBedrockConfigOutput struct {
+	Auth AIGatewayModelProviderBedrockAuthOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderBedrockConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderBedrockConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderBedrockConfigOutput) GetAuth() AIGatewayModelProviderBedrockAuthOutput {
+	if a == nil {
+		return AIGatewayModelProviderBedrockAuthOutput{}
+	}
+	return a.Auth
+}
+
+func (a *AIGatewayModelProviderBedrockConfigOutput) GetAuthBasic() *AIGatewayModelProviderConfigAuthBasicOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthBasicOutput
+}
+
+func (a *AIGatewayModelProviderBedrockConfigOutput) GetAuthAws() *AIGatewayModelProviderConfigAuthAWSOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthAWSOutput
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderBedrock - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for AWS model provider.
+type AIGatewayModelProviderAIGatewayModelProviderBedrock struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"bedrock" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string                         `json:"managed_by,omitempty"`
+	Config    AIGatewayModelProviderBedrockConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderBedrock) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetType() string {
+	return "bedrock"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetConfig() AIGatewayModelProviderBedrockConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderBedrockConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+type AIGatewayModelProviderAzureAuthOutputType string
+
+const (
+	AIGatewayModelProviderAzureAuthOutputTypeBasic AIGatewayModelProviderAzureAuthOutputType = "basic"
+	AIGatewayModelProviderAzureAuthOutputTypeAzure AIGatewayModelProviderAzureAuthOutputType = "azure"
+)
+
+type AIGatewayModelProviderAzureAuthOutput struct {
+	AIGatewayModelProviderConfigAuthBasicOutput *AIGatewayModelProviderConfigAuthBasicOutput `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderConfigAuthAzureOutput *AIGatewayModelProviderConfigAuthAzureOutput `queryParam:"inline" union:"member"`
+
+	Type AIGatewayModelProviderAzureAuthOutputType
+}
+
+func CreateAIGatewayModelProviderAzureAuthOutputBasic(basic AIGatewayModelProviderConfigAuthBasicOutput) AIGatewayModelProviderAzureAuthOutput {
+	typ := AIGatewayModelProviderAzureAuthOutputTypeBasic
+
+	return AIGatewayModelProviderAzureAuthOutput{
+		AIGatewayModelProviderConfigAuthBasicOutput: &basic,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderAzureAuthOutputAzure(azure AIGatewayModelProviderConfigAuthAzureOutput) AIGatewayModelProviderAzureAuthOutput {
+	typ := AIGatewayModelProviderAzureAuthOutputTypeAzure
+
+	return AIGatewayModelProviderAzureAuthOutput{
+		AIGatewayModelProviderConfigAuthAzureOutput: &azure,
+		Type: typ,
+	}
+}
+
+func (u *AIGatewayModelProviderAzureAuthOutput) UnmarshalJSON(data []byte) error {
+
+	type discriminator struct {
+		Type string `json:"type"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Type {
+	case "basic":
+		aiGatewayModelProviderConfigAuthBasicOutput := new(AIGatewayModelProviderConfigAuthBasicOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthBasicOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == basic) type AIGatewayModelProviderConfigAuthBasicOutput within AIGatewayModelProviderAzureAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthBasicOutput = aiGatewayModelProviderConfigAuthBasicOutput
+		u.Type = AIGatewayModelProviderAzureAuthOutputTypeBasic
+		return nil
+	case "azure":
+		aiGatewayModelProviderConfigAuthAzureOutput := new(AIGatewayModelProviderConfigAuthAzureOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthAzureOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == azure) type AIGatewayModelProviderConfigAuthAzureOutput within AIGatewayModelProviderAzureAuthOutput: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderConfigAuthAzureOutput = aiGatewayModelProviderConfigAuthAzureOutput
+		u.Type = AIGatewayModelProviderAzureAuthOutputTypeAzure
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelProviderAzureAuthOutput", string(data))
+}
+
+func (u AIGatewayModelProviderAzureAuthOutput) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthBasicOutput, "", true)
+	}
+
+	if u.AIGatewayModelProviderConfigAuthAzureOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthAzureOutput, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AIGatewayModelProviderAzureAuthOutput: all fields are null")
+}
+
+type AIGatewayModelProviderAzureConfigOutput struct {
+	Auth     AIGatewayModelProviderAzureAuthOutput `json:"auth"`
+	Instance string                                `json:"instance"`
+}
+
+func (a AIGatewayModelProviderAzureConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAzureConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAzureConfigOutput) GetAuth() AIGatewayModelProviderAzureAuthOutput {
+	if a == nil {
+		return AIGatewayModelProviderAzureAuthOutput{}
+	}
+	return a.Auth
+}
+
+func (a *AIGatewayModelProviderAzureConfigOutput) GetAuthBasic() *AIGatewayModelProviderConfigAuthBasicOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthBasicOutput
+}
+
+func (a *AIGatewayModelProviderAzureConfigOutput) GetAuthAzure() *AIGatewayModelProviderConfigAuthAzureOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthAzureOutput
+}
+
+func (a *AIGatewayModelProviderAzureConfigOutput) GetInstance() string {
+	if a == nil {
+		return ""
+	}
+	return a.Instance
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderAzure - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for Azure model provider.
+type AIGatewayModelProviderAIGatewayModelProviderAzure struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"azure" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string                       `json:"managed_by,omitempty"`
+	Config    AIGatewayModelProviderAzureConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderAzure) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetType() string {
+	return "azure"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetConfig() AIGatewayModelProviderAzureConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderAzureConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderAnthropicConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderAnthropicConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Basic auth config for an upstream model provider.
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderAnthropicConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAnthropicConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAnthropicConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderAnthropic - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+type AIGatewayModelProviderAIGatewayModelProviderAnthropic struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"anthropic" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderAnthropicConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderAnthropic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetType() string {
+	return "anthropic"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetConfig() AIGatewayModelProviderAnthropicConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderAnthropicConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
 
 type AIGatewayModelProviderType string
 
@@ -31,202 +3108,213 @@ const (
 	AIGatewayModelProviderTypeVllm        AIGatewayModelProviderType = "vllm"
 	AIGatewayModelProviderTypeXai         AIGatewayModelProviderType = "xai"
 	AIGatewayModelProviderTypeVertex      AIGatewayModelProviderType = "vertex"
+	AIGatewayModelProviderTypeSagemaker   AIGatewayModelProviderType = "sagemaker"
 )
 
 // AIGatewayModelProvider - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type AIGatewayModelProvider struct {
-	AIGatewayModelProviderAnthropicResponse   *AIGatewayModelProviderAnthropicResponse   `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderAzureResponse       *AIGatewayModelProviderAzureResponse       `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderBedrockResponse     *AIGatewayModelProviderBedrockResponse     `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderCerebrasResponse    *AIGatewayModelProviderCerebrasResponse    `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderCohereResponse      *AIGatewayModelProviderCohereResponse      `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderDashscopeResponse   *AIGatewayModelProviderDashscopeResponse   `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderDatabricksResponse  *AIGatewayModelProviderDatabricksResponse  `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderDeepseekResponse    *AIGatewayModelProviderDeepseekResponse    `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderGeminiResponse      *AIGatewayModelProviderGeminiResponse      `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderHuggingfaceResponse *AIGatewayModelProviderHuggingfaceResponse `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderKimiResponse        *AIGatewayModelProviderKimiResponse        `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderLlama2Response      *AIGatewayModelProviderLlama2Response      `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderMistralResponse     *AIGatewayModelProviderMistralResponse     `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderOllamaResponse      *AIGatewayModelProviderOllamaResponse      `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderOpenaiResponse      *AIGatewayModelProviderOpenaiResponse      `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderVercelResponse      *AIGatewayModelProviderVercelResponse      `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderVllmResponse        *AIGatewayModelProviderVllmResponse        `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderXaiResponse         *AIGatewayModelProviderXaiResponse         `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderVertexResponse      *AIGatewayModelProviderVertexResponse      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderAnthropic   *AIGatewayModelProviderAIGatewayModelProviderAnthropic   `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderAzure       *AIGatewayModelProviderAIGatewayModelProviderAzure       `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderBedrock     *AIGatewayModelProviderAIGatewayModelProviderBedrock     `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderCerebras    *AIGatewayModelProviderAIGatewayModelProviderCerebras    `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderCohere      *AIGatewayModelProviderAIGatewayModelProviderCohere      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderDashscope   *AIGatewayModelProviderAIGatewayModelProviderDashscope   `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderDatabricks  *AIGatewayModelProviderAIGatewayModelProviderDatabricks  `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderDeepseek    *AIGatewayModelProviderAIGatewayModelProviderDeepseek    `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderGemini      *AIGatewayModelProviderAIGatewayModelProviderGemini      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderHuggingface *AIGatewayModelProviderAIGatewayModelProviderHuggingface `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderKimi        *AIGatewayModelProviderAIGatewayModelProviderKimi        `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderLlama2      *AIGatewayModelProviderAIGatewayModelProviderLlama2      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderMistral     *AIGatewayModelProviderAIGatewayModelProviderMistral     `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderOllama      *AIGatewayModelProviderAIGatewayModelProviderOllama      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderOpenai      *AIGatewayModelProviderAIGatewayModelProviderOpenai      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderVercel      *AIGatewayModelProviderAIGatewayModelProviderVercel      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderVllm        *AIGatewayModelProviderAIGatewayModelProviderVllm        `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderXai         *AIGatewayModelProviderAIGatewayModelProviderXai         `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderVertex      *AIGatewayModelProviderAIGatewayModelProviderVertex      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderSagemaker   *AIGatewayModelProviderAIGatewayModelProviderSagemaker   `queryParam:"inline" union:"member"`
 
 	Type AIGatewayModelProviderType
 }
 
-func CreateAIGatewayModelProviderAnthropic(anthropic AIGatewayModelProviderAnthropicResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderAnthropic(anthropic AIGatewayModelProviderAIGatewayModelProviderAnthropic) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeAnthropic
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderAnthropicResponse: &anthropic,
-		Type:                                    typ,
-	}
-}
-
-func CreateAIGatewayModelProviderAzure(azure AIGatewayModelProviderAzureResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeAzure
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderAzureResponse: &azure,
-		Type:                                typ,
-	}
-}
-
-func CreateAIGatewayModelProviderBedrock(bedrock AIGatewayModelProviderBedrockResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeBedrock
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderBedrockResponse: &bedrock,
-		Type:                                  typ,
-	}
-}
-
-func CreateAIGatewayModelProviderCerebras(cerebras AIGatewayModelProviderCerebrasResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeCerebras
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderCerebrasResponse: &cerebras,
-		Type:                                   typ,
-	}
-}
-
-func CreateAIGatewayModelProviderCohere(cohere AIGatewayModelProviderCohereResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeCohere
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderCohereResponse: &cohere,
-		Type:                                 typ,
-	}
-}
-
-func CreateAIGatewayModelProviderDashscope(dashscope AIGatewayModelProviderDashscopeResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeDashscope
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderDashscopeResponse: &dashscope,
-		Type:                                    typ,
-	}
-}
-
-func CreateAIGatewayModelProviderDatabricks(databricks AIGatewayModelProviderDatabricksResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeDatabricks
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderDatabricksResponse: &databricks,
-		Type:                                     typ,
-	}
-}
-
-func CreateAIGatewayModelProviderDeepseek(deepseek AIGatewayModelProviderDeepseekResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeDeepseek
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderDeepseekResponse: &deepseek,
-		Type:                                   typ,
-	}
-}
-
-func CreateAIGatewayModelProviderGemini(gemini AIGatewayModelProviderGeminiResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeGemini
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderGeminiResponse: &gemini,
-		Type:                                 typ,
-	}
-}
-
-func CreateAIGatewayModelProviderHuggingface(huggingface AIGatewayModelProviderHuggingfaceResponse) AIGatewayModelProvider {
-	typ := AIGatewayModelProviderTypeHuggingface
-
-	return AIGatewayModelProvider{
-		AIGatewayModelProviderHuggingfaceResponse: &huggingface,
+		AIGatewayModelProviderAIGatewayModelProviderAnthropic: &anthropic,
 		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderKimi(kimi AIGatewayModelProviderKimiResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderAzure(azure AIGatewayModelProviderAIGatewayModelProviderAzure) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeAzure
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderAzure: &azure,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderBedrock(bedrock AIGatewayModelProviderAIGatewayModelProviderBedrock) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeBedrock
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderBedrock: &bedrock,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderCerebras(cerebras AIGatewayModelProviderAIGatewayModelProviderCerebras) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeCerebras
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderCerebras: &cerebras,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderCohere(cohere AIGatewayModelProviderAIGatewayModelProviderCohere) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeCohere
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderCohere: &cohere,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderDashscope(dashscope AIGatewayModelProviderAIGatewayModelProviderDashscope) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeDashscope
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderDashscope: &dashscope,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderDatabricks(databricks AIGatewayModelProviderAIGatewayModelProviderDatabricks) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeDatabricks
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderDatabricks: &databricks,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderDeepseek(deepseek AIGatewayModelProviderAIGatewayModelProviderDeepseek) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeDeepseek
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderDeepseek: &deepseek,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderGemini(gemini AIGatewayModelProviderAIGatewayModelProviderGemini) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeGemini
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderGemini: &gemini,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderHuggingface(huggingface AIGatewayModelProviderAIGatewayModelProviderHuggingface) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeHuggingface
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderHuggingface: &huggingface,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderKimi(kimi AIGatewayModelProviderAIGatewayModelProviderKimi) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeKimi
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderKimiResponse: &kimi,
-		Type:                               typ,
+		AIGatewayModelProviderAIGatewayModelProviderKimi: &kimi,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderLlama2(llama2 AIGatewayModelProviderLlama2Response) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderLlama2(llama2 AIGatewayModelProviderAIGatewayModelProviderLlama2) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeLlama2
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderLlama2Response: &llama2,
-		Type:                                 typ,
+		AIGatewayModelProviderAIGatewayModelProviderLlama2: &llama2,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderMistral(mistral AIGatewayModelProviderMistralResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderMistral(mistral AIGatewayModelProviderAIGatewayModelProviderMistral) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeMistral
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderMistralResponse: &mistral,
-		Type:                                  typ,
+		AIGatewayModelProviderAIGatewayModelProviderMistral: &mistral,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderOllama(ollama AIGatewayModelProviderOllamaResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderOllama(ollama AIGatewayModelProviderAIGatewayModelProviderOllama) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeOllama
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderOllamaResponse: &ollama,
-		Type:                                 typ,
+		AIGatewayModelProviderAIGatewayModelProviderOllama: &ollama,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderOpenai(openai AIGatewayModelProviderOpenaiResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderOpenai(openai AIGatewayModelProviderAIGatewayModelProviderOpenai) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeOpenai
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderOpenaiResponse: &openai,
-		Type:                                 typ,
+		AIGatewayModelProviderAIGatewayModelProviderOpenai: &openai,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderVercel(vercel AIGatewayModelProviderVercelResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderVercel(vercel AIGatewayModelProviderAIGatewayModelProviderVercel) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeVercel
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderVercelResponse: &vercel,
-		Type:                                 typ,
+		AIGatewayModelProviderAIGatewayModelProviderVercel: &vercel,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderVllm(vllm AIGatewayModelProviderVllmResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderVllm(vllm AIGatewayModelProviderAIGatewayModelProviderVllm) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeVllm
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderVllmResponse: &vllm,
-		Type:                               typ,
+		AIGatewayModelProviderAIGatewayModelProviderVllm: &vllm,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderXai(xai AIGatewayModelProviderXaiResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderXai(xai AIGatewayModelProviderAIGatewayModelProviderXai) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeXai
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderXaiResponse: &xai,
-		Type:                              typ,
+		AIGatewayModelProviderAIGatewayModelProviderXai: &xai,
+		Type: typ,
 	}
 }
 
-func CreateAIGatewayModelProviderVertex(vertex AIGatewayModelProviderVertexResponse) AIGatewayModelProvider {
+func CreateAIGatewayModelProviderVertex(vertex AIGatewayModelProviderAIGatewayModelProviderVertex) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeVertex
 
 	return AIGatewayModelProvider{
-		AIGatewayModelProviderVertexResponse: &vertex,
-		Type:                                 typ,
+		AIGatewayModelProviderAIGatewayModelProviderVertex: &vertex,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderSagemaker(sagemaker AIGatewayModelProviderAIGatewayModelProviderSagemaker) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeSagemaker
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderSagemaker: &sagemaker,
+		Type: typ,
 	}
 }
 
@@ -243,175 +3331,184 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) error {
 
 	switch dis.Type {
 	case "anthropic":
-		aiGatewayModelProviderAnthropicResponse := new(AIGatewayModelProviderAnthropicResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAnthropicResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anthropic) type AIGatewayModelProviderAnthropicResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderAnthropic := new(AIGatewayModelProviderAIGatewayModelProviderAnthropic)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderAnthropic, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anthropic) type AIGatewayModelProviderAIGatewayModelProviderAnthropic within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderAnthropicResponse = aiGatewayModelProviderAnthropicResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderAnthropic = aiGatewayModelProviderAIGatewayModelProviderAnthropic
 		u.Type = AIGatewayModelProviderTypeAnthropic
 		return nil
 	case "azure":
-		aiGatewayModelProviderAzureResponse := new(AIGatewayModelProviderAzureResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAzureResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == azure) type AIGatewayModelProviderAzureResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderAzure := new(AIGatewayModelProviderAIGatewayModelProviderAzure)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderAzure, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == azure) type AIGatewayModelProviderAIGatewayModelProviderAzure within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderAzureResponse = aiGatewayModelProviderAzureResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderAzure = aiGatewayModelProviderAIGatewayModelProviderAzure
 		u.Type = AIGatewayModelProviderTypeAzure
 		return nil
 	case "bedrock":
-		aiGatewayModelProviderBedrockResponse := new(AIGatewayModelProviderBedrockResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderBedrockResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == bedrock) type AIGatewayModelProviderBedrockResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderBedrock := new(AIGatewayModelProviderAIGatewayModelProviderBedrock)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderBedrock, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == bedrock) type AIGatewayModelProviderAIGatewayModelProviderBedrock within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderBedrockResponse = aiGatewayModelProviderBedrockResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderBedrock = aiGatewayModelProviderAIGatewayModelProviderBedrock
 		u.Type = AIGatewayModelProviderTypeBedrock
 		return nil
 	case "cerebras":
-		aiGatewayModelProviderCerebrasResponse := new(AIGatewayModelProviderCerebrasResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderCerebrasResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == cerebras) type AIGatewayModelProviderCerebrasResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderCerebras := new(AIGatewayModelProviderAIGatewayModelProviderCerebras)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderCerebras, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == cerebras) type AIGatewayModelProviderAIGatewayModelProviderCerebras within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderCerebrasResponse = aiGatewayModelProviderCerebrasResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderCerebras = aiGatewayModelProviderAIGatewayModelProviderCerebras
 		u.Type = AIGatewayModelProviderTypeCerebras
 		return nil
 	case "cohere":
-		aiGatewayModelProviderCohereResponse := new(AIGatewayModelProviderCohereResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderCohereResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == cohere) type AIGatewayModelProviderCohereResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderCohere := new(AIGatewayModelProviderAIGatewayModelProviderCohere)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderCohere, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == cohere) type AIGatewayModelProviderAIGatewayModelProviderCohere within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderCohereResponse = aiGatewayModelProviderCohereResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderCohere = aiGatewayModelProviderAIGatewayModelProviderCohere
 		u.Type = AIGatewayModelProviderTypeCohere
 		return nil
 	case "dashscope":
-		aiGatewayModelProviderDashscopeResponse := new(AIGatewayModelProviderDashscopeResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderDashscopeResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == dashscope) type AIGatewayModelProviderDashscopeResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderDashscope := new(AIGatewayModelProviderAIGatewayModelProviderDashscope)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderDashscope, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == dashscope) type AIGatewayModelProviderAIGatewayModelProviderDashscope within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderDashscopeResponse = aiGatewayModelProviderDashscopeResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderDashscope = aiGatewayModelProviderAIGatewayModelProviderDashscope
 		u.Type = AIGatewayModelProviderTypeDashscope
 		return nil
 	case "databricks":
-		aiGatewayModelProviderDatabricksResponse := new(AIGatewayModelProviderDatabricksResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderDatabricksResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == databricks) type AIGatewayModelProviderDatabricksResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderDatabricks := new(AIGatewayModelProviderAIGatewayModelProviderDatabricks)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderDatabricks, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == databricks) type AIGatewayModelProviderAIGatewayModelProviderDatabricks within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderDatabricksResponse = aiGatewayModelProviderDatabricksResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderDatabricks = aiGatewayModelProviderAIGatewayModelProviderDatabricks
 		u.Type = AIGatewayModelProviderTypeDatabricks
 		return nil
 	case "deepseek":
-		aiGatewayModelProviderDeepseekResponse := new(AIGatewayModelProviderDeepseekResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderDeepseekResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == deepseek) type AIGatewayModelProviderDeepseekResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderDeepseek := new(AIGatewayModelProviderAIGatewayModelProviderDeepseek)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderDeepseek, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == deepseek) type AIGatewayModelProviderAIGatewayModelProviderDeepseek within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderDeepseekResponse = aiGatewayModelProviderDeepseekResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderDeepseek = aiGatewayModelProviderAIGatewayModelProviderDeepseek
 		u.Type = AIGatewayModelProviderTypeDeepseek
 		return nil
 	case "gemini":
-		aiGatewayModelProviderGeminiResponse := new(AIGatewayModelProviderGeminiResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderGeminiResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == gemini) type AIGatewayModelProviderGeminiResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderGemini := new(AIGatewayModelProviderAIGatewayModelProviderGemini)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderGemini, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == gemini) type AIGatewayModelProviderAIGatewayModelProviderGemini within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderGeminiResponse = aiGatewayModelProviderGeminiResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderGemini = aiGatewayModelProviderAIGatewayModelProviderGemini
 		u.Type = AIGatewayModelProviderTypeGemini
 		return nil
 	case "huggingface":
-		aiGatewayModelProviderHuggingfaceResponse := new(AIGatewayModelProviderHuggingfaceResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderHuggingfaceResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == huggingface) type AIGatewayModelProviderHuggingfaceResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderHuggingface := new(AIGatewayModelProviderAIGatewayModelProviderHuggingface)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderHuggingface, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == huggingface) type AIGatewayModelProviderAIGatewayModelProviderHuggingface within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderHuggingfaceResponse = aiGatewayModelProviderHuggingfaceResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderHuggingface = aiGatewayModelProviderAIGatewayModelProviderHuggingface
 		u.Type = AIGatewayModelProviderTypeHuggingface
 		return nil
 	case "kimi":
-		aiGatewayModelProviderKimiResponse := new(AIGatewayModelProviderKimiResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderKimiResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == kimi) type AIGatewayModelProviderKimiResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderKimi := new(AIGatewayModelProviderAIGatewayModelProviderKimi)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderKimi, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == kimi) type AIGatewayModelProviderAIGatewayModelProviderKimi within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderKimiResponse = aiGatewayModelProviderKimiResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderKimi = aiGatewayModelProviderAIGatewayModelProviderKimi
 		u.Type = AIGatewayModelProviderTypeKimi
 		return nil
 	case "llama2":
-		aiGatewayModelProviderLlama2Response := new(AIGatewayModelProviderLlama2Response)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderLlama2Response, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == llama2) type AIGatewayModelProviderLlama2Response within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderLlama2 := new(AIGatewayModelProviderAIGatewayModelProviderLlama2)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderLlama2, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == llama2) type AIGatewayModelProviderAIGatewayModelProviderLlama2 within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderLlama2Response = aiGatewayModelProviderLlama2Response
+		u.AIGatewayModelProviderAIGatewayModelProviderLlama2 = aiGatewayModelProviderAIGatewayModelProviderLlama2
 		u.Type = AIGatewayModelProviderTypeLlama2
 		return nil
 	case "mistral":
-		aiGatewayModelProviderMistralResponse := new(AIGatewayModelProviderMistralResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderMistralResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == mistral) type AIGatewayModelProviderMistralResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderMistral := new(AIGatewayModelProviderAIGatewayModelProviderMistral)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderMistral, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == mistral) type AIGatewayModelProviderAIGatewayModelProviderMistral within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderMistralResponse = aiGatewayModelProviderMistralResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderMistral = aiGatewayModelProviderAIGatewayModelProviderMistral
 		u.Type = AIGatewayModelProviderTypeMistral
 		return nil
 	case "ollama":
-		aiGatewayModelProviderOllamaResponse := new(AIGatewayModelProviderOllamaResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderOllamaResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == ollama) type AIGatewayModelProviderOllamaResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderOllama := new(AIGatewayModelProviderAIGatewayModelProviderOllama)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderOllama, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == ollama) type AIGatewayModelProviderAIGatewayModelProviderOllama within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderOllamaResponse = aiGatewayModelProviderOllamaResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderOllama = aiGatewayModelProviderAIGatewayModelProviderOllama
 		u.Type = AIGatewayModelProviderTypeOllama
 		return nil
 	case "openai":
-		aiGatewayModelProviderOpenaiResponse := new(AIGatewayModelProviderOpenaiResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderOpenaiResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == openai) type AIGatewayModelProviderOpenaiResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderOpenai := new(AIGatewayModelProviderAIGatewayModelProviderOpenai)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderOpenai, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == openai) type AIGatewayModelProviderAIGatewayModelProviderOpenai within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderOpenaiResponse = aiGatewayModelProviderOpenaiResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderOpenai = aiGatewayModelProviderAIGatewayModelProviderOpenai
 		u.Type = AIGatewayModelProviderTypeOpenai
 		return nil
 	case "vercel":
-		aiGatewayModelProviderVercelResponse := new(AIGatewayModelProviderVercelResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderVercelResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vercel) type AIGatewayModelProviderVercelResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderVercel := new(AIGatewayModelProviderAIGatewayModelProviderVercel)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderVercel, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vercel) type AIGatewayModelProviderAIGatewayModelProviderVercel within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderVercelResponse = aiGatewayModelProviderVercelResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderVercel = aiGatewayModelProviderAIGatewayModelProviderVercel
 		u.Type = AIGatewayModelProviderTypeVercel
 		return nil
 	case "vllm":
-		aiGatewayModelProviderVllmResponse := new(AIGatewayModelProviderVllmResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderVllmResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vllm) type AIGatewayModelProviderVllmResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderVllm := new(AIGatewayModelProviderAIGatewayModelProviderVllm)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderVllm, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vllm) type AIGatewayModelProviderAIGatewayModelProviderVllm within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderVllmResponse = aiGatewayModelProviderVllmResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderVllm = aiGatewayModelProviderAIGatewayModelProviderVllm
 		u.Type = AIGatewayModelProviderTypeVllm
 		return nil
 	case "xai":
-		aiGatewayModelProviderXaiResponse := new(AIGatewayModelProviderXaiResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderXaiResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == xai) type AIGatewayModelProviderXaiResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderXai := new(AIGatewayModelProviderAIGatewayModelProviderXai)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderXai, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == xai) type AIGatewayModelProviderAIGatewayModelProviderXai within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderXaiResponse = aiGatewayModelProviderXaiResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderXai = aiGatewayModelProviderAIGatewayModelProviderXai
 		u.Type = AIGatewayModelProviderTypeXai
 		return nil
 	case "vertex":
-		aiGatewayModelProviderVertexResponse := new(AIGatewayModelProviderVertexResponse)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderVertexResponse, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vertex) type AIGatewayModelProviderVertexResponse within AIGatewayModelProvider: %w", string(data), err)
+		aiGatewayModelProviderAIGatewayModelProviderVertex := new(AIGatewayModelProviderAIGatewayModelProviderVertex)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderVertex, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vertex) type AIGatewayModelProviderAIGatewayModelProviderVertex within AIGatewayModelProvider: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderVertexResponse = aiGatewayModelProviderVertexResponse
+		u.AIGatewayModelProviderAIGatewayModelProviderVertex = aiGatewayModelProviderAIGatewayModelProviderVertex
 		u.Type = AIGatewayModelProviderTypeVertex
+		return nil
+	case "sagemaker":
+		aiGatewayModelProviderAIGatewayModelProviderSagemaker := new(AIGatewayModelProviderAIGatewayModelProviderSagemaker)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderSagemaker, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sagemaker) type AIGatewayModelProviderAIGatewayModelProviderSagemaker within AIGatewayModelProvider: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderAIGatewayModelProviderSagemaker = aiGatewayModelProviderAIGatewayModelProviderSagemaker
+		u.Type = AIGatewayModelProviderTypeSagemaker
 		return nil
 	}
 
@@ -419,80 +3516,84 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) error {
 }
 
 func (u AIGatewayModelProvider) MarshalJSON() ([]byte, error) {
-	if u.AIGatewayModelProviderAnthropicResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderAnthropicResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderAnthropic != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderAnthropic, "", true)
 	}
 
-	if u.AIGatewayModelProviderAzureResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderAzureResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderAzure != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderAzure, "", true)
 	}
 
-	if u.AIGatewayModelProviderBedrockResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderBedrockResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderBedrock != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderBedrock, "", true)
 	}
 
-	if u.AIGatewayModelProviderCerebrasResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderCerebrasResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderCerebras != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderCerebras, "", true)
 	}
 
-	if u.AIGatewayModelProviderCohereResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderCohereResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderCohere != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderCohere, "", true)
 	}
 
-	if u.AIGatewayModelProviderDashscopeResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderDashscopeResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderDashscope != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderDashscope, "", true)
 	}
 
-	if u.AIGatewayModelProviderDatabricksResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderDatabricksResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderDatabricks != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderDatabricks, "", true)
 	}
 
-	if u.AIGatewayModelProviderDeepseekResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderDeepseekResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderDeepseek != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderDeepseek, "", true)
 	}
 
-	if u.AIGatewayModelProviderGeminiResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderGeminiResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderGemini != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderGemini, "", true)
 	}
 
-	if u.AIGatewayModelProviderHuggingfaceResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderHuggingfaceResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderHuggingface != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderHuggingface, "", true)
 	}
 
-	if u.AIGatewayModelProviderKimiResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderKimiResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderKimi != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderKimi, "", true)
 	}
 
-	if u.AIGatewayModelProviderLlama2Response != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderLlama2Response, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderLlama2 != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderLlama2, "", true)
 	}
 
-	if u.AIGatewayModelProviderMistralResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderMistralResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderMistral != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderMistral, "", true)
 	}
 
-	if u.AIGatewayModelProviderOllamaResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderOllamaResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderOllama != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderOllama, "", true)
 	}
 
-	if u.AIGatewayModelProviderOpenaiResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderOpenaiResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderOpenai != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderOpenai, "", true)
 	}
 
-	if u.AIGatewayModelProviderVercelResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderVercelResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderVercel != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderVercel, "", true)
 	}
 
-	if u.AIGatewayModelProviderVllmResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderVllmResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderVllm != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderVllm, "", true)
 	}
 
-	if u.AIGatewayModelProviderXaiResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderXaiResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderXai != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderXai, "", true)
 	}
 
-	if u.AIGatewayModelProviderVertexResponse != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderVertexResponse, "", true)
+	if u.AIGatewayModelProviderAIGatewayModelProviderVertex != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderVertex, "", true)
+	}
+
+	if u.AIGatewayModelProviderAIGatewayModelProviderSagemaker != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderSagemaker, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AIGatewayModelProvider: all fields are null")

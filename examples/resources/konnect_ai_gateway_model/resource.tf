@@ -67,8 +67,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
         model = {
           path_selector = {
-            path_aliases = [
-              "@azure/claude-sonnet-5"
+            path_param = "x-model"
+            values = [
+              "@azure/claude-sonnet-5",
             ]
           }
         }
@@ -231,9 +232,10 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
         model = {
           body_selector = {
-            body = {
-              key = jsonencode("value")
-            }
+            body_param = "model"
+            values = [
+              "gpt-3.5-turbo",
+            ]
           }
         }
         paths = [
