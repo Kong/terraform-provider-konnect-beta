@@ -389,6 +389,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"allow": knownvalue.ListExact([]knownvalue.Check{
 										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"sni": knownvalue.Null(),
 											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
 												"type":  knownvalue.StringExact("Exact"),
 												"value": knownvalue.StringExact("spiffe://hello/world"),
@@ -422,6 +423,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"deny": knownvalue.ListExact([]knownvalue.Check{
 										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"sni": knownvalue.Null(),
 											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
 												"type":  knownvalue.StringExact("Exact"),
 												"value": knownvalue.StringExact("spiffe://hello/world"),
