@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.21.0
+> Released on 2026/08/??
+
+### Features
+* Add support for AI Gateway 2.0 using which you can configure AI Gateway, MCP servers, AI Model Providers and AI Models
+  * `konnect_ai_gateway`
+  * `konnect_ai_gateway_agent`
+  * `konnect_ai_gateway_config_store`
+  * `konnect_ai_gateway_config_store_secret`
+  * `konnect_ai_gateway_consumer`
+  * `konnect_ai_gateway_consumer_credential`
+  * `konnect_ai_gateway_consumer_group`
+  * `konnect_ai_gateway_consumer_group_member`
+  * `konnect_ai_gateway_data_plane_certificate`
+  * `konnect_ai_gateway_identity_provider`
+  * `konnect_ai_gateway_mcp_server`
+  * `konnect_ai_gateway_model`
+  * `konnect_ai_gateway_model_provider`
+  * `konnect_ai_gateway_policy`
+  * `konnect_ai_gateway_vault`
+* Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources, using which you can manage developer accounts in a portal, the applications owned by those developers, and the registration of those applications against APIs published to the portal.
+* Add support for `konnect_identity_auth_server_client_secret` resource, using which you can create and rotate client secrets for an identity auth server client.
+
 ## 0.20.0
 > Released on 2026/06/26
 
