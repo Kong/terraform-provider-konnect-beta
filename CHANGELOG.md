@@ -3,6 +3,9 @@
 ## 0.21.0
 > Released on 2026/08/??
 
+### BREAKING CHANGES
+* A new chart type `table` for has been introduced in `konnect_dashboard` resource, and the chart tile definition is nested under `{chart_type}_visualization` key
+
 ### Features
 * Add support for AI Gateway 2.0 using which you can configure AI Gateway, MCP servers, AI Model Providers and AI Models
   * `konnect_ai_gateway`
