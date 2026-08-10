@@ -148,81 +148,81 @@ func (u Query) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type Query: all fields are null")
 }
 
-type ChartTileDefinition struct {
+type ChartVisualization struct {
 	Query Query `json:"query"`
 	// The type of chart to render.
 	Chart Chart `json:"chart"`
 }
 
-func (c ChartTileDefinition) MarshalJSON() ([]byte, error) {
+func (c ChartVisualization) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *ChartTileDefinition) UnmarshalJSON(data []byte) error {
+func (c *ChartVisualization) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ChartTileDefinition) GetQuery() Query {
+func (c *ChartVisualization) GetQuery() Query {
 	if c == nil {
 		return Query{}
 	}
 	return c.Query
 }
 
-func (c *ChartTileDefinition) GetQueryAPIUsage() *AdvancedQuery {
+func (c *ChartVisualization) GetQueryAPIUsage() *AdvancedQuery {
 	return c.GetQuery().AdvancedQuery
 }
 
-func (c *ChartTileDefinition) GetQueryLlmUsage() *LLMQuery {
+func (c *ChartVisualization) GetQueryLlmUsage() *LLMQuery {
 	return c.GetQuery().LLMQuery
 }
 
-func (c *ChartTileDefinition) GetQueryAgenticUsage() *AgenticQuery {
+func (c *ChartVisualization) GetQueryAgenticUsage() *AgenticQuery {
 	return c.GetQuery().AgenticQuery
 }
 
-func (c *ChartTileDefinition) GetQueryPlatformUsage() *PlatformQuery {
+func (c *ChartVisualization) GetQueryPlatformUsage() *PlatformQuery {
 	return c.GetQuery().PlatformQuery
 }
 
-func (c *ChartTileDefinition) GetChart() Chart {
+func (c *ChartVisualization) GetChart() Chart {
 	if c == nil {
 		return Chart{}
 	}
 	return c.Chart
 }
 
-func (c *ChartTileDefinition) GetChartDonut() *DonutChart {
+func (c *ChartVisualization) GetChartDonut() *DonutChart {
 	return c.GetChart().DonutChart
 }
 
-func (c *ChartTileDefinition) GetChartTimeseriesLine() *TimeseriesChart {
+func (c *ChartVisualization) GetChartTimeseriesLine() *TimeseriesChart {
 	return c.GetChart().TimeseriesChart
 }
 
-func (c *ChartTileDefinition) GetChartTimeseriesBar() *TimeseriesChart {
+func (c *ChartVisualization) GetChartTimeseriesBar() *TimeseriesChart {
 	return c.GetChart().TimeseriesChart
 }
 
-func (c *ChartTileDefinition) GetChartHorizontalBar() *BarChart {
+func (c *ChartVisualization) GetChartHorizontalBar() *BarChart {
 	return c.GetChart().BarChart
 }
 
-func (c *ChartTileDefinition) GetChartVerticalBar() *BarChart {
+func (c *ChartVisualization) GetChartVerticalBar() *BarChart {
 	return c.GetChart().BarChart
 }
 
-func (c *ChartTileDefinition) GetChartTopN() *TopNChart {
+func (c *ChartVisualization) GetChartTopN() *TopNChart {
 	return c.GetChart().TopNChart
 }
 
-func (c *ChartTileDefinition) GetChartSingleValue() *SingleValueChart {
+func (c *ChartVisualization) GetChartSingleValue() *SingleValueChart {
 	return c.GetChart().SingleValueChart
 }
 
-func (c *ChartTileDefinition) GetChartChoroplethMap() *ChoroplethMapChart {
+func (c *ChartVisualization) GetChartChoroplethMap() *ChoroplethMapChart {
 	return c.GetChart().ChoroplethMapChart
 }

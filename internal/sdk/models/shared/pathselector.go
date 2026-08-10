@@ -8,7 +8,8 @@ import (
 
 // PathSelector - Configuration for routing requests to a specific model using a path selector.
 type PathSelector struct {
-	// The path param name to match for routing.
+	// The name of the regex capture group defined in the route path for routing.
+	//
 	PathParam string `json:"path_param"`
 	// The list of values that are matched against the path param value.
 	// If the path param value matches any of the specified values, the request will be routed to the corresponding model.

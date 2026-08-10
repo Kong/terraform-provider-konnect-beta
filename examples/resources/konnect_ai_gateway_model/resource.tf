@@ -67,7 +67,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
         model = {
           path_selector = {
-            path_param = "x-model"
+            path_param = "model_name"
             values = [
               "@azure/claude-sonnet-5",
             ]

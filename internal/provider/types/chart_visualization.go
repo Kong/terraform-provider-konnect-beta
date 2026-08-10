@@ -2,7 +2,7 @@
 
 package types
 
-type ChartTileDefinition struct {
+type ChartVisualization struct {
 	Chart *Chart `tfsdk:"chart"`
 	Query *Query `tfsdk:"query"`
 }

@@ -12,28 +12,30 @@ resource "konnect_dashboard" "my_dashboard" {
       {
         chart = {
           definition = {
-            table_chart_tile_definition = {
+            table_visualization = {
               chart = {
                 chart_title = "...my_chart_title..."
                 type        = "table"
               }
               query = {
-                columns = [
-                  "..."
-                ]
-                cursor     = "...my_cursor..."
-                datasource = "platform_usage"
-                entity     = "...my_entity..."
-                filters = [
-                  {
-                    field    = "hostname"
-                    operator = "not_in"
-                    value = [
-                      "..."
-                    ]
-                  }
-                ]
-                page_size = 4
+                platform_usage = {
+                  columns = [
+                    "..."
+                  ]
+                  cursor     = "...my_cursor..."
+                  datasource = "platform_usage"
+                  entity     = "...my_entity..."
+                  filters = [
+                    {
+                      field    = "plugin_name"
+                      operator = "not_in"
+                      value = [
+                        "..."
+                      ]
+                    }
+                  ]
+                  page_size = 2
+                }
               }
             }
           }

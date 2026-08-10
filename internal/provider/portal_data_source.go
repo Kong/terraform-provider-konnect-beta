@@ -44,7 +44,6 @@ type PortalDataSourceModel struct {
 	Filter                                     *tfTypes.PortalFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 	ID                                         types.String                    `tfsdk:"id"`
 	Labels                                     map[string]types.String         `tfsdk:"labels"`
-	McpServerEnabled                           types.Bool                      `tfsdk:"mcp_server_enabled"`
 	Name                                       types.String                    `tfsdk:"name"`
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool                      `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool                      `tfsdk:"rbac_enabled"`
@@ -356,11 +355,6 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"mcp_server_enabled": schema.BoolAttribute{
-				Computed:           true,
-				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `Whether the portal has the MCP server enabled`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

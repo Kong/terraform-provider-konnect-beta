@@ -82,7 +82,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
         model = {
           path_selector = {
-            path_param = "x-model"
+            path_param = "model_name"
             values = [
               "@azure/claude-sonnet-5",
             ]
@@ -1001,7 +1001,7 @@ Not Null
 
 Optional:
 
-- `path_param` (String) The path param name to match for routing. Not Null
+- `path_param` (String) The name of the regex capture group defined in the route path for routing. Not Null
 - `values` (List of String) The list of values that are matched against the path param value.
 If the path param value matches any of the specified values, the request will be routed to the corresponding model.
 Not Null
@@ -2180,7 +2180,7 @@ Not Null
 
 Optional:
 
-- `path_param` (String) The path param name to match for routing. Not Null
+- `path_param` (String) The name of the regex capture group defined in the route path for routing. Not Null
 - `values` (List of String) The list of values that are matched against the path param value.
 If the path param value matches any of the specified values, the request will be routed to the corresponding model.
 Not Null

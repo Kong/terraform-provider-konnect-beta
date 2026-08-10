@@ -93,7 +93,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								"field": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+									Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -132,7 +132,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
-												"chart_tile_definition": schema.SingleNestedAttribute{
+												"chart_visualization": schema.SingleNestedAttribute{
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"chart": schema.SingleNestedAttribute{
@@ -384,7 +384,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					"field": schema.StringAttribute{
 																						Computed:    true,
 																						Optional:    true,
-																						Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+																						Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 																						Validators: []validator.String{
 																							speakeasy_stringvalidators.NotNull(),
 																						},
@@ -568,7 +568,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					"field": schema.StringAttribute{
 																						Computed:    true,
 																						Optional:    true,
-																						Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+																						Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 																						Validators: []validator.String{
 																							speakeasy_stringvalidators.NotNull(),
 																						},
@@ -1097,11 +1097,11 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 													},
 													Validators: []validator.Object{
 														objectvalidator.ConflictsWith(path.Expressions{
-															path.MatchRelative().AtParent().AtName("table_chart_tile_definition"),
+															path.MatchRelative().AtParent().AtName("table_visualization"),
 														}...),
 													},
 												},
-												"table_chart_tile_definition": schema.SingleNestedAttribute{
+												"table_visualization": schema.SingleNestedAttribute{
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"chart": schema.SingleNestedAttribute{
@@ -1132,73 +1132,79 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
-																"columns": schema.ListAttribute{
-																	Optional:    true,
-																	ElementType: types.StringType,
-																	Validators: []validator.List{
-																		listvalidator.SizeAtLeast(1),
-																	},
-																},
-																"cursor": schema.StringAttribute{
+																"platform_usage": schema.SingleNestedAttribute{
 																	Optional: true,
-																},
-																"datasource": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `Not Null; must be "platform_usage"`,
-																	Validators: []validator.String{
-																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"platform_usage",
-																		),
-																	},
-																},
-																"entity": schema.StringAttribute{
-																	Optional: true,
-																},
-																"filters": schema.ListNestedAttribute{
-																	Computed: true,
-																	Optional: true,
-																	NestedObject: schema.NestedAttributeObject{
-																		Validators: []validator.Object{
-																			speakeasy_objectvalidators.NotNull(),
-																		},
-																		Attributes: map[string]schema.Attribute{
-																			"field": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"operator": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `possible known values include one of ["in", "not_in"]; Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"value": schema.ListAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				ElementType: types.StringType,
-																				Description: `The values to filter by. Not Null`,
-																				Validators: []validator.List{
-																					speakeasy_listvalidators.NotNull(),
-																					listvalidator.SizeAtLeast(1),
-																				},
+																	Attributes: map[string]schema.Attribute{
+																		"columns": schema.ListAttribute{
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Validators: []validator.List{
+																				listvalidator.SizeAtLeast(1),
 																			},
 																		},
+																		"cursor": schema.StringAttribute{
+																			Optional: true,
+																		},
+																		"datasource": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "platform_usage"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"platform_usage",
+																				),
+																			},
+																		},
+																		"entity": schema.StringAttribute{
+																			Optional: true,
+																		},
+																		"filters": schema.ListNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Validators: []validator.Object{
+																					speakeasy_objectvalidators.NotNull(),
+																				},
+																				Attributes: map[string]schema.Attribute{
+																					"field": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"operator": schema.StringAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Description: `possible known values include one of ["in", "not_in"]; Not Null`,
+																						Validators: []validator.String{
+																							speakeasy_stringvalidators.NotNull(),
+																						},
+																					},
+																					"value": schema.ListAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						ElementType: types.StringType,
+																						Description: `The values to filter by. Not Null`,
+																						Validators: []validator.List{
+																							speakeasy_listvalidators.NotNull(),
+																							listvalidator.SizeAtLeast(1),
+																						},
+																					},
+																				},
+																			},
+																			Description: `A list of filters to apply to the query.`,
+																		},
+																		"page_size": schema.Int64Attribute{
+																			Optional: true,
+																		},
 																	},
-																	Description: `A list of filters to apply to the query.`,
-																},
-																"page_size": schema.Int64Attribute{
-																	Optional: true,
+																	Description: `A query targeting tabular platform usage analytics data.`,
 																},
 															},
-															Description: `A query targeting tabular platform usage analytics data. Not Null`,
+															Description: `Not Null`,
 															Validators: []validator.Object{
 																speakeasy_objectvalidators.NotNull(),
 															},
@@ -1206,7 +1212,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 													},
 													Validators: []validator.Object{
 														objectvalidator.ConflictsWith(path.Expressions{
-															path.MatchRelative().AtParent().AtName("chart_tile_definition"),
+															path.MatchRelative().AtParent().AtName("chart_visualization"),
 														}...),
 													},
 												},

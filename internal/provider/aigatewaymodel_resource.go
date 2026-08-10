@@ -1853,7 +1853,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													"path_param": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The path param name to match for routing. Not Null`,
+														Description: `The name of the regex capture group defined in the route path for routing. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
 														},
@@ -5481,7 +5481,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													"path_param": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The path param name to match for routing. Not Null`,
+														Description: `The name of the regex capture group defined in the route path for routing. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
 														},

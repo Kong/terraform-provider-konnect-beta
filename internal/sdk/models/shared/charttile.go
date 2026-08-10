@@ -4,7 +4,6 @@ package shared
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
@@ -134,97 +133,6 @@ func (e *ChartTileType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type DefinitionType string
-
-const (
-	DefinitionTypeChartTileDefinition      DefinitionType = "ChartTileDefinition"
-	DefinitionTypeTableChartTileDefinition DefinitionType = "TableChartTileDefinition"
-)
-
-// Definition - The tile's definition, which consists of a query to fetch data and a visualization to render the data.
-// Charts and tables expect certain query types to render properly. The documentation for the individual visualization types has more information.
-type Definition struct {
-	ChartTileDefinition      *ChartTileDefinition      `queryParam:"inline" union:"member"`
-	TableChartTileDefinition *TableChartTileDefinition `queryParam:"inline" union:"member"`
-
-	Type DefinitionType
-}
-
-func CreateDefinitionChartTileDefinition(chartTileDefinition ChartTileDefinition) Definition {
-	typ := DefinitionTypeChartTileDefinition
-
-	return Definition{
-		ChartTileDefinition: &chartTileDefinition,
-		Type:                typ,
-	}
-}
-
-func CreateDefinitionTableChartTileDefinition(tableChartTileDefinition TableChartTileDefinition) Definition {
-	typ := DefinitionTypeTableChartTileDefinition
-
-	return Definition{
-		TableChartTileDefinition: &tableChartTileDefinition,
-		Type:                     typ,
-	}
-}
-
-func (u *Definition) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var chartTileDefinition ChartTileDefinition = ChartTileDefinition{}
-	if err := utils.UnmarshalJSON(data, &chartTileDefinition, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  DefinitionTypeChartTileDefinition,
-			Value: &chartTileDefinition,
-		})
-	}
-
-	var tableChartTileDefinition TableChartTileDefinition = TableChartTileDefinition{}
-	if err := utils.UnmarshalJSON(data, &tableChartTileDefinition, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  DefinitionTypeTableChartTileDefinition,
-			Value: &tableChartTileDefinition,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Definition", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Definition", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(DefinitionType)
-	switch best.Type {
-	case DefinitionTypeChartTileDefinition:
-		u.ChartTileDefinition = best.Value.(*ChartTileDefinition)
-		return nil
-	case DefinitionTypeTableChartTileDefinition:
-		u.TableChartTileDefinition = best.Value.(*TableChartTileDefinition)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Definition", string(data))
-}
-
-func (u Definition) MarshalJSON() ([]byte, error) {
-	if u.ChartTileDefinition != nil {
-		return utils.MarshalJSON(u.ChartTileDefinition, "", true)
-	}
-
-	if u.TableChartTileDefinition != nil {
-		return utils.MarshalJSON(u.TableChartTileDefinition, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type Definition: all fields are null")
-}
-
 // ChartTile - A tile that queries data and renders a visualization.
 type ChartTile struct {
 	// Information about how the tile is placed on the dashboard.
@@ -239,7 +147,7 @@ type ChartTile struct {
 	// The tile's definition, which consists of a query to fetch data and a visualization to render the data.
 	// Charts and tables expect certain query types to render properly. The documentation for the individual visualization types has more information.
 	//
-	Definition Definition `json:"definition"`
+	Definition AnyChartTileDefinition `json:"definition"`
 }
 
 func (c ChartTile) MarshalJSON() ([]byte, error) {
@@ -267,9 +175,9 @@ func (c *ChartTile) GetType() ChartTileType {
 	return c.Type
 }
 
-func (c *ChartTile) GetDefinition() Definition {
+func (c *ChartTile) GetDefinition() AnyChartTileDefinition {
 	if c == nil {
-		return Definition{}
+		return AnyChartTileDefinition{}
 	}
 	return c.Definition
 }
