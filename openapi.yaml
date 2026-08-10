@@ -31686,6 +31686,7 @@ components:
               - api_product
               - api_product_version
               - application
+              - cache_status
               - consumer
               - control_plane
               - control_plane_group
@@ -31837,6 +31838,7 @@ components:
               - api_product
               - api_product_version
               - application
+              - cache_status
               - consumer
               - control_plane
               - control_plane_group
@@ -32060,17 +32062,19 @@ components:
           enum:
             - chart
         definition:
-          description: |
-            The tile's definition, which consists of a query to fetch data and a visualization to render the data.
-            Charts and tables expect certain query types to render properly. The documentation for the individual visualization types has more information.
-          oneOf:
-            - $ref: '#/components/schemas/ChartTileDefinition'
-            - $ref: '#/components/schemas/TableChartTileDefinition'
+          $ref: '#/components/schemas/AnyChartTileDefinition'
       additionalProperties: false
       required:
         - layout
         - type
         - definition
+    AnyChartTileDefinition:
+      description: |
+        The tile's definition, which consists of a query to fetch data and a visualization to render the data.
+        Charts and tables expect certain query types to render properly. The documentation for the individual visualization types has more information.
+      oneOf:
+        - $ref: '#/components/schemas/ChartTileDefinition'
+        - $ref: '#/components/schemas/TableChartTileDefinition'
     ChartTileDefinition:
       type: object
       properties:
@@ -32093,17 +32097,24 @@ components:
       required:
         - query
         - chart
+      x-speakeasy-name-override: ChartVisualization
     TableChartTileDefinition:
       type: object
       properties:
         query:
-          $ref: '#/components/schemas/PlatformTabularQuery'
+          discriminator:
+            propertyName: datasource
+            mapping:
+              platform_usage: '#/components/schemas/PlatformTabularQuery'
+          oneOf:
+            - $ref: '#/components/schemas/PlatformTabularQuery'
         chart:
           $ref: '#/components/schemas/TableChart'
       additionalProperties: false
       required:
         - query
         - chart
+      x-speakeasy-name-override: TableVisualization
     Dashboard:
       description: |
         A JSON object describing a dashboard.
@@ -32186,11 +32197,13 @@ components:
         - definition
       title: Dashboard Request
     AdvancedMetrics:
-      description: 'List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.'
+      description: |
+        List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.
       type: array
       items:
         type: string
         enum:
+          - cache_hit_rate
           - error_rate
           - kong_internal_latency_average
           - kong_internal_latency_p50
@@ -32420,6 +32433,42 @@ components:
             - operator
             - field
       title: Filter by application
+    MetricsCacheStatusFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - cache_status
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - cache_status
+          required:
+            - operator
+            - field
+      title: Filter by cache_status
     ScopedUuid:
       type: string
       pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
@@ -33019,6 +33068,7 @@ components:
               - api_product
               - api_product_version
               - application
+              - cache_status
               - consumer
               - control_plane
               - control_plane_group
@@ -33468,13 +33518,15 @@ components:
           - field
           - operator
     AgenticMetrics:
-      description: List of aggregated metrics to collect across the requested time span.
+      description: |
+        List of aggregated metrics to collect across the requested time span.
       type: array
       items:
         type: string
         enum:
           - a2a_latency_average
           - a2a_response_size_sum
+          - cache_hit_rate
           - error_rate
           - kong_internal_latency_average
           - kong_internal_latency_p50
@@ -33814,6 +33866,7 @@ components:
               - api_product
               - api_product_version
               - application
+              - cache_status
               - consumer
               - control_plane
               - control_plane_group
@@ -34307,6 +34360,7 @@ components:
             - api_product
             - api_product_version
             - application
+            - cache_status
             - consumer
             - control_plane
             - control_plane_group
@@ -40117,9 +40171,10 @@ components:
       type: object
       properties:
         path_param:
-          description: The path param name to match for routing.
+          description: |
+            The name of the regex capture group defined in the route path for routing.
           type: string
-          example: x-model
+          example: model_name
         values:
           description: |
             The list of values that are matched against the path param value.
@@ -41115,7 +41170,7 @@ components:
           minimum: 0
           x-go-type: types.Referenceable
           x-go-type-import:
-            path: github.com/kong/koko/internal/server/public/openapi/controlplanesconfig/types
+            path: github.com/kong-konnect/koko-private/internal/server/public/openapi/controlplanesconfig/types
             name: types
           x-referenceable: true
         read_timeout:
@@ -46046,7 +46101,7 @@ components:
           minimum: 0
           x-go-type: types.Referenceable
           x-go-type-import:
-            path: github.com/kong/koko/internal/server/public/openapi/controlplanesconfig/types
+            path: github.com/kong-konnect/koko-private/internal/server/public/openapi/controlplanesconfig/types
             name: types
           x-referenceable: true
         read_timeout:
@@ -49122,11 +49177,6 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
-              mcp_server_enabled:
-                description: Whether the portal has the MCP server enabled
-                type: boolean
-                deprecated: true
-                x-speakeasy-param-computed: true
               ai:
                 $ref: '#/components/schemas/AISettings'
               sipr_enabled:
@@ -49191,9 +49241,6 @@ components:
               - name
             title: Portal
             x-property-annotations:
-              mcp_server_enabled:
-                - x-unstable
-                - x-internal
               ai:
                 - x-unstable
                 - x-internal
@@ -49244,11 +49291,6 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
-              mcp_server_enabled:
-                description: Whether the portal has the MCP server enabled
-                type: boolean
-                deprecated: true
-                x-speakeasy-param-computed: true
               ai:
                 $ref: '#/components/schemas/AISettings'
               sipr_enabled:
@@ -49307,9 +49349,6 @@ components:
             additionalProperties: false
             title: Portal
             x-property-annotations:
-              mcp_server_enabled:
-                - x-unstable
-                - x-internal
               ai:
                 - x-unstable
                 - x-internal
@@ -50501,9 +50540,6 @@ components:
                   type: object
                   additionalProperties: false
                   x-property-annotations:
-                    mcp_server_enabled:
-                      - x-unstable
-                      - x-internal
                     ai:
                       - x-unstable
                       - x-internal
@@ -50540,11 +50576,6 @@ components:
                       description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                       type: boolean
                       default: false
-                    mcp_server_enabled:
-                      description: Whether the portal has the MCP server enabled
-                      type: boolean
-                      deprecated: true
-                      x-speakeasy-param-computed: true
                     ai:
                       $ref: '#/components/schemas/AISettings'
                     sipr_enabled:
@@ -50663,11 +50694,6 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
-              mcp_server_enabled:
-                description: Whether the portal has the MCP server enabled
-                type: boolean
-                deprecated: true
-                x-speakeasy-param-computed: true
               ai:
                 $ref: '#/components/schemas/AISettings'
               sipr_enabled:
@@ -50743,9 +50769,6 @@ components:
               - created_at
             title: Portal
             x-property-annotations:
-              mcp_server_enabled:
-                - x-unstable
-                - x-internal
               ai:
                 - x-unstable
                 - x-internal
