@@ -7,8 +7,9 @@ import (
 )
 
 type ServiceReference struct {
-	CreatedAt types.String              `tfsdk:"created_at"`
-	ID        types.String              `tfsdk:"id"`
-	Service   *APIImplementationService `tfsdk:"service"`
-	UpdatedAt types.String              `tfsdk:"updated_at"`
+	CreatedAt   types.String              `tfsdk:"created_at"`
+	Environment types.String              `tfsdk:"environment"`
+	ID          types.String              `tfsdk:"id"`
+	Service     *APIImplementationService `tfsdk:"service"`
+	UpdatedAt   types.String              `tfsdk:"updated_at"`
 }

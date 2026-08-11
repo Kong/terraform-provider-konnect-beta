@@ -42,14 +42,25 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Snis = []tfTypes.Snis{}
+
+		for _, snisItem := range resp.Snis {
+			var snis tfTypes.Snis
+
+			snis.Port = types.Int32Value(int32(snisItem.Port))
+			snis.Sni = types.StringValue(snisItem.Sni)
+
+			r.Snis = append(r.Snis, snis)
+		}
 		r.Spec = &tfTypes.MeshExternalServiceItemSpec{}
-		r.Spec.Endpoints = []tfTypes.Endpoints{}
+		r.Spec.Endpoints = []tfTypes.MeshExternalServiceItemEndpoints{}
 
 		for _, endpointsItem := range resp.Spec.Endpoints {
-			var endpoints tfTypes.Endpoints
+			var endpoints tfTypes.MeshExternalServiceItemEndpoints
 
 			endpoints.Address = types.StringValue(endpointsItem.Address)
 			endpoints.Port = types.Int32Value(int32(endpointsItem.Port))
+			endpoints.Priority = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(endpointsItem.Priority))
 
 			r.Spec.Endpoints = append(r.Spec.Endpoints, endpoints)
 		}
@@ -151,7 +162,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 		if resp.Status == nil {
 			r.Status = nil
 		} else {
-			r.Status = &tfTypes.Status{}
+			r.Status = &tfTypes.MeshExternalServiceItemStatus{}
 			r.Status.Addresses = []tfTypes.Addresses{}
 
 			for _, addressesItem := range resp.Status.Addresses {
@@ -173,10 +184,10 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 			for _, hostnameGeneratorsItem := range resp.Status.HostnameGenerators {
 				var hostnameGenerators tfTypes.HostnameGenerators
 
-				hostnameGenerators.Conditions = []tfTypes.MeshExternalServiceItemConditions{}
+				hostnameGenerators.Conditions = []tfTypes.Conditions{}
 
 				for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
-					var conditions tfTypes.MeshExternalServiceItemConditions
+					var conditions tfTypes.Conditions
 
 					conditions.Message = types.StringValue(conditionsItem.Message)
 					conditions.Reason = types.StringValue(conditionsItem.Reason)
@@ -291,7 +302,7 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
 		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
 	}
-	endpoints := make([]shared.Endpoints, 0, len(r.Spec.Endpoints))
+	endpoints := make([]shared.MeshExternalServiceItemEndpoints, 0, len(r.Spec.Endpoints))
 	for endpointsIndex := range r.Spec.Endpoints {
 		var address string
 		address = r.Spec.Endpoints[endpointsIndex].Address.ValueString()
@@ -299,9 +310,16 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 		var port int
 		port = int(r.Spec.Endpoints[endpointsIndex].Port.ValueInt32())
 
-		endpoints = append(endpoints, shared.Endpoints{
-			Address: address,
-			Port:    port,
+		priority := new(int)
+		if !r.Spec.Endpoints[endpointsIndex].Priority.IsUnknown() && !r.Spec.Endpoints[endpointsIndex].Priority.IsNull() {
+			*priority = int(r.Spec.Endpoints[endpointsIndex].Priority.ValueInt32())
+		} else {
+			priority = nil
+		}
+		endpoints = append(endpoints, shared.MeshExternalServiceItemEndpoints{
+			Address:  address,
+			Port:     port,
+			Priority: priority,
 		})
 	}
 	var extension *shared.MeshExternalServiceItemExtension
@@ -469,7 +487,7 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 				SubjectAltNames: subjectAltNames,
 			}
 		}
-		var version *shared.Version
+		var version *shared.MeshExternalServiceItemVersion
 		if r.Spec.TLS.Version != nil {
 			max := new(shared.MeshExternalServiceItemMax)
 			if !r.Spec.TLS.Version.Max.IsUnknown() && !r.Spec.TLS.Version.Max.IsNull() {
@@ -483,7 +501,7 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 			} else {
 				min = nil
 			}
-			version = &shared.Version{
+			version = &shared.MeshExternalServiceItemVersion{
 				Max: max,
 				Min: min,
 			}

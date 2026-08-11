@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -15,6 +16,15 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.Ai == nil {
+			r.Ai = nil
+		} else {
+			r.Ai = &tfTypes.AISettings{}
+			r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
+			r.Ai.Features = &tfTypes.Features{}
+			r.Ai.Features.McpServer = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+			r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
+		}
 		r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 		r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
 		r.AutoApproveDevelopers = types.BoolPointerValue(resp.AutoApproveDevelopers)
@@ -33,7 +43,6 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
-		r.McpServerEnabled = types.BoolPointerValue(resp.McpServerEnabled)
 		r.Name = types.StringValue(resp.Name)
 		r.NotificationsDeveloperPiiVisibilityEnabled = types.BoolPointerValue(resp.NotificationsDeveloperPiiVisibilityEnabled)
 		r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
@@ -128,11 +137,24 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	} else {
 		rbacEnabled = nil
 	}
-	mcpServerEnabled := new(bool)
-	if !r.McpServerEnabled.IsUnknown() && !r.McpServerEnabled.IsNull() {
-		*mcpServerEnabled = r.McpServerEnabled.ValueBool()
-	} else {
-		mcpServerEnabled = nil
+	var ai *shared.AISettings
+	if r.Ai != nil {
+		var enabled bool
+		enabled = r.Ai.Enabled.ValueBool()
+
+		var enabled1 bool
+		enabled1 = r.Ai.Features.McpServer.Enabled.ValueBool()
+
+		mcpServer := shared.McpServer{
+			Enabled: enabled1,
+		}
+		features := shared.Features{
+			McpServer: mcpServer,
+		}
+		ai = &shared.AISettings{
+			Enabled:  enabled,
+			Features: features,
+		}
 	}
 	siprEnabled := new(bool)
 	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
@@ -201,7 +223,7 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
-		McpServerEnabled:                 mcpServerEnabled,
+		Ai:                               ai,
 		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,
@@ -249,11 +271,24 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 	} else {
 		rbacEnabled = nil
 	}
-	mcpServerEnabled := new(bool)
-	if !r.McpServerEnabled.IsUnknown() && !r.McpServerEnabled.IsNull() {
-		*mcpServerEnabled = r.McpServerEnabled.ValueBool()
-	} else {
-		mcpServerEnabled = nil
+	var ai *shared.AISettings
+	if r.Ai != nil {
+		var enabled bool
+		enabled = r.Ai.Enabled.ValueBool()
+
+		var enabled1 bool
+		enabled1 = r.Ai.Features.McpServer.Enabled.ValueBool()
+
+		mcpServer := shared.McpServer{
+			Enabled: enabled1,
+		}
+		features := shared.Features{
+			McpServer: mcpServer,
+		}
+		ai = &shared.AISettings{
+			Enabled:  enabled,
+			Features: features,
+		}
 	}
 	siprEnabled := new(bool)
 	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
@@ -316,7 +351,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
-		McpServerEnabled:                 mcpServerEnabled,
+		Ai:                               ai,
 		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,

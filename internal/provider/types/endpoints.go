@@ -7,6 +7,6 @@ import (
 )
 
 type Endpoints struct {
-	Address types.String `tfsdk:"address"`
-	Port    types.Int32  `tfsdk:"port"`
+	Configuration types.String `tfsdk:"configuration"`
+	Telemetry     types.String `tfsdk:"telemetry"`
 }

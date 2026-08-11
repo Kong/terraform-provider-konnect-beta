@@ -29,6 +29,7 @@ type PortalDataSource struct {
 
 // PortalDataSourceModel describes the data model.
 type PortalDataSourceModel struct {
+	Ai                                         *tfTypes.AISettings             `tfsdk:"ai"`
 	AuthenticationEnabled                      types.Bool                      `tfsdk:"authentication_enabled"`
 	AutoApproveApplications                    types.Bool                      `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers                      types.Bool                      `tfsdk:"auto_approve_developers"`
@@ -43,7 +44,6 @@ type PortalDataSourceModel struct {
 	Filter                                     *tfTypes.PortalFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 	ID                                         types.String                    `tfsdk:"id"`
 	Labels                                     map[string]types.String         `tfsdk:"labels"`
-	McpServerEnabled                           types.Bool                      `tfsdk:"mcp_server_enabled"`
 	Name                                       types.String                    `tfsdk:"name"`
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool                      `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool                      `tfsdk:"rbac_enabled"`
@@ -63,6 +63,30 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 		MarkdownDescription: "Portal DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"ai": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"enabled": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Is AI enabled?`,
+					},
+					"features": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"mcp_server": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Is the MCP Server enabled?`,
+									},
+								},
+								Description: `AI Features config`,
+							},
+						},
+					},
+				},
+			},
 			"authentication_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.`,
@@ -331,10 +355,6 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"mcp_server_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Whether the portal has the MCP server enabled`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

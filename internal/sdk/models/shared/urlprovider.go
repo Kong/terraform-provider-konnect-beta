@@ -8,26 +8,26 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type Type string
+type URLProviderType string
 
 const (
-	TypeURL Type = "url"
+	URLProviderTypeURL URLProviderType = "url"
 )
 
-func (e Type) ToPointer() *Type {
+func (e URLProviderType) ToPointer() *URLProviderType {
 	return &e
 }
-func (e *Type) UnmarshalJSON(data []byte) error {
+func (e *URLProviderType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "url":
-		*e = Type(v)
+		*e = URLProviderType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Type: %v", v)
+		return fmt.Errorf("invalid value for URLProviderType: %v", v)
 	}
 }
 
@@ -57,8 +57,8 @@ func (c *Config) GetURL() string {
 }
 
 type URLProvider struct {
-	Type   Type   `json:"type"`
-	Config Config `json:"config"`
+	Type   URLProviderType `json:"type"`
+	Config Config          `json:"config"`
 }
 
 func (u URLProvider) MarshalJSON() ([]byte, error) {
@@ -72,9 +72,9 @@ func (u *URLProvider) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (u *URLProvider) GetType() Type {
+func (u *URLProvider) GetType() URLProviderType {
 	if u == nil {
-		return Type("")
+		return URLProviderType("")
 	}
 	return u.Type
 }

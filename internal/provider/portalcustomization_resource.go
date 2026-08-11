@@ -7,10 +7,12 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -44,6 +46,7 @@ type PortalCustomizationResourceModel struct {
 	Layout       types.String          `tfsdk:"layout"`
 	Menu         *tfTypes.Menu         `tfsdk:"menu"`
 	PortalID     types.String          `tfsdk:"portal_id"`
+	PortalLayout *tfTypes.PortalLayout `tfsdk:"portal_layout"`
 	Robots       types.String          `tfsdk:"robots"`
 	SpecRenderer *tfTypes.SpecRenderer `tfsdk:"spec_renderer"`
 	Theme        *tfTypes.Theme        `tfsdk:"theme"`
@@ -239,6 +242,27 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The Portal identifier`,
+			},
+			"portal_layout": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"footer": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"snippet_name": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"snippet_name": schema.StringAttribute{
+								Optional:    true,
+								Description: `The unique name of a snippet in the portal to render in place of the default footer.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtMost(512),
+								},
+							},
+						},
+					},
+				},
 			},
 			"robots": schema.StringAttribute{
 				Optional: true,

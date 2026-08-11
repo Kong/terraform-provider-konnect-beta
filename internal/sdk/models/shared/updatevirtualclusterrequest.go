@@ -28,9 +28,6 @@ type UpdateVirtualClusterRequest struct {
 	// It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).
 	//
 	Namespace *VirtualClusterNamespace `json:"namespace,omitempty"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Topic aliases allow exposing backend topics under additional names.
 	// An alias creates a new entry point to the same physical data.
 	// The alias `topic` field references namespace-visible names (if namespace is configured).

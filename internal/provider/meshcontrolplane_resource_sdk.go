@@ -48,6 +48,7 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(ctx co
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Version = types.StringPointerValue(resp.Version)
 	}
 
 	return diags
@@ -152,11 +153,18 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest(ct
 			labels[labelsKey] = labelsInst
 		}
 	}
+	version := new(string)
+	if !r.Version.IsUnknown() && !r.Version.IsNull() {
+		*version = r.Version.ValueString()
+	} else {
+		version = nil
+	}
 	out := shared.CreateMeshControlPlaneRequest{
 		Name:        name,
 		Description: description,
 		Features:    features,
 		Labels:      labels,
+		Version:     version,
 	}
 
 	return &out, diags
@@ -184,10 +192,17 @@ func (r *MeshControlPlaneResourceModel) ToSharedPutMeshControlPlaneRequest(ctx c
 			labels[labelsKey] = labelsInst
 		}
 	}
+	version := new(string)
+	if !r.Version.IsUnknown() && !r.Version.IsNull() {
+		*version = r.Version.ValueString()
+	} else {
+		version = nil
+	}
 	out := shared.PutMeshControlPlaneRequest{
 		Name:        name,
 		Description: description,
 		Labels:      labels,
+		Version:     version,
 	}
 
 	return &out, diags

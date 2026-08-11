@@ -4,8 +4,10 @@ package provider
 
 import (
 	"context"
+	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -66,12 +68,13 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 				}
 			}
 		}
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key2, value2 := range resp.Labels {
-				r.Labels[key2] = types.StringValue(value2)
-			}
-		}
+		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
+		r.Kri = types.StringPointerValue(resp.Kri)
+		labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, resp.Labels)
+		diags.Append(labelsDiags...)
+		labelsValuable, labelsDiags := kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}}.ValueFromMap(ctx, labelsValue)
+		diags.Append(labelsDiags...)
+		r.Labels, _ = labelsValuable.(kumalabels.KumaLabelsMapValue)
 		if resp.Logging == nil {
 			r.Logging = nil
 		} else {
@@ -152,8 +155,8 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						backends1.Conf.PrometheusMetricsBackendConfig.SkipMTLS = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS)
 						if len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags) > 0 {
 							backends1.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String, len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags))
-							for key3, value3 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
-								backends1.Conf.PrometheusMetricsBackendConfig.Tags[key3] = types.StringValue(value3)
+							for key2, value2 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
+								backends1.Conf.PrometheusMetricsBackendConfig.Tags[key2] = types.StringValue(value2)
 							}
 						}
 						if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS == nil {
@@ -179,6 +182,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 			}
 			r.Metrics.EnabledBackend = types.StringPointerValue(resp.Metrics.EnabledBackend)
 		}
+		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		if resp.Mtls == nil {
 			r.Mtls = nil
 		} else {
@@ -196,7 +200,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
 							backends2.Conf.ACMCertificateAuthorityConfig.Auth = nil
 						} else {
-							backends2.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.Auth{}
+							backends2.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.ConfAuth{}
 							if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials == nil {
 								backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = nil
 							} else {
@@ -368,7 +372,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws == nil {
 											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws = nil
 										} else {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws = &tfTypes.Aws{}
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws = &tfTypes.AuthAws{}
 											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader)
 											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role)
 											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type != nil {
@@ -638,7 +642,7 @@ func (r *MeshResourceModel) ToOperationsPutMeshRequest(ctx context.Context) (*op
 	var name string
 	name = r.Name.ValueString()
 
-	meshItem, meshItemDiags := r.ToSharedMeshItem(ctx)
+	meshItem, meshItemDiags := r.ToSharedMeshItemInput(ctx)
 	diags.Append(meshItemDiags...)
 
 	if diags.HasError() {
@@ -654,7 +658,7 @@ func (r *MeshResourceModel) ToOperationsPutMeshRequest(ctx context.Context) (*op
 	return &out, diags
 }
 
-func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshItem, diag.Diagnostics) {
+func (r *MeshResourceModel) ToSharedMeshItemInput(ctx context.Context) (*shared.MeshItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var constraints *shared.Constraints
@@ -696,12 +700,9 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 			DataplaneProxy: dataplaneProxy,
 		}
 	}
-	labels := make(map[string]string)
-	for labelsKey := range r.Labels {
-		var labelsInst string
-		labelsInst = r.Labels[labelsKey].ValueString()
-
-		labels[labelsKey] = labelsInst
+	var labels map[string]string
+	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
+		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
 	}
 	var logging *shared.Logging
 	if r.Logging != nil {
@@ -1191,7 +1192,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 							if r.Mtls.Backends[backendsIndex2].Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth != nil {
 								var vaultCertificateAuthorityConfigFromCpAuthAws *shared.VaultCertificateAuthorityConfigFromCpAuthAws
 								if r.Mtls.Backends[backendsIndex2].Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws != nil {
-									var aws *shared.Aws
+									var aws *shared.AuthAws
 									if r.Mtls.Backends[backendsIndex2].Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws != nil {
 										iamServerIDHeader := new(string)
 										if !r.Mtls.Backends[backendsIndex2].Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.IsUnknown() && !r.Mtls.Backends[backendsIndex2].Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.IsNull() {
@@ -1230,7 +1231,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 												}
 											}
 										}
-										aws = &shared.Aws{
+										aws = &shared.AuthAws{
 											IamServerIDHeader: iamServerIDHeader,
 											Role:              role,
 											Type:              typeVar1,
@@ -1637,7 +1638,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 					} else {
 						arn = nil
 					}
-					var auth1 *shared.Auth
+					var auth1 *shared.ConfAuth
 					if r.Mtls.Backends[backendsIndex2].Conf.ACMCertificateAuthorityConfig.Auth != nil {
 						var awsCredentials *shared.AwsCredentials
 						if r.Mtls.Backends[backendsIndex2].Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials != nil {
@@ -1788,7 +1789,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 								AccessKeySecret: accessKeySecret,
 							}
 						}
-						auth1 = &shared.Auth{
+						auth1 = &shared.ConfAuth{
 							AwsCredentials: awsCredentials,
 						}
 					}
@@ -2296,7 +2297,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 	var typeVar2 string
 	typeVar2 = r.Type.ValueString()
 
-	out := shared.MeshItem{
+	out := shared.MeshItemInput{
 		Constraints:                 constraints,
 		Labels:                      labels,
 		Logging:                     logging,

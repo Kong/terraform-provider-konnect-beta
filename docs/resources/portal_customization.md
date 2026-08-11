@@ -55,7 +55,12 @@ resource "konnect_portal_customization" "my_portalcustomization" {
     ]
   }
   portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
-  robots    = "...my_robots..."
+  portal_layout = {
+    footer = {
+      snippet_name = "my-snippet"
+    }
+  }
+  robots = "...my_robots..."
   spec_renderer = {
     allow_custom_server_urls = true
     hide_deprecated          = false
@@ -88,6 +93,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
 - `js` (Attributes) (see [below for nested schema](#nestedatt--js))
 - `layout` (String)
 - `menu` (Attributes) (see [below for nested schema](#nestedatt--menu))
+- `portal_layout` (Attributes) (see [below for nested schema](#nestedatt--portal_layout))
 - `robots` (String)
 - `spec_renderer` (Attributes) (see [below for nested schema](#nestedatt--spec_renderer))
 - `theme` (Attributes) (see [below for nested schema](#nestedatt--theme))
@@ -150,6 +156,22 @@ Optional:
 - `path` (String) The absolute path of a page in a portal with a leading slash. Not Null
 - `title` (String) The link display text. Not Null
 - `visibility` (String) Whether a menu item is public or private. Private menu items are only accessible to authenticated users. possible known values include one of ["public", "private"]; Not Null
+
+
+
+<a id="nestedatt--portal_layout"></a>
+### Nested Schema for `portal_layout`
+
+Optional:
+
+- `footer` (Attributes) (see [below for nested schema](#nestedatt--portal_layout--footer))
+
+<a id="nestedatt--portal_layout--footer"></a>
+### Nested Schema for `portal_layout.footer`
+
+Optional:
+
+- `snippet_name` (String) The unique name of a snippet in the portal to render in place of the default footer.
 
 
 

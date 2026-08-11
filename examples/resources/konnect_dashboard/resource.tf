@@ -12,36 +12,29 @@ resource "konnect_dashboard" "my_dashboard" {
       {
         chart = {
           definition = {
-            chart = {
-              choropleth_map = {
+            table_visualization = {
+              chart = {
                 chart_title = "...my_chart_title..."
-                type        = "choropleth_map"
+                type        = "table"
               }
-            }
-            query = {
-              llm_usage = {
-                datasource = "llm_usage"
-                dimensions = [
-                  "consumer"
-                ]
-                filters = [
-                  {
-                    field    = "application"
-                    operator = "empty"
-                    value    = "{ \"see\": \"documentation\" }"
-                  }
-                ]
-                granularity = "tenMinutely"
-                metrics = [
-                  "ai_request_count"
-                ]
-                time_range = {
-                  absolute = {
-                    end   = "2022-11-26T07:30:44.592Z"
-                    start = "2022-01-09T02:25:36.303Z"
-                    type  = "absolute"
-                    tz    = "Etc/UTC"
-                  }
+              query = {
+                platform_usage = {
+                  columns = [
+                    "..."
+                  ]
+                  cursor     = "...my_cursor..."
+                  datasource = "platform_usage"
+                  entity     = "...my_entity..."
+                  filters = [
+                    {
+                      field    = "plugin_name"
+                      operator = "not_in"
+                      value = [
+                        "..."
+                      ]
+                    }
+                  ]
+                  page_size = 2
                 }
               }
             }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -28,12 +29,15 @@ func (r *MeshZoneEgressResourceModel) RefreshFromSharedZoneEgressItem(ctx contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
+		r.Kri = types.StringPointerValue(resp.Kri)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
 		}
+		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		if resp.Networking == nil {
 			r.Networking = nil
@@ -98,7 +102,7 @@ func (r *MeshZoneEgressResourceModel) ToOperationsPutZoneEgressRequest(ctx conte
 	var name string
 	name = r.Name.ValueString()
 
-	zoneEgressItem, zoneEgressItemDiags := r.ToSharedZoneEgressItem(ctx)
+	zoneEgressItem, zoneEgressItemDiags := r.ToSharedZoneEgressItemInput(ctx)
 	diags.Append(zoneEgressItemDiags...)
 
 	if diags.HasError() {
@@ -114,7 +118,7 @@ func (r *MeshZoneEgressResourceModel) ToOperationsPutZoneEgressRequest(ctx conte
 	return &out, diags
 }
 
-func (r *MeshZoneEgressResourceModel) ToSharedZoneEgressItem(ctx context.Context) (*shared.ZoneEgressItem, diag.Diagnostics) {
+func (r *MeshZoneEgressResourceModel) ToSharedZoneEgressItemInput(ctx context.Context) (*shared.ZoneEgressItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	labels := make(map[string]string)
@@ -168,7 +172,7 @@ func (r *MeshZoneEgressResourceModel) ToSharedZoneEgressItem(ctx context.Context
 	} else {
 		zone = nil
 	}
-	out := shared.ZoneEgressItem{
+	out := shared.ZoneEgressItemInput{
 		Labels:     labels,
 		Name:       name,
 		Networking: networking,

@@ -1,5 +1,13 @@
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
+  ai = {
+    enabled = true
+    features = {
+      mcp_server = {
+        enabled = false
+      }
+    }
+  }
   authentication_enabled               = true
   auto_approve_applications            = false
   auto_approve_developers              = false
@@ -13,7 +21,6 @@ resource "konnect_portal" "my_portal" {
   labels = {
     key = "value"
   }
-  mcp_server_enabled                             = false
   name                                           = "...my_name..."
   notifications_developer_pii_visibility_enabled = false
   rbac_enabled                                   = false

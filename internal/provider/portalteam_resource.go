@@ -40,6 +40,7 @@ type PortalTeamResourceModel struct {
 	CreatedAt          types.String `tfsdk:"created_at"`
 	Description        types.String `tfsdk:"description"`
 	ID                 types.String `tfsdk:"id"`
+	KonnectManaged     types.Bool   `tfsdk:"konnect_managed"`
 	Name               types.String `tfsdk:"name"`
 	PortalID           types.String `tfsdk:"portal_id"`
 	UpdatedAt          types.String `tfsdk:"updated_at"`
@@ -75,6 +76,11 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Indicates whether the team is managed by Konnect.`,
 			},
 			"name": schema.StringAttribute{
 				Required: true,

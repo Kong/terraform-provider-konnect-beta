@@ -27,6 +27,8 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 			}
 			r.ControlPlaneReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseControlPlaneReference.CreatedAt))
 			r.CreatedAt = r.ControlPlaneReference.CreatedAt
+			r.ControlPlaneReference.Environment = types.StringPointerValue(resp.APIImplementationResponseControlPlaneReference.Environment)
+			r.Environment = r.ControlPlaneReference.Environment
 			r.ControlPlaneReference.ID = types.StringValue(resp.APIImplementationResponseControlPlaneReference.ID)
 			r.ID = r.ControlPlaneReference.ID
 			r.ControlPlaneReference.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseControlPlaneReference.UpdatedAt))
@@ -36,6 +38,8 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 			r.ServiceReference = &tfTypes.ServiceReference{}
 			r.ServiceReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.CreatedAt))
 			r.CreatedAt = r.ServiceReference.CreatedAt
+			r.ServiceReference.Environment = types.StringPointerValue(resp.APIImplementationResponseServiceReference.Environment)
+			r.Environment = r.ServiceReference.Environment
 			r.ServiceReference.ID = types.StringValue(resp.APIImplementationResponseServiceReference.ID)
 			r.ID = r.ServiceReference.ID
 			if resp.APIImplementationResponseServiceReference.Service == nil {
@@ -114,6 +118,12 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 	var out shared.APIImplementation
 	var serviceReference *shared.ServiceReference
 	if r.ServiceReference != nil {
+		environment := new(string)
+		if !r.ServiceReference.Environment.IsUnknown() && !r.ServiceReference.Environment.IsNull() {
+			*environment = r.ServiceReference.Environment.ValueString()
+		} else {
+			environment = nil
+		}
 		var service *shared.APIImplementationService
 		if r.ServiceReference.Service != nil {
 			var controlPlaneID string
@@ -128,7 +138,8 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 			}
 		}
 		serviceReference = &shared.ServiceReference{
-			Service: service,
+			Environment: environment,
+			Service:     service,
 		}
 	}
 	if serviceReference != nil {
@@ -138,6 +149,12 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 	}
 	var controlPlaneReference *shared.ControlPlaneReference
 	if r.ControlPlaneReference != nil {
+		environment1 := new(string)
+		if !r.ControlPlaneReference.Environment.IsUnknown() && !r.ControlPlaneReference.Environment.IsNull() {
+			*environment1 = r.ControlPlaneReference.Environment.ValueString()
+		} else {
+			environment1 = nil
+		}
 		var controlPlane *shared.APIImplementationControlPlaneInput
 		if r.ControlPlaneReference.ControlPlane != nil {
 			var id1 string
@@ -148,6 +165,7 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 			}
 		}
 		controlPlaneReference = &shared.ControlPlaneReference{
+			Environment:  environment1,
 			ControlPlane: controlPlane,
 		}
 	}

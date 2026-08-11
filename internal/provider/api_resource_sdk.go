@@ -30,6 +30,15 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
+		if len(resp.Environments) > 0 {
+			r.Environments = make(map[string]tfTypes.APIEnvironmentVersionSummary, len(resp.Environments))
+			for apiEnvironmentVersionSummaryKey, apiEnvironmentVersionSummaryValue := range resp.Environments {
+				var apiEnvironmentVersionSummaryResult tfTypes.APIEnvironmentVersionSummary
+				apiEnvironmentVersionSummaryResult.Version = types.StringValue(apiEnvironmentVersionSummaryValue.Version)
+
+				r.Environments[apiEnvironmentVersionSummaryKey] = apiEnvironmentVersionSummaryResult
+			}
+		}
 		r.ID = types.StringValue(resp.ID)
 		r.ImplementationMode = types.StringPointerValue(resp.ImplementationMode)
 		if len(resp.Labels) > 0 {
@@ -164,7 +173,7 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 			var provider shared.APISpecProviderPayloadProvider
 			var urlProvider *shared.URLProvider
 			if r.Spec.ProviderPayload.Provider.URLProvider != nil {
-				typeVar := shared.Type(r.Spec.ProviderPayload.Provider.URLProvider.Type.ValueString())
+				typeVar := shared.URLProviderType(r.Spec.ProviderPayload.Provider.URLProvider.Type.ValueString())
 				var url string
 				url = r.Spec.ProviderPayload.Provider.URLProvider.Config.URL.ValueString()
 

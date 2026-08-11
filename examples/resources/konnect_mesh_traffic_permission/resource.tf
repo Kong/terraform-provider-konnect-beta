@@ -35,6 +35,10 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
         default = {
           allow = [
             {
+              sni = {
+                type  = "Exact"
+                value = "...my_value..."
+              }
               spiffe_id = {
                 type  = "Exact"
                 value = "...my_value..."
@@ -43,6 +47,10 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
           ]
           allow_with_shadow_deny = [
             {
+              sni = {
+                type  = "Exact"
+                value = "...my_value..."
+              }
               spiffe_id = {
                 type  = "Prefix"
                 value = "...my_value..."
@@ -51,6 +59,10 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
           ]
           deny = [
             {
+              sni = {
+                type  = "Exact"
+                value = "...my_value..."
+              }
               spiffe_id = {
                 type  = "Prefix"
                 value = "...my_value..."

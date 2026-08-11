@@ -15,6 +15,14 @@ Portal Resource
 ```terraform
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
+  ai = {
+    enabled = true
+    features = {
+      mcp_server = {
+        enabled = false
+      }
+    }
+  }
   authentication_enabled               = true
   auto_approve_applications            = false
   auto_approve_developers              = false
@@ -28,7 +36,6 @@ resource "konnect_portal" "my_portal" {
   labels = {
     key = "value"
   }
-  mcp_server_enabled                             = false
   name                                           = "...my_name..."
   notifications_developer_pii_visibility_enabled = false
   rbac_enabled                                   = false
@@ -45,6 +52,7 @@ resource "konnect_portal" "my_portal" {
 
 ### Optional
 
+- `ai` (Attributes) (see [below for nested schema](#nestedatt--ai))
 - `authentication_enabled` (Boolean) Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications. Default: true
 - `auto_approve_applications` (Boolean) Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
 - `auto_approve_developers` (Boolean) Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
@@ -63,7 +71,6 @@ Default: "false"; must be one of ["true", "false"]
 Labels are intended to store **INTERNAL** metadata.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `mcp_server_enabled` (Boolean) Whether the portal has the MCP server enabled
 - `notifications_developer_pii_visibility_enabled` (Boolean) When enabled, portal registration notifications include the registering developer's identifying information (such as name and email). Default: false
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
 - `sipr_enabled` (Boolean) Whether ip allow list is enabled for the portal. Default: false
@@ -75,6 +82,28 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `default_domain` (String) The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+<a id="nestedatt--ai"></a>
+### Nested Schema for `ai`
+
+Optional:
+
+- `enabled` (Boolean) Is AI enabled?. Not Null
+- `features` (Attributes) Not Null (see [below for nested schema](#nestedatt--ai--features))
+
+<a id="nestedatt--ai--features"></a>
+### Nested Schema for `ai.features`
+
+Optional:
+
+- `mcp_server` (Attributes) AI Features config. Not Null (see [below for nested schema](#nestedatt--ai--features--mcp_server))
+
+<a id="nestedatt--ai--features--mcp_server"></a>
+### Nested Schema for `ai.features.mcp_server`
+
+Optional:
+
+- `enabled` (Boolean) Is the MCP Server enabled?. Not Null
 
 ## Import
 

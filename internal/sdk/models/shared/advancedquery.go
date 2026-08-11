@@ -39,6 +39,7 @@ const (
 	DimensionsAPIProduct                Dimensions = "api_product"
 	DimensionsAPIProductVersion         Dimensions = "api_product_version"
 	DimensionsApplication               Dimensions = "application"
+	DimensionsCacheStatus               Dimensions = "cache_status"
 	DimensionsConsumer                  Dimensions = "consumer"
 	DimensionsControlPlane              Dimensions = "control_plane"
 	DimensionsControlPlaneGroup         Dimensions = "control_plane_group"
@@ -47,6 +48,7 @@ const (
 	DimensionsDataPlaneNodeVersion      Dimensions = "data_plane_node_version"
 	DimensionsGatewayService            Dimensions = "gateway_service"
 	DimensionsPortal                    Dimensions = "portal"
+	DimensionsPrincipal                 Dimensions = "principal"
 	DimensionsRealm                     Dimensions = "realm"
 	DimensionsResponseSource            Dimensions = "response_source"
 	DimensionsRoute                     Dimensions = "route"
@@ -65,7 +67,7 @@ func (e Dimensions) ToPointer() *Dimensions {
 func (e *Dimensions) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "time", "upstream_status_code", "upstream_status_code_grouped":
+		case "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "time", "upstream_status_code", "upstream_status_code_grouped":
 			return true
 		}
 	}
@@ -76,6 +78,7 @@ func (e *Dimensions) IsExact() bool {
 type AdvancedQuery struct {
 	Datasource Datasource `json:"datasource"`
 	// List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.
+	//
 	Metrics []AdvancedMetrics `json:"metrics,omitempty"`
 	// List of attributes or entity types to group by.
 	Dimensions []Dimensions `json:"dimensions"`
@@ -105,6 +108,8 @@ type AdvancedQuery struct {
 	Granularity *Granularity `json:"granularity,omitempty"`
 	// The time range to query.
 	TimeRange *TimeRange `json:"time_range,omitempty"`
+	// Limits the number of distinct metric groups to return.
+	Limit *float64 `default:"50" json:"limit"`
 }
 
 func (a AdvancedQuery) MarshalJSON() ([]byte, error) {
@@ -172,4 +177,11 @@ func (a *AdvancedQuery) GetTimeRangeAbsolute() *MetricsAbsoluteTimeRangeDtoV2 {
 		return v.MetricsAbsoluteTimeRangeDtoV2
 	}
 	return nil
+}
+
+func (a *AdvancedQuery) GetLimit() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.Limit
 }

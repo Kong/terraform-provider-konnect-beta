@@ -8,6 +8,13 @@ import (
 
 // ServiceReference - A gateway service that implements an API
 type ServiceReference struct {
+	// The environment this implementation is scoped to, by name. On write, selects the
+	// target environment: required when the API is configured across multiple
+	// environments, and optional otherwise (accepted only if it matches the API's sole
+	// environment). On read, the resolved environment name. Present only for APIs
+	// configured across multiple environments.
+	//
+	Environment *string `default:"null" json:"environment"`
 	// A Gateway service that implements an API
 	Service *APIImplementationService `json:"service,omitempty"`
 }
@@ -21,6 +28,13 @@ func (s *ServiceReference) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (s *ServiceReference) GetEnvironment() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Environment
 }
 
 func (s *ServiceReference) GetService() *APIImplementationService {

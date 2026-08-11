@@ -45,266 +45,317 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 
 			if tilesItem.ChartTile != nil {
 				tiles.Chart = &tfTypes.ChartTile{}
-				tiles.Chart.Definition = &tfTypes.Definition{}
-				if tiles.Chart.Definition.Chart == nil {
-					tiles.Chart.Definition.Chart = &tfTypes.Chart{}
+				if tiles.Chart.Definition == nil {
+					tiles.Chart.Definition = &tfTypes.AnyChartTileDefinition{}
 				}
-				if tilesItem.ChartTile.Definition.Chart.BarChart != nil {
-					tiles.Chart.Definition.Chart.HorizontalBar = &tfTypes.BarChart{}
-					tiles.Chart.Definition.Chart.HorizontalBar.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.BarChart.ChartTitle)
-					tiles.Chart.Definition.Chart.HorizontalBar.Stacked = types.BoolPointerValue(tilesItem.ChartTile.Definition.Chart.BarChart.Stacked)
-					tiles.Chart.Definition.Chart.HorizontalBar.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.BarChart.Type))
-				}
-				if tilesItem.ChartTile.Definition.Chart.ChoroplethMapChart != nil {
-					tiles.Chart.Definition.Chart.ChoroplethMap = &tfTypes.ChoroplethMapChart{}
-					tiles.Chart.Definition.Chart.ChoroplethMap.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.ChoroplethMapChart.ChartTitle)
-					tiles.Chart.Definition.Chart.ChoroplethMap.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.ChoroplethMapChart.Type))
-				}
-				if tilesItem.ChartTile.Definition.Chart.DonutChart != nil {
-					tiles.Chart.Definition.Chart.Donut = &tfTypes.ChoroplethMapChart{}
-					tiles.Chart.Definition.Chart.Donut.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.DonutChart.ChartTitle)
-					tiles.Chart.Definition.Chart.Donut.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.DonutChart.Type))
-				}
-				if tilesItem.ChartTile.Definition.Chart.SingleValueChart != nil {
-					tiles.Chart.Definition.Chart.SingleValue = &tfTypes.SingleValueChart{}
-					tiles.Chart.Definition.Chart.SingleValue.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.SingleValueChart.ChartTitle)
-					tiles.Chart.Definition.Chart.SingleValue.DecimalPoints = types.Float64PointerValue(tilesItem.ChartTile.Definition.Chart.SingleValueChart.DecimalPoints)
-					tiles.Chart.Definition.Chart.SingleValue.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.SingleValueChart.Type))
-				}
-				if tilesItem.ChartTile.Definition.Chart.TimeseriesChart != nil {
-					tiles.Chart.Definition.Chart.TimeseriesLine = &tfTypes.BarChart{}
-					tiles.Chart.Definition.Chart.TimeseriesLine.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.TimeseriesChart.ChartTitle)
-					tiles.Chart.Definition.Chart.TimeseriesLine.Stacked = types.BoolPointerValue(tilesItem.ChartTile.Definition.Chart.TimeseriesChart.Stacked)
-					tiles.Chart.Definition.Chart.TimeseriesLine.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.TimeseriesChart.Type))
-				}
-				if tiles.Chart.Definition.Query == nil {
-					tiles.Chart.Definition.Query = &tfTypes.Query{}
-				}
-				if tilesItem.ChartTile.Definition.Query.AdvancedQuery != nil {
-					tiles.Chart.Definition.Query.APIUsage = &tfTypes.AdvancedQuery{}
-					tiles.Chart.Definition.Query.APIUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Datasource))
-					if tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions != nil {
-						tiles.Chart.Definition.Query.APIUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions))
-						for _, v := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions {
-							tiles.Chart.Definition.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.Query.APIUsage.Dimensions, types.StringValue(string(v)))
-						}
-					} else {
-						tiles.Chart.Definition.Query.APIUsage.Dimensions = nil
+				if tilesItem.ChartTile.Definition.ChartVisualization != nil {
+					tiles.Chart.Definition.ChartVisualization = &tfTypes.ChartVisualization{}
+					if tiles.Chart.Definition.ChartVisualization.Chart == nil {
+						tiles.Chart.Definition.ChartVisualization.Chart = &tfTypes.Chart{}
 					}
-					tiles.Chart.Definition.Query.APIUsage.Filters = []tfTypes.AllFilterItems{}
-
-					for _, filtersItem := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Filters {
-						var filters tfTypes.AllFilterItems
-
-						filters.Field = types.StringValue(string(filtersItem.Field))
-						filters.Operator = types.StringValue(string(filtersItem.Operator))
-						if filtersItem.Value == nil {
-							filters.Value = jsontypes.NewNormalizedNull()
+					if tilesItem.ChartTile.Definition.ChartVisualization.Chart.BarChart != nil {
+						tiles.Chart.Definition.ChartVisualization.Chart.HorizontalBar = &tfTypes.BarChart{}
+						tiles.Chart.Definition.ChartVisualization.Chart.HorizontalBar.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.BarChart.ChartTitle)
+						tiles.Chart.Definition.ChartVisualization.Chart.HorizontalBar.Stacked = types.BoolPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.BarChart.Stacked)
+						tiles.Chart.Definition.ChartVisualization.Chart.HorizontalBar.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Chart.BarChart.Type))
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Chart.ChoroplethMapChart != nil {
+						tiles.Chart.Definition.ChartVisualization.Chart.ChoroplethMap = &tfTypes.ChoroplethMapChart{}
+						tiles.Chart.Definition.ChartVisualization.Chart.ChoroplethMap.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.ChoroplethMapChart.ChartTitle)
+						tiles.Chart.Definition.ChartVisualization.Chart.ChoroplethMap.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Chart.ChoroplethMapChart.Type))
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Chart.DonutChart != nil {
+						tiles.Chart.Definition.ChartVisualization.Chart.Donut = &tfTypes.ChoroplethMapChart{}
+						tiles.Chart.Definition.ChartVisualization.Chart.Donut.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.DonutChart.ChartTitle)
+						tiles.Chart.Definition.ChartVisualization.Chart.Donut.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Chart.DonutChart.Type))
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Chart.SingleValueChart != nil {
+						tiles.Chart.Definition.ChartVisualization.Chart.SingleValue = &tfTypes.SingleValueChart{}
+						tiles.Chart.Definition.ChartVisualization.Chart.SingleValue.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.SingleValueChart.ChartTitle)
+						tiles.Chart.Definition.ChartVisualization.Chart.SingleValue.DecimalPoints = types.Float64PointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.SingleValueChart.DecimalPoints)
+						tiles.Chart.Definition.ChartVisualization.Chart.SingleValue.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Chart.SingleValueChart.Type))
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Chart.TimeseriesChart != nil {
+						tiles.Chart.Definition.ChartVisualization.Chart.TimeseriesLine = &tfTypes.BarChart{}
+						tiles.Chart.Definition.ChartVisualization.Chart.TimeseriesLine.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.TimeseriesChart.ChartTitle)
+						tiles.Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Stacked = types.BoolPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.TimeseriesChart.Stacked)
+						tiles.Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Chart.TimeseriesChart.Type))
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Chart.TopNChart != nil {
+						tiles.Chart.Definition.ChartVisualization.Chart.TopN = &tfTypes.ChoroplethMapChart{}
+						tiles.Chart.Definition.ChartVisualization.Chart.TopN.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Chart.TopNChart.ChartTitle)
+						tiles.Chart.Definition.ChartVisualization.Chart.TopN.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Chart.TopNChart.Type))
+					}
+					if tiles.Chart.Definition.ChartVisualization.Query == nil {
+						tiles.Chart.Definition.ChartVisualization.Query = &tfTypes.Query{}
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery != nil {
+						tiles.Chart.Definition.ChartVisualization.Query.APIUsage = &tfTypes.AdvancedQuery{}
+						tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Datasource))
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions))
+							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions {
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions, types.StringValue(string(v)))
+							}
 						} else {
-							valueResult1, _ := json.Marshal(filtersItem.Value)
-							filters.Value = jsontypes.NewNormalizedValue(string(valueResult1))
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = nil
 						}
+						tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Filters = []tfTypes.AllFilterItems{}
 
-						tiles.Chart.Definition.Query.APIUsage.Filters = append(tiles.Chart.Definition.Query.APIUsage.Filters, filters)
-					}
-					if tilesItem.ChartTile.Definition.Query.AdvancedQuery.Granularity != nil {
-						tiles.Chart.Definition.Query.APIUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AdvancedQuery.Granularity))
-					} else {
-						tiles.Chart.Definition.Query.APIUsage.Granularity = types.StringNull()
-					}
-					tiles.Chart.Definition.Query.APIUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Metrics))
-					for _, v := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Metrics {
-						tiles.Chart.Definition.Query.APIUsage.Metrics = append(tiles.Chart.Definition.Query.APIUsage.Metrics, types.StringValue(string(v)))
-					}
-					if tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange != nil {
-						tiles.Chart.Definition.Query.APIUsage.TimeRange = &tfTypes.TimeRange{}
-						if tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
-						}
-						if tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
-							if tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
-								tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+						for _, filtersItem := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Filters {
+							var filters tfTypes.AllFilterItems
+
+							filters.Field = types.StringValue(string(filtersItem.Field))
+							filters.Operator = types.StringValue(string(filtersItem.Operator))
+							if filtersItem.Value == nil {
+								filters.Value = jsontypes.NewNormalizedNull()
 							} else {
-								tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange = types.StringNull()
+								valueResult1, _ := json.Marshal(filtersItem.Value)
+								filters.Value = jsontypes.NewNormalizedValue(string(valueResult1))
 							}
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
-						}
-					}
-				}
-				if tilesItem.ChartTile.Definition.Query.AgenticQuery != nil {
-					tiles.Chart.Definition.Query.AgenticUsage = &tfTypes.AdvancedQuery{}
-					tiles.Chart.Definition.Query.AgenticUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AgenticQuery.Datasource))
-					if tilesItem.ChartTile.Definition.Query.AgenticQuery.Dimensions != nil {
-						tiles.Chart.Definition.Query.AgenticUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AgenticQuery.Dimensions))
-						for _, v := range tilesItem.ChartTile.Definition.Query.AgenticQuery.Dimensions {
-							tiles.Chart.Definition.Query.AgenticUsage.Dimensions = append(tiles.Chart.Definition.Query.AgenticUsage.Dimensions, types.StringValue(string(v)))
-						}
-					} else {
-						tiles.Chart.Definition.Query.AgenticUsage.Dimensions = nil
-					}
-					tiles.Chart.Definition.Query.AgenticUsage.Filters = []tfTypes.AllFilterItems{}
 
-					for _, filtersItem1 := range tilesItem.ChartTile.Definition.Query.AgenticQuery.Filters {
-						var filters1 tfTypes.AllFilterItems
-
-						filters1.Field = types.StringValue(string(filtersItem1.Field))
-						filters1.Operator = types.StringValue(string(filtersItem1.Operator))
-						if filtersItem1.Value == nil {
-							filters1.Value = jsontypes.NewNormalizedNull()
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Filters = append(tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Filters, filters)
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Granularity != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Granularity))
 						} else {
-							valueResult2, _ := json.Marshal(filtersItem1.Value)
-							filters1.Value = jsontypes.NewNormalizedValue(string(valueResult2))
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Granularity = types.StringNull()
 						}
-
-						tiles.Chart.Definition.Query.AgenticUsage.Filters = append(tiles.Chart.Definition.Query.AgenticUsage.Filters, filters1)
-					}
-					if tilesItem.ChartTile.Definition.Query.AgenticQuery.Granularity != nil {
-						tiles.Chart.Definition.Query.AgenticUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AgenticQuery.Granularity))
-					} else {
-						tiles.Chart.Definition.Query.AgenticUsage.Granularity = types.StringNull()
-					}
-					tiles.Chart.Definition.Query.AgenticUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AgenticQuery.Metrics))
-					for _, v := range tilesItem.ChartTile.Definition.Query.AgenticQuery.Metrics {
-						tiles.Chart.Definition.Query.AgenticUsage.Metrics = append(tiles.Chart.Definition.Query.AgenticUsage.Metrics, types.StringValue(string(v)))
-					}
-					if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange != nil {
-						tiles.Chart.Definition.Query.AgenticUsage.TimeRange = &tfTypes.TimeRange{}
-						if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
+						tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Limit)
+						tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Metrics))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Metrics {
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Metrics = append(tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Metrics, types.StringValue(string(v)))
 						}
-						if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
-							if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
-								tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
-							} else {
-								tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange = types.StringNull()
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange = &tfTypes.TimeRange{}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
 							}
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
-							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
+								if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
+									tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+								} else {
+									tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.TimeRange = types.StringNull()
+								}
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
+							}
 						}
 					}
-				}
-				if tilesItem.ChartTile.Definition.Query.LLMQuery != nil {
-					tiles.Chart.Definition.Query.LlmUsage = &tfTypes.AdvancedQuery{}
-					tiles.Chart.Definition.Query.LlmUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.LLMQuery.Datasource))
-					if tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions != nil {
-						tiles.Chart.Definition.Query.LlmUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions))
-						for _, v := range tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions {
-							tiles.Chart.Definition.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
-						}
-					} else {
-						tiles.Chart.Definition.Query.LlmUsage.Dimensions = nil
-					}
-					tiles.Chart.Definition.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
-
-					for _, filtersItem2 := range tilesItem.ChartTile.Definition.Query.LLMQuery.Filters {
-						var filters2 tfTypes.AllFilterItems
-
-						filters2.Field = types.StringValue(string(filtersItem2.Field))
-						filters2.Operator = types.StringValue(string(filtersItem2.Operator))
-						if filtersItem2.Value == nil {
-							filters2.Value = jsontypes.NewNormalizedNull()
+					if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery != nil {
+						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage = &tfTypes.AdvancedQuery{}
+						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Datasource))
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions))
+							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions {
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions, types.StringValue(string(v)))
+							}
 						} else {
-							valueResult3, _ := json.Marshal(filtersItem2.Value)
-							filters2.Value = jsontypes.NewNormalizedValue(string(valueResult3))
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = nil
 						}
+						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters = []tfTypes.AllFilterItems{}
 
-						tiles.Chart.Definition.Query.LlmUsage.Filters = append(tiles.Chart.Definition.Query.LlmUsage.Filters, filters2)
-					}
-					if tilesItem.ChartTile.Definition.Query.LLMQuery.Granularity != nil {
-						tiles.Chart.Definition.Query.LlmUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.LLMQuery.Granularity))
-					} else {
-						tiles.Chart.Definition.Query.LlmUsage.Granularity = types.StringNull()
-					}
-					tiles.Chart.Definition.Query.LlmUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.LLMQuery.Metrics))
-					for _, v := range tilesItem.ChartTile.Definition.Query.LLMQuery.Metrics {
-						tiles.Chart.Definition.Query.LlmUsage.Metrics = append(tiles.Chart.Definition.Query.LlmUsage.Metrics, types.StringValue(string(v)))
-					}
-					if tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange != nil {
-						tiles.Chart.Definition.Query.LlmUsage.TimeRange = &tfTypes.TimeRange{}
-						if tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
-						}
-						if tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
-							if tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
-								tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+						for _, filtersItem1 := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Filters {
+							var filters1 tfTypes.AllFilterItems
+
+							filters1.Field = types.StringValue(string(filtersItem1.Field))
+							filters1.Operator = types.StringValue(string(filtersItem1.Operator))
+							if filtersItem1.Value == nil {
+								filters1.Value = jsontypes.NewNormalizedNull()
 							} else {
-								tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange = types.StringNull()
+								valueResult2, _ := json.Marshal(filtersItem1.Value)
+								filters1.Value = jsontypes.NewNormalizedValue(string(valueResult2))
 							}
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
+
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters = append(tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters, filters1)
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Granularity != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Granularity))
+						} else {
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Granularity = types.StringNull()
+						}
+						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Limit)
+						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Metrics))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Metrics {
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Metrics = append(tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Metrics, types.StringValue(string(v)))
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange = &tfTypes.TimeRange{}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
+							}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
+								if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
+									tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+								} else {
+									tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.TimeRange = types.StringNull()
+								}
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
+							}
+						}
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery != nil {
+						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage = &tfTypes.AdvancedQuery{}
+						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Datasource))
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions))
+							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions {
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
+							}
+						} else {
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = nil
+						}
+						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
+
+						for _, filtersItem2 := range tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Filters {
+							var filters2 tfTypes.AllFilterItems
+
+							filters2.Field = types.StringValue(string(filtersItem2.Field))
+							filters2.Operator = types.StringValue(string(filtersItem2.Operator))
+							if filtersItem2.Value == nil {
+								filters2.Value = jsontypes.NewNormalizedNull()
+							} else {
+								valueResult3, _ := json.Marshal(filtersItem2.Value)
+								filters2.Value = jsontypes.NewNormalizedValue(string(valueResult3))
+							}
+
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Filters = append(tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Filters, filters2)
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Granularity != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Granularity))
+						} else {
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Granularity = types.StringNull()
+						}
+						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Limit)
+						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Metrics))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Metrics {
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Metrics = append(tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Metrics, types.StringValue(string(v)))
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange = &tfTypes.TimeRange{}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
+							}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
+								if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
+									tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+								} else {
+									tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.TimeRange = types.StringNull()
+								}
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
+							}
+						}
+					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery != nil {
+						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage = &tfTypes.PlatformQuery{}
+						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Datasource))
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions))
+							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions {
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions, types.StringValue(string(v)))
+							}
+						} else {
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = nil
+						}
+						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters = []tfTypes.PlatformFilter{}
+
+						for _, filtersItem3 := range tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Filters {
+							var filters3 tfTypes.PlatformFilter
+
+							filters3.Field = types.StringValue(string(filtersItem3.Field))
+							filters3.Operator = types.StringValue(string(filtersItem3.Operator))
+							filters3.Value = make([]types.String, 0, len(filtersItem3.Value))
+							for _, v := range filtersItem3.Value {
+								filters3.Value = append(filters3.Value, types.StringValue(v))
+							}
+
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters = append(tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters, filters3)
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Granularity != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Granularity))
+						} else {
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Granularity = types.StringNull()
+						}
+						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Limit)
+						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Metrics))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Metrics {
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Metrics = append(tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Metrics, types.StringValue(string(v)))
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange = &tfTypes.TimeRange{}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
+							}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
+								if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.TimeRange != nil {
+									tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.TimeRange))
+								} else {
+									tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.TimeRange = types.StringNull()
+								}
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.Tz)
+							}
 						}
 					}
 				}
-				if tilesItem.ChartTile.Definition.Query.PlatformQuery != nil {
-					tiles.Chart.Definition.Query.PlatformUsage = &tfTypes.PlatformQuery{}
-					tiles.Chart.Definition.Query.PlatformUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.PlatformQuery.Datasource))
-					if tilesItem.ChartTile.Definition.Query.PlatformQuery.Dimensions != nil {
-						tiles.Chart.Definition.Query.PlatformUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.PlatformQuery.Dimensions))
-						for _, v := range tilesItem.ChartTile.Definition.Query.PlatformQuery.Dimensions {
-							tiles.Chart.Definition.Query.PlatformUsage.Dimensions = append(tiles.Chart.Definition.Query.PlatformUsage.Dimensions, types.StringValue(string(v)))
-						}
-					} else {
-						tiles.Chart.Definition.Query.PlatformUsage.Dimensions = nil
+				if tilesItem.ChartTile.Definition.TableVisualization != nil {
+					tiles.Chart.Definition.TableVisualization = &tfTypes.TableVisualization{}
+					tiles.Chart.Definition.TableVisualization.Chart = &tfTypes.ChoroplethMapChart{}
+					tiles.Chart.Definition.TableVisualization.Chart.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.TableVisualization.Chart.ChartTitle)
+					tiles.Chart.Definition.TableVisualization.Chart.Type = types.StringValue(string(tilesItem.ChartTile.Definition.TableVisualization.Chart.Type))
+					if tiles.Chart.Definition.TableVisualization.Query == nil {
+						tiles.Chart.Definition.TableVisualization.Query = &tfTypes.TableVisualizationQuery{}
 					}
-					tiles.Chart.Definition.Query.PlatformUsage.Filters = []tfTypes.PlatformFilter{}
-
-					for _, filtersItem3 := range tilesItem.ChartTile.Definition.Query.PlatformQuery.Filters {
-						var filters3 tfTypes.PlatformFilter
-
-						filters3.Field = types.StringValue(string(filtersItem3.Field))
-						filters3.Operator = types.StringValue(string(filtersItem3.Operator))
-						filters3.Value = make([]types.String, 0, len(filtersItem3.Value))
-						for _, v := range filtersItem3.Value {
-							filters3.Value = append(filters3.Value, types.StringValue(v))
-						}
-
-						tiles.Chart.Definition.Query.PlatformUsage.Filters = append(tiles.Chart.Definition.Query.PlatformUsage.Filters, filters3)
-					}
-					if tilesItem.ChartTile.Definition.Query.PlatformQuery.Granularity != nil {
-						tiles.Chart.Definition.Query.PlatformUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.PlatformQuery.Granularity))
-					} else {
-						tiles.Chart.Definition.Query.PlatformUsage.Granularity = types.StringNull()
-					}
-					tiles.Chart.Definition.Query.PlatformUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.Query.PlatformQuery.Limit)
-					tiles.Chart.Definition.Query.PlatformUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.PlatformQuery.Metrics))
-					for _, v := range tilesItem.ChartTile.Definition.Query.PlatformQuery.Metrics {
-						tiles.Chart.Definition.Query.PlatformUsage.Metrics = append(tiles.Chart.Definition.Query.PlatformUsage.Metrics, types.StringValue(string(v)))
-					}
-					if tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange != nil {
-						tiles.Chart.Definition.Query.PlatformUsage.TimeRange = &tfTypes.TimeRange{}
-						if tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
-						}
-						if tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange != nil {
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
-							if tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.TimeRange != nil {
-								tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.TimeRange))
-							} else {
-								tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Relative.TimeRange = types.StringNull()
+					if tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery != nil {
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage = &tfTypes.PlatformTabularQuery{}
+						if tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns != nil {
+							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = make([]types.String, 0, len(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns))
+							for _, v := range tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns {
+								tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = append(tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns, types.StringValue(v))
 							}
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.Type))
-							tiles.Chart.Definition.Query.PlatformUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.PlatformQuery.TimeRange.PlatformRelativeTimeRange.Tz)
+						} else {
+							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = nil
 						}
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Cursor = types.StringPointerValue(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Cursor)
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Datasource))
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Entity = types.StringPointerValue(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Entity)
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters = []tfTypes.PlatformFilter{}
+
+						for _, filtersItem4 := range tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Filters {
+							var filters4 tfTypes.PlatformFilter
+
+							filters4.Field = types.StringValue(string(filtersItem4.Field))
+							filters4.Operator = types.StringValue(string(filtersItem4.Operator))
+							filters4.Value = make([]types.String, 0, len(filtersItem4.Value))
+							for _, v := range filtersItem4.Value {
+								filters4.Value = append(filters4.Value, types.StringValue(v))
+							}
+
+							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters = append(tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters, filters4)
+						}
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.PageSize = types.Int64PointerValue(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.PageSize)
 					}
 				}
 				tiles.Chart.Layout = &tfTypes.Layout{}
@@ -414,574 +465,703 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				Size:     size,
 			}
 			typeVar := shared.ChartTileType(r.Definition.Tiles[tilesItem].Chart.Type.ValueString())
-			var query shared.Query
-			var advancedQuery *shared.AdvancedQuery
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage != nil {
-				datasource := shared.Datasource(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Datasource.ValueString())
-				metrics := make([]shared.AdvancedMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Metrics))
-				for _, metricsItem := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Metrics {
-					metrics = append(metrics, shared.AdvancedMetrics(metricsItem.ValueString()))
-				}
-				var dimensions []shared.Dimensions
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Dimensions != nil {
-					dimensions = make([]shared.Dimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Dimensions))
-					for _, dimensionsItem := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Dimensions {
-						dimensions = append(dimensions, shared.Dimensions(dimensionsItem.ValueString()))
+			var definition1 shared.AnyChartTileDefinition
+			var chartVisualization *shared.ChartVisualization
+			if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization != nil {
+				var query shared.Query
+				var advancedQuery *shared.AdvancedQuery
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage != nil {
+					datasource := shared.Datasource(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Datasource.ValueString())
+					metrics := make([]shared.AdvancedMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Metrics))
+					for _, metricsItem := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Metrics {
+						metrics = append(metrics, shared.AdvancedMetrics(metricsItem.ValueString()))
+					}
+					var dimensions []shared.Dimensions
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions != nil {
+						dimensions = make([]shared.Dimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions))
+						for _, dimensionsItem := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions {
+							dimensions = append(dimensions, shared.Dimensions(dimensionsItem.ValueString()))
+						}
+					}
+					filters := make([]shared.AdvancedFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters))
+					for filtersIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters {
+						field := shared.Field(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters[filtersIndex].Field.ValueString())
+						operator := shared.Operator(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters[filtersIndex].Operator.ValueString())
+						var value interface{}
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters[filtersIndex].Value.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters[filtersIndex].Value.IsNull() {
+							_ = json.Unmarshal([]byte(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters[filtersIndex].Value.ValueString()), &value)
+						}
+						filters = append(filters, shared.AdvancedFilters{
+							Field:    field,
+							Operator: operator,
+							Value:    value,
+						})
+					}
+					granularity := new(shared.Granularity)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Granularity.IsNull() {
+						*granularity = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Granularity.ValueString())
+					} else {
+						granularity = nil
+					}
+					var timeRange *shared.TimeRange
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange != nil {
+						var metricsRelativeTimeRangeDtoV2 *shared.MetricsRelativeTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative != nil {
+							tz := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.Tz.IsNull() {
+								*tz = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.Tz.ValueString()
+							} else {
+								tz = nil
+							}
+							typeVar1 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.Type.ValueString())
+							timeRange1 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.TimeRange.IsNull() {
+								*timeRange1 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Relative.TimeRange.ValueString())
+							} else {
+								timeRange1 = nil
+							}
+							metricsRelativeTimeRangeDtoV2 = &shared.MetricsRelativeTimeRangeDtoV2{
+								Tz:        tz,
+								Type:      typeVar1,
+								TimeRange: timeRange1,
+							}
+						}
+						if metricsRelativeTimeRangeDtoV2 != nil {
+							timeRange = &shared.TimeRange{
+								MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV2,
+							}
+						}
+						var metricsAbsoluteTimeRangeDtoV2 *shared.MetricsAbsoluteTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute != nil {
+							tz1 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Tz.IsNull() {
+								*tz1 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Tz.ValueString()
+							} else {
+								tz1 = nil
+							}
+							typeVar2 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Type.ValueString())
+							start := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Start.IsNull() {
+								*start, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.Start.ValueString())
+							} else {
+								start = nil
+							}
+							end := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.End.IsNull() {
+								*end, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.TimeRange.Absolute.End.ValueString())
+							} else {
+								end = nil
+							}
+							metricsAbsoluteTimeRangeDtoV2 = &shared.MetricsAbsoluteTimeRangeDtoV2{
+								Tz:    tz1,
+								Type:  typeVar2,
+								Start: start,
+								End:   end,
+							}
+						}
+						if metricsAbsoluteTimeRangeDtoV2 != nil {
+							timeRange = &shared.TimeRange{
+								MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV2,
+							}
+						}
+					}
+					limit := new(float64)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Limit.IsNull() {
+						*limit = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Limit.ValueFloat64()
+					} else {
+						limit = nil
+					}
+					advancedQuery = &shared.AdvancedQuery{
+						Datasource:  datasource,
+						Metrics:     metrics,
+						Dimensions:  dimensions,
+						Filters:     filters,
+						Granularity: granularity,
+						TimeRange:   timeRange,
+						Limit:       limit,
 					}
 				}
-				filters := make([]shared.AdvancedFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Filters))
-				for filtersIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Filters {
-					field := shared.Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Filters[filtersIndex].Field.ValueString())
-					operator := shared.Operator(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Filters[filtersIndex].Operator.ValueString())
-					var value interface{}
-					if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Filters[filtersIndex].Value.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Filters[filtersIndex].Value.IsNull() {
-						_ = json.Unmarshal([]byte(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Filters[filtersIndex].Value.ValueString()), &value)
+				if advancedQuery != nil {
+					query = shared.Query{
+						AdvancedQuery: advancedQuery,
 					}
-					filters = append(filters, shared.AdvancedFilters{
-						Field:    field,
-						Operator: operator,
-						Value:    value,
-					})
 				}
-				granularity := new(shared.Granularity)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Granularity.IsNull() {
-					*granularity = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Granularity.ValueString())
+				var llmQuery *shared.LLMQuery
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage != nil {
+					datasource1 := shared.LLMQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Datasource.ValueString())
+					metrics1 := make([]shared.LLMMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Metrics))
+					for _, metricsItem1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Metrics {
+						metrics1 = append(metrics1, shared.LLMMetrics(metricsItem1.ValueString()))
+					}
+					var dimensions1 []shared.LLMQueryDimensions
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions != nil {
+						dimensions1 = make([]shared.LLMQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions))
+						for _, dimensionsItem1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions {
+							dimensions1 = append(dimensions1, shared.LLMQueryDimensions(dimensionsItem1.ValueString()))
+						}
+					}
+					filters1 := make([]shared.LLMFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters))
+					for filtersIndex1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters {
+						field1 := shared.LLMFiltersField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters[filtersIndex1].Field.ValueString())
+						operator1 := shared.LLMFiltersOperator(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters[filtersIndex1].Operator.ValueString())
+						var value1 interface{}
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters[filtersIndex1].Value.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters[filtersIndex1].Value.IsNull() {
+							_ = json.Unmarshal([]byte(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters[filtersIndex1].Value.ValueString()), &value1)
+						}
+						filters1 = append(filters1, shared.LLMFilters{
+							Field:    field1,
+							Operator: operator1,
+							Value:    value1,
+						})
+					}
+					granularity1 := new(shared.Granularity)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Granularity.IsNull() {
+						*granularity1 = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Granularity.ValueString())
+					} else {
+						granularity1 = nil
+					}
+					var timeRange2 *shared.TimeRange
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange != nil {
+						var metricsRelativeTimeRangeDtoV21 *shared.MetricsRelativeTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative != nil {
+							tz2 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.Tz.IsNull() {
+								*tz2 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.Tz.ValueString()
+							} else {
+								tz2 = nil
+							}
+							typeVar3 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.Type.ValueString())
+							timeRange3 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.TimeRange.IsNull() {
+								*timeRange3 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Relative.TimeRange.ValueString())
+							} else {
+								timeRange3 = nil
+							}
+							metricsRelativeTimeRangeDtoV21 = &shared.MetricsRelativeTimeRangeDtoV2{
+								Tz:        tz2,
+								Type:      typeVar3,
+								TimeRange: timeRange3,
+							}
+						}
+						if metricsRelativeTimeRangeDtoV21 != nil {
+							timeRange2 = &shared.TimeRange{
+								MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV21,
+							}
+						}
+						var metricsAbsoluteTimeRangeDtoV21 *shared.MetricsAbsoluteTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute != nil {
+							tz3 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Tz.IsNull() {
+								*tz3 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Tz.ValueString()
+							} else {
+								tz3 = nil
+							}
+							typeVar4 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Type.ValueString())
+							start1 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Start.IsNull() {
+								*start1, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.Start.ValueString())
+							} else {
+								start1 = nil
+							}
+							end1 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.End.IsNull() {
+								*end1, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.TimeRange.Absolute.End.ValueString())
+							} else {
+								end1 = nil
+							}
+							metricsAbsoluteTimeRangeDtoV21 = &shared.MetricsAbsoluteTimeRangeDtoV2{
+								Tz:    tz3,
+								Type:  typeVar4,
+								Start: start1,
+								End:   end1,
+							}
+						}
+						if metricsAbsoluteTimeRangeDtoV21 != nil {
+							timeRange2 = &shared.TimeRange{
+								MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV21,
+							}
+						}
+					}
+					limit1 := new(float64)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Limit.IsNull() {
+						*limit1 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Limit.ValueFloat64()
+					} else {
+						limit1 = nil
+					}
+					llmQuery = &shared.LLMQuery{
+						Datasource:  datasource1,
+						Metrics:     metrics1,
+						Dimensions:  dimensions1,
+						Filters:     filters1,
+						Granularity: granularity1,
+						TimeRange:   timeRange2,
+						Limit:       limit1,
+					}
+				}
+				if llmQuery != nil {
+					query = shared.Query{
+						LLMQuery: llmQuery,
+					}
+				}
+				var agenticQuery *shared.AgenticQuery
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage != nil {
+					datasource2 := shared.AgenticQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Datasource.ValueString())
+					metrics2 := make([]shared.AgenticMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Metrics))
+					for _, metricsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Metrics {
+						metrics2 = append(metrics2, shared.AgenticMetrics(metricsItem2.ValueString()))
+					}
+					var dimensions2 []shared.AgenticQueryDimensions
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions != nil {
+						dimensions2 = make([]shared.AgenticQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions))
+						for _, dimensionsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions {
+							dimensions2 = append(dimensions2, shared.AgenticQueryDimensions(dimensionsItem2.ValueString()))
+						}
+					}
+					filters2 := make([]shared.AgenticFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters))
+					for filtersIndex2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters {
+						field2 := shared.AgenticFiltersField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters[filtersIndex2].Field.ValueString())
+						operator2 := shared.AgenticFiltersOperator(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters[filtersIndex2].Operator.ValueString())
+						var value2 interface{}
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters[filtersIndex2].Value.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters[filtersIndex2].Value.IsNull() {
+							_ = json.Unmarshal([]byte(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters[filtersIndex2].Value.ValueString()), &value2)
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							Field:    field2,
+							Operator: operator2,
+							Value:    value2,
+						})
+					}
+					granularity2 := new(shared.Granularity)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Granularity.IsNull() {
+						*granularity2 = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Granularity.ValueString())
+					} else {
+						granularity2 = nil
+					}
+					var timeRange4 *shared.TimeRange
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange != nil {
+						var metricsRelativeTimeRangeDtoV22 *shared.MetricsRelativeTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative != nil {
+							tz4 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.Tz.IsNull() {
+								*tz4 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.Tz.ValueString()
+							} else {
+								tz4 = nil
+							}
+							typeVar5 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.Type.ValueString())
+							timeRange5 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.TimeRange.IsNull() {
+								*timeRange5 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Relative.TimeRange.ValueString())
+							} else {
+								timeRange5 = nil
+							}
+							metricsRelativeTimeRangeDtoV22 = &shared.MetricsRelativeTimeRangeDtoV2{
+								Tz:        tz4,
+								Type:      typeVar5,
+								TimeRange: timeRange5,
+							}
+						}
+						if metricsRelativeTimeRangeDtoV22 != nil {
+							timeRange4 = &shared.TimeRange{
+								MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV22,
+							}
+						}
+						var metricsAbsoluteTimeRangeDtoV22 *shared.MetricsAbsoluteTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute != nil {
+							tz5 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Tz.IsNull() {
+								*tz5 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Tz.ValueString()
+							} else {
+								tz5 = nil
+							}
+							typeVar6 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Type.ValueString())
+							start2 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Start.IsNull() {
+								*start2, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.Start.ValueString())
+							} else {
+								start2 = nil
+							}
+							end2 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.End.IsNull() {
+								*end2, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.TimeRange.Absolute.End.ValueString())
+							} else {
+								end2 = nil
+							}
+							metricsAbsoluteTimeRangeDtoV22 = &shared.MetricsAbsoluteTimeRangeDtoV2{
+								Tz:    tz5,
+								Type:  typeVar6,
+								Start: start2,
+								End:   end2,
+							}
+						}
+						if metricsAbsoluteTimeRangeDtoV22 != nil {
+							timeRange4 = &shared.TimeRange{
+								MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV22,
+							}
+						}
+					}
+					limit2 := new(float64)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Limit.IsNull() {
+						*limit2 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Limit.ValueFloat64()
+					} else {
+						limit2 = nil
+					}
+					agenticQuery = &shared.AgenticQuery{
+						Datasource:  datasource2,
+						Metrics:     metrics2,
+						Dimensions:  dimensions2,
+						Filters:     filters2,
+						Granularity: granularity2,
+						TimeRange:   timeRange4,
+						Limit:       limit2,
+					}
+				}
+				if agenticQuery != nil {
+					query = shared.Query{
+						AgenticQuery: agenticQuery,
+					}
+				}
+				var platformQuery *shared.PlatformQuery
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage != nil {
+					datasource3 := shared.PlatformQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Datasource.ValueString())
+					metrics3 := make([]shared.PlatformMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Metrics))
+					for _, metricsItem3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Metrics {
+						metrics3 = append(metrics3, shared.PlatformMetrics(metricsItem3.ValueString()))
+					}
+					var dimensions3 []shared.PlatformQueryDimensions
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions != nil {
+						dimensions3 = make([]shared.PlatformQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions))
+						for _, dimensionsItem3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions {
+							dimensions3 = append(dimensions3, shared.PlatformQueryDimensions(dimensionsItem3.ValueString()))
+						}
+					}
+					filters3 := make([]shared.PlatformFilter, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters))
+					for filtersIndex3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters {
+						field3 := shared.PlatformFilterField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters[filtersIndex3].Field.ValueString())
+						operator3 := shared.PlatformFilterOperator(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters[filtersIndex3].Operator.ValueString())
+						value3 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters[filtersIndex3].Value))
+						for valueIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters[filtersIndex3].Value {
+							value3 = append(value3, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters[filtersIndex3].Value[valueIndex].ValueString())
+						}
+						filters3 = append(filters3, shared.PlatformFilter{
+							Field:    field3,
+							Operator: operator3,
+							Value:    value3,
+						})
+					}
+					granularity3 := new(shared.PlatformGranularity)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Granularity.IsNull() {
+						*granularity3 = shared.PlatformGranularity(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Granularity.ValueString())
+					} else {
+						granularity3 = nil
+					}
+					var timeRange6 *shared.PlatformTimeRange
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange != nil {
+						var platformRelativeTimeRange *shared.PlatformRelativeTimeRange
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative != nil {
+							tz6 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.Tz.IsNull() {
+								*tz6 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.Tz.ValueString()
+							} else {
+								tz6 = nil
+							}
+							typeVar7 := shared.PlatformRelativeTimeRangeType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.Type.ValueString())
+							timeRange7 := new(shared.PlatformRelativeTimeRangeTimeRange)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.TimeRange.IsNull() {
+								*timeRange7 = shared.PlatformRelativeTimeRangeTimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Relative.TimeRange.ValueString())
+							} else {
+								timeRange7 = nil
+							}
+							platformRelativeTimeRange = &shared.PlatformRelativeTimeRange{
+								Tz:        tz6,
+								Type:      typeVar7,
+								TimeRange: timeRange7,
+							}
+						}
+						if platformRelativeTimeRange != nil {
+							timeRange6 = &shared.PlatformTimeRange{
+								PlatformRelativeTimeRange: platformRelativeTimeRange,
+							}
+						}
+						var metricsAbsoluteTimeRangeDtoV23 *shared.MetricsAbsoluteTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute != nil {
+							tz7 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Tz.IsNull() {
+								*tz7 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Tz.ValueString()
+							} else {
+								tz7 = nil
+							}
+							typeVar8 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Type.ValueString())
+							start3 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Start.IsNull() {
+								*start3, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.Start.ValueString())
+							} else {
+								start3 = nil
+							}
+							end3 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.End.IsNull() {
+								*end3, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.TimeRange.Absolute.End.ValueString())
+							} else {
+								end3 = nil
+							}
+							metricsAbsoluteTimeRangeDtoV23 = &shared.MetricsAbsoluteTimeRangeDtoV2{
+								Tz:    tz7,
+								Type:  typeVar8,
+								Start: start3,
+								End:   end3,
+							}
+						}
+						if metricsAbsoluteTimeRangeDtoV23 != nil {
+							timeRange6 = &shared.PlatformTimeRange{
+								MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV23,
+							}
+						}
+					}
+					limit3 := new(float64)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Limit.IsNull() {
+						*limit3 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Limit.ValueFloat64()
+					} else {
+						limit3 = nil
+					}
+					platformQuery = &shared.PlatformQuery{
+						Datasource:  datasource3,
+						Metrics:     metrics3,
+						Dimensions:  dimensions3,
+						Filters:     filters3,
+						Granularity: granularity3,
+						TimeRange:   timeRange6,
+						Limit:       limit3,
+					}
+				}
+				if platformQuery != nil {
+					query = shared.Query{
+						PlatformQuery: platformQuery,
+					}
+				}
+				var chart shared.Chart
+				var donutChart *shared.DonutChart
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut != nil {
+					chartTitle := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut.ChartTitle.IsNull() {
+						*chartTitle = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut.ChartTitle.ValueString()
+					} else {
+						chartTitle = nil
+					}
+					typeVar9 := shared.DonutChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut.Type.ValueString())
+					donutChart = &shared.DonutChart{
+						ChartTitle: chartTitle,
+						Type:       typeVar9,
+					}
+				}
+				if donutChart != nil {
+					chart = shared.Chart{
+						DonutChart: donutChart,
+					}
+				}
+				var timeseriesChart *shared.TimeseriesChart
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine != nil {
+					chartTitle1 := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.ChartTitle.IsNull() {
+						*chartTitle1 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.ChartTitle.ValueString()
+					} else {
+						chartTitle1 = nil
+					}
+					typeVar10 := shared.TimeseriesChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Type.ValueString())
+					stacked := new(bool)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Stacked.IsNull() {
+						*stacked = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Stacked.ValueBool()
+					} else {
+						stacked = nil
+					}
+					timeseriesChart = &shared.TimeseriesChart{
+						ChartTitle: chartTitle1,
+						Type:       typeVar10,
+						Stacked:    stacked,
+					}
+				}
+				if timeseriesChart != nil {
+					chart = shared.Chart{
+						TimeseriesChart: timeseriesChart,
+					}
+				}
+				var barChart *shared.BarChart
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar != nil {
+					chartTitle2 := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.ChartTitle.IsNull() {
+						*chartTitle2 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.ChartTitle.ValueString()
+					} else {
+						chartTitle2 = nil
+					}
+					typeVar11 := shared.BarChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Type.ValueString())
+					stacked1 := new(bool)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Stacked.IsNull() {
+						*stacked1 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Stacked.ValueBool()
+					} else {
+						stacked1 = nil
+					}
+					barChart = &shared.BarChart{
+						ChartTitle: chartTitle2,
+						Type:       typeVar11,
+						Stacked:    stacked1,
+					}
+				}
+				if barChart != nil {
+					chart = shared.Chart{
+						BarChart: barChart,
+					}
+				}
+				var topNChart *shared.TopNChart
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TopN != nil {
+					chartTitle3 := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TopN.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TopN.ChartTitle.IsNull() {
+						*chartTitle3 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TopN.ChartTitle.ValueString()
+					} else {
+						chartTitle3 = nil
+					}
+					typeVar12 := shared.TopNChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TopN.Type.ValueString())
+					topNChart = &shared.TopNChart{
+						ChartTitle: chartTitle3,
+						Type:       typeVar12,
+					}
+				}
+				if topNChart != nil {
+					chart = shared.Chart{
+						TopNChart: topNChart,
+					}
+				}
+				var singleValueChart *shared.SingleValueChart
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue != nil {
+					chartTitle4 := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.ChartTitle.IsNull() {
+						*chartTitle4 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.ChartTitle.ValueString()
+					} else {
+						chartTitle4 = nil
+					}
+					typeVar13 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.Type.ValueString())
+					decimalPoints := new(float64)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.DecimalPoints.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.DecimalPoints.IsNull() {
+						*decimalPoints = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.DecimalPoints.ValueFloat64()
+					} else {
+						decimalPoints = nil
+					}
+					singleValueChart = &shared.SingleValueChart{
+						ChartTitle:    chartTitle4,
+						Type:          typeVar13,
+						DecimalPoints: decimalPoints,
+					}
+				}
+				if singleValueChart != nil {
+					chart = shared.Chart{
+						SingleValueChart: singleValueChart,
+					}
+				}
+				var choroplethMapChart *shared.ChoroplethMapChart
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.ChoroplethMap != nil {
+					chartTitle5 := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.ChoroplethMap.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.ChoroplethMap.ChartTitle.IsNull() {
+						*chartTitle5 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.ChoroplethMap.ChartTitle.ValueString()
+					} else {
+						chartTitle5 = nil
+					}
+					typeVar14 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.ChoroplethMap.Type.ValueString())
+					choroplethMapChart = &shared.ChoroplethMapChart{
+						ChartTitle: chartTitle5,
+						Type:       typeVar14,
+					}
+				}
+				if choroplethMapChart != nil {
+					chart = shared.Chart{
+						ChoroplethMapChart: choroplethMapChart,
+					}
+				}
+				chartVisualization = &shared.ChartVisualization{
+					Query: query,
+					Chart: chart,
+				}
+			}
+			if chartVisualization != nil {
+				definition1 = shared.AnyChartTileDefinition{
+					ChartVisualization: chartVisualization,
+				}
+			}
+			var tableVisualization *shared.TableVisualization
+			if r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization != nil {
+				var query1 shared.TableVisualizationQuery
+				var platformTabularQuery *shared.PlatformTabularQuery
+				if r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage != nil {
+					datasource4 := shared.PlatformTabularQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Datasource.ValueString())
+					entity := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Entity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Entity.IsNull() {
+						*entity = r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Entity.ValueString()
+					} else {
+						entity = nil
+					}
+					var columns []string
+					if r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns != nil {
+						columns = make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns))
+						for columnsIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns {
+							columns = append(columns, r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns[columnsIndex].ValueString())
+						}
+					}
+					filters4 := make([]shared.PlatformFilter, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters))
+					for filtersIndex4 := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters {
+						field4 := shared.PlatformFilterField(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Field.ValueString())
+						operator4 := shared.PlatformFilterOperator(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Operator.ValueString())
+						value4 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value))
+						for valueIndex1 := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value {
+							value4 = append(value4, r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value[valueIndex1].ValueString())
+						}
+						filters4 = append(filters4, shared.PlatformFilter{
+							Field:    field4,
+							Operator: operator4,
+							Value:    value4,
+						})
+					}
+					cursor := new(string)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Cursor.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Cursor.IsNull() {
+						*cursor = r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Cursor.ValueString()
+					} else {
+						cursor = nil
+					}
+					pageSize := new(int64)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.PageSize.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.PageSize.IsNull() {
+						*pageSize = r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.PageSize.ValueInt64()
+					} else {
+						pageSize = nil
+					}
+					platformTabularQuery = &shared.PlatformTabularQuery{
+						Datasource: datasource4,
+						Entity:     entity,
+						Columns:    columns,
+						Filters:    filters4,
+						Cursor:     cursor,
+						PageSize:   pageSize,
+					}
+				}
+				if platformTabularQuery != nil {
+					query1 = shared.TableVisualizationQuery{
+						PlatformTabularQuery: platformTabularQuery,
+					}
+				}
+				chartTitle6 := new(string)
+				if !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Chart.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Chart.ChartTitle.IsNull() {
+					*chartTitle6 = r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Chart.ChartTitle.ValueString()
 				} else {
-					granularity = nil
+					chartTitle6 = nil
 				}
-				var timeRange *shared.TimeRange
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange != nil {
-					var metricsRelativeTimeRangeDtoV2 *shared.MetricsRelativeTimeRangeDtoV2
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative != nil {
-						tz := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative.Tz.IsNull() {
-							*tz = r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative.Tz.ValueString()
-						} else {
-							tz = nil
-						}
-						typeVar1 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative.Type.ValueString())
-						timeRange1 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange.IsNull() {
-							*timeRange1 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange.ValueString())
-						} else {
-							timeRange1 = nil
-						}
-						metricsRelativeTimeRangeDtoV2 = &shared.MetricsRelativeTimeRangeDtoV2{
-							Tz:        tz,
-							Type:      typeVar1,
-							TimeRange: timeRange1,
-						}
-					}
-					if metricsRelativeTimeRangeDtoV2 != nil {
-						timeRange = &shared.TimeRange{
-							MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV2,
-						}
-					}
-					var metricsAbsoluteTimeRangeDtoV2 *shared.MetricsAbsoluteTimeRangeDtoV2
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute != nil {
-						tz1 := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.Tz.IsNull() {
-							*tz1 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.Tz.ValueString()
-						} else {
-							tz1 = nil
-						}
-						typeVar2 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.Type.ValueString())
-						start := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.Start.IsNull() {
-							*start, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.Start.ValueString())
-						} else {
-							start = nil
-						}
-						end := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.End.IsNull() {
-							*end, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.TimeRange.Absolute.End.ValueString())
-						} else {
-							end = nil
-						}
-						metricsAbsoluteTimeRangeDtoV2 = &shared.MetricsAbsoluteTimeRangeDtoV2{
-							Tz:    tz1,
-							Type:  typeVar2,
-							Start: start,
-							End:   end,
-						}
-					}
-					if metricsAbsoluteTimeRangeDtoV2 != nil {
-						timeRange = &shared.TimeRange{
-							MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV2,
-						}
-					}
+				typeVar15 := shared.TableChartType(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Chart.Type.ValueString())
+				chart1 := shared.TableChart{
+					ChartTitle: chartTitle6,
+					Type:       typeVar15,
 				}
-				advancedQuery = &shared.AdvancedQuery{
-					Datasource:  datasource,
-					Metrics:     metrics,
-					Dimensions:  dimensions,
-					Filters:     filters,
-					Granularity: granularity,
-					TimeRange:   timeRange,
+				tableVisualization = &shared.TableVisualization{
+					Query: query1,
+					Chart: chart1,
 				}
 			}
-			if advancedQuery != nil {
-				query = shared.Query{
-					AdvancedQuery: advancedQuery,
+			if tableVisualization != nil {
+				definition1 = shared.AnyChartTileDefinition{
+					TableVisualization: tableVisualization,
 				}
-			}
-			var llmQuery *shared.LLMQuery
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage != nil {
-				datasource1 := shared.LLMQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Datasource.ValueString())
-				metrics1 := make([]shared.LLMMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Metrics))
-				for _, metricsItem1 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Metrics {
-					metrics1 = append(metrics1, shared.LLMMetrics(metricsItem1.ValueString()))
-				}
-				var dimensions1 []shared.LLMQueryDimensions
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Dimensions != nil {
-					dimensions1 = make([]shared.LLMQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Dimensions))
-					for _, dimensionsItem1 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Dimensions {
-						dimensions1 = append(dimensions1, shared.LLMQueryDimensions(dimensionsItem1.ValueString()))
-					}
-				}
-				filters1 := make([]shared.LLMFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Filters))
-				for filtersIndex1 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Filters {
-					field1 := shared.LLMFiltersField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Filters[filtersIndex1].Field.ValueString())
-					operator1 := shared.LLMFiltersOperator(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Filters[filtersIndex1].Operator.ValueString())
-					var value1 interface{}
-					if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Filters[filtersIndex1].Value.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Filters[filtersIndex1].Value.IsNull() {
-						_ = json.Unmarshal([]byte(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Filters[filtersIndex1].Value.ValueString()), &value1)
-					}
-					filters1 = append(filters1, shared.LLMFilters{
-						Field:    field1,
-						Operator: operator1,
-						Value:    value1,
-					})
-				}
-				granularity1 := new(shared.Granularity)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Granularity.IsNull() {
-					*granularity1 = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Granularity.ValueString())
-				} else {
-					granularity1 = nil
-				}
-				var timeRange2 *shared.TimeRange
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange != nil {
-					var metricsRelativeTimeRangeDtoV21 *shared.MetricsRelativeTimeRangeDtoV2
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative != nil {
-						tz2 := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative.Tz.IsNull() {
-							*tz2 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative.Tz.ValueString()
-						} else {
-							tz2 = nil
-						}
-						typeVar3 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative.Type.ValueString())
-						timeRange3 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange.IsNull() {
-							*timeRange3 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange.ValueString())
-						} else {
-							timeRange3 = nil
-						}
-						metricsRelativeTimeRangeDtoV21 = &shared.MetricsRelativeTimeRangeDtoV2{
-							Tz:        tz2,
-							Type:      typeVar3,
-							TimeRange: timeRange3,
-						}
-					}
-					if metricsRelativeTimeRangeDtoV21 != nil {
-						timeRange2 = &shared.TimeRange{
-							MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV21,
-						}
-					}
-					var metricsAbsoluteTimeRangeDtoV21 *shared.MetricsAbsoluteTimeRangeDtoV2
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute != nil {
-						tz3 := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Tz.IsNull() {
-							*tz3 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Tz.ValueString()
-						} else {
-							tz3 = nil
-						}
-						typeVar4 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Type.ValueString())
-						start1 := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Start.IsNull() {
-							*start1, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.Start.ValueString())
-						} else {
-							start1 = nil
-						}
-						end1 := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.End.IsNull() {
-							*end1, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.TimeRange.Absolute.End.ValueString())
-						} else {
-							end1 = nil
-						}
-						metricsAbsoluteTimeRangeDtoV21 = &shared.MetricsAbsoluteTimeRangeDtoV2{
-							Tz:    tz3,
-							Type:  typeVar4,
-							Start: start1,
-							End:   end1,
-						}
-					}
-					if metricsAbsoluteTimeRangeDtoV21 != nil {
-						timeRange2 = &shared.TimeRange{
-							MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV21,
-						}
-					}
-				}
-				llmQuery = &shared.LLMQuery{
-					Datasource:  datasource1,
-					Metrics:     metrics1,
-					Dimensions:  dimensions1,
-					Filters:     filters1,
-					Granularity: granularity1,
-					TimeRange:   timeRange2,
-				}
-			}
-			if llmQuery != nil {
-				query = shared.Query{
-					LLMQuery: llmQuery,
-				}
-			}
-			var agenticQuery *shared.AgenticQuery
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage != nil {
-				datasource2 := shared.AgenticQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Datasource.ValueString())
-				metrics2 := make([]shared.AgenticMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Metrics))
-				for _, metricsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Metrics {
-					metrics2 = append(metrics2, shared.AgenticMetrics(metricsItem2.ValueString()))
-				}
-				var dimensions2 []shared.AgenticQueryDimensions
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Dimensions != nil {
-					dimensions2 = make([]shared.AgenticQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Dimensions))
-					for _, dimensionsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Dimensions {
-						dimensions2 = append(dimensions2, shared.AgenticQueryDimensions(dimensionsItem2.ValueString()))
-					}
-				}
-				filters2 := make([]shared.AgenticFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters))
-				for filtersIndex2 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters {
-					field2 := shared.AgenticFiltersField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersIndex2].Field.ValueString())
-					operator2 := shared.AgenticFiltersOperator(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersIndex2].Operator.ValueString())
-					var value2 interface{}
-					if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersIndex2].Value.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersIndex2].Value.IsNull() {
-						_ = json.Unmarshal([]byte(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersIndex2].Value.ValueString()), &value2)
-					}
-					filters2 = append(filters2, shared.AgenticFilters{
-						Field:    field2,
-						Operator: operator2,
-						Value:    value2,
-					})
-				}
-				granularity2 := new(shared.Granularity)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Granularity.IsNull() {
-					*granularity2 = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Granularity.ValueString())
-				} else {
-					granularity2 = nil
-				}
-				var timeRange4 *shared.TimeRange
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange != nil {
-					var metricsRelativeTimeRangeDtoV22 *shared.MetricsRelativeTimeRangeDtoV2
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative != nil {
-						tz4 := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz.IsNull() {
-							*tz4 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz.ValueString()
-						} else {
-							tz4 = nil
-						}
-						typeVar5 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Type.ValueString())
-						timeRange5 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange.IsNull() {
-							*timeRange5 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange.ValueString())
-						} else {
-							timeRange5 = nil
-						}
-						metricsRelativeTimeRangeDtoV22 = &shared.MetricsRelativeTimeRangeDtoV2{
-							Tz:        tz4,
-							Type:      typeVar5,
-							TimeRange: timeRange5,
-						}
-					}
-					if metricsRelativeTimeRangeDtoV22 != nil {
-						timeRange4 = &shared.TimeRange{
-							MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV22,
-						}
-					}
-					var metricsAbsoluteTimeRangeDtoV22 *shared.MetricsAbsoluteTimeRangeDtoV2
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute != nil {
-						tz5 := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz.IsNull() {
-							*tz5 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz.ValueString()
-						} else {
-							tz5 = nil
-						}
-						typeVar6 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Type.ValueString())
-						start2 := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start.IsNull() {
-							*start2, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start.ValueString())
-						} else {
-							start2 = nil
-						}
-						end2 := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End.IsNull() {
-							*end2, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End.ValueString())
-						} else {
-							end2 = nil
-						}
-						metricsAbsoluteTimeRangeDtoV22 = &shared.MetricsAbsoluteTimeRangeDtoV2{
-							Tz:    tz5,
-							Type:  typeVar6,
-							Start: start2,
-							End:   end2,
-						}
-					}
-					if metricsAbsoluteTimeRangeDtoV22 != nil {
-						timeRange4 = &shared.TimeRange{
-							MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV22,
-						}
-					}
-				}
-				agenticQuery = &shared.AgenticQuery{
-					Datasource:  datasource2,
-					Metrics:     metrics2,
-					Dimensions:  dimensions2,
-					Filters:     filters2,
-					Granularity: granularity2,
-					TimeRange:   timeRange4,
-				}
-			}
-			if agenticQuery != nil {
-				query = shared.Query{
-					AgenticQuery: agenticQuery,
-				}
-			}
-			var platformQuery *shared.PlatformQuery
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage != nil {
-				datasource3 := shared.PlatformQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Datasource.ValueString())
-				metrics3 := make([]shared.PlatformMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Metrics))
-				for _, metricsItem3 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Metrics {
-					metrics3 = append(metrics3, shared.PlatformMetrics(metricsItem3.ValueString()))
-				}
-				var dimensions3 []shared.PlatformQueryDimensions
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Dimensions != nil {
-					dimensions3 = make([]shared.PlatformQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Dimensions))
-					for _, dimensionsItem3 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Dimensions {
-						dimensions3 = append(dimensions3, shared.PlatformQueryDimensions(dimensionsItem3.ValueString()))
-					}
-				}
-				filters3 := make([]shared.PlatformFilter, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Filters))
-				for filtersIndex3 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Filters {
-					field3 := shared.PlatformFilterField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Filters[filtersIndex3].Field.ValueString())
-					operator3 := shared.PlatformFilterOperator(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Filters[filtersIndex3].Operator.ValueString())
-					value3 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Filters[filtersIndex3].Value))
-					for valueIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Filters[filtersIndex3].Value {
-						value3 = append(value3, r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Filters[filtersIndex3].Value[valueIndex].ValueString())
-					}
-					filters3 = append(filters3, shared.PlatformFilter{
-						Field:    field3,
-						Operator: operator3,
-						Value:    value3,
-					})
-				}
-				granularity3 := new(shared.PlatformGranularity)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Granularity.IsNull() {
-					*granularity3 = shared.PlatformGranularity(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Granularity.ValueString())
-				} else {
-					granularity3 = nil
-				}
-				var timeRange6 *shared.PlatformTimeRange
-				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange != nil {
-					var platformRelativeTimeRange *shared.PlatformRelativeTimeRange
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative != nil {
-						tz6 := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative.Tz.IsNull() {
-							*tz6 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative.Tz.ValueString()
-						} else {
-							tz6 = nil
-						}
-						typeVar7 := shared.PlatformRelativeTimeRangeType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative.Type.ValueString())
-						timeRange7 := new(shared.PlatformRelativeTimeRangeTimeRange)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative.TimeRange.IsNull() {
-							*timeRange7 = shared.PlatformRelativeTimeRangeTimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Relative.TimeRange.ValueString())
-						} else {
-							timeRange7 = nil
-						}
-						platformRelativeTimeRange = &shared.PlatformRelativeTimeRange{
-							Tz:        tz6,
-							Type:      typeVar7,
-							TimeRange: timeRange7,
-						}
-					}
-					if platformRelativeTimeRange != nil {
-						timeRange6 = &shared.PlatformTimeRange{
-							PlatformRelativeTimeRange: platformRelativeTimeRange,
-						}
-					}
-					var metricsAbsoluteTimeRangeDtoV23 *shared.MetricsAbsoluteTimeRangeDtoV2
-					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute != nil {
-						tz7 := new(string)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Tz.IsNull() {
-							*tz7 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Tz.ValueString()
-						} else {
-							tz7 = nil
-						}
-						typeVar8 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Type.ValueString())
-						start3 := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Start.IsNull() {
-							*start3, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.Start.ValueString())
-						} else {
-							start3 = nil
-						}
-						end3 := new(time.Time)
-						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.End.IsNull() {
-							*end3, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.TimeRange.Absolute.End.ValueString())
-						} else {
-							end3 = nil
-						}
-						metricsAbsoluteTimeRangeDtoV23 = &shared.MetricsAbsoluteTimeRangeDtoV2{
-							Tz:    tz7,
-							Type:  typeVar8,
-							Start: start3,
-							End:   end3,
-						}
-					}
-					if metricsAbsoluteTimeRangeDtoV23 != nil {
-						timeRange6 = &shared.PlatformTimeRange{
-							MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV23,
-						}
-					}
-				}
-				limit := new(float64)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Limit.IsNull() {
-					*limit = r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Limit.ValueFloat64()
-				} else {
-					limit = nil
-				}
-				platformQuery = &shared.PlatformQuery{
-					Datasource:  datasource3,
-					Metrics:     metrics3,
-					Dimensions:  dimensions3,
-					Filters:     filters3,
-					Granularity: granularity3,
-					TimeRange:   timeRange6,
-					Limit:       limit,
-				}
-			}
-			if platformQuery != nil {
-				query = shared.Query{
-					PlatformQuery: platformQuery,
-				}
-			}
-			var chart shared.Chart
-			var donutChart *shared.DonutChart
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut != nil {
-				chartTitle := new(string)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut.ChartTitle.IsNull() {
-					*chartTitle = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut.ChartTitle.ValueString()
-				} else {
-					chartTitle = nil
-				}
-				typeVar9 := shared.DonutChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut.Type.ValueString())
-				donutChart = &shared.DonutChart{
-					ChartTitle: chartTitle,
-					Type:       typeVar9,
-				}
-			}
-			if donutChart != nil {
-				chart = shared.Chart{
-					DonutChart: donutChart,
-				}
-			}
-			var timeseriesChart *shared.TimeseriesChart
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine != nil {
-				chartTitle1 := new(string)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.ChartTitle.IsNull() {
-					*chartTitle1 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.ChartTitle.ValueString()
-				} else {
-					chartTitle1 = nil
-				}
-				typeVar10 := shared.TimeseriesChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Type.ValueString())
-				stacked := new(bool)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Stacked.IsNull() {
-					*stacked = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Stacked.ValueBool()
-				} else {
-					stacked = nil
-				}
-				timeseriesChart = &shared.TimeseriesChart{
-					ChartTitle: chartTitle1,
-					Type:       typeVar10,
-					Stacked:    stacked,
-				}
-			}
-			if timeseriesChart != nil {
-				chart = shared.Chart{
-					TimeseriesChart: timeseriesChart,
-				}
-			}
-			var barChart *shared.BarChart
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar != nil {
-				chartTitle2 := new(string)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.ChartTitle.IsNull() {
-					*chartTitle2 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.ChartTitle.ValueString()
-				} else {
-					chartTitle2 = nil
-				}
-				typeVar11 := shared.BarChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Type.ValueString())
-				stacked1 := new(bool)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Stacked.IsNull() {
-					*stacked1 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Stacked.ValueBool()
-				} else {
-					stacked1 = nil
-				}
-				barChart = &shared.BarChart{
-					ChartTitle: chartTitle2,
-					Type:       typeVar11,
-					Stacked:    stacked1,
-				}
-			}
-			if barChart != nil {
-				chart = shared.Chart{
-					BarChart: barChart,
-				}
-			}
-			var singleValueChart *shared.SingleValueChart
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue != nil {
-				chartTitle3 := new(string)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.IsNull() {
-					*chartTitle3 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.ValueString()
-				} else {
-					chartTitle3 = nil
-				}
-				typeVar12 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.Type.ValueString())
-				decimalPoints := new(float64)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.IsNull() {
-					*decimalPoints = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.ValueFloat64()
-				} else {
-					decimalPoints = nil
-				}
-				singleValueChart = &shared.SingleValueChart{
-					ChartTitle:    chartTitle3,
-					Type:          typeVar12,
-					DecimalPoints: decimalPoints,
-				}
-			}
-			if singleValueChart != nil {
-				chart = shared.Chart{
-					SingleValueChart: singleValueChart,
-				}
-			}
-			var choroplethMapChart *shared.ChoroplethMapChart
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap != nil {
-				chartTitle4 := new(string)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.ChartTitle.IsNull() {
-					*chartTitle4 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.ChartTitle.ValueString()
-				} else {
-					chartTitle4 = nil
-				}
-				typeVar13 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.Type.ValueString())
-				choroplethMapChart = &shared.ChoroplethMapChart{
-					ChartTitle: chartTitle4,
-					Type:       typeVar13,
-				}
-			}
-			if choroplethMapChart != nil {
-				chart = shared.Chart{
-					ChoroplethMapChart: choroplethMapChart,
-				}
-			}
-			definition1 := shared.Definition{
-				Query: query,
-				Chart: chart,
 			}
 			chartTile := shared.ChartTile{
 				Layout:     layout,
@@ -995,16 +1175,16 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 	}
 	presetFilters := make([]shared.AllFilterItems, 0, len(r.Definition.PresetFilters))
 	for presetFiltersIndex := range r.Definition.PresetFilters {
-		field4 := shared.AllFilterItemsField(r.Definition.PresetFilters[presetFiltersIndex].Field.ValueString())
-		operator4 := shared.AllFilterItemsOperator(r.Definition.PresetFilters[presetFiltersIndex].Operator.ValueString())
-		var value4 interface{}
+		field5 := shared.AllFilterItemsField(r.Definition.PresetFilters[presetFiltersIndex].Field.ValueString())
+		operator5 := shared.AllFilterItemsOperator(r.Definition.PresetFilters[presetFiltersIndex].Operator.ValueString())
+		var value5 interface{}
 		if !r.Definition.PresetFilters[presetFiltersIndex].Value.IsUnknown() && !r.Definition.PresetFilters[presetFiltersIndex].Value.IsNull() {
-			_ = json.Unmarshal([]byte(r.Definition.PresetFilters[presetFiltersIndex].Value.ValueString()), &value4)
+			_ = json.Unmarshal([]byte(r.Definition.PresetFilters[presetFiltersIndex].Value.ValueString()), &value5)
 		}
 		presetFilters = append(presetFilters, shared.AllFilterItems{
-			Field:    field4,
-			Operator: operator4,
-			Value:    value4,
+			Field:    field5,
+			Operator: operator5,
+			Value:    value5,
 		})
 	}
 	definition := shared.Dashboard{

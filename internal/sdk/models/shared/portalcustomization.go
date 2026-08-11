@@ -201,6 +201,40 @@ func (s *SpecRenderer) GetAllowCustomServerUrls() *bool {
 	return s.AllowCustomServerUrls
 }
 
+type Footer struct {
+	// The unique name of a snippet in the portal to render in place of the default footer.
+	SnippetName *string `default:"null" json:"snippet_name"`
+}
+
+func (f Footer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *Footer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (f *Footer) GetSnippetName() *string {
+	if f == nil {
+		return nil
+	}
+	return f.SnippetName
+}
+
+type PortalLayout struct {
+	Footer *Footer `json:"footer"`
+}
+
+func (p *PortalLayout) GetFooter() *Footer {
+	if p == nil {
+		return nil
+	}
+	return p.Footer
+}
+
 // PortalCustomization - The custom settings of this portal
 type PortalCustomization struct {
 	Theme        *Theme        `json:"theme,omitempty"`
@@ -210,6 +244,7 @@ type PortalCustomization struct {
 	Menu         *Menu         `json:"menu,omitempty"`
 	SpecRenderer *SpecRenderer `json:"spec_renderer,omitempty"`
 	Robots       *string       `default:"null" json:"robots"`
+	PortalLayout *PortalLayout `json:"portal_layout,omitempty"`
 }
 
 func (p PortalCustomization) MarshalJSON() ([]byte, error) {
@@ -270,4 +305,11 @@ func (p *PortalCustomization) GetRobots() *string {
 		return nil
 	}
 	return p.Robots
+}
+
+func (p *PortalCustomization) GetPortalLayout() *PortalLayout {
+	if p == nil {
+		return nil
+	}
+	return p.PortalLayout
 }

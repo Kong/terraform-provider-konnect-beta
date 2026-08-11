@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -20,7 +21,7 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 			return diags
 		}
 
-		diags.Append(r.RefreshFromSharedPortal(ctx, &resp.Data[0])...)
+		diags.Append(r.RefreshFromSharedListPortalsResponsePortal(ctx, &resp.Data[0])...)
 
 		if diags.HasError() {
 			return diags
@@ -31,9 +32,18 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 	return diags
 }
 
-func (r *PortalDataSourceModel) RefreshFromSharedPortal(ctx context.Context, resp *shared.Portal) diag.Diagnostics {
+func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx context.Context, resp *shared.ListPortalsResponsePortal) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	if resp.Ai == nil {
+		r.Ai = nil
+	} else {
+		r.Ai = &tfTypes.AISettings{}
+		r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
+		r.Ai.Features = &tfTypes.Features{}
+		r.Ai.Features.McpServer = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+		r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
+	}
 	r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 	r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
 	r.AutoApproveDevelopers = types.BoolPointerValue(resp.AutoApproveDevelopers)
@@ -52,7 +62,6 @@ func (r *PortalDataSourceModel) RefreshFromSharedPortal(ctx context.Context, res
 			r.Labels[key] = types.StringPointerValue(value)
 		}
 	}
-	r.McpServerEnabled = types.BoolPointerValue(resp.McpServerEnabled)
 	r.Name = types.StringValue(resp.Name)
 	r.NotificationsDeveloperPiiVisibilityEnabled = types.BoolPointerValue(resp.NotificationsDeveloperPiiVisibilityEnabled)
 	r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
