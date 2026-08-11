@@ -47244,7 +47244,7 @@ components:
             See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
           type: object
           additionalProperties: true
-          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
       required:
         - display_name
         - name
@@ -47289,7 +47289,7 @@ components:
             See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
           type: object
           additionalProperties: true
-          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
       required:
         - display_name
         - name
@@ -48885,7 +48885,7 @@ components:
             See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
           type: object
           additionalProperties: true
-          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -48937,7 +48937,7 @@ components:
             See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
           type: object
           additionalProperties: true
-          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
