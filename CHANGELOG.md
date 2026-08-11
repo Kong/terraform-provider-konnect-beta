@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.21.0
-> Released on 2026/08/??
+> Released on 2026/08/11
 
 ### BREAKING CHANGES
 * A new chart type `table` for has been introduced in `konnect_dashboard` resource, and the chart tile definition is nested under `{chart_type}_visualization` key
