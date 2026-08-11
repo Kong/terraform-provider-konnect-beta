@@ -48591,6 +48591,7 @@ components:
       example: my-secret-key
       maxLength: 512
       minLength: 1
+      x-speakeasy-param-force-new: true
       x-unstable: true
     AIGatewayConfigStoreSecretValue:
       description: |-
@@ -48602,6 +48603,8 @@ components:
       example: my-secret-value
       maxLength: 5120
       writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
       x-unstable: true
     CreateAIGatewayConfigStoreSecretRequest:
       description: |-
