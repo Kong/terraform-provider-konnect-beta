@@ -5,6 +5,7 @@
 
 ### BREAKING CHANGES
 * A new chart type `table` for has been introduced in `konnect_dashboard` resource, and the chart tile definition is nested under `{chart_type}_visualization` key
+* `konnect_portal.mcp_server_enabled` is now removed - use `konnect_portal.ai.features.mcp_server.enabled` instead
 
 ### Features
 * Add support for AI Gateway 2.0 using which you can configure AI Gateway, MCP servers, AI Model Providers and AI Models
@@ -23,8 +24,12 @@
   * `konnect_ai_gateway_model_provider`
   * `konnect_ai_gateway_policy`
   * `konnect_ai_gateway_vault`
-* Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources, using which you can manage developer accounts in a portal, the applications owned by those developers, and the registration of those applications against APIs published to the portal.
-* Add support for `konnect_identity_auth_server_client_secret` resource, using which you can create and rotate client secrets for an identity auth server client.
+* Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources, using which you can manage developer accounts in a portal, the applications owned by those developers, and the registration of those applications against APIs published to the portal
+* Add support for `konnect_identity_auth_server_client_secret` resource, using which you can create and rotate client secrets for an identity auth server client
+* Add support for `konnect_organization_personal_access_token_settings` resource, using which governance can be set up on PATs for an organizations
+* Add support for new Mesh resources
+  * `konnect_mesh_zone_address`
+  * `konnect_mesh_open_telemetry_backend`
 
 ## 0.20.0
 > Released on 2026/06/26
