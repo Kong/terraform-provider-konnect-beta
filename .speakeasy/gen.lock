@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: bf09c1725c80565194ab8eabfc37612e
+  docChecksum: 0338ed95022bd44738c8e6954dc4b124
   docVersion: 2.0.0
   speakeasyVersion: 1.792.0
   generationVersion: 2.927.0
   releaseVersion: 0.20.0
   configChecksum: 29eca23de25eed63c0c4095a3fa5c965
 persistentEdits:
-  generation_id: bc8cf0fe-c9d1-4361-a0a1-8e4c49283c04
-  pristine_commit_hash: e91f73ad0aba53801b458d7e3eeb18fd76582297
-  pristine_tree_hash: 3f847e10057774f00f519c8167d104a57c819c9a
+  generation_id: 554f2df9-1c24-47eb-b916-e3d0d949e1d7
+  pristine_commit_hash: af0cb7505bcc630437b69e0eb5d26d9bb91f3e8a
+  pristine_tree_hash: 7f053c9dc373895f2dca9efcd31a5cc3a2a4f123
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1432,8 +1432,8 @@ trackedFiles:
     pristine_git_object: 586032e147fa20c984fba90d911180f61542e8f6
   internal/provider/aigatewayconfigstoresecret_resource.go:
     id: 1432cd4bd1cb
-    last_write_checksum: sha1:18ed1005b6fc6bfae4e6d75056b17f4c1a949d24
-    pristine_git_object: b913924fb1b4d229196f3f64668032b8cac67bc4
+    last_write_checksum: sha1:127d00542aff2e92055cde5b0d01a90bc9467680
+    pristine_git_object: 17f998e2f97259232940a98cce26142795cb4603
   internal/provider/aigatewayconfigstoresecret_resource_sdk.go:
     id: 648d9759358a
     last_write_checksum: sha1:798718add0da5bfafadaafb4aa8fdb0a52c9af96

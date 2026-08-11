@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -68,10 +69,15 @@ func (r *AIGatewayConfigStoreSecretResource) Schema(ctx context.Context, req res
 			},
 			"key": schema.StringAttribute{
 				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +
 					`This feature is currently in beta and is subject to change.` + "\n" +
 					`` + "\n" +
-					`The unique key identifying the secret within the Config Store.`,
+					`The unique key identifying the secret within the Config Store.` + "\n" +
+					`Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 512),
 				},
@@ -84,7 +90,11 @@ func (r *AIGatewayConfigStoreSecretResource) Schema(ctx context.Context, req res
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 			"value": schema.StringAttribute{
-				Required: true,
+				Required:  true,
+				Sensitive: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseConfigValue(),
+				},
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +
 					`This feature is currently in beta and is subject to change.` + "\n" +
 					`` + "\n" +

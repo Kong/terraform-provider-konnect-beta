@@ -33,7 +33,8 @@ resource "konnect_ai_gateway_config_store_secret" "my_aigatewayconfigstoresecret
 This feature is currently in beta and is subject to change.
 
 The unique key identifying the secret within the Config Store.
-- `value` (String) **Pre-release Feature**
+Requires replacement if changed.
+- `value` (String, Sensitive) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 The secret value. Once stored, this value cannot be retrieved.
