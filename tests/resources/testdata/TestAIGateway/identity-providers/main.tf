@@ -8,9 +8,9 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
     provider = konnect-beta
     gateway_id = konnect_ai_gateway.my_aigateway.id
     key_auth = {
-        config = {
+        config = jsonencode({
             key_in_header         = true
-        }
+        })
         display_name = "Okta AI SE"
         
         name = "tf-test-key-auth-identity-provider"
@@ -28,11 +28,11 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider_oi
   provider = konnect-beta
   gateway_id = konnect_ai_gateway.my_aigateway.id
   openid_connect = {
-    config = {
-      cache_tokens_salt = jsonencode("my_cache_tokens_salt")
-      issuer                   = jsonencode("https://dev-123456.example.com")
+    config = jsonencode({
+      cache_tokens_salt = "my_cache_tokens_salt"
+      issuer                   = "https://dev-123456.example.com"
       ssl_verify = true
-    }
+    })
     display_name = "TF Test OpenID Connect"
 
     name = "tf-test-openid-connect-identity-provider"
