@@ -59,24 +59,16 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.ConversionListener.Access.Consumer.Metadata = nil
 					} else {
 						r.ConversionListener.Access.Consumer.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers != nil {
-							r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
-								r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = append(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = nil
+						r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
+							r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = append(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.ConversionListener.Access.Consumer.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.DiscoveryEndpoint)
 						r.ConversionListener.Access.Consumer.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Endpoint)
 						r.ConversionListener.Access.Consumer.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported != nil {
-							r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
-								r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = append(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = nil
+						r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
+							r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = append(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -117,24 +109,16 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.ConversionListener.Access.OauthAccessToken.Metadata = nil
 					} else {
 						r.ConversionListener.Access.OauthAccessToken.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers != nil {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
-								r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = nil
+						r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
+							r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.ConversionListener.Access.OauthAccessToken.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.DiscoveryEndpoint)
 						r.ConversionListener.Access.OauthAccessToken.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Endpoint)
 						r.ConversionListener.Access.OauthAccessToken.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported != nil {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
-								r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = nil
+						r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
+							r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -739,24 +723,16 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.Listener.Access.Consumer.Metadata = nil
 					} else {
 						r.Listener.Access.Consumer.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers != nil {
-							r.Listener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
-								r.Listener.Access.Consumer.Metadata.AuthorizationServers = append(r.Listener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.Consumer.Metadata.AuthorizationServers = nil
+						r.Listener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
+							r.Listener.Access.Consumer.Metadata.AuthorizationServers = append(r.Listener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.Listener.Access.Consumer.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.DiscoveryEndpoint)
 						r.Listener.Access.Consumer.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Endpoint)
 						r.Listener.Access.Consumer.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported != nil {
-							r.Listener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
-								r.Listener.Access.Consumer.Metadata.ScopesSupported = append(r.Listener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.Consumer.Metadata.ScopesSupported = nil
+						r.Listener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
+							r.Listener.Access.Consumer.Metadata.ScopesSupported = append(r.Listener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -797,24 +773,16 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.Listener.Access.OauthAccessToken.Metadata = nil
 					} else {
 						r.Listener.Access.OauthAccessToken.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers != nil {
-							r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
-								r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = nil
+						r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
+							r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.Listener.Access.OauthAccessToken.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.DiscoveryEndpoint)
 						r.Listener.Access.OauthAccessToken.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Endpoint)
 						r.Listener.Access.OauthAccessToken.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported != nil {
-							r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
-								r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = nil
+						r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
+							r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -1191,24 +1159,16 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.PassthroughListener.Access.Consumer.Metadata = nil
 					} else {
 						r.PassthroughListener.Access.Consumer.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers != nil {
-							r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
-								r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = nil
+						r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
+							r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.PassthroughListener.Access.Consumer.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.DiscoveryEndpoint)
 						r.PassthroughListener.Access.Consumer.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Endpoint)
 						r.PassthroughListener.Access.Consumer.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported != nil {
-							r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
-								r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = append(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = nil
+						r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
+							r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = append(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -1249,24 +1209,16 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.PassthroughListener.Access.OauthAccessToken.Metadata = nil
 					} else {
 						r.PassthroughListener.Access.OauthAccessToken.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers != nil {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
-								r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = nil
+						r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
+							r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.PassthroughListener.Access.OauthAccessToken.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.DiscoveryEndpoint)
 						r.PassthroughListener.Access.OauthAccessToken.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Endpoint)
 						r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported != nil {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
-								r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = nil
+						r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
+							r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -3380,12 +3332,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint = nil
 					}
-					var authorizationServers []string
-					if r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
-						}
+					authorizationServers := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
 					}
 					resource := new(string)
 					if !r.ConversionListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -3393,12 +3342,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource = nil
 					}
-					var scopesSupported []string
-					if r.ConversionListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
-						}
+					scopesSupported := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
 					}
 					metadata = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint,
@@ -3473,12 +3419,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint1 = nil
 					}
-					var authorizationServers1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
-						}
+					authorizationServers1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
 					}
 					resource1 := new(string)
 					if !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -3486,12 +3429,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource1 = nil
 					}
-					var scopesSupported1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
-						}
+					scopesSupported1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
 					}
 					metadata1 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint1,
@@ -4264,12 +4204,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint2 = nil
 					}
-					var authorizationServers2 []string
-					if r.Listener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
-						}
+					authorizationServers2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
 					}
 					resource2 := new(string)
 					if !r.Listener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.Listener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -4277,12 +4214,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource2 = nil
 					}
-					var scopesSupported2 []string
-					if r.Listener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
-						}
+					scopesSupported2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
 					}
 					metadata2 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint2,
@@ -4357,12 +4291,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint3 = nil
 					}
-					var authorizationServers3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
-						}
+					authorizationServers3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
 					}
 					resource3 := new(string)
 					if !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -4370,12 +4301,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource3 = nil
 					}
-					var scopesSupported3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
-						}
+					scopesSupported3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
 					}
 					metadata3 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint3,
@@ -5301,12 +5229,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint4 = nil
 					}
-					var authorizationServers4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
-						}
+					authorizationServers4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
 					}
 					resource4 := new(string)
 					if !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -5314,12 +5239,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource4 = nil
 					}
-					var scopesSupported4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
-						}
+					scopesSupported4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
 					}
 					metadata4 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint4,
@@ -5394,12 +5316,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint5 = nil
 					}
-					var authorizationServers5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
-						}
+					authorizationServers5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
 					}
 					resource5 := new(string)
 					if !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -5407,12 +5326,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource5 = nil
 					}
-					var scopesSupported5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
-						}
+					scopesSupported5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
 					}
 					metadata5 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint5,
@@ -7606,12 +7522,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint = nil
 					}
-					var authorizationServers []string
-					if r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
-						}
+					authorizationServers := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
 					}
 					resource := new(string)
 					if !r.ConversionListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -7619,12 +7532,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource = nil
 					}
-					var scopesSupported []string
-					if r.ConversionListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
-						}
+					scopesSupported := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
 					}
 					metadata = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint,
@@ -7699,12 +7609,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint1 = nil
 					}
-					var authorizationServers1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
-						}
+					authorizationServers1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
 					}
 					resource1 := new(string)
 					if !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -7712,12 +7619,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource1 = nil
 					}
-					var scopesSupported1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
-						}
+					scopesSupported1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
 					}
 					metadata1 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint1,
@@ -8490,12 +8394,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint2 = nil
 					}
-					var authorizationServers2 []string
-					if r.Listener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
-						}
+					authorizationServers2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
 					}
 					resource2 := new(string)
 					if !r.Listener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.Listener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -8503,12 +8404,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource2 = nil
 					}
-					var scopesSupported2 []string
-					if r.Listener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
-						}
+					scopesSupported2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
 					}
 					metadata2 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint2,
@@ -8583,12 +8481,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint3 = nil
 					}
-					var authorizationServers3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
-						}
+					authorizationServers3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
 					}
 					resource3 := new(string)
 					if !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -8596,12 +8491,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource3 = nil
 					}
-					var scopesSupported3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
-						}
+					scopesSupported3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
 					}
 					metadata3 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint3,
@@ -9527,12 +9419,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint4 = nil
 					}
-					var authorizationServers4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
-						}
+					authorizationServers4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
 					}
 					resource4 := new(string)
 					if !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -9540,12 +9429,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource4 = nil
 					}
-					var scopesSupported4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
-						}
+					scopesSupported4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
 					}
 					metadata4 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint4,
@@ -9620,12 +9506,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint5 = nil
 					}
-					var authorizationServers5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
-						}
+					authorizationServers5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
 					}
 					resource5 := new(string)
 					if !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -9633,12 +9516,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource5 = nil
 					}
-					var scopesSupported5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
-						}
+					scopesSupported5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
 					}
 					metadata5 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint5,

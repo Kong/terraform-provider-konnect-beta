@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 9bdd2ead953d200ada614a4f0d0df4f7
+  docChecksum: 32a0c336467de52cc7d1bf41fea92298
   docVersion: 2.0.0
   speakeasyVersion: 1.794.1
   generationVersion: 2.931.0
   releaseVersion: 0.21.0
   configChecksum: 66a3884abe41e29cca4d9f7327c98bdd
 persistentEdits:
-  generation_id: ffbd6df5-9067-4fda-bb57-1fc7a6ef9e72
-  pristine_commit_hash: b290ddbf07d708c619f2d62d6534feb52ae8b5d5
-  pristine_tree_hash: 3fb2ceff282d147363ddc84468dcfe533e9fdf1a
+  generation_id: 819cb75d-5d63-4ba1-a600-71b48072c606
+  pristine_commit_hash: b201b6eb14c60673d27ba08e5f1a7c24ae51e4b5
+  pristine_tree_hash: 4e307d39d243dcfbee6bdd98aeefc0e6961918c2
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1492,8 +1492,8 @@ trackedFiles:
     pristine_git_object: d9778a3b73d488d44cc92f9876936821208c8e59
   internal/provider/aigatewaymcpserver_resource_sdk.go:
     id: b82534b2bc15
-    last_write_checksum: sha1:70325a1a2a532f3c12a31954a2e7707e4ccecdad
-    pristine_git_object: 50247d15da9885636525331ba2cffdf6af6e6ac7
+    last_write_checksum: sha1:e340046d409b8655b47209b55cae787a0df7c78d
+    pristine_git_object: 98794017c3defb81eed1b5caa14b8f367fba16c7
   internal/provider/aigatewaymodel_resource.go:
     id: ef3ca43d46b4
     last_write_checksum: sha1:4cc852fed3a98b51cc4a13776a94557d26537de0
@@ -6868,8 +6868,8 @@ trackedFiles:
     pristine_git_object: d356e5308d4a77441bcbb326993bbec5729f11ea
   internal/sdk/models/shared/aigatewaymcpserverprotectedresourcemetadata.go:
     id: c9c77bbbcb50
-    last_write_checksum: sha1:3241283358a21348e451138bd3bf4e7b1a6d32d6
-    pristine_git_object: cf4f9154895a001dc003e3de1a2ae792343cd97a
+    last_write_checksum: sha1:28a3ab189a97173c96981d7cb3360f7cf8bc806d
+    pristine_git_object: 05c61b8781d032f1715ebbd7f7dd90df8efbeda2
   internal/sdk/models/shared/aigatewaymcpserverserverconfigbaseoutput.go:
     id: d08419b86b3d
     last_write_checksum: sha1:8b8b054061dba27e01077cc92e759191cfbb638f
@@ -7004,16 +7004,16 @@ trackedFiles:
     pristine_git_object: dcd710904ee92bf2bfa9da2c71b609a0a83ce5c2
   internal/sdk/models/shared/aigatewaymodelprovider.go:
     id: 8ce863dd3c59
-    last_write_checksum: sha1:509aa8cd1ba1ec8047e83a59ac3ab6b1809407c2
-    pristine_git_object: 11b4b10f11e86d36c4395be0bb1054c07b94b310
+    last_write_checksum: sha1:2547283904964fd1bca861139cad9aa2c8a59f31
+    pristine_git_object: 91385a9869f57ae402059fba9ae5c7fef349bbe6
   internal/sdk/models/shared/aigatewaymodelprovideranthropic.go:
     id: d7f8fac2c91b
     last_write_checksum: sha1:03a7992f408c2797623e483f29a6056014c49070
     pristine_git_object: 1239213c0d25c1bad2a78e2838848240e6465a05
   internal/sdk/models/shared/aigatewaymodelproviderazure.go:
     id: cf7344473887
-    last_write_checksum: sha1:54fc8b6bf3651754a414c1aa6a408d1433c9342d
-    pristine_git_object: ed87fc10a7e442e7b6de2d69e8187532eccdf16e
+    last_write_checksum: sha1:e28e0bae21a6f3f77175bff8c617ada77f0f19e4
+    pristine_git_object: 63f28d1888e85fb3f4f097ea5f866bbce1be14d5
   internal/sdk/models/shared/aigatewaymodelproviderbedrock.go:
     id: e9e21c8ca1ff
     last_write_checksum: sha1:9a03c969b643ee7dcca1e7cf561990069da474c5
@@ -7028,8 +7028,8 @@ trackedFiles:
     pristine_git_object: fd7b001b24410f27d8412a64190c6a4c90764f4a
   internal/sdk/models/shared/aigatewaymodelproviderconfigauthaws.go:
     id: f30fe54322b8
-    last_write_checksum: sha1:08d6ab5ca1809eff985c3a4db99e90029a46ab65
-    pristine_git_object: 820fe5f466d8a411d6940e4baea1290df0f04597
+    last_write_checksum: sha1:debb18f7c867ab337bf5ed5264041a3f34a2d237
+    pristine_git_object: 15686db1ae4e4b1a9f45af852930d5406d60d316
   internal/sdk/models/shared/aigatewaymodelproviderconfigauthawsoutput.go:
     id: 54ba5fb18c35
     last_write_checksum: sha1:7eef51b0ec92496e31c164d432023c918a743e87
@@ -7216,8 +7216,8 @@ trackedFiles:
     pristine_git_object: 334794c9cc3b94409b792d4d7c6bcba63fb8e7ce
   internal/sdk/models/shared/aigatewaytargetazureconfig.go:
     id: ec4b8487008f
-    last_write_checksum: sha1:5a70ed7e2464e43978c6cf97c7e50fa47b61fc61
-    pristine_git_object: 74c640f50cb2955065d00d1a63bc8123037c0820
+    last_write_checksum: sha1:d8606612b84149ae3d32421ece4ef70d7fb1ff2d
+    pristine_git_object: ff83028ff2cc21d7be98d11d2a1303bf8b327eff
   internal/sdk/models/shared/aigatewaytargetbedrockconfig.go:
     id: ab0544bf50e9
     last_write_checksum: sha1:69eb21fa4bd882f325e6936be2316e219a3a1b8e
@@ -7296,12 +7296,12 @@ trackedFiles:
     pristine_git_object: a586f328184220552ff16e0ecd09f77ab996b316
   internal/sdk/models/shared/aigatewayupstreamauthaws.go:
     id: 98d95c865008
-    last_write_checksum: sha1:aad6293427379d8a114cf3a1d9cce8bee25a3d96
-    pristine_git_object: 9271226574ac72345ce37c02d01bfcb8b6bde478
+    last_write_checksum: sha1:b764fa109c59ba22b7e6a6a5308b3ec69d7701d1
+    pristine_git_object: 3a194ce22b3a1f47501de806f12727dc040da831
   internal/sdk/models/shared/aigatewayupstreamauthawsoutput.go:
     id: 36ec8931df61
-    last_write_checksum: sha1:6ff7de9a77f39750cbbfbfc0ab1e7f2b4350ef70
-    pristine_git_object: 8ba3d7b3ca680a52b0d701e0e474b7577d70210c
+    last_write_checksum: sha1:c8c302423e21cfba6ddcba670e6edf249b992902
+    pristine_git_object: 9c001b7b657286d54307e16b8c0f729bbecf6eb9
   internal/sdk/models/shared/aigatewayupstreamconfig.go:
     id: de3046b04341
     last_write_checksum: sha1:1466d0c7100c62a1729c67bfd31e44a029bd70af
@@ -16894,10 +16894,10 @@ examples:
         path:
           gatewayId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       requestBody:
-        application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "secret_access_key": null, "session_token": null, "region": "us-east-1", "assume_role_arn": null, "role_session_name": null, "sts_endpoint_url": null}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}}
+        application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1"}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}}
       responses:
         "201":
-          application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1", "assume_role_arn": null, "role_session_name": null, "sts_endpoint_url": null}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1"}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 674960, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -16918,7 +16918,7 @@ examples:
           agentIdOrName: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       responses:
         "200":
-          application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1", "assume_role_arn": null, "role_session_name": null, "sts_endpoint_url": null}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1"}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -16934,10 +16934,10 @@ examples:
           gatewayId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
           agentIdOrName: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       requestBody:
-        application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "secret_access_key": null, "session_token": null, "region": "us-east-1", "assume_role_arn": null, "role_session_name": null, "sts_endpoint_url": null}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}}
+        application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1"}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}}
       responses:
         "200":
-          application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1", "assume_role_arn": null, "role_session_name": null, "sts_endpoint_url": null}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"display_name": "Kong Air Flight Booking Agent", "name": "kongair-flight-booking-agent", "enabled": true, "type": "a2a", "access": {"identity_providers": ["okta-ai-se"]}, "config": {"url": "https://booking-agent.internal.kongair.com", "upstream": {"auth": {"type": "aws", "access_key_id": "AKIAIOSFODNN7EXAMPLE", "region": "us-east-1"}}, "route": {"headers": {"version": ["v1", "v2"]}, "hosts": ["foo.example.com"], "https_redirect_status_code": 426, "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "strip_path": true}, "max_request_body_size": 8388608, "logging": {"payloads": false, "max_payload_size": 524288}}, "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 854600, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":

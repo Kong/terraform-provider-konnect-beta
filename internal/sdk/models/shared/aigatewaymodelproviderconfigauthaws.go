@@ -25,7 +25,7 @@ type AIGatewayModelProviderConfigAuthAWS struct {
 	// It is sent to AWS as the `X-Amz-Security-Token` header. Because temporary credentials are short-lived, reference this from a secrets backend so it is refreshed before it expires.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	SessionToken *string `default:"null" json:"session_token"`
+	SessionToken *string `json:"session_token,omitempty"`
 	// The ARN of the IAM role to assume for generating authentication tokens.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//

@@ -14,15 +14,15 @@ import (
 // protect it.
 type AIGatewayMCPServerProtectedResourceMetadata struct {
 	// The authorization server metadata discovery URL.
-	DiscoveryEndpoint *string `default:"null" json:"discovery_endpoint"`
+	DiscoveryEndpoint *string `json:"discovery_endpoint,omitempty"`
 	// The URL path where the OAuth 2.0 Protected Resource Metadata is served.
-	Endpoint *string `default:"null" json:"endpoint"`
+	Endpoint *string `json:"endpoint,omitempty"`
 	// List of authorization server issuer URLs that can issue tokens for this resource.
-	AuthorizationServers []string `json:"authorization_servers"`
+	AuthorizationServers []string `json:"authorization_servers,omitempty"`
 	// The protected resource's identifier (resource URI).
-	Resource *string `default:"null" json:"resource"`
+	Resource *string `json:"resource,omitempty"`
 	// List of OAuth scopes supported by the protected resource.
-	ScopesSupported []string `json:"scopes_supported"`
+	ScopesSupported []string `json:"scopes_supported,omitempty"`
 }
 
 func (a AIGatewayMCPServerProtectedResourceMetadata) MarshalJSON() ([]byte, error) {

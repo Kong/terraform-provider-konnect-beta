@@ -2876,7 +2876,7 @@ type AIGatewayModelProviderAzureConfigOutput struct {
 	Service *AIGatewayModelProviderAzureService `default:"azure-openai" json:"service"`
 	// The Azure OpenAI instance name. Required when `service` is `azure-openai`.
 	//
-	Instance *string `default:"null" json:"instance"`
+	Instance *string `json:"instance,omitempty"`
 	// Endpoint configuration for Azure AI Foundry hosted models. Required when
 	// `service` is `azure-foundry`.
 	//

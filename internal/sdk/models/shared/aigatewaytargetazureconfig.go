@@ -68,7 +68,7 @@ type AIGatewayTargetAzureConfig struct {
 	// The Azure deployment ID for the model. Applies when the Azure provider's
 	// `service` is `azure-openai`; not used for `azure-foundry`.
 	//
-	DeploymentID *string `default:"null" json:"deployment_id"`
+	DeploymentID *string `json:"deployment_id,omitempty"`
 	// The Azure OpenAI API version to use.
 	APIVersion *string `default:"2023-05-15" json:"api_version"`
 	// The API path prefix for the Azure AI Foundry endpoint, selecting the model's
