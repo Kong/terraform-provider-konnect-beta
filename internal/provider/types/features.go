@@ -3,5 +3,5 @@
 package types
 
 type Features struct {
-	McpServer *MeshControlPlaneFeatureHostnameGenerationCreation `tfsdk:"mcp_server"`
+	McpServer *McpServer `tfsdk:"mcp_server"`
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type BodySelector struct {
-	BodyParam types.String   `tfsdk:"body_param"`
-	Values    []types.String `tfsdk:"values"`
+type Foundry struct {
+	Domain   types.String `tfsdk:"domain"`
+	Resource types.String `tfsdk:"resource"`
 }

@@ -36,7 +36,7 @@ type AIGatewayIdentityProviderOpenIDConnect struct {
 	// For advanced use cases, additional config properties can be sent in the request body.
 	// See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
 	//
-	Config map[string]any `json:"config,omitempty"`
+	Config any `json:"config,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -82,7 +82,7 @@ func (a *AIGatewayIdentityProviderOpenIDConnect) GetType() string {
 	return "openid-connect"
 }
 
-func (a *AIGatewayIdentityProviderOpenIDConnect) GetConfig() map[string]any {
+func (a *AIGatewayIdentityProviderOpenIDConnect) GetConfig() any {
 	if a == nil {
 		return nil
 	}

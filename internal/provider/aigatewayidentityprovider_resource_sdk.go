@@ -20,13 +20,13 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 	if resp != nil {
 		if resp.AIGatewayIdentityProviderKeyAuthResponse != nil {
 			r.KeyAuth = &tfTypes.AIGatewayIdentityProviderKeyAuth{}
-			if len(resp.AIGatewayIdentityProviderKeyAuthResponse.Config) > 0 {
-				r.KeyAuth.Config = make(map[string]jsontypes.Normalized, len(resp.AIGatewayIdentityProviderKeyAuthResponse.Config))
-				for key, value := range resp.AIGatewayIdentityProviderKeyAuthResponse.Config {
-					result, _ := json.Marshal(value)
-					r.KeyAuth.Config[key] = jsontypes.NewNormalizedValue(string(result))
-				}
+			if resp.AIGatewayIdentityProviderKeyAuthResponse.Config == nil {
+				r.KeyAuth.Config = jsontypes.NewNormalizedNull()
+			} else {
+				configResult, _ := json.Marshal(resp.AIGatewayIdentityProviderKeyAuthResponse.Config)
+				r.KeyAuth.Config = jsontypes.NewNormalizedValue(string(configResult))
 			}
+			r.Config = r.KeyAuth.Config
 			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayIdentityProviderKeyAuthResponse.CreatedAt))
 			r.CreatedAt = r.KeyAuth.CreatedAt
 			r.KeyAuth.DisplayName = types.StringValue(resp.AIGatewayIdentityProviderKeyAuthResponse.DisplayName)
@@ -35,14 +35,14 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 			r.ID = r.KeyAuth.ID
 			if len(resp.AIGatewayIdentityProviderKeyAuthResponse.Labels) > 0 {
 				r.KeyAuth.Labels = make(map[string]types.String, len(resp.AIGatewayIdentityProviderKeyAuthResponse.Labels))
-				for key1, value1 := range resp.AIGatewayIdentityProviderKeyAuthResponse.Labels {
-					r.KeyAuth.Labels[key1] = types.StringValue(value1)
+				for key, value := range resp.AIGatewayIdentityProviderKeyAuthResponse.Labels {
+					r.KeyAuth.Labels[key] = types.StringValue(value)
 				}
 			}
 			if len(resp.AIGatewayIdentityProviderKeyAuthResponse.ManagedBy) > 0 {
 				r.KeyAuth.ManagedBy = make(map[string]types.String, len(resp.AIGatewayIdentityProviderKeyAuthResponse.ManagedBy))
-				for key2, value2 := range resp.AIGatewayIdentityProviderKeyAuthResponse.ManagedBy {
-					r.KeyAuth.ManagedBy[key2] = types.StringValue(value2)
+				for key1, value1 := range resp.AIGatewayIdentityProviderKeyAuthResponse.ManagedBy {
+					r.KeyAuth.ManagedBy[key1] = types.StringValue(value1)
 				}
 			}
 			r.KeyAuth.Name = types.StringValue(resp.AIGatewayIdentityProviderKeyAuthResponse.Name)
@@ -52,13 +52,13 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 		}
 		if resp.AIGatewayIdentityProviderOpenIDConnectResponse != nil {
 			r.OpenidConnect = &tfTypes.AIGatewayIdentityProviderKeyAuth{}
-			if len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config) > 0 {
-				r.OpenidConnect.Config = make(map[string]jsontypes.Normalized, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config))
-				for key3, value3 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config {
-					result1, _ := json.Marshal(value3)
-					r.OpenidConnect.Config[key3] = jsontypes.NewNormalizedValue(string(result1))
-				}
+			if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config == nil {
+				r.OpenidConnect.Config = jsontypes.NewNormalizedNull()
+			} else {
+				configResult1, _ := json.Marshal(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config)
+				r.OpenidConnect.Config = jsontypes.NewNormalizedValue(string(configResult1))
 			}
+			r.Config = r.OpenidConnect.Config
 			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayIdentityProviderOpenIDConnectResponse.CreatedAt))
 			r.CreatedAt = r.OpenidConnect.CreatedAt
 			r.OpenidConnect.DisplayName = types.StringValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.DisplayName)
@@ -67,14 +67,14 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 			r.ID = r.OpenidConnect.ID
 			if len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Labels) > 0 {
 				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Labels))
-				for key4, value4 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Labels {
-					r.OpenidConnect.Labels[key4] = types.StringValue(value4)
+				for key2, value2 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Labels {
+					r.OpenidConnect.Labels[key2] = types.StringValue(value2)
 				}
 			}
 			if len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.ManagedBy) > 0 {
 				r.OpenidConnect.ManagedBy = make(map[string]types.String, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.ManagedBy))
-				for key5, value5 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.ManagedBy {
-					r.OpenidConnect.ManagedBy[key5] = types.StringValue(value5)
+				for key3, value3 := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.ManagedBy {
+					r.OpenidConnect.ManagedBy[key3] = types.StringValue(value3)
 				}
 			}
 			r.OpenidConnect.Name = types.StringValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Name)
@@ -193,11 +193,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 
 			managedBy[managedByKey] = managedByInst
 		}
-		config := make(map[string]interface{})
-		for configKey := range r.KeyAuth.Config {
-			var configInst interface{}
-			_ = json.Unmarshal([]byte(r.KeyAuth.Config[configKey].ValueString()), &configInst)
-			config[configKey] = configInst
+		var config interface{}
+		if !r.KeyAuth.Config.IsUnknown() && !r.KeyAuth.Config.IsNull() {
+			_ = json.Unmarshal([]byte(r.KeyAuth.Config.ValueString()), &config)
 		}
 		aiGatewayIdentityProviderKeyAuth = &shared.AIGatewayIdentityProviderKeyAuth{
 			DisplayName: displayName,
@@ -234,11 +232,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		config1 := make(map[string]interface{})
-		for configKey1 := range r.OpenidConnect.Config {
-			var configInst1 interface{}
-			_ = json.Unmarshal([]byte(r.OpenidConnect.Config[configKey1].ValueString()), &configInst1)
-			config1[configKey1] = configInst1
+		var config1 interface{}
+		if !r.OpenidConnect.Config.IsUnknown() && !r.OpenidConnect.Config.IsNull() {
+			_ = json.Unmarshal([]byte(r.OpenidConnect.Config.ValueString()), &config1)
 		}
 		aiGatewayIdentityProviderOpenIDConnect = &shared.AIGatewayIdentityProviderOpenIDConnect{
 			DisplayName: displayName1,
@@ -283,11 +279,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 
 			managedBy[managedByKey] = managedByInst
 		}
-		config := make(map[string]interface{})
-		for configKey := range r.KeyAuth.Config {
-			var configInst interface{}
-			_ = json.Unmarshal([]byte(r.KeyAuth.Config[configKey].ValueString()), &configInst)
-			config[configKey] = configInst
+		var config interface{}
+		if !r.KeyAuth.Config.IsUnknown() && !r.KeyAuth.Config.IsNull() {
+			_ = json.Unmarshal([]byte(r.KeyAuth.Config.ValueString()), &config)
 		}
 		aiGatewayIdentityProviderKeyAuth = &shared.AIGatewayIdentityProviderKeyAuth{
 			DisplayName: displayName,
@@ -324,11 +318,9 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		config1 := make(map[string]interface{})
-		for configKey1 := range r.OpenidConnect.Config {
-			var configInst1 interface{}
-			_ = json.Unmarshal([]byte(r.OpenidConnect.Config[configKey1].ValueString()), &configInst1)
-			config1[configKey1] = configInst1
+		var config1 interface{}
+		if !r.OpenidConnect.Config.IsUnknown() && !r.OpenidConnect.Config.IsNull() {
+			_ = json.Unmarshal([]byte(r.OpenidConnect.Config.ValueString()), &config1)
 		}
 		aiGatewayIdentityProviderOpenIDConnect = &shared.AIGatewayIdentityProviderOpenIDConnect{
 			DisplayName: displayName1,

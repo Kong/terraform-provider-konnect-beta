@@ -178,7 +178,19 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					r.Azure.Config.Auth.Basic.Params = append(r.Azure.Config.Auth.Basic.Params, params1)
 				}
 			}
-			r.Azure.Config.Instance = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Instance)
+			if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Foundry == nil {
+				r.Azure.Config.Foundry = nil
+			} else {
+				r.Azure.Config.Foundry = &tfTypes.Foundry{}
+				r.Azure.Config.Foundry.Domain = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Foundry.Domain)
+				r.Azure.Config.Foundry.Resource = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Foundry.Resource)
+			}
+			r.Azure.Config.Instance = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Instance)
+			if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Service != nil {
+				r.Azure.Config.Service = types.StringValue(string(*resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Service))
+			} else {
+				r.Azure.Config.Service = types.StringNull()
+			}
 			r.Azure.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.CreatedAt))
 			r.CreatedAt = r.Azure.CreatedAt
 			r.Azure.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.DisplayName)
@@ -227,6 +239,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				r.Bedrock.Config.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.StsEndpointURL)
 				if awsPriorData != nil {
 					r.Bedrock.Config.Auth.Aws.SecretAccessKey = awsPriorData.SecretAccessKey
+					r.Bedrock.Config.Auth.Aws.SessionToken = awsPriorData.SessionToken
 				}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
@@ -2052,12 +2065,39 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				AIGatewayModelProviderConfigAuthAzure: aiGatewayModelProviderConfigAuthAzure,
 			}
 		}
-		var instance string
-		instance = r.Azure.Config.Instance.ValueString()
+		service := new(shared.Service)
+		if !r.Azure.Config.Service.IsUnknown() && !r.Azure.Config.Service.IsNull() {
+			*service = shared.Service(r.Azure.Config.Service.ValueString())
+		} else {
+			service = nil
+		}
+		instance := new(string)
+		if !r.Azure.Config.Instance.IsUnknown() && !r.Azure.Config.Instance.IsNull() {
+			*instance = r.Azure.Config.Instance.ValueString()
+		} else {
+			instance = nil
+		}
+		var foundry *shared.Foundry
+		if r.Azure.Config.Foundry != nil {
+			var resource string
+			resource = r.Azure.Config.Foundry.Resource.ValueString()
 
+			domain := new(string)
+			if !r.Azure.Config.Foundry.Domain.IsUnknown() && !r.Azure.Config.Foundry.Domain.IsNull() {
+				*domain = r.Azure.Config.Foundry.Domain.ValueString()
+			} else {
+				domain = nil
+			}
+			foundry = &shared.Foundry{
+				Resource: resource,
+				Domain:   domain,
+			}
+		}
 		config1 := shared.AIGatewayModelProviderAzureConfig{
 			Auth:     auth1,
+			Service:  service,
 			Instance: instance,
+			Foundry:  foundry,
 		}
 		aiGatewayModelProviderAzure = &shared.AIGatewayModelProviderAzure{
 			DisplayName: displayName1,
@@ -2160,6 +2200,12 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				secretAccessKey = nil
 			}
+			sessionToken := new(string)
+			if !r.Bedrock.Config.Auth.Aws.SessionToken.IsUnknown() && !r.Bedrock.Config.Auth.Aws.SessionToken.IsNull() {
+				*sessionToken = r.Bedrock.Config.Auth.Aws.SessionToken.ValueString()
+			} else {
+				sessionToken = nil
+			}
 			assumeRoleArn := new(string)
 			if !r.Bedrock.Config.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.Bedrock.Config.Auth.Aws.AssumeRoleArn.IsNull() {
 				*assumeRoleArn = r.Bedrock.Config.Auth.Aws.AssumeRoleArn.ValueString()
@@ -2187,6 +2233,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			aiGatewayModelProviderConfigAuthAWS = &shared.AIGatewayModelProviderConfigAuthAWS{
 				AccessKeyID:     accessKeyID,
 				SecretAccessKey: secretAccessKey,
+				SessionToken:    sessionToken,
 				AssumeRoleArn:   assumeRoleArn,
 				RoleSessionName: roleSessionName,
 				StsEndpointURL:  stsEndpointURL,
@@ -3674,16 +3721,16 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				} else {
 					secretAccessKey1 = nil
 				}
-				sessionToken := new(string)
+				sessionToken1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsNull() {
-					*sessionToken = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
+					*sessionToken1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
 				} else {
-					sessionToken = nil
+					sessionToken1 = nil
 				}
 				aws = &shared.AIGatewayModelProviderConfigAuthSagemakerAws{
 					AccessKeyID:     accessKeyId1,
 					SecretAccessKey: secretAccessKey1,
-					SessionToken:    sessionToken,
+					SessionToken:    sessionToken1,
 				}
 			}
 			aiGatewayModelProviderConfigAuthSagemaker = &shared.AIGatewayModelProviderConfigAuthSagemaker{
@@ -3913,12 +3960,39 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				AIGatewayModelProviderConfigAuthAzure: aiGatewayModelProviderConfigAuthAzure,
 			}
 		}
-		var instance string
-		instance = r.Azure.Config.Instance.ValueString()
+		service := new(shared.Service)
+		if !r.Azure.Config.Service.IsUnknown() && !r.Azure.Config.Service.IsNull() {
+			*service = shared.Service(r.Azure.Config.Service.ValueString())
+		} else {
+			service = nil
+		}
+		instance := new(string)
+		if !r.Azure.Config.Instance.IsUnknown() && !r.Azure.Config.Instance.IsNull() {
+			*instance = r.Azure.Config.Instance.ValueString()
+		} else {
+			instance = nil
+		}
+		var foundry *shared.Foundry
+		if r.Azure.Config.Foundry != nil {
+			var resource string
+			resource = r.Azure.Config.Foundry.Resource.ValueString()
 
+			domain := new(string)
+			if !r.Azure.Config.Foundry.Domain.IsUnknown() && !r.Azure.Config.Foundry.Domain.IsNull() {
+				*domain = r.Azure.Config.Foundry.Domain.ValueString()
+			} else {
+				domain = nil
+			}
+			foundry = &shared.Foundry{
+				Resource: resource,
+				Domain:   domain,
+			}
+		}
 		config1 := shared.AIGatewayModelProviderAzureConfig{
 			Auth:     auth1,
+			Service:  service,
 			Instance: instance,
+			Foundry:  foundry,
 		}
 		aiGatewayModelProviderAzure = &shared.AIGatewayModelProviderAzure{
 			DisplayName: displayName1,
@@ -4021,6 +4095,12 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				secretAccessKey = nil
 			}
+			sessionToken := new(string)
+			if !r.Bedrock.Config.Auth.Aws.SessionToken.IsUnknown() && !r.Bedrock.Config.Auth.Aws.SessionToken.IsNull() {
+				*sessionToken = r.Bedrock.Config.Auth.Aws.SessionToken.ValueString()
+			} else {
+				sessionToken = nil
+			}
 			assumeRoleArn := new(string)
 			if !r.Bedrock.Config.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.Bedrock.Config.Auth.Aws.AssumeRoleArn.IsNull() {
 				*assumeRoleArn = r.Bedrock.Config.Auth.Aws.AssumeRoleArn.ValueString()
@@ -4048,6 +4128,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			aiGatewayModelProviderConfigAuthAWS = &shared.AIGatewayModelProviderConfigAuthAWS{
 				AccessKeyID:     accessKeyID,
 				SecretAccessKey: secretAccessKey,
+				SessionToken:    sessionToken,
 				AssumeRoleArn:   assumeRoleArn,
 				RoleSessionName: roleSessionName,
 				StsEndpointURL:  stsEndpointURL,
@@ -5535,16 +5616,16 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				} else {
 					secretAccessKey1 = nil
 				}
-				sessionToken := new(string)
+				sessionToken1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsNull() {
-					*sessionToken = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
+					*sessionToken1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
 				} else {
-					sessionToken = nil
+					sessionToken1 = nil
 				}
 				aws = &shared.AIGatewayModelProviderConfigAuthSagemakerAws{
 					AccessKeyID:     accessKeyId1,
 					SecretAccessKey: secretAccessKey1,
-					SessionToken:    sessionToken,
+					SessionToken:    sessionToken1,
 				}
 			}
 			aiGatewayModelProviderConfigAuthSagemaker = &shared.AIGatewayModelProviderConfigAuthSagemaker{

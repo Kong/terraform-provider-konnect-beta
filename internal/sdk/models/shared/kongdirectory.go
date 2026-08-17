@@ -52,6 +52,10 @@ type KongDirectory struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// Set to enabled to enable the Token Vault for this directory.
+	// Defaults to disabled when omitted.
+	//
+	VaultEnabled *bool `json:"vault_enabled,omitempty"`
 }
 
 func (k KongDirectory) MarshalJSON() ([]byte, error) {
@@ -140,4 +144,11 @@ func (k *KongDirectory) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return k.UpdatedAt
+}
+
+func (k *KongDirectory) GetVaultEnabled() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.VaultEnabled
 }

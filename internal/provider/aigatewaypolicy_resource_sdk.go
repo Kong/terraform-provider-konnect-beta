@@ -17,13 +17,8 @@ func (r *AIGatewayPolicyResourceModel) RefreshFromSharedAIGatewayPolicy(ctx cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.Config) > 0 {
-			r.Config = make(map[string]jsontypes.Normalized, len(resp.Config))
-			for key, value := range resp.Config {
-				result, _ := json.Marshal(value)
-				r.Config[key] = jsontypes.NewNormalizedValue(string(result))
-			}
-		}
+		configResult, _ := json.Marshal(resp.Config)
+		r.Config = jsontypes.NewNormalizedValue(string(configResult))
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -31,14 +26,14 @@ func (r *AIGatewayPolicyResourceModel) RefreshFromSharedAIGatewayPolicy(ctx cont
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key1, value1 := range resp.Labels {
-				r.Labels[key1] = types.StringValue(value1)
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
 			}
 		}
 		if len(resp.ManagedBy) > 0 {
 			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
-			for key2, value2 := range resp.ManagedBy {
-				r.ManagedBy[key2] = types.StringValue(value2)
+			for key1, value1 := range resp.ManagedBy {
+				r.ManagedBy[key1] = types.StringValue(value1)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -153,12 +148,8 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 	} else {
 		global = nil
 	}
-	config := make(map[string]interface{})
-	for configKey := range r.Config {
-		var configInst interface{}
-		_ = json.Unmarshal([]byte(r.Config[configKey].ValueString()), &configInst)
-		config[configKey] = configInst
-	}
+	var config interface{}
+	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string
@@ -211,12 +202,8 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 	} else {
 		global = nil
 	}
-	config := make(map[string]interface{})
-	for configKey := range r.Config {
-		var configInst interface{}
-		_ = json.Unmarshal([]byte(r.Config[configKey].ValueString()), &configInst)
-		config[configKey] = configInst
-	}
+	var config interface{}
+	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string

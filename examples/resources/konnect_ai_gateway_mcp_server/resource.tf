@@ -129,6 +129,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
+      }
       url = "https://mcp.internal.kongair.com"
     }
     display_name = "Kong Air Flights"
@@ -218,6 +231,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         tags = [
           "..."
         ]
+      }
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
       }
       url = "https://mcp.internal.kongair.com"
     }
@@ -604,6 +630,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
+      }
       url = "https://mcp.internal.kongair.com"
     }
     display_name = "Kong Air Flights"
@@ -782,7 +821,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
       tools_cache_ttl_seconds = 7
-      url                     = "https://mcp.internal.kongair.com"
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
+      }
+      url = "https://mcp.internal.kongair.com"
     }
     display_name = "Kong Air Flights"
     enabled      = true

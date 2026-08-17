@@ -17,9 +17,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
   provider = konnect-beta
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   key_auth = {
-    config = {
-      key = jsonencode("value")
-    }
+    config       = "{ \"see\": \"documentation\" }"
     display_name = "Okta AI SE"
     labels = {
       key = "value"
@@ -30,9 +28,7 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
     name = "okta-ai-se"
   }
   openid_connect = {
-    config = {
-      key = jsonencode("value")
-    }
+    config       = "{ \"see\": \"documentation\" }"
     display_name = "Okta AI SE"
     labels = {
       key = "value"
@@ -65,6 +61,10 @@ Configuration for an identity provider. (see [below for nested schema](#nestedat
 
 ### Read-Only
 
+- `config` (String) Configuration for the Kong Key auth identity provider.
+For advanced use cases, additional config properties can be sent in the request body.
+See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
+Parsed as JSON.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `display_name` (String) The display name for this identity provider instance.
 - `id` (String) Contains a unique identifier used for this resource.
@@ -79,9 +79,10 @@ A user-defined unique identifier for this identity provider instance, used as a 
 
 Optional:
 
-- `config` (Map of String) Configuration for the Kong Key auth identity provider.
+- `config` (String) Configuration for the Kong Key auth identity provider.
 For advanced use cases, additional config properties can be sent in the request body.
 See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
+Parsed as JSON.
 - `display_name` (String) The display name for this identity provider instance. Not Null
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -109,9 +110,10 @@ Read-Only:
 
 Optional:
 
-- `config` (Map of String) Configuration for the OpenID Connect identity provider.
+- `config` (String) Configuration for the OpenID Connect identity provider.
 For advanced use cases, additional config properties can be sent in the request body.
 See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
+Parsed as JSON.
 - `display_name` (String) The display name for this identity provider instance. Not Null
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 

@@ -15,10 +15,20 @@ type AIGatewayTargetXaiConfig struct {
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
 	// The maximum number of tokens to generate in the response.
 	MaxTokens *int64 `json:"max_tokens,omitempty"`
-	// Cost per input token for billing and cost tracking.
+	// Cost per 1M input tokens for billing and cost tracking.
 	InputCost *float64 `json:"input_cost,omitempty"`
-	// Cost per output token for billing and cost tracking.
+	// Cost per 1M output tokens for billing and cost tracking.
 	OutputCost *float64 `json:"output_cost,omitempty"`
+	// Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
+	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
+	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
+	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
+	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
+	ContextWindowFactor []AIGatewayContextWindowFactor `json:"context_window_factor,omitempty"`
+	// Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+	ServiceTierFactor []AIGatewayServiceTierFactor `json:"service_tier_factor,omitempty"`
 	// Controls randomness in the model output. Higher values produce more varied responses.
 	Temperature *float64 `json:"temperature,omitempty"`
 	// Limits the number of highest-probability tokens considered during generation.
@@ -68,6 +78,41 @@ func (a *AIGatewayTargetXaiConfig) GetOutputCost() *float64 {
 		return nil
 	}
 	return a.OutputCost
+}
+
+func (a *AIGatewayTargetXaiConfig) GetCacheReadCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheReadCost
+}
+
+func (a *AIGatewayTargetXaiConfig) GetCacheWriteCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCost
+}
+
+func (a *AIGatewayTargetXaiConfig) GetCacheWriteCostList() []AIGatewayCacheWriteCost {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCostList
+}
+
+func (a *AIGatewayTargetXaiConfig) GetContextWindowFactor() []AIGatewayContextWindowFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ContextWindowFactor
+}
+
+func (a *AIGatewayTargetXaiConfig) GetServiceTierFactor() []AIGatewayServiceTierFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ServiceTierFactor
 }
 
 func (a *AIGatewayTargetXaiConfig) GetTemperature() *float64 {

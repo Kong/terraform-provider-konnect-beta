@@ -9,5 +9,6 @@ import (
 type AIGatewayAzureEmbeddingsModelConfig struct {
 	APIVersion   types.String `tfsdk:"api_version"`
 	DeploymentID types.String `tfsdk:"deployment_id"`
+	Type         types.String `tfsdk:"type"`
 	UpstreamURL  types.String `tfsdk:"upstream_url"`
 }

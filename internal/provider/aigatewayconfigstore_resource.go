@@ -95,8 +95,8 @@ func (r *AIGatewayConfigStoreResource) Schema(ctx context.Context, req resource.
 				},
 				Description: `The name of the Config Store. This value is immutable after creation. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-zA-Z0-9.\-_~]*$`), "must match pattern "+regexp.MustCompile(`^[a-zA-Z0-9.\-_~]*$`).String()),
+					stringvalidator.UTF8LengthBetween(2, 255),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
 				},
 			},
 			"updated_at": schema.StringAttribute{

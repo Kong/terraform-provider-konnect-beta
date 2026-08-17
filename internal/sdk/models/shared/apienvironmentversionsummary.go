@@ -4,7 +4,8 @@ package shared
 
 type APIEnvironmentVersionSummary struct {
 	// The API's current version string in this environment.
-	Version string `json:"version"`
+	Version               string             `json:"version"`
+	CurrentVersionSummary *APIVersionSummary `json:"current_version_summary"`
 }
 
 func (a *APIEnvironmentVersionSummary) GetVersion() string {
@@ -12,4 +13,11 @@ func (a *APIEnvironmentVersionSummary) GetVersion() string {
 		return ""
 	}
 	return a.Version
+}
+
+func (a *APIEnvironmentVersionSummary) GetCurrentVersionSummary() *APIVersionSummary {
+	if a == nil {
+		return nil
+	}
+	return a.CurrentVersionSummary
 }

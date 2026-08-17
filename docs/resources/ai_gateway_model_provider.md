@@ -52,7 +52,12 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           use_managed_identity = true
         }
       }
+      foundry = {
+        domain   = "services.ai.azure.com"
+        resource = "kong-foundry-east"
+      }
       instance = "kong-az-east"
+      service  = "azure-openai"
     }
     display_name = "Azure AI SE"
     labels = {
@@ -72,6 +77,7 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           batch_role_arn    = "...my_batch_role_arn..."
           role_session_name = "...my_role_session_name..."
           secret_access_key = "...my_secret_access_key..."
+          session_token     = "...my_session_token..."
           sts_endpoint_url  = "...my_sts_endpoint_url..."
         }
       }
@@ -708,7 +714,12 @@ Read-Only:
 Optional:
 
 - `auth` (Attributes) Not Null (see [below for nested schema](#nestedatt--azure--config--auth))
-- `instance` (String) Not Null
+- `foundry` (Attributes) Endpoint configuration for Azure AI Foundry hosted models. Required when
+`service` is `azure-foundry`. (see [below for nested schema](#nestedatt--azure--config--foundry))
+- `instance` (String) The Azure OpenAI instance name. Required when `service` is `azure-openai`.
+- `service` (String) Selects the Azure backend for this provider instance. Use `azure-openai`
+for Azure OpenAI deployments or `azure-foundry` for Azure AI Foundry.
+possible known values include one of ["azure-openai", "azure-foundry"]; Default: "azure-openai"
 
 <a id="nestedatt--azure--config--auth"></a>
 ### Nested Schema for `azure.config.auth`
@@ -768,6 +779,15 @@ Optional:
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
+
+
+<a id="nestedatt--azure--config--foundry"></a>
+### Nested Schema for `azure.config.foundry`
+
+Optional:
+
+- `domain` (String) The domain for Azure AI Foundry hosted models. Default: "services.ai.azure.com"
+- `resource` (String) The Azure AI Foundry resource name. Not Null
 
 
 
@@ -833,6 +853,9 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `session_token` (String) The session token for authenticating with temporary IAM credentials (issued by AWS STS, Vault, or SSO/SAML).
+It is sent to AWS as the `X-Amz-Security-Token` header. Because temporary credentials are short-lived, reference this from a secrets backend so it is refreshed before it expires.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens. If not specified, the default AWS STS endpoint will be used.
 

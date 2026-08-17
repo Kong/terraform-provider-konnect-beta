@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type HeadersSelector struct {
-	HeaderParam types.String   `tfsdk:"header_param"`
-	Values      []types.String `tfsdk:"values"`
+type EmptyFilters struct {
+	Field    types.String `tfsdk:"field"`
+	Operator types.String `tfsdk:"operator"`
 }

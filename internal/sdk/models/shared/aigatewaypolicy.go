@@ -29,7 +29,7 @@ type AIGatewayPolicy struct {
 	// Configuration for the policy. This is equivalent to the Kong 3 plugin configuration.
 	// Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
 	//
-	Config map[string]any `json:"config"`
+	Config any `json:"config"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -96,9 +96,9 @@ func (a *AIGatewayPolicy) GetGlobal() *bool {
 	return a.Global
 }
 
-func (a *AIGatewayPolicy) GetConfig() map[string]any {
+func (a *AIGatewayPolicy) GetConfig() any {
 	if a == nil {
-		return map[string]any{}
+		return nil
 	}
 	return a.Config
 }

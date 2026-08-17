@@ -7,14 +7,19 @@ import (
 )
 
 type AIGatewayTargetSagemakerConfig struct {
-	Aws                  *Aws          `tfsdk:"aws"`
-	EmbeddingsDimensions types.Int64   `tfsdk:"embeddings_dimensions"`
-	InputCost            types.Float64 `tfsdk:"input_cost"`
-	MaxTokens            types.Int64   `tfsdk:"max_tokens"`
-	OutputCost           types.Float64 `tfsdk:"output_cost"`
-	Target               *Target       `tfsdk:"target"`
-	Temperature          types.Float64 `tfsdk:"temperature"`
-	TopK                 types.Int64   `tfsdk:"top_k"`
-	TopP                 types.Float64 `tfsdk:"top_p"`
-	UpstreamURL          types.String  `tfsdk:"upstream_url"`
+	Aws                  *Aws                           `tfsdk:"aws"`
+	CacheReadCost        types.Float64                  `tfsdk:"cache_read_cost"`
+	CacheWriteCost       types.Float64                  `tfsdk:"cache_write_cost"`
+	CacheWriteCostList   []AIGatewayCacheWriteCost      `tfsdk:"cache_write_cost_list"`
+	ContextWindowFactor  []AIGatewayContextWindowFactor `tfsdk:"context_window_factor"`
+	EmbeddingsDimensions types.Int64                    `tfsdk:"embeddings_dimensions"`
+	InputCost            types.Float64                  `tfsdk:"input_cost"`
+	MaxTokens            types.Int64                    `tfsdk:"max_tokens"`
+	OutputCost           types.Float64                  `tfsdk:"output_cost"`
+	ServiceTierFactor    []AIGatewayServiceTierFactor   `tfsdk:"service_tier_factor"`
+	Target               *Target                        `tfsdk:"target"`
+	Temperature          types.Float64                  `tfsdk:"temperature"`
+	TopK                 types.Int64                    `tfsdk:"top_k"`
+	TopP                 types.Float64                  `tfsdk:"top_p"`
+	UpstreamURL          types.String                   `tfsdk:"upstream_url"`
 }

@@ -93,7 +93,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								"field": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+									Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_group", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "managed_cache", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "network", "portal", "principal", "provider", "provider_region", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -531,6 +531,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		objectvalidator.ConflictsWith(path.Expressions{
 																			path.MatchRelative().AtParent().AtName("api_usage"),
 																			path.MatchRelative().AtParent().AtName("llm_usage"),
+																			path.MatchRelative().AtParent().AtName("managed_cache_usage"),
 																			path.MatchRelative().AtParent().AtName("platform_usage"),
 																		}...),
 																	},
@@ -715,6 +716,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		objectvalidator.ConflictsWith(path.Expressions{
 																			path.MatchRelative().AtParent().AtName("agentic_usage"),
 																			path.MatchRelative().AtParent().AtName("llm_usage"),
+																			path.MatchRelative().AtParent().AtName("managed_cache_usage"),
 																			path.MatchRelative().AtParent().AtName("platform_usage"),
 																		}...),
 																	},
@@ -899,6 +901,650 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		objectvalidator.ConflictsWith(path.Expressions{
 																			path.MatchRelative().AtParent().AtName("api_usage"),
 																			path.MatchRelative().AtParent().AtName("agentic_usage"),
+																			path.MatchRelative().AtParent().AtName("managed_cache_usage"),
+																			path.MatchRelative().AtParent().AtName("platform_usage"),
+																		}...),
+																	},
+																},
+																"managed_cache_usage": schema.SingleNestedAttribute{
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"datasource": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; must be "managed_cache_usage"`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				stringvalidator.OneOf(
+																					"managed_cache_usage",
+																				),
+																			},
+																		},
+																		"dimensions": schema.ListAttribute{
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Description: `List of attributes or entity types to group by.`,
+																			Validators: []validator.List{
+																				listvalidator.SizeAtMost(2),
+																			},
+																		},
+																		"filters": schema.ListNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Validators: []validator.Object{
+																					speakeasy_objectvalidators.NotNull(),
+																				},
+																				Attributes: map[string]schema.Attribute{
+																					"control_plane": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"empty_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "control_plane"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"control_plane",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																									}...),
+																								},
+																							},
+																							"multiselect_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "control_plane"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"control_plane",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																									"value": schema.ListAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										ElementType: types.StringType,
+																										Description: `The IDs to include in the results. Not Null`,
+																										Validators: []validator.List{
+																											speakeasy_listvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("empty_filters"),
+																									}...),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("data_plane_group"),
+																								path.MatchRelative().AtParent().AtName("managed_cache"),
+																								path.MatchRelative().AtParent().AtName("network"),
+																								path.MatchRelative().AtParent().AtName("provider"),
+																								path.MatchRelative().AtParent().AtName("provider_region"),
+																							}...),
+																						},
+																					},
+																					"data_plane_group": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"empty_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "data_plane_group"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"data_plane_group",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																									}...),
+																								},
+																							},
+																							"multiselect_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "data_plane_group"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"data_plane_group",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																									"value": schema.ListAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										ElementType: types.StringType,
+																										Description: `The IDs to include in the results. Not Null`,
+																										Validators: []validator.List{
+																											speakeasy_listvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("empty_filters"),
+																									}...),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("control_plane"),
+																								path.MatchRelative().AtParent().AtName("managed_cache"),
+																								path.MatchRelative().AtParent().AtName("network"),
+																								path.MatchRelative().AtParent().AtName("provider"),
+																								path.MatchRelative().AtParent().AtName("provider_region"),
+																							}...),
+																						},
+																					},
+																					"managed_cache": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"empty_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "managed_cache"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"managed_cache",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																									}...),
+																								},
+																							},
+																							"multiselect_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "managed_cache"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"managed_cache",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																									"value": schema.ListAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										ElementType: types.StringType,
+																										Description: `The IDs to include in the results. Not Null`,
+																										Validators: []validator.List{
+																											speakeasy_listvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("empty_filters"),
+																									}...),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("control_plane"),
+																								path.MatchRelative().AtParent().AtName("data_plane_group"),
+																								path.MatchRelative().AtParent().AtName("network"),
+																								path.MatchRelative().AtParent().AtName("provider"),
+																								path.MatchRelative().AtParent().AtName("provider_region"),
+																							}...),
+																						},
+																					},
+																					"network": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"empty_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "network"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf("network"),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																									}...),
+																								},
+																							},
+																							"multiselect_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "network"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf("network"),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																									"value": schema.ListAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										ElementType: types.StringType,
+																										Description: `The values to include in the results. Not Null`,
+																										Validators: []validator.List{
+																											speakeasy_listvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("empty_filters"),
+																									}...),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("control_plane"),
+																								path.MatchRelative().AtParent().AtName("data_plane_group"),
+																								path.MatchRelative().AtParent().AtName("managed_cache"),
+																								path.MatchRelative().AtParent().AtName("provider"),
+																								path.MatchRelative().AtParent().AtName("provider_region"),
+																							}...),
+																						},
+																					},
+																					"provider": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"empty_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "provider"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf("provider"),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																									}...),
+																								},
+																							},
+																							"multiselect_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "provider"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf("provider"),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																									"value": schema.ListAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										ElementType: types.StringType,
+																										Description: `The values to include in the results. Not Null`,
+																										Validators: []validator.List{
+																											speakeasy_listvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("empty_filters"),
+																									}...),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("control_plane"),
+																								path.MatchRelative().AtParent().AtName("data_plane_group"),
+																								path.MatchRelative().AtParent().AtName("managed_cache"),
+																								path.MatchRelative().AtParent().AtName("network"),
+																								path.MatchRelative().AtParent().AtName("provider_region"),
+																							}...),
+																						},
+																					},
+																					"provider_region": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"empty_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "provider_region"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"provider_region",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																									}...),
+																								},
+																							},
+																							"multiselect_filters": schema.SingleNestedAttribute{
+																								Optional: true,
+																								Attributes: map[string]schema.Attribute{
+																									"field": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The field to filter. Not Null; must be "provider_region"`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																											stringvalidator.OneOf(
+																												"provider_region",
+																											),
+																										},
+																									},
+																									"operator": schema.StringAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																										Validators: []validator.String{
+																											speakeasy_stringvalidators.NotNull(),
+																										},
+																									},
+																									"value": schema.ListAttribute{
+																										Computed:    true,
+																										Optional:    true,
+																										ElementType: types.StringType,
+																										Description: `The values to include in the results. Not Null`,
+																										Validators: []validator.List{
+																											speakeasy_listvalidators.NotNull(),
+																										},
+																									},
+																								},
+																								Validators: []validator.Object{
+																									objectvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("empty_filters"),
+																									}...),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("control_plane"),
+																								path.MatchRelative().AtParent().AtName("data_plane_group"),
+																								path.MatchRelative().AtParent().AtName("managed_cache"),
+																								path.MatchRelative().AtParent().AtName("network"),
+																								path.MatchRelative().AtParent().AtName("provider"),
+																							}...),
+																						},
+																					},
+																				},
+																			},
+																			Description: `A list of filters to apply to the query.`,
+																		},
+																		"granularity": schema.StringAttribute{
+																			Computed: true,
+																			Optional: true,
+																			MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
+																				`` + "\n" +
+																				`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
+																				`` + "\n" +
+																				`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
+																				`` + "\n" +
+																				`Different relative times support different granularities:` + "\n" +
+																				`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
+																				`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
+																				`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																				`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For special time ranges:` + "\n" +
+																				`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																				`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																				`` + "\n" +
+																				`For absolute time ranges, daily will be used.` + "\n" +
+																				`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																		},
+																		"limit": schema.Float64Attribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     float64default.StaticFloat64(50),
+																			Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																			Validators: []validator.Float64{
+																				float64validator.AtMost(1000),
+																			},
+																		},
+																		"metrics": schema.ListAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("cache_memory_utilization_max")})),
+																			ElementType: types.StringType,
+																			Description: `List of aggregated metrics to collect across the requested time span. Default: ["cache_memory_utilization_max"]`,
+																		},
+																		"time_range": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Optional: true,
+																			Attributes: map[string]schema.Attribute{
+																				"absolute": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"end": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"start": schema.StringAttribute{
+																							Optional: true,
+																							Validators: []validator.String{
+																								validators.IsRFC3339(),
+																							},
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "absolute"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("absolute"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing an exact start and end time.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("relative"),
+																						}...),
+																					},
+																				},
+																				"relative": schema.SingleNestedAttribute{
+																					Optional: true,
+																					Attributes: map[string]schema.Attribute{
+																						"time_range": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`1h`),
+																							Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
+																						},
+																						"type": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Description: `Not Null; must be "relative"`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.OneOf("relative"),
+																							},
+																						},
+																						"tz": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`Etc/UTC`),
+																							Description: `Default: "Etc/UTC"`,
+																						},
+																					},
+																					Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
+																					Validators: []validator.Object{
+																						objectvalidator.ConflictsWith(path.Expressions{
+																							path.MatchRelative().AtParent().AtName("absolute"),
+																						}...),
+																					},
+																				},
+																			},
+																			Description: `The time range to query.`,
+																		},
+																	},
+																	MarkdownDescription: `A query targeting the managed cache usage analytics datasource.` + "\n" +
+																		`` + "\n" +
+																		`Note: this datasource only retains data for the last 7 days.`,
+																	Validators: []validator.Object{
+																		objectvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("api_usage"),
+																			path.MatchRelative().AtParent().AtName("agentic_usage"),
+																			path.MatchRelative().AtParent().AtName("llm_usage"),
 																			path.MatchRelative().AtParent().AtName("platform_usage"),
 																		}...),
 																	},
@@ -1085,6 +1731,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			path.MatchRelative().AtParent().AtName("api_usage"),
 																			path.MatchRelative().AtParent().AtName("agentic_usage"),
 																			path.MatchRelative().AtParent().AtName("llm_usage"),
+																			path.MatchRelative().AtParent().AtName("managed_cache_usage"),
 																		}...),
 																	},
 																},

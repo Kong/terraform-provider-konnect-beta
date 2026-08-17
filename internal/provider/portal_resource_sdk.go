@@ -22,8 +22,9 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 			r.Ai = &tfTypes.AISettings{}
 			r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
 			r.Ai.Features = &tfTypes.Features{}
-			r.Ai.Features.McpServer = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+			r.Ai.Features.McpServer = &tfTypes.McpServer{}
 			r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
+			r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
 		}
 		r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 		r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
@@ -145,8 +146,12 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 		var enabled1 bool
 		enabled1 = r.Ai.Features.McpServer.Enabled.ValueBool()
 
+		var writeOperationsEnabled bool
+		writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
+
 		mcpServer := shared.McpServer{
-			Enabled: enabled1,
+			Enabled:                enabled1,
+			WriteOperationsEnabled: writeOperationsEnabled,
 		}
 		features := shared.Features{
 			McpServer: mcpServer,
@@ -279,8 +284,12 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		var enabled1 bool
 		enabled1 = r.Ai.Features.McpServer.Enabled.ValueBool()
 
+		var writeOperationsEnabled bool
+		writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
+
 		mcpServer := shared.McpServer{
-			Enabled: enabled1,
+			Enabled:                enabled1,
+			WriteOperationsEnabled: writeOperationsEnabled,
 		}
 		features := shared.Features{
 			McpServer: mcpServer,

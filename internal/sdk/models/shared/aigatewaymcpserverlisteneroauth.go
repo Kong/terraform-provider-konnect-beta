@@ -32,7 +32,7 @@ type AIGatewayMCPServerListenerOauth struct {
 	// List of identity providers for granting access to the MCP server.
 	// At most 1 identity provider of each identity provider type can be referenced.
 	//
-	IdentityProviders []string `json:"identity_providers"`
+	IdentityProviders []string `json:"identity_providers,omitempty"`
 	// OAuth 2.0 Protected Resource Metadata advertised for this MCP server.
 	Metadata *AIGatewayMCPServerProtectedResourceMetadata `json:"metadata,omitempty"`
 }

@@ -3,124 +3,61 @@
 package shared
 
 import (
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type AIGatewayModelSelectorConfigType string
-
-const (
-	AIGatewayModelSelectorConfigTypeBodySelector    AIGatewayModelSelectorConfigType = "BodySelector"
-	AIGatewayModelSelectorConfigTypeHeadersSelector AIGatewayModelSelectorConfigType = "HeadersSelector"
-	AIGatewayModelSelectorConfigTypePathSelector    AIGatewayModelSelectorConfigType = "PathSelector"
-)
-
 // AIGatewayModelSelectorConfig - Configuration for overriding routing to this model using a selector.
-// When not set, a default model selector will be created using the model's name and format.
+// When no selector location is set, the format default selector is used.
+// When values are not set, the model name is used as the selector value.
 type AIGatewayModelSelectorConfig struct {
-	BodySelector    *BodySelector    `queryParam:"inline" union:"member"`
-	HeadersSelector *HeadersSelector `queryParam:"inline" union:"member"`
-	PathSelector    *PathSelector    `queryParam:"inline" union:"member"`
-
-	Type AIGatewayModelSelectorConfigType
+	// The body property name to match for routing.
+	BodyParam *string `json:"body_param,omitempty"`
+	// The header property name to match for routing.
+	HeaderParam *string `json:"header_param,omitempty"`
+	// The name of the regex capture group defined in the route path for routing.
+	//
+	PathParam *string `json:"path_param,omitempty"`
+	// An optional model alias. When omitted, the model name is used.
+	// When no selector location is configured, the format default selector is used.
+	//
+	Values []string `json:"values,omitempty"`
 }
 
-func CreateAIGatewayModelSelectorConfigBodySelector(bodySelector BodySelector) AIGatewayModelSelectorConfig {
-	typ := AIGatewayModelSelectorConfigTypeBodySelector
-
-	return AIGatewayModelSelectorConfig{
-		BodySelector: &bodySelector,
-		Type:         typ,
-	}
+func (a AIGatewayModelSelectorConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func CreateAIGatewayModelSelectorConfigHeadersSelector(headersSelector HeadersSelector) AIGatewayModelSelectorConfig {
-	typ := AIGatewayModelSelectorConfigTypeHeadersSelector
-
-	return AIGatewayModelSelectorConfig{
-		HeadersSelector: &headersSelector,
-		Type:            typ,
+func (a *AIGatewayModelSelectorConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
 	}
+	return nil
 }
 
-func CreateAIGatewayModelSelectorConfigPathSelector(pathSelector PathSelector) AIGatewayModelSelectorConfig {
-	typ := AIGatewayModelSelectorConfigTypePathSelector
-
-	return AIGatewayModelSelectorConfig{
-		PathSelector: &pathSelector,
-		Type:         typ,
-	}
-}
-
-func (u *AIGatewayModelSelectorConfig) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var bodySelector BodySelector = BodySelector{}
-	if err := utils.UnmarshalJSON(data, &bodySelector, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AIGatewayModelSelectorConfigTypeBodySelector,
-			Value: &bodySelector,
-		})
-	}
-
-	var headersSelector HeadersSelector = HeadersSelector{}
-	if err := utils.UnmarshalJSON(data, &headersSelector, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AIGatewayModelSelectorConfigTypeHeadersSelector,
-			Value: &headersSelector,
-		})
-	}
-
-	var pathSelector PathSelector = PathSelector{}
-	if err := utils.UnmarshalJSON(data, &pathSelector, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AIGatewayModelSelectorConfigTypePathSelector,
-			Value: &pathSelector,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelSelectorConfig", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelSelectorConfig", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AIGatewayModelSelectorConfigType)
-	switch best.Type {
-	case AIGatewayModelSelectorConfigTypeBodySelector:
-		u.BodySelector = best.Value.(*BodySelector)
-		return nil
-	case AIGatewayModelSelectorConfigTypeHeadersSelector:
-		u.HeadersSelector = best.Value.(*HeadersSelector)
-		return nil
-	case AIGatewayModelSelectorConfigTypePathSelector:
-		u.PathSelector = best.Value.(*PathSelector)
+func (a *AIGatewayModelSelectorConfig) GetBodyParam() *string {
+	if a == nil {
 		return nil
 	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelSelectorConfig", string(data))
+	return a.BodyParam
 }
 
-func (u AIGatewayModelSelectorConfig) MarshalJSON() ([]byte, error) {
-	if u.BodySelector != nil {
-		return utils.MarshalJSON(u.BodySelector, "", true)
+func (a *AIGatewayModelSelectorConfig) GetHeaderParam() *string {
+	if a == nil {
+		return nil
 	}
+	return a.HeaderParam
+}
 
-	if u.HeadersSelector != nil {
-		return utils.MarshalJSON(u.HeadersSelector, "", true)
+func (a *AIGatewayModelSelectorConfig) GetPathParam() *string {
+	if a == nil {
+		return nil
 	}
+	return a.PathParam
+}
 
-	if u.PathSelector != nil {
-		return utils.MarshalJSON(u.PathSelector, "", true)
+func (a *AIGatewayModelSelectorConfig) GetValues() []string {
+	if a == nil {
+		return nil
 	}
-
-	return nil, errors.New("could not marshal union type AIGatewayModelSelectorConfig: all fields are null")
+	return a.Values
 }

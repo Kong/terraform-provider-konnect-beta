@@ -3,7 +3,7 @@ resource "konnect_dashboard" "my_dashboard" {
   definition = {
     preset_filters = [
       {
-        field    = "a2a_method"
+        field    = "a2a_task_id"
         operator = "not_in"
         value    = "{ \"see\": \"documentation\" }"
       }

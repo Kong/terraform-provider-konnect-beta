@@ -7,13 +7,18 @@ import (
 )
 
 type AIGatewayTargetGeminiConfig struct {
-	EmbeddingsDimensions types.Int64     `tfsdk:"embeddings_dimensions"`
-	GcpEnvironment       *GCPModelConfig `tfsdk:"gcp_environment"`
-	InputCost            types.Float64   `tfsdk:"input_cost"`
-	MaxTokens            types.Int64     `tfsdk:"max_tokens"`
-	OutputCost           types.Float64   `tfsdk:"output_cost"`
-	Temperature          types.Float64   `tfsdk:"temperature"`
-	TopK                 types.Int64     `tfsdk:"top_k"`
-	TopP                 types.Float64   `tfsdk:"top_p"`
-	UpstreamURL          types.String    `tfsdk:"upstream_url"`
+	CacheReadCost        types.Float64                  `tfsdk:"cache_read_cost"`
+	CacheWriteCost       types.Float64                  `tfsdk:"cache_write_cost"`
+	CacheWriteCostList   []AIGatewayCacheWriteCost      `tfsdk:"cache_write_cost_list"`
+	ContextWindowFactor  []AIGatewayContextWindowFactor `tfsdk:"context_window_factor"`
+	EmbeddingsDimensions types.Int64                    `tfsdk:"embeddings_dimensions"`
+	GcpEnvironment       *GCPModelConfig                `tfsdk:"gcp_environment"`
+	InputCost            types.Float64                  `tfsdk:"input_cost"`
+	MaxTokens            types.Int64                    `tfsdk:"max_tokens"`
+	OutputCost           types.Float64                  `tfsdk:"output_cost"`
+	ServiceTierFactor    []AIGatewayServiceTierFactor   `tfsdk:"service_tier_factor"`
+	Temperature          types.Float64                  `tfsdk:"temperature"`
+	TopK                 types.Int64                    `tfsdk:"top_k"`
+	TopP                 types.Float64                  `tfsdk:"top_p"`
+	UpstreamURL          types.String                   `tfsdk:"upstream_url"`
 }

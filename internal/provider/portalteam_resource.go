@@ -66,9 +66,10 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"description": schema.StringAttribute{
-				Optional: true,
+				Optional:    true,
+				Description: `The description of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 				},
 			},
 			"id": schema.StringAttribute{
@@ -83,9 +84,10 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Indicates whether the team is managed by Konnect.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The name of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w \W]+$`), "must match pattern "+regexp.MustCompile(`^[\w \W]+$`).String()),
 				},
 			},
