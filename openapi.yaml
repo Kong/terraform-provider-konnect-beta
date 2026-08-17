@@ -42021,8 +42021,6 @@ components:
             The Azure deployment ID for the model. Applies when the Azure provider's
             `service` is `azure-openai`; not used for `azure-foundry`.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         api_version:
           description: The Azure OpenAI API version to use.
@@ -46733,36 +46731,26 @@ components:
         discovery_endpoint:
           description: The authorization server metadata discovery URL.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         endpoint:
           description: The URL path where the OAuth 2.0 Protected Resource Metadata is served.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         authorization_servers:
           description: List of authorization server issuer URLs that can issue tokens for this resource.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         resource:
           description: The protected resource's identifier (resource URI).
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         scopes_supported:
           description: List of OAuth scopes supported by the protected resource.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       title: AIGatewayMCPServerProtectedResourceMetadata
       x-unstable: true
@@ -49050,8 +49038,6 @@ components:
             It is sent to AWS as the `X-Amz-Security-Token` header. Because temporary credentials are short-lived, reference this from a secrets backend so it is refreshed before it expires.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
-          nullable: true
           writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49120,8 +49106,6 @@ components:
             The access key id for authenticating with static IAM User credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
-          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         secret_access_key:
@@ -49129,8 +49113,6 @@ components:
             The secret access key for authenticating with static IAM User credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
-          nullable: true
           writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49139,8 +49121,6 @@ components:
             The session token for authenticating with temporary IAM credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
-          nullable: true
           writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49148,16 +49128,12 @@ components:
           description: |
             The AWS region of the upstream service. Overrides the region inferred from the environment.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         assume_role_arn:
           description: |
             The ARN of the IAM role to assume for generating authentication tokens.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
-          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         role_session_name:
@@ -49165,8 +49141,6 @@ components:
             The session name for the temporary credentials when assuming the IAM role.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
-          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         sts_endpoint_url:
@@ -49174,8 +49148,6 @@ components:
             The STS endpoint URL to use for generating authentication tokens.
             If not specified, the default AWS STS endpoint will be used.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       example:
         type: aws
@@ -49244,8 +49216,6 @@ components:
                 The Azure OpenAI instance name. Required when `service` is `azure-openai`.
               type: string
               example: kong-az-east
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
             foundry:
               description: |
