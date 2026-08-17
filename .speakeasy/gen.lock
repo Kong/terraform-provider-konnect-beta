@@ -3,19 +3,19 @@ id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
   docChecksum: 0338ed95022bd44738c8e6954dc4b124
   docVersion: 2.0.0
-  speakeasyVersion: 1.792.0
-  generationVersion: 2.927.0
+  speakeasyVersion: 1.794.1
+  generationVersion: 2.931.0
   releaseVersion: 0.21.0
   configChecksum: 66a3884abe41e29cca4d9f7327c98bdd
 persistentEdits:
-  generation_id: 3abef6bd-f32c-445f-acc6-e0c67d9809f6
-  pristine_commit_hash: 46e32fc6061281d6250e5f6d855230b41c622ad2
-  pristine_tree_hash: bca940dabefc9ec2e7519dc17960f96f7f46b520
+  generation_id: 9cc0d168-7c3d-44a5-819a-33276fc28ad6
+  pristine_commit_hash: 76578ef16d44a2c2a7043f07185a2b23fd724f96
+  pristine_tree_hash: e26da7c9646832002072f411ad709556fe7e627b
 features:
   terraform:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.3.2
-    core: 3.47.11
+    core: 3.47.13
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.3
@@ -31,8 +31,8 @@ features:
     retries: 2.81.5
     sets: 0.1.2
     transformJq: 0.0.1
-    typeOverrides: 2.81.1
-    unions: 2.82.16
+    typeOverrides: 2.81.2
+    unions: 2.82.18
 trackedFiles:
   .gitattributes:
     id: 24139dae6567
@@ -1264,8 +1264,8 @@ trackedFiles:
     pristine_git_object: b986cbf98e5ab5c5a0e1ec61665eee6580d1f235
   go.mod:
     id: c47645c391ad
-    last_write_checksum: sha1:c80086de754881c50b3d0e9a95ed818a9dac8d57
-    pristine_git_object: 797c1a99d729253224526c95a1e98655bd5d2796
+    last_write_checksum: sha1:3845671f60999e1fc7c78e78ab339d209bdaba9a
+    pristine_git_object: 437c64c967dd6653da68555ce9ea83e5ebabf804
   internal/planmodifiers/boolplanmodifier/suppress_diff.go:
     id: 3cf85b98963e
     last_write_checksum: sha1:514a576081b053eca73d5376de591929138489b3
@@ -1396,8 +1396,8 @@ trackedFiles:
     pristine_git_object: 8b4457aeb6b22b7f2b581434762e71f3f782897b
   internal/planmodifiers/stringplanmodifier/use_hoisted_value.go:
     id: f9220e0f9187
-    last_write_checksum: sha1:dc1faa128000d9f18204f08611562bb0f15f4719
-    pristine_git_object: 339b1ff5dffb89f689a1909d6dc22da12ef332f3
+    last_write_checksum: sha1:dc8bed4ccbb6bca5714af9372cd7d0468d72fc0d
+    pristine_git_object: 05ea4cb0dc38eab9f80e1455b4be0c53247f7901
   internal/planmodifiers/utils/hoisted_value.go:
     id: 7c3741509670
     last_write_checksum: sha1:04ccb3d58a019eb0e94efe207280974e85e5fccc
@@ -4904,8 +4904,8 @@ trackedFiles:
     pristine_git_object: 74da12d3f21867c6acf6ad1cfc98f03cda3da5c0
   internal/sdk/konnectbeta.go:
     id: 34b8a82d72ce
-    last_write_checksum: sha1:7a1de1b4a1ca2d5526b4ad912e8770aa60cbc8fb
-    pristine_git_object: 91d37f63e50e8732f10880e8fa7b832db591c3c2
+    last_write_checksum: sha1:0556a2cd69523da86a649b13c77f38ddf038ee7e
+    pristine_git_object: 6312ff56e8c2d25b38b33adafd5f5f6384763188
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:8ebf7afb1e0baa8fde373eff36037b4ca1391d0a
