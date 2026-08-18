@@ -44,6 +44,10 @@ type CreateDirectoryBody struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Set to enabled to enable the Token Vault for this directory.
+	// Defaults to disabled when omitted.
+	//
+	VaultEnabled *bool `json:"vault_enabled,omitempty"`
 }
 
 func (c CreateDirectoryBody) MarshalJSON() ([]byte, error) {
@@ -111,4 +115,11 @@ func (c *CreateDirectoryBody) GetManagedBy() map[string]string {
 		return nil
 	}
 	return c.ManagedBy
+}
+
+func (c *CreateDirectoryBody) GetVaultEnabled() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.VaultEnabled
 }

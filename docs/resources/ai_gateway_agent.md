@@ -34,6 +34,22 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       payloads         = false
     }
     max_request_body_size = 8388608
+    proxy = {
+      auth = {
+        password = "...my_password..."
+        username = "...my_username..."
+      }
+      http_proxy = {
+        host = "...my_host..."
+        port = 25961
+      }
+      https_proxy = {
+        host = "...my_host..."
+        port = 62168
+      }
+      no_proxy     = "...my_no_proxy..."
+      proxy_scheme = "http"
+    }
     route = {
       headers = {
         key = jsonencode("value")
@@ -59,6 +75,19 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       tags = [
         "..."
       ]
+    }
+    upstream = {
+      auth = {
+        aws = {
+          access_key_id     = "...my_access_key_id..."
+          assume_role_arn   = "...my_assume_role_arn..."
+          region            = "...my_region..."
+          role_session_name = "...my_role_session_name..."
+          secret_access_key = "...my_secret_access_key..."
+          session_token     = "...my_session_token..."
+          sts_endpoint_url  = "...my_sts_endpoint_url..."
+        }
+      }
     }
     url = "https://booking-agent.internal.kongair.com"
   }
@@ -131,10 +160,15 @@ This feature is currently in beta and is subject to change.
 
 Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--config--proxy))
 - `route` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--config--route))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--config--upstream))
 
 <a id="nestedatt--config--logging"></a>
 ### Nested Schema for `config.logging`
@@ -143,6 +177,47 @@ Optional:
 
 - `max_payload_size` (Number) Maximum size in bytes for logged request/response payloads. Payloads exceeding this size will be truncated. Default: 1048576
 - `payloads` (Boolean) Default: false
+
+
+<a id="nestedatt--config--proxy"></a>
+### Nested Schema for `config.proxy`
+
+Optional:
+
+- `auth` (Attributes) Credentials used to authenticate to the proxy server. (see [below for nested schema](#nestedatt--config--proxy--auth))
+- `http_proxy` (Attributes) HTTP proxy server to route plaintext outbound requests through. (see [below for nested schema](#nestedatt--config--proxy--http_proxy))
+- `https_proxy` (Attributes) HTTPS proxy server to route TLS outbound requests through. (see [below for nested schema](#nestedatt--config--proxy--https_proxy))
+- `no_proxy` (String) Comma-separated list of hosts that should not be proxied.
+- `proxy_scheme` (String) The proxy scheme to use when connecting to the proxy server. Default: "http"; must be "http"
+
+<a id="nestedatt--config--proxy--auth"></a>
+### Nested Schema for `config.proxy.auth`
+
+Optional:
+
+- `password` (String) The password to use for proxy authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `username` (String) The username to use for proxy authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--config--proxy--http_proxy"></a>
+### Nested Schema for `config.proxy.http_proxy`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+
+
+<a id="nestedatt--config--proxy--https_proxy"></a>
+### Nested Schema for `config.proxy.https_proxy`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+
 
 
 <a id="nestedatt--config--route"></a>
@@ -162,6 +237,48 @@ Optional:
 - `response_buffering` (Boolean) Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding. Default: true
 - `strip_path` (Boolean) When matching a route via one of the `paths`, strip the matching prefix from the upstream request URL. Default: true
 - `tags` (List of String) An optional set of strings associated with the route for grouping and filtering.
+
+
+<a id="nestedatt--config--upstream"></a>
+### Nested Schema for `config.upstream`
+
+Optional:
+
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--config--upstream--auth))
+
+<a id="nestedatt--config--upstream--auth"></a>
+### Nested Schema for `config.upstream.auth`
+
+Optional:
+
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--config--upstream--auth--aws))
+
+<a id="nestedatt--config--upstream--auth--aws"></a>
+### Nested Schema for `config.upstream.auth.aws`
+
+Optional:
+
+- `access_key_id` (String) The access key id for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `region` (String) The AWS region of the upstream service. Overrides the region inferred from the environment.
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `session_token` (String) The session token for authenticating with temporary IAM credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens.
+If not specified, the default AWS STS endpoint will be used.
+
+
 
 
 

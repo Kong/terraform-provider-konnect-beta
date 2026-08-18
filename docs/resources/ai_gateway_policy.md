@@ -15,9 +15,7 @@ AIGatewayPolicy Resource
 ```terraform
 resource "konnect_ai_gateway_policy" "my_aigatewaypolicy" {
   provider = konnect-beta
-  config = {
-    key = jsonencode("value")
-  }
+  config       = "{ \"see\": \"documentation\" }"
   display_name = "My Cool AI PII Sanitizer Policy"
   enabled      = true
   gateway_id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
@@ -38,8 +36,9 @@ resource "konnect_ai_gateway_policy" "my_aigatewaypolicy" {
 
 ### Required
 
-- `config` (Map of String) Configuration for the policy. This is equivalent to the Kong 3 plugin configuration.
+- `config` (String) Configuration for the policy. This is equivalent to the Kong 3 plugin configuration.
 Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
+Parsed as JSON.
 - `display_name` (String) The display name for this policy instance.
 - `gateway_id` (String) The unique ID of the AI Gateway.
 - `name` (String) **Pre-release Feature**

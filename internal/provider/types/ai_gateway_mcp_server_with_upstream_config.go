@@ -12,5 +12,6 @@ type AIGatewayMCPServerWithUpstreamConfig struct {
 	Proxy              *AIGatewayProxyConfig                               `tfsdk:"proxy"`
 	Route              *AIGatewayRouteConfig                               `tfsdk:"route"`
 	Server             *AIGatewayMCPServerServerConfigBase                 `tfsdk:"server"`
+	Upstream           *AIGatewayUpstreamConfig                            `tfsdk:"upstream"`
 	URL                types.String                                        `tfsdk:"url"`
 }

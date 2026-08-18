@@ -6,6 +6,32 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
+// FoundryPathPrefix - The API path prefix for the Azure AI Foundry endpoint, selecting the model's
+// API surface. `/openai/v1` targets the OpenAI-compatible surface; `/anthropic/v1`
+// targets the Anthropic surface. Applies when the Azure provider's `service` is
+// `azure-foundry`.
+type FoundryPathPrefix string
+
+const (
+	FoundryPathPrefixRootOpenaiV1    FoundryPathPrefix = "/openai/v1"
+	FoundryPathPrefixRootAnthropicV1 FoundryPathPrefix = "/anthropic/v1"
+)
+
+func (e FoundryPathPrefix) ToPointer() *FoundryPathPrefix {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FoundryPathPrefix) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "/openai/v1", "/anthropic/v1":
+			return true
+		}
+	}
+	return false
+}
+
 // AIGatewayTargetAzureConfig - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
@@ -15,10 +41,20 @@ type AIGatewayTargetAzureConfig struct {
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
 	// The maximum number of tokens to generate in the response.
 	MaxTokens *int64 `json:"max_tokens,omitempty"`
-	// Cost per input token for billing and cost tracking.
+	// Cost per 1M input tokens for billing and cost tracking.
 	InputCost *float64 `json:"input_cost,omitempty"`
-	// Cost per output token for billing and cost tracking.
+	// Cost per 1M output tokens for billing and cost tracking.
 	OutputCost *float64 `json:"output_cost,omitempty"`
+	// Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
+	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
+	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
+	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
+	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
+	ContextWindowFactor []AIGatewayContextWindowFactor `json:"context_window_factor,omitempty"`
+	// Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+	ServiceTierFactor []AIGatewayServiceTierFactor `json:"service_tier_factor,omitempty"`
 	// Controls randomness in the model output. Higher values produce more varied responses.
 	Temperature *float64 `json:"temperature,omitempty"`
 	// Limits the number of highest-probability tokens considered during generation.
@@ -29,10 +65,18 @@ type AIGatewayTargetAzureConfig struct {
 	UpstreamURL *string `json:"upstream_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"azure" json:"type"`
-	// The Azure deployment ID for the model.
-	DeploymentID string `json:"deployment_id"`
+	// The Azure deployment ID for the model. Applies when the Azure provider's
+	// `service` is `azure-openai`; not used for `azure-foundry`.
+	//
+	DeploymentID *string `json:"deployment_id,omitempty"`
 	// The Azure OpenAI API version to use.
 	APIVersion *string `default:"2023-05-15" json:"api_version"`
+	// The API path prefix for the Azure AI Foundry endpoint, selecting the model's
+	// API surface. `/openai/v1` targets the OpenAI-compatible surface; `/anthropic/v1`
+	// targets the Anthropic surface. Applies when the Azure provider's `service` is
+	// `azure-foundry`.
+	//
+	FoundryPathPrefix *FoundryPathPrefix `default:"/openai/v1" json:"foundry_path_prefix"`
 }
 
 func (a AIGatewayTargetAzureConfig) MarshalJSON() ([]byte, error) {
@@ -74,6 +118,41 @@ func (a *AIGatewayTargetAzureConfig) GetOutputCost() *float64 {
 	return a.OutputCost
 }
 
+func (a *AIGatewayTargetAzureConfig) GetCacheReadCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheReadCost
+}
+
+func (a *AIGatewayTargetAzureConfig) GetCacheWriteCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCost
+}
+
+func (a *AIGatewayTargetAzureConfig) GetCacheWriteCostList() []AIGatewayCacheWriteCost {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCostList
+}
+
+func (a *AIGatewayTargetAzureConfig) GetContextWindowFactor() []AIGatewayContextWindowFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ContextWindowFactor
+}
+
+func (a *AIGatewayTargetAzureConfig) GetServiceTierFactor() []AIGatewayServiceTierFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ServiceTierFactor
+}
+
 func (a *AIGatewayTargetAzureConfig) GetTemperature() *float64 {
 	if a == nil {
 		return nil
@@ -106,9 +185,9 @@ func (a *AIGatewayTargetAzureConfig) GetType() string {
 	return "azure"
 }
 
-func (a *AIGatewayTargetAzureConfig) GetDeploymentID() string {
+func (a *AIGatewayTargetAzureConfig) GetDeploymentID() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.DeploymentID
 }
@@ -118,4 +197,11 @@ func (a *AIGatewayTargetAzureConfig) GetAPIVersion() *string {
 		return nil
 	}
 	return a.APIVersion
+}
+
+func (a *AIGatewayTargetAzureConfig) GetFoundryPathPrefix() *FoundryPathPrefix {
+	if a == nil {
+		return nil
+	}
+	return a.FoundryPathPrefix
 }

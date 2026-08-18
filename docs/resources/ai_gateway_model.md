@@ -81,12 +81,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          path_selector = {
-            path_param = "model_name"
-            values = [
-              "@azure/claude-sonnet-5",
-            ]
-          }
+          body_param   = "model"
+          header_param = "x-model"
+          path_param   = "model_name"
+          values = [
+            "..."
+          ]
         }
         paths = [
           "..."
@@ -126,15 +126,36 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow_auth_override = false
         config = {
           anthropic = {
+            cache_read_cost  = 8.86
+            cache_write_cost = 7.72
+            cache_write_cost_list = [
+              {
+                cost = 1.85
+                ttl  = "...my_ttl..."
+              }
+            ]
+            context_window_factor = [
+              {
+                above         = "...my_above..."
+                input_factor  = 7.89
+                output_factor = 6.2
+              }
+            ]
             embeddings_dimensions = 3
             input_cost            = 9.85
             max_tokens            = 1
             output_cost           = 1.7
-            temperature           = 6.58
-            top_k                 = 3
-            top_p                 = 4.84
-            upstream_url          = "https://ajar-summer.biz"
-            version               = "2023-06-01"
+            service_tier_factor = [
+              {
+                factor = 7.15
+                tier   = "...my_tier..."
+              }
+            ]
+            temperature  = 6.58
+            top_k        = 3
+            top_p        = 4.84
+            upstream_url = "https://ajar-summer.biz"
+            version      = "2023-06-01"
           }
         }
         name                 = "gpt-5-model"
@@ -246,12 +267,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          body_selector = {
-            body_param = "model"
-            values = [
-              "gpt-3.5-turbo",
-            ]
-          }
+          body_param   = "model"
+          header_param = "x-model"
+          path_param   = "model_name"
+          values = [
+            "..."
+          ]
         }
         paths = [
           "..."
@@ -291,15 +312,36 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow_auth_override = false
         config = {
           mistral = {
+            cache_read_cost  = 9.91
+            cache_write_cost = 1.14
+            cache_write_cost_list = [
+              {
+                cost = 5.09
+                ttl  = "...my_ttl..."
+              }
+            ]
+            context_window_factor = [
+              {
+                above         = "...my_above..."
+                input_factor  = 1.3
+                output_factor = 9.49
+              }
+            ]
             embeddings_dimensions = 10
             format                = "ollama"
             input_cost            = 1.29
             max_tokens            = 5
             output_cost           = 5.4
-            temperature           = 4.9
-            top_k                 = 6
-            top_p                 = 5.29
-            upstream_url          = "https://sad-thigh.net"
+            service_tier_factor = [
+              {
+                factor = 5.81
+                tier   = "...my_tier..."
+              }
+            ]
+            temperature  = 4.9
+            top_k        = 6
+            top_p        = 5.29
+            upstream_url = "https://sad-thigh.net"
           }
         }
         name                 = "gpt-5-model"
@@ -571,7 +613,8 @@ Optional:
 - `azure` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Azure-specific configuration for a model. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings--config--azure))
+Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry
+embeddings are not supported. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings--config--azure))
 - `bedrock` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -605,7 +648,8 @@ Google Vertex-specific configuration for a model. (see [below for nested schema]
 Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
-- `deployment_id` (String) The Azure deployment ID for the model. Not Null
+- `deployment_id` (String) The Azure OpenAI deployment ID for the embeddings model. Not Null
+- `type` (String) Not Null; must be "azure"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -955,7 +999,8 @@ Optional:
 - `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol. Default: 426
 - `methods` (List of String) A list of HTTP methods that match this route.
 - `model` (Attributes) Configuration for overriding routing to this model using a selector.
-When not set, a default model selector will be created using the model's name and format. (see [below for nested schema](#nestedatt--api--config--route--model))
+When no selector location is set, the format default selector is used.
+When values are not set, the model name is used as the selector value. (see [below for nested schema](#nestedatt--api--config--route--model))
 - `paths` (List of String) A list of paths that match this route.
 - `preserve_host` (Boolean) When matching a route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the service's `host`. Default: false
 - `protocols` (List of String) An array of the protocols this route should allow. See the [route Object](#route-object) section for a list of accepted protocols. When set to only `https`, HTTP requests are answered with an upgrade error. When set to only `http`, HTTPS requests are answered with an error. Default: ["http","https"]
@@ -970,42 +1015,11 @@ When not set, a default model selector will be created using the model's name an
 
 Optional:
 
-- `body_selector` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--api--config--route--model--body_selector))
-- `headers_selector` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--api--config--route--model--headers_selector))
-- `path_selector` (Attributes) Configuration for routing requests to a specific model using a path selector. (see [below for nested schema](#nestedatt--api--config--route--model--path_selector))
-
-<a id="nestedatt--api--config--route--model--body_selector"></a>
-### Nested Schema for `api.config.route.model.body_selector`
-
-Optional:
-
-- `body_param` (String) The body property name to match for routing. Not Null
-- `values` (List of String) The list of values that are matched against the body property value.
-If the body property value matches any of the specified values, the request will be routed to the corresponding model.
-Not Null
-
-
-<a id="nestedatt--api--config--route--model--headers_selector"></a>
-### Nested Schema for `api.config.route.model.headers_selector`
-
-Optional:
-
-- `header_param` (String) The header property name to match for routing. Not Null
-- `values` (List of String) The list of values that are matched against the header property value.
-If the header property value matches any of the specified values, the request will be routed to the corresponding model.
-Not Null
-
-
-<a id="nestedatt--api--config--route--model--path_selector"></a>
-### Nested Schema for `api.config.route.model.path_selector`
-
-Optional:
-
-- `path_param` (String) The name of the regex capture group defined in the route path for routing. Not Null
-- `values` (List of String) The list of values that are matched against the path param value.
-If the path param value matches any of the specified values, the request will be routed to the corresponding model.
-Not Null
-
+- `body_param` (String) The body property name to match for routing.
+- `header_param` (String) The header property name to match for routing.
+- `path_param` (String) The name of the regex capture group defined in the route path for routing.
+- `values` (List of String) An optional model alias. When omitted, the model name is used.
+When no selector location is configured, the format default selector is used.
 
 
 
@@ -1126,15 +1140,48 @@ Xai-specific configuration for a model. (see [below for nested schema](#nestedat
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
+
+<a id="nestedatt--api--targets--config--anthropic--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.anthropic.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--anthropic--context_window_factor"></a>
+### Nested Schema for `api.targets.config.anthropic.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--anthropic--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.anthropic.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--azure"></a>
@@ -1143,15 +1190,54 @@ Optional:
 Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
-- `deployment_id` (String) The Azure deployment ID for the model. Not Null
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--azure--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--azure--context_window_factor))
+- `deployment_id` (String) The Azure deployment ID for the model. Applies when the Azure provider's
+`service` is `azure-openai`; not used for `azure-foundry`.
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `foundry_path_prefix` (String) The API path prefix for the Azure AI Foundry endpoint, selecting the model's
+API surface. `/openai/v1` targets the OpenAI-compatible surface; `/anthropic/v1`
+targets the Anthropic surface. Applies when the Azure provider's `service` is
+`azure-foundry`.
+possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "/openai/v1"
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--azure--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--azure--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.azure.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--azure--context_window_factor"></a>
+### Nested Schema for `api.targets.config.azure.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--azure--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.azure.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--bedrock"></a>
@@ -1160,19 +1246,52 @@ Optional:
 Optional:
 
 - `batch_bucket_prefix` (String) S3 bucket prefix for batch inference jobs.
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `embeddings_normalize` (Boolean) Whether to normalize embedding vectors in the response. Default: false
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
 - `performance_config_latency` (String) Latency performance configuration for the model invocation.
 - `region` (String) The AWS region for the model.
 Setting this option overrides the AWS_REGION environment variable.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+
+<a id="nestedatt--api--targets--config--bedrock--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.bedrock.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--bedrock--context_window_factor"></a>
+### Nested Schema for `api.targets.config.bedrock.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--bedrock--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.bedrock.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--cerebras"></a>
@@ -1180,14 +1299,47 @@ Setting this option overrides the AWS_REGION environment variable.
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--cerebras--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.cerebras.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--cerebras--context_window_factor"></a>
+### Nested Schema for `api.targets.config.cerebras.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--cerebras--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.cerebras.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--cohere"></a>
@@ -1198,16 +1350,49 @@ Optional:
 - `api_version` (String) Cohere API version. `v1` uses the legacy `/v1/chat` endpoint; `v2` (default)
 uses `/v2/chat` and supports tool calling.
 possible known values include one of ["v1", "v2"]; Default: "v2"
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--cohere--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--cohere--context_window_factor))
 - `embedding_input_type` (String) The intended downstream use of the embeddings to improve model quality. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--cohere--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
+
+<a id="nestedatt--api--targets--config--cohere--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.cohere.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--cohere--context_window_factor"></a>
+### Nested Schema for `api.targets.config.cohere.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--cohere--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.cohere.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--dashscope"></a>
@@ -1215,15 +1400,48 @@ possible known values include one of ["v1", "v2"]; Default: "v2"
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `international` (Boolean) Whether to use the international DashScope endpoint. Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--dashscope--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.dashscope.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--dashscope--context_window_factor"></a>
+### Nested Schema for `api.targets.config.dashscope.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--dashscope--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.dashscope.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--databricks"></a>
@@ -1231,15 +1449,48 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--databricks--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--databricks--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--databricks--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
+
+<a id="nestedatt--api--targets--config--databricks--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.databricks.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--databricks--context_window_factor"></a>
+### Nested Schema for `api.targets.config.databricks.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--databricks--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.databricks.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--deepseek"></a>
@@ -1247,14 +1498,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--deepseek--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.deepseek.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--deepseek--context_window_factor"></a>
+### Nested Schema for `api.targets.config.deepseek.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--deepseek--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.deepseek.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--gemini"></a>
@@ -1262,18 +1546,42 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--gemini--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--gemini--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `gcp_environment` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--api--targets--config--gemini--gcp_environment))
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--gemini--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--gemini--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.gemini.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--gemini--context_window_factor"></a>
+### Nested Schema for `api.targets.config.gemini.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
 
 <a id="nestedatt--api--targets--config--gemini--gcp_environment"></a>
 ### Nested Schema for `api.targets.config.gemini.gcp_environment`
@@ -1285,16 +1593,30 @@ Optional:
 - `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
 
 
+<a id="nestedatt--api--targets--config--gemini--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.gemini.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
 
 <a id="nestedatt--api--targets--config--huggingface"></a>
 ### Nested Schema for `api.targets.config.huggingface`
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -1302,23 +1624,84 @@ Optional:
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
 
+<a id="nestedatt--api--targets--config--huggingface--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.huggingface.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--huggingface--context_window_factor"></a>
+### Nested Schema for `api.targets.config.huggingface.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--huggingface--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.huggingface.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
 
 <a id="nestedatt--api--targets--config--kimi"></a>
 ### Nested Schema for `api.targets.config.kimi`
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--kimi--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--kimi--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `international` (Boolean) When `true`, requests are sent to `api.moonshot.ai` (international).
 When `false`, requests are sent to `api.moonshot.cn` (mainland China).
 Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--kimi--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--kimi--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.kimi.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--kimi--context_window_factor"></a>
+### Nested Schema for `api.targets.config.kimi.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--kimi--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.kimi.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--llama2"></a>
@@ -1326,15 +1709,48 @@ Default: true
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--llama2--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--llama2--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Llama2 model. possible known values include one of ["ollama", "openai", "raw"]; Not Null
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--llama2--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--api--targets--config--llama2--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.llama2.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--llama2--context_window_factor"></a>
+### Nested Schema for `api.targets.config.llama2.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--llama2--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.llama2.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--mistral"></a>
@@ -1342,15 +1758,48 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--mistral--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--mistral--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Mistral model. possible known values include one of ["ollama", "openai"]; Not Null
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--mistral--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--mistral--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.mistral.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--mistral--context_window_factor"></a>
+### Nested Schema for `api.targets.config.mistral.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--mistral--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.mistral.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--ollama"></a>
@@ -1358,14 +1807,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--ollama--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--ollama--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--ollama--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--ollama--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.ollama.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--ollama--context_window_factor"></a>
+### Nested Schema for `api.targets.config.ollama.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--ollama--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.ollama.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--openai"></a>
@@ -1373,14 +1855,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--openai--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--openai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--openai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--openai--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.openai.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--openai--context_window_factor"></a>
+### Nested Schema for `api.targets.config.openai.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--openai--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.openai.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--sagemaker"></a>
@@ -1390,10 +1905,15 @@ Optional:
 
 - `aws` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--aws))
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--service_tier_factor))
 - `target` (Attributes) (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--target))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
@@ -1409,6 +1929,34 @@ Optional:
 - `region` (String) Overrides the AWS_REGION environment variable for SageMaker requests.
 - `role_session_name` (String) Session identifier for the assumed role; mutually required with assume_role_arn.
 - `sts_endpoint_url` (String) Overrides the STS endpoint when assuming a role.
+
+
+<a id="nestedatt--api--targets--config--sagemaker--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.sagemaker.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--sagemaker--context_window_factor"></a>
+### Nested Schema for `api.targets.config.sagemaker.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--sagemaker--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.sagemaker.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
 
 
 <a id="nestedatt--api--targets--config--sagemaker--target"></a>
@@ -1427,14 +1975,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--vercel--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--vercel--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--vercel--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--vercel--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.vercel.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--vercel--context_window_factor"></a>
+### Nested Schema for `api.targets.config.vercel.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--vercel--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.vercel.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--vertex"></a>
@@ -1442,18 +2023,42 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--vertex--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--vertex--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `gcp_environment` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--api--targets--config--vertex--gcp_environment))
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--vertex--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--vertex--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.vertex.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--vertex--context_window_factor"></a>
+### Nested Schema for `api.targets.config.vertex.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
 
 <a id="nestedatt--api--targets--config--vertex--gcp_environment"></a>
 ### Nested Schema for `api.targets.config.vertex.gcp_environment`
@@ -1467,20 +2072,62 @@ This must be set when running a target model on Gemini on Vertex Model Garden.
 - `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
 
 
+<a id="nestedatt--api--targets--config--vertex--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.vertex.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
 
 <a id="nestedatt--api--targets--config--vllm"></a>
 ### Nested Schema for `api.targets.config.vllm`
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--vllm--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--vllm--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--vllm--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--api--targets--config--vllm--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.vllm.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--vllm--context_window_factor"></a>
+### Nested Schema for `api.targets.config.vllm.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--vllm--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.vllm.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--api--targets--config--xai"></a>
@@ -1488,14 +2135,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--xai--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--xai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--xai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--xai--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.xai.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--xai--context_window_factor"></a>
+### Nested Schema for `api.targets.config.xai.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--xai--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.xai.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 
@@ -1738,7 +2418,8 @@ Optional:
 - `azure` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Azure-specific configuration for a model. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings--config--azure))
+Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry
+embeddings are not supported. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings--config--azure))
 - `bedrock` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1772,7 +2453,8 @@ Google Vertex-specific configuration for a model. (see [below for nested schema]
 Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
-- `deployment_id` (String) The Azure deployment ID for the model. Not Null
+- `deployment_id` (String) The Azure OpenAI deployment ID for the embeddings model. Not Null
+- `type` (String) Not Null; must be "azure"
 - `upstream_url` (String) The URL of the embeddings model.
 
 
@@ -2134,7 +2816,8 @@ Optional:
 - `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol. Default: 426
 - `methods` (List of String) A list of HTTP methods that match this route.
 - `model` (Attributes) Configuration for overriding routing to this model using a selector.
-When not set, a default model selector will be created using the model's name and format. (see [below for nested schema](#nestedatt--model--config--route--model))
+When no selector location is set, the format default selector is used.
+When values are not set, the model name is used as the selector value. (see [below for nested schema](#nestedatt--model--config--route--model))
 - `paths` (List of String) A list of paths that match this route.
 - `preserve_host` (Boolean) When matching a route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the service's `host`. Default: false
 - `protocols` (List of String) An array of the protocols this route should allow. See the [route Object](#route-object) section for a list of accepted protocols. When set to only `https`, HTTP requests are answered with an upgrade error. When set to only `http`, HTTPS requests are answered with an error. Default: ["http","https"]
@@ -2149,42 +2832,11 @@ When not set, a default model selector will be created using the model's name an
 
 Optional:
 
-- `body_selector` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--model--config--route--model--body_selector))
-- `headers_selector` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--model--config--route--model--headers_selector))
-- `path_selector` (Attributes) Configuration for routing requests to a specific model using a path selector. (see [below for nested schema](#nestedatt--model--config--route--model--path_selector))
-
-<a id="nestedatt--model--config--route--model--body_selector"></a>
-### Nested Schema for `model.config.route.model.body_selector`
-
-Optional:
-
-- `body_param` (String) The body property name to match for routing. Not Null
-- `values` (List of String) The list of values that are matched against the body property value.
-If the body property value matches any of the specified values, the request will be routed to the corresponding model.
-Not Null
-
-
-<a id="nestedatt--model--config--route--model--headers_selector"></a>
-### Nested Schema for `model.config.route.model.headers_selector`
-
-Optional:
-
-- `header_param` (String) The header property name to match for routing. Not Null
-- `values` (List of String) The list of values that are matched against the header property value.
-If the header property value matches any of the specified values, the request will be routed to the corresponding model.
-Not Null
-
-
-<a id="nestedatt--model--config--route--model--path_selector"></a>
-### Nested Schema for `model.config.route.model.path_selector`
-
-Optional:
-
-- `path_param` (String) The name of the regex capture group defined in the route path for routing. Not Null
-- `values` (List of String) The list of values that are matched against the path param value.
-If the path param value matches any of the specified values, the request will be routed to the corresponding model.
-Not Null
-
+- `body_param` (String) The body property name to match for routing.
+- `header_param` (String) The header property name to match for routing.
+- `path_param` (String) The name of the regex capture group defined in the route path for routing.
+- `values` (List of String) An optional model alias. When omitted, the model name is used.
+When no selector location is configured, the format default selector is used.
 
 
 
@@ -2305,15 +2957,48 @@ Xai-specific configuration for a model. (see [below for nested schema](#nestedat
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
+
+<a id="nestedatt--model--targets--config--anthropic--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.anthropic.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--anthropic--context_window_factor"></a>
+### Nested Schema for `model.targets.config.anthropic.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--anthropic--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.anthropic.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--azure"></a>
@@ -2322,15 +3007,54 @@ Optional:
 Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
-- `deployment_id` (String) The Azure deployment ID for the model. Not Null
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--azure--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--azure--context_window_factor))
+- `deployment_id` (String) The Azure deployment ID for the model. Applies when the Azure provider's
+`service` is `azure-openai`; not used for `azure-foundry`.
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `foundry_path_prefix` (String) The API path prefix for the Azure AI Foundry endpoint, selecting the model's
+API surface. `/openai/v1` targets the OpenAI-compatible surface; `/anthropic/v1`
+targets the Anthropic surface. Applies when the Azure provider's `service` is
+`azure-foundry`.
+possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "/openai/v1"
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--azure--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--azure--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.azure.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--azure--context_window_factor"></a>
+### Nested Schema for `model.targets.config.azure.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--azure--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.azure.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--bedrock"></a>
@@ -2339,19 +3063,52 @@ Optional:
 Optional:
 
 - `batch_bucket_prefix` (String) S3 bucket prefix for batch inference jobs.
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `embeddings_normalize` (Boolean) Whether to normalize embedding vectors in the response. Default: false
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
 - `performance_config_latency` (String) Latency performance configuration for the model invocation.
 - `region` (String) The AWS region for the model.
 Setting this option overrides the AWS_REGION environment variable.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+
+<a id="nestedatt--model--targets--config--bedrock--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.bedrock.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--bedrock--context_window_factor"></a>
+### Nested Schema for `model.targets.config.bedrock.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--bedrock--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.bedrock.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--cerebras"></a>
@@ -2359,14 +3116,47 @@ Setting this option overrides the AWS_REGION environment variable.
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--cerebras--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.cerebras.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--cerebras--context_window_factor"></a>
+### Nested Schema for `model.targets.config.cerebras.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--cerebras--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.cerebras.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--cohere"></a>
@@ -2377,16 +3167,49 @@ Optional:
 - `api_version` (String) Cohere API version. `v1` uses the legacy `/v1/chat` endpoint; `v2` (default)
 uses `/v2/chat` and supports tool calling.
 possible known values include one of ["v1", "v2"]; Default: "v2"
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--cohere--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--cohere--context_window_factor))
 - `embedding_input_type` (String) The intended downstream use of the embeddings to improve model quality. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--cohere--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
+
+<a id="nestedatt--model--targets--config--cohere--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.cohere.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--cohere--context_window_factor"></a>
+### Nested Schema for `model.targets.config.cohere.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--cohere--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.cohere.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--dashscope"></a>
@@ -2394,15 +3217,48 @@ possible known values include one of ["v1", "v2"]; Default: "v2"
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `international` (Boolean) Whether to use the international DashScope endpoint. Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--dashscope--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.dashscope.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--dashscope--context_window_factor"></a>
+### Nested Schema for `model.targets.config.dashscope.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--dashscope--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.dashscope.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--databricks"></a>
@@ -2410,15 +3266,48 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--databricks--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--databricks--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--databricks--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
+
+<a id="nestedatt--model--targets--config--databricks--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.databricks.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--databricks--context_window_factor"></a>
+### Nested Schema for `model.targets.config.databricks.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--databricks--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.databricks.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--deepseek"></a>
@@ -2426,14 +3315,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--deepseek--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.deepseek.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--deepseek--context_window_factor"></a>
+### Nested Schema for `model.targets.config.deepseek.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--deepseek--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.deepseek.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--gemini"></a>
@@ -2441,18 +3363,42 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--gemini--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--gemini--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `gcp_environment` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--model--targets--config--gemini--gcp_environment))
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--gemini--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--gemini--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.gemini.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--gemini--context_window_factor"></a>
+### Nested Schema for `model.targets.config.gemini.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
 
 <a id="nestedatt--model--targets--config--gemini--gcp_environment"></a>
 ### Nested Schema for `model.targets.config.gemini.gcp_environment`
@@ -2464,16 +3410,30 @@ Optional:
 - `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
 
 
+<a id="nestedatt--model--targets--config--gemini--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.gemini.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
 
 <a id="nestedatt--model--targets--config--huggingface"></a>
 ### Nested Schema for `model.targets.config.huggingface`
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -2481,23 +3441,84 @@ Optional:
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
 
+<a id="nestedatt--model--targets--config--huggingface--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.huggingface.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--huggingface--context_window_factor"></a>
+### Nested Schema for `model.targets.config.huggingface.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--huggingface--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.huggingface.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
 
 <a id="nestedatt--model--targets--config--kimi"></a>
 ### Nested Schema for `model.targets.config.kimi`
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--kimi--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--kimi--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `international` (Boolean) When `true`, requests are sent to `api.moonshot.ai` (international).
 When `false`, requests are sent to `api.moonshot.cn` (mainland China).
 Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--kimi--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--kimi--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.kimi.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--kimi--context_window_factor"></a>
+### Nested Schema for `model.targets.config.kimi.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--kimi--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.kimi.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--llama2"></a>
@@ -2505,15 +3526,48 @@ Default: true
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--llama2--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--llama2--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Llama2 model. possible known values include one of ["ollama", "openai", "raw"]; Not Null
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--llama2--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--model--targets--config--llama2--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.llama2.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--llama2--context_window_factor"></a>
+### Nested Schema for `model.targets.config.llama2.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--llama2--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.llama2.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--mistral"></a>
@@ -2521,15 +3575,48 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--mistral--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--mistral--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Mistral model. possible known values include one of ["ollama", "openai"]; Not Null
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--mistral--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--mistral--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.mistral.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--mistral--context_window_factor"></a>
+### Nested Schema for `model.targets.config.mistral.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--mistral--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.mistral.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--ollama"></a>
@@ -2537,14 +3624,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--ollama--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--ollama--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--ollama--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--ollama--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.ollama.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--ollama--context_window_factor"></a>
+### Nested Schema for `model.targets.config.ollama.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--ollama--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.ollama.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--openai"></a>
@@ -2552,14 +3672,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--openai--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--openai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--openai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--openai--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.openai.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--openai--context_window_factor"></a>
+### Nested Schema for `model.targets.config.openai.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--openai--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.openai.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--sagemaker"></a>
@@ -2569,10 +3722,15 @@ Optional:
 
 - `aws` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--aws))
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--service_tier_factor))
 - `target` (Attributes) (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--target))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
@@ -2588,6 +3746,34 @@ Optional:
 - `region` (String) Overrides the AWS_REGION environment variable for SageMaker requests.
 - `role_session_name` (String) Session identifier for the assumed role; mutually required with assume_role_arn.
 - `sts_endpoint_url` (String) Overrides the STS endpoint when assuming a role.
+
+
+<a id="nestedatt--model--targets--config--sagemaker--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.sagemaker.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--sagemaker--context_window_factor"></a>
+### Nested Schema for `model.targets.config.sagemaker.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--sagemaker--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.sagemaker.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
 
 
 <a id="nestedatt--model--targets--config--sagemaker--target"></a>
@@ -2606,14 +3792,47 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--vercel--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--vercel--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--vercel--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--vercel--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.vercel.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--vercel--context_window_factor"></a>
+### Nested Schema for `model.targets.config.vercel.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--vercel--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.vercel.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--vertex"></a>
@@ -2621,18 +3840,42 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--vertex--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--vertex--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `gcp_environment` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--model--targets--config--vertex--gcp_environment))
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--vertex--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--vertex--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.vertex.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--vertex--context_window_factor"></a>
+### Nested Schema for `model.targets.config.vertex.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
 
 <a id="nestedatt--model--targets--config--vertex--gcp_environment"></a>
 ### Nested Schema for `model.targets.config.vertex.gcp_environment`
@@ -2646,20 +3889,62 @@ This must be set when running a target model on Gemini on Vertex Model Garden.
 - `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
 
 
+<a id="nestedatt--model--targets--config--vertex--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.vertex.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
 
 <a id="nestedatt--model--targets--config--vllm"></a>
 ### Nested Schema for `model.targets.config.vllm`
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--vllm--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--vllm--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--vllm--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--model--targets--config--vllm--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.vllm.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--vllm--context_window_factor"></a>
+### Nested Schema for `model.targets.config.vllm.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--vllm--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.vllm.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
 
 
 <a id="nestedatt--model--targets--config--xai"></a>
@@ -2667,14 +3952,46 @@ Optional:
 
 Optional:
 
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--xai--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--xai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `input_cost` (Number) Cost per input token for billing and cost tracking.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per output token for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--xai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--xai--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.xai.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--xai--context_window_factor"></a>
+### Nested Schema for `model.targets.config.xai.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--xai--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.xai.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
 
 ## Import
 

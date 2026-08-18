@@ -78,7 +78,11 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 								Attributes: map[string]schema.Attribute{
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
-										Description: `Is the MCP Server enabled?`,
+										Description: `Whether the MCP Server is enabled or not`,
+									},
+									"write_operations_enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled`,
 									},
 								},
 								Description: `AI Features config`,

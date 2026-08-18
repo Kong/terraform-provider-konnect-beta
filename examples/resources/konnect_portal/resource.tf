@@ -4,7 +4,8 @@ resource "konnect_portal" "my_portal" {
     enabled = true
     features = {
       mcp_server = {
-        enabled = false
+        enabled                  = false
+        write_operations_enabled = false
       }
     }
   }

@@ -88,9 +88,77 @@ func (u AIGatewayModelProviderAzureAuth) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type AIGatewayModelProviderAzureAuth: all fields are null")
 }
 
+// Service - Selects the Azure backend for this provider instance. Use `azure-openai`
+// for Azure OpenAI deployments or `azure-foundry` for Azure AI Foundry.
+type Service string
+
+const (
+	ServiceAzureOpenai  Service = "azure-openai"
+	ServiceAzureFoundry Service = "azure-foundry"
+)
+
+func (e Service) ToPointer() *Service {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Service) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "azure-openai", "azure-foundry":
+			return true
+		}
+	}
+	return false
+}
+
+// Foundry - Endpoint configuration for Azure AI Foundry hosted models. Required when
+// `service` is `azure-foundry`.
+type Foundry struct {
+	// The Azure AI Foundry resource name.
+	Resource string `json:"resource"`
+	// The domain for Azure AI Foundry hosted models.
+	Domain *string `default:"services.ai.azure.com" json:"domain"`
+}
+
+func (f Foundry) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *Foundry) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (f *Foundry) GetResource() string {
+	if f == nil {
+		return ""
+	}
+	return f.Resource
+}
+
+func (f *Foundry) GetDomain() *string {
+	if f == nil {
+		return nil
+	}
+	return f.Domain
+}
+
 type AIGatewayModelProviderAzureConfig struct {
-	Auth     AIGatewayModelProviderAzureAuth `json:"auth"`
-	Instance string                          `json:"instance"`
+	Auth AIGatewayModelProviderAzureAuth `json:"auth"`
+	// Selects the Azure backend for this provider instance. Use `azure-openai`
+	// for Azure OpenAI deployments or `azure-foundry` for Azure AI Foundry.
+	//
+	Service *Service `default:"azure-openai" json:"service"`
+	// The Azure OpenAI instance name. Required when `service` is `azure-openai`.
+	//
+	Instance *string `json:"instance,omitempty"`
+	// Endpoint configuration for Azure AI Foundry hosted models. Required when
+	// `service` is `azure-foundry`.
+	//
+	Foundry *Foundry `json:"foundry,omitempty"`
 }
 
 func (a AIGatewayModelProviderAzureConfig) MarshalJSON() ([]byte, error) {
@@ -119,11 +187,25 @@ func (a *AIGatewayModelProviderAzureConfig) GetAuthAzure() *AIGatewayModelProvid
 	return a.GetAuth().AIGatewayModelProviderConfigAuthAzure
 }
 
-func (a *AIGatewayModelProviderAzureConfig) GetInstance() string {
+func (a *AIGatewayModelProviderAzureConfig) GetService() *Service {
 	if a == nil {
-		return ""
+		return nil
+	}
+	return a.Service
+}
+
+func (a *AIGatewayModelProviderAzureConfig) GetInstance() *string {
+	if a == nil {
+		return nil
 	}
 	return a.Instance
+}
+
+func (a *AIGatewayModelProviderAzureConfig) GetFoundry() *Foundry {
+	if a == nil {
+		return nil
+	}
+	return a.Foundry
 }
 
 // AIGatewayModelProviderAzure - **Pre-release Feature**

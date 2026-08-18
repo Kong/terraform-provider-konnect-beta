@@ -19,7 +19,8 @@ resource "konnect_portal" "my_portal" {
     enabled = true
     features = {
       mcp_server = {
-        enabled = false
+        enabled                  = false
+        write_operations_enabled = false
       }
     }
   }
@@ -103,7 +104,8 @@ Optional:
 
 Optional:
 
-- `enabled` (Boolean) Is the MCP Server enabled?. Not Null
+- `enabled` (Boolean) Whether the MCP Server is enabled or not. Not Null
+- `write_operations_enabled` (Boolean) Whether write operations are enabled or not for the Portal MCP Server enabled. Not Null
 
 ## Import
 

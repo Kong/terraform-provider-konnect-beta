@@ -15489,18 +15489,23 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
           default: null
+          maxLength: 250
+          minLength: 1
           nullable: true
           pattern: '^[\w \W]+$'
           writeOnly: true
           x-speakeasy-param-computed: false
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) API team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -15530,15 +15535,20 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
+          maxLength: 250
+          minLength: 1
           pattern: '^[\w \W]+$'
           writeOnly: true
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -15573,14 +15583,13 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          type: string
-          example: IDM - Developers
-          maxLength: 250
-          pattern: '^[\w \W]+$'
+          $ref: '#/components/schemas/TeamName'
         description:
+          description: The description of the team.
           type: string
           example: The developers for the IDM API.
           maxLength: 250
+          minLength: 1
         created_at:
           type: string
           format: date-time
@@ -15740,10 +15749,14 @@ components:
               additionalProperties: false
               properties:
                 enabled:
-                  description: Is the MCP Server enabled?
+                  description: Whether the MCP Server is enabled or not
+                  type: boolean
+                write_operations_enabled:
+                  description: Whether write operations are enabled or not for the Portal MCP Server enabled
                   type: boolean
               required:
                 - enabled
+                - write_operations_enabled
           required:
             - mcp_server
       additionalProperties: false
@@ -16510,6 +16523,13 @@ components:
             items:
               type: string
       x-speakeasy-terraform-ignore: true
+    TeamName:
+      description: The name of the team.
+      type: string
+      example: IDM - Developers
+      maxLength: 250
+      minLength: 1
+      pattern: '^[\w \W]+$'
     KonnectManaged:
       description: Indicates whether the team is managed by Konnect.
       type: boolean
@@ -16698,8 +16718,22 @@ components:
       example:
         default:
           version: v1
+          current_version_summary:
+            id: 7710d5c4-d902-410b-992f-18b814155b53
+            version: v1
+            spec:
+              type: oas3
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
         staging:
           version: v2
+          current_version_summary:
+            id: 8710d5c4-d902-410b-992f-18b814155b54
+            version: v2
+            spec:
+              type: oas3
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
       additionalProperties:
         $ref: '#/components/schemas/ApiEnvironmentVersionSummary'
       readOnly: true
@@ -16712,9 +16746,12 @@ components:
           description: The API's current version string in this environment.
           type: string
           example: v1
+        current_version_summary:
+          $ref: '#/components/schemas/ApiVersionSummary'
       additionalProperties: false
       required:
         - version
+        - current_version_summary
       title: API Environment Version Summary
     AuthStrategyApiSyncError:
       type: object
@@ -31896,6 +31933,68 @@ components:
       additionalProperties: false
       required:
         - datasource
+    ManagedCacheUsageQuery:
+      description: |
+        A query targeting the managed cache usage analytics datasource.
+
+        Note: this datasource only retains data for the last 7 days.
+      type: object
+      properties:
+        datasource:
+          type: string
+          enum:
+            - managed_cache_usage
+        metrics:
+          $ref: '#/components/schemas/ManagedCacheUsageMetrics'
+        dimensions:
+          description: List of attributes or entity types to group by.
+          type: array
+          items:
+            type: string
+            enum:
+              - control_plane
+              - data_plane_group
+              - managed_cache
+              - network
+              - provider
+              - provider_region
+              - time
+            x-speakeasy-unknown-values: allow
+          default: null
+          maxItems: 2
+          nullable: true
+          x-speakeasy-param-computed: false
+        filters:
+          $ref: '#/components/schemas/ManagedCacheUsageFilters'
+        granularity:
+          $ref: '#/components/schemas/Granularity'
+        time_range:
+          $ref: '#/components/schemas/TimeRange'
+        limit:
+          description: Limits the number of distinct metric groups to return.
+          type: number
+          default: 50
+          maximum: 1000
+      example:
+        datasource: managed_cache_usage
+        time_range:
+          type: relative
+          time_range: 24h
+          tz: EST
+        dimensions:
+          - time
+          - provider
+        filters:
+          - operator: in
+            field: control_plane
+            value:
+              - d5ac5d88-efed-4e10-9dfe-0b0a6646c219
+        granularity: hourly
+        metrics:
+          - cache_memory_utilization_max
+      additionalProperties: false
+      required:
+        - datasource
     PlatformQuery:
       description: A query targeting the platform usage analytics datasource.
       type: object
@@ -32086,11 +32185,13 @@ components:
               llm_usage: '#/components/schemas/LLMQuery'
               agentic_usage: '#/components/schemas/AgenticQuery'
               platform_usage: '#/components/schemas/PlatformQuery'
+              managed_cache_usage: '#/components/schemas/ManagedCacheUsageQuery'
           oneOf:
             - $ref: '#/components/schemas/AdvancedQuery'
             - $ref: '#/components/schemas/LLMQuery'
             - $ref: '#/components/schemas/AgenticQuery'
             - $ref: '#/components/schemas/PlatformQuery'
+            - $ref: '#/components/schemas/ManagedCacheUsageQuery'
         chart:
           $ref: '#/components/schemas/Chart'
       additionalProperties: false
@@ -34028,6 +34129,219 @@ components:
       oneOf:
         - $ref: '#/components/schemas/PlatformRelativeTimeRange'
         - $ref: '#/components/schemas/MetricsAbsoluteTimeRangeDtoV2'
+    ManagedCacheUsageMetrics:
+      description: List of aggregated metrics to collect across the requested time span.
+      type: array
+      items:
+        type: string
+        enum:
+          - cache_eviction_rate
+          - cache_expiration_rate
+          - cache_items_average
+          - cache_memory_utilization_max
+        x-speakeasy-unknown-values: allow
+      default:
+        - cache_memory_utilization_max
+    MetricsDataPlaneGroupFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The IDs to include in the results.
+              type: array
+              items:
+                $ref: '#/components/schemas/UnscopedUuid'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - data_plane_group
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - data_plane_group
+          required:
+            - operator
+            - field
+      title: Filter by data_plane_group
+    MetricsManagedCacheFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The IDs to include in the results.
+              type: array
+              items:
+                $ref: '#/components/schemas/UnscopedUuid'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - managed_cache
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - managed_cache
+          required:
+            - operator
+            - field
+      title: Filter by managed_cache
+    MetricsNetworkFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - network
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - network
+          required:
+            - operator
+            - field
+      title: Filter by network
+    MetricsProviderFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - provider
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - provider
+          required:
+            - operator
+            - field
+      title: Filter by provider
+    MetricsProviderRegionFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - provider_region
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - provider_region
+          required:
+            - operator
+            - field
+      title: Filter by provider_region
+    ManagedCacheUsageFilters:
+      description: A list of filters to apply to the query.
+      type: array
+      items:
+        discriminator:
+          propertyName: field
+          mapping:
+            control_plane: '#/components/schemas/MetricsControlPlaneFilterByField'
+            data_plane_group: '#/components/schemas/MetricsDataPlaneGroupFilterByField'
+            managed_cache: '#/components/schemas/MetricsManagedCacheFilterByField'
+            network: '#/components/schemas/MetricsNetworkFilterByField'
+            provider: '#/components/schemas/MetricsProviderFilterByField'
+            provider_region: '#/components/schemas/MetricsProviderRegionFilterByField'
+        oneOf:
+          - $ref: '#/components/schemas/MetricsControlPlaneFilterByField'
+          - $ref: '#/components/schemas/MetricsDataPlaneGroupFilterByField'
+          - $ref: '#/components/schemas/MetricsManagedCacheFilterByField'
+          - $ref: '#/components/schemas/MetricsNetworkFilterByField'
+          - $ref: '#/components/schemas/MetricsProviderFilterByField'
+          - $ref: '#/components/schemas/MetricsProviderRegionFilterByField'
     DonutChart:
       description: |
         A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that
@@ -34365,6 +34679,7 @@ components:
             - control_plane
             - control_plane_group
             - country_code
+            - data_plane_group
             - data_plane_node
             - data_plane_node_version
             - env
@@ -34373,12 +34688,16 @@ components:
             - llm_cache_status
             - llm_embeddings_model
             - llm_embeddings_provider
+            - managed_cache
             - mcp_error
             - mcp_method
             - mcp_session_id
             - mcp_tool_name
+            - network
             - portal
             - principal
+            - provider
+            - provider_region
             - realm
             - region
             - response_source
@@ -39332,6 +39651,8 @@ components:
           $ref: '#/components/schemas/Labels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        vault_enabled:
+          $ref: '#/components/schemas/DirectoryVaultEnabled'
       additionalProperties: false
       required:
         - name
@@ -39340,6 +39661,9 @@ components:
           - x-internal
           - x-unstable
         negative_ttl_secs:
+          - x-internal
+          - x-unstable
+        vault_enabled:
           - x-internal
           - x-unstable
     ReplaceDirectoryBody:
@@ -39361,6 +39685,8 @@ components:
           $ref: '#/components/schemas/Labels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        vault_enabled:
+          $ref: '#/components/schemas/DirectoryVaultEnabled'
       additionalProperties: false
       required:
         - name
@@ -39371,6 +39697,14 @@ components:
         negative_ttl_secs:
           - x-internal
           - x-unstable
+        vault_enabled:
+          - x-internal
+          - x-unstable
+    DirectoryVaultEnabled:
+      description: |
+        Set to enabled to enable the Token Vault for this directory.
+        Defaults to disabled when omitted.
+      type: boolean
     DirectoryTTLSecs:
       description: |
         The time in seconds that a principal will be cached in memory on a running Gateway if it is
@@ -39418,6 +39752,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        vault_enabled:
+          $ref: '#/components/schemas/DirectoryVaultEnabled'
       required:
         - id
         - name
@@ -39435,6 +39771,9 @@ components:
           - x-internal
           - x-unstable
         negative_ttl_secs:
+          - x-internal
+          - x-unstable
+        vault_enabled:
           - x-internal
           - x-unstable
     ManagedBy:
@@ -39459,6 +39798,20 @@ components:
       maxLength: 256
       minLength: 1
       pattern: '^[A-Za-z0-9._:-]{1,256}$'
+    AIGatewayVaultName:
+      description: An immutable user-defined identifier for this resource.
+      type: string
+      example: my-awesome-vault
+      maxLength: 255
+      minLength: 2
+      pattern: '^[a-z][a-z0-9-]*[a-z0-9]+$'
+    AIGatewayConfigStoreName:
+      description: An immutable user-defined identifier for this resource.
+      type: string
+      example: my-config-store
+      maxLength: 255
+      minLength: 2
+      pattern: '^[a-z][a-z0-9-]*[a-z0-9]+$'
     AIGatewayProxyURL:
       description: Proxy URL associated with reaching the data-planes connected to a control-plane.
       type: object
@@ -40109,88 +40462,42 @@ components:
     AIGatewayModelSelectorConfig:
       description: |
         Configuration for overriding routing to this model using a selector.
-        When not set, a default model selector will be created using the model's name and format.
-      oneOf:
-        - $ref: '#/components/schemas/AIGatewayModelSelectorConfigBody'
-        - $ref: '#/components/schemas/AIGatewayModelSelectorConfigHeaders'
-        - $ref: '#/components/schemas/AIGatewayModelSelectorConfigPath'
-      title: AIGatewayModelSelectorConfig
-    AIGatewayModelSelectorConfigBody:
-      description: |
-        Configuration for routing requests to a specific model using a request body property.
+        When no selector location is set, the format default selector is used.
+        When values are not set, the model name is used as the selector value.
       type: object
       properties:
         body_param:
           description: The body property name to match for routing.
           type: string
           example: model
-        values:
-          description: |
-            The list of values that are matched against the body property value.
-            If the body property value matches any of the specified values, the request will be routed to the corresponding model.
-          type: array
-          items:
-            type: string
-          example:
-            - gpt-3.5-turbo
-          maxItems: 1
-      additionalProperties: false
-      required:
-        - body_param
-        - values
-      title: AIGatewayModelSelectorConfigBody
-      x-speakeasy-name-override: BodySelector
-    AIGatewayModelSelectorConfigHeaders:
-      description: |
-        Configuration for routing requests to a specific model using a header.
-      type: object
-      properties:
+          minLength: 1
+          x-speakeasy-param-computed: false
         header_param:
           description: The header property name to match for routing.
           type: string
           example: x-model
-        values:
-          description: |
-            The list of values that are matched against the header property value.
-            If the header property value matches any of the specified values, the request will be routed to the corresponding model.
-          type: array
-          items:
-            type: string
-          example:
-            - '@azure/claude-sonnet-5'
-          maxItems: 1
-      additionalProperties: false
-      required:
-        - header_param
-        - values
-      title: AIGatewayModelSelectorConfigHeaders
-      x-speakeasy-name-override: HeadersSelector
-    AIGatewayModelSelectorConfigPath:
-      description: |
-        Configuration for routing requests to a specific model using a path selector.
-      type: object
-      properties:
+          minLength: 1
+          x-speakeasy-param-computed: false
         path_param:
           description: |
             The name of the regex capture group defined in the route path for routing.
           type: string
           example: model_name
+          minLength: 1
+          x-speakeasy-param-computed: false
         values:
           description: |
-            The list of values that are matched against the path param value.
-            If the path param value matches any of the specified values, the request will be routed to the corresponding model.
+            An optional model alias. When omitted, the model name is used.
+            When no selector location is configured, the format default selector is used.
           type: array
           items:
             type: string
-          example:
-            - '@azure/claude-sonnet-5'
+            minLength: 1
           maxItems: 1
+          minItems: 1
+          x-speakeasy-param-computed: true
       additionalProperties: false
-      required:
-        - path_param
-        - values
-      title: AIGatewayModelSelectorConfigPath
-      x-speakeasy-name-override: PathSelector
+      title: AIGatewayModelSelectorConfig
     AIGatewayModelBalancerConfig:
       description: |-
         **Pre-release Feature**
@@ -40809,7 +41116,8 @@ components:
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
 
-        Azure-specific configuration for a model.
+        Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry
+        embeddings are not supported.
       type: object
       properties:
         upstream_url:
@@ -40820,9 +41128,10 @@ components:
           x-speakeasy-param-computed: false
         type:
           type: string
-          const: azure
+          enum:
+            - azure
         deployment_id:
-          description: The Azure deployment ID for the model.
+          description: The Azure OpenAI deployment ID for the embeddings model.
           type: string
         api_version:
           description: The Azure OpenAI API version to use.
@@ -40832,6 +41141,7 @@ components:
       required:
         - type
         - deployment_id
+      title: AIGatewayAzureEmbeddingsModelConfig
       x-unstable: true
     AIGatewayBedrockEmbeddingsModelConfig:
       description: |-
@@ -41491,6 +41801,74 @@ components:
         - $ref: '#/components/schemas/AIGatewayTargetXaiConfig'
         - $ref: '#/components/schemas/AIGatewayTargetSagemakerConfig'
       x-unstable: true
+    AIGatewayCacheWriteCost:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        ttl:
+          description: 'Cache TTL this price applies to, e.g. "5m" or "1h".'
+          type: string
+          pattern: '^[0-9]+\.?[0-9]*[hm]$'
+        cost:
+          description: Cost per 1M cache-write prompt tokens for this TTL.
+          type: number
+          minimum: 0
+      additionalProperties: false
+      required:
+        - ttl
+        - cost
+      title: AIGatewayCacheWriteCost
+      x-unstable: true
+    AIGatewayContextWindowFactor:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        above:
+          description: 'Input-token threshold above which the factors apply, e.g. "128k" or "1m".'
+          type: string
+          pattern: '^[0-9]+\.?[0-9]*[km]$'
+        input_factor:
+          description: Multiplier applied to input pricing above the threshold.
+          type: number
+          exclusiveMinimum: true
+          minimum: 0
+        output_factor:
+          description: Multiplier applied to output pricing above the threshold.
+          type: number
+          exclusiveMinimum: true
+          minimum: 0
+      additionalProperties: false
+      required:
+        - above
+        - input_factor
+        - output_factor
+      title: AIGatewayContextWindowFactor
+      x-unstable: true
+    AIGatewayServiceTierFactor:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        tier:
+          description: 'Matched case-insensitively as a substring of the vendor''s reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter.'
+          type: string
+          minLength: 1
+        factor:
+          description: Multiplier applied to the whole request for this service tier.
+          type: number
+          exclusiveMinimum: true
+          minimum: 0
+      additionalProperties: false
+      required:
+        - tier
+        - factor
+      title: AIGatewayServiceTierFactor
+      x-unstable: true
     AIGatewayTargetAnthropicConfig:
       description: |-
         **Pre-release Feature**
@@ -41508,13 +41886,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41559,13 +41963,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41587,15 +42017,29 @@ components:
           type: string
           const: azure
         deployment_id:
-          description: The Azure deployment ID for the model.
+          description: |
+            The Azure deployment ID for the model. Applies when the Azure provider's
+            `service` is `azure-openai`; not used for `azure-foundry`.
           type: string
+          x-speakeasy-param-computed: false
         api_version:
           description: The Azure OpenAI API version to use.
           type: string
           default: '2023-05-15'
+        foundry_path_prefix:
+          description: |
+            The API path prefix for the Azure AI Foundry endpoint, selecting the model's
+            API surface. `/openai/v1` targets the OpenAI-compatible surface; `/anthropic/v1`
+            targets the Anthropic surface. Applies when the Azure provider's `service` is
+            `azure-foundry`.
+          type: string
+          default: /openai/v1
+          enum:
+            - /openai/v1
+            - /anthropic/v1
+          x-speakeasy-unknown-values: allow
       required:
         - type
-        - deployment_id
       x-unstable: true
     AIGatewayTargetBedrockConfig:
       description: |-
@@ -41614,13 +42058,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41691,13 +42161,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41738,13 +42234,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41810,13 +42332,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41861,13 +42409,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41912,13 +42486,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -41959,13 +42559,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42008,13 +42634,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42063,13 +42715,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42116,13 +42794,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42173,13 +42877,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42228,13 +42958,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42275,13 +43031,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42322,13 +43104,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42369,13 +43177,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42449,13 +43283,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42497,13 +43357,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42544,13 +43430,39 @@ components:
           type: integer
           x-speakeasy-param-computed: false
         input_cost:
-          description: Cost per input token for billing and cost tracking.
+          description: Cost per 1M input tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
         output_cost:
-          description: Cost per output token for billing and cost tracking.
+          description: Cost per 1M output tokens for billing and cost tracking.
           type: number
           x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
@@ -42765,7 +43677,7 @@ components:
             The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
           example: my-awesome-vault
           allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+            - $ref: '#/components/schemas/AIGatewayVaultName'
           x-unstable: true
         description:
           description: The description of the Vault.
@@ -42812,7 +43724,7 @@ components:
             The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
           example: my-awesome-vault
           allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+            - $ref: '#/components/schemas/AIGatewayVaultName'
           x-unstable: true
         description:
           description: The description of the Vault.
@@ -42869,7 +43781,7 @@ components:
             The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
           example: my-awesome-vault
           allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+            - $ref: '#/components/schemas/AIGatewayVaultName'
           x-unstable: true
         description:
           description: The description of the Vault.
@@ -42970,7 +43882,7 @@ components:
             The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
           example: my-awesome-vault
           allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+            - $ref: '#/components/schemas/AIGatewayVaultName'
           x-unstable: true
         description:
           description: The description of the Vault.
@@ -43048,7 +43960,7 @@ components:
             The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
           example: my-awesome-vault
           allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+            - $ref: '#/components/schemas/AIGatewayVaultName'
           x-unstable: true
         description:
           description: The description of the Vault.
@@ -43155,7 +44067,7 @@ components:
             The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
           example: my-awesome-vault
           allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+            - $ref: '#/components/schemas/AIGatewayVaultName'
           x-unstable: true
         description:
           description: The description of the Vault.
@@ -43248,7 +44160,7 @@ components:
             The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
           example: my-awesome-vault
           allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+            - $ref: '#/components/schemas/AIGatewayVaultName'
           x-unstable: true
         description:
           description: The description of the Vault.
@@ -44428,6 +45340,7 @@ components:
               - creditcard
             stop_on_error: true
           additionalProperties: true
+          x-speakeasy-type-override: any
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -44489,6 +45402,7 @@ components:
               - creditcard
             stop_on_error: true
           additionalProperties: true
+          x-speakeasy-type-override: any
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -44550,6 +45464,7 @@ components:
               - creditcard
             stop_on_error: true
           additionalProperties: true
+          x-speakeasy-type-override: any
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -44621,8 +45536,12 @@ components:
               type: string
               format: uri
               example: 'https://booking-agent.internal.kongair.com'
+            upstream:
+              $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             route:
               $ref: '#/components/schemas/AIGatewayRouteConfig'
+            proxy:
+              $ref: '#/components/schemas/AIGatewayProxyConfig'
             max_request_body_size:
               description: Maximum size of request body to parse. Set to 0 for unlimited.
               type: integer
@@ -44710,8 +45629,12 @@ components:
               type: string
               format: uri
               example: 'https://booking-agent.internal.kongair.com'
+            upstream:
+              $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             route:
               $ref: '#/components/schemas/AIGatewayRouteConfig'
+            proxy:
+              $ref: '#/components/schemas/AIGatewayProxyConfig'
             max_request_body_size:
               description: Maximum size of request body to parse. Set to 0 for unlimited.
               type: integer
@@ -44799,8 +45722,12 @@ components:
               type: string
               format: uri
               example: 'https://booking-agent.internal.kongair.com'
+            upstream:
+              $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             route:
               $ref: '#/components/schemas/AIGatewayRouteConfig'
+            proxy:
+              $ref: '#/components/schemas/AIGatewayProxyConfig'
             max_request_body_size:
               description: Maximum size of request body to parse. Set to 0 for unlimited.
               type: integer
@@ -45727,10 +46654,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayIdentityProviderReference'
-          default: null
           maxItems: 1
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         metadata:
           description: OAuth 2.0 Protected Resource Metadata advertised for this MCP server.
           allOf:
@@ -45782,10 +46707,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayIdentityProviderReference'
-          default: null
           maxItems: 1
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         metadata:
           description: OAuth 2.0 Protected Resource Metadata advertised for this MCP server.
           allOf:
@@ -45806,38 +46729,28 @@ components:
       type: object
       properties:
         discovery_endpoint:
-          description: The URL where the protected resource metadata is served.
+          description: The authorization server metadata discovery URL.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         endpoint:
-          description: The protected resource endpoint the metadata describes.
+          description: The URL path where the OAuth 2.0 Protected Resource Metadata is served.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         authorization_servers:
           description: List of authorization server issuer URLs that can issue tokens for this resource.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         resource:
           description: The protected resource's identifier (resource URI).
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         scopes_supported:
           description: List of OAuth scopes supported by the protected resource.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       title: AIGatewayMCPServerProtectedResourceMetadata
       x-unstable: true
@@ -46454,6 +47367,8 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+        upstream:
+          $ref: '#/components/schemas/AIGatewayUpstreamConfig'
       additionalProperties: false
       required:
         - url
@@ -46498,6 +47413,8 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+        upstream:
+          $ref: '#/components/schemas/AIGatewayUpstreamConfig'
       additionalProperties: false
       required:
         - url
@@ -46542,6 +47459,8 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+        upstream:
+          $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         proxy:
           $ref: '#/components/schemas/AIGatewayProxyConfig'
       additionalProperties: false
@@ -46588,6 +47507,8 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+        upstream:
+          $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         tools_cache_ttl_seconds:
           description: |
             The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
@@ -47245,6 +48166,7 @@ components:
           type: object
           additionalProperties: true
           x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
       required:
         - display_name
         - name
@@ -47290,6 +48212,7 @@ components:
           type: object
           additionalProperties: true
           x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
       required:
         - display_name
         - name
@@ -48109,6 +49032,15 @@ components:
           writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
+        session_token:
+          description: |
+            The session token for authenticating with temporary IAM credentials (issued by AWS STS, Vault, or SSO/SAML).
+            It is sent to AWS as the `X-Amz-Security-Token` header. Because temporary credentials are short-lived, reference this from a secrets backend so it is refreshed before it expires.
+            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+          type: string
+          writeOnly: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
         assume_role_arn:
           description: |
             The ARN of the IAM role to assume for generating authentication tokens.
@@ -48134,6 +49066,96 @@ components:
       required:
         - type
       title: AIGatewayModelProviderConfigAuthAWS
+      x-unstable: true
+    AIGatewayUpstreamConfig:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Configuration applied when proxying to the upstream service, including authentication.
+      type: object
+      properties:
+        auth:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            Authentication to use when proxying to the upstream service.
+          discriminator:
+            propertyName: type
+            mapping:
+              aws: '#/components/schemas/AIGatewayUpstreamAuthAWS'
+          oneOf:
+            - $ref: '#/components/schemas/AIGatewayUpstreamAuthAWS'
+          x-unstable: true
+      additionalProperties: false
+      x-unstable: true
+    AIGatewayUpstreamAuthAWS:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        AWS IAM (SigV4) authentication for the upstream service.
+      type: object
+      properties:
+        type:
+          type: string
+          const: aws
+        access_key_id:
+          description: |
+            The access key id for authenticating with static IAM User credentials.
+            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+          type: string
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        secret_access_key:
+          description: |
+            The secret access key for authenticating with static IAM User credentials.
+            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+          type: string
+          writeOnly: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        session_token:
+          description: |
+            The session token for authenticating with temporary IAM credentials.
+            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+          type: string
+          writeOnly: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        region:
+          description: |
+            The AWS region of the upstream service. Overrides the region inferred from the environment.
+          type: string
+          x-speakeasy-param-computed: false
+        assume_role_arn:
+          description: |
+            The ARN of the IAM role to assume for generating authentication tokens.
+            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+          type: string
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        role_session_name:
+          description: |
+            The session name for the temporary credentials when assuming the IAM role.
+            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+          type: string
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        sts_endpoint_url:
+          description: |
+            The STS endpoint URL to use for generating authentication tokens.
+            If not specified, the default AWS STS endpoint will be used.
+          type: string
+          x-speakeasy-param-computed: false
+      example:
+        type: aws
+        region: us-east-1
+        access_key_id: AKIAIOSFODNN7EXAMPLE
+      required:
+        - type
+      title: AIGatewayUpstreamAuthAWS
       x-unstable: true
     AIGatewayModelProviderAzure:
       description: |-
@@ -48179,12 +49201,42 @@ components:
               oneOf:
                 - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
                 - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthAzure'
+            service:
+              description: |
+                Selects the Azure backend for this provider instance. Use `azure-openai`
+                for Azure OpenAI deployments or `azure-foundry` for Azure AI Foundry.
+              type: string
+              default: azure-openai
+              enum:
+                - azure-openai
+                - azure-foundry
+              x-speakeasy-unknown-values: allow
             instance:
+              description: |
+                The Azure OpenAI instance name. Required when `service` is `azure-openai`.
               type: string
               example: kong-az-east
+              x-speakeasy-param-computed: false
+            foundry:
+              description: |
+                Endpoint configuration for Azure AI Foundry hosted models. Required when
+                `service` is `azure-foundry`.
+              type: object
+              additionalProperties: false
+              properties:
+                resource:
+                  description: The Azure AI Foundry resource name.
+                  type: string
+                  example: kong-foundry-east
+                domain:
+                  description: The domain for Azure AI Foundry hosted models.
+                  type: string
+                  default: services.ai.azure.com
+              required:
+                - resource
+              x-speakeasy-param-computed: false
           required:
             - auth
-            - instance
       required:
         - type
         - display_name
@@ -48522,11 +49574,9 @@ components:
           x-speakeasy-param-computed: false
         name:
           description: The name of the Config Store. This value is immutable after creation.
-          type: string
           example: my-config-store
-          maxLength: 256
-          minLength: 1
-          pattern: '^[a-zA-Z0-9.\-_~]*$'
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayConfigStoreName'
       additionalProperties: false
       required:
         - name
@@ -48563,11 +49613,9 @@ components:
           x-speakeasy-param-computed: false
         name:
           description: The name of the Config Store. This value is immutable after creation.
-          type: string
           example: my-config-store
-          maxLength: 256
-          minLength: 1
-          pattern: '^[a-zA-Z0-9.\-_~]*$'
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayConfigStoreName'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -48886,6 +49934,7 @@ components:
           type: object
           additionalProperties: true
           x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -48938,6 +49987,7 @@ components:
           type: object
           additionalProperties: true
           x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
         id:
           $ref: '#/components/schemas/UUID'
         created_at:

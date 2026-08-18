@@ -52,6 +52,7 @@ type IdentityDirectoryResourceModel struct {
 	NegativeTTLSecs       types.Int64             `tfsdk:"negative_ttl_secs"`
 	TTLSecs               types.Int64             `tfsdk:"ttl_secs"`
 	UpdatedAt             types.String            `tfsdk:"updated_at"`
+	VaultEnabled          types.Bool              `tfsdk:"vault_enabled"`
 }
 
 func (r *IdentityDirectoryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -169,6 +170,12 @@ func (r *IdentityDirectoryResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
+			},
+			"vault_enabled": schema.BoolAttribute{
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `Set to enabled to enable the Token Vault for this directory.` + "\n" +
+					`Defaults to disabled when omitted.`,
 			},
 		},
 	}

@@ -131,6 +131,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
 									"identity_providers": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
@@ -150,11 +151,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 											"discovery_endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The URL where the protected resource metadata is served.`,
+												Description: `The authorization server metadata discovery URL.`,
 											},
 											"endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The protected resource endpoint the metadata describes.`,
+												Description: `The URL path where the OAuth 2.0 Protected Resource Metadata is served.`,
 											},
 											"resource": schema.StringAttribute{
 												Optional:    true,
@@ -238,6 +239,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
 									"identity_providers": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
@@ -257,11 +259,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 											"discovery_endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The URL where the protected resource metadata is served.`,
+												Description: `The authorization server metadata discovery URL.`,
 											},
 											"endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The protected resource endpoint the metadata describes.`,
+												Description: `The URL path where the OAuth 2.0 Protected Resource Metadata is served.`,
 											},
 											"resource": schema.StringAttribute{
 												Optional:    true,
@@ -922,6 +924,69 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									`` + "\n" +
 									`Server-side configuration for the MCP Server.`,
 							},
+							"upstream": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"auth": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"aws": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"access_key_id": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The access key id for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"assume_role_arn": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The ARN of the IAM role to assume for generating authentication tokens.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"region": schema.StringAttribute{
+														Optional:    true,
+														Description: `The AWS region of the upstream service. Overrides the region inferred from the environment.`,
+													},
+													"role_session_name": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"secret_access_key": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The secret access key for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"session_token": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session token for authenticating with temporary IAM credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"sts_endpoint_url": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The STS endpoint URL to use for generating authentication tokens.` + "\n" +
+															`If not specified, the default AWS STS endpoint will be used.`,
+													},
+												},
+												MarkdownDescription: `**Pre-release Feature**` + "\n" +
+													`This feature is currently in beta and is subject to change.` + "\n" +
+													`` + "\n" +
+													`AWS IAM (SigV4) authentication for the upstream service.`,
+											},
+										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`Authentication to use when proxying to the upstream service.`,
+									},
+								},
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration applied when proxying to the upstream service, including authentication.`,
+							},
 							"url": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
@@ -1341,6 +1406,69 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									`` + "\n" +
 									`Configuration for an AI Gateway route.`,
 							},
+							"upstream": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"auth": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"aws": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"access_key_id": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The access key id for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"assume_role_arn": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The ARN of the IAM role to assume for generating authentication tokens.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"region": schema.StringAttribute{
+														Optional:    true,
+														Description: `The AWS region of the upstream service. Overrides the region inferred from the environment.`,
+													},
+													"role_session_name": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"secret_access_key": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The secret access key for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"session_token": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session token for authenticating with temporary IAM credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"sts_endpoint_url": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The STS endpoint URL to use for generating authentication tokens.` + "\n" +
+															`If not specified, the default AWS STS endpoint will be used.`,
+													},
+												},
+												MarkdownDescription: `**Pre-release Feature**` + "\n" +
+													`This feature is currently in beta and is subject to change.` + "\n" +
+													`` + "\n" +
+													`AWS IAM (SigV4) authentication for the upstream service.`,
+											},
+										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`Authentication to use when proxying to the upstream service.`,
+									},
+								},
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration applied when proxying to the upstream service, including authentication.`,
+							},
 							"url": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
@@ -1724,6 +1852,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
 									"identity_providers": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
@@ -1743,11 +1872,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 											"discovery_endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The URL where the protected resource metadata is served.`,
+												Description: `The authorization server metadata discovery URL.`,
 											},
 											"endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The protected resource endpoint the metadata describes.`,
+												Description: `The URL path where the OAuth 2.0 Protected Resource Metadata is served.`,
 											},
 											"resource": schema.StringAttribute{
 												Optional:    true,
@@ -1831,6 +1960,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
 									"identity_providers": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
@@ -1850,11 +1980,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 											"discovery_endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The URL where the protected resource metadata is served.`,
+												Description: `The authorization server metadata discovery URL.`,
 											},
 											"endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The protected resource endpoint the metadata describes.`,
+												Description: `The URL path where the OAuth 2.0 Protected Resource Metadata is served.`,
 											},
 											"resource": schema.StringAttribute{
 												Optional:    true,
@@ -2863,6 +2993,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
 									"identity_providers": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
@@ -2882,11 +3013,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 											"discovery_endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The URL where the protected resource metadata is served.`,
+												Description: `The authorization server metadata discovery URL.`,
 											},
 											"endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The protected resource endpoint the metadata describes.`,
+												Description: `The URL path where the OAuth 2.0 Protected Resource Metadata is served.`,
 											},
 											"resource": schema.StringAttribute{
 												Optional:    true,
@@ -2970,6 +3101,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default access control rules for allowing or denying consumer groups to tools.`,
 									},
 									"identity_providers": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
@@ -2989,11 +3121,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 											"discovery_endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The URL where the protected resource metadata is served.`,
+												Description: `The authorization server metadata discovery URL.`,
 											},
 											"endpoint": schema.StringAttribute{
 												Optional:    true,
-												Description: `The protected resource endpoint the metadata describes.`,
+												Description: `The URL path where the OAuth 2.0 Protected Resource Metadata is served.`,
 											},
 											"resource": schema.StringAttribute{
 												Optional:    true,
@@ -3722,6 +3854,69 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
 									`Server-side configuration for the MCP Server.`,
+							},
+							"upstream": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"auth": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"aws": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"access_key_id": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The access key id for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"assume_role_arn": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The ARN of the IAM role to assume for generating authentication tokens.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"region": schema.StringAttribute{
+														Optional:    true,
+														Description: `The AWS region of the upstream service. Overrides the region inferred from the environment.`,
+													},
+													"role_session_name": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"secret_access_key": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The secret access key for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"session_token": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session token for authenticating with temporary IAM credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"sts_endpoint_url": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The STS endpoint URL to use for generating authentication tokens.` + "\n" +
+															`If not specified, the default AWS STS endpoint will be used.`,
+													},
+												},
+												MarkdownDescription: `**Pre-release Feature**` + "\n" +
+													`This feature is currently in beta and is subject to change.` + "\n" +
+													`` + "\n" +
+													`AWS IAM (SigV4) authentication for the upstream service.`,
+											},
+										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`Authentication to use when proxying to the upstream service.`,
+									},
+								},
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
 								Computed: true,
@@ -4900,6 +5095,69 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									speakeasy_int64validators.NotNull(),
 									int64validator.AtLeast(0),
 								},
+							},
+							"upstream": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"auth": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"aws": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"access_key_id": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The access key id for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"assume_role_arn": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The ARN of the IAM role to assume for generating authentication tokens.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"region": schema.StringAttribute{
+														Optional:    true,
+														Description: `The AWS region of the upstream service. Overrides the region inferred from the environment.`,
+													},
+													"role_session_name": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"secret_access_key": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The secret access key for authenticating with static IAM User credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"session_token": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The session token for authenticating with temporary IAM credentials.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"sts_endpoint_url": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `The STS endpoint URL to use for generating authentication tokens.` + "\n" +
+															`If not specified, the default AWS STS endpoint will be used.`,
+													},
+												},
+												MarkdownDescription: `**Pre-release Feature**` + "\n" +
+													`This feature is currently in beta and is subject to change.` + "\n" +
+													`` + "\n" +
+													`AWS IAM (SigV4) authentication for the upstream service.`,
+											},
+										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`Authentication to use when proxying to the upstream service.`,
+									},
+								},
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
 								Computed: true,

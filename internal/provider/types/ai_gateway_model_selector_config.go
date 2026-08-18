@@ -2,8 +2,13 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type AIGatewayModelSelectorConfig struct {
-	BodySelector    *BodySelector    `queryParam:"inline" tfsdk:"body_selector"`
-	HeadersSelector *HeadersSelector `queryParam:"inline" tfsdk:"headers_selector"`
-	PathSelector    *PathSelector    `queryParam:"inline" tfsdk:"path_selector"`
+	BodyParam   types.String   `tfsdk:"body_param"`
+	HeaderParam types.String   `tfsdk:"header_param"`
+	PathParam   types.String   `tfsdk:"path_param"`
+	Values      []types.String `tfsdk:"values"`
 }

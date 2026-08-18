@@ -51,36 +51,24 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
 						}
 					}
-					if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders != nil {
-						r.ConversionListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
-						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders {
-							r.ConversionListener.Access.Consumer.IdentityProviders = append(r.ConversionListener.Access.Consumer.IdentityProviders, types.StringValue(v))
-						}
-					} else {
-						r.ConversionListener.Access.Consumer.IdentityProviders = nil
+					r.ConversionListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
+					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders {
+						r.ConversionListener.Access.Consumer.IdentityProviders = append(r.ConversionListener.Access.Consumer.IdentityProviders, types.StringValue(v))
 					}
 					if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata == nil {
 						r.ConversionListener.Access.Consumer.Metadata = nil
 					} else {
 						r.ConversionListener.Access.Consumer.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers != nil {
-							r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
-								r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = append(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = nil
+						r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
+							r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers = append(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.ConversionListener.Access.Consumer.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.DiscoveryEndpoint)
 						r.ConversionListener.Access.Consumer.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Endpoint)
 						r.ConversionListener.Access.Consumer.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported != nil {
-							r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
-								r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = append(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = nil
+						r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
+							r.ConversionListener.Access.Consumer.Metadata.ScopesSupported = append(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -113,36 +101,24 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
 						}
 					}
-					if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders != nil {
-						r.ConversionListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
-						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders {
-							r.ConversionListener.Access.OauthAccessToken.IdentityProviders = append(r.ConversionListener.Access.OauthAccessToken.IdentityProviders, types.StringValue(v))
-						}
-					} else {
-						r.ConversionListener.Access.OauthAccessToken.IdentityProviders = nil
+					r.ConversionListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
+					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders {
+						r.ConversionListener.Access.OauthAccessToken.IdentityProviders = append(r.ConversionListener.Access.OauthAccessToken.IdentityProviders, types.StringValue(v))
 					}
 					if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata == nil {
 						r.ConversionListener.Access.OauthAccessToken.Metadata = nil
 					} else {
 						r.ConversionListener.Access.OauthAccessToken.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers != nil {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
-								r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = nil
+						r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
+							r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.ConversionListener.Access.OauthAccessToken.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.DiscoveryEndpoint)
 						r.ConversionListener.Access.OauthAccessToken.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Endpoint)
 						r.ConversionListener.Access.OauthAccessToken.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported != nil {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
-								r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = nil
+						r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
+							r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -356,6 +332,35 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				}
 				r.ConversionListener.Config.Server.Timeout = types.Int64PointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Server.Timeout)
 			}
+			if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream == nil {
+				r.ConversionListener.Config.Upstream = nil
+			} else {
+				var upstreamPriorData *tfTypes.AIGatewayUpstreamConfig
+				if configPriorData != nil {
+					upstreamPriorData = configPriorData.Upstream
+				}
+				r.ConversionListener.Config.Upstream = &tfTypes.AIGatewayUpstreamConfig{}
+				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream.Auth != nil {
+					authPriorData := upstreamPriorData.Auth
+					r.ConversionListener.Config.Upstream.Auth = &tfTypes.AIGatewayUpstreamConfigAuth{}
+					if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
+						var awsPriorData1 *tfTypes.AIGatewayUpstreamAuthAWS
+						if authPriorData != nil {
+							awsPriorData1 = authPriorData.Aws
+						}
+						r.ConversionListener.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
+						r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
+						r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AssumeRoleArn)
+						r.ConversionListener.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
+						r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
+						r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
+						if awsPriorData1 != nil {
+							r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData1.SecretAccessKey
+							r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken = awsPriorData1.SessionToken
+						}
+					}
+				}
+			}
 			r.ConversionListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.URL)
 			r.ConversionListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.CreatedAt))
 			r.CreatedAt = r.ConversionListener.CreatedAt
@@ -476,7 +481,12 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			r.UpdatedAt = r.ConversionListener.UpdatedAt
 		}
 		if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly != nil {
+			conversionOnlyPriorData := r.ConversionOnly
 			r.ConversionOnly = &tfTypes.AIGatewayMCPServerConversionOnly{}
+			var configPriorData1 *tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig
+			if conversionOnlyPriorData != nil {
+				configPriorData1 = conversionOnlyPriorData.Config
+			}
 			r.ConversionOnly.Config = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig{}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Logging == nil {
 				r.ConversionOnly.Config.Logging = nil
@@ -522,6 +532,35 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionOnly.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Tags))
 				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Tags {
 					r.ConversionOnly.Config.Route.Tags = append(r.ConversionOnly.Config.Route.Tags, types.StringValue(v))
+				}
+			}
+			if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream == nil {
+				r.ConversionOnly.Config.Upstream = nil
+			} else {
+				var upstreamPriorData1 *tfTypes.AIGatewayUpstreamConfig
+				if configPriorData1 != nil {
+					upstreamPriorData1 = configPriorData1.Upstream
+				}
+				r.ConversionOnly.Config.Upstream = &tfTypes.AIGatewayUpstreamConfig{}
+				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream.Auth != nil {
+					authPriorData1 := upstreamPriorData1.Auth
+					r.ConversionOnly.Config.Upstream.Auth = &tfTypes.AIGatewayUpstreamConfigAuth{}
+					if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
+						var awsPriorData2 *tfTypes.AIGatewayUpstreamAuthAWS
+						if authPriorData1 != nil {
+							awsPriorData2 = authPriorData1.Aws
+						}
+						r.ConversionOnly.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
+						r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
+						r.ConversionOnly.Config.Upstream.Auth.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AssumeRoleArn)
+						r.ConversionOnly.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
+						r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
+						r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
+						if awsPriorData2 != nil {
+							r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData2.SecretAccessKey
+							r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken = awsPriorData2.SessionToken
+						}
+					}
 				}
 			}
 			r.ConversionOnly.Config.URL = types.StringValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.URL)
@@ -676,36 +715,24 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.Access.Consumer.DefaultToolAcls.Deny = append(r.Listener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
 						}
 					}
-					if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders != nil {
-						r.Listener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
-						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders {
-							r.Listener.Access.Consumer.IdentityProviders = append(r.Listener.Access.Consumer.IdentityProviders, types.StringValue(v))
-						}
-					} else {
-						r.Listener.Access.Consumer.IdentityProviders = nil
+					r.Listener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
+					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders {
+						r.Listener.Access.Consumer.IdentityProviders = append(r.Listener.Access.Consumer.IdentityProviders, types.StringValue(v))
 					}
 					if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata == nil {
 						r.Listener.Access.Consumer.Metadata = nil
 					} else {
 						r.Listener.Access.Consumer.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers != nil {
-							r.Listener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
-								r.Listener.Access.Consumer.Metadata.AuthorizationServers = append(r.Listener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.Consumer.Metadata.AuthorizationServers = nil
+						r.Listener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
+							r.Listener.Access.Consumer.Metadata.AuthorizationServers = append(r.Listener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.Listener.Access.Consumer.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.DiscoveryEndpoint)
 						r.Listener.Access.Consumer.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Endpoint)
 						r.Listener.Access.Consumer.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported != nil {
-							r.Listener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
-								r.Listener.Access.Consumer.Metadata.ScopesSupported = append(r.Listener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.Consumer.Metadata.ScopesSupported = nil
+						r.Listener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
+							r.Listener.Access.Consumer.Metadata.ScopesSupported = append(r.Listener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -738,43 +765,31 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
 						}
 					}
-					if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders != nil {
-						r.Listener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
-						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders {
-							r.Listener.Access.OauthAccessToken.IdentityProviders = append(r.Listener.Access.OauthAccessToken.IdentityProviders, types.StringValue(v))
-						}
-					} else {
-						r.Listener.Access.OauthAccessToken.IdentityProviders = nil
+					r.Listener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
+					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders {
+						r.Listener.Access.OauthAccessToken.IdentityProviders = append(r.Listener.Access.OauthAccessToken.IdentityProviders, types.StringValue(v))
 					}
 					if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata == nil {
 						r.Listener.Access.OauthAccessToken.Metadata = nil
 					} else {
 						r.Listener.Access.OauthAccessToken.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers != nil {
-							r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
-								r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = nil
+						r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
+							r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.Listener.Access.OauthAccessToken.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.DiscoveryEndpoint)
 						r.Listener.Access.OauthAccessToken.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Endpoint)
 						r.Listener.Access.OauthAccessToken.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported != nil {
-							r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
-								r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = nil
+						r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
+							r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
 			}
-			var configPriorData1 *tfTypes.AIGatewayMCPServerNoUpstreamConfig
+			var configPriorData2 *tfTypes.AIGatewayMCPServerNoUpstreamConfig
 			if listenerPriorData != nil {
-				configPriorData1 = listenerPriorData.Config
+				configPriorData2 = listenerPriorData.Config
 			}
 			r.Listener.Config = &tfTypes.AIGatewayMCPServerNoUpstreamConfig{}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Logging == nil {
@@ -827,8 +842,8 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.Listener.Config.Server = nil
 			} else {
 				var serverPriorData1 *tfTypes.AIGatewayMCPServerServerConfigBase
-				if configPriorData1 != nil {
-					serverPriorData1 = configPriorData1.Server
+				if configPriorData2 != nil {
+					serverPriorData1 = configPriorData2.Server
 				}
 				r.Listener.Config.Server = &tfTypes.AIGatewayMCPServerServerConfigBase{}
 				r.Listener.Config.Server.ForwardClientHeaders = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server.ForwardClientHeaders)
@@ -867,9 +882,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							cloudAuthenticationPriorData1 := redisPriorData1.CloudAuthentication
 							r.Listener.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.AIGatewayRedisCloudConfigurationCloudAuthentication{}
 							if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
-								var awsPriorData1 *tfTypes.AIGatewayRedisAWSAuthentication
+								var awsPriorData3 *tfTypes.AIGatewayRedisAWSAuthentication
 								if cloudAuthenticationPriorData1 != nil {
-									awsPriorData1 = cloudAuthenticationPriorData1.Aws
+									awsPriorData3 = cloudAuthenticationPriorData1.Aws
 								}
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
@@ -878,8 +893,8 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								if awsPriorData1 != nil {
-									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData1.SecretAccessKey
+								if awsPriorData3 != nil {
+									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData3.SecretAccessKey
 								}
 							}
 							if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
@@ -1136,36 +1151,24 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
 						}
 					}
-					if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders != nil {
-						r.PassthroughListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
-						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders {
-							r.PassthroughListener.Access.Consumer.IdentityProviders = append(r.PassthroughListener.Access.Consumer.IdentityProviders, types.StringValue(v))
-						}
-					} else {
-						r.PassthroughListener.Access.Consumer.IdentityProviders = nil
+					r.PassthroughListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
+					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders {
+						r.PassthroughListener.Access.Consumer.IdentityProviders = append(r.PassthroughListener.Access.Consumer.IdentityProviders, types.StringValue(v))
 					}
 					if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata == nil {
 						r.PassthroughListener.Access.Consumer.Metadata = nil
 					} else {
 						r.PassthroughListener.Access.Consumer.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers != nil {
-							r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
-								r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = nil
+						r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.AuthorizationServers {
+							r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.PassthroughListener.Access.Consumer.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.DiscoveryEndpoint)
 						r.PassthroughListener.Access.Consumer.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Endpoint)
 						r.PassthroughListener.Access.Consumer.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported != nil {
-							r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
-								r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = append(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = nil
+						r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerConsumer.Metadata.ScopesSupported {
+							r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported = append(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
@@ -1198,43 +1201,31 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
 						}
 					}
-					if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders != nil {
-						r.PassthroughListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
-						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders {
-							r.PassthroughListener.Access.OauthAccessToken.IdentityProviders = append(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders, types.StringValue(v))
-						}
-					} else {
-						r.PassthroughListener.Access.OauthAccessToken.IdentityProviders = nil
+					r.PassthroughListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
+					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.IdentityProviders {
+						r.PassthroughListener.Access.OauthAccessToken.IdentityProviders = append(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders, types.StringValue(v))
 					}
 					if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata == nil {
 						r.PassthroughListener.Access.OauthAccessToken.Metadata = nil
 					} else {
 						r.PassthroughListener.Access.OauthAccessToken.Metadata = &tfTypes.AIGatewayMCPServerProtectedResourceMetadata{}
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers != nil {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
-								r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = nil
+						r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.AuthorizationServers {
+							r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers, types.StringValue(v))
 						}
 						r.PassthroughListener.Access.OauthAccessToken.Metadata.DiscoveryEndpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.DiscoveryEndpoint)
 						r.PassthroughListener.Access.OauthAccessToken.Metadata.Endpoint = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Endpoint)
 						r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.Resource)
-						if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported != nil {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
-							for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
-								r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
-							}
-						} else {
-							r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = nil
+						r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported))
+						for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Access.AIGatewayMCPServerListenerOauth.Metadata.ScopesSupported {
+							r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported = append(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported, types.StringValue(v))
 						}
 					}
 				}
 			}
-			var configPriorData2 *tfTypes.AIGatewayMCPServerWithUpstreamConfig
+			var configPriorData3 *tfTypes.AIGatewayMCPServerWithUpstreamConfig
 			if passthroughListenerPriorData != nil {
-				configPriorData2 = passthroughListenerPriorData.Config
+				configPriorData3 = passthroughListenerPriorData.Config
 			}
 			r.PassthroughListener.Config = &tfTypes.AIGatewayMCPServerWithUpstreamConfig{}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Logging == nil {
@@ -1249,21 +1240,21 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.PassthroughListener.Config.Proxy = nil
 			} else {
 				var proxyPriorData *tfTypes.AIGatewayProxyConfig
-				if configPriorData2 != nil {
-					proxyPriorData = configPriorData2.Proxy
+				if configPriorData3 != nil {
+					proxyPriorData = configPriorData3.Proxy
 				}
 				r.PassthroughListener.Config.Proxy = &tfTypes.AIGatewayProxyConfig{}
 				if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Proxy.Auth == nil {
 					r.PassthroughListener.Config.Proxy.Auth = nil
 				} else {
-					var authPriorData *tfTypes.Auth
+					var authPriorData2 *tfTypes.Auth
 					if proxyPriorData != nil {
-						authPriorData = proxyPriorData.Auth
+						authPriorData2 = proxyPriorData.Auth
 					}
 					r.PassthroughListener.Config.Proxy.Auth = &tfTypes.Auth{}
 					r.PassthroughListener.Config.Proxy.Auth.Username = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Proxy.Auth.Username)
-					if authPriorData != nil {
-						r.PassthroughListener.Config.Proxy.Auth.Password = authPriorData.Password
+					if authPriorData2 != nil {
+						r.PassthroughListener.Config.Proxy.Auth.Password = authPriorData2.Password
 					}
 				}
 				if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Proxy.HTTPProxy == nil {
@@ -1329,8 +1320,8 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.PassthroughListener.Config.Server = nil
 			} else {
 				var serverPriorData2 *tfTypes.AIGatewayMCPServerServerConfigBase
-				if configPriorData2 != nil {
-					serverPriorData2 = configPriorData2.Server
+				if configPriorData3 != nil {
+					serverPriorData2 = configPriorData3.Server
 				}
 				r.PassthroughListener.Config.Server = &tfTypes.AIGatewayMCPServerServerConfigBase{}
 				r.PassthroughListener.Config.Server.ForwardClientHeaders = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.ForwardClientHeaders)
@@ -1369,9 +1360,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							cloudAuthenticationPriorData2 := redisPriorData2.CloudAuthentication
 							r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.AIGatewayRedisCloudConfigurationCloudAuthentication{}
 							if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
-								var awsPriorData2 *tfTypes.AIGatewayRedisAWSAuthentication
+								var awsPriorData4 *tfTypes.AIGatewayRedisAWSAuthentication
 								if cloudAuthenticationPriorData2 != nil {
-									awsPriorData2 = cloudAuthenticationPriorData2.Aws
+									awsPriorData4 = cloudAuthenticationPriorData2.Aws
 								}
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
@@ -1380,8 +1371,8 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								if awsPriorData2 != nil {
-									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData2.SecretAccessKey
+								if awsPriorData4 != nil {
+									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData4.SecretAccessKey
 								}
 							}
 							if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
@@ -1482,6 +1473,35 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 				r.PassthroughListener.Config.Server.Timeout = types.Int64PointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server.Timeout)
+			}
+			if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream == nil {
+				r.PassthroughListener.Config.Upstream = nil
+			} else {
+				var upstreamPriorData2 *tfTypes.AIGatewayUpstreamConfig
+				if configPriorData3 != nil {
+					upstreamPriorData2 = configPriorData3.Upstream
+				}
+				r.PassthroughListener.Config.Upstream = &tfTypes.AIGatewayUpstreamConfig{}
+				if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream.Auth != nil {
+					authPriorData3 := upstreamPriorData2.Auth
+					r.PassthroughListener.Config.Upstream.Auth = &tfTypes.AIGatewayUpstreamConfigAuth{}
+					if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
+						var awsPriorData5 *tfTypes.AIGatewayUpstreamAuthAWS
+						if authPriorData3 != nil {
+							awsPriorData5 = authPriorData3.Aws
+						}
+						r.PassthroughListener.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
+						r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
+						r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AssumeRoleArn)
+						r.PassthroughListener.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
+						r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
+						r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
+						if awsPriorData5 != nil {
+							r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData5.SecretAccessKey
+							r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken = awsPriorData5.SessionToken
+						}
+					}
+				}
 			}
 			r.PassthroughListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.URL)
 			r.PassthroughListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.CreatedAt))
@@ -1671,9 +1691,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			var configPriorData3 *tfTypes.AIGatewayMCPServerUpstreamServerConfig
+			var configPriorData4 *tfTypes.AIGatewayMCPServerUpstreamServerConfig
 			if upstreamServerPriorData != nil {
-				configPriorData3 = upstreamServerPriorData.Config
+				configPriorData4 = upstreamServerPriorData.Config
 			}
 			r.UpstreamServer.Config = &tfTypes.AIGatewayMCPServerUpstreamServerConfig{}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Logging == nil {
@@ -1726,8 +1746,8 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.UpstreamServer.Config.Server = nil
 			} else {
 				var serverPriorData3 *tfTypes.AIGatewayMCPServerUpstreamServerServerConfig
-				if configPriorData3 != nil {
-					serverPriorData3 = configPriorData3.Server
+				if configPriorData4 != nil {
+					serverPriorData3 = configPriorData4.Server
 				}
 				r.UpstreamServer.Config.Server = &tfTypes.AIGatewayMCPServerUpstreamServerServerConfig{}
 				r.UpstreamServer.Config.Server.ForwardClientHeaders = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server.ForwardClientHeaders)
@@ -1767,9 +1787,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							cloudAuthenticationPriorData3 := redisPriorData3.CloudAuthentication
 							r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.AIGatewayRedisCloudConfigurationCloudAuthentication{}
 							if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
-								var awsPriorData3 *tfTypes.AIGatewayRedisAWSAuthentication
+								var awsPriorData6 *tfTypes.AIGatewayRedisAWSAuthentication
 								if cloudAuthenticationPriorData3 != nil {
-									awsPriorData3 = cloudAuthenticationPriorData3.Aws
+									awsPriorData6 = cloudAuthenticationPriorData3.Aws
 								}
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
@@ -1778,8 +1798,8 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								if awsPriorData3 != nil {
-									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData3.SecretAccessKey
+								if awsPriorData6 != nil {
+									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData6.SecretAccessKey
 								}
 							}
 							if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
@@ -1907,6 +1927,35 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				}
 			}
 			r.UpstreamServer.Config.ToolsCacheTTLSeconds = types.Int64Value(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.ToolsCacheTTLSeconds)
+			if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream == nil {
+				r.UpstreamServer.Config.Upstream = nil
+			} else {
+				var upstreamPriorData3 *tfTypes.AIGatewayUpstreamConfig
+				if configPriorData4 != nil {
+					upstreamPriorData3 = configPriorData4.Upstream
+				}
+				r.UpstreamServer.Config.Upstream = &tfTypes.AIGatewayUpstreamConfig{}
+				if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream.Auth != nil {
+					authPriorData4 := upstreamPriorData3.Auth
+					r.UpstreamServer.Config.Upstream.Auth = &tfTypes.AIGatewayUpstreamConfigAuth{}
+					if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
+						var awsPriorData7 *tfTypes.AIGatewayUpstreamAuthAWS
+						if authPriorData4 != nil {
+							awsPriorData7 = authPriorData4.Aws
+						}
+						r.UpstreamServer.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
+						r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
+						r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AssumeRoleArn)
+						r.UpstreamServer.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
+						r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
+						r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
+						if awsPriorData7 != nil {
+							r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData7.SecretAccessKey
+							r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken = awsPriorData7.SessionToken
+						}
+					}
+				}
+			}
 			r.UpstreamServer.Config.URL = types.StringValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.URL)
 			r.UpstreamServer.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.CreatedAt))
 			r.CreatedAt = r.UpstreamServer.CreatedAt
@@ -2240,11 +2289,80 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		var url string
 		url = r.ConversionOnly.Config.URL.ValueString()
 
+		var upstream *shared.AIGatewayUpstreamConfig
+		if r.ConversionOnly.Config.Upstream != nil {
+			var auth *shared.AIGatewayUpstreamConfigAuth
+			if r.ConversionOnly.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
+				if r.ConversionOnly.Config.Upstream.Auth.Aws != nil {
+					accessKeyID := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyID = r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyID = nil
+					}
+					secretAccessKey := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey = r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey = nil
+					}
+					sessionToken := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken = r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken = nil
+					}
+					region := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region = r.ConversionOnly.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region = nil
+					}
+					assumeRoleArn := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn = r.ConversionOnly.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn = nil
+					}
+					roleSessionName := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName = r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName = nil
+					}
+					stsEndpointURL := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointURL = r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointURL = nil
+					}
+					aiGatewayUpstreamAuthAWS = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyID,
+						SecretAccessKey: secretAccessKey,
+						SessionToken:    sessionToken,
+						Region:          region,
+						AssumeRoleArn:   assumeRoleArn,
+						RoleSessionName: roleSessionName,
+						StsEndpointURL:  stsEndpointURL,
+					}
+				}
+				if aiGatewayUpstreamAuthAWS != nil {
+					auth = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
+					}
+				}
+			}
+			upstream = &shared.AIGatewayUpstreamConfig{
+				Auth: auth,
+			}
+		}
 		config := shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig{
 			Route:              route,
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 			URL:                url,
+			Upstream:           upstream,
 		}
 		tools := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionOnly.Tools))
 		for toolsIndex := range r.ConversionOnly.Tools {
@@ -2585,17 +2703,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyID := new(string)
+							accessKeyId1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyID = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyID = nil
+								accessKeyId1 = nil
 							}
-							assumeRoleArn := new(string)
+							assumeRoleArn1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn = nil
+								assumeRoleArn1 = nil
 							}
 							cacheName := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -2609,32 +2727,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							} else {
 								isServerless = nil
 							}
-							region := new(string)
+							region1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region = nil
+								region1 = nil
 							}
-							roleSessionName := new(string)
+							roleSessionName1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName = nil
+								roleSessionName1 = nil
 							}
-							secretAccessKey := new(string)
+							secretAccessKey1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey = nil
+								secretAccessKey1 = nil
 							}
 							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyID,
-								AssumeRoleArn:   assumeRoleArn,
+								AccessKeyID:     accessKeyId1,
+								AssumeRoleArn:   assumeRoleArn1,
 								CacheName:       cacheName,
 								IsServerless:    isServerless,
-								Region:          region,
-								RoleSessionName: roleSessionName,
-								SecretAccessKey: secretAccessKey,
+								Region:          region1,
+								RoleSessionName: roleSessionName1,
+								SecretAccessKey: secretAccessKey1,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication != nil {
@@ -2934,12 +3052,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		var url1 string
 		url1 = r.ConversionListener.Config.URL.ValueString()
 
+		var upstream1 *shared.AIGatewayUpstreamConfig
+		if r.ConversionListener.Config.Upstream != nil {
+			var auth1 *shared.AIGatewayUpstreamConfigAuth
+			if r.ConversionListener.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
+				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
+					accessKeyId2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId2 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId2 = nil
+					}
+					secretAccessKey2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey2 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey2 = nil
+					}
+					sessionToken1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken1 = r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken1 = nil
+					}
+					region2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region2 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region2 = nil
+					}
+					assumeRoleArn2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn2 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn2 = nil
+					}
+					roleSessionName2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName2 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName2 = nil
+					}
+					stsEndpointUrl1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl1 = r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl1 = nil
+					}
+					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId2,
+						SecretAccessKey: secretAccessKey2,
+						SessionToken:    sessionToken1,
+						Region:          region2,
+						AssumeRoleArn:   assumeRoleArn2,
+						RoleSessionName: roleSessionName2,
+						StsEndpointURL:  stsEndpointUrl1,
+					}
+				}
+				if aiGatewayUpstreamAuthAws1 != nil {
+					auth1 = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
+					}
+				}
+			}
+			upstream1 = &shared.AIGatewayUpstreamConfig{
+				Auth: auth1,
+			}
+		}
 		config1 := shared.AIGatewayMCPServerWithUpstreamNoProxyConfig{
 			Route:              route1,
 			Logging:            logging1,
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
+			Upstream:           upstream1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -3127,12 +3314,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						Deny:  deny3,
 					}
 				}
-				var identityProviders []string
-				if r.ConversionListener.Access.Consumer.IdentityProviders != nil {
-					identityProviders = make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
-					for identityProvidersIndex := range r.ConversionListener.Access.Consumer.IdentityProviders {
-						identityProviders = append(identityProviders, r.ConversionListener.Access.Consumer.IdentityProviders[identityProvidersIndex].ValueString())
-					}
+				identityProviders := make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
+				for identityProvidersIndex := range r.ConversionListener.Access.Consumer.IdentityProviders {
+					identityProviders = append(identityProviders, r.ConversionListener.Access.Consumer.IdentityProviders[identityProvidersIndex].ValueString())
 				}
 				var metadata *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.ConversionListener.Access.Consumer.Metadata != nil {
@@ -3148,12 +3332,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint = nil
 					}
-					var authorizationServers []string
-					if r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
-						}
+					authorizationServers := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
 					}
 					resource := new(string)
 					if !r.ConversionListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -3161,12 +3342,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource = nil
 					}
-					var scopesSupported []string
-					if r.ConversionListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
-						}
+					scopesSupported := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
 					}
 					metadata = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint,
@@ -3223,12 +3401,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						Deny:  deny5,
 					}
 				}
-				var identityProviders1 []string
-				if r.ConversionListener.Access.OauthAccessToken.IdentityProviders != nil {
-					identityProviders1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
-					for identityProvidersIndex1 := range r.ConversionListener.Access.OauthAccessToken.IdentityProviders {
-						identityProviders1 = append(identityProviders1, r.ConversionListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex1].ValueString())
-					}
+				identityProviders1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
+				for identityProvidersIndex1 := range r.ConversionListener.Access.OauthAccessToken.IdentityProviders {
+					identityProviders1 = append(identityProviders1, r.ConversionListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex1].ValueString())
 				}
 				var metadata1 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.ConversionListener.Access.OauthAccessToken.Metadata != nil {
@@ -3244,12 +3419,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint1 = nil
 					}
-					var authorizationServers1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
-						}
+					authorizationServers1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
 					}
 					resource1 := new(string)
 					if !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -3257,12 +3429,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource1 = nil
 					}
-					var scopesSupported1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
-						}
+					scopesSupported1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
 					}
 					metadata1 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint1,
@@ -3474,17 +3643,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					if r.Listener.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId1 := new(string)
+							accessKeyId3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId1 = nil
+								accessKeyId3 = nil
 							}
-							assumeRoleArn1 := new(string)
+							assumeRoleArn3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn1 = nil
+								assumeRoleArn3 = nil
 							}
 							cacheName1 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -3498,32 +3667,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							} else {
 								isServerless1 = nil
 							}
-							region1 := new(string)
+							region3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region1 = nil
+								region3 = nil
 							}
-							roleSessionName1 := new(string)
+							roleSessionName3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName1 = nil
+								roleSessionName3 = nil
 							}
-							secretAccessKey1 := new(string)
+							secretAccessKey3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey1 = nil
+								secretAccessKey3 = nil
 							}
 							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId1,
-								AssumeRoleArn:   assumeRoleArn1,
+								AccessKeyID:     accessKeyId3,
+								AssumeRoleArn:   assumeRoleArn3,
 								CacheName:       cacheName1,
 								IsServerless:    isServerless1,
-								Region:          region1,
-								RoleSessionName: roleSessionName1,
-								SecretAccessKey: secretAccessKey1,
+								Region:          region3,
+								RoleSessionName: roleSessionName3,
+								SecretAccessKey: secretAccessKey3,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication1 != nil {
@@ -4017,12 +4186,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						Deny:  deny8,
 					}
 				}
-				var identityProviders2 []string
-				if r.Listener.Access.Consumer.IdentityProviders != nil {
-					identityProviders2 = make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
-					for identityProvidersIndex2 := range r.Listener.Access.Consumer.IdentityProviders {
-						identityProviders2 = append(identityProviders2, r.Listener.Access.Consumer.IdentityProviders[identityProvidersIndex2].ValueString())
-					}
+				identityProviders2 := make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
+				for identityProvidersIndex2 := range r.Listener.Access.Consumer.IdentityProviders {
+					identityProviders2 = append(identityProviders2, r.Listener.Access.Consumer.IdentityProviders[identityProvidersIndex2].ValueString())
 				}
 				var metadata2 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.Listener.Access.Consumer.Metadata != nil {
@@ -4038,12 +4204,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint2 = nil
 					}
-					var authorizationServers2 []string
-					if r.Listener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
-						}
+					authorizationServers2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
 					}
 					resource2 := new(string)
 					if !r.Listener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.Listener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -4051,12 +4214,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource2 = nil
 					}
-					var scopesSupported2 []string
-					if r.Listener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
-						}
+					scopesSupported2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
 					}
 					metadata2 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint2,
@@ -4113,12 +4273,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						Deny:  deny10,
 					}
 				}
-				var identityProviders3 []string
-				if r.Listener.Access.OauthAccessToken.IdentityProviders != nil {
-					identityProviders3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
-					for identityProvidersIndex3 := range r.Listener.Access.OauthAccessToken.IdentityProviders {
-						identityProviders3 = append(identityProviders3, r.Listener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex3].ValueString())
-					}
+				identityProviders3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
+				for identityProvidersIndex3 := range r.Listener.Access.OauthAccessToken.IdentityProviders {
+					identityProviders3 = append(identityProviders3, r.Listener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex3].ValueString())
 				}
 				var metadata3 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.Listener.Access.OauthAccessToken.Metadata != nil {
@@ -4134,12 +4291,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint3 = nil
 					}
-					var authorizationServers3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
-						}
+					authorizationServers3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
 					}
 					resource3 := new(string)
 					if !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -4147,12 +4301,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource3 = nil
 					}
-					var scopesSupported3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
-						}
+					scopesSupported3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
 					}
 					metadata3 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint3,
@@ -4364,17 +4515,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication2 *shared.AIGatewayRedisAWSAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId2 := new(string)
+							accessKeyId4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId2 = nil
+								accessKeyId4 = nil
 							}
-							assumeRoleArn2 := new(string)
+							assumeRoleArn4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn2 = nil
+								assumeRoleArn4 = nil
 							}
 							cacheName2 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -4388,32 +4539,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							} else {
 								isServerless2 = nil
 							}
-							region2 := new(string)
+							region4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region2 = nil
+								region4 = nil
 							}
-							roleSessionName2 := new(string)
+							roleSessionName4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName2 = nil
+								roleSessionName4 = nil
 							}
-							secretAccessKey2 := new(string)
+							secretAccessKey4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey2 = nil
+								secretAccessKey4 = nil
 							}
 							aiGatewayRedisAWSAuthentication2 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId2,
-								AssumeRoleArn:   assumeRoleArn2,
+								AccessKeyID:     accessKeyId4,
+								AssumeRoleArn:   assumeRoleArn4,
 								CacheName:       cacheName2,
 								IsServerless:    isServerless2,
-								Region:          region2,
-								RoleSessionName: roleSessionName2,
-								SecretAccessKey: secretAccessKey2,
+								Region:          region4,
+								RoleSessionName: roleSessionName4,
+								SecretAccessKey: secretAccessKey4,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication2 != nil {
@@ -4713,6 +4864,74 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		var url2 string
 		url2 = r.PassthroughListener.Config.URL.ValueString()
 
+		var upstream2 *shared.AIGatewayUpstreamConfig
+		if r.PassthroughListener.Config.Upstream != nil {
+			var auth2 *shared.AIGatewayUpstreamConfigAuth
+			if r.PassthroughListener.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
+				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
+					accessKeyId5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId5 = nil
+					}
+					secretAccessKey5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey5 = r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey5 = nil
+					}
+					sessionToken2 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken2 = r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken2 = nil
+					}
+					region5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region5 = r.PassthroughListener.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region5 = nil
+					}
+					assumeRoleArn5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn5 = nil
+					}
+					roleSessionName5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName5 = r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName5 = nil
+					}
+					stsEndpointUrl2 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl2 = r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl2 = nil
+					}
+					aiGatewayUpstreamAuthAws2 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId5,
+						SecretAccessKey: secretAccessKey5,
+						SessionToken:    sessionToken2,
+						Region:          region5,
+						AssumeRoleArn:   assumeRoleArn5,
+						RoleSessionName: roleSessionName5,
+						StsEndpointURL:  stsEndpointUrl2,
+					}
+				}
+				if aiGatewayUpstreamAuthAws2 != nil {
+					auth2 = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws2,
+					}
+				}
+			}
+			upstream2 = &shared.AIGatewayUpstreamConfig{
+				Auth: auth2,
+			}
+		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
 			var httpProxy *shared.HTTPProxy
@@ -4759,7 +4978,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				proxyScheme = nil
 			}
-			var auth *shared.Auth
+			var auth3 *shared.Auth
 			if r.PassthroughListener.Config.Proxy.Auth != nil {
 				username6 := new(string)
 				if !r.PassthroughListener.Config.Proxy.Auth.Username.IsUnknown() && !r.PassthroughListener.Config.Proxy.Auth.Username.IsNull() {
@@ -4773,7 +4992,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					password6 = nil
 				}
-				auth = &shared.Auth{
+				auth3 = &shared.Auth{
 					Username: username6,
 					Password: password6,
 				}
@@ -4788,7 +5007,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				HTTPProxy:   httpProxy,
 				HTTPSProxy:  httpsProxy,
 				ProxyScheme: proxyScheme,
-				Auth:        auth,
+				Auth:        auth3,
 				NoProxy:     noProxy,
 			}
 		}
@@ -4798,6 +5017,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize3,
 			Server:             server2,
 			URL:                url2,
+			Upstream:           upstream2,
 			Proxy:              proxy,
 		}
 		tools3 := make([]shared.AIGatewayMCPToolBase, 0, len(r.PassthroughListener.Tools))
@@ -4991,12 +5211,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						Deny:  deny13,
 					}
 				}
-				var identityProviders4 []string
-				if r.PassthroughListener.Access.Consumer.IdentityProviders != nil {
-					identityProviders4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
-					for identityProvidersIndex4 := range r.PassthroughListener.Access.Consumer.IdentityProviders {
-						identityProviders4 = append(identityProviders4, r.PassthroughListener.Access.Consumer.IdentityProviders[identityProvidersIndex4].ValueString())
-					}
+				identityProviders4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
+				for identityProvidersIndex4 := range r.PassthroughListener.Access.Consumer.IdentityProviders {
+					identityProviders4 = append(identityProviders4, r.PassthroughListener.Access.Consumer.IdentityProviders[identityProvidersIndex4].ValueString())
 				}
 				var metadata4 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.PassthroughListener.Access.Consumer.Metadata != nil {
@@ -5012,12 +5229,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint4 = nil
 					}
-					var authorizationServers4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
-						}
+					authorizationServers4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
 					}
 					resource4 := new(string)
 					if !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -5025,12 +5239,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource4 = nil
 					}
-					var scopesSupported4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
-						}
+					scopesSupported4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
 					}
 					metadata4 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint4,
@@ -5087,12 +5298,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						Deny:  deny15,
 					}
 				}
-				var identityProviders5 []string
-				if r.PassthroughListener.Access.OauthAccessToken.IdentityProviders != nil {
-					identityProviders5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
-					for identityProvidersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.IdentityProviders {
-						identityProviders5 = append(identityProviders5, r.PassthroughListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex5].ValueString())
-					}
+				identityProviders5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
+				for identityProvidersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.IdentityProviders {
+					identityProviders5 = append(identityProviders5, r.PassthroughListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex5].ValueString())
 				}
 				var metadata5 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.PassthroughListener.Access.OauthAccessToken.Metadata != nil {
@@ -5108,12 +5316,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						endpoint5 = nil
 					}
-					var authorizationServers5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
-						}
+					authorizationServers5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
 					}
 					resource5 := new(string)
 					if !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -5121,12 +5326,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						resource5 = nil
 					}
-					var scopesSupported5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
-						}
+					scopesSupported5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
 					}
 					metadata5 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint5,
@@ -5338,17 +5540,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication3 *shared.AIGatewayRedisAWSAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId3 := new(string)
+							accessKeyId6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId3 = nil
+								accessKeyId6 = nil
 							}
-							assumeRoleArn3 := new(string)
+							assumeRoleArn6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn3 = nil
+								assumeRoleArn6 = nil
 							}
 							cacheName3 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -5362,32 +5564,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							} else {
 								isServerless3 = nil
 							}
-							region3 := new(string)
+							region6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region3 = nil
+								region6 = nil
 							}
-							roleSessionName3 := new(string)
+							roleSessionName6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName3 = nil
+								roleSessionName6 = nil
 							}
-							secretAccessKey3 := new(string)
+							secretAccessKey6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey3 = nil
+								secretAccessKey6 = nil
 							}
 							aiGatewayRedisAWSAuthentication3 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId3,
-								AssumeRoleArn:   assumeRoleArn3,
+								AccessKeyID:     accessKeyId6,
+								AssumeRoleArn:   assumeRoleArn6,
 								CacheName:       cacheName3,
 								IsServerless:    isServerless3,
-								Region:          region3,
-								RoleSessionName: roleSessionName3,
-								SecretAccessKey: secretAccessKey3,
+								Region:          region6,
+								RoleSessionName: roleSessionName6,
+								SecretAccessKey: secretAccessKey6,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication3 != nil {
@@ -5775,6 +5977,74 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		var url3 string
 		url3 = r.UpstreamServer.Config.URL.ValueString()
 
+		var upstream3 *shared.AIGatewayUpstreamConfig
+		if r.UpstreamServer.Config.Upstream != nil {
+			var auth4 *shared.AIGatewayUpstreamConfigAuth
+			if r.UpstreamServer.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
+				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
+					accessKeyId7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId7 = nil
+					}
+					secretAccessKey7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey7 = r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey7 = nil
+					}
+					sessionToken3 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken3 = r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken3 = nil
+					}
+					region7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region7 = r.UpstreamServer.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region7 = nil
+					}
+					assumeRoleArn7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn7 = nil
+					}
+					roleSessionName7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName7 = r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName7 = nil
+					}
+					stsEndpointUrl3 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl3 = r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl3 = nil
+					}
+					aiGatewayUpstreamAuthAws3 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId7,
+						SecretAccessKey: secretAccessKey7,
+						SessionToken:    sessionToken3,
+						Region:          region7,
+						AssumeRoleArn:   assumeRoleArn7,
+						RoleSessionName: roleSessionName7,
+						StsEndpointURL:  stsEndpointUrl3,
+					}
+				}
+				if aiGatewayUpstreamAuthAws3 != nil {
+					auth4 = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws3,
+					}
+				}
+			}
+			upstream3 = &shared.AIGatewayUpstreamConfig{
+				Auth: auth4,
+			}
+		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
 
@@ -5784,6 +6054,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize:   maxRequestBodySize4,
 			Server:               server3,
 			URL:                  url3,
+			Upstream:             upstream3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools4 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
@@ -6208,11 +6479,80 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		var url string
 		url = r.ConversionOnly.Config.URL.ValueString()
 
+		var upstream *shared.AIGatewayUpstreamConfig
+		if r.ConversionOnly.Config.Upstream != nil {
+			var auth *shared.AIGatewayUpstreamConfigAuth
+			if r.ConversionOnly.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
+				if r.ConversionOnly.Config.Upstream.Auth.Aws != nil {
+					accessKeyID := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyID = r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyID = nil
+					}
+					secretAccessKey := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey = r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey = nil
+					}
+					sessionToken := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken = r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken = nil
+					}
+					region := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region = r.ConversionOnly.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region = nil
+					}
+					assumeRoleArn := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn = r.ConversionOnly.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn = nil
+					}
+					roleSessionName := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName = r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName = nil
+					}
+					stsEndpointURL := new(string)
+					if !r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointURL = r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointURL = nil
+					}
+					aiGatewayUpstreamAuthAWS = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyID,
+						SecretAccessKey: secretAccessKey,
+						SessionToken:    sessionToken,
+						Region:          region,
+						AssumeRoleArn:   assumeRoleArn,
+						RoleSessionName: roleSessionName,
+						StsEndpointURL:  stsEndpointURL,
+					}
+				}
+				if aiGatewayUpstreamAuthAWS != nil {
+					auth = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
+					}
+				}
+			}
+			upstream = &shared.AIGatewayUpstreamConfig{
+				Auth: auth,
+			}
+		}
 		config := shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig{
 			Route:              route,
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 			URL:                url,
+			Upstream:           upstream,
 		}
 		tools := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionOnly.Tools))
 		for toolsIndex := range r.ConversionOnly.Tools {
@@ -6553,17 +6893,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyID := new(string)
+							accessKeyId1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyID = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyID = nil
+								accessKeyId1 = nil
 							}
-							assumeRoleArn := new(string)
+							assumeRoleArn1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn = nil
+								assumeRoleArn1 = nil
 							}
 							cacheName := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -6577,32 +6917,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							} else {
 								isServerless = nil
 							}
-							region := new(string)
+							region1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region = nil
+								region1 = nil
 							}
-							roleSessionName := new(string)
+							roleSessionName1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName = nil
+								roleSessionName1 = nil
 							}
-							secretAccessKey := new(string)
+							secretAccessKey1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey = nil
+								secretAccessKey1 = nil
 							}
 							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyID,
-								AssumeRoleArn:   assumeRoleArn,
+								AccessKeyID:     accessKeyId1,
+								AssumeRoleArn:   assumeRoleArn1,
 								CacheName:       cacheName,
 								IsServerless:    isServerless,
-								Region:          region,
-								RoleSessionName: roleSessionName,
-								SecretAccessKey: secretAccessKey,
+								Region:          region1,
+								RoleSessionName: roleSessionName1,
+								SecretAccessKey: secretAccessKey1,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication != nil {
@@ -6902,12 +7242,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		var url1 string
 		url1 = r.ConversionListener.Config.URL.ValueString()
 
+		var upstream1 *shared.AIGatewayUpstreamConfig
+		if r.ConversionListener.Config.Upstream != nil {
+			var auth1 *shared.AIGatewayUpstreamConfigAuth
+			if r.ConversionListener.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
+				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
+					accessKeyId2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId2 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId2 = nil
+					}
+					secretAccessKey2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey2 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey2 = nil
+					}
+					sessionToken1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken1 = r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken1 = nil
+					}
+					region2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region2 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region2 = nil
+					}
+					assumeRoleArn2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn2 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn2 = nil
+					}
+					roleSessionName2 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName2 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName2 = nil
+					}
+					stsEndpointUrl1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl1 = r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl1 = nil
+					}
+					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId2,
+						SecretAccessKey: secretAccessKey2,
+						SessionToken:    sessionToken1,
+						Region:          region2,
+						AssumeRoleArn:   assumeRoleArn2,
+						RoleSessionName: roleSessionName2,
+						StsEndpointURL:  stsEndpointUrl1,
+					}
+				}
+				if aiGatewayUpstreamAuthAws1 != nil {
+					auth1 = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
+					}
+				}
+			}
+			upstream1 = &shared.AIGatewayUpstreamConfig{
+				Auth: auth1,
+			}
+		}
 		config1 := shared.AIGatewayMCPServerWithUpstreamNoProxyConfig{
 			Route:              route1,
 			Logging:            logging1,
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
+			Upstream:           upstream1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -7095,12 +7504,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						Deny:  deny3,
 					}
 				}
-				var identityProviders []string
-				if r.ConversionListener.Access.Consumer.IdentityProviders != nil {
-					identityProviders = make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
-					for identityProvidersIndex := range r.ConversionListener.Access.Consumer.IdentityProviders {
-						identityProviders = append(identityProviders, r.ConversionListener.Access.Consumer.IdentityProviders[identityProvidersIndex].ValueString())
-					}
+				identityProviders := make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
+				for identityProvidersIndex := range r.ConversionListener.Access.Consumer.IdentityProviders {
+					identityProviders = append(identityProviders, r.ConversionListener.Access.Consumer.IdentityProviders[identityProvidersIndex].ValueString())
 				}
 				var metadata *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.ConversionListener.Access.Consumer.Metadata != nil {
@@ -7116,12 +7522,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint = nil
 					}
-					var authorizationServers []string
-					if r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
-						}
+					authorizationServers := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex := range r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers = append(authorizationServers, r.ConversionListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex].ValueString())
 					}
 					resource := new(string)
 					if !r.ConversionListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -7129,12 +7532,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource = nil
 					}
-					var scopesSupported []string
-					if r.ConversionListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported = make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
-						}
+					scopesSupported := make([]string, 0, len(r.ConversionListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex := range r.ConversionListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported = append(scopesSupported, r.ConversionListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex].ValueString())
 					}
 					metadata = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint,
@@ -7191,12 +7591,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						Deny:  deny5,
 					}
 				}
-				var identityProviders1 []string
-				if r.ConversionListener.Access.OauthAccessToken.IdentityProviders != nil {
-					identityProviders1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
-					for identityProvidersIndex1 := range r.ConversionListener.Access.OauthAccessToken.IdentityProviders {
-						identityProviders1 = append(identityProviders1, r.ConversionListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex1].ValueString())
-					}
+				identityProviders1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
+				for identityProvidersIndex1 := range r.ConversionListener.Access.OauthAccessToken.IdentityProviders {
+					identityProviders1 = append(identityProviders1, r.ConversionListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex1].ValueString())
 				}
 				var metadata1 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.ConversionListener.Access.OauthAccessToken.Metadata != nil {
@@ -7212,12 +7609,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint1 = nil
 					}
-					var authorizationServers1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
-						}
+					authorizationServers1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers1 = append(authorizationServers1, r.ConversionListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex1].ValueString())
 					}
 					resource1 := new(string)
 					if !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.ConversionListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -7225,12 +7619,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource1 = nil
 					}
-					var scopesSupported1 []string
-					if r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported1 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
-						}
+					scopesSupported1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex1 := range r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported1 = append(scopesSupported1, r.ConversionListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex1].ValueString())
 					}
 					metadata1 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint1,
@@ -7442,17 +7833,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					if r.Listener.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId1 := new(string)
+							accessKeyId3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId1 = nil
+								accessKeyId3 = nil
 							}
-							assumeRoleArn1 := new(string)
+							assumeRoleArn3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn1 = nil
+								assumeRoleArn3 = nil
 							}
 							cacheName1 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -7466,32 +7857,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							} else {
 								isServerless1 = nil
 							}
-							region1 := new(string)
+							region3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region1 = nil
+								region3 = nil
 							}
-							roleSessionName1 := new(string)
+							roleSessionName3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName1 = nil
+								roleSessionName3 = nil
 							}
-							secretAccessKey1 := new(string)
+							secretAccessKey3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey1 = nil
+								secretAccessKey3 = nil
 							}
 							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId1,
-								AssumeRoleArn:   assumeRoleArn1,
+								AccessKeyID:     accessKeyId3,
+								AssumeRoleArn:   assumeRoleArn3,
 								CacheName:       cacheName1,
 								IsServerless:    isServerless1,
-								Region:          region1,
-								RoleSessionName: roleSessionName1,
-								SecretAccessKey: secretAccessKey1,
+								Region:          region3,
+								RoleSessionName: roleSessionName3,
+								SecretAccessKey: secretAccessKey3,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication1 != nil {
@@ -7985,12 +8376,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						Deny:  deny8,
 					}
 				}
-				var identityProviders2 []string
-				if r.Listener.Access.Consumer.IdentityProviders != nil {
-					identityProviders2 = make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
-					for identityProvidersIndex2 := range r.Listener.Access.Consumer.IdentityProviders {
-						identityProviders2 = append(identityProviders2, r.Listener.Access.Consumer.IdentityProviders[identityProvidersIndex2].ValueString())
-					}
+				identityProviders2 := make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
+				for identityProvidersIndex2 := range r.Listener.Access.Consumer.IdentityProviders {
+					identityProviders2 = append(identityProviders2, r.Listener.Access.Consumer.IdentityProviders[identityProvidersIndex2].ValueString())
 				}
 				var metadata2 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.Listener.Access.Consumer.Metadata != nil {
@@ -8006,12 +8394,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint2 = nil
 					}
-					var authorizationServers2 []string
-					if r.Listener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
-						}
+					authorizationServers2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex2 := range r.Listener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers2 = append(authorizationServers2, r.Listener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex2].ValueString())
 					}
 					resource2 := new(string)
 					if !r.Listener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.Listener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -8019,12 +8404,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource2 = nil
 					}
-					var scopesSupported2 []string
-					if r.Listener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported2 = make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
-						}
+					scopesSupported2 := make([]string, 0, len(r.Listener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex2 := range r.Listener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported2 = append(scopesSupported2, r.Listener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex2].ValueString())
 					}
 					metadata2 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint2,
@@ -8081,12 +8463,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						Deny:  deny10,
 					}
 				}
-				var identityProviders3 []string
-				if r.Listener.Access.OauthAccessToken.IdentityProviders != nil {
-					identityProviders3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
-					for identityProvidersIndex3 := range r.Listener.Access.OauthAccessToken.IdentityProviders {
-						identityProviders3 = append(identityProviders3, r.Listener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex3].ValueString())
-					}
+				identityProviders3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
+				for identityProvidersIndex3 := range r.Listener.Access.OauthAccessToken.IdentityProviders {
+					identityProviders3 = append(identityProviders3, r.Listener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex3].ValueString())
 				}
 				var metadata3 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.Listener.Access.OauthAccessToken.Metadata != nil {
@@ -8102,12 +8481,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint3 = nil
 					}
-					var authorizationServers3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
-						}
+					authorizationServers3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers3 = append(authorizationServers3, r.Listener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex3].ValueString())
 					}
 					resource3 := new(string)
 					if !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.Listener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -8115,12 +8491,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource3 = nil
 					}
-					var scopesSupported3 []string
-					if r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported3 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
-						}
+					scopesSupported3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex3 := range r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported3 = append(scopesSupported3, r.Listener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex3].ValueString())
 					}
 					metadata3 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint3,
@@ -8332,17 +8705,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication2 *shared.AIGatewayRedisAWSAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId2 := new(string)
+							accessKeyId4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId2 = nil
+								accessKeyId4 = nil
 							}
-							assumeRoleArn2 := new(string)
+							assumeRoleArn4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn2 = nil
+								assumeRoleArn4 = nil
 							}
 							cacheName2 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -8356,32 +8729,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							} else {
 								isServerless2 = nil
 							}
-							region2 := new(string)
+							region4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region2 = nil
+								region4 = nil
 							}
-							roleSessionName2 := new(string)
+							roleSessionName4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName2 = nil
+								roleSessionName4 = nil
 							}
-							secretAccessKey2 := new(string)
+							secretAccessKey4 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey2 = nil
+								secretAccessKey4 = nil
 							}
 							aiGatewayRedisAWSAuthentication2 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId2,
-								AssumeRoleArn:   assumeRoleArn2,
+								AccessKeyID:     accessKeyId4,
+								AssumeRoleArn:   assumeRoleArn4,
 								CacheName:       cacheName2,
 								IsServerless:    isServerless2,
-								Region:          region2,
-								RoleSessionName: roleSessionName2,
-								SecretAccessKey: secretAccessKey2,
+								Region:          region4,
+								RoleSessionName: roleSessionName4,
+								SecretAccessKey: secretAccessKey4,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication2 != nil {
@@ -8681,6 +9054,74 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		var url2 string
 		url2 = r.PassthroughListener.Config.URL.ValueString()
 
+		var upstream2 *shared.AIGatewayUpstreamConfig
+		if r.PassthroughListener.Config.Upstream != nil {
+			var auth2 *shared.AIGatewayUpstreamConfigAuth
+			if r.PassthroughListener.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
+				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
+					accessKeyId5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId5 = nil
+					}
+					secretAccessKey5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey5 = r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey5 = nil
+					}
+					sessionToken2 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken2 = r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken2 = nil
+					}
+					region5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region5 = r.PassthroughListener.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region5 = nil
+					}
+					assumeRoleArn5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn5 = nil
+					}
+					roleSessionName5 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName5 = r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName5 = nil
+					}
+					stsEndpointUrl2 := new(string)
+					if !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl2 = r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl2 = nil
+					}
+					aiGatewayUpstreamAuthAws2 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId5,
+						SecretAccessKey: secretAccessKey5,
+						SessionToken:    sessionToken2,
+						Region:          region5,
+						AssumeRoleArn:   assumeRoleArn5,
+						RoleSessionName: roleSessionName5,
+						StsEndpointURL:  stsEndpointUrl2,
+					}
+				}
+				if aiGatewayUpstreamAuthAws2 != nil {
+					auth2 = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws2,
+					}
+				}
+			}
+			upstream2 = &shared.AIGatewayUpstreamConfig{
+				Auth: auth2,
+			}
+		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
 			var httpProxy *shared.HTTPProxy
@@ -8727,7 +9168,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				proxyScheme = nil
 			}
-			var auth *shared.Auth
+			var auth3 *shared.Auth
 			if r.PassthroughListener.Config.Proxy.Auth != nil {
 				username6 := new(string)
 				if !r.PassthroughListener.Config.Proxy.Auth.Username.IsUnknown() && !r.PassthroughListener.Config.Proxy.Auth.Username.IsNull() {
@@ -8741,7 +9182,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					password6 = nil
 				}
-				auth = &shared.Auth{
+				auth3 = &shared.Auth{
 					Username: username6,
 					Password: password6,
 				}
@@ -8756,7 +9197,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				HTTPProxy:   httpProxy,
 				HTTPSProxy:  httpsProxy,
 				ProxyScheme: proxyScheme,
-				Auth:        auth,
+				Auth:        auth3,
 				NoProxy:     noProxy,
 			}
 		}
@@ -8766,6 +9207,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize3,
 			Server:             server2,
 			URL:                url2,
+			Upstream:           upstream2,
 			Proxy:              proxy,
 		}
 		tools3 := make([]shared.AIGatewayMCPToolBase, 0, len(r.PassthroughListener.Tools))
@@ -8959,12 +9401,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						Deny:  deny13,
 					}
 				}
-				var identityProviders4 []string
-				if r.PassthroughListener.Access.Consumer.IdentityProviders != nil {
-					identityProviders4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
-					for identityProvidersIndex4 := range r.PassthroughListener.Access.Consumer.IdentityProviders {
-						identityProviders4 = append(identityProviders4, r.PassthroughListener.Access.Consumer.IdentityProviders[identityProvidersIndex4].ValueString())
-					}
+				identityProviders4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
+				for identityProvidersIndex4 := range r.PassthroughListener.Access.Consumer.IdentityProviders {
+					identityProviders4 = append(identityProviders4, r.PassthroughListener.Access.Consumer.IdentityProviders[identityProvidersIndex4].ValueString())
 				}
 				var metadata4 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.PassthroughListener.Access.Consumer.Metadata != nil {
@@ -8980,12 +9419,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint4 = nil
 					}
-					var authorizationServers4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers != nil {
-						authorizationServers4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
-						for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
-							authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
-						}
+					authorizationServers4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers))
+					for authorizationServersIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers {
+						authorizationServers4 = append(authorizationServers4, r.PassthroughListener.Access.Consumer.Metadata.AuthorizationServers[authorizationServersIndex4].ValueString())
 					}
 					resource4 := new(string)
 					if !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.Consumer.Metadata.Resource.IsNull() {
@@ -8993,12 +9429,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource4 = nil
 					}
-					var scopesSupported4 []string
-					if r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported != nil {
-						scopesSupported4 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
-						for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
-							scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
-						}
+					scopesSupported4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported))
+					for scopesSupportedIndex4 := range r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported {
+						scopesSupported4 = append(scopesSupported4, r.PassthroughListener.Access.Consumer.Metadata.ScopesSupported[scopesSupportedIndex4].ValueString())
 					}
 					metadata4 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint4,
@@ -9055,12 +9488,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						Deny:  deny15,
 					}
 				}
-				var identityProviders5 []string
-				if r.PassthroughListener.Access.OauthAccessToken.IdentityProviders != nil {
-					identityProviders5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
-					for identityProvidersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.IdentityProviders {
-						identityProviders5 = append(identityProviders5, r.PassthroughListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex5].ValueString())
-					}
+				identityProviders5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
+				for identityProvidersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.IdentityProviders {
+					identityProviders5 = append(identityProviders5, r.PassthroughListener.Access.OauthAccessToken.IdentityProviders[identityProvidersIndex5].ValueString())
 				}
 				var metadata5 *shared.AIGatewayMCPServerProtectedResourceMetadata
 				if r.PassthroughListener.Access.OauthAccessToken.Metadata != nil {
@@ -9076,12 +9506,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						endpoint5 = nil
 					}
-					var authorizationServers5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers != nil {
-						authorizationServers5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
-						for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
-							authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
-						}
+					authorizationServers5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers))
+					for authorizationServersIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers {
+						authorizationServers5 = append(authorizationServers5, r.PassthroughListener.Access.OauthAccessToken.Metadata.AuthorizationServers[authorizationServersIndex5].ValueString())
 					}
 					resource5 := new(string)
 					if !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsUnknown() && !r.PassthroughListener.Access.OauthAccessToken.Metadata.Resource.IsNull() {
@@ -9089,12 +9516,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						resource5 = nil
 					}
-					var scopesSupported5 []string
-					if r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported != nil {
-						scopesSupported5 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
-						for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
-							scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
-						}
+					scopesSupported5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported))
+					for scopesSupportedIndex5 := range r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported {
+						scopesSupported5 = append(scopesSupported5, r.PassthroughListener.Access.OauthAccessToken.Metadata.ScopesSupported[scopesSupportedIndex5].ValueString())
 					}
 					metadata5 = &shared.AIGatewayMCPServerProtectedResourceMetadata{
 						DiscoveryEndpoint:    discoveryEndpoint5,
@@ -9306,17 +9730,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication != nil {
 						var aiGatewayRedisAWSAuthentication3 *shared.AIGatewayRedisAWSAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId3 := new(string)
+							accessKeyId6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId3 = nil
+								accessKeyId6 = nil
 							}
-							assumeRoleArn3 := new(string)
+							assumeRoleArn6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn3 = nil
+								assumeRoleArn6 = nil
 							}
 							cacheName3 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
@@ -9330,32 +9754,32 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							} else {
 								isServerless3 = nil
 							}
-							region3 := new(string)
+							region6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region3 = nil
+								region6 = nil
 							}
-							roleSessionName3 := new(string)
+							roleSessionName6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName3 = nil
+								roleSessionName6 = nil
 							}
-							secretAccessKey3 := new(string)
+							secretAccessKey6 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey3 = nil
+								secretAccessKey6 = nil
 							}
 							aiGatewayRedisAWSAuthentication3 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId3,
-								AssumeRoleArn:   assumeRoleArn3,
+								AccessKeyID:     accessKeyId6,
+								AssumeRoleArn:   assumeRoleArn6,
 								CacheName:       cacheName3,
 								IsServerless:    isServerless3,
-								Region:          region3,
-								RoleSessionName: roleSessionName3,
-								SecretAccessKey: secretAccessKey3,
+								Region:          region6,
+								RoleSessionName: roleSessionName6,
+								SecretAccessKey: secretAccessKey6,
 							}
 						}
 						if aiGatewayRedisAWSAuthentication3 != nil {
@@ -9743,6 +10167,74 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		var url3 string
 		url3 = r.UpstreamServer.Config.URL.ValueString()
 
+		var upstream3 *shared.AIGatewayUpstreamConfig
+		if r.UpstreamServer.Config.Upstream != nil {
+			var auth4 *shared.AIGatewayUpstreamConfigAuth
+			if r.UpstreamServer.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
+				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
+					accessKeyId7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId7 = nil
+					}
+					secretAccessKey7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey7 = r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey7 = nil
+					}
+					sessionToken3 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken3 = r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken3 = nil
+					}
+					region7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region7 = r.UpstreamServer.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region7 = nil
+					}
+					assumeRoleArn7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn7 = nil
+					}
+					roleSessionName7 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName7 = r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName7 = nil
+					}
+					stsEndpointUrl3 := new(string)
+					if !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl3 = r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl3 = nil
+					}
+					aiGatewayUpstreamAuthAws3 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId7,
+						SecretAccessKey: secretAccessKey7,
+						SessionToken:    sessionToken3,
+						Region:          region7,
+						AssumeRoleArn:   assumeRoleArn7,
+						RoleSessionName: roleSessionName7,
+						StsEndpointURL:  stsEndpointUrl3,
+					}
+				}
+				if aiGatewayUpstreamAuthAws3 != nil {
+					auth4 = &shared.AIGatewayUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws3,
+					}
+				}
+			}
+			upstream3 = &shared.AIGatewayUpstreamConfig{
+				Auth: auth4,
+			}
+		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
 
@@ -9752,6 +10244,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize:   maxRequestBodySize4,
 			Server:               server3,
 			URL:                  url3,
+			Upstream:             upstream3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools4 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))

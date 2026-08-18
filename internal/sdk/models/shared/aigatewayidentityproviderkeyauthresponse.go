@@ -35,7 +35,7 @@ type AIGatewayIdentityProviderKeyAuthResponse struct {
 	// For advanced use cases, additional config properties can be sent in the request body.
 	// See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
 	//
-	Config map[string]any `json:"config,omitempty"`
+	Config any `json:"config,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -87,7 +87,7 @@ func (a *AIGatewayIdentityProviderKeyAuthResponse) GetType() string {
 	return "key-auth"
 }
 
-func (a *AIGatewayIdentityProviderKeyAuthResponse) GetConfig() map[string]any {
+func (a *AIGatewayIdentityProviderKeyAuthResponse) GetConfig() any {
 	if a == nil {
 		return nil
 	}

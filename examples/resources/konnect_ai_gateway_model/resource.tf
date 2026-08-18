@@ -66,12 +66,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          path_selector = {
-            path_param = "model_name"
-            values = [
-              "@azure/claude-sonnet-5",
-            ]
-          }
+          body_param   = "model"
+          header_param = "x-model"
+          path_param   = "model_name"
+          values = [
+            "..."
+          ]
         }
         paths = [
           "..."
@@ -111,15 +111,36 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow_auth_override = false
         config = {
           anthropic = {
+            cache_read_cost  = 8.86
+            cache_write_cost = 7.72
+            cache_write_cost_list = [
+              {
+                cost = 1.85
+                ttl  = "...my_ttl..."
+              }
+            ]
+            context_window_factor = [
+              {
+                above         = "...my_above..."
+                input_factor  = 7.89
+                output_factor = 6.2
+              }
+            ]
             embeddings_dimensions = 3
             input_cost            = 9.85
             max_tokens            = 1
             output_cost           = 1.7
-            temperature           = 6.58
-            top_k                 = 3
-            top_p                 = 4.84
-            upstream_url          = "https://ajar-summer.biz"
-            version               = "2023-06-01"
+            service_tier_factor = [
+              {
+                factor = 7.15
+                tier   = "...my_tier..."
+              }
+            ]
+            temperature  = 6.58
+            top_k        = 3
+            top_p        = 4.84
+            upstream_url = "https://ajar-summer.biz"
+            version      = "2023-06-01"
           }
         }
         name                 = "gpt-5-model"
@@ -231,12 +252,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          body_selector = {
-            body_param = "model"
-            values = [
-              "gpt-3.5-turbo",
-            ]
-          }
+          body_param   = "model"
+          header_param = "x-model"
+          path_param   = "model_name"
+          values = [
+            "..."
+          ]
         }
         paths = [
           "..."
@@ -276,15 +297,36 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow_auth_override = false
         config = {
           mistral = {
+            cache_read_cost  = 9.91
+            cache_write_cost = 1.14
+            cache_write_cost_list = [
+              {
+                cost = 5.09
+                ttl  = "...my_ttl..."
+              }
+            ]
+            context_window_factor = [
+              {
+                above         = "...my_above..."
+                input_factor  = 1.3
+                output_factor = 9.49
+              }
+            ]
             embeddings_dimensions = 10
             format                = "ollama"
             input_cost            = 1.29
             max_tokens            = 5
             output_cost           = 5.4
-            temperature           = 4.9
-            top_k                 = 6
-            top_p                 = 5.29
-            upstream_url          = "https://sad-thigh.net"
+            service_tier_factor = [
+              {
+                factor = 5.81
+                tier   = "...my_tier..."
+              }
+            ]
+            temperature  = 4.9
+            top_k        = 6
+            top_p        = 5.29
+            upstream_url = "https://sad-thigh.net"
           }
         }
         name                 = "gpt-5-model"

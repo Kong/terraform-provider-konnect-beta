@@ -3,19 +3,44 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
+
+type AIGatewayAzureEmbeddingsModelConfigType string
+
+const (
+	AIGatewayAzureEmbeddingsModelConfigTypeAzure AIGatewayAzureEmbeddingsModelConfigType = "azure"
+)
+
+func (e AIGatewayAzureEmbeddingsModelConfigType) ToPointer() *AIGatewayAzureEmbeddingsModelConfigType {
+	return &e
+}
+func (e *AIGatewayAzureEmbeddingsModelConfigType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "azure":
+		*e = AIGatewayAzureEmbeddingsModelConfigType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AIGatewayAzureEmbeddingsModelConfigType: %v", v)
+	}
+}
 
 // AIGatewayAzureEmbeddingsModelConfig - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
-// Azure-specific configuration for a model.
+// Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry
+// embeddings are not supported.
 type AIGatewayAzureEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string `default:"null" json:"upstream_url"`
-	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_ string `const:"azure" json:"type"`
-	// The Azure deployment ID for the model.
+	UpstreamURL *string                                 `default:"null" json:"upstream_url"`
+	Type        AIGatewayAzureEmbeddingsModelConfigType `json:"type"`
+	// The Azure OpenAI deployment ID for the embeddings model.
 	DeploymentID string `json:"deployment_id"`
 	// The Azure OpenAI API version to use.
 	APIVersion *string `default:"2023-05-15" json:"api_version"`
@@ -39,8 +64,11 @@ func (a *AIGatewayAzureEmbeddingsModelConfig) GetUpstreamURL() *string {
 	return a.UpstreamURL
 }
 
-func (a *AIGatewayAzureEmbeddingsModelConfig) GetType() string {
-	return "azure"
+func (a *AIGatewayAzureEmbeddingsModelConfig) GetType() AIGatewayAzureEmbeddingsModelConfigType {
+	if a == nil {
+		return AIGatewayAzureEmbeddingsModelConfigType("")
+	}
+	return a.Type
 }
 
 func (a *AIGatewayAzureEmbeddingsModelConfig) GetDeploymentID() string {

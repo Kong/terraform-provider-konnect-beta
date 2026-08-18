@@ -40,6 +40,7 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				r.Access.IdentityProviders = append(r.Access.IdentityProviders, types.StringValue(v))
 			}
 		}
+		configPriorData := r.Config
 		r.Config = &tfTypes.CreateAIGatewayAgentRequestConfig{}
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
@@ -49,6 +50,48 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 			r.Config.Logging.Payloads = types.BoolPointerValue(resp.Config.Logging.Payloads)
 		}
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		if resp.Config.Proxy == nil {
+			r.Config.Proxy = nil
+		} else {
+			var proxyPriorData *tfTypes.AIGatewayProxyConfig
+			if configPriorData != nil {
+				proxyPriorData = configPriorData.Proxy
+			}
+			r.Config.Proxy = &tfTypes.AIGatewayProxyConfig{}
+			if resp.Config.Proxy.Auth == nil {
+				r.Config.Proxy.Auth = nil
+			} else {
+				var authPriorData *tfTypes.Auth
+				if proxyPriorData != nil {
+					authPriorData = proxyPriorData.Auth
+				}
+				r.Config.Proxy.Auth = &tfTypes.Auth{}
+				r.Config.Proxy.Auth.Username = types.StringPointerValue(resp.Config.Proxy.Auth.Username)
+				if authPriorData != nil {
+					r.Config.Proxy.Auth.Password = authPriorData.Password
+				}
+			}
+			if resp.Config.Proxy.HTTPProxy == nil {
+				r.Config.Proxy.HTTPProxy = nil
+			} else {
+				r.Config.Proxy.HTTPProxy = &tfTypes.HTTPProxy{}
+				r.Config.Proxy.HTTPProxy.Host = types.StringPointerValue(resp.Config.Proxy.HTTPProxy.Host)
+				r.Config.Proxy.HTTPProxy.Port = types.Int64PointerValue(resp.Config.Proxy.HTTPProxy.Port)
+			}
+			if resp.Config.Proxy.HTTPSProxy == nil {
+				r.Config.Proxy.HTTPSProxy = nil
+			} else {
+				r.Config.Proxy.HTTPSProxy = &tfTypes.HTTPProxy{}
+				r.Config.Proxy.HTTPSProxy.Host = types.StringPointerValue(resp.Config.Proxy.HTTPSProxy.Host)
+				r.Config.Proxy.HTTPSProxy.Port = types.Int64PointerValue(resp.Config.Proxy.HTTPSProxy.Port)
+			}
+			r.Config.Proxy.NoProxy = types.StringPointerValue(resp.Config.Proxy.NoProxy)
+			if resp.Config.Proxy.ProxyScheme != nil {
+				r.Config.Proxy.ProxyScheme = types.StringValue(string(*resp.Config.Proxy.ProxyScheme))
+			} else {
+				r.Config.Proxy.ProxyScheme = types.StringNull()
+			}
+		}
 		if resp.Config.Route == nil {
 			r.Config.Route = nil
 		} else {
@@ -85,6 +128,35 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 			r.Config.Route.Tags = make([]types.String, 0, len(resp.Config.Route.Tags))
 			for _, v := range resp.Config.Route.Tags {
 				r.Config.Route.Tags = append(r.Config.Route.Tags, types.StringValue(v))
+			}
+		}
+		if resp.Config.Upstream == nil {
+			r.Config.Upstream = nil
+		} else {
+			var upstreamPriorData *tfTypes.AIGatewayUpstreamConfig
+			if configPriorData != nil {
+				upstreamPriorData = configPriorData.Upstream
+			}
+			r.Config.Upstream = &tfTypes.AIGatewayUpstreamConfig{}
+			if resp.Config.Upstream.Auth != nil {
+				authPriorData1 := upstreamPriorData.Auth
+				r.Config.Upstream.Auth = &tfTypes.AIGatewayUpstreamConfigAuth{}
+				if resp.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
+					var awsPriorData *tfTypes.AIGatewayUpstreamAuthAWS
+					if authPriorData1 != nil {
+						awsPriorData = authPriorData1.Aws
+					}
+					r.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
+					r.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
+					r.Config.Upstream.Auth.Aws.AssumeRoleArn = types.StringPointerValue(resp.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AssumeRoleArn)
+					r.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
+					r.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
+					r.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
+					if awsPriorData != nil {
+						r.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData.SecretAccessKey
+						r.Config.Upstream.Auth.Aws.SessionToken = awsPriorData.SessionToken
+					}
+				}
 			}
 		}
 		r.Config.URL = types.StringValue(resp.Config.URL)
@@ -245,6 +317,74 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 	var url string
 	url = r.Config.URL.ValueString()
 
+	var upstream *shared.AIGatewayUpstreamConfig
+	if r.Config.Upstream != nil {
+		var auth *shared.AIGatewayUpstreamConfigAuth
+		if r.Config.Upstream.Auth != nil {
+			var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
+			if r.Config.Upstream.Auth.Aws != nil {
+				accessKeyID := new(string)
+				if !r.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+					*accessKeyID = r.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+				} else {
+					accessKeyID = nil
+				}
+				secretAccessKey := new(string)
+				if !r.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+					*secretAccessKey = r.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+				} else {
+					secretAccessKey = nil
+				}
+				sessionToken := new(string)
+				if !r.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+					*sessionToken = r.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+				} else {
+					sessionToken = nil
+				}
+				region := new(string)
+				if !r.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.Config.Upstream.Auth.Aws.Region.IsNull() {
+					*region = r.Config.Upstream.Auth.Aws.Region.ValueString()
+				} else {
+					region = nil
+				}
+				assumeRoleArn := new(string)
+				if !r.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+					*assumeRoleArn = r.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+				} else {
+					assumeRoleArn = nil
+				}
+				roleSessionName := new(string)
+				if !r.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+					*roleSessionName = r.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+				} else {
+					roleSessionName = nil
+				}
+				stsEndpointURL := new(string)
+				if !r.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+					*stsEndpointURL = r.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+				} else {
+					stsEndpointURL = nil
+				}
+				aiGatewayUpstreamAuthAWS = &shared.AIGatewayUpstreamAuthAWS{
+					AccessKeyID:     accessKeyID,
+					SecretAccessKey: secretAccessKey,
+					SessionToken:    sessionToken,
+					Region:          region,
+					AssumeRoleArn:   assumeRoleArn,
+					RoleSessionName: roleSessionName,
+					StsEndpointURL:  stsEndpointURL,
+				}
+			}
+			if aiGatewayUpstreamAuthAWS != nil {
+				auth = &shared.AIGatewayUpstreamConfigAuth{
+					AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
+				}
+			}
+		}
+		upstream = &shared.AIGatewayUpstreamConfig{
+			Auth: auth,
+		}
+	}
 	var route *shared.AIGatewayRouteConfig
 	if r.Config.Route != nil {
 		headers := make(map[string]interface{})
@@ -324,6 +464,85 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			Tags:                    tags,
 		}
 	}
+	var proxy *shared.AIGatewayProxyConfig
+	if r.Config.Proxy != nil {
+		var httpProxy *shared.HTTPProxy
+		if r.Config.Proxy.HTTPProxy != nil {
+			host := new(string)
+			if !r.Config.Proxy.HTTPProxy.Host.IsUnknown() && !r.Config.Proxy.HTTPProxy.Host.IsNull() {
+				*host = r.Config.Proxy.HTTPProxy.Host.ValueString()
+			} else {
+				host = nil
+			}
+			port := new(int64)
+			if !r.Config.Proxy.HTTPProxy.Port.IsUnknown() && !r.Config.Proxy.HTTPProxy.Port.IsNull() {
+				*port = r.Config.Proxy.HTTPProxy.Port.ValueInt64()
+			} else {
+				port = nil
+			}
+			httpProxy = &shared.HTTPProxy{
+				Host: host,
+				Port: port,
+			}
+		}
+		var httpsProxy *shared.HTTPSProxy
+		if r.Config.Proxy.HTTPSProxy != nil {
+			host1 := new(string)
+			if !r.Config.Proxy.HTTPSProxy.Host.IsUnknown() && !r.Config.Proxy.HTTPSProxy.Host.IsNull() {
+				*host1 = r.Config.Proxy.HTTPSProxy.Host.ValueString()
+			} else {
+				host1 = nil
+			}
+			port1 := new(int64)
+			if !r.Config.Proxy.HTTPSProxy.Port.IsUnknown() && !r.Config.Proxy.HTTPSProxy.Port.IsNull() {
+				*port1 = r.Config.Proxy.HTTPSProxy.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			httpsProxy = &shared.HTTPSProxy{
+				Host: host1,
+				Port: port1,
+			}
+		}
+		proxyScheme := new(shared.ProxyScheme)
+		if !r.Config.Proxy.ProxyScheme.IsUnknown() && !r.Config.Proxy.ProxyScheme.IsNull() {
+			*proxyScheme = shared.ProxyScheme(r.Config.Proxy.ProxyScheme.ValueString())
+		} else {
+			proxyScheme = nil
+		}
+		var auth1 *shared.Auth
+		if r.Config.Proxy.Auth != nil {
+			username := new(string)
+			if !r.Config.Proxy.Auth.Username.IsUnknown() && !r.Config.Proxy.Auth.Username.IsNull() {
+				*username = r.Config.Proxy.Auth.Username.ValueString()
+			} else {
+				username = nil
+			}
+			password := new(string)
+			if !r.Config.Proxy.Auth.Password.IsUnknown() && !r.Config.Proxy.Auth.Password.IsNull() {
+				*password = r.Config.Proxy.Auth.Password.ValueString()
+			} else {
+				password = nil
+			}
+			auth1 = &shared.Auth{
+				Username: username,
+				Password: password,
+			}
+		}
+		noProxy := new(string)
+		if !r.Config.Proxy.NoProxy.IsUnknown() && !r.Config.Proxy.NoProxy.IsNull() {
+			*noProxy = r.Config.Proxy.NoProxy.ValueString()
+		} else {
+			noProxy = nil
+		}
+		proxy = &shared.AIGatewayProxyConfig{
+			HTTPProxy:   httpProxy,
+			HTTPSProxy:  httpsProxy,
+			ProxyScheme: proxyScheme,
+			Auth:        auth1,
+			NoProxy:     noProxy,
+		}
+	}
 	maxRequestBodySize := new(int64)
 	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
 		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
@@ -351,7 +570,9 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 	}
 	config := shared.CreateAIGatewayAgentRequestConfig{
 		URL:                url,
+		Upstream:           upstream,
 		Route:              route,
+		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
 	}
@@ -433,6 +654,74 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 	var url string
 	url = r.Config.URL.ValueString()
 
+	var upstream *shared.AIGatewayUpstreamConfig
+	if r.Config.Upstream != nil {
+		var auth *shared.AIGatewayUpstreamConfigAuth
+		if r.Config.Upstream.Auth != nil {
+			var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
+			if r.Config.Upstream.Auth.Aws != nil {
+				accessKeyID := new(string)
+				if !r.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+					*accessKeyID = r.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+				} else {
+					accessKeyID = nil
+				}
+				secretAccessKey := new(string)
+				if !r.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+					*secretAccessKey = r.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+				} else {
+					secretAccessKey = nil
+				}
+				sessionToken := new(string)
+				if !r.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+					*sessionToken = r.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+				} else {
+					sessionToken = nil
+				}
+				region := new(string)
+				if !r.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.Config.Upstream.Auth.Aws.Region.IsNull() {
+					*region = r.Config.Upstream.Auth.Aws.Region.ValueString()
+				} else {
+					region = nil
+				}
+				assumeRoleArn := new(string)
+				if !r.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+					*assumeRoleArn = r.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+				} else {
+					assumeRoleArn = nil
+				}
+				roleSessionName := new(string)
+				if !r.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+					*roleSessionName = r.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+				} else {
+					roleSessionName = nil
+				}
+				stsEndpointURL := new(string)
+				if !r.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+					*stsEndpointURL = r.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+				} else {
+					stsEndpointURL = nil
+				}
+				aiGatewayUpstreamAuthAWS = &shared.AIGatewayUpstreamAuthAWS{
+					AccessKeyID:     accessKeyID,
+					SecretAccessKey: secretAccessKey,
+					SessionToken:    sessionToken,
+					Region:          region,
+					AssumeRoleArn:   assumeRoleArn,
+					RoleSessionName: roleSessionName,
+					StsEndpointURL:  stsEndpointURL,
+				}
+			}
+			if aiGatewayUpstreamAuthAWS != nil {
+				auth = &shared.AIGatewayUpstreamConfigAuth{
+					AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
+				}
+			}
+		}
+		upstream = &shared.AIGatewayUpstreamConfig{
+			Auth: auth,
+		}
+	}
 	var route *shared.AIGatewayRouteConfig
 	if r.Config.Route != nil {
 		headers := make(map[string]interface{})
@@ -512,6 +801,85 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			Tags:                    tags,
 		}
 	}
+	var proxy *shared.AIGatewayProxyConfig
+	if r.Config.Proxy != nil {
+		var httpProxy *shared.HTTPProxy
+		if r.Config.Proxy.HTTPProxy != nil {
+			host := new(string)
+			if !r.Config.Proxy.HTTPProxy.Host.IsUnknown() && !r.Config.Proxy.HTTPProxy.Host.IsNull() {
+				*host = r.Config.Proxy.HTTPProxy.Host.ValueString()
+			} else {
+				host = nil
+			}
+			port := new(int64)
+			if !r.Config.Proxy.HTTPProxy.Port.IsUnknown() && !r.Config.Proxy.HTTPProxy.Port.IsNull() {
+				*port = r.Config.Proxy.HTTPProxy.Port.ValueInt64()
+			} else {
+				port = nil
+			}
+			httpProxy = &shared.HTTPProxy{
+				Host: host,
+				Port: port,
+			}
+		}
+		var httpsProxy *shared.HTTPSProxy
+		if r.Config.Proxy.HTTPSProxy != nil {
+			host1 := new(string)
+			if !r.Config.Proxy.HTTPSProxy.Host.IsUnknown() && !r.Config.Proxy.HTTPSProxy.Host.IsNull() {
+				*host1 = r.Config.Proxy.HTTPSProxy.Host.ValueString()
+			} else {
+				host1 = nil
+			}
+			port1 := new(int64)
+			if !r.Config.Proxy.HTTPSProxy.Port.IsUnknown() && !r.Config.Proxy.HTTPSProxy.Port.IsNull() {
+				*port1 = r.Config.Proxy.HTTPSProxy.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			httpsProxy = &shared.HTTPSProxy{
+				Host: host1,
+				Port: port1,
+			}
+		}
+		proxyScheme := new(shared.ProxyScheme)
+		if !r.Config.Proxy.ProxyScheme.IsUnknown() && !r.Config.Proxy.ProxyScheme.IsNull() {
+			*proxyScheme = shared.ProxyScheme(r.Config.Proxy.ProxyScheme.ValueString())
+		} else {
+			proxyScheme = nil
+		}
+		var auth1 *shared.Auth
+		if r.Config.Proxy.Auth != nil {
+			username := new(string)
+			if !r.Config.Proxy.Auth.Username.IsUnknown() && !r.Config.Proxy.Auth.Username.IsNull() {
+				*username = r.Config.Proxy.Auth.Username.ValueString()
+			} else {
+				username = nil
+			}
+			password := new(string)
+			if !r.Config.Proxy.Auth.Password.IsUnknown() && !r.Config.Proxy.Auth.Password.IsNull() {
+				*password = r.Config.Proxy.Auth.Password.ValueString()
+			} else {
+				password = nil
+			}
+			auth1 = &shared.Auth{
+				Username: username,
+				Password: password,
+			}
+		}
+		noProxy := new(string)
+		if !r.Config.Proxy.NoProxy.IsUnknown() && !r.Config.Proxy.NoProxy.IsNull() {
+			*noProxy = r.Config.Proxy.NoProxy.ValueString()
+		} else {
+			noProxy = nil
+		}
+		proxy = &shared.AIGatewayProxyConfig{
+			HTTPProxy:   httpProxy,
+			HTTPSProxy:  httpsProxy,
+			ProxyScheme: proxyScheme,
+			Auth:        auth1,
+			NoProxy:     noProxy,
+		}
+	}
 	maxRequestBodySize := new(int64)
 	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
 		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
@@ -539,7 +907,9 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 	}
 	config := shared.UpdateAIGatewayAgentRequestConfig{
 		URL:                url,
+		Upstream:           upstream,
 		Route:              route,
+		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
 	}

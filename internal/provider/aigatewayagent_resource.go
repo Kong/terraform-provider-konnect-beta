@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -19,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -141,6 +143,75 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 						Default:     int64default.StaticInt64(8388608),
 						Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
 					},
+					"proxy": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"auth": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"password": schema.StringAttribute{
+										Optional: true,
+										MarkdownDescription: `The password to use for proxy authentication.` + "\n" +
+											`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+									},
+									"username": schema.StringAttribute{
+										Optional: true,
+										MarkdownDescription: `The username to use for proxy authentication.` + "\n" +
+											`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+									},
+								},
+								Description: `Credentials used to authenticate to the proxy server.`,
+							},
+							"http_proxy": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"host": schema.StringAttribute{
+										Optional:    true,
+										Description: `A string representing a host name, such as example.com.`,
+									},
+									"port": schema.Int64Attribute{
+										Optional:    true,
+										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 65535),
+										},
+									},
+								},
+								Description: `HTTP proxy server to route plaintext outbound requests through.`,
+							},
+							"https_proxy": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"host": schema.StringAttribute{
+										Optional:    true,
+										Description: `A string representing a host name, such as example.com.`,
+									},
+									"port": schema.Int64Attribute{
+										Optional:    true,
+										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 65535),
+										},
+									},
+								},
+								Description: `HTTPS proxy server to route TLS outbound requests through.`,
+							},
+							"no_proxy": schema.StringAttribute{
+								Optional:    true,
+								Description: `Comma-separated list of hosts that should not be proxied.`,
+							},
+							"proxy_scheme": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`http`),
+								Description: `The proxy scheme to use when connecting to the proxy server. Default: "http"; must be "http"`,
+								Validators: []validator.String{
+									stringvalidator.OneOf("http"),
+								},
+							},
+						},
+						Description: `HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.`,
+					},
 					"route": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -228,6 +299,69 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 							`This feature is currently in beta and is subject to change.` + "\n" +
 							`` + "\n" +
 							`Configuration for an AI Gateway route.`,
+					},
+					"upstream": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"auth": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"aws": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"access_key_id": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The access key id for authenticating with static IAM User credentials.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"assume_role_arn": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The ARN of the IAM role to assume for generating authentication tokens.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"region": schema.StringAttribute{
+												Optional:    true,
+												Description: `The AWS region of the upstream service. Overrides the region inferred from the environment.`,
+											},
+											"role_session_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"secret_access_key": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The secret access key for authenticating with static IAM User credentials.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"session_token": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The session token for authenticating with temporary IAM credentials.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"sts_endpoint_url": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The STS endpoint URL to use for generating authentication tokens.` + "\n" +
+													`If not specified, the default AWS STS endpoint will be used.`,
+											},
+										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`AWS IAM (SigV4) authentication for the upstream service.`,
+									},
+								},
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Authentication to use when proxying to the upstream service.`,
+							},
+						},
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`Configuration applied when proxying to the upstream service, including authentication.`,
 					},
 					"url": schema.StringAttribute{
 						Required: true,
