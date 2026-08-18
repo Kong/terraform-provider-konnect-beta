@@ -177,7 +177,7 @@ func (r *APIVersionResourceModel) ToSharedAPIVersionRequest(ctx context.Context)
 	if r.Spec.Provider != nil {
 		var urlProvider *shared.URLProvider
 		if r.Spec.Provider.URLProvider != nil {
-			typeVar := shared.Type(r.Spec.Provider.URLProvider.Type.ValueString())
+			typeVar := shared.URLProviderType(r.Spec.Provider.URLProvider.Type.ValueString())
 			var url string
 			url = r.Spec.Provider.URLProvider.Config.URL.ValueString()
 
@@ -272,7 +272,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 	if r.Spec.Provider != nil {
 		var urlProvider *shared.URLProvider
 		if r.Spec.Provider.URLProvider != nil {
-			typeVar := shared.Type(r.Spec.Provider.URLProvider.Type.ValueString())
+			typeVar := shared.URLProviderType(r.Spec.Provider.URLProvider.Type.ValueString())
 			var url string
 			url = r.Spec.Provider.URLProvider.Config.URL.ValueString()
 

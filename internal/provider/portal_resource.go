@@ -17,7 +17,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/boolvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -36,6 +39,7 @@ type PortalResource struct {
 
 // PortalResourceModel describes the resource data model.
 type PortalResourceModel struct {
+	Ai                                         *tfTypes.AISettings     `tfsdk:"ai"`
 	AuthenticationEnabled                      types.Bool              `tfsdk:"authentication_enabled"`
 	AutoApproveApplications                    types.Bool              `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers                      types.Bool              `tfsdk:"auto_approve_developers"`
@@ -51,7 +55,6 @@ type PortalResourceModel struct {
 	ForceDestroy                               types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID                                         types.String            `tfsdk:"id"`
 	Labels                                     map[string]types.String `tfsdk:"labels"`
-	McpServerEnabled                           types.Bool              `tfsdk:"mcp_server_enabled"`
 	Name                                       types.String            `tfsdk:"name"`
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
@@ -67,6 +70,56 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Portal Resource",
 		Attributes: map[string]schema.Attribute{
+			"ai": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"enabled": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Is AI enabled?. Not Null`,
+						Validators: []validator.Bool{
+							speakeasy_boolvalidators.NotNull(),
+						},
+					},
+					"features": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"mcp_server": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Whether the MCP Server is enabled or not. Not Null`,
+										Validators: []validator.Bool{
+											speakeasy_boolvalidators.NotNull(),
+										},
+									},
+									"write_operations_enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Not Null`,
+										Validators: []validator.Bool{
+											speakeasy_boolvalidators.NotNull(),
+										},
+									},
+								},
+								Description: `AI Features config. Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
+							},
+						},
+						Description: `Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
+					},
+				},
+			},
 			"authentication_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -175,11 +228,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					`Labels are intended to store **INTERNAL** metadata.` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"mcp_server_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Whether the portal has the MCP server enabled`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

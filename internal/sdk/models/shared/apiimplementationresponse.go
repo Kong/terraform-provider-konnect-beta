@@ -17,6 +17,13 @@ type APIImplementationResponseControlPlaneReference struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// The environment this implementation is scoped to, by name. On write, selects the
+	// target environment: required when the API is configured across multiple
+	// environments, and optional otherwise (accepted only if it matches the API's sole
+	// environment). On read, the resolved environment name. Present only for APIs
+	// configured across multiple environments.
+	//
+	Environment *string `default:"null" json:"environment"`
 	// A Control plane that implements an API
 	ControlPlane *APIImplementationControlPlane `json:"control_plane,omitempty"`
 }
@@ -53,6 +60,13 @@ func (a *APIImplementationResponseControlPlaneReference) GetUpdatedAt() time.Tim
 	return a.UpdatedAt
 }
 
+func (a *APIImplementationResponseControlPlaneReference) GetEnvironment() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Environment
+}
+
 func (a *APIImplementationResponseControlPlaneReference) GetControlPlane() *APIImplementationControlPlane {
 	if a == nil {
 		return nil
@@ -68,6 +82,13 @@ type APIImplementationResponseServiceReference struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// The environment this implementation is scoped to, by name. On write, selects the
+	// target environment: required when the API is configured across multiple
+	// environments, and optional otherwise (accepted only if it matches the API's sole
+	// environment). On read, the resolved environment name. Present only for APIs
+	// configured across multiple environments.
+	//
+	Environment *string `default:"null" json:"environment"`
 	// A Gateway service that implements an API
 	Service *APIImplementationService `json:"service,omitempty"`
 }
@@ -102,6 +123,13 @@ func (a *APIImplementationResponseServiceReference) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
+}
+
+func (a *APIImplementationResponseServiceReference) GetEnvironment() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Environment
 }
 
 func (a *APIImplementationResponseServiceReference) GetService() *APIImplementationService {

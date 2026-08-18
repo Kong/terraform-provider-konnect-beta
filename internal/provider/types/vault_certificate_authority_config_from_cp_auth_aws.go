@@ -3,5 +3,5 @@
 package types
 
 type VaultCertificateAuthorityConfigFromCpAuthAws struct {
-	Aws *Aws `tfsdk:"aws"`
+	Aws *AuthAws `tfsdk:"aws"`
 }

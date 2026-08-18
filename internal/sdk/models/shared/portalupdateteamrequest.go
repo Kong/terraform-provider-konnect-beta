@@ -8,10 +8,14 @@ import (
 
 // PortalUpdateTeamRequest - Properties to update on a team.
 type PortalUpdateTeamRequest struct {
-	Name        *string `default:"null" json:"name"`
+	// The name of the team.
+	Name *string `default:"null" json:"name"`
+	// The description of the team.
 	Description *string `default:"null" json:"description"`
 	// Whether the team is allowed to own applications.
 	CanOwnApplications *bool `default:"null" json:"can_own_applications"`
+	// Indicates whether the team is managed by Konnect.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (p PortalUpdateTeamRequest) MarshalJSON() ([]byte, error) {
@@ -44,4 +48,11 @@ func (p *PortalUpdateTeamRequest) GetCanOwnApplications() *bool {
 		return nil
 	}
 	return p.CanOwnApplications
+}
+
+func (p *PortalUpdateTeamRequest) GetKonnectManaged() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.KonnectManaged
 }

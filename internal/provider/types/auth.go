@@ -2,6 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type Auth struct {
-	AwsCredentials *AwsCredentials `tfsdk:"aws_credentials"`
+	Password types.String `tfsdk:"password"`
+	Username types.String `tfsdk:"username"`
 }

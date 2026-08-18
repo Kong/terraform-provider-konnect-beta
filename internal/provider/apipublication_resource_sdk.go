@@ -25,6 +25,7 @@ func (r *APIPublicationResourceModel) RefreshFromSharedAPIPublicationResponse(ct
 		}
 		r.AutoApproveRegistrations = types.BoolPointerValue(resp.AutoApproveRegistrations)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Environment = types.StringPointerValue(resp.Environment)
 		r.FormID = types.StringPointerValue(resp.FormID)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		if resp.Visibility != nil {

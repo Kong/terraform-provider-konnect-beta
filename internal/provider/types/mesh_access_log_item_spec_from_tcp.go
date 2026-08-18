@@ -7,6 +7,6 @@ import (
 )
 
 type MeshAccessLogItemSpecFromTCP struct {
-	Address types.String `tfsdk:"address"`
-	Format  *Format      `tfsdk:"format"`
+	Address types.String                     `tfsdk:"address"`
+	Format  *MeshAccessLogItemSpecFromFormat `tfsdk:"format"`
 }

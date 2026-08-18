@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.910.1
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.931.0
 
 import (
 	"context"
@@ -66,11 +66,19 @@ type KonnectBeta struct {
 	PortalPages         *PortalPages
 	// APIs related to Konnect Developer Portal Custom Snippets.
 	Snippets *Snippets
+	// APIs related to Konnect Developer Portal Applications.
+	Applications *Applications
+	// APIs related to Konnect Developer Portal Application Registrations.
+	ApplicationRegistrations *ApplicationRegistrations
 	// APIs related to configuration of Konnect Developer Portal auth settings.
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portal developer teams.
-	PortalTeams     *PortalTeams
-	PortalAuditLogs *PortalAuditLogs
+	PortalTeams *PortalTeams
+	// APIs related to Konnect Developer Portal developer team roles.
+	PortalTeamRoles *PortalTeamRoles
+	// APIs related to Konnect Developer Portal developers.
+	PortalDevelopers *PortalDevelopers
+	PortalAuditLogs  *PortalAuditLogs
 	// APIs related to Konnect Portal IP Allow List.
 	PortalsIPAllowList        *PortalsIPAllowList
 	API                       *API
@@ -104,8 +112,10 @@ type KonnectBeta struct {
 	MeshExternalService       *MeshExternalService
 	MeshIdentity              *MeshIdentity
 	MeshMultiZoneService      *MeshMultiZoneService
+	MeshOpenTelemetryBackend  *MeshOpenTelemetryBackend
 	MeshService               *MeshService
 	MeshTrust                 *MeshTrust
+	MeshZoneAddress           *MeshZoneAddress
 	Workload                  *Workload
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
@@ -119,8 +129,9 @@ type KonnectBeta struct {
 	// Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.
 	AuthServerScopes *AuthServerScopes
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
-	AuthServerClients *AuthServerClients
-	Dashboards        *Dashboards
+	AuthServerClients    *AuthServerClients
+	Dashboards           *Dashboards
+	PersonalAccessTokens *PersonalAccessTokens
 	// Create an Event Gateway Control Plane, used to store Event Gateway configuration
 	//
 	EventGateways *EventGateways
@@ -179,6 +190,30 @@ type KonnectBeta struct {
 	// directories can be used across multiple control planes.
 	//
 	KongIdentityDirectories *KongIdentityDirectories
+	// API related to the management of Konnect AI Gateway resources.
+	AIGateways *AIGateways
+	// API related to the management of AI Gateway DataPlane Certificates.
+	AIGatewayDataPlaneCertificates *AIGatewayDataPlaneCertificates
+	// API related to the management of AI Gateway vaults for storing secrets.
+	AIGatewayVaults *AIGatewayVaults
+	// Policies that control security, rate-limiting, and guardrail behavior for the AI Gateway.
+	AIGatewayPolicies *AIGatewayPolicies
+	// Models that define routing, capabilities, and backend targets for the AI Gateway.
+	AIGatewayModels *AIGatewayModels
+	// AI Agents registered with the AI Gateway.
+	AIGatewayAgents *AIGatewayAgents
+	// Individual consumers with credentials and group memberships for AI Gateway access control.
+	AIGatewayConsumers *AIGatewayConsumers
+	// Consumer groups for applying rate-limiting and access policies to AI Gateway traffic.
+	AIGatewayConsumerGroups *AIGatewayConsumerGroups
+	// MCP Servers that expose tools for AI Gateway integrations.
+	AIGatewayMCPServers *AIGatewayMCPServers
+	// Model providers that define the backend AI service connections for the AI Gateway.
+	AIGatewayModelProviders *AIGatewayModelProviders
+	// Identity providers for authenticating users and accessing AI Gateway resources.
+	AIGatewayIdentityProviders *AIGatewayIdentityProviders
+	// API related to the management of AI Gateway Config Stores.
+	AIGatewayConfigStores *AIGatewayConfigStores
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -254,9 +289,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
-		SDKVersion: "0.20.0",
+		SDKVersion: "0.21.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.20.0 2.910.1 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.21.0 2.931.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -283,8 +318,12 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Applications = newApplications(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ApplicationRegistrations = newApplicationRegistrations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -318,8 +357,10 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshIdentity = newMeshIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshOpenTelemetryBackend = newMeshOpenTelemetryBackend(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshTrust = newMeshTrust(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshZoneAddress = newMeshZoneAddress(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Workload = newWorkload(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -331,6 +372,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGateways = newEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListeners = newEventGatewayListeners(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -346,6 +388,18 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CloudGateways = newCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.KongIdentityDirectories = newKongIdentityDirectories(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGateways = newAIGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayVaults = newAIGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayPolicies = newAIGatewayPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayModels = newAIGatewayModels(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayAgents = newAIGatewayAgents(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConsumerGroups = newAIGatewayConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayIdentityProviders = newAIGatewayIdentityProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

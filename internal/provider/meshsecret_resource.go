@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 )
 
@@ -35,13 +36,15 @@ type MeshSecretResource struct {
 
 // MeshSecretResourceModel describes the resource data model.
 type MeshSecretResourceModel struct {
-	CpID     types.String                  `tfsdk:"cp_id"`
-	Data     types.String                  `tfsdk:"data"`
-	Labels   kumalabels.KumaLabelsMapValue `tfsdk:"labels"`
-	Mesh     types.String                  `tfsdk:"mesh"`
-	Name     types.String                  `tfsdk:"name"`
-	Type     types.String                  `tfsdk:"type"`
-	Warnings []types.String                `tfsdk:"warnings"`
+	CpID             types.String                  `tfsdk:"cp_id"`
+	CreationTime     types.String                  `tfsdk:"creation_time"`
+	Data             types.String                  `tfsdk:"data"`
+	Labels           kumalabels.KumaLabelsMapValue `tfsdk:"labels"`
+	Mesh             types.String                  `tfsdk:"mesh"`
+	ModificationTime types.String                  `tfsdk:"modification_time"`
+	Name             types.String                  `tfsdk:"name"`
+	Type             types.String                  `tfsdk:"type"`
+	Warnings         []types.String                `tfsdk:"warnings"`
 }
 
 func (r *MeshSecretResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,6 +62,13 @@ func (r *MeshSecretResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 				Description: `Id of the Konnect resource. Requires replacement if changed.`,
 			},
+			"creation_time": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Time at which the resource was created`,
+			},
 			"data": schema.StringAttribute{
 				Optional:    true,
 				Description: `Value of the secret`,
@@ -73,6 +83,13 @@ func (r *MeshSecretResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"mesh": schema.StringAttribute{
 				Required:    true,
 				Description: `name of the mesh`,
+			},
+			"modification_time": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Time at which the resource was updated`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -162,6 +179,43 @@ func (r *MeshSecretResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedSecretCreateOrUpdateSuccessResponse(ctx, res.SecretCreateOrUpdateSuccessResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetSecretRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.Secret.GetSecret(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.SecretItem != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedSecretItem(ctx, res1.SecretItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -279,6 +333,43 @@ func (r *MeshSecretResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedSecretCreateOrUpdateSuccessResponse(ctx, res.SecretCreateOrUpdateSuccessResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetSecretRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.Secret.GetSecret(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.SecretItem != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedSecretItem(ctx, res1.SecretItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return

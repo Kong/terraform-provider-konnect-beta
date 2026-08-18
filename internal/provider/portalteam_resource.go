@@ -40,6 +40,7 @@ type PortalTeamResourceModel struct {
 	CreatedAt          types.String `tfsdk:"created_at"`
 	Description        types.String `tfsdk:"description"`
 	ID                 types.String `tfsdk:"id"`
+	KonnectManaged     types.Bool   `tfsdk:"konnect_managed"`
 	Name               types.String `tfsdk:"name"`
 	PortalID           types.String `tfsdk:"portal_id"`
 	UpdatedAt          types.String `tfsdk:"updated_at"`
@@ -65,9 +66,10 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"description": schema.StringAttribute{
-				Optional: true,
+				Optional:    true,
+				Description: `The description of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 				},
 			},
 			"id": schema.StringAttribute{
@@ -76,10 +78,16 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Indicates whether the team is managed by Konnect.`,
+			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The name of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w \W]+$`), "must match pattern "+regexp.MustCompile(`^[\w \W]+$`).String()),
 				},
 			},

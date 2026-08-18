@@ -17,6 +17,7 @@ resource "konnect_portal_team" "my_portalteam" {
   provider = konnect-beta
   can_own_applications = true
   description          = "The Identity Management (IDM) team."
+  konnect_managed      = false
   name                 = "IDM - Developers"
   portal_id            = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 }
@@ -27,13 +28,14 @@ resource "konnect_portal_team" "my_portalteam" {
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the team.
 - `portal_id` (String) The Portal identifier
 
 ### Optional
 
 - `can_own_applications` (Boolean) Whether the team is allowed to own applications
-- `description` (String)
+- `description` (String) The description of the team.
+- `konnect_managed` (Boolean) Indicates whether the team is managed by Konnect.
 
 ### Read-Only
 

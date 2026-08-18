@@ -20,8 +20,10 @@ resource "konnect_api_implementation" "my_apiimplementation" {
     control_plane = {
       id = "7710d5c4-d902-410b-992f-18b814155b53"
     }
+    environment = "production"
   }
   service_reference = {
+    environment = "production"
     service = {
       control_plane_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       id               = "7710d5c4-d902-410b-992f-18b814155b53"
@@ -45,6 +47,11 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `environment` (String) The environment this implementation is scoped to, by name. On write, selects the
+target environment: required when the API is configured across multiple
+environments, and optional otherwise (accepted only if it matches the API's sole
+environment). On read, the resolved environment name. Present only for APIs
+configured across multiple environments.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -54,6 +61,12 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 Optional:
 
 - `control_plane` (Attributes) A Control plane that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--control_plane_reference--control_plane))
+- `environment` (String) The environment this implementation is scoped to, by name. On write, selects the
+target environment: required when the API is configured across multiple
+environments, and optional otherwise (accepted only if it matches the API's sole
+environment). On read, the resolved environment name. Present only for APIs
+configured across multiple environments.
+Requires replacement if changed.
 
 Read-Only:
 
@@ -79,6 +92,12 @@ Read-Only:
 
 Optional:
 
+- `environment` (String) The environment this implementation is scoped to, by name. On write, selects the
+target environment: required when the API is configured across multiple
+environments, and optional otherwise (accepted only if it matches the API's sole
+environment). On read, the resolved environment name. Present only for APIs
+configured across multiple environments.
+Requires replacement if changed.
 - `service` (Attributes) A Gateway service that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--service_reference--service))
 
 Read-Only:

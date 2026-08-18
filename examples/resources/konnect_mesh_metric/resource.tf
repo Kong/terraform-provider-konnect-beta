@@ -19,7 +19,13 @@ resource "konnect_mesh_metric" "my_meshmetric" {
       backends = [
         {
           open_telemetry = {
-            endpoint         = "...my_endpoint..."
+            backend_ref = {
+              kind = "MeshOpenTelemetryBackend"
+              labels = {
+                key = "value"
+              }
+            }
+            endpoint         = ""
             refresh_interval = "...my_refresh_interval..."
           }
           prometheus = {

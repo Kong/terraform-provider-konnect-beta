@@ -18,7 +18,7 @@ resource "konnect_dashboard" "my_dashboard" {
   definition = {
     preset_filters = [
       {
-        field    = "a2a_method"
+        field    = "a2a_task_id"
         operator = "not_in"
         value    = "{ \"see\": \"documentation\" }"
       }
@@ -27,36 +27,29 @@ resource "konnect_dashboard" "my_dashboard" {
       {
         chart = {
           definition = {
-            chart = {
-              choropleth_map = {
+            table_visualization = {
+              chart = {
                 chart_title = "...my_chart_title..."
-                type        = "choropleth_map"
+                type        = "table"
               }
-            }
-            query = {
-              llm_usage = {
-                datasource = "llm_usage"
-                dimensions = [
-                  "consumer"
-                ]
-                filters = [
-                  {
-                    field    = "application"
-                    operator = "empty"
-                    value    = "{ \"see\": \"documentation\" }"
-                  }
-                ]
-                granularity = "tenMinutely"
-                metrics = [
-                  "ai_request_count"
-                ]
-                time_range = {
-                  absolute = {
-                    end   = "2022-11-26T07:30:44.592Z"
-                    start = "2022-01-09T02:25:36.303Z"
-                    type  = "absolute"
-                    tz    = "Etc/UTC"
-                  }
+              query = {
+                platform_usage = {
+                  columns = [
+                    "..."
+                  ]
+                  cursor     = "...my_cursor..."
+                  datasource = "platform_usage"
+                  entity     = "...my_entity..."
+                  filters = [
+                    {
+                      field    = "plugin_name"
+                      operator = "not_in"
+                      value = [
+                        "..."
+                      ]
+                    }
+                  ]
+                  page_size = 2
                 }
               }
             }
@@ -90,7 +83,7 @@ resource "konnect_dashboard" "my_dashboard" {
 
 - `definition` (Attributes) A JSON object describing a dashboard.
 
-A dashboard is an array of tiles.  All tiles are of type 'chart', which query data and render a chart displaying that data.
+A dashboard is an array of tiles.  All tiles are of type 'chart', which query data and render a visualization, either a chart or table.
 
 Dashboards have 6 columns and as many rows as necessary to display their tiles. (see [below for nested schema](#nestedatt--definition))
 - `name` (String) The dashboard name, which is displayed at the top of the dashboard and in lists.
@@ -127,15 +120,15 @@ Whether or not a preset filter applies to a tile depends on the filter's dimensi
 
 Optional:
 
-- `chart` (Attributes) A tile that queries data and renders a chart. (see [below for nested schema](#nestedatt--definition--tiles--chart))
+- `chart` (Attributes) A tile that queries data and renders a visualization. (see [below for nested schema](#nestedatt--definition--tiles--chart))
 
 <a id="nestedatt--definition--tiles--chart"></a>
 ### Nested Schema for `definition.tiles.chart`
 
 Optional:
 
-- `definition` (Attributes) The tile's definition, which consists of a query to fetch data and a chart to render the data.
-Note that some charts expect certain types of queries to render properly.  The documentation for the individual chart types has more information.
+- `definition` (Attributes) The tile's definition, which consists of a query to fetch data and a visualization to render the data.
+Charts and tables expect certain query types to render properly. The documentation for the individual visualization types has more information.
 Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--definition))
 - `layout` (Attributes) Information about how the tile is placed on the dashboard.
 
@@ -150,22 +143,30 @@ Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--la
 
 Optional:
 
-- `chart` (Attributes) The type of chart to render. Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart))
-- `query` (Attributes) Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query))
+- `chart_visualization` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization))
+- `table_visualization` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--table_visualization))
 
-<a id="nestedatt--definition--tiles--chart--definition--chart"></a>
-### Nested Schema for `definition.tiles.chart.definition.chart`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization`
+
+Optional:
+
+- `chart` (Attributes) The type of chart to render. Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--chart))
+- `query` (Attributes) Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--chart"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.chart`
 
 Optional:
 
 - `choropleth_map` (Attributes) A chart that displays data on a world map. Each region on the map is colored based on the metric value.
 This chart works only with the `api_usage` datasource and requires a single metric and a single dimension of `country_code`.
-No additional dimensions are supported. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--choropleth_map))
+No additional dimensions are supported. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--chart--choropleth_map))
 - `donut` (Attributes) A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that
-the query includes only one dimension (not `time`). (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--donut))
+the query includes only one dimension (not `time`). (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--chart--donut))
 - `horizontal_bar` (Attributes) A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not `time`).
-To render a bar chart of timeseries data, use a `timeseries_bar` chart instead. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--horizontal_bar))
-- `single_value` (Attributes) A chart that can render a single number.  This chart works with a single metric and no dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--single_value))
+To render a bar chart of timeseries data, use a `timeseries_bar` chart instead. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--chart--horizontal_bar))
+- `single_value` (Attributes) A chart that can render a single number.  This chart works with a single metric and no dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--chart--single_value))
 - `timeseries_line` (Attributes) A chart that can render timeseries data -- data from a query that has `time` as a dimension -- as lines or bars.
 
 This type of chart can support:
@@ -173,10 +174,12 @@ This type of chart can support:
 - One or more metrics: `{ metrics: ["response_latency_p99", "response_latency_p95"], dimensions: ["time"] }`
 - One metric plus one non-time dimension: `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` 
 
-Either way, ensure that `time` is in the list of query dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--timeseries_line))
+Either way, ensure that `time` is in the list of query dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--chart--timeseries_line))
+- `top_n` (Attributes) A chart that ranks dimension values by a metric and renders them as a table, showing
+the top results.  This type of chart supports up to 3 dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--chart--top_n))
 
-<a id="nestedatt--definition--tiles--chart--definition--chart--choropleth_map"></a>
-### Nested Schema for `definition.tiles.chart.definition.chart.choropleth_map`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--chart--choropleth_map"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.chart.choropleth_map`
 
 Optional:
 
@@ -184,8 +187,8 @@ Optional:
 - `type` (String) Not Null; must be "choropleth_map"
 
 
-<a id="nestedatt--definition--tiles--chart--definition--chart--donut"></a>
-### Nested Schema for `definition.tiles.chart.definition.chart.donut`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--chart--donut"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.chart.donut`
 
 Optional:
 
@@ -193,8 +196,8 @@ Optional:
 - `type` (String) Not Null; must be "donut"
 
 
-<a id="nestedatt--definition--tiles--chart--definition--chart--horizontal_bar"></a>
-### Nested Schema for `definition.tiles.chart.definition.chart.horizontal_bar`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--chart--horizontal_bar"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.chart.horizontal_bar`
 
 Optional:
 
@@ -203,8 +206,8 @@ Optional:
 - `type` (String) possible known values include one of ["horizontal_bar", "vertical_bar"]; Not Null
 
 
-<a id="nestedatt--definition--tiles--chart--definition--chart--single_value"></a>
-### Nested Schema for `definition.tiles.chart.definition.chart.single_value`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--chart--single_value"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.chart.single_value`
 
 Optional:
 
@@ -213,8 +216,8 @@ Optional:
 - `type` (String) Not Null; must be "single_value"
 
 
-<a id="nestedatt--definition--tiles--chart--definition--chart--timeseries_line"></a>
-### Nested Schema for `definition.tiles.chart.definition.chart.timeseries_line`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--chart--timeseries_line"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.chart.timeseries_line`
 
 Optional:
 
@@ -223,25 +226,37 @@ Optional:
 - `type` (String) possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null
 
 
-
-<a id="nestedatt--definition--tiles--chart--definition--query"></a>
-### Nested Schema for `definition.tiles.chart.definition.query`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--chart--top_n"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.chart.top_n`
 
 Optional:
 
-- `agentic_usage` (Attributes) A query targeting the agentic usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage))
-- `api_usage` (Attributes) A query targeting the API usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage))
-- `llm_usage` (Attributes) A query targeting the LLM usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage))
-- `platform_usage` (Attributes) A query targeting the platform usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--platform_usage))
+- `chart_title` (String) The title of the chart, which is displayed in the tile's header.
+- `type` (String) Not Null; must be "top_n"
 
-<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage`
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query`
+
+Optional:
+
+- `agentic_usage` (Attributes) A query targeting the agentic usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage))
+- `api_usage` (Attributes) A query targeting the API usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage))
+- `llm_usage` (Attributes) A query targeting the LLM usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage))
+- `managed_cache_usage` (Attributes) A query targeting the managed cache usage analytics datasource.
+
+Note: this datasource only retains data for the last 7 days. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage))
+- `platform_usage` (Attributes) A query targeting the platform usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.agentic_usage`
 
 Optional:
 
 - `datasource` (String) Not Null; must be "agentic_usage"
 - `dimensions` (List of String) List of attributes or entity types to group by.
-- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters))
+- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--filters))
 - `granularity` (String) Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
 
 The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
@@ -263,29 +278,30 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["request_count"]
-- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range))
+- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--time_range))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.agentic_usage.filters`
 
 Optional:
 
-- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.time_range`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--time_range"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.agentic_usage.time_range`
 
 Optional:
 
-- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--absolute))
-- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--relative))
+- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--time_range--absolute))
+- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--time_range--relative))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--absolute"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.time_range.absolute`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--time_range--absolute"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.agentic_usage.time_range.absolute`
 
 Optional:
 
@@ -295,8 +311,8 @@ Optional:
 - `tz` (String) Default: "Etc/UTC"
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--relative"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.time_range.relative`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--agentic_usage--time_range--relative"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.agentic_usage.time_range.relative`
 
 Optional:
 
@@ -307,14 +323,14 @@ Optional:
 
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--api_usage"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.api_usage`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.api_usage`
 
 Optional:
 
 - `datasource` (String) Not Null; must be "api_usage"
 - `dimensions` (List of String) List of attributes or entity types to group by.
-- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--filters))
+- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--filters))
 - `granularity` (String) Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
 
 The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
@@ -336,29 +352,30 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]
-- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range))
+- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--time_range))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--api_usage--filters"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.api_usage.filters`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.api_usage.filters`
 
 Optional:
 
-- `field` (String) possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--api_usage--time_range"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.api_usage.time_range`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--time_range"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.api_usage.time_range`
 
 Optional:
 
-- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range--absolute))
-- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range--relative))
+- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--time_range--absolute))
+- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--time_range--relative))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--api_usage--time_range--absolute"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.api_usage.time_range.absolute`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--time_range--absolute"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.api_usage.time_range.absolute`
 
 Optional:
 
@@ -368,8 +385,8 @@ Optional:
 - `tz` (String) Default: "Etc/UTC"
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--api_usage--time_range--relative"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.api_usage.time_range.relative`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--api_usage--time_range--relative"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.api_usage.time_range.relative`
 
 Optional:
 
@@ -380,14 +397,14 @@ Optional:
 
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--llm_usage"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.llm_usage`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.llm_usage`
 
 Optional:
 
 - `datasource` (String) Not Null; must be "llm_usage"
 - `dimensions` (List of String) List of attributes or entity types to group by.
-- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--filters))
+- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--filters))
 - `granularity` (String) Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
 
 The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
@@ -409,29 +426,30 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]
-- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range))
+- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--time_range))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--llm_usage--filters"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.llm_usage.filters`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.llm_usage.filters`
 
 Optional:
 
-- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "principal", "realm", "route", "status_code", "status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.llm_usage.time_range`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--time_range"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.llm_usage.time_range`
 
 Optional:
 
-- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range--absolute))
-- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range--relative))
+- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--time_range--absolute))
+- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--time_range--relative))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range--absolute"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.llm_usage.time_range.absolute`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--time_range--absolute"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.llm_usage.time_range.absolute`
 
 Optional:
 
@@ -441,8 +459,8 @@ Optional:
 - `tz` (String) Default: "Etc/UTC"
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range--relative"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.llm_usage.time_range.relative`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--llm_usage--time_range--relative"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.llm_usage.time_range.relative`
 
 Optional:
 
@@ -453,14 +471,259 @@ Optional:
 
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--platform_usage"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.platform_usage`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage`
+
+Optional:
+
+- `datasource` (String) Not Null; must be "managed_cache_usage"
+- `dimensions` (List of String) List of attributes or entity types to group by.
+- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters))
+- `granularity` (String) Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
+
+The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
+
+If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
+
+Different relative times support different granularities:
+  - 15m => tenSecondly, thirtySecondly, minutely
+  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely
+  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly
+  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly
+  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly
+  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily
+  - 30d => hourly, twoHourly, twelveHourly, daily, weekly
+
+For special time ranges:
+  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily
+  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
+
+For absolute time ranges, daily will be used.
+possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
+- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["cache_memory_utilization_max"]
+- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--time_range))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters`
+
+Optional:
+
+- `control_plane` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--control_plane))
+- `data_plane_group` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--data_plane_group))
+- `managed_cache` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--managed_cache))
+- `network` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--network))
+- `provider` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider))
+- `provider_region` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider_region))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--control_plane"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.control_plane`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--control_plane--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--control_plane--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--control_plane--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.control_plane.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "control_plane"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--control_plane--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.control_plane.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "control_plane"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--data_plane_group"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.data_plane_group`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--data_plane_group--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--data_plane_group--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--data_plane_group--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.data_plane_group.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "data_plane_group"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--data_plane_group--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.data_plane_group.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "data_plane_group"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--managed_cache"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.managed_cache`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--managed_cache--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--managed_cache--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--managed_cache--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.managed_cache.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "managed_cache"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--managed_cache--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.managed_cache.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "managed_cache"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--network"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.network`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--network--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--network--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--network--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.network.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "network"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--network--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.network.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "network"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.provider`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.provider.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "provider"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.provider.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "provider"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider_region"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.provider_region`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider_region--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider_region--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider_region--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.provider_region.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "provider_region"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--filters--provider_region--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.filters.provider_region.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "provider_region"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--time_range"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.time_range`
+
+Optional:
+
+- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--time_range--absolute))
+- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--time_range--relative))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--time_range--absolute"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.time_range.absolute`
+
+Optional:
+
+- `end` (String)
+- `start` (String)
+- `type` (String) Not Null; must be "absolute"
+- `tz` (String) Default: "Etc/UTC"
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--managed_cache_usage--time_range--relative"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.managed_cache_usage.time_range.relative`
+
+Optional:
+
+- `time_range` (String) possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"
+- `type` (String) Not Null; must be "relative"
+- `tz` (String) Default: "Etc/UTC"
+
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.platform_usage`
 
 Optional:
 
 - `datasource` (String) Not Null; must be "platform_usage"
 - `dimensions` (List of String) List of attributes or entity types to group by.
-- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--platform_usage--filters))
+- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--filters))
 - `granularity` (String) Force time grouping into buckets of the specified duration. Only has an effect if "time" is in the "dimensions" list.
 
 If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
@@ -479,30 +742,30 @@ Granularity values:
   - `weekly`: Groups data into 7-day buckets.
   - `monthly`: Groups data into calendar month buckets.
 possible known values include one of ["daily", "weekly", "monthly"]
-- `limit` (Number) Maximum number of group_by buckets to return. Defaults to 50, capped at 1000. Only applies when a group_by dimension is requested. Default: 50
+- `limit` (Number) Limits the number of distinct metric groups to return. Default: 50
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["control_plane_count"]
-- `time_range` (Attributes) The time range to query for platform data. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--platform_usage--time_range))
+- `time_range` (Attributes) The time range to query for platform data. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--time_range))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--platform_usage--filters"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.platform_usage.filters`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.platform_usage.filters`
 
 Optional:
 
-- `field` (String) The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "gateway_service", "plugin", "plugin_name", "plugin_scope", "realm", "route"]; Not Null
+- `field` (String) The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to filter by. Not Null
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--platform_usage--time_range"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.platform_usage.time_range`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--time_range"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.platform_usage.time_range`
 
 Optional:
 
-- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--platform_usage--time_range--absolute))
-- `relative` (Attributes) A duration representing a relative-to-now span of time for platform queries. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--platform_usage--time_range--relative))
+- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--time_range--absolute))
+- `relative` (Attributes) A duration representing a relative-to-now span of time for platform queries. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--time_range--relative))
 
-<a id="nestedatt--definition--tiles--chart--definition--query--platform_usage--time_range--absolute"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.platform_usage.time_range.absolute`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--time_range--absolute"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.platform_usage.time_range.absolute`
 
 Optional:
 
@@ -512,14 +775,64 @@ Optional:
 - `tz` (String) Default: "Etc/UTC"
 
 
-<a id="nestedatt--definition--tiles--chart--definition--query--platform_usage--time_range--relative"></a>
-### Nested Schema for `definition.tiles.chart.definition.query.platform_usage.time_range.relative`
+<a id="nestedatt--definition--tiles--chart--definition--chart_visualization--query--platform_usage--time_range--relative"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart_visualization.query.platform_usage.time_range.relative`
 
 Optional:
 
 - `time_range` (String) possible known values include one of ["24h", "7d", "30d", "90d", "180d", "365d", "current_week", "current_month", "current_quarter", "previous_week", "previous_month", "previous_quarter"]; Default: "30d"
 - `type` (String) Not Null; must be "relative"
 - `tz` (String) Default: "Etc/UTC"
+
+
+
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--table_visualization"></a>
+### Nested Schema for `definition.tiles.chart.definition.table_visualization`
+
+Optional:
+
+- `chart` (Attributes) A table that displays tabular platform usage data. Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--table_visualization--chart))
+- `query` (Attributes) Not Null (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--table_visualization--query))
+
+<a id="nestedatt--definition--tiles--chart--definition--table_visualization--chart"></a>
+### Nested Schema for `definition.tiles.chart.definition.table_visualization.chart`
+
+Optional:
+
+- `chart_title` (String) The title of the chart, which is displayed in the tile's header.
+- `type` (String) Not Null; must be "table"
+
+
+<a id="nestedatt--definition--tiles--chart--definition--table_visualization--query"></a>
+### Nested Schema for `definition.tiles.chart.definition.table_visualization.query`
+
+Optional:
+
+- `platform_usage` (Attributes) A query targeting tabular platform usage analytics data. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--table_visualization--query--platform_usage))
+
+<a id="nestedatt--definition--tiles--chart--definition--table_visualization--query--platform_usage"></a>
+### Nested Schema for `definition.tiles.chart.definition.table_visualization.query.platform_usage`
+
+Optional:
+
+- `columns` (List of String)
+- `cursor` (String)
+- `datasource` (String) Not Null; must be "platform_usage"
+- `entity` (String)
+- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--table_visualization--query--platform_usage--filters))
+- `page_size` (Number)
+
+<a id="nestedatt--definition--tiles--chart--definition--table_visualization--query--platform_usage--filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.table_visualization.query.platform_usage.filters`
+
+Optional:
+
+- `field` (String) The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team"]; Not Null
+- `operator` (String) possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to filter by. Not Null
 
 
 
@@ -560,7 +873,7 @@ Optional:
 
 Optional:
 
-- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_group", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "managed_cache", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "network", "portal", "principal", "provider", "provider_region", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 

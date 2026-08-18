@@ -7,6 +7,6 @@ import (
 )
 
 type File struct {
-	Format *Format      `tfsdk:"format"`
-	Path   types.String `tfsdk:"path"`
+	Format *MeshAccessLogItemSpecFromFormat `tfsdk:"format"`
+	Path   types.String                     `tfsdk:"path"`
 }

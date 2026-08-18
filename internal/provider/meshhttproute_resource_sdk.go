@@ -263,10 +263,10 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 				for _, matchesItem := range rulesItem.Matches {
 					var matches tfTypes.MeshHTTPRouteItemMatches
 
-					matches.Headers = []tfTypes.Headers{}
+					matches.Headers = []tfTypes.MeshHTTPRouteItemHeaders{}
 
 					for _, headersItem := range matchesItem.Headers {
-						var headers tfTypes.Headers
+						var headers tfTypes.MeshHTTPRouteItemHeaders
 
 						headers.Name = types.StringValue(headersItem.Name)
 						if headersItem.Type != nil {
@@ -286,7 +286,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 					if matchesItem.Path == nil {
 						matches.Path = nil
 					} else {
-						matches.Path = &tfTypes.MeshFaultInjectionItemSpiffeID{}
+						matches.Path = &tfTypes.Sni{}
 						matches.Path.Type = types.StringValue(string(matchesItem.Path.Type))
 						matches.Path.Value = types.StringValue(matchesItem.Path.Value)
 					}
@@ -657,7 +657,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput(ctx context.
 					} else {
 						weight1 = nil
 					}
-					backendRef := shared.BackendRef{
+					backendRef := shared.MeshHTTPRouteItemBackendRef{
 						Kind:        kind2,
 						Labels:      labels3,
 						Mesh:        mesh3,
@@ -734,9 +734,9 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput(ctx context.
 					} else {
 						port2 = nil
 					}
-					scheme := new(shared.Scheme)
+					scheme := new(shared.MeshHTTPRouteItemScheme)
 					if !r.Spec.To[toIndex].Rules[rulesIndex].Default.Filters[filtersIndex].RequestRedirect.Scheme.IsUnknown() && !r.Spec.To[toIndex].Rules[rulesIndex].Default.Filters[filtersIndex].RequestRedirect.Scheme.IsNull() {
-						*scheme = shared.Scheme(r.Spec.To[toIndex].Rules[rulesIndex].Default.Filters[filtersIndex].RequestRedirect.Scheme.ValueString())
+						*scheme = shared.MeshHTTPRouteItemScheme(r.Spec.To[toIndex].Rules[rulesIndex].Default.Filters[filtersIndex].RequestRedirect.Scheme.ValueString())
 					} else {
 						scheme = nil
 					}
@@ -849,7 +849,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput(ctx context.
 			}
 			matches := make([]shared.MeshHTTPRouteItemMatches, 0, len(r.Spec.To[toIndex].Rules[rulesIndex].Matches))
 			for matchesIndex := range r.Spec.To[toIndex].Rules[rulesIndex].Matches {
-				headers := make([]shared.Headers, 0, len(r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Headers))
+				headers := make([]shared.MeshHTTPRouteItemHeaders, 0, len(r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Headers))
 				for headersIndex := range r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Headers {
 					var name8 string
 					name8 = r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Headers[headersIndex].Name.ValueString()
@@ -866,15 +866,15 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput(ctx context.
 					} else {
 						value4 = nil
 					}
-					headers = append(headers, shared.Headers{
+					headers = append(headers, shared.MeshHTTPRouteItemHeaders{
 						Name:  name8,
 						Type:  type2,
 						Value: value4,
 					})
 				}
-				method := new(shared.Method)
+				method := new(shared.MeshHTTPRouteItemMethod)
 				if !r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Method.IsUnknown() && !r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Method.IsNull() {
-					*method = shared.Method(r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Method.ValueString())
+					*method = shared.MeshHTTPRouteItemMethod(r.Spec.To[toIndex].Rules[rulesIndex].Matches[matchesIndex].Method.ValueString())
 				} else {
 					method = nil
 				}

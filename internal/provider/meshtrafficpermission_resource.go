@@ -222,6 +222,27 @@ func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource
 													speakeasy_objectvalidators.NotNull(),
 												},
 												Attributes: map[string]schema.Attribute{
+													"sni": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"type": schema.StringAttribute{
+																Optional:    true,
+																Description: `Type defines how to match traffic by SNI. Only ` + "`" + `Exact` + "`" + ` is supported. Not Null; must be "Exact"`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.OneOf("Exact"),
+																},
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+														Description: `SNI defines a matcher configuration for matching by SNI value carried on the TLS connection`,
+													},
 													"spiffe_id": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
@@ -234,7 +255,7 @@ func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource
 															},
 															"value": schema.StringAttribute{
 																Optional:    true,
-																Description: `Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null`,
+																Description: `Value is SpiffeID of a client that needs to match for the configuration to be applied. Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
 																},
@@ -257,6 +278,27 @@ func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource
 													speakeasy_objectvalidators.NotNull(),
 												},
 												Attributes: map[string]schema.Attribute{
+													"sni": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"type": schema.StringAttribute{
+																Optional:    true,
+																Description: `Type defines how to match traffic by SNI. Only ` + "`" + `Exact` + "`" + ` is supported. Not Null; must be "Exact"`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.OneOf("Exact"),
+																},
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+														Description: `SNI defines a matcher configuration for matching by SNI value carried on the TLS connection`,
+													},
 													"spiffe_id": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
@@ -269,7 +311,7 @@ func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource
 															},
 															"value": schema.StringAttribute{
 																Optional:    true,
-																Description: `Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null`,
+																Description: `Value is SpiffeID of a client that needs to match for the configuration to be applied. Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
 																},
@@ -293,6 +335,27 @@ func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource
 													speakeasy_objectvalidators.NotNull(),
 												},
 												Attributes: map[string]schema.Attribute{
+													"sni": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"type": schema.StringAttribute{
+																Optional:    true,
+																Description: `Type defines how to match traffic by SNI. Only ` + "`" + `Exact` + "`" + ` is supported. Not Null; must be "Exact"`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.OneOf("Exact"),
+																},
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+														Description: `SNI defines a matcher configuration for matching by SNI value carried on the TLS connection`,
+													},
 													"spiffe_id": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
@@ -305,7 +368,7 @@ func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource
 															},
 															"value": schema.StringAttribute{
 																Optional:    true,
-																Description: `Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null`,
+																Description: `Value is SpiffeID of a client that needs to match for the configuration to be applied. Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
 																},

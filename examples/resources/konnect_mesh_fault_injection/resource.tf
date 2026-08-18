@@ -79,6 +79,10 @@ resource "konnect_mesh_fault_injection" "my_meshfaultinjection" {
         }
         matches = [
           {
+            sni = {
+              type  = "Exact"
+              value = "...my_value..."
+            }
             spiffe_id = {
               type  = "Exact"
               value = "...my_value..."

@@ -16,7 +16,7 @@ terraform {
   required_providers {
     konnect-beta = {
       source  = "kong/konnect-beta"
-      version = "0.20.0"
+      version = "0.21.0"
     }
   }
 }
@@ -39,6 +39,8 @@ The PAT token must be passed in the header of a request, for example:
 `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
 . Configurable via environment variable `KONNECT_TOKEN`.
 - `server_url` (String) Server URL (defaults to https://global.api.konghq.com)
+- `service_access_token` (String, Sensitive) The Service access token is meant to be used between internal services.
+.
 - `system_account_access_token` (String, Sensitive) The system account access token is meant for automations and integrations that are not directly associated with a human identity.
 You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
 The access token must be passed in the header of a request, for example:

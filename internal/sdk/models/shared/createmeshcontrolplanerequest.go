@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // CreateMeshControlPlaneRequest - a payload to create a control plane
 type CreateMeshControlPlaneRequest struct {
 	// The name of the control plane.
@@ -10,6 +14,19 @@ type CreateMeshControlPlaneRequest struct {
 	Features    []MeshControlPlaneFeature `json:"features,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
 	Labels map[string]*string `json:"labels,omitempty"`
+	// The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions.
+	Version *string `default:"v2" json:"version"`
+}
+
+func (c CreateMeshControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateMeshControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateMeshControlPlaneRequest) GetName() string {
@@ -38,4 +55,11 @@ func (c *CreateMeshControlPlaneRequest) GetLabels() map[string]*string {
 		return nil
 	}
 	return c.Labels
+}
+
+func (c *CreateMeshControlPlaneRequest) GetVersion() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Version
 }

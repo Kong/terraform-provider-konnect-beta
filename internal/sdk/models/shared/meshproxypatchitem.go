@@ -158,8 +158,8 @@ func (e *Operation) IsExact() bool {
 	return false
 }
 
-// Cluster is a modification of Envoy's Cluster resource.
-type Cluster struct {
+// MeshProxyPatchItemCluster - Cluster is a modification of Envoy's Cluster resource.
+type MeshProxyPatchItemCluster struct {
 	// JsonPatches specifies list of jsonpatches to apply to on Envoy's Cluster
 	// resource
 	JSONPatches []JSONPatches `json:"jsonPatches,omitempty"`
@@ -171,32 +171,32 @@ type Cluster struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (c *Cluster) GetJSONPatches() []JSONPatches {
-	if c == nil {
+func (m *MeshProxyPatchItemCluster) GetJSONPatches() []JSONPatches {
+	if m == nil {
 		return nil
 	}
-	return c.JSONPatches
+	return m.JSONPatches
 }
 
-func (c *Cluster) GetMatch() *MeshProxyPatchItemSpecDefaultAppendModificationsClusterMatch {
-	if c == nil {
+func (m *MeshProxyPatchItemCluster) GetMatch() *MeshProxyPatchItemSpecDefaultAppendModificationsClusterMatch {
+	if m == nil {
 		return nil
 	}
-	return c.Match
+	return m.Match
 }
 
-func (c *Cluster) GetOperation() Operation {
-	if c == nil {
+func (m *MeshProxyPatchItemCluster) GetOperation() Operation {
+	if m == nil {
 		return Operation("")
 	}
-	return c.Operation
+	return m.Operation
 }
 
-func (c *Cluster) GetValue() *string {
-	if c == nil {
+func (m *MeshProxyPatchItemCluster) GetValue() *string {
+	if m == nil {
 		return nil
 	}
-	return c.Value
+	return m.Value
 }
 
 // MeshProxyPatchItemOp - Op is a jsonpatch operation string.
@@ -927,7 +927,7 @@ func (v *VirtualHost) GetValue() *string {
 
 type AppendModifications struct {
 	// Cluster is a modification of Envoy's Cluster resource.
-	Cluster *Cluster `json:"cluster,omitempty"`
+	Cluster *MeshProxyPatchItemCluster `json:"cluster,omitempty"`
 	// HTTPFilter is a modification of Envoy HTTP Filter
 	// available in HTTP Connection Manager in a Listener resource.
 	HTTPFilter *HTTPFilter `json:"httpFilter,omitempty"`
@@ -940,7 +940,7 @@ type AppendModifications struct {
 	VirtualHost *VirtualHost `json:"virtualHost,omitempty"`
 }
 
-func (a *AppendModifications) GetCluster() *Cluster {
+func (a *AppendModifications) GetCluster() *MeshProxyPatchItemCluster {
 	if a == nil {
 		return nil
 	}

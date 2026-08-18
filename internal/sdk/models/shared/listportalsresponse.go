@@ -53,7 +53,7 @@ func (e *ListPortalsResponseDefaultPageVisibility) IsExact() bool {
 	return false
 }
 
-type Portal struct {
+type ListPortalsResponsePortal struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -69,9 +69,8 @@ type Portal struct {
 	// Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.
 	AuthenticationEnabled *bool `default:"true" json:"authentication_enabled"`
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.
-	RbacEnabled *bool `default:"false" json:"rbac_enabled"`
-	// Whether the portal has the MCP server enabled
-	McpServerEnabled *bool `json:"mcp_server_enabled,omitempty"`
+	RbacEnabled *bool       `default:"false" json:"rbac_enabled"`
+	Ai          *AISettings `json:"ai,omitempty"`
 	// Whether ip allow list is enabled for the portal.
 	SiprEnabled *bool `default:"false" json:"sipr_enabled"`
 	// The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.
@@ -97,160 +96,160 @@ type Portal struct {
 	NotificationsDeveloperPiiVisibilityEnabled *bool `default:"false" json:"notifications_developer_pii_visibility_enabled"`
 }
 
-func (p Portal) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (l ListPortalsResponsePortal) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
 }
 
-func (p *Portal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+func (l *ListPortalsResponsePortal) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *Portal) GetID() string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetID() string {
+	if l == nil {
 		return ""
 	}
-	return p.ID
+	return l.ID
 }
 
-func (p *Portal) GetCreatedAt() time.Time {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetCreatedAt() time.Time {
+	if l == nil {
 		return time.Time{}
 	}
-	return p.CreatedAt
+	return l.CreatedAt
 }
 
-func (p *Portal) GetUpdatedAt() time.Time {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetUpdatedAt() time.Time {
+	if l == nil {
 		return time.Time{}
 	}
-	return p.UpdatedAt
+	return l.UpdatedAt
 }
 
-func (p *Portal) GetName() string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetName() string {
+	if l == nil {
 		return ""
 	}
-	return p.Name
+	return l.Name
 }
 
-func (p *Portal) GetDisplayName() string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetDisplayName() string {
+	if l == nil {
 		return ""
 	}
-	return p.DisplayName
+	return l.DisplayName
 }
 
-func (p *Portal) GetDescription() *string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetDescription() *string {
+	if l == nil {
 		return nil
 	}
-	return p.Description
+	return l.Description
 }
 
-func (p *Portal) GetAuthenticationEnabled() *bool {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetAuthenticationEnabled() *bool {
+	if l == nil {
 		return nil
 	}
-	return p.AuthenticationEnabled
+	return l.AuthenticationEnabled
 }
 
-func (p *Portal) GetRbacEnabled() *bool {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetRbacEnabled() *bool {
+	if l == nil {
 		return nil
 	}
-	return p.RbacEnabled
+	return l.RbacEnabled
 }
 
-func (p *Portal) GetMcpServerEnabled() *bool {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetAi() *AISettings {
+	if l == nil {
 		return nil
 	}
-	return p.McpServerEnabled
+	return l.Ai
 }
 
-func (p *Portal) GetSiprEnabled() *bool {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetSiprEnabled() *bool {
+	if l == nil {
 		return nil
 	}
-	return p.SiprEnabled
+	return l.SiprEnabled
 }
 
-func (p *Portal) GetDefaultAPIVisibility() ListPortalsResponseDefaultAPIVisibility {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetDefaultAPIVisibility() ListPortalsResponseDefaultAPIVisibility {
+	if l == nil {
 		return ListPortalsResponseDefaultAPIVisibility("")
 	}
-	return p.DefaultAPIVisibility
+	return l.DefaultAPIVisibility
 }
 
-func (p *Portal) GetDefaultPageVisibility() ListPortalsResponseDefaultPageVisibility {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetDefaultPageVisibility() ListPortalsResponseDefaultPageVisibility {
+	if l == nil {
 		return ListPortalsResponseDefaultPageVisibility("")
 	}
-	return p.DefaultPageVisibility
+	return l.DefaultPageVisibility
 }
 
-func (p *Portal) GetDefaultApplicationAuthStrategyID() *string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetDefaultApplicationAuthStrategyID() *string {
+	if l == nil {
 		return nil
 	}
-	return p.DefaultApplicationAuthStrategyID
+	return l.DefaultApplicationAuthStrategyID
 }
 
-func (p *Portal) GetAutoApproveDevelopers() *bool {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetAutoApproveDevelopers() *bool {
+	if l == nil {
 		return nil
 	}
-	return p.AutoApproveDevelopers
+	return l.AutoApproveDevelopers
 }
 
-func (p *Portal) GetAutoApproveApplications() *bool {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetAutoApproveApplications() *bool {
+	if l == nil {
 		return nil
 	}
-	return p.AutoApproveApplications
+	return l.AutoApproveApplications
 }
 
-func (p *Portal) GetDefaultDomain() string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetDefaultDomain() string {
+	if l == nil {
 		return ""
 	}
-	return p.DefaultDomain
+	return l.DefaultDomain
 }
 
-func (p *Portal) GetCanonicalDomain() string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetCanonicalDomain() string {
+	if l == nil {
 		return ""
 	}
-	return p.CanonicalDomain
+	return l.CanonicalDomain
 }
 
-func (p *Portal) GetLabels() map[string]*string {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetLabels() map[string]*string {
+	if l == nil {
 		return nil
 	}
-	return p.Labels
+	return l.Labels
 }
 
-func (p *Portal) GetNotificationsDeveloperPiiVisibilityEnabled() *bool {
-	if p == nil {
+func (l *ListPortalsResponsePortal) GetNotificationsDeveloperPiiVisibilityEnabled() *bool {
+	if l == nil {
 		return nil
 	}
-	return p.NotificationsDeveloperPiiVisibilityEnabled
+	return l.NotificationsDeveloperPiiVisibilityEnabled
 }
 
 // ListPortalsResponse - A paginated list of portals in the current region of an organization.
 type ListPortalsResponse struct {
-	Data []Portal `json:"data"`
+	Data []ListPortalsResponsePortal `json:"data"`
 	// returns the pagination information
 	Meta PaginatedMeta `json:"meta"`
 }
 
-func (l *ListPortalsResponse) GetData() []Portal {
+func (l *ListPortalsResponse) GetData() []ListPortalsResponsePortal {
 	if l == nil {
-		return []Portal{}
+		return []ListPortalsResponsePortal{}
 	}
 	return l.Data
 }

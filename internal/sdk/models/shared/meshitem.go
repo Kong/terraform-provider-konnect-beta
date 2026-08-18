@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+	"time"
 )
 
 // Requirements - Rules defines a set of rules for data plane proxies to be member of the mesh.
@@ -1615,26 +1616,26 @@ func (a *AwsCredentials) GetAccessKeySecret() *AccessKeySecret {
 	return a.AccessKeySecret
 }
 
-type Auth struct {
+type ConfAuth struct {
 	AwsCredentials *AwsCredentials `json:"awsCredentials,omitempty"`
 }
 
-func (a Auth) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (c ConfAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
 }
 
-func (a *Auth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+func (c *ConfAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *Auth) GetAwsCredentials() *AwsCredentials {
-	if a == nil {
+func (c *ConfAuth) GetAwsCredentials() *AwsCredentials {
+	if c == nil {
 		return nil
 	}
-	return a.AwsCredentials
+	return c.AwsCredentials
 }
 
 type CaCertDataSourceSecret struct {
@@ -1873,7 +1874,7 @@ func (u ConfCaCert) MarshalJSON() ([]byte, error) {
 
 type ACMCertificateAuthorityConfig struct {
 	Arn        *string     `json:"arn,omitempty"`
-	Auth       *Auth       `json:"auth,omitempty"`
+	Auth       *ConfAuth   `json:"auth,omitempty"`
 	CaCert     *ConfCaCert `json:"caCert,omitempty"`
 	CommonName *string     `json:"commonName,omitempty"`
 }
@@ -1896,7 +1897,7 @@ func (a *ACMCertificateAuthorityConfig) GetArn() *string {
 	return a.Arn
 }
 
-func (a *ACMCertificateAuthorityConfig) GetAuth() *Auth {
+func (a *ACMCertificateAuthorityConfig) GetAuth() *ConfAuth {
 	if a == nil {
 		return nil
 	}
@@ -2782,38 +2783,38 @@ func (u AuthType) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type AuthType: all fields are null")
 }
 
-type Aws struct {
+type AuthAws struct {
 	IamServerIDHeader *string   `json:"iamServerIdHeader,omitempty"`
 	Role              *string   `json:"role,omitempty"`
 	Type              *AuthType `json:"type,omitempty"`
 }
 
-func (a Aws) MarshalJSON() ([]byte, error) {
+func (a AuthAws) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *Aws) UnmarshalJSON(data []byte) error {
+func (a *AuthAws) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *Aws) GetIamServerIDHeader() *string {
+func (a *AuthAws) GetIamServerIDHeader() *string {
 	if a == nil {
 		return nil
 	}
 	return a.IamServerIDHeader
 }
 
-func (a *Aws) GetRole() *string {
+func (a *AuthAws) GetRole() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Role
 }
 
-func (a *Aws) GetType() *AuthType {
+func (a *AuthAws) GetType() *AuthType {
 	if a == nil {
 		return nil
 	}
@@ -2821,7 +2822,7 @@ func (a *Aws) GetType() *AuthType {
 }
 
 type VaultCertificateAuthorityConfigFromCpAuthAws struct {
-	Aws *Aws `json:"aws,omitempty"`
+	Aws *AuthAws `json:"aws,omitempty"`
 }
 
 func (v VaultCertificateAuthorityConfigFromCpAuthAws) MarshalJSON() ([]byte, error) {
@@ -2835,7 +2836,7 @@ func (v *VaultCertificateAuthorityConfigFromCpAuthAws) UnmarshalJSON(data []byte
 	return nil
 }
 
-func (v *VaultCertificateAuthorityConfigFromCpAuthAws) GetAws() *Aws {
+func (v *VaultCertificateAuthorityConfigFromCpAuthAws) GetAws() *AuthAws {
 	if v == nil {
 		return nil
 	}
@@ -4692,8 +4693,12 @@ func (t *Tracing) GetDefaultBackend() *string {
 
 type MeshItem struct {
 	// Constraints that applies to the mesh and its entities
-	Constraints *Constraints      `json:"constraints,omitempty"`
-	Labels      map[string]string `json:"labels,omitempty"`
+	Constraints *Constraints `json:"constraints,omitempty"`
+	// Time at which the resource was created
+	CreationTime *time.Time `json:"creationTime,omitempty"`
+	// Kuma Resource Identifier (KRI) of the given resource
+	Kri    *string           `json:"kri,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// Logging settings.
 	// +optional
 	Logging      *Logging      `json:"logging,omitempty"`
@@ -4705,6 +4710,8 @@ type MeshItem struct {
 	// for each dataplane individually using Dataplane resource.
 	// +optional
 	Metrics *Metrics `json:"metrics,omitempty"`
+	// Time at which the resource was updated
+	ModificationTime *time.Time `json:"modificationTime,omitempty"`
 	// mTLS settings.
 	// +optional
 	Mtls *Mtls  `json:"mtls,omitempty"`
@@ -4723,11 +4730,36 @@ type MeshItem struct {
 	Type    string   `json:"type"`
 }
 
+func (m MeshItem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshItem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *MeshItem) GetConstraints() *Constraints {
 	if m == nil {
 		return nil
 	}
 	return m.Constraints
+}
+
+func (m *MeshItem) GetCreationTime() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.CreationTime
+}
+
+func (m *MeshItem) GetKri() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Kri
 }
 
 func (m *MeshItem) GetLabels() map[string]string {
@@ -4756,6 +4788,13 @@ func (m *MeshItem) GetMetrics() *Metrics {
 		return nil
 	}
 	return m.Metrics
+}
+
+func (m *MeshItem) GetModificationTime() *time.Time {
+	if m == nil {
+		return nil
+	}
+	return m.ModificationTime
 }
 
 func (m *MeshItem) GetMtls() *Mtls {
@@ -4801,6 +4840,123 @@ func (m *MeshItem) GetTracing() *Tracing {
 }
 
 func (m *MeshItem) GetType() string {
+	if m == nil {
+		return ""
+	}
+	return m.Type
+}
+
+type MeshItemInput struct {
+	// Constraints that applies to the mesh and its entities
+	Constraints *Constraints      `json:"constraints,omitempty"`
+	Labels      map[string]string `json:"labels,omitempty"`
+	// Logging settings.
+	// +optional
+	Logging      *Logging      `json:"logging,omitempty"`
+	MeshServices *MeshServices `json:"meshServices,omitempty"`
+	// Configuration for metrics collected and exposed by dataplanes.
+	//
+	// Settings defined here become defaults for every dataplane in a given Mesh.
+	// Additionally, it is also possible to further customize this configuration
+	// for each dataplane individually using Dataplane resource.
+	// +optional
+	Metrics *Metrics `json:"metrics,omitempty"`
+	// mTLS settings.
+	// +optional
+	Mtls *Mtls  `json:"mtls,omitempty"`
+	Name string `json:"name"`
+	// Networking settings of the mesh
+	Networking *Networking `json:"networking,omitempty"`
+	// Routing settings of the mesh
+	Routing *Routing `json:"routing,omitempty"`
+	// List of policies to skip creating by default when the mesh is created.
+	// e.g. TrafficPermission, MeshRetry, etc. An '*' can be used to skip all
+	// policies.
+	SkipCreatingInitialPolicies []string `json:"skipCreatingInitialPolicies,omitempty"`
+	// Tracing settings.
+	// +optional
+	Tracing *Tracing `json:"tracing,omitempty"`
+	Type    string   `json:"type"`
+}
+
+func (m *MeshItemInput) GetConstraints() *Constraints {
+	if m == nil {
+		return nil
+	}
+	return m.Constraints
+}
+
+func (m *MeshItemInput) GetLabels() map[string]string {
+	if m == nil {
+		return nil
+	}
+	return m.Labels
+}
+
+func (m *MeshItemInput) GetLogging() *Logging {
+	if m == nil {
+		return nil
+	}
+	return m.Logging
+}
+
+func (m *MeshItemInput) GetMeshServices() *MeshServices {
+	if m == nil {
+		return nil
+	}
+	return m.MeshServices
+}
+
+func (m *MeshItemInput) GetMetrics() *Metrics {
+	if m == nil {
+		return nil
+	}
+	return m.Metrics
+}
+
+func (m *MeshItemInput) GetMtls() *Mtls {
+	if m == nil {
+		return nil
+	}
+	return m.Mtls
+}
+
+func (m *MeshItemInput) GetName() string {
+	if m == nil {
+		return ""
+	}
+	return m.Name
+}
+
+func (m *MeshItemInput) GetNetworking() *Networking {
+	if m == nil {
+		return nil
+	}
+	return m.Networking
+}
+
+func (m *MeshItemInput) GetRouting() *Routing {
+	if m == nil {
+		return nil
+	}
+	return m.Routing
+}
+
+func (m *MeshItemInput) GetSkipCreatingInitialPolicies() []string {
+	if m == nil {
+		return nil
+	}
+	return m.SkipCreatingInitialPolicies
+}
+
+func (m *MeshItemInput) GetTracing() *Tracing {
+	if m == nil {
+		return nil
+	}
+	return m.Tracing
+}
+
+func (m *MeshItemInput) GetType() string {
 	if m == nil {
 		return ""
 	}

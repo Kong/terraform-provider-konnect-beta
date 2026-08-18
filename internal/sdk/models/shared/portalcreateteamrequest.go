@@ -8,10 +8,14 @@ import (
 
 // PortalCreateTeamRequest - Details about a team to create.
 type PortalCreateTeamRequest struct {
-	Name        string  `json:"name"`
+	// The name of the team.
+	Name string `json:"name"`
+	// The description of the team.
 	Description *string `default:"null" json:"description"`
 	// Whether the team is allowed to own applications
 	CanOwnApplications *bool `json:"can_own_applications,omitempty"`
+	// Indicates whether the team is managed by Konnect.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (p PortalCreateTeamRequest) MarshalJSON() ([]byte, error) {
@@ -44,4 +48,11 @@ func (p *PortalCreateTeamRequest) GetCanOwnApplications() *bool {
 		return nil
 	}
 	return p.CanOwnApplications
+}
+
+func (p *PortalCreateTeamRequest) GetKonnectManaged() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.KonnectManaged
 }

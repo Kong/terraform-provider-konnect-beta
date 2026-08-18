@@ -6,41 +6,42 @@ import (
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+	"time"
 )
 
-type AccessType string
+type AccessAuditItemAccessType string
 
 const (
-	AccessTypeStr     AccessType = "str"
-	AccessTypeInteger AccessType = "integer"
+	AccessAuditItemAccessTypeStr     AccessAuditItemAccessType = "str"
+	AccessAuditItemAccessTypeInteger AccessAuditItemAccessType = "integer"
 )
 
-type Access struct {
+type AccessAuditItemAccess struct {
 	Str     *string `queryParam:"inline" union:"member"`
 	Integer *int64  `queryParam:"inline" union:"member"`
 
-	Type AccessType
+	Type AccessAuditItemAccessType
 }
 
-func CreateAccessStr(str string) Access {
-	typ := AccessTypeStr
+func CreateAccessAuditItemAccessStr(str string) AccessAuditItemAccess {
+	typ := AccessAuditItemAccessTypeStr
 
-	return Access{
+	return AccessAuditItemAccess{
 		Str:  &str,
 		Type: typ,
 	}
 }
 
-func CreateAccessInteger(integer int64) Access {
-	typ := AccessTypeInteger
+func CreateAccessAuditItemAccessInteger(integer int64) AccessAuditItemAccess {
+	typ := AccessAuditItemAccessTypeInteger
 
-	return Access{
+	return AccessAuditItemAccess{
 		Integer: &integer,
 		Type:    typ,
 	}
 }
 
-func (u *Access) UnmarshalJSON(data []byte) error {
+func (u *AccessAuditItemAccess) UnmarshalJSON(data []byte) error {
 
 	var candidates []utils.UnionCandidate
 
@@ -48,7 +49,7 @@ func (u *Access) UnmarshalJSON(data []byte) error {
 	var str string = ""
 	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessTypeStr,
+			Type:  AccessAuditItemAccessTypeStr,
 			Value: &str,
 		})
 	}
@@ -56,36 +57,36 @@ func (u *Access) UnmarshalJSON(data []byte) error {
 	var integer int64 = int64(0)
 	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessTypeInteger,
+			Type:  AccessAuditItemAccessTypeInteger,
 			Value: &integer,
 		})
 	}
 
 	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Access", string(data))
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessAuditItemAccess", string(data))
 	}
 
 	// Pick the best candidate using multi-stage filtering
 	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Access", string(data))
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessAuditItemAccess", string(data))
 	}
 
 	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AccessType)
+	u.Type = best.Type.(AccessAuditItemAccessType)
 	switch best.Type {
-	case AccessTypeStr:
+	case AccessAuditItemAccessTypeStr:
 		u.Str = best.Value.(*string)
 		return nil
-	case AccessTypeInteger:
+	case AccessAuditItemAccessTypeInteger:
 		u.Integer = best.Value.(*int64)
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Access", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessAuditItemAccess", string(data))
 }
 
-func (u Access) MarshalJSON() ([]byte, error) {
+func (u AccessAuditItemAccess) MarshalJSON() ([]byte, error) {
 	if u.Str != nil {
 		return utils.MarshalJSON(u.Str, "", true)
 	}
@@ -94,17 +95,17 @@ func (u Access) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Integer, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type Access: all fields are null")
+	return nil, errors.New("could not marshal union type AccessAuditItemAccess: all fields are null")
 }
 
 type Rules struct {
-	Access    []Access `json:"access"`
-	AccessAll *bool    `json:"accessAll,omitempty"`
-	Mesh      *string  `json:"mesh,omitempty"`
-	Types     []string `json:"types"`
+	Access    []AccessAuditItemAccess `json:"access"`
+	AccessAll *bool                   `json:"accessAll,omitempty"`
+	Mesh      *string                 `json:"mesh,omitempty"`
+	Types     []string                `json:"types"`
 }
 
-func (r *Rules) GetAccess() []Access {
+func (r *Rules) GetAccess() []AccessAuditItemAccess {
 	if r == nil {
 		return nil
 	}
@@ -133,10 +134,32 @@ func (r *Rules) GetTypes() []string {
 }
 
 type AccessAuditItem struct {
-	Labels map[string]string `json:"labels,omitempty"`
-	Name   string            `json:"name"`
-	Rules  []Rules           `json:"rules"`
-	Type   string            `json:"type"`
+	// Time at which the resource was created
+	CreationTime *time.Time        `json:"creationTime,omitempty"`
+	Labels       map[string]string `json:"labels,omitempty"`
+	// Time at which the resource was updated
+	ModificationTime *time.Time `json:"modificationTime,omitempty"`
+	Name             string     `json:"name"`
+	Rules            []Rules    `json:"rules"`
+	Type             string     `json:"type"`
+}
+
+func (a AccessAuditItem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AccessAuditItem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AccessAuditItem) GetCreationTime() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.CreationTime
 }
 
 func (a *AccessAuditItem) GetLabels() map[string]string {
@@ -144,6 +167,13 @@ func (a *AccessAuditItem) GetLabels() map[string]string {
 		return nil
 	}
 	return a.Labels
+}
+
+func (a *AccessAuditItem) GetModificationTime() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.ModificationTime
 }
 
 func (a *AccessAuditItem) GetName() string {
@@ -161,6 +191,41 @@ func (a *AccessAuditItem) GetRules() []Rules {
 }
 
 func (a *AccessAuditItem) GetType() string {
+	if a == nil {
+		return ""
+	}
+	return a.Type
+}
+
+type AccessAuditItemInput struct {
+	Labels map[string]string `json:"labels,omitempty"`
+	Name   string            `json:"name"`
+	Rules  []Rules           `json:"rules"`
+	Type   string            `json:"type"`
+}
+
+func (a *AccessAuditItemInput) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AccessAuditItemInput) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AccessAuditItemInput) GetRules() []Rules {
+	if a == nil {
+		return nil
+	}
+	return a.Rules
+}
+
+func (a *AccessAuditItemInput) GetType() string {
 	if a == nil {
 		return ""
 	}

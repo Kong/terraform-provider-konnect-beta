@@ -175,7 +175,7 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToSharedEventGatewayACLsPol
 		action := shared.Action(r.Config.Rules[rulesIndex].Action.ValueString())
 		operationsVar := make([]shared.EventGatewayACLOperation, 0, len(r.Config.Rules[rulesIndex].Operations))
 		for operationsIndex := range r.Config.Rules[rulesIndex].Operations {
-			name1 := shared.Name(r.Config.Rules[rulesIndex].Operations[operationsIndex].Name.ValueString())
+			name1 := shared.EventGatewayACLOperationName(r.Config.Rules[rulesIndex].Operations[operationsIndex].Name.ValueString())
 			operationsVar = append(operationsVar, shared.EventGatewayACLOperation{
 				Name: name1,
 			})
