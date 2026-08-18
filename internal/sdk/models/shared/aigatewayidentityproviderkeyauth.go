@@ -36,7 +36,7 @@ type AIGatewayIdentityProviderKeyAuth struct {
 	// For advanced use cases, additional config properties can be sent in the request body.
 	// See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
 	//
-	Config map[string]any `json:"config,omitempty"`
+	Config any `json:"config,omitempty"`
 }
 
 func (a AIGatewayIdentityProviderKeyAuth) MarshalJSON() ([]byte, error) {
@@ -82,7 +82,7 @@ func (a *AIGatewayIdentityProviderKeyAuth) GetType() string {
 	return "key-auth"
 }
 
-func (a *AIGatewayIdentityProviderKeyAuth) GetConfig() map[string]any {
+func (a *AIGatewayIdentityProviderKeyAuth) GetConfig() any {
 	if a == nil {
 		return nil
 	}

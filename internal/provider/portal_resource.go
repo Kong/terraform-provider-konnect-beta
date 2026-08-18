@@ -93,7 +93,15 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Is the MCP Server enabled?. Not Null`,
+										Description: `Whether the MCP Server is enabled or not. Not Null`,
+										Validators: []validator.Bool{
+											speakeasy_boolvalidators.NotNull(),
+										},
+									},
+									"write_operations_enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Not Null`,
 										Validators: []validator.Bool{
 											speakeasy_boolvalidators.NotNull(),
 										},

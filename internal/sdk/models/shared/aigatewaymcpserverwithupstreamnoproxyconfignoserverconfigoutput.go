@@ -40,6 +40,80 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging) GetAu
 	return a.Audits
 }
 
+// AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Routing, logging, and request body size limits for the MCP Server.
+type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Configuration for an AI Gateway route.
+	Route *AIGatewayRouteConfig `json:"route,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Configuration for AI Gateway logging.
+	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging `json:"logging,omitempty"`
+	// Maximum size of request body to parse. Set to 0 for unlimited.
+	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
+	// Helper field to set protocol, host, port and path of the upstream service using a URL.
+	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
+	//
+	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Configuration applied when proxying to the upstream service, including authentication.
+	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
+}
+
+func (a AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetRoute() *AIGatewayRouteConfig {
+	if a == nil {
+		return nil
+	}
+	return a.Route
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetLogging() *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging {
+	if a == nil {
+		return nil
+	}
+	return a.Logging
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetMaxRequestBodySize() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.MaxRequestBodySize
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetURL() string {
+	if a == nil {
+		return ""
+	}
+	return a.URL
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetUpstream() *AIGatewayUpstreamConfigOutput {
+	if a == nil {
+		return nil
+	}
+	return a.Upstream
+}
+
 // AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
@@ -61,6 +135,11 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Configuration applied when proxying to the upstream service, including authentication.
+	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
 }
 
 func (a AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) MarshalJSON() ([]byte, error) {
@@ -100,4 +179,11 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetURL() str
 		return ""
 	}
 	return a.URL
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetUpstream() *AIGatewayUpstreamConfig {
+	if a == nil {
+		return nil
+	}
+	return a.Upstream
 }

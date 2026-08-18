@@ -37,7 +37,12 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           use_managed_identity = true
         }
       }
+      foundry = {
+        domain   = "services.ai.azure.com"
+        resource = "kong-foundry-east"
+      }
       instance = "kong-az-east"
+      service  = "azure-openai"
     }
     display_name = "Azure AI SE"
     labels = {
@@ -57,6 +62,7 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           batch_role_arn    = "...my_batch_role_arn..."
           role_session_name = "...my_role_session_name..."
           secret_access_key = "...my_secret_access_key..."
+          session_token     = "...my_session_token..."
           sts_endpoint_url  = "...my_sts_endpoint_url..."
         }
       }

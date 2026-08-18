@@ -8,5 +8,7 @@ import (
 
 type AIGatewayModelProviderAzureConfig struct {
 	Auth     *AIGatewayModelProviderAzureAuth `tfsdk:"auth"`
+	Foundry  *Foundry                         `tfsdk:"foundry"`
 	Instance types.String                     `tfsdk:"instance"`
+	Service  types.String                     `tfsdk:"service"`
 }

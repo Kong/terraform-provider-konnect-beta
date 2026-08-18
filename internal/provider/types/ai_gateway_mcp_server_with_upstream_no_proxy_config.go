@@ -11,5 +11,6 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfig struct {
 	MaxRequestBodySize types.Int64                                         `tfsdk:"max_request_body_size"`
 	Route              *AIGatewayRouteConfig                               `tfsdk:"route"`
 	Server             *AIGatewayMCPServerServerConfigBase                 `tfsdk:"server"`
+	Upstream           *AIGatewayUpstreamConfig                            `tfsdk:"upstream"`
 	URL                types.String                                        `tfsdk:"url"`
 }

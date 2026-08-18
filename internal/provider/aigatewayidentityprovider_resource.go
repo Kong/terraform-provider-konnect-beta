@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -22,7 +21,6 @@ import (
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
 )
@@ -43,6 +41,7 @@ type AIGatewayIdentityProviderResource struct {
 
 // AIGatewayIdentityProviderResourceModel describes the resource data model.
 type AIGatewayIdentityProviderResourceModel struct {
+	Config        jsontypes.Normalized                      `tfsdk:"config"`
 	CreatedAt     types.String                              `tfsdk:"created_at"`
 	DisplayName   types.String                              `tfsdk:"display_name"`
 	GatewayID     types.String                              `tfsdk:"gateway_id"`
@@ -61,6 +60,17 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayIdentityProvider Resource",
 		Attributes: map[string]schema.Attribute{
+			"config": schema.StringAttribute{
+				CustomType: jsontypes.NormalizedType{},
+				Computed:   true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("config")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("config")}}),
+				},
+				MarkdownDescription: `Configuration for the Kong Key auth identity provider.` + "\n" +
+					`For advanced use cases, additional config properties can be sent in the request body.` + "\n" +
+					`See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties` + "\n" +
+					`Parsed as JSON.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -89,16 +99,14 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 			"key_auth": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"config": schema.MapAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+					"config": schema.StringAttribute{
+						CustomType: jsontypes.NormalizedType{},
+						Computed:   true,
+						Optional:   true,
 						MarkdownDescription: `Configuration for the Kong Key auth identity provider.` + "\n" +
 							`For advanced use cases, additional config properties can be sent in the request body.` + "\n" +
-							`See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
+							`See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties` + "\n" +
+							`Parsed as JSON.`,
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
@@ -186,16 +194,14 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 			"openid_connect": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"config": schema.MapAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+					"config": schema.StringAttribute{
+						CustomType: jsontypes.NormalizedType{},
+						Computed:   true,
+						Optional:   true,
 						MarkdownDescription: `Configuration for the OpenID Connect identity provider.` + "\n" +
 							`For advanced use cases, additional config properties can be sent in the request body.` + "\n" +
-							`See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
+							`See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties` + "\n" +
+							`Parsed as JSON.`,
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,

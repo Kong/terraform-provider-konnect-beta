@@ -4,8 +4,10 @@ package shared
 
 // McpServer - AI Features config
 type McpServer struct {
-	// Is the MCP Server enabled?
+	// Whether the MCP Server is enabled or not
 	Enabled bool `json:"enabled"`
+	// Whether write operations are enabled or not for the Portal MCP Server enabled
+	WriteOperationsEnabled bool `json:"write_operations_enabled"`
 }
 
 func (m *McpServer) GetEnabled() bool {
@@ -13,6 +15,13 @@ func (m *McpServer) GetEnabled() bool {
 		return false
 	}
 	return m.Enabled
+}
+
+func (m *McpServer) GetWriteOperationsEnabled() bool {
+	if m == nil {
+		return false
+	}
+	return m.WriteOperationsEnabled
 }
 
 type Features struct {

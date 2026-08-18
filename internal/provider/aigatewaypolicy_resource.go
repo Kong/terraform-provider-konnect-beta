@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
 )
 
@@ -40,18 +38,18 @@ type AIGatewayPolicyResource struct {
 
 // AIGatewayPolicyResourceModel describes the resource data model.
 type AIGatewayPolicyResourceModel struct {
-	Config      map[string]jsontypes.Normalized `tfsdk:"config"`
-	CreatedAt   types.String                    `tfsdk:"created_at"`
-	DisplayName types.String                    `tfsdk:"display_name"`
-	Enabled     types.Bool                      `tfsdk:"enabled"`
-	GatewayID   types.String                    `tfsdk:"gateway_id"`
-	Global      types.Bool                      `tfsdk:"global"`
-	ID          types.String                    `tfsdk:"id"`
-	Labels      map[string]types.String         `tfsdk:"labels"`
-	ManagedBy   map[string]types.String         `tfsdk:"managed_by"`
-	Name        types.String                    `tfsdk:"name"`
-	Type        types.String                    `tfsdk:"type"`
-	UpdatedAt   types.String                    `tfsdk:"updated_at"`
+	Config      jsontypes.Normalized    `tfsdk:"config"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	DisplayName types.String            `tfsdk:"display_name"`
+	Enabled     types.Bool              `tfsdk:"enabled"`
+	GatewayID   types.String            `tfsdk:"gateway_id"`
+	Global      types.Bool              `tfsdk:"global"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
+	Name        types.String            `tfsdk:"name"`
+	Type        types.String            `tfsdk:"type"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayPolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,14 +60,12 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayPolicy Resource",
 		Attributes: map[string]schema.Attribute{
-			"config": schema.MapAttribute{
-				Required:    true,
-				ElementType: jsontypes.NormalizedType{},
+			"config": schema.StringAttribute{
+				CustomType: jsontypes.NormalizedType{},
+				Required:   true,
 				MarkdownDescription: `Configuration for the policy. This is equivalent to the Kong 3 plugin configuration.` + "\n" +
-					`Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).`,
-				Validators: []validator.Map{
-					mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-				},
+					`Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).` + "\n" +
+					`Parsed as JSON.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

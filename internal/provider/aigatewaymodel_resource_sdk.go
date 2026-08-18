@@ -166,6 +166,7 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure = &tfTypes.AIGatewayAzureEmbeddingsModelConfig{}
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.APIVersion = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.APIVersion)
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.DeploymentID)
+						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.Type))
 						r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.UpstreamURL)
 					}
 					if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig != nil {
@@ -460,31 +461,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 			for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Methods {
 				r.API.Config.Route.Methods = append(r.API.Config.Route.Methods, types.StringValue(v))
 			}
-			if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model != nil {
+			if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model == nil {
+				r.API.Config.Route.Model = nil
+			} else {
 				r.API.Config.Route.Model = &tfTypes.AIGatewayModelSelectorConfig{}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.BodySelector != nil {
-					r.API.Config.Route.Model.BodySelector = &tfTypes.BodySelector{}
-					r.API.Config.Route.Model.BodySelector.BodyParam = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.BodySelector.BodyParam)
-					r.API.Config.Route.Model.BodySelector.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.BodySelector.Values))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.BodySelector.Values {
-						r.API.Config.Route.Model.BodySelector.Values = append(r.API.Config.Route.Model.BodySelector.Values, types.StringValue(v))
-					}
-				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.HeadersSelector != nil {
-					r.API.Config.Route.Model.HeadersSelector = &tfTypes.HeadersSelector{}
-					r.API.Config.Route.Model.HeadersSelector.HeaderParam = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.HeadersSelector.HeaderParam)
-					r.API.Config.Route.Model.HeadersSelector.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.HeadersSelector.Values))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.HeadersSelector.Values {
-						r.API.Config.Route.Model.HeadersSelector.Values = append(r.API.Config.Route.Model.HeadersSelector.Values, types.StringValue(v))
-					}
-				}
-				if resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.PathSelector != nil {
-					r.API.Config.Route.Model.PathSelector = &tfTypes.PathSelector{}
-					r.API.Config.Route.Model.PathSelector.PathParam = types.StringValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.PathSelector.PathParam)
-					r.API.Config.Route.Model.PathSelector.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.PathSelector.Values))
-					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.PathSelector.Values {
-						r.API.Config.Route.Model.PathSelector.Values = append(r.API.Config.Route.Model.PathSelector.Values, types.StringValue(v))
-					}
+				r.API.Config.Route.Model.BodyParam = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.BodyParam)
+				r.API.Config.Route.Model.HeaderParam = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.HeaderParam)
+				r.API.Config.Route.Model.PathParam = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.PathParam)
+				r.API.Config.Route.Model.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.Values))
+				for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Model.Values {
+					r.API.Config.Route.Model.Values = append(r.API.Config.Route.Model.Values, types.StringValue(v))
 				}
 			}
 			r.API.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Config.Route.Paths))
@@ -554,10 +540,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetAnthropicConfig != nil {
 					targets.Config.Anthropic = &tfTypes.AIGatewayTargetAnthropicConfig{}
+					targets.Config.Anthropic.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.CacheReadCost)
+					targets.Config.Anthropic.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.CacheWriteCost)
+					targets.Config.Anthropic.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem := range targetsItem.Config.AIGatewayTargetAnthropicConfig.CacheWriteCostList {
+						var cacheWriteCostList tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
+						cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
+
+						targets.Config.Anthropic.CacheWriteCostList = append(targets.Config.Anthropic.CacheWriteCostList, cacheWriteCostList)
+					}
+					targets.Config.Anthropic.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem := range targetsItem.Config.AIGatewayTargetAnthropicConfig.ContextWindowFactor {
+						var contextWindowFactor tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
+						contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
+						contextWindowFactor.OutputFactor = types.Float64Value(contextWindowFactorItem.OutputFactor)
+
+						targets.Config.Anthropic.ContextWindowFactor = append(targets.Config.Anthropic.ContextWindowFactor, contextWindowFactor)
+					}
 					targets.Config.Anthropic.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.EmbeddingsDimensions)
 					targets.Config.Anthropic.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.InputCost)
 					targets.Config.Anthropic.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.MaxTokens)
 					targets.Config.Anthropic.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.OutputCost)
+					targets.Config.Anthropic.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem := range targetsItem.Config.AIGatewayTargetAnthropicConfig.ServiceTierFactor {
+						var serviceTierFactor tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
+						serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)
+
+						targets.Config.Anthropic.ServiceTierFactor = append(targets.Config.Anthropic.ServiceTierFactor, serviceTierFactor)
+					}
 					targets.Config.Anthropic.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.Temperature)
 					targets.Config.Anthropic.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.TopK)
 					targets.Config.Anthropic.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.TopP)
@@ -567,11 +586,49 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetAzureConfig != nil {
 					targets.Config.Azure = &tfTypes.AIGatewayTargetAzureConfig{}
 					targets.Config.Azure.APIVersion = types.StringPointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.APIVersion)
-					targets.Config.Azure.DeploymentID = types.StringValue(targetsItem.Config.AIGatewayTargetAzureConfig.DeploymentID)
+					targets.Config.Azure.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.CacheReadCost)
+					targets.Config.Azure.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.CacheWriteCost)
+					targets.Config.Azure.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem1 := range targetsItem.Config.AIGatewayTargetAzureConfig.CacheWriteCostList {
+						var cacheWriteCostList1 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList1.Cost = types.Float64Value(cacheWriteCostListItem1.Cost)
+						cacheWriteCostList1.TTL = types.StringValue(cacheWriteCostListItem1.TTL)
+
+						targets.Config.Azure.CacheWriteCostList = append(targets.Config.Azure.CacheWriteCostList, cacheWriteCostList1)
+					}
+					targets.Config.Azure.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem1 := range targetsItem.Config.AIGatewayTargetAzureConfig.ContextWindowFactor {
+						var contextWindowFactor1 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor1.Above = types.StringValue(contextWindowFactorItem1.Above)
+						contextWindowFactor1.InputFactor = types.Float64Value(contextWindowFactorItem1.InputFactor)
+						contextWindowFactor1.OutputFactor = types.Float64Value(contextWindowFactorItem1.OutputFactor)
+
+						targets.Config.Azure.ContextWindowFactor = append(targets.Config.Azure.ContextWindowFactor, contextWindowFactor1)
+					}
+					targets.Config.Azure.DeploymentID = types.StringPointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.DeploymentID)
 					targets.Config.Azure.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.EmbeddingsDimensions)
+					if targetsItem.Config.AIGatewayTargetAzureConfig.FoundryPathPrefix != nil {
+						targets.Config.Azure.FoundryPathPrefix = types.StringValue(string(*targetsItem.Config.AIGatewayTargetAzureConfig.FoundryPathPrefix))
+					} else {
+						targets.Config.Azure.FoundryPathPrefix = types.StringNull()
+					}
 					targets.Config.Azure.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.InputCost)
 					targets.Config.Azure.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.MaxTokens)
 					targets.Config.Azure.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.OutputCost)
+					targets.Config.Azure.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem1 := range targetsItem.Config.AIGatewayTargetAzureConfig.ServiceTierFactor {
+						var serviceTierFactor1 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor1.Factor = types.Float64Value(serviceTierFactorItem1.Factor)
+						serviceTierFactor1.Tier = types.StringValue(serviceTierFactorItem1.Tier)
+
+						targets.Config.Azure.ServiceTierFactor = append(targets.Config.Azure.ServiceTierFactor, serviceTierFactor1)
+					}
 					targets.Config.Azure.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.Temperature)
 					targets.Config.Azure.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.TopK)
 					targets.Config.Azure.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.TopP)
@@ -580,6 +637,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetBedrockConfig != nil {
 					targets.Config.Bedrock = &tfTypes.AIGatewayTargetBedrockConfig{}
 					targets.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.BatchBucketPrefix)
+					targets.Config.Bedrock.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.CacheReadCost)
+					targets.Config.Bedrock.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.CacheWriteCost)
+					targets.Config.Bedrock.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem2 := range targetsItem.Config.AIGatewayTargetBedrockConfig.CacheWriteCostList {
+						var cacheWriteCostList2 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList2.Cost = types.Float64Value(cacheWriteCostListItem2.Cost)
+						cacheWriteCostList2.TTL = types.StringValue(cacheWriteCostListItem2.TTL)
+
+						targets.Config.Bedrock.CacheWriteCostList = append(targets.Config.Bedrock.CacheWriteCostList, cacheWriteCostList2)
+					}
+					targets.Config.Bedrock.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem2 := range targetsItem.Config.AIGatewayTargetBedrockConfig.ContextWindowFactor {
+						var contextWindowFactor2 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor2.Above = types.StringValue(contextWindowFactorItem2.Above)
+						contextWindowFactor2.InputFactor = types.Float64Value(contextWindowFactorItem2.InputFactor)
+						contextWindowFactor2.OutputFactor = types.Float64Value(contextWindowFactorItem2.OutputFactor)
+
+						targets.Config.Bedrock.ContextWindowFactor = append(targets.Config.Bedrock.ContextWindowFactor, contextWindowFactor2)
+					}
 					targets.Config.Bedrock.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.EmbeddingsDimensions)
 					targets.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.EmbeddingsNormalize)
 					targets.Config.Bedrock.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.InputCost)
@@ -587,6 +667,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Bedrock.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.OutputCost)
 					targets.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.PerformanceConfigLatency)
 					targets.Config.Bedrock.Region = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.Region)
+					targets.Config.Bedrock.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem2 := range targetsItem.Config.AIGatewayTargetBedrockConfig.ServiceTierFactor {
+						var serviceTierFactor2 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor2.Factor = types.Float64Value(serviceTierFactorItem2.Factor)
+						serviceTierFactor2.Tier = types.StringValue(serviceTierFactorItem2.Tier)
+
+						targets.Config.Bedrock.ServiceTierFactor = append(targets.Config.Bedrock.ServiceTierFactor, serviceTierFactor2)
+					}
 					targets.Config.Bedrock.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.Temperature)
 					targets.Config.Bedrock.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.TopK)
 					targets.Config.Bedrock.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.TopP)
@@ -595,10 +685,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetCerebrasConfig != nil {
 					targets.Config.Cerebras = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets.Config.Cerebras.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.CacheReadCost)
+					targets.Config.Cerebras.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.CacheWriteCost)
+					targets.Config.Cerebras.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem3 := range targetsItem.Config.AIGatewayTargetCerebrasConfig.CacheWriteCostList {
+						var cacheWriteCostList3 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList3.Cost = types.Float64Value(cacheWriteCostListItem3.Cost)
+						cacheWriteCostList3.TTL = types.StringValue(cacheWriteCostListItem3.TTL)
+
+						targets.Config.Cerebras.CacheWriteCostList = append(targets.Config.Cerebras.CacheWriteCostList, cacheWriteCostList3)
+					}
+					targets.Config.Cerebras.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem3 := range targetsItem.Config.AIGatewayTargetCerebrasConfig.ContextWindowFactor {
+						var contextWindowFactor3 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor3.Above = types.StringValue(contextWindowFactorItem3.Above)
+						contextWindowFactor3.InputFactor = types.Float64Value(contextWindowFactorItem3.InputFactor)
+						contextWindowFactor3.OutputFactor = types.Float64Value(contextWindowFactorItem3.OutputFactor)
+
+						targets.Config.Cerebras.ContextWindowFactor = append(targets.Config.Cerebras.ContextWindowFactor, contextWindowFactor3)
+					}
 					targets.Config.Cerebras.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.EmbeddingsDimensions)
 					targets.Config.Cerebras.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.InputCost)
 					targets.Config.Cerebras.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.MaxTokens)
 					targets.Config.Cerebras.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.OutputCost)
+					targets.Config.Cerebras.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem3 := range targetsItem.Config.AIGatewayTargetCerebrasConfig.ServiceTierFactor {
+						var serviceTierFactor3 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor3.Factor = types.Float64Value(serviceTierFactorItem3.Factor)
+						serviceTierFactor3.Tier = types.StringValue(serviceTierFactorItem3.Tier)
+
+						targets.Config.Cerebras.ServiceTierFactor = append(targets.Config.Cerebras.ServiceTierFactor, serviceTierFactor3)
+					}
 					targets.Config.Cerebras.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.Temperature)
 					targets.Config.Cerebras.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.TopK)
 					targets.Config.Cerebras.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.TopP)
@@ -611,6 +734,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					} else {
 						targets.Config.Cohere.APIVersion = types.StringNull()
 					}
+					targets.Config.Cohere.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.CacheReadCost)
+					targets.Config.Cohere.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.CacheWriteCost)
+					targets.Config.Cohere.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem4 := range targetsItem.Config.AIGatewayTargetCohereConfig.CacheWriteCostList {
+						var cacheWriteCostList4 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList4.Cost = types.Float64Value(cacheWriteCostListItem4.Cost)
+						cacheWriteCostList4.TTL = types.StringValue(cacheWriteCostListItem4.TTL)
+
+						targets.Config.Cohere.CacheWriteCostList = append(targets.Config.Cohere.CacheWriteCostList, cacheWriteCostList4)
+					}
+					targets.Config.Cohere.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem4 := range targetsItem.Config.AIGatewayTargetCohereConfig.ContextWindowFactor {
+						var contextWindowFactor4 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor4.Above = types.StringValue(contextWindowFactorItem4.Above)
+						contextWindowFactor4.InputFactor = types.Float64Value(contextWindowFactorItem4.InputFactor)
+						contextWindowFactor4.OutputFactor = types.Float64Value(contextWindowFactorItem4.OutputFactor)
+
+						targets.Config.Cohere.ContextWindowFactor = append(targets.Config.Cohere.ContextWindowFactor, contextWindowFactor4)
+					}
 					if targetsItem.Config.AIGatewayTargetCohereConfig.EmbeddingInputType != nil {
 						targets.Config.Cohere.EmbeddingInputType = types.StringValue(string(*targetsItem.Config.AIGatewayTargetCohereConfig.EmbeddingInputType))
 					} else {
@@ -620,6 +766,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Cohere.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.InputCost)
 					targets.Config.Cohere.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.MaxTokens)
 					targets.Config.Cohere.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.OutputCost)
+					targets.Config.Cohere.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem4 := range targetsItem.Config.AIGatewayTargetCohereConfig.ServiceTierFactor {
+						var serviceTierFactor4 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor4.Factor = types.Float64Value(serviceTierFactorItem4.Factor)
+						serviceTierFactor4.Tier = types.StringValue(serviceTierFactorItem4.Tier)
+
+						targets.Config.Cohere.ServiceTierFactor = append(targets.Config.Cohere.ServiceTierFactor, serviceTierFactor4)
+					}
 					targets.Config.Cohere.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.Temperature)
 					targets.Config.Cohere.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.TopK)
 					targets.Config.Cohere.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.TopP)
@@ -628,11 +784,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetDashscopeConfig != nil {
 					targets.Config.Dashscope = &tfTypes.AIGatewayTargetDashscopeConfig{}
+					targets.Config.Dashscope.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.CacheReadCost)
+					targets.Config.Dashscope.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.CacheWriteCost)
+					targets.Config.Dashscope.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem5 := range targetsItem.Config.AIGatewayTargetDashscopeConfig.CacheWriteCostList {
+						var cacheWriteCostList5 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList5.Cost = types.Float64Value(cacheWriteCostListItem5.Cost)
+						cacheWriteCostList5.TTL = types.StringValue(cacheWriteCostListItem5.TTL)
+
+						targets.Config.Dashscope.CacheWriteCostList = append(targets.Config.Dashscope.CacheWriteCostList, cacheWriteCostList5)
+					}
+					targets.Config.Dashscope.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem5 := range targetsItem.Config.AIGatewayTargetDashscopeConfig.ContextWindowFactor {
+						var contextWindowFactor5 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor5.Above = types.StringValue(contextWindowFactorItem5.Above)
+						contextWindowFactor5.InputFactor = types.Float64Value(contextWindowFactorItem5.InputFactor)
+						contextWindowFactor5.OutputFactor = types.Float64Value(contextWindowFactorItem5.OutputFactor)
+
+						targets.Config.Dashscope.ContextWindowFactor = append(targets.Config.Dashscope.ContextWindowFactor, contextWindowFactor5)
+					}
 					targets.Config.Dashscope.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.EmbeddingsDimensions)
 					targets.Config.Dashscope.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.InputCost)
 					targets.Config.Dashscope.International = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.International)
 					targets.Config.Dashscope.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.MaxTokens)
 					targets.Config.Dashscope.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.OutputCost)
+					targets.Config.Dashscope.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem5 := range targetsItem.Config.AIGatewayTargetDashscopeConfig.ServiceTierFactor {
+						var serviceTierFactor5 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor5.Factor = types.Float64Value(serviceTierFactorItem5.Factor)
+						serviceTierFactor5.Tier = types.StringValue(serviceTierFactorItem5.Tier)
+
+						targets.Config.Dashscope.ServiceTierFactor = append(targets.Config.Dashscope.ServiceTierFactor, serviceTierFactor5)
+					}
 					targets.Config.Dashscope.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.Temperature)
 					targets.Config.Dashscope.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.TopK)
 					targets.Config.Dashscope.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.TopP)
@@ -640,10 +829,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetDatabricksConfig != nil {
 					targets.Config.Databricks = &tfTypes.AIGatewayTargetDatabricksConfig{}
+					targets.Config.Databricks.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.CacheReadCost)
+					targets.Config.Databricks.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.CacheWriteCost)
+					targets.Config.Databricks.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem6 := range targetsItem.Config.AIGatewayTargetDatabricksConfig.CacheWriteCostList {
+						var cacheWriteCostList6 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList6.Cost = types.Float64Value(cacheWriteCostListItem6.Cost)
+						cacheWriteCostList6.TTL = types.StringValue(cacheWriteCostListItem6.TTL)
+
+						targets.Config.Databricks.CacheWriteCostList = append(targets.Config.Databricks.CacheWriteCostList, cacheWriteCostList6)
+					}
+					targets.Config.Databricks.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem6 := range targetsItem.Config.AIGatewayTargetDatabricksConfig.ContextWindowFactor {
+						var contextWindowFactor6 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor6.Above = types.StringValue(contextWindowFactorItem6.Above)
+						contextWindowFactor6.InputFactor = types.Float64Value(contextWindowFactorItem6.InputFactor)
+						contextWindowFactor6.OutputFactor = types.Float64Value(contextWindowFactorItem6.OutputFactor)
+
+						targets.Config.Databricks.ContextWindowFactor = append(targets.Config.Databricks.ContextWindowFactor, contextWindowFactor6)
+					}
 					targets.Config.Databricks.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.EmbeddingsDimensions)
 					targets.Config.Databricks.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.InputCost)
 					targets.Config.Databricks.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.MaxTokens)
 					targets.Config.Databricks.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.OutputCost)
+					targets.Config.Databricks.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem6 := range targetsItem.Config.AIGatewayTargetDatabricksConfig.ServiceTierFactor {
+						var serviceTierFactor6 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor6.Factor = types.Float64Value(serviceTierFactorItem6.Factor)
+						serviceTierFactor6.Tier = types.StringValue(serviceTierFactorItem6.Tier)
+
+						targets.Config.Databricks.ServiceTierFactor = append(targets.Config.Databricks.ServiceTierFactor, serviceTierFactor6)
+					}
 					targets.Config.Databricks.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.Temperature)
 					targets.Config.Databricks.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.TopK)
 					targets.Config.Databricks.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.TopP)
@@ -652,10 +874,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetDeepseekConfig != nil {
 					targets.Config.Deepseek = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets.Config.Deepseek.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.CacheReadCost)
+					targets.Config.Deepseek.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.CacheWriteCost)
+					targets.Config.Deepseek.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem7 := range targetsItem.Config.AIGatewayTargetDeepseekConfig.CacheWriteCostList {
+						var cacheWriteCostList7 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList7.Cost = types.Float64Value(cacheWriteCostListItem7.Cost)
+						cacheWriteCostList7.TTL = types.StringValue(cacheWriteCostListItem7.TTL)
+
+						targets.Config.Deepseek.CacheWriteCostList = append(targets.Config.Deepseek.CacheWriteCostList, cacheWriteCostList7)
+					}
+					targets.Config.Deepseek.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem7 := range targetsItem.Config.AIGatewayTargetDeepseekConfig.ContextWindowFactor {
+						var contextWindowFactor7 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor7.Above = types.StringValue(contextWindowFactorItem7.Above)
+						contextWindowFactor7.InputFactor = types.Float64Value(contextWindowFactorItem7.InputFactor)
+						contextWindowFactor7.OutputFactor = types.Float64Value(contextWindowFactorItem7.OutputFactor)
+
+						targets.Config.Deepseek.ContextWindowFactor = append(targets.Config.Deepseek.ContextWindowFactor, contextWindowFactor7)
+					}
 					targets.Config.Deepseek.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.EmbeddingsDimensions)
 					targets.Config.Deepseek.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.InputCost)
 					targets.Config.Deepseek.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.MaxTokens)
 					targets.Config.Deepseek.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.OutputCost)
+					targets.Config.Deepseek.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem7 := range targetsItem.Config.AIGatewayTargetDeepseekConfig.ServiceTierFactor {
+						var serviceTierFactor7 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor7.Factor = types.Float64Value(serviceTierFactorItem7.Factor)
+						serviceTierFactor7.Tier = types.StringValue(serviceTierFactorItem7.Tier)
+
+						targets.Config.Deepseek.ServiceTierFactor = append(targets.Config.Deepseek.ServiceTierFactor, serviceTierFactor7)
+					}
 					targets.Config.Deepseek.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.Temperature)
 					targets.Config.Deepseek.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.TopK)
 					targets.Config.Deepseek.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.TopP)
@@ -663,6 +918,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetGeminiConfig != nil {
 					targets.Config.Gemini = &tfTypes.AIGatewayTargetGeminiConfig{}
+					targets.Config.Gemini.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.CacheReadCost)
+					targets.Config.Gemini.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.CacheWriteCost)
+					targets.Config.Gemini.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem8 := range targetsItem.Config.AIGatewayTargetGeminiConfig.CacheWriteCostList {
+						var cacheWriteCostList8 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList8.Cost = types.Float64Value(cacheWriteCostListItem8.Cost)
+						cacheWriteCostList8.TTL = types.StringValue(cacheWriteCostListItem8.TTL)
+
+						targets.Config.Gemini.CacheWriteCostList = append(targets.Config.Gemini.CacheWriteCostList, cacheWriteCostList8)
+					}
+					targets.Config.Gemini.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem8 := range targetsItem.Config.AIGatewayTargetGeminiConfig.ContextWindowFactor {
+						var contextWindowFactor8 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor8.Above = types.StringValue(contextWindowFactorItem8.Above)
+						contextWindowFactor8.InputFactor = types.Float64Value(contextWindowFactorItem8.InputFactor)
+						contextWindowFactor8.OutputFactor = types.Float64Value(contextWindowFactorItem8.OutputFactor)
+
+						targets.Config.Gemini.ContextWindowFactor = append(targets.Config.Gemini.ContextWindowFactor, contextWindowFactor8)
+					}
 					targets.Config.Gemini.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.EmbeddingsDimensions)
 					if targetsItem.Config.AIGatewayTargetGeminiConfig.GcpEnvironment == nil {
 						targets.Config.Gemini.GcpEnvironment = nil
@@ -675,6 +953,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Gemini.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.InputCost)
 					targets.Config.Gemini.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.MaxTokens)
 					targets.Config.Gemini.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.OutputCost)
+					targets.Config.Gemini.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem8 := range targetsItem.Config.AIGatewayTargetGeminiConfig.ServiceTierFactor {
+						var serviceTierFactor8 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor8.Factor = types.Float64Value(serviceTierFactorItem8.Factor)
+						serviceTierFactor8.Tier = types.StringValue(serviceTierFactorItem8.Tier)
+
+						targets.Config.Gemini.ServiceTierFactor = append(targets.Config.Gemini.ServiceTierFactor, serviceTierFactor8)
+					}
 					targets.Config.Gemini.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.Temperature)
 					targets.Config.Gemini.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.TopK)
 					targets.Config.Gemini.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.TopP)
@@ -682,10 +970,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetHuggingfaceConfig != nil {
 					targets.Config.Huggingface = &tfTypes.AIGatewayTargetHuggingfaceConfig{}
+					targets.Config.Huggingface.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCost)
+					targets.Config.Huggingface.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.CacheWriteCost)
+					targets.Config.Huggingface.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem9 := range targetsItem.Config.AIGatewayTargetHuggingfaceConfig.CacheWriteCostList {
+						var cacheWriteCostList9 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList9.Cost = types.Float64Value(cacheWriteCostListItem9.Cost)
+						cacheWriteCostList9.TTL = types.StringValue(cacheWriteCostListItem9.TTL)
+
+						targets.Config.Huggingface.CacheWriteCostList = append(targets.Config.Huggingface.CacheWriteCostList, cacheWriteCostList9)
+					}
+					targets.Config.Huggingface.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem9 := range targetsItem.Config.AIGatewayTargetHuggingfaceConfig.ContextWindowFactor {
+						var contextWindowFactor9 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor9.Above = types.StringValue(contextWindowFactorItem9.Above)
+						contextWindowFactor9.InputFactor = types.Float64Value(contextWindowFactorItem9.InputFactor)
+						contextWindowFactor9.OutputFactor = types.Float64Value(contextWindowFactorItem9.OutputFactor)
+
+						targets.Config.Huggingface.ContextWindowFactor = append(targets.Config.Huggingface.ContextWindowFactor, contextWindowFactor9)
+					}
 					targets.Config.Huggingface.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.EmbeddingsDimensions)
 					targets.Config.Huggingface.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.InputCost)
 					targets.Config.Huggingface.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.MaxTokens)
 					targets.Config.Huggingface.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.OutputCost)
+					targets.Config.Huggingface.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem9 := range targetsItem.Config.AIGatewayTargetHuggingfaceConfig.ServiceTierFactor {
+						var serviceTierFactor9 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor9.Factor = types.Float64Value(serviceTierFactorItem9.Factor)
+						serviceTierFactor9.Tier = types.StringValue(serviceTierFactorItem9.Tier)
+
+						targets.Config.Huggingface.ServiceTierFactor = append(targets.Config.Huggingface.ServiceTierFactor, serviceTierFactor9)
+					}
 					targets.Config.Huggingface.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.Temperature)
 					targets.Config.Huggingface.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.TopK)
 					targets.Config.Huggingface.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.TopP)
@@ -695,11 +1016,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetKimiConfig != nil {
 					targets.Config.Kimi = &tfTypes.AIGatewayTargetDashscopeConfig{}
+					targets.Config.Kimi.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.CacheReadCost)
+					targets.Config.Kimi.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.CacheWriteCost)
+					targets.Config.Kimi.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem10 := range targetsItem.Config.AIGatewayTargetKimiConfig.CacheWriteCostList {
+						var cacheWriteCostList10 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList10.Cost = types.Float64Value(cacheWriteCostListItem10.Cost)
+						cacheWriteCostList10.TTL = types.StringValue(cacheWriteCostListItem10.TTL)
+
+						targets.Config.Kimi.CacheWriteCostList = append(targets.Config.Kimi.CacheWriteCostList, cacheWriteCostList10)
+					}
+					targets.Config.Kimi.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem10 := range targetsItem.Config.AIGatewayTargetKimiConfig.ContextWindowFactor {
+						var contextWindowFactor10 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor10.Above = types.StringValue(contextWindowFactorItem10.Above)
+						contextWindowFactor10.InputFactor = types.Float64Value(contextWindowFactorItem10.InputFactor)
+						contextWindowFactor10.OutputFactor = types.Float64Value(contextWindowFactorItem10.OutputFactor)
+
+						targets.Config.Kimi.ContextWindowFactor = append(targets.Config.Kimi.ContextWindowFactor, contextWindowFactor10)
+					}
 					targets.Config.Kimi.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.EmbeddingsDimensions)
 					targets.Config.Kimi.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.InputCost)
 					targets.Config.Kimi.International = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.International)
 					targets.Config.Kimi.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.MaxTokens)
 					targets.Config.Kimi.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.OutputCost)
+					targets.Config.Kimi.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem10 := range targetsItem.Config.AIGatewayTargetKimiConfig.ServiceTierFactor {
+						var serviceTierFactor10 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor10.Factor = types.Float64Value(serviceTierFactorItem10.Factor)
+						serviceTierFactor10.Tier = types.StringValue(serviceTierFactorItem10.Tier)
+
+						targets.Config.Kimi.ServiceTierFactor = append(targets.Config.Kimi.ServiceTierFactor, serviceTierFactor10)
+					}
 					targets.Config.Kimi.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.Temperature)
 					targets.Config.Kimi.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.TopK)
 					targets.Config.Kimi.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.TopP)
@@ -707,11 +1061,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetLlama2Config != nil {
 					targets.Config.Llama2 = &tfTypes.AIGatewayTargetLlama2Config{}
+					targets.Config.Llama2.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.CacheReadCost)
+					targets.Config.Llama2.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.CacheWriteCost)
+					targets.Config.Llama2.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem11 := range targetsItem.Config.AIGatewayTargetLlama2Config.CacheWriteCostList {
+						var cacheWriteCostList11 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList11.Cost = types.Float64Value(cacheWriteCostListItem11.Cost)
+						cacheWriteCostList11.TTL = types.StringValue(cacheWriteCostListItem11.TTL)
+
+						targets.Config.Llama2.CacheWriteCostList = append(targets.Config.Llama2.CacheWriteCostList, cacheWriteCostList11)
+					}
+					targets.Config.Llama2.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem11 := range targetsItem.Config.AIGatewayTargetLlama2Config.ContextWindowFactor {
+						var contextWindowFactor11 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor11.Above = types.StringValue(contextWindowFactorItem11.Above)
+						contextWindowFactor11.InputFactor = types.Float64Value(contextWindowFactorItem11.InputFactor)
+						contextWindowFactor11.OutputFactor = types.Float64Value(contextWindowFactorItem11.OutputFactor)
+
+						targets.Config.Llama2.ContextWindowFactor = append(targets.Config.Llama2.ContextWindowFactor, contextWindowFactor11)
+					}
 					targets.Config.Llama2.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.EmbeddingsDimensions)
 					targets.Config.Llama2.Format = types.StringValue(string(targetsItem.Config.AIGatewayTargetLlama2Config.Format))
 					targets.Config.Llama2.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.InputCost)
 					targets.Config.Llama2.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.MaxTokens)
 					targets.Config.Llama2.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.OutputCost)
+					targets.Config.Llama2.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem11 := range targetsItem.Config.AIGatewayTargetLlama2Config.ServiceTierFactor {
+						var serviceTierFactor11 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor11.Factor = types.Float64Value(serviceTierFactorItem11.Factor)
+						serviceTierFactor11.Tier = types.StringValue(serviceTierFactorItem11.Tier)
+
+						targets.Config.Llama2.ServiceTierFactor = append(targets.Config.Llama2.ServiceTierFactor, serviceTierFactor11)
+					}
 					targets.Config.Llama2.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.Temperature)
 					targets.Config.Llama2.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.TopK)
 					targets.Config.Llama2.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.TopP)
@@ -719,11 +1106,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetMistralConfig != nil {
 					targets.Config.Mistral = &tfTypes.AIGatewayTargetMistralConfig{}
+					targets.Config.Mistral.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.CacheReadCost)
+					targets.Config.Mistral.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.CacheWriteCost)
+					targets.Config.Mistral.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem12 := range targetsItem.Config.AIGatewayTargetMistralConfig.CacheWriteCostList {
+						var cacheWriteCostList12 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList12.Cost = types.Float64Value(cacheWriteCostListItem12.Cost)
+						cacheWriteCostList12.TTL = types.StringValue(cacheWriteCostListItem12.TTL)
+
+						targets.Config.Mistral.CacheWriteCostList = append(targets.Config.Mistral.CacheWriteCostList, cacheWriteCostList12)
+					}
+					targets.Config.Mistral.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem12 := range targetsItem.Config.AIGatewayTargetMistralConfig.ContextWindowFactor {
+						var contextWindowFactor12 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor12.Above = types.StringValue(contextWindowFactorItem12.Above)
+						contextWindowFactor12.InputFactor = types.Float64Value(contextWindowFactorItem12.InputFactor)
+						contextWindowFactor12.OutputFactor = types.Float64Value(contextWindowFactorItem12.OutputFactor)
+
+						targets.Config.Mistral.ContextWindowFactor = append(targets.Config.Mistral.ContextWindowFactor, contextWindowFactor12)
+					}
 					targets.Config.Mistral.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.EmbeddingsDimensions)
 					targets.Config.Mistral.Format = types.StringValue(string(targetsItem.Config.AIGatewayTargetMistralConfig.Format))
 					targets.Config.Mistral.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.InputCost)
 					targets.Config.Mistral.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.MaxTokens)
 					targets.Config.Mistral.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.OutputCost)
+					targets.Config.Mistral.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem12 := range targetsItem.Config.AIGatewayTargetMistralConfig.ServiceTierFactor {
+						var serviceTierFactor12 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor12.Factor = types.Float64Value(serviceTierFactorItem12.Factor)
+						serviceTierFactor12.Tier = types.StringValue(serviceTierFactorItem12.Tier)
+
+						targets.Config.Mistral.ServiceTierFactor = append(targets.Config.Mistral.ServiceTierFactor, serviceTierFactor12)
+					}
 					targets.Config.Mistral.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.Temperature)
 					targets.Config.Mistral.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.TopK)
 					targets.Config.Mistral.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.TopP)
@@ -731,10 +1151,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetOllamaConfig != nil {
 					targets.Config.Ollama = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets.Config.Ollama.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.CacheReadCost)
+					targets.Config.Ollama.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.CacheWriteCost)
+					targets.Config.Ollama.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem13 := range targetsItem.Config.AIGatewayTargetOllamaConfig.CacheWriteCostList {
+						var cacheWriteCostList13 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList13.Cost = types.Float64Value(cacheWriteCostListItem13.Cost)
+						cacheWriteCostList13.TTL = types.StringValue(cacheWriteCostListItem13.TTL)
+
+						targets.Config.Ollama.CacheWriteCostList = append(targets.Config.Ollama.CacheWriteCostList, cacheWriteCostList13)
+					}
+					targets.Config.Ollama.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem13 := range targetsItem.Config.AIGatewayTargetOllamaConfig.ContextWindowFactor {
+						var contextWindowFactor13 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor13.Above = types.StringValue(contextWindowFactorItem13.Above)
+						contextWindowFactor13.InputFactor = types.Float64Value(contextWindowFactorItem13.InputFactor)
+						contextWindowFactor13.OutputFactor = types.Float64Value(contextWindowFactorItem13.OutputFactor)
+
+						targets.Config.Ollama.ContextWindowFactor = append(targets.Config.Ollama.ContextWindowFactor, contextWindowFactor13)
+					}
 					targets.Config.Ollama.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.EmbeddingsDimensions)
 					targets.Config.Ollama.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.InputCost)
 					targets.Config.Ollama.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.MaxTokens)
 					targets.Config.Ollama.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.OutputCost)
+					targets.Config.Ollama.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem13 := range targetsItem.Config.AIGatewayTargetOllamaConfig.ServiceTierFactor {
+						var serviceTierFactor13 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor13.Factor = types.Float64Value(serviceTierFactorItem13.Factor)
+						serviceTierFactor13.Tier = types.StringValue(serviceTierFactorItem13.Tier)
+
+						targets.Config.Ollama.ServiceTierFactor = append(targets.Config.Ollama.ServiceTierFactor, serviceTierFactor13)
+					}
 					targets.Config.Ollama.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.Temperature)
 					targets.Config.Ollama.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.TopK)
 					targets.Config.Ollama.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.TopP)
@@ -742,10 +1195,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetOpenaiConfig != nil {
 					targets.Config.Openai = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets.Config.Openai.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.CacheReadCost)
+					targets.Config.Openai.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.CacheWriteCost)
+					targets.Config.Openai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem14 := range targetsItem.Config.AIGatewayTargetOpenaiConfig.CacheWriteCostList {
+						var cacheWriteCostList14 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList14.Cost = types.Float64Value(cacheWriteCostListItem14.Cost)
+						cacheWriteCostList14.TTL = types.StringValue(cacheWriteCostListItem14.TTL)
+
+						targets.Config.Openai.CacheWriteCostList = append(targets.Config.Openai.CacheWriteCostList, cacheWriteCostList14)
+					}
+					targets.Config.Openai.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem14 := range targetsItem.Config.AIGatewayTargetOpenaiConfig.ContextWindowFactor {
+						var contextWindowFactor14 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor14.Above = types.StringValue(contextWindowFactorItem14.Above)
+						contextWindowFactor14.InputFactor = types.Float64Value(contextWindowFactorItem14.InputFactor)
+						contextWindowFactor14.OutputFactor = types.Float64Value(contextWindowFactorItem14.OutputFactor)
+
+						targets.Config.Openai.ContextWindowFactor = append(targets.Config.Openai.ContextWindowFactor, contextWindowFactor14)
+					}
 					targets.Config.Openai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.EmbeddingsDimensions)
 					targets.Config.Openai.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.InputCost)
 					targets.Config.Openai.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.MaxTokens)
 					targets.Config.Openai.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.OutputCost)
+					targets.Config.Openai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem14 := range targetsItem.Config.AIGatewayTargetOpenaiConfig.ServiceTierFactor {
+						var serviceTierFactor14 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor14.Factor = types.Float64Value(serviceTierFactorItem14.Factor)
+						serviceTierFactor14.Tier = types.StringValue(serviceTierFactorItem14.Tier)
+
+						targets.Config.Openai.ServiceTierFactor = append(targets.Config.Openai.ServiceTierFactor, serviceTierFactor14)
+					}
 					targets.Config.Openai.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.Temperature)
 					targets.Config.Openai.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.TopK)
 					targets.Config.Openai.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.TopP)
@@ -762,10 +1248,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets.Config.Sagemaker.Aws.RoleSessionName = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws.RoleSessionName)
 						targets.Config.Sagemaker.Aws.StsEndpointURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws.StsEndpointURL)
 					}
+					targets.Config.Sagemaker.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.CacheReadCost)
+					targets.Config.Sagemaker.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.CacheWriteCost)
+					targets.Config.Sagemaker.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem15 := range targetsItem.Config.AIGatewayTargetSagemakerConfig.CacheWriteCostList {
+						var cacheWriteCostList15 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList15.Cost = types.Float64Value(cacheWriteCostListItem15.Cost)
+						cacheWriteCostList15.TTL = types.StringValue(cacheWriteCostListItem15.TTL)
+
+						targets.Config.Sagemaker.CacheWriteCostList = append(targets.Config.Sagemaker.CacheWriteCostList, cacheWriteCostList15)
+					}
+					targets.Config.Sagemaker.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem15 := range targetsItem.Config.AIGatewayTargetSagemakerConfig.ContextWindowFactor {
+						var contextWindowFactor15 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor15.Above = types.StringValue(contextWindowFactorItem15.Above)
+						contextWindowFactor15.InputFactor = types.Float64Value(contextWindowFactorItem15.InputFactor)
+						contextWindowFactor15.OutputFactor = types.Float64Value(contextWindowFactorItem15.OutputFactor)
+
+						targets.Config.Sagemaker.ContextWindowFactor = append(targets.Config.Sagemaker.ContextWindowFactor, contextWindowFactor15)
+					}
 					targets.Config.Sagemaker.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.EmbeddingsDimensions)
 					targets.Config.Sagemaker.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.InputCost)
 					targets.Config.Sagemaker.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.MaxTokens)
 					targets.Config.Sagemaker.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.OutputCost)
+					targets.Config.Sagemaker.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem15 := range targetsItem.Config.AIGatewayTargetSagemakerConfig.ServiceTierFactor {
+						var serviceTierFactor15 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor15.Factor = types.Float64Value(serviceTierFactorItem15.Factor)
+						serviceTierFactor15.Tier = types.StringValue(serviceTierFactorItem15.Tier)
+
+						targets.Config.Sagemaker.ServiceTierFactor = append(targets.Config.Sagemaker.ServiceTierFactor, serviceTierFactor15)
+					}
 					if targetsItem.Config.AIGatewayTargetSagemakerConfig.Target == nil {
 						targets.Config.Sagemaker.Target = nil
 					} else {
@@ -781,10 +1300,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetVercelConfig != nil {
 					targets.Config.Vercel = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets.Config.Vercel.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.CacheReadCost)
+					targets.Config.Vercel.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.CacheWriteCost)
+					targets.Config.Vercel.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem16 := range targetsItem.Config.AIGatewayTargetVercelConfig.CacheWriteCostList {
+						var cacheWriteCostList16 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList16.Cost = types.Float64Value(cacheWriteCostListItem16.Cost)
+						cacheWriteCostList16.TTL = types.StringValue(cacheWriteCostListItem16.TTL)
+
+						targets.Config.Vercel.CacheWriteCostList = append(targets.Config.Vercel.CacheWriteCostList, cacheWriteCostList16)
+					}
+					targets.Config.Vercel.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem16 := range targetsItem.Config.AIGatewayTargetVercelConfig.ContextWindowFactor {
+						var contextWindowFactor16 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor16.Above = types.StringValue(contextWindowFactorItem16.Above)
+						contextWindowFactor16.InputFactor = types.Float64Value(contextWindowFactorItem16.InputFactor)
+						contextWindowFactor16.OutputFactor = types.Float64Value(contextWindowFactorItem16.OutputFactor)
+
+						targets.Config.Vercel.ContextWindowFactor = append(targets.Config.Vercel.ContextWindowFactor, contextWindowFactor16)
+					}
 					targets.Config.Vercel.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.EmbeddingsDimensions)
 					targets.Config.Vercel.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.InputCost)
 					targets.Config.Vercel.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.MaxTokens)
 					targets.Config.Vercel.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.OutputCost)
+					targets.Config.Vercel.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem16 := range targetsItem.Config.AIGatewayTargetVercelConfig.ServiceTierFactor {
+						var serviceTierFactor16 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor16.Factor = types.Float64Value(serviceTierFactorItem16.Factor)
+						serviceTierFactor16.Tier = types.StringValue(serviceTierFactorItem16.Tier)
+
+						targets.Config.Vercel.ServiceTierFactor = append(targets.Config.Vercel.ServiceTierFactor, serviceTierFactor16)
+					}
 					targets.Config.Vercel.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.Temperature)
 					targets.Config.Vercel.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.TopK)
 					targets.Config.Vercel.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.TopP)
@@ -792,6 +1344,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetVertexConfig != nil {
 					targets.Config.Vertex = &tfTypes.AIGatewayTargetVertexConfig{}
+					targets.Config.Vertex.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.CacheReadCost)
+					targets.Config.Vertex.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.CacheWriteCost)
+					targets.Config.Vertex.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem17 := range targetsItem.Config.AIGatewayTargetVertexConfig.CacheWriteCostList {
+						var cacheWriteCostList17 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList17.Cost = types.Float64Value(cacheWriteCostListItem17.Cost)
+						cacheWriteCostList17.TTL = types.StringValue(cacheWriteCostListItem17.TTL)
+
+						targets.Config.Vertex.CacheWriteCostList = append(targets.Config.Vertex.CacheWriteCostList, cacheWriteCostList17)
+					}
+					targets.Config.Vertex.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem17 := range targetsItem.Config.AIGatewayTargetVertexConfig.ContextWindowFactor {
+						var contextWindowFactor17 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor17.Above = types.StringValue(contextWindowFactorItem17.Above)
+						contextWindowFactor17.InputFactor = types.Float64Value(contextWindowFactorItem17.InputFactor)
+						contextWindowFactor17.OutputFactor = types.Float64Value(contextWindowFactorItem17.OutputFactor)
+
+						targets.Config.Vertex.ContextWindowFactor = append(targets.Config.Vertex.ContextWindowFactor, contextWindowFactor17)
+					}
 					targets.Config.Vertex.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.EmbeddingsDimensions)
 					if targetsItem.Config.AIGatewayTargetVertexConfig.GcpEnvironment == nil {
 						targets.Config.Vertex.GcpEnvironment = nil
@@ -805,6 +1380,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Vertex.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.InputCost)
 					targets.Config.Vertex.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.MaxTokens)
 					targets.Config.Vertex.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.OutputCost)
+					targets.Config.Vertex.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem17 := range targetsItem.Config.AIGatewayTargetVertexConfig.ServiceTierFactor {
+						var serviceTierFactor17 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor17.Factor = types.Float64Value(serviceTierFactorItem17.Factor)
+						serviceTierFactor17.Tier = types.StringValue(serviceTierFactorItem17.Tier)
+
+						targets.Config.Vertex.ServiceTierFactor = append(targets.Config.Vertex.ServiceTierFactor, serviceTierFactor17)
+					}
 					targets.Config.Vertex.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.Temperature)
 					targets.Config.Vertex.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.TopK)
 					targets.Config.Vertex.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVertexConfig.TopP)
@@ -812,10 +1397,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetVllmConfig != nil {
 					targets.Config.Vllm = &tfTypes.AIGatewayTargetVllmConfig{}
+					targets.Config.Vllm.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.CacheReadCost)
+					targets.Config.Vllm.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.CacheWriteCost)
+					targets.Config.Vllm.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem18 := range targetsItem.Config.AIGatewayTargetVllmConfig.CacheWriteCostList {
+						var cacheWriteCostList18 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList18.Cost = types.Float64Value(cacheWriteCostListItem18.Cost)
+						cacheWriteCostList18.TTL = types.StringValue(cacheWriteCostListItem18.TTL)
+
+						targets.Config.Vllm.CacheWriteCostList = append(targets.Config.Vllm.CacheWriteCostList, cacheWriteCostList18)
+					}
+					targets.Config.Vllm.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem18 := range targetsItem.Config.AIGatewayTargetVllmConfig.ContextWindowFactor {
+						var contextWindowFactor18 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor18.Above = types.StringValue(contextWindowFactorItem18.Above)
+						contextWindowFactor18.InputFactor = types.Float64Value(contextWindowFactorItem18.InputFactor)
+						contextWindowFactor18.OutputFactor = types.Float64Value(contextWindowFactorItem18.OutputFactor)
+
+						targets.Config.Vllm.ContextWindowFactor = append(targets.Config.Vllm.ContextWindowFactor, contextWindowFactor18)
+					}
 					targets.Config.Vllm.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.EmbeddingsDimensions)
 					targets.Config.Vllm.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.InputCost)
 					targets.Config.Vllm.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.MaxTokens)
 					targets.Config.Vllm.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.OutputCost)
+					targets.Config.Vllm.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem18 := range targetsItem.Config.AIGatewayTargetVllmConfig.ServiceTierFactor {
+						var serviceTierFactor18 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor18.Factor = types.Float64Value(serviceTierFactorItem18.Factor)
+						serviceTierFactor18.Tier = types.StringValue(serviceTierFactorItem18.Tier)
+
+						targets.Config.Vllm.ServiceTierFactor = append(targets.Config.Vllm.ServiceTierFactor, serviceTierFactor18)
+					}
 					targets.Config.Vllm.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.Temperature)
 					targets.Config.Vllm.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.TopK)
 					targets.Config.Vllm.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.TopP)
@@ -823,10 +1441,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem.Config.AIGatewayTargetXaiConfig != nil {
 					targets.Config.Xai = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets.Config.Xai.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.CacheReadCost)
+					targets.Config.Xai.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.CacheWriteCost)
+					targets.Config.Xai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem19 := range targetsItem.Config.AIGatewayTargetXaiConfig.CacheWriteCostList {
+						var cacheWriteCostList19 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList19.Cost = types.Float64Value(cacheWriteCostListItem19.Cost)
+						cacheWriteCostList19.TTL = types.StringValue(cacheWriteCostListItem19.TTL)
+
+						targets.Config.Xai.CacheWriteCostList = append(targets.Config.Xai.CacheWriteCostList, cacheWriteCostList19)
+					}
+					targets.Config.Xai.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem19 := range targetsItem.Config.AIGatewayTargetXaiConfig.ContextWindowFactor {
+						var contextWindowFactor19 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor19.Above = types.StringValue(contextWindowFactorItem19.Above)
+						contextWindowFactor19.InputFactor = types.Float64Value(contextWindowFactorItem19.InputFactor)
+						contextWindowFactor19.OutputFactor = types.Float64Value(contextWindowFactorItem19.OutputFactor)
+
+						targets.Config.Xai.ContextWindowFactor = append(targets.Config.Xai.ContextWindowFactor, contextWindowFactor19)
+					}
 					targets.Config.Xai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.EmbeddingsDimensions)
 					targets.Config.Xai.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.InputCost)
 					targets.Config.Xai.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.MaxTokens)
 					targets.Config.Xai.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.OutputCost)
+					targets.Config.Xai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem19 := range targetsItem.Config.AIGatewayTargetXaiConfig.ServiceTierFactor {
+						var serviceTierFactor19 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor19.Factor = types.Float64Value(serviceTierFactorItem19.Factor)
+						serviceTierFactor19.Tier = types.StringValue(serviceTierFactorItem19.Tier)
+
+						targets.Config.Xai.ServiceTierFactor = append(targets.Config.Xai.ServiceTierFactor, serviceTierFactor19)
+					}
 					targets.Config.Xai.Temperature = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.Temperature)
 					targets.Config.Xai.TopK = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.TopK)
 					targets.Config.Xai.TopP = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.TopP)
@@ -990,6 +1641,7 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure = &tfTypes.AIGatewayAzureEmbeddingsModelConfig{}
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.APIVersion = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.APIVersion)
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.DeploymentID)
+						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.Type = types.StringValue(string(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.Type))
 						r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.UpstreamURL = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayAzureEmbeddingsModelConfig.UpstreamURL)
 					}
 					if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Embeddings.Config.AIGatewayBedrockEmbeddingsModelConfig != nil {
@@ -1290,31 +1942,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 			for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Methods {
 				r.Model.Config.Route.Methods = append(r.Model.Config.Route.Methods, types.StringValue(v))
 			}
-			if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model != nil {
+			if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model == nil {
+				r.Model.Config.Route.Model = nil
+			} else {
 				r.Model.Config.Route.Model = &tfTypes.AIGatewayModelSelectorConfig{}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.BodySelector != nil {
-					r.Model.Config.Route.Model.BodySelector = &tfTypes.BodySelector{}
-					r.Model.Config.Route.Model.BodySelector.BodyParam = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.BodySelector.BodyParam)
-					r.Model.Config.Route.Model.BodySelector.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.BodySelector.Values))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.BodySelector.Values {
-						r.Model.Config.Route.Model.BodySelector.Values = append(r.Model.Config.Route.Model.BodySelector.Values, types.StringValue(v))
-					}
-				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.HeadersSelector != nil {
-					r.Model.Config.Route.Model.HeadersSelector = &tfTypes.HeadersSelector{}
-					r.Model.Config.Route.Model.HeadersSelector.HeaderParam = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.HeadersSelector.HeaderParam)
-					r.Model.Config.Route.Model.HeadersSelector.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.HeadersSelector.Values))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.HeadersSelector.Values {
-						r.Model.Config.Route.Model.HeadersSelector.Values = append(r.Model.Config.Route.Model.HeadersSelector.Values, types.StringValue(v))
-					}
-				}
-				if resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.PathSelector != nil {
-					r.Model.Config.Route.Model.PathSelector = &tfTypes.PathSelector{}
-					r.Model.Config.Route.Model.PathSelector.PathParam = types.StringValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.PathSelector.PathParam)
-					r.Model.Config.Route.Model.PathSelector.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.PathSelector.Values))
-					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.PathSelector.Values {
-						r.Model.Config.Route.Model.PathSelector.Values = append(r.Model.Config.Route.Model.PathSelector.Values, types.StringValue(v))
-					}
+				r.Model.Config.Route.Model.BodyParam = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.BodyParam)
+				r.Model.Config.Route.Model.HeaderParam = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.HeaderParam)
+				r.Model.Config.Route.Model.PathParam = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.PathParam)
+				r.Model.Config.Route.Model.Values = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.Values))
+				for _, v := range resp.AIGatewayModelAIGatewayModelModel.Config.Route.Model.Values {
+					r.Model.Config.Route.Model.Values = append(r.Model.Config.Route.Model.Values, types.StringValue(v))
 				}
 			}
 			r.Model.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Config.Route.Paths))
@@ -1384,10 +2021,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetAnthropicConfig != nil {
 					targets1.Config.Anthropic = &tfTypes.AIGatewayTargetAnthropicConfig{}
+					targets1.Config.Anthropic.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.CacheReadCost)
+					targets1.Config.Anthropic.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.CacheWriteCost)
+					targets1.Config.Anthropic.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem20 := range targetsItem1.Config.AIGatewayTargetAnthropicConfig.CacheWriteCostList {
+						var cacheWriteCostList20 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList20.Cost = types.Float64Value(cacheWriteCostListItem20.Cost)
+						cacheWriteCostList20.TTL = types.StringValue(cacheWriteCostListItem20.TTL)
+
+						targets1.Config.Anthropic.CacheWriteCostList = append(targets1.Config.Anthropic.CacheWriteCostList, cacheWriteCostList20)
+					}
+					targets1.Config.Anthropic.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem20 := range targetsItem1.Config.AIGatewayTargetAnthropicConfig.ContextWindowFactor {
+						var contextWindowFactor20 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor20.Above = types.StringValue(contextWindowFactorItem20.Above)
+						contextWindowFactor20.InputFactor = types.Float64Value(contextWindowFactorItem20.InputFactor)
+						contextWindowFactor20.OutputFactor = types.Float64Value(contextWindowFactorItem20.OutputFactor)
+
+						targets1.Config.Anthropic.ContextWindowFactor = append(targets1.Config.Anthropic.ContextWindowFactor, contextWindowFactor20)
+					}
 					targets1.Config.Anthropic.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.EmbeddingsDimensions)
 					targets1.Config.Anthropic.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.InputCost)
 					targets1.Config.Anthropic.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.MaxTokens)
 					targets1.Config.Anthropic.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.OutputCost)
+					targets1.Config.Anthropic.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem20 := range targetsItem1.Config.AIGatewayTargetAnthropicConfig.ServiceTierFactor {
+						var serviceTierFactor20 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor20.Factor = types.Float64Value(serviceTierFactorItem20.Factor)
+						serviceTierFactor20.Tier = types.StringValue(serviceTierFactorItem20.Tier)
+
+						targets1.Config.Anthropic.ServiceTierFactor = append(targets1.Config.Anthropic.ServiceTierFactor, serviceTierFactor20)
+					}
 					targets1.Config.Anthropic.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.Temperature)
 					targets1.Config.Anthropic.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.TopK)
 					targets1.Config.Anthropic.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.TopP)
@@ -1397,11 +2067,49 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetAzureConfig != nil {
 					targets1.Config.Azure = &tfTypes.AIGatewayTargetAzureConfig{}
 					targets1.Config.Azure.APIVersion = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.APIVersion)
-					targets1.Config.Azure.DeploymentID = types.StringValue(targetsItem1.Config.AIGatewayTargetAzureConfig.DeploymentID)
+					targets1.Config.Azure.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.CacheReadCost)
+					targets1.Config.Azure.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.CacheWriteCost)
+					targets1.Config.Azure.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem21 := range targetsItem1.Config.AIGatewayTargetAzureConfig.CacheWriteCostList {
+						var cacheWriteCostList21 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList21.Cost = types.Float64Value(cacheWriteCostListItem21.Cost)
+						cacheWriteCostList21.TTL = types.StringValue(cacheWriteCostListItem21.TTL)
+
+						targets1.Config.Azure.CacheWriteCostList = append(targets1.Config.Azure.CacheWriteCostList, cacheWriteCostList21)
+					}
+					targets1.Config.Azure.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem21 := range targetsItem1.Config.AIGatewayTargetAzureConfig.ContextWindowFactor {
+						var contextWindowFactor21 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor21.Above = types.StringValue(contextWindowFactorItem21.Above)
+						contextWindowFactor21.InputFactor = types.Float64Value(contextWindowFactorItem21.InputFactor)
+						contextWindowFactor21.OutputFactor = types.Float64Value(contextWindowFactorItem21.OutputFactor)
+
+						targets1.Config.Azure.ContextWindowFactor = append(targets1.Config.Azure.ContextWindowFactor, contextWindowFactor21)
+					}
+					targets1.Config.Azure.DeploymentID = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.DeploymentID)
 					targets1.Config.Azure.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.EmbeddingsDimensions)
+					if targetsItem1.Config.AIGatewayTargetAzureConfig.FoundryPathPrefix != nil {
+						targets1.Config.Azure.FoundryPathPrefix = types.StringValue(string(*targetsItem1.Config.AIGatewayTargetAzureConfig.FoundryPathPrefix))
+					} else {
+						targets1.Config.Azure.FoundryPathPrefix = types.StringNull()
+					}
 					targets1.Config.Azure.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.InputCost)
 					targets1.Config.Azure.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.MaxTokens)
 					targets1.Config.Azure.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.OutputCost)
+					targets1.Config.Azure.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem21 := range targetsItem1.Config.AIGatewayTargetAzureConfig.ServiceTierFactor {
+						var serviceTierFactor21 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor21.Factor = types.Float64Value(serviceTierFactorItem21.Factor)
+						serviceTierFactor21.Tier = types.StringValue(serviceTierFactorItem21.Tier)
+
+						targets1.Config.Azure.ServiceTierFactor = append(targets1.Config.Azure.ServiceTierFactor, serviceTierFactor21)
+					}
 					targets1.Config.Azure.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.Temperature)
 					targets1.Config.Azure.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.TopK)
 					targets1.Config.Azure.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.TopP)
@@ -1410,6 +2118,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetBedrockConfig != nil {
 					targets1.Config.Bedrock = &tfTypes.AIGatewayTargetBedrockConfig{}
 					targets1.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.BatchBucketPrefix)
+					targets1.Config.Bedrock.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.CacheReadCost)
+					targets1.Config.Bedrock.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.CacheWriteCost)
+					targets1.Config.Bedrock.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem22 := range targetsItem1.Config.AIGatewayTargetBedrockConfig.CacheWriteCostList {
+						var cacheWriteCostList22 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList22.Cost = types.Float64Value(cacheWriteCostListItem22.Cost)
+						cacheWriteCostList22.TTL = types.StringValue(cacheWriteCostListItem22.TTL)
+
+						targets1.Config.Bedrock.CacheWriteCostList = append(targets1.Config.Bedrock.CacheWriteCostList, cacheWriteCostList22)
+					}
+					targets1.Config.Bedrock.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem22 := range targetsItem1.Config.AIGatewayTargetBedrockConfig.ContextWindowFactor {
+						var contextWindowFactor22 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor22.Above = types.StringValue(contextWindowFactorItem22.Above)
+						contextWindowFactor22.InputFactor = types.Float64Value(contextWindowFactorItem22.InputFactor)
+						contextWindowFactor22.OutputFactor = types.Float64Value(contextWindowFactorItem22.OutputFactor)
+
+						targets1.Config.Bedrock.ContextWindowFactor = append(targets1.Config.Bedrock.ContextWindowFactor, contextWindowFactor22)
+					}
 					targets1.Config.Bedrock.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.EmbeddingsDimensions)
 					targets1.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.EmbeddingsNormalize)
 					targets1.Config.Bedrock.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.InputCost)
@@ -1417,6 +2148,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Bedrock.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.OutputCost)
 					targets1.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.PerformanceConfigLatency)
 					targets1.Config.Bedrock.Region = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.Region)
+					targets1.Config.Bedrock.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem22 := range targetsItem1.Config.AIGatewayTargetBedrockConfig.ServiceTierFactor {
+						var serviceTierFactor22 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor22.Factor = types.Float64Value(serviceTierFactorItem22.Factor)
+						serviceTierFactor22.Tier = types.StringValue(serviceTierFactorItem22.Tier)
+
+						targets1.Config.Bedrock.ServiceTierFactor = append(targets1.Config.Bedrock.ServiceTierFactor, serviceTierFactor22)
+					}
 					targets1.Config.Bedrock.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.Temperature)
 					targets1.Config.Bedrock.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.TopK)
 					targets1.Config.Bedrock.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.TopP)
@@ -1425,10 +2166,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetCerebrasConfig != nil {
 					targets1.Config.Cerebras = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets1.Config.Cerebras.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.CacheReadCost)
+					targets1.Config.Cerebras.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.CacheWriteCost)
+					targets1.Config.Cerebras.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem23 := range targetsItem1.Config.AIGatewayTargetCerebrasConfig.CacheWriteCostList {
+						var cacheWriteCostList23 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList23.Cost = types.Float64Value(cacheWriteCostListItem23.Cost)
+						cacheWriteCostList23.TTL = types.StringValue(cacheWriteCostListItem23.TTL)
+
+						targets1.Config.Cerebras.CacheWriteCostList = append(targets1.Config.Cerebras.CacheWriteCostList, cacheWriteCostList23)
+					}
+					targets1.Config.Cerebras.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem23 := range targetsItem1.Config.AIGatewayTargetCerebrasConfig.ContextWindowFactor {
+						var contextWindowFactor23 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor23.Above = types.StringValue(contextWindowFactorItem23.Above)
+						contextWindowFactor23.InputFactor = types.Float64Value(contextWindowFactorItem23.InputFactor)
+						contextWindowFactor23.OutputFactor = types.Float64Value(contextWindowFactorItem23.OutputFactor)
+
+						targets1.Config.Cerebras.ContextWindowFactor = append(targets1.Config.Cerebras.ContextWindowFactor, contextWindowFactor23)
+					}
 					targets1.Config.Cerebras.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.EmbeddingsDimensions)
 					targets1.Config.Cerebras.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.InputCost)
 					targets1.Config.Cerebras.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.MaxTokens)
 					targets1.Config.Cerebras.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.OutputCost)
+					targets1.Config.Cerebras.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem23 := range targetsItem1.Config.AIGatewayTargetCerebrasConfig.ServiceTierFactor {
+						var serviceTierFactor23 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor23.Factor = types.Float64Value(serviceTierFactorItem23.Factor)
+						serviceTierFactor23.Tier = types.StringValue(serviceTierFactorItem23.Tier)
+
+						targets1.Config.Cerebras.ServiceTierFactor = append(targets1.Config.Cerebras.ServiceTierFactor, serviceTierFactor23)
+					}
 					targets1.Config.Cerebras.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.Temperature)
 					targets1.Config.Cerebras.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.TopK)
 					targets1.Config.Cerebras.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.TopP)
@@ -1441,6 +2215,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					} else {
 						targets1.Config.Cohere.APIVersion = types.StringNull()
 					}
+					targets1.Config.Cohere.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.CacheReadCost)
+					targets1.Config.Cohere.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.CacheWriteCost)
+					targets1.Config.Cohere.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem24 := range targetsItem1.Config.AIGatewayTargetCohereConfig.CacheWriteCostList {
+						var cacheWriteCostList24 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList24.Cost = types.Float64Value(cacheWriteCostListItem24.Cost)
+						cacheWriteCostList24.TTL = types.StringValue(cacheWriteCostListItem24.TTL)
+
+						targets1.Config.Cohere.CacheWriteCostList = append(targets1.Config.Cohere.CacheWriteCostList, cacheWriteCostList24)
+					}
+					targets1.Config.Cohere.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem24 := range targetsItem1.Config.AIGatewayTargetCohereConfig.ContextWindowFactor {
+						var contextWindowFactor24 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor24.Above = types.StringValue(contextWindowFactorItem24.Above)
+						contextWindowFactor24.InputFactor = types.Float64Value(contextWindowFactorItem24.InputFactor)
+						contextWindowFactor24.OutputFactor = types.Float64Value(contextWindowFactorItem24.OutputFactor)
+
+						targets1.Config.Cohere.ContextWindowFactor = append(targets1.Config.Cohere.ContextWindowFactor, contextWindowFactor24)
+					}
 					if targetsItem1.Config.AIGatewayTargetCohereConfig.EmbeddingInputType != nil {
 						targets1.Config.Cohere.EmbeddingInputType = types.StringValue(string(*targetsItem1.Config.AIGatewayTargetCohereConfig.EmbeddingInputType))
 					} else {
@@ -1450,6 +2247,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Cohere.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.InputCost)
 					targets1.Config.Cohere.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.MaxTokens)
 					targets1.Config.Cohere.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.OutputCost)
+					targets1.Config.Cohere.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem24 := range targetsItem1.Config.AIGatewayTargetCohereConfig.ServiceTierFactor {
+						var serviceTierFactor24 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor24.Factor = types.Float64Value(serviceTierFactorItem24.Factor)
+						serviceTierFactor24.Tier = types.StringValue(serviceTierFactorItem24.Tier)
+
+						targets1.Config.Cohere.ServiceTierFactor = append(targets1.Config.Cohere.ServiceTierFactor, serviceTierFactor24)
+					}
 					targets1.Config.Cohere.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.Temperature)
 					targets1.Config.Cohere.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.TopK)
 					targets1.Config.Cohere.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.TopP)
@@ -1458,11 +2265,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetDashscopeConfig != nil {
 					targets1.Config.Dashscope = &tfTypes.AIGatewayTargetDashscopeConfig{}
+					targets1.Config.Dashscope.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.CacheReadCost)
+					targets1.Config.Dashscope.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.CacheWriteCost)
+					targets1.Config.Dashscope.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem25 := range targetsItem1.Config.AIGatewayTargetDashscopeConfig.CacheWriteCostList {
+						var cacheWriteCostList25 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList25.Cost = types.Float64Value(cacheWriteCostListItem25.Cost)
+						cacheWriteCostList25.TTL = types.StringValue(cacheWriteCostListItem25.TTL)
+
+						targets1.Config.Dashscope.CacheWriteCostList = append(targets1.Config.Dashscope.CacheWriteCostList, cacheWriteCostList25)
+					}
+					targets1.Config.Dashscope.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem25 := range targetsItem1.Config.AIGatewayTargetDashscopeConfig.ContextWindowFactor {
+						var contextWindowFactor25 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor25.Above = types.StringValue(contextWindowFactorItem25.Above)
+						contextWindowFactor25.InputFactor = types.Float64Value(contextWindowFactorItem25.InputFactor)
+						contextWindowFactor25.OutputFactor = types.Float64Value(contextWindowFactorItem25.OutputFactor)
+
+						targets1.Config.Dashscope.ContextWindowFactor = append(targets1.Config.Dashscope.ContextWindowFactor, contextWindowFactor25)
+					}
 					targets1.Config.Dashscope.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.EmbeddingsDimensions)
 					targets1.Config.Dashscope.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.InputCost)
 					targets1.Config.Dashscope.International = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.International)
 					targets1.Config.Dashscope.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.MaxTokens)
 					targets1.Config.Dashscope.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.OutputCost)
+					targets1.Config.Dashscope.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem25 := range targetsItem1.Config.AIGatewayTargetDashscopeConfig.ServiceTierFactor {
+						var serviceTierFactor25 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor25.Factor = types.Float64Value(serviceTierFactorItem25.Factor)
+						serviceTierFactor25.Tier = types.StringValue(serviceTierFactorItem25.Tier)
+
+						targets1.Config.Dashscope.ServiceTierFactor = append(targets1.Config.Dashscope.ServiceTierFactor, serviceTierFactor25)
+					}
 					targets1.Config.Dashscope.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.Temperature)
 					targets1.Config.Dashscope.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.TopK)
 					targets1.Config.Dashscope.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.TopP)
@@ -1470,10 +2310,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetDatabricksConfig != nil {
 					targets1.Config.Databricks = &tfTypes.AIGatewayTargetDatabricksConfig{}
+					targets1.Config.Databricks.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.CacheReadCost)
+					targets1.Config.Databricks.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.CacheWriteCost)
+					targets1.Config.Databricks.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem26 := range targetsItem1.Config.AIGatewayTargetDatabricksConfig.CacheWriteCostList {
+						var cacheWriteCostList26 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList26.Cost = types.Float64Value(cacheWriteCostListItem26.Cost)
+						cacheWriteCostList26.TTL = types.StringValue(cacheWriteCostListItem26.TTL)
+
+						targets1.Config.Databricks.CacheWriteCostList = append(targets1.Config.Databricks.CacheWriteCostList, cacheWriteCostList26)
+					}
+					targets1.Config.Databricks.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem26 := range targetsItem1.Config.AIGatewayTargetDatabricksConfig.ContextWindowFactor {
+						var contextWindowFactor26 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor26.Above = types.StringValue(contextWindowFactorItem26.Above)
+						contextWindowFactor26.InputFactor = types.Float64Value(contextWindowFactorItem26.InputFactor)
+						contextWindowFactor26.OutputFactor = types.Float64Value(contextWindowFactorItem26.OutputFactor)
+
+						targets1.Config.Databricks.ContextWindowFactor = append(targets1.Config.Databricks.ContextWindowFactor, contextWindowFactor26)
+					}
 					targets1.Config.Databricks.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.EmbeddingsDimensions)
 					targets1.Config.Databricks.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.InputCost)
 					targets1.Config.Databricks.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.MaxTokens)
 					targets1.Config.Databricks.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.OutputCost)
+					targets1.Config.Databricks.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem26 := range targetsItem1.Config.AIGatewayTargetDatabricksConfig.ServiceTierFactor {
+						var serviceTierFactor26 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor26.Factor = types.Float64Value(serviceTierFactorItem26.Factor)
+						serviceTierFactor26.Tier = types.StringValue(serviceTierFactorItem26.Tier)
+
+						targets1.Config.Databricks.ServiceTierFactor = append(targets1.Config.Databricks.ServiceTierFactor, serviceTierFactor26)
+					}
 					targets1.Config.Databricks.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.Temperature)
 					targets1.Config.Databricks.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.TopK)
 					targets1.Config.Databricks.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.TopP)
@@ -1482,10 +2355,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetDeepseekConfig != nil {
 					targets1.Config.Deepseek = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets1.Config.Deepseek.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.CacheReadCost)
+					targets1.Config.Deepseek.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.CacheWriteCost)
+					targets1.Config.Deepseek.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem27 := range targetsItem1.Config.AIGatewayTargetDeepseekConfig.CacheWriteCostList {
+						var cacheWriteCostList27 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList27.Cost = types.Float64Value(cacheWriteCostListItem27.Cost)
+						cacheWriteCostList27.TTL = types.StringValue(cacheWriteCostListItem27.TTL)
+
+						targets1.Config.Deepseek.CacheWriteCostList = append(targets1.Config.Deepseek.CacheWriteCostList, cacheWriteCostList27)
+					}
+					targets1.Config.Deepseek.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem27 := range targetsItem1.Config.AIGatewayTargetDeepseekConfig.ContextWindowFactor {
+						var contextWindowFactor27 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor27.Above = types.StringValue(contextWindowFactorItem27.Above)
+						contextWindowFactor27.InputFactor = types.Float64Value(contextWindowFactorItem27.InputFactor)
+						contextWindowFactor27.OutputFactor = types.Float64Value(contextWindowFactorItem27.OutputFactor)
+
+						targets1.Config.Deepseek.ContextWindowFactor = append(targets1.Config.Deepseek.ContextWindowFactor, contextWindowFactor27)
+					}
 					targets1.Config.Deepseek.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.EmbeddingsDimensions)
 					targets1.Config.Deepseek.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.InputCost)
 					targets1.Config.Deepseek.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.MaxTokens)
 					targets1.Config.Deepseek.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.OutputCost)
+					targets1.Config.Deepseek.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem27 := range targetsItem1.Config.AIGatewayTargetDeepseekConfig.ServiceTierFactor {
+						var serviceTierFactor27 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor27.Factor = types.Float64Value(serviceTierFactorItem27.Factor)
+						serviceTierFactor27.Tier = types.StringValue(serviceTierFactorItem27.Tier)
+
+						targets1.Config.Deepseek.ServiceTierFactor = append(targets1.Config.Deepseek.ServiceTierFactor, serviceTierFactor27)
+					}
 					targets1.Config.Deepseek.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.Temperature)
 					targets1.Config.Deepseek.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.TopK)
 					targets1.Config.Deepseek.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.TopP)
@@ -1493,6 +2399,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetGeminiConfig != nil {
 					targets1.Config.Gemini = &tfTypes.AIGatewayTargetGeminiConfig{}
+					targets1.Config.Gemini.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.CacheReadCost)
+					targets1.Config.Gemini.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.CacheWriteCost)
+					targets1.Config.Gemini.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem28 := range targetsItem1.Config.AIGatewayTargetGeminiConfig.CacheWriteCostList {
+						var cacheWriteCostList28 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList28.Cost = types.Float64Value(cacheWriteCostListItem28.Cost)
+						cacheWriteCostList28.TTL = types.StringValue(cacheWriteCostListItem28.TTL)
+
+						targets1.Config.Gemini.CacheWriteCostList = append(targets1.Config.Gemini.CacheWriteCostList, cacheWriteCostList28)
+					}
+					targets1.Config.Gemini.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem28 := range targetsItem1.Config.AIGatewayTargetGeminiConfig.ContextWindowFactor {
+						var contextWindowFactor28 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor28.Above = types.StringValue(contextWindowFactorItem28.Above)
+						contextWindowFactor28.InputFactor = types.Float64Value(contextWindowFactorItem28.InputFactor)
+						contextWindowFactor28.OutputFactor = types.Float64Value(contextWindowFactorItem28.OutputFactor)
+
+						targets1.Config.Gemini.ContextWindowFactor = append(targets1.Config.Gemini.ContextWindowFactor, contextWindowFactor28)
+					}
 					targets1.Config.Gemini.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.EmbeddingsDimensions)
 					if targetsItem1.Config.AIGatewayTargetGeminiConfig.GcpEnvironment == nil {
 						targets1.Config.Gemini.GcpEnvironment = nil
@@ -1505,6 +2434,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Gemini.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.InputCost)
 					targets1.Config.Gemini.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.MaxTokens)
 					targets1.Config.Gemini.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.OutputCost)
+					targets1.Config.Gemini.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem28 := range targetsItem1.Config.AIGatewayTargetGeminiConfig.ServiceTierFactor {
+						var serviceTierFactor28 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor28.Factor = types.Float64Value(serviceTierFactorItem28.Factor)
+						serviceTierFactor28.Tier = types.StringValue(serviceTierFactorItem28.Tier)
+
+						targets1.Config.Gemini.ServiceTierFactor = append(targets1.Config.Gemini.ServiceTierFactor, serviceTierFactor28)
+					}
 					targets1.Config.Gemini.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.Temperature)
 					targets1.Config.Gemini.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.TopK)
 					targets1.Config.Gemini.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.TopP)
@@ -1512,10 +2451,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetHuggingfaceConfig != nil {
 					targets1.Config.Huggingface = &tfTypes.AIGatewayTargetHuggingfaceConfig{}
+					targets1.Config.Huggingface.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCost)
+					targets1.Config.Huggingface.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.CacheWriteCost)
+					targets1.Config.Huggingface.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem29 := range targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.CacheWriteCostList {
+						var cacheWriteCostList29 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList29.Cost = types.Float64Value(cacheWriteCostListItem29.Cost)
+						cacheWriteCostList29.TTL = types.StringValue(cacheWriteCostListItem29.TTL)
+
+						targets1.Config.Huggingface.CacheWriteCostList = append(targets1.Config.Huggingface.CacheWriteCostList, cacheWriteCostList29)
+					}
+					targets1.Config.Huggingface.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem29 := range targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.ContextWindowFactor {
+						var contextWindowFactor29 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor29.Above = types.StringValue(contextWindowFactorItem29.Above)
+						contextWindowFactor29.InputFactor = types.Float64Value(contextWindowFactorItem29.InputFactor)
+						contextWindowFactor29.OutputFactor = types.Float64Value(contextWindowFactorItem29.OutputFactor)
+
+						targets1.Config.Huggingface.ContextWindowFactor = append(targets1.Config.Huggingface.ContextWindowFactor, contextWindowFactor29)
+					}
 					targets1.Config.Huggingface.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.EmbeddingsDimensions)
 					targets1.Config.Huggingface.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.InputCost)
 					targets1.Config.Huggingface.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.MaxTokens)
 					targets1.Config.Huggingface.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.OutputCost)
+					targets1.Config.Huggingface.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem29 := range targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.ServiceTierFactor {
+						var serviceTierFactor29 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor29.Factor = types.Float64Value(serviceTierFactorItem29.Factor)
+						serviceTierFactor29.Tier = types.StringValue(serviceTierFactorItem29.Tier)
+
+						targets1.Config.Huggingface.ServiceTierFactor = append(targets1.Config.Huggingface.ServiceTierFactor, serviceTierFactor29)
+					}
 					targets1.Config.Huggingface.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.Temperature)
 					targets1.Config.Huggingface.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.TopK)
 					targets1.Config.Huggingface.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.TopP)
@@ -1525,11 +2497,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetKimiConfig != nil {
 					targets1.Config.Kimi = &tfTypes.AIGatewayTargetDashscopeConfig{}
+					targets1.Config.Kimi.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.CacheReadCost)
+					targets1.Config.Kimi.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.CacheWriteCost)
+					targets1.Config.Kimi.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem30 := range targetsItem1.Config.AIGatewayTargetKimiConfig.CacheWriteCostList {
+						var cacheWriteCostList30 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList30.Cost = types.Float64Value(cacheWriteCostListItem30.Cost)
+						cacheWriteCostList30.TTL = types.StringValue(cacheWriteCostListItem30.TTL)
+
+						targets1.Config.Kimi.CacheWriteCostList = append(targets1.Config.Kimi.CacheWriteCostList, cacheWriteCostList30)
+					}
+					targets1.Config.Kimi.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem30 := range targetsItem1.Config.AIGatewayTargetKimiConfig.ContextWindowFactor {
+						var contextWindowFactor30 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor30.Above = types.StringValue(contextWindowFactorItem30.Above)
+						contextWindowFactor30.InputFactor = types.Float64Value(contextWindowFactorItem30.InputFactor)
+						contextWindowFactor30.OutputFactor = types.Float64Value(contextWindowFactorItem30.OutputFactor)
+
+						targets1.Config.Kimi.ContextWindowFactor = append(targets1.Config.Kimi.ContextWindowFactor, contextWindowFactor30)
+					}
 					targets1.Config.Kimi.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.EmbeddingsDimensions)
 					targets1.Config.Kimi.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.InputCost)
 					targets1.Config.Kimi.International = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.International)
 					targets1.Config.Kimi.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.MaxTokens)
 					targets1.Config.Kimi.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.OutputCost)
+					targets1.Config.Kimi.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem30 := range targetsItem1.Config.AIGatewayTargetKimiConfig.ServiceTierFactor {
+						var serviceTierFactor30 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor30.Factor = types.Float64Value(serviceTierFactorItem30.Factor)
+						serviceTierFactor30.Tier = types.StringValue(serviceTierFactorItem30.Tier)
+
+						targets1.Config.Kimi.ServiceTierFactor = append(targets1.Config.Kimi.ServiceTierFactor, serviceTierFactor30)
+					}
 					targets1.Config.Kimi.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.Temperature)
 					targets1.Config.Kimi.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.TopK)
 					targets1.Config.Kimi.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.TopP)
@@ -1537,11 +2542,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetLlama2Config != nil {
 					targets1.Config.Llama2 = &tfTypes.AIGatewayTargetLlama2Config{}
+					targets1.Config.Llama2.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.CacheReadCost)
+					targets1.Config.Llama2.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.CacheWriteCost)
+					targets1.Config.Llama2.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem31 := range targetsItem1.Config.AIGatewayTargetLlama2Config.CacheWriteCostList {
+						var cacheWriteCostList31 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList31.Cost = types.Float64Value(cacheWriteCostListItem31.Cost)
+						cacheWriteCostList31.TTL = types.StringValue(cacheWriteCostListItem31.TTL)
+
+						targets1.Config.Llama2.CacheWriteCostList = append(targets1.Config.Llama2.CacheWriteCostList, cacheWriteCostList31)
+					}
+					targets1.Config.Llama2.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem31 := range targetsItem1.Config.AIGatewayTargetLlama2Config.ContextWindowFactor {
+						var contextWindowFactor31 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor31.Above = types.StringValue(contextWindowFactorItem31.Above)
+						contextWindowFactor31.InputFactor = types.Float64Value(contextWindowFactorItem31.InputFactor)
+						contextWindowFactor31.OutputFactor = types.Float64Value(contextWindowFactorItem31.OutputFactor)
+
+						targets1.Config.Llama2.ContextWindowFactor = append(targets1.Config.Llama2.ContextWindowFactor, contextWindowFactor31)
+					}
 					targets1.Config.Llama2.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.EmbeddingsDimensions)
 					targets1.Config.Llama2.Format = types.StringValue(string(targetsItem1.Config.AIGatewayTargetLlama2Config.Format))
 					targets1.Config.Llama2.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.InputCost)
 					targets1.Config.Llama2.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.MaxTokens)
 					targets1.Config.Llama2.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.OutputCost)
+					targets1.Config.Llama2.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem31 := range targetsItem1.Config.AIGatewayTargetLlama2Config.ServiceTierFactor {
+						var serviceTierFactor31 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor31.Factor = types.Float64Value(serviceTierFactorItem31.Factor)
+						serviceTierFactor31.Tier = types.StringValue(serviceTierFactorItem31.Tier)
+
+						targets1.Config.Llama2.ServiceTierFactor = append(targets1.Config.Llama2.ServiceTierFactor, serviceTierFactor31)
+					}
 					targets1.Config.Llama2.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.Temperature)
 					targets1.Config.Llama2.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.TopK)
 					targets1.Config.Llama2.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.TopP)
@@ -1549,11 +2587,44 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetMistralConfig != nil {
 					targets1.Config.Mistral = &tfTypes.AIGatewayTargetMistralConfig{}
+					targets1.Config.Mistral.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.CacheReadCost)
+					targets1.Config.Mistral.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.CacheWriteCost)
+					targets1.Config.Mistral.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem32 := range targetsItem1.Config.AIGatewayTargetMistralConfig.CacheWriteCostList {
+						var cacheWriteCostList32 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList32.Cost = types.Float64Value(cacheWriteCostListItem32.Cost)
+						cacheWriteCostList32.TTL = types.StringValue(cacheWriteCostListItem32.TTL)
+
+						targets1.Config.Mistral.CacheWriteCostList = append(targets1.Config.Mistral.CacheWriteCostList, cacheWriteCostList32)
+					}
+					targets1.Config.Mistral.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem32 := range targetsItem1.Config.AIGatewayTargetMistralConfig.ContextWindowFactor {
+						var contextWindowFactor32 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor32.Above = types.StringValue(contextWindowFactorItem32.Above)
+						contextWindowFactor32.InputFactor = types.Float64Value(contextWindowFactorItem32.InputFactor)
+						contextWindowFactor32.OutputFactor = types.Float64Value(contextWindowFactorItem32.OutputFactor)
+
+						targets1.Config.Mistral.ContextWindowFactor = append(targets1.Config.Mistral.ContextWindowFactor, contextWindowFactor32)
+					}
 					targets1.Config.Mistral.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.EmbeddingsDimensions)
 					targets1.Config.Mistral.Format = types.StringValue(string(targetsItem1.Config.AIGatewayTargetMistralConfig.Format))
 					targets1.Config.Mistral.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.InputCost)
 					targets1.Config.Mistral.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.MaxTokens)
 					targets1.Config.Mistral.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.OutputCost)
+					targets1.Config.Mistral.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem32 := range targetsItem1.Config.AIGatewayTargetMistralConfig.ServiceTierFactor {
+						var serviceTierFactor32 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor32.Factor = types.Float64Value(serviceTierFactorItem32.Factor)
+						serviceTierFactor32.Tier = types.StringValue(serviceTierFactorItem32.Tier)
+
+						targets1.Config.Mistral.ServiceTierFactor = append(targets1.Config.Mistral.ServiceTierFactor, serviceTierFactor32)
+					}
 					targets1.Config.Mistral.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.Temperature)
 					targets1.Config.Mistral.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.TopK)
 					targets1.Config.Mistral.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.TopP)
@@ -1561,10 +2632,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetOllamaConfig != nil {
 					targets1.Config.Ollama = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets1.Config.Ollama.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.CacheReadCost)
+					targets1.Config.Ollama.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.CacheWriteCost)
+					targets1.Config.Ollama.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem33 := range targetsItem1.Config.AIGatewayTargetOllamaConfig.CacheWriteCostList {
+						var cacheWriteCostList33 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList33.Cost = types.Float64Value(cacheWriteCostListItem33.Cost)
+						cacheWriteCostList33.TTL = types.StringValue(cacheWriteCostListItem33.TTL)
+
+						targets1.Config.Ollama.CacheWriteCostList = append(targets1.Config.Ollama.CacheWriteCostList, cacheWriteCostList33)
+					}
+					targets1.Config.Ollama.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem33 := range targetsItem1.Config.AIGatewayTargetOllamaConfig.ContextWindowFactor {
+						var contextWindowFactor33 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor33.Above = types.StringValue(contextWindowFactorItem33.Above)
+						contextWindowFactor33.InputFactor = types.Float64Value(contextWindowFactorItem33.InputFactor)
+						contextWindowFactor33.OutputFactor = types.Float64Value(contextWindowFactorItem33.OutputFactor)
+
+						targets1.Config.Ollama.ContextWindowFactor = append(targets1.Config.Ollama.ContextWindowFactor, contextWindowFactor33)
+					}
 					targets1.Config.Ollama.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.EmbeddingsDimensions)
 					targets1.Config.Ollama.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.InputCost)
 					targets1.Config.Ollama.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.MaxTokens)
 					targets1.Config.Ollama.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.OutputCost)
+					targets1.Config.Ollama.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem33 := range targetsItem1.Config.AIGatewayTargetOllamaConfig.ServiceTierFactor {
+						var serviceTierFactor33 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor33.Factor = types.Float64Value(serviceTierFactorItem33.Factor)
+						serviceTierFactor33.Tier = types.StringValue(serviceTierFactorItem33.Tier)
+
+						targets1.Config.Ollama.ServiceTierFactor = append(targets1.Config.Ollama.ServiceTierFactor, serviceTierFactor33)
+					}
 					targets1.Config.Ollama.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.Temperature)
 					targets1.Config.Ollama.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.TopK)
 					targets1.Config.Ollama.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.TopP)
@@ -1572,10 +2676,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetOpenaiConfig != nil {
 					targets1.Config.Openai = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets1.Config.Openai.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.CacheReadCost)
+					targets1.Config.Openai.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.CacheWriteCost)
+					targets1.Config.Openai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem34 := range targetsItem1.Config.AIGatewayTargetOpenaiConfig.CacheWriteCostList {
+						var cacheWriteCostList34 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList34.Cost = types.Float64Value(cacheWriteCostListItem34.Cost)
+						cacheWriteCostList34.TTL = types.StringValue(cacheWriteCostListItem34.TTL)
+
+						targets1.Config.Openai.CacheWriteCostList = append(targets1.Config.Openai.CacheWriteCostList, cacheWriteCostList34)
+					}
+					targets1.Config.Openai.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem34 := range targetsItem1.Config.AIGatewayTargetOpenaiConfig.ContextWindowFactor {
+						var contextWindowFactor34 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor34.Above = types.StringValue(contextWindowFactorItem34.Above)
+						contextWindowFactor34.InputFactor = types.Float64Value(contextWindowFactorItem34.InputFactor)
+						contextWindowFactor34.OutputFactor = types.Float64Value(contextWindowFactorItem34.OutputFactor)
+
+						targets1.Config.Openai.ContextWindowFactor = append(targets1.Config.Openai.ContextWindowFactor, contextWindowFactor34)
+					}
 					targets1.Config.Openai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.EmbeddingsDimensions)
 					targets1.Config.Openai.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.InputCost)
 					targets1.Config.Openai.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.MaxTokens)
 					targets1.Config.Openai.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.OutputCost)
+					targets1.Config.Openai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem34 := range targetsItem1.Config.AIGatewayTargetOpenaiConfig.ServiceTierFactor {
+						var serviceTierFactor34 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor34.Factor = types.Float64Value(serviceTierFactorItem34.Factor)
+						serviceTierFactor34.Tier = types.StringValue(serviceTierFactorItem34.Tier)
+
+						targets1.Config.Openai.ServiceTierFactor = append(targets1.Config.Openai.ServiceTierFactor, serviceTierFactor34)
+					}
 					targets1.Config.Openai.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.Temperature)
 					targets1.Config.Openai.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.TopK)
 					targets1.Config.Openai.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.TopP)
@@ -1592,10 +2729,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets1.Config.Sagemaker.Aws.RoleSessionName = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws.RoleSessionName)
 						targets1.Config.Sagemaker.Aws.StsEndpointURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws.StsEndpointURL)
 					}
+					targets1.Config.Sagemaker.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.CacheReadCost)
+					targets1.Config.Sagemaker.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.CacheWriteCost)
+					targets1.Config.Sagemaker.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem35 := range targetsItem1.Config.AIGatewayTargetSagemakerConfig.CacheWriteCostList {
+						var cacheWriteCostList35 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList35.Cost = types.Float64Value(cacheWriteCostListItem35.Cost)
+						cacheWriteCostList35.TTL = types.StringValue(cacheWriteCostListItem35.TTL)
+
+						targets1.Config.Sagemaker.CacheWriteCostList = append(targets1.Config.Sagemaker.CacheWriteCostList, cacheWriteCostList35)
+					}
+					targets1.Config.Sagemaker.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem35 := range targetsItem1.Config.AIGatewayTargetSagemakerConfig.ContextWindowFactor {
+						var contextWindowFactor35 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor35.Above = types.StringValue(contextWindowFactorItem35.Above)
+						contextWindowFactor35.InputFactor = types.Float64Value(contextWindowFactorItem35.InputFactor)
+						contextWindowFactor35.OutputFactor = types.Float64Value(contextWindowFactorItem35.OutputFactor)
+
+						targets1.Config.Sagemaker.ContextWindowFactor = append(targets1.Config.Sagemaker.ContextWindowFactor, contextWindowFactor35)
+					}
 					targets1.Config.Sagemaker.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.EmbeddingsDimensions)
 					targets1.Config.Sagemaker.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.InputCost)
 					targets1.Config.Sagemaker.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.MaxTokens)
 					targets1.Config.Sagemaker.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.OutputCost)
+					targets1.Config.Sagemaker.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem35 := range targetsItem1.Config.AIGatewayTargetSagemakerConfig.ServiceTierFactor {
+						var serviceTierFactor35 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor35.Factor = types.Float64Value(serviceTierFactorItem35.Factor)
+						serviceTierFactor35.Tier = types.StringValue(serviceTierFactorItem35.Tier)
+
+						targets1.Config.Sagemaker.ServiceTierFactor = append(targets1.Config.Sagemaker.ServiceTierFactor, serviceTierFactor35)
+					}
 					if targetsItem1.Config.AIGatewayTargetSagemakerConfig.Target == nil {
 						targets1.Config.Sagemaker.Target = nil
 					} else {
@@ -1611,10 +2781,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetVercelConfig != nil {
 					targets1.Config.Vercel = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets1.Config.Vercel.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.CacheReadCost)
+					targets1.Config.Vercel.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.CacheWriteCost)
+					targets1.Config.Vercel.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem36 := range targetsItem1.Config.AIGatewayTargetVercelConfig.CacheWriteCostList {
+						var cacheWriteCostList36 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList36.Cost = types.Float64Value(cacheWriteCostListItem36.Cost)
+						cacheWriteCostList36.TTL = types.StringValue(cacheWriteCostListItem36.TTL)
+
+						targets1.Config.Vercel.CacheWriteCostList = append(targets1.Config.Vercel.CacheWriteCostList, cacheWriteCostList36)
+					}
+					targets1.Config.Vercel.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem36 := range targetsItem1.Config.AIGatewayTargetVercelConfig.ContextWindowFactor {
+						var contextWindowFactor36 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor36.Above = types.StringValue(contextWindowFactorItem36.Above)
+						contextWindowFactor36.InputFactor = types.Float64Value(contextWindowFactorItem36.InputFactor)
+						contextWindowFactor36.OutputFactor = types.Float64Value(contextWindowFactorItem36.OutputFactor)
+
+						targets1.Config.Vercel.ContextWindowFactor = append(targets1.Config.Vercel.ContextWindowFactor, contextWindowFactor36)
+					}
 					targets1.Config.Vercel.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.EmbeddingsDimensions)
 					targets1.Config.Vercel.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.InputCost)
 					targets1.Config.Vercel.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.MaxTokens)
 					targets1.Config.Vercel.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.OutputCost)
+					targets1.Config.Vercel.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem36 := range targetsItem1.Config.AIGatewayTargetVercelConfig.ServiceTierFactor {
+						var serviceTierFactor36 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor36.Factor = types.Float64Value(serviceTierFactorItem36.Factor)
+						serviceTierFactor36.Tier = types.StringValue(serviceTierFactorItem36.Tier)
+
+						targets1.Config.Vercel.ServiceTierFactor = append(targets1.Config.Vercel.ServiceTierFactor, serviceTierFactor36)
+					}
 					targets1.Config.Vercel.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.Temperature)
 					targets1.Config.Vercel.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.TopK)
 					targets1.Config.Vercel.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.TopP)
@@ -1622,6 +2825,29 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetVertexConfig != nil {
 					targets1.Config.Vertex = &tfTypes.AIGatewayTargetVertexConfig{}
+					targets1.Config.Vertex.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.CacheReadCost)
+					targets1.Config.Vertex.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.CacheWriteCost)
+					targets1.Config.Vertex.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem37 := range targetsItem1.Config.AIGatewayTargetVertexConfig.CacheWriteCostList {
+						var cacheWriteCostList37 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList37.Cost = types.Float64Value(cacheWriteCostListItem37.Cost)
+						cacheWriteCostList37.TTL = types.StringValue(cacheWriteCostListItem37.TTL)
+
+						targets1.Config.Vertex.CacheWriteCostList = append(targets1.Config.Vertex.CacheWriteCostList, cacheWriteCostList37)
+					}
+					targets1.Config.Vertex.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem37 := range targetsItem1.Config.AIGatewayTargetVertexConfig.ContextWindowFactor {
+						var contextWindowFactor37 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor37.Above = types.StringValue(contextWindowFactorItem37.Above)
+						contextWindowFactor37.InputFactor = types.Float64Value(contextWindowFactorItem37.InputFactor)
+						contextWindowFactor37.OutputFactor = types.Float64Value(contextWindowFactorItem37.OutputFactor)
+
+						targets1.Config.Vertex.ContextWindowFactor = append(targets1.Config.Vertex.ContextWindowFactor, contextWindowFactor37)
+					}
 					targets1.Config.Vertex.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.EmbeddingsDimensions)
 					if targetsItem1.Config.AIGatewayTargetVertexConfig.GcpEnvironment == nil {
 						targets1.Config.Vertex.GcpEnvironment = nil
@@ -1635,6 +2861,16 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Vertex.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.InputCost)
 					targets1.Config.Vertex.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.MaxTokens)
 					targets1.Config.Vertex.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.OutputCost)
+					targets1.Config.Vertex.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem37 := range targetsItem1.Config.AIGatewayTargetVertexConfig.ServiceTierFactor {
+						var serviceTierFactor37 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor37.Factor = types.Float64Value(serviceTierFactorItem37.Factor)
+						serviceTierFactor37.Tier = types.StringValue(serviceTierFactorItem37.Tier)
+
+						targets1.Config.Vertex.ServiceTierFactor = append(targets1.Config.Vertex.ServiceTierFactor, serviceTierFactor37)
+					}
 					targets1.Config.Vertex.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.Temperature)
 					targets1.Config.Vertex.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.TopK)
 					targets1.Config.Vertex.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVertexConfig.TopP)
@@ -1642,10 +2878,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetVllmConfig != nil {
 					targets1.Config.Vllm = &tfTypes.AIGatewayTargetVllmConfig{}
+					targets1.Config.Vllm.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.CacheReadCost)
+					targets1.Config.Vllm.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.CacheWriteCost)
+					targets1.Config.Vllm.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem38 := range targetsItem1.Config.AIGatewayTargetVllmConfig.CacheWriteCostList {
+						var cacheWriteCostList38 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList38.Cost = types.Float64Value(cacheWriteCostListItem38.Cost)
+						cacheWriteCostList38.TTL = types.StringValue(cacheWriteCostListItem38.TTL)
+
+						targets1.Config.Vllm.CacheWriteCostList = append(targets1.Config.Vllm.CacheWriteCostList, cacheWriteCostList38)
+					}
+					targets1.Config.Vllm.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem38 := range targetsItem1.Config.AIGatewayTargetVllmConfig.ContextWindowFactor {
+						var contextWindowFactor38 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor38.Above = types.StringValue(contextWindowFactorItem38.Above)
+						contextWindowFactor38.InputFactor = types.Float64Value(contextWindowFactorItem38.InputFactor)
+						contextWindowFactor38.OutputFactor = types.Float64Value(contextWindowFactorItem38.OutputFactor)
+
+						targets1.Config.Vllm.ContextWindowFactor = append(targets1.Config.Vllm.ContextWindowFactor, contextWindowFactor38)
+					}
 					targets1.Config.Vllm.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.EmbeddingsDimensions)
 					targets1.Config.Vllm.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.InputCost)
 					targets1.Config.Vllm.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.MaxTokens)
 					targets1.Config.Vllm.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.OutputCost)
+					targets1.Config.Vllm.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem38 := range targetsItem1.Config.AIGatewayTargetVllmConfig.ServiceTierFactor {
+						var serviceTierFactor38 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor38.Factor = types.Float64Value(serviceTierFactorItem38.Factor)
+						serviceTierFactor38.Tier = types.StringValue(serviceTierFactorItem38.Tier)
+
+						targets1.Config.Vllm.ServiceTierFactor = append(targets1.Config.Vllm.ServiceTierFactor, serviceTierFactor38)
+					}
 					targets1.Config.Vllm.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.Temperature)
 					targets1.Config.Vllm.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.TopK)
 					targets1.Config.Vllm.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.TopP)
@@ -1653,10 +2922,43 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				}
 				if targetsItem1.Config.AIGatewayTargetXaiConfig != nil {
 					targets1.Config.Xai = &tfTypes.AIGatewayTargetCerebrasConfig{}
+					targets1.Config.Xai.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.CacheReadCost)
+					targets1.Config.Xai.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.CacheWriteCost)
+					targets1.Config.Xai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
+
+					for _, cacheWriteCostListItem39 := range targetsItem1.Config.AIGatewayTargetXaiConfig.CacheWriteCostList {
+						var cacheWriteCostList39 tfTypes.AIGatewayCacheWriteCost
+
+						cacheWriteCostList39.Cost = types.Float64Value(cacheWriteCostListItem39.Cost)
+						cacheWriteCostList39.TTL = types.StringValue(cacheWriteCostListItem39.TTL)
+
+						targets1.Config.Xai.CacheWriteCostList = append(targets1.Config.Xai.CacheWriteCostList, cacheWriteCostList39)
+					}
+					targets1.Config.Xai.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
+
+					for _, contextWindowFactorItem39 := range targetsItem1.Config.AIGatewayTargetXaiConfig.ContextWindowFactor {
+						var contextWindowFactor39 tfTypes.AIGatewayContextWindowFactor
+
+						contextWindowFactor39.Above = types.StringValue(contextWindowFactorItem39.Above)
+						contextWindowFactor39.InputFactor = types.Float64Value(contextWindowFactorItem39.InputFactor)
+						contextWindowFactor39.OutputFactor = types.Float64Value(contextWindowFactorItem39.OutputFactor)
+
+						targets1.Config.Xai.ContextWindowFactor = append(targets1.Config.Xai.ContextWindowFactor, contextWindowFactor39)
+					}
 					targets1.Config.Xai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.EmbeddingsDimensions)
 					targets1.Config.Xai.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.InputCost)
 					targets1.Config.Xai.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.MaxTokens)
 					targets1.Config.Xai.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.OutputCost)
+					targets1.Config.Xai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
+
+					for _, serviceTierFactorItem39 := range targetsItem1.Config.AIGatewayTargetXaiConfig.ServiceTierFactor {
+						var serviceTierFactor39 tfTypes.AIGatewayServiceTierFactor
+
+						serviceTierFactor39.Factor = types.Float64Value(serviceTierFactorItem39.Factor)
+						serviceTierFactor39.Tier = types.StringValue(serviceTierFactorItem39.Tier)
+
+						targets1.Config.Xai.ServiceTierFactor = append(targets1.Config.Xai.ServiceTierFactor, serviceTierFactor39)
+					}
 					targets1.Config.Xai.Temperature = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.Temperature)
 					targets1.Config.Xai.TopK = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.TopK)
 					targets1.Config.Xai.TopP = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.TopP)
@@ -1866,6 +3168,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost = nil
 				}
+				cacheReadCost := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCost.IsNull() {
+					*cacheReadCost = r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost = nil
+				}
+				cacheWriteCost := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCost.IsNull() {
+					*cacheWriteCost = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost = nil
+				}
+				cacheWriteCostList := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList))
+				for cacheWriteCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList {
+					var ttl string
+					ttl = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].TTL.ValueString()
+
+					var cost float64
+					cost = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
+
+					cacheWriteCostList = append(cacheWriteCostList, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl,
+						Cost: cost,
+					})
+				}
+				contextWindowFactor := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor))
+				for contextWindowFactorIndex := range r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor {
+					var above string
+					above = r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex].Above.ValueString()
+
+					var inputFactor float64
+					inputFactor = r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex].InputFactor.ValueFloat64()
+
+					var outputFactor float64
+					outputFactor = r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex].OutputFactor.ValueFloat64()
+
+					contextWindowFactor = append(contextWindowFactor, shared.AIGatewayContextWindowFactor{
+						Above:        above,
+						InputFactor:  inputFactor,
+						OutputFactor: outputFactor,
+					})
+				}
+				serviceTierFactor := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor))
+				for serviceTierFactorIndex := range r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor {
+					var tier string
+					tier = r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex].Tier.ValueString()
+
+					var factor float64
+					factor = r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex].Factor.ValueFloat64()
+
+					serviceTierFactor = append(serviceTierFactor, shared.AIGatewayServiceTierFactor{
+						Tier:   tier,
+						Factor: factor,
+					})
+				}
 				temperature := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Anthropic.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.Temperature.IsNull() {
 					*temperature = r.API.Targets[targetsIndex].Config.Anthropic.Temperature.ValueFloat64()
@@ -1901,6 +3258,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens,
 					InputCost:            inputCost,
 					OutputCost:           outputCost,
+					CacheReadCost:        cacheReadCost,
+					CacheWriteCost:       cacheWriteCost,
+					CacheWriteCostList:   cacheWriteCostList,
+					ContextWindowFactor:  contextWindowFactor,
+					ServiceTierFactor:    serviceTierFactor,
 					Temperature:          temperature,
 					TopK:                 topK,
 					TopP:                 topP,
@@ -1939,6 +3301,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost1 = nil
 				}
+				cacheReadCost1 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Azure.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.CacheReadCost.IsNull() {
+					*cacheReadCost1 = r.API.Targets[targetsIndex].Config.Azure.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost1 = nil
+				}
+				cacheWriteCost1 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Azure.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.CacheWriteCost.IsNull() {
+					*cacheWriteCost1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost1 = nil
+				}
+				cacheWriteCostList1 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList))
+				for cacheWriteCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList {
+					var ttl1 string
+					ttl1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].TTL.ValueString()
+
+					var cost1 float64
+					cost1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].Cost.ValueFloat64()
+
+					cacheWriteCostList1 = append(cacheWriteCostList1, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl1,
+						Cost: cost1,
+					})
+				}
+				contextWindowFactor1 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor))
+				for contextWindowFactorIndex1 := range r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor {
+					var above1 string
+					above1 = r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor[contextWindowFactorIndex1].Above.ValueString()
+
+					var inputFactor1 float64
+					inputFactor1 = r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor[contextWindowFactorIndex1].InputFactor.ValueFloat64()
+
+					var outputFactor1 float64
+					outputFactor1 = r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor[contextWindowFactorIndex1].OutputFactor.ValueFloat64()
+
+					contextWindowFactor1 = append(contextWindowFactor1, shared.AIGatewayContextWindowFactor{
+						Above:        above1,
+						InputFactor:  inputFactor1,
+						OutputFactor: outputFactor1,
+					})
+				}
+				serviceTierFactor1 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor))
+				for serviceTierFactorIndex1 := range r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor {
+					var tier1 string
+					tier1 = r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor[serviceTierFactorIndex1].Tier.ValueString()
+
+					var factor1 float64
+					factor1 = r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor[serviceTierFactorIndex1].Factor.ValueFloat64()
+
+					serviceTierFactor1 = append(serviceTierFactor1, shared.AIGatewayServiceTierFactor{
+						Tier:   tier1,
+						Factor: factor1,
+					})
+				}
 				temperature1 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Azure.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.Temperature.IsNull() {
 					*temperature1 = r.API.Targets[targetsIndex].Config.Azure.Temperature.ValueFloat64()
@@ -1963,26 +3380,41 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl1 = nil
 				}
-				var deploymentID string
-				deploymentID = r.API.Targets[targetsIndex].Config.Azure.DeploymentID.ValueString()
-
+				deploymentID := new(string)
+				if !r.API.Targets[targetsIndex].Config.Azure.DeploymentID.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.DeploymentID.IsNull() {
+					*deploymentID = r.API.Targets[targetsIndex].Config.Azure.DeploymentID.ValueString()
+				} else {
+					deploymentID = nil
+				}
 				apiVersion := new(string)
 				if !r.API.Targets[targetsIndex].Config.Azure.APIVersion.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.APIVersion.IsNull() {
 					*apiVersion = r.API.Targets[targetsIndex].Config.Azure.APIVersion.ValueString()
 				} else {
 					apiVersion = nil
 				}
+				foundryPathPrefix := new(shared.FoundryPathPrefix)
+				if !r.API.Targets[targetsIndex].Config.Azure.FoundryPathPrefix.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.FoundryPathPrefix.IsNull() {
+					*foundryPathPrefix = shared.FoundryPathPrefix(r.API.Targets[targetsIndex].Config.Azure.FoundryPathPrefix.ValueString())
+				} else {
+					foundryPathPrefix = nil
+				}
 				aiGatewayTargetAzureConfig = &shared.AIGatewayTargetAzureConfig{
 					EmbeddingsDimensions: embeddingsDimensions1,
 					MaxTokens:            maxTokens1,
 					InputCost:            inputCost1,
 					OutputCost:           outputCost1,
+					CacheReadCost:        cacheReadCost1,
+					CacheWriteCost:       cacheWriteCost1,
+					CacheWriteCostList:   cacheWriteCostList1,
+					ContextWindowFactor:  contextWindowFactor1,
+					ServiceTierFactor:    serviceTierFactor1,
 					Temperature:          temperature1,
 					TopK:                 topK1,
 					TopP:                 topP1,
 					UpstreamURL:          upstreamUrl1,
 					DeploymentID:         deploymentID,
 					APIVersion:           apiVersion,
+					FoundryPathPrefix:    foundryPathPrefix,
 				}
 			}
 			if aiGatewayTargetAzureConfig != nil {
@@ -2015,6 +3447,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost2 = r.API.Targets[targetsIndex].Config.Bedrock.OutputCost.ValueFloat64()
 				} else {
 					outputCost2 = nil
+				}
+				cacheReadCost2 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCost.IsNull() {
+					*cacheReadCost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost2 = nil
+				}
+				cacheWriteCost2 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCost.IsNull() {
+					*cacheWriteCost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost2 = nil
+				}
+				cacheWriteCostList2 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList))
+				for cacheWriteCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList {
+					var ttl2 string
+					ttl2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].TTL.ValueString()
+
+					var cost2 float64
+					cost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].Cost.ValueFloat64()
+
+					cacheWriteCostList2 = append(cacheWriteCostList2, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl2,
+						Cost: cost2,
+					})
+				}
+				contextWindowFactor2 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor))
+				for contextWindowFactorIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor {
+					var above2 string
+					above2 = r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex2].Above.ValueString()
+
+					var inputFactor2 float64
+					inputFactor2 = r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex2].InputFactor.ValueFloat64()
+
+					var outputFactor2 float64
+					outputFactor2 = r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex2].OutputFactor.ValueFloat64()
+
+					contextWindowFactor2 = append(contextWindowFactor2, shared.AIGatewayContextWindowFactor{
+						Above:        above2,
+						InputFactor:  inputFactor2,
+						OutputFactor: outputFactor2,
+					})
+				}
+				serviceTierFactor2 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor))
+				for serviceTierFactorIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor {
+					var tier2 string
+					tier2 = r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex2].Tier.ValueString()
+
+					var factor2 float64
+					factor2 = r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex2].Factor.ValueFloat64()
+
+					serviceTierFactor2 = append(serviceTierFactor2, shared.AIGatewayServiceTierFactor{
+						Tier:   tier2,
+						Factor: factor2,
+					})
 				}
 				temperature2 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Bedrock.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.Temperature.IsNull() {
@@ -2075,6 +3562,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:                maxTokens2,
 					InputCost:                inputCost2,
 					OutputCost:               outputCost2,
+					CacheReadCost:            cacheReadCost2,
+					CacheWriteCost:           cacheWriteCost2,
+					CacheWriteCostList:       cacheWriteCostList2,
+					ContextWindowFactor:      contextWindowFactor2,
+					ServiceTierFactor:        serviceTierFactor2,
 					Temperature:              temperature2,
 					TopK:                     topK2,
 					TopP:                     topP2,
@@ -2117,6 +3609,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost3 = nil
 				}
+				cacheReadCost3 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCost.IsNull() {
+					*cacheReadCost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost3 = nil
+				}
+				cacheWriteCost3 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCost.IsNull() {
+					*cacheWriteCost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost3 = nil
+				}
+				cacheWriteCostList3 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList))
+				for cacheWriteCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList {
+					var ttl3 string
+					ttl3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].TTL.ValueString()
+
+					var cost3 float64
+					cost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].Cost.ValueFloat64()
+
+					cacheWriteCostList3 = append(cacheWriteCostList3, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl3,
+						Cost: cost3,
+					})
+				}
+				contextWindowFactor3 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor))
+				for contextWindowFactorIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor {
+					var above3 string
+					above3 = r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex3].Above.ValueString()
+
+					var inputFactor3 float64
+					inputFactor3 = r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex3].InputFactor.ValueFloat64()
+
+					var outputFactor3 float64
+					outputFactor3 = r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex3].OutputFactor.ValueFloat64()
+
+					contextWindowFactor3 = append(contextWindowFactor3, shared.AIGatewayContextWindowFactor{
+						Above:        above3,
+						InputFactor:  inputFactor3,
+						OutputFactor: outputFactor3,
+					})
+				}
+				serviceTierFactor3 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor))
+				for serviceTierFactorIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor {
+					var tier3 string
+					tier3 = r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex3].Tier.ValueString()
+
+					var factor3 float64
+					factor3 = r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex3].Factor.ValueFloat64()
+
+					serviceTierFactor3 = append(serviceTierFactor3, shared.AIGatewayServiceTierFactor{
+						Tier:   tier3,
+						Factor: factor3,
+					})
+				}
 				temperature3 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Cerebras.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cerebras.Temperature.IsNull() {
 					*temperature3 = r.API.Targets[targetsIndex].Config.Cerebras.Temperature.ValueFloat64()
@@ -2146,6 +3693,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens3,
 					InputCost:            inputCost3,
 					OutputCost:           outputCost3,
+					CacheReadCost:        cacheReadCost3,
+					CacheWriteCost:       cacheWriteCost3,
+					CacheWriteCostList:   cacheWriteCostList3,
+					ContextWindowFactor:  contextWindowFactor3,
+					ServiceTierFactor:    serviceTierFactor3,
 					Temperature:          temperature3,
 					TopK:                 topK3,
 					TopP:                 topP3,
@@ -2182,6 +3734,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost4 = r.API.Targets[targetsIndex].Config.Cohere.OutputCost.ValueFloat64()
 				} else {
 					outputCost4 = nil
+				}
+				cacheReadCost4 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cohere.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.CacheReadCost.IsNull() {
+					*cacheReadCost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost4 = nil
+				}
+				cacheWriteCost4 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCost.IsNull() {
+					*cacheWriteCost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost4 = nil
+				}
+				cacheWriteCostList4 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList))
+				for cacheWriteCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList {
+					var ttl4 string
+					ttl4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].TTL.ValueString()
+
+					var cost4 float64
+					cost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].Cost.ValueFloat64()
+
+					cacheWriteCostList4 = append(cacheWriteCostList4, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl4,
+						Cost: cost4,
+					})
+				}
+				contextWindowFactor4 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor))
+				for contextWindowFactorIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor {
+					var above4 string
+					above4 = r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex4].Above.ValueString()
+
+					var inputFactor4 float64
+					inputFactor4 = r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex4].InputFactor.ValueFloat64()
+
+					var outputFactor4 float64
+					outputFactor4 = r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex4].OutputFactor.ValueFloat64()
+
+					contextWindowFactor4 = append(contextWindowFactor4, shared.AIGatewayContextWindowFactor{
+						Above:        above4,
+						InputFactor:  inputFactor4,
+						OutputFactor: outputFactor4,
+					})
+				}
+				serviceTierFactor4 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor))
+				for serviceTierFactorIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor {
+					var tier4 string
+					tier4 = r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex4].Tier.ValueString()
+
+					var factor4 float64
+					factor4 = r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex4].Factor.ValueFloat64()
+
+					serviceTierFactor4 = append(serviceTierFactor4, shared.AIGatewayServiceTierFactor{
+						Tier:   tier4,
+						Factor: factor4,
+					})
 				}
 				temperature4 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Cohere.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.Temperature.IsNull() {
@@ -2230,6 +3837,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens4,
 					InputCost:            inputCost4,
 					OutputCost:           outputCost4,
+					CacheReadCost:        cacheReadCost4,
+					CacheWriteCost:       cacheWriteCost4,
+					CacheWriteCostList:   cacheWriteCostList4,
+					ContextWindowFactor:  contextWindowFactor4,
+					ServiceTierFactor:    serviceTierFactor4,
 					Temperature:          temperature4,
 					TopK:                 topK4,
 					TopP:                 topP4,
@@ -2270,6 +3882,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost5 = nil
 				}
+				cacheReadCost5 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCost.IsNull() {
+					*cacheReadCost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost5 = nil
+				}
+				cacheWriteCost5 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCost.IsNull() {
+					*cacheWriteCost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost5 = nil
+				}
+				cacheWriteCostList5 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList))
+				for cacheWriteCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList {
+					var ttl5 string
+					ttl5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].TTL.ValueString()
+
+					var cost5 float64
+					cost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].Cost.ValueFloat64()
+
+					cacheWriteCostList5 = append(cacheWriteCostList5, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl5,
+						Cost: cost5,
+					})
+				}
+				contextWindowFactor5 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor))
+				for contextWindowFactorIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor {
+					var above5 string
+					above5 = r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex5].Above.ValueString()
+
+					var inputFactor5 float64
+					inputFactor5 = r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex5].InputFactor.ValueFloat64()
+
+					var outputFactor5 float64
+					outputFactor5 = r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex5].OutputFactor.ValueFloat64()
+
+					contextWindowFactor5 = append(contextWindowFactor5, shared.AIGatewayContextWindowFactor{
+						Above:        above5,
+						InputFactor:  inputFactor5,
+						OutputFactor: outputFactor5,
+					})
+				}
+				serviceTierFactor5 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor))
+				for serviceTierFactorIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor {
+					var tier5 string
+					tier5 = r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex5].Tier.ValueString()
+
+					var factor5 float64
+					factor5 = r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex5].Factor.ValueFloat64()
+
+					serviceTierFactor5 = append(serviceTierFactor5, shared.AIGatewayServiceTierFactor{
+						Tier:   tier5,
+						Factor: factor5,
+					})
+				}
 				temperature5 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Dashscope.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.Temperature.IsNull() {
 					*temperature5 = r.API.Targets[targetsIndex].Config.Dashscope.Temperature.ValueFloat64()
@@ -2305,6 +3972,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens5,
 					InputCost:            inputCost5,
 					OutputCost:           outputCost5,
+					CacheReadCost:        cacheReadCost5,
+					CacheWriteCost:       cacheWriteCost5,
+					CacheWriteCostList:   cacheWriteCostList5,
+					ContextWindowFactor:  contextWindowFactor5,
+					ServiceTierFactor:    serviceTierFactor5,
 					Temperature:          temperature5,
 					TopK:                 topK5,
 					TopP:                 topP5,
@@ -2343,6 +4015,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost6 = nil
 				}
+				cacheReadCost6 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Databricks.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Databricks.CacheReadCost.IsNull() {
+					*cacheReadCost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost6 = nil
+				}
+				cacheWriteCost6 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCost.IsNull() {
+					*cacheWriteCost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost6 = nil
+				}
+				cacheWriteCostList6 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList))
+				for cacheWriteCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList {
+					var ttl6 string
+					ttl6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].TTL.ValueString()
+
+					var cost6 float64
+					cost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].Cost.ValueFloat64()
+
+					cacheWriteCostList6 = append(cacheWriteCostList6, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl6,
+						Cost: cost6,
+					})
+				}
+				contextWindowFactor6 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor))
+				for contextWindowFactorIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor {
+					var above6 string
+					above6 = r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex6].Above.ValueString()
+
+					var inputFactor6 float64
+					inputFactor6 = r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex6].InputFactor.ValueFloat64()
+
+					var outputFactor6 float64
+					outputFactor6 = r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex6].OutputFactor.ValueFloat64()
+
+					contextWindowFactor6 = append(contextWindowFactor6, shared.AIGatewayContextWindowFactor{
+						Above:        above6,
+						InputFactor:  inputFactor6,
+						OutputFactor: outputFactor6,
+					})
+				}
+				serviceTierFactor6 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor))
+				for serviceTierFactorIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor {
+					var tier6 string
+					tier6 = r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex6].Tier.ValueString()
+
+					var factor6 float64
+					factor6 = r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex6].Factor.ValueFloat64()
+
+					serviceTierFactor6 = append(serviceTierFactor6, shared.AIGatewayServiceTierFactor{
+						Tier:   tier6,
+						Factor: factor6,
+					})
+				}
 				temperature6 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Databricks.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Databricks.Temperature.IsNull() {
 					*temperature6 = r.API.Targets[targetsIndex].Config.Databricks.Temperature.ValueFloat64()
@@ -2375,6 +4102,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens6,
 					InputCost:            inputCost6,
 					OutputCost:           outputCost6,
+					CacheReadCost:        cacheReadCost6,
+					CacheWriteCost:       cacheWriteCost6,
+					CacheWriteCostList:   cacheWriteCostList6,
+					ContextWindowFactor:  contextWindowFactor6,
+					ServiceTierFactor:    serviceTierFactor6,
 					Temperature:          temperature6,
 					TopK:                 topK6,
 					TopP:                 topP6,
@@ -2413,6 +4145,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost7 = nil
 				}
+				cacheReadCost7 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCost.IsNull() {
+					*cacheReadCost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost7 = nil
+				}
+				cacheWriteCost7 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCost.IsNull() {
+					*cacheWriteCost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost7 = nil
+				}
+				cacheWriteCostList7 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList))
+				for cacheWriteCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList {
+					var ttl7 string
+					ttl7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].TTL.ValueString()
+
+					var cost7 float64
+					cost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].Cost.ValueFloat64()
+
+					cacheWriteCostList7 = append(cacheWriteCostList7, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl7,
+						Cost: cost7,
+					})
+				}
+				contextWindowFactor7 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor))
+				for contextWindowFactorIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor {
+					var above7 string
+					above7 = r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex7].Above.ValueString()
+
+					var inputFactor7 float64
+					inputFactor7 = r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex7].InputFactor.ValueFloat64()
+
+					var outputFactor7 float64
+					outputFactor7 = r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex7].OutputFactor.ValueFloat64()
+
+					contextWindowFactor7 = append(contextWindowFactor7, shared.AIGatewayContextWindowFactor{
+						Above:        above7,
+						InputFactor:  inputFactor7,
+						OutputFactor: outputFactor7,
+					})
+				}
+				serviceTierFactor7 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor))
+				for serviceTierFactorIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor {
+					var tier7 string
+					tier7 = r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex7].Tier.ValueString()
+
+					var factor7 float64
+					factor7 = r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex7].Factor.ValueFloat64()
+
+					serviceTierFactor7 = append(serviceTierFactor7, shared.AIGatewayServiceTierFactor{
+						Tier:   tier7,
+						Factor: factor7,
+					})
+				}
 				temperature7 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Deepseek.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Deepseek.Temperature.IsNull() {
 					*temperature7 = r.API.Targets[targetsIndex].Config.Deepseek.Temperature.ValueFloat64()
@@ -2442,6 +4229,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens7,
 					InputCost:            inputCost7,
 					OutputCost:           outputCost7,
+					CacheReadCost:        cacheReadCost7,
+					CacheWriteCost:       cacheWriteCost7,
+					CacheWriteCostList:   cacheWriteCostList7,
+					ContextWindowFactor:  contextWindowFactor7,
+					ServiceTierFactor:    serviceTierFactor7,
 					Temperature:          temperature7,
 					TopK:                 topK7,
 					TopP:                 topP7,
@@ -2478,6 +4270,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost8 = r.API.Targets[targetsIndex].Config.Gemini.OutputCost.ValueFloat64()
 				} else {
 					outputCost8 = nil
+				}
+				cacheReadCost8 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Gemini.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Gemini.CacheReadCost.IsNull() {
+					*cacheReadCost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost8 = nil
+				}
+				cacheWriteCost8 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCost.IsNull() {
+					*cacheWriteCost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost8 = nil
+				}
+				cacheWriteCostList8 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList))
+				for cacheWriteCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList {
+					var ttl8 string
+					ttl8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].TTL.ValueString()
+
+					var cost8 float64
+					cost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].Cost.ValueFloat64()
+
+					cacheWriteCostList8 = append(cacheWriteCostList8, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl8,
+						Cost: cost8,
+					})
+				}
+				contextWindowFactor8 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor))
+				for contextWindowFactorIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor {
+					var above8 string
+					above8 = r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex8].Above.ValueString()
+
+					var inputFactor8 float64
+					inputFactor8 = r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex8].InputFactor.ValueFloat64()
+
+					var outputFactor8 float64
+					outputFactor8 = r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex8].OutputFactor.ValueFloat64()
+
+					contextWindowFactor8 = append(contextWindowFactor8, shared.AIGatewayContextWindowFactor{
+						Above:        above8,
+						InputFactor:  inputFactor8,
+						OutputFactor: outputFactor8,
+					})
+				}
+				serviceTierFactor8 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor))
+				for serviceTierFactorIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor {
+					var tier8 string
+					tier8 = r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex8].Tier.ValueString()
+
+					var factor8 float64
+					factor8 = r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex8].Factor.ValueFloat64()
+
+					serviceTierFactor8 = append(serviceTierFactor8, shared.AIGatewayServiceTierFactor{
+						Tier:   tier8,
+						Factor: factor8,
+					})
 				}
 				temperature8 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Gemini.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Gemini.Temperature.IsNull() {
@@ -2525,6 +4372,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens8,
 					InputCost:            inputCost8,
 					OutputCost:           outputCost8,
+					CacheReadCost:        cacheReadCost8,
+					CacheWriteCost:       cacheWriteCost8,
+					CacheWriteCostList:   cacheWriteCostList8,
+					ContextWindowFactor:  contextWindowFactor8,
+					ServiceTierFactor:    serviceTierFactor8,
 					Temperature:          temperature8,
 					TopK:                 topK8,
 					TopP:                 topP8,
@@ -2562,6 +4414,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost9 = r.API.Targets[targetsIndex].Config.Huggingface.OutputCost.ValueFloat64()
 				} else {
 					outputCost9 = nil
+				}
+				cacheReadCost9 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCost.IsNull() {
+					*cacheReadCost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost9 = nil
+				}
+				cacheWriteCost9 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCost.IsNull() {
+					*cacheWriteCost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost9 = nil
+				}
+				cacheWriteCostList9 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList))
+				for cacheWriteCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList {
+					var ttl9 string
+					ttl9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].TTL.ValueString()
+
+					var cost9 float64
+					cost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].Cost.ValueFloat64()
+
+					cacheWriteCostList9 = append(cacheWriteCostList9, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl9,
+						Cost: cost9,
+					})
+				}
+				contextWindowFactor9 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor))
+				for contextWindowFactorIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor {
+					var above9 string
+					above9 = r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex9].Above.ValueString()
+
+					var inputFactor9 float64
+					inputFactor9 = r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex9].InputFactor.ValueFloat64()
+
+					var outputFactor9 float64
+					outputFactor9 = r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex9].OutputFactor.ValueFloat64()
+
+					contextWindowFactor9 = append(contextWindowFactor9, shared.AIGatewayContextWindowFactor{
+						Above:        above9,
+						InputFactor:  inputFactor9,
+						OutputFactor: outputFactor9,
+					})
+				}
+				serviceTierFactor9 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor))
+				for serviceTierFactorIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor {
+					var tier9 string
+					tier9 = r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex9].Tier.ValueString()
+
+					var factor9 float64
+					factor9 = r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex9].Factor.ValueFloat64()
+
+					serviceTierFactor9 = append(serviceTierFactor9, shared.AIGatewayServiceTierFactor{
+						Tier:   tier9,
+						Factor: factor9,
+					})
 				}
 				temperature9 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Huggingface.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.Temperature.IsNull() {
@@ -2604,6 +4511,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens9,
 					InputCost:            inputCost9,
 					OutputCost:           outputCost9,
+					CacheReadCost:        cacheReadCost9,
+					CacheWriteCost:       cacheWriteCost9,
+					CacheWriteCostList:   cacheWriteCostList9,
+					ContextWindowFactor:  contextWindowFactor9,
+					ServiceTierFactor:    serviceTierFactor9,
 					Temperature:          temperature9,
 					TopK:                 topK9,
 					TopP:                 topP9,
@@ -2643,6 +4555,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost10 = nil
 				}
+				cacheReadCost10 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Kimi.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.CacheReadCost.IsNull() {
+					*cacheReadCost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost10 = nil
+				}
+				cacheWriteCost10 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCost.IsNull() {
+					*cacheWriteCost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost10 = nil
+				}
+				cacheWriteCostList10 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList))
+				for cacheWriteCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList {
+					var ttl10 string
+					ttl10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].TTL.ValueString()
+
+					var cost10 float64
+					cost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].Cost.ValueFloat64()
+
+					cacheWriteCostList10 = append(cacheWriteCostList10, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl10,
+						Cost: cost10,
+					})
+				}
+				contextWindowFactor10 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor))
+				for contextWindowFactorIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor {
+					var above10 string
+					above10 = r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex10].Above.ValueString()
+
+					var inputFactor10 float64
+					inputFactor10 = r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex10].InputFactor.ValueFloat64()
+
+					var outputFactor10 float64
+					outputFactor10 = r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex10].OutputFactor.ValueFloat64()
+
+					contextWindowFactor10 = append(contextWindowFactor10, shared.AIGatewayContextWindowFactor{
+						Above:        above10,
+						InputFactor:  inputFactor10,
+						OutputFactor: outputFactor10,
+					})
+				}
+				serviceTierFactor10 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor))
+				for serviceTierFactorIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor {
+					var tier10 string
+					tier10 = r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex10].Tier.ValueString()
+
+					var factor10 float64
+					factor10 = r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex10].Factor.ValueFloat64()
+
+					serviceTierFactor10 = append(serviceTierFactor10, shared.AIGatewayServiceTierFactor{
+						Tier:   tier10,
+						Factor: factor10,
+					})
+				}
 				temperature10 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Kimi.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.Temperature.IsNull() {
 					*temperature10 = r.API.Targets[targetsIndex].Config.Kimi.Temperature.ValueFloat64()
@@ -2678,6 +4645,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens10,
 					InputCost:            inputCost10,
 					OutputCost:           outputCost10,
+					CacheReadCost:        cacheReadCost10,
+					CacheWriteCost:       cacheWriteCost10,
+					CacheWriteCostList:   cacheWriteCostList10,
+					ContextWindowFactor:  contextWindowFactor10,
+					ServiceTierFactor:    serviceTierFactor10,
 					Temperature:          temperature10,
 					TopK:                 topK10,
 					TopP:                 topP10,
@@ -2716,6 +4688,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost11 = nil
 				}
+				cacheReadCost11 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Llama2.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Llama2.CacheReadCost.IsNull() {
+					*cacheReadCost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost11 = nil
+				}
+				cacheWriteCost11 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCost.IsNull() {
+					*cacheWriteCost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost11 = nil
+				}
+				cacheWriteCostList11 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList))
+				for cacheWriteCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList {
+					var ttl11 string
+					ttl11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].TTL.ValueString()
+
+					var cost11 float64
+					cost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].Cost.ValueFloat64()
+
+					cacheWriteCostList11 = append(cacheWriteCostList11, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl11,
+						Cost: cost11,
+					})
+				}
+				contextWindowFactor11 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor))
+				for contextWindowFactorIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor {
+					var above11 string
+					above11 = r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex11].Above.ValueString()
+
+					var inputFactor11 float64
+					inputFactor11 = r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex11].InputFactor.ValueFloat64()
+
+					var outputFactor11 float64
+					outputFactor11 = r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex11].OutputFactor.ValueFloat64()
+
+					contextWindowFactor11 = append(contextWindowFactor11, shared.AIGatewayContextWindowFactor{
+						Above:        above11,
+						InputFactor:  inputFactor11,
+						OutputFactor: outputFactor11,
+					})
+				}
+				serviceTierFactor11 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor))
+				for serviceTierFactorIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor {
+					var tier11 string
+					tier11 = r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex11].Tier.ValueString()
+
+					var factor11 float64
+					factor11 = r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex11].Factor.ValueFloat64()
+
+					serviceTierFactor11 = append(serviceTierFactor11, shared.AIGatewayServiceTierFactor{
+						Tier:   tier11,
+						Factor: factor11,
+					})
+				}
 				temperature11 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Llama2.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Llama2.Temperature.IsNull() {
 					*temperature11 = r.API.Targets[targetsIndex].Config.Llama2.Temperature.ValueFloat64()
@@ -2743,6 +4770,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens11,
 					InputCost:            inputCost11,
 					OutputCost:           outputCost11,
+					CacheReadCost:        cacheReadCost11,
+					CacheWriteCost:       cacheWriteCost11,
+					CacheWriteCostList:   cacheWriteCostList11,
+					ContextWindowFactor:  contextWindowFactor11,
+					ServiceTierFactor:    serviceTierFactor11,
 					Temperature:          temperature11,
 					TopK:                 topK11,
 					TopP:                 topP11,
@@ -2781,6 +4813,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost12 = nil
 				}
+				cacheReadCost12 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Mistral.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Mistral.CacheReadCost.IsNull() {
+					*cacheReadCost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost12 = nil
+				}
+				cacheWriteCost12 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCost.IsNull() {
+					*cacheWriteCost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost12 = nil
+				}
+				cacheWriteCostList12 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList))
+				for cacheWriteCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList {
+					var ttl12 string
+					ttl12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].TTL.ValueString()
+
+					var cost12 float64
+					cost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].Cost.ValueFloat64()
+
+					cacheWriteCostList12 = append(cacheWriteCostList12, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl12,
+						Cost: cost12,
+					})
+				}
+				contextWindowFactor12 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor))
+				for contextWindowFactorIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor {
+					var above12 string
+					above12 = r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex12].Above.ValueString()
+
+					var inputFactor12 float64
+					inputFactor12 = r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex12].InputFactor.ValueFloat64()
+
+					var outputFactor12 float64
+					outputFactor12 = r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex12].OutputFactor.ValueFloat64()
+
+					contextWindowFactor12 = append(contextWindowFactor12, shared.AIGatewayContextWindowFactor{
+						Above:        above12,
+						InputFactor:  inputFactor12,
+						OutputFactor: outputFactor12,
+					})
+				}
+				serviceTierFactor12 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor))
+				for serviceTierFactorIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor {
+					var tier12 string
+					tier12 = r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex12].Tier.ValueString()
+
+					var factor12 float64
+					factor12 = r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex12].Factor.ValueFloat64()
+
+					serviceTierFactor12 = append(serviceTierFactor12, shared.AIGatewayServiceTierFactor{
+						Tier:   tier12,
+						Factor: factor12,
+					})
+				}
 				temperature12 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Mistral.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Mistral.Temperature.IsNull() {
 					*temperature12 = r.API.Targets[targetsIndex].Config.Mistral.Temperature.ValueFloat64()
@@ -2811,6 +4898,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens12,
 					InputCost:            inputCost12,
 					OutputCost:           outputCost12,
+					CacheReadCost:        cacheReadCost12,
+					CacheWriteCost:       cacheWriteCost12,
+					CacheWriteCostList:   cacheWriteCostList12,
+					ContextWindowFactor:  contextWindowFactor12,
+					ServiceTierFactor:    serviceTierFactor12,
 					Temperature:          temperature12,
 					TopK:                 topK12,
 					TopP:                 topP12,
@@ -2849,6 +4941,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost13 = nil
 				}
+				cacheReadCost13 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Ollama.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Ollama.CacheReadCost.IsNull() {
+					*cacheReadCost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost13 = nil
+				}
+				cacheWriteCost13 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCost.IsNull() {
+					*cacheWriteCost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost13 = nil
+				}
+				cacheWriteCostList13 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList))
+				for cacheWriteCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList {
+					var ttl13 string
+					ttl13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].TTL.ValueString()
+
+					var cost13 float64
+					cost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].Cost.ValueFloat64()
+
+					cacheWriteCostList13 = append(cacheWriteCostList13, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl13,
+						Cost: cost13,
+					})
+				}
+				contextWindowFactor13 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor))
+				for contextWindowFactorIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor {
+					var above13 string
+					above13 = r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex13].Above.ValueString()
+
+					var inputFactor13 float64
+					inputFactor13 = r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex13].InputFactor.ValueFloat64()
+
+					var outputFactor13 float64
+					outputFactor13 = r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex13].OutputFactor.ValueFloat64()
+
+					contextWindowFactor13 = append(contextWindowFactor13, shared.AIGatewayContextWindowFactor{
+						Above:        above13,
+						InputFactor:  inputFactor13,
+						OutputFactor: outputFactor13,
+					})
+				}
+				serviceTierFactor13 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor))
+				for serviceTierFactorIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor {
+					var tier13 string
+					tier13 = r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex13].Tier.ValueString()
+
+					var factor13 float64
+					factor13 = r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex13].Factor.ValueFloat64()
+
+					serviceTierFactor13 = append(serviceTierFactor13, shared.AIGatewayServiceTierFactor{
+						Tier:   tier13,
+						Factor: factor13,
+					})
+				}
 				temperature13 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Ollama.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Ollama.Temperature.IsNull() {
 					*temperature13 = r.API.Targets[targetsIndex].Config.Ollama.Temperature.ValueFloat64()
@@ -2878,6 +5025,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens13,
 					InputCost:            inputCost13,
 					OutputCost:           outputCost13,
+					CacheReadCost:        cacheReadCost13,
+					CacheWriteCost:       cacheWriteCost13,
+					CacheWriteCostList:   cacheWriteCostList13,
+					ContextWindowFactor:  contextWindowFactor13,
+					ServiceTierFactor:    serviceTierFactor13,
 					Temperature:          temperature13,
 					TopK:                 topK13,
 					TopP:                 topP13,
@@ -2915,6 +5067,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost14 = nil
 				}
+				cacheReadCost14 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Openai.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Openai.CacheReadCost.IsNull() {
+					*cacheReadCost14 = r.API.Targets[targetsIndex].Config.Openai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost14 = nil
+				}
+				cacheWriteCost14 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Openai.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Openai.CacheWriteCost.IsNull() {
+					*cacheWriteCost14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost14 = nil
+				}
+				cacheWriteCostList14 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList))
+				for cacheWriteCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList {
+					var ttl14 string
+					ttl14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].TTL.ValueString()
+
+					var cost14 float64
+					cost14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].Cost.ValueFloat64()
+
+					cacheWriteCostList14 = append(cacheWriteCostList14, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl14,
+						Cost: cost14,
+					})
+				}
+				contextWindowFactor14 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor))
+				for contextWindowFactorIndex14 := range r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor {
+					var above14 string
+					above14 = r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor[contextWindowFactorIndex14].Above.ValueString()
+
+					var inputFactor14 float64
+					inputFactor14 = r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor[contextWindowFactorIndex14].InputFactor.ValueFloat64()
+
+					var outputFactor14 float64
+					outputFactor14 = r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor[contextWindowFactorIndex14].OutputFactor.ValueFloat64()
+
+					contextWindowFactor14 = append(contextWindowFactor14, shared.AIGatewayContextWindowFactor{
+						Above:        above14,
+						InputFactor:  inputFactor14,
+						OutputFactor: outputFactor14,
+					})
+				}
+				serviceTierFactor14 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor))
+				for serviceTierFactorIndex14 := range r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor {
+					var tier14 string
+					tier14 = r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor[serviceTierFactorIndex14].Tier.ValueString()
+
+					var factor14 float64
+					factor14 = r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor[serviceTierFactorIndex14].Factor.ValueFloat64()
+
+					serviceTierFactor14 = append(serviceTierFactor14, shared.AIGatewayServiceTierFactor{
+						Tier:   tier14,
+						Factor: factor14,
+					})
+				}
 				temperature14 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Openai.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Openai.Temperature.IsNull() {
 					*temperature14 = r.API.Targets[targetsIndex].Config.Openai.Temperature.ValueFloat64()
@@ -2944,6 +5151,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens14,
 					InputCost:            inputCost14,
 					OutputCost:           outputCost14,
+					CacheReadCost:        cacheReadCost14,
+					CacheWriteCost:       cacheWriteCost14,
+					CacheWriteCostList:   cacheWriteCostList14,
+					ContextWindowFactor:  contextWindowFactor14,
+					ServiceTierFactor:    serviceTierFactor14,
 					Temperature:          temperature14,
 					TopK:                 topK14,
 					TopP:                 topP14,
@@ -2981,6 +5193,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost15 = nil
 				}
+				cacheReadCost15 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vercel.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vercel.CacheReadCost.IsNull() {
+					*cacheReadCost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost15 = nil
+				}
+				cacheWriteCost15 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCost.IsNull() {
+					*cacheWriteCost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost15 = nil
+				}
+				cacheWriteCostList15 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList))
+				for cacheWriteCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList {
+					var ttl15 string
+					ttl15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].TTL.ValueString()
+
+					var cost15 float64
+					cost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].Cost.ValueFloat64()
+
+					cacheWriteCostList15 = append(cacheWriteCostList15, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl15,
+						Cost: cost15,
+					})
+				}
+				contextWindowFactor15 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor))
+				for contextWindowFactorIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor {
+					var above15 string
+					above15 = r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex15].Above.ValueString()
+
+					var inputFactor15 float64
+					inputFactor15 = r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex15].InputFactor.ValueFloat64()
+
+					var outputFactor15 float64
+					outputFactor15 = r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex15].OutputFactor.ValueFloat64()
+
+					contextWindowFactor15 = append(contextWindowFactor15, shared.AIGatewayContextWindowFactor{
+						Above:        above15,
+						InputFactor:  inputFactor15,
+						OutputFactor: outputFactor15,
+					})
+				}
+				serviceTierFactor15 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor))
+				for serviceTierFactorIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor {
+					var tier15 string
+					tier15 = r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex15].Tier.ValueString()
+
+					var factor15 float64
+					factor15 = r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex15].Factor.ValueFloat64()
+
+					serviceTierFactor15 = append(serviceTierFactor15, shared.AIGatewayServiceTierFactor{
+						Tier:   tier15,
+						Factor: factor15,
+					})
+				}
 				temperature15 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Vercel.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vercel.Temperature.IsNull() {
 					*temperature15 = r.API.Targets[targetsIndex].Config.Vercel.Temperature.ValueFloat64()
@@ -3010,6 +5277,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens15,
 					InputCost:            inputCost15,
 					OutputCost:           outputCost15,
+					CacheReadCost:        cacheReadCost15,
+					CacheWriteCost:       cacheWriteCost15,
+					CacheWriteCostList:   cacheWriteCostList15,
+					ContextWindowFactor:  contextWindowFactor15,
+					ServiceTierFactor:    serviceTierFactor15,
 					Temperature:          temperature15,
 					TopK:                 topK15,
 					TopP:                 topP15,
@@ -3046,6 +5318,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost16 = r.API.Targets[targetsIndex].Config.Vertex.OutputCost.ValueFloat64()
 				} else {
 					outputCost16 = nil
+				}
+				cacheReadCost16 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vertex.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vertex.CacheReadCost.IsNull() {
+					*cacheReadCost16 = r.API.Targets[targetsIndex].Config.Vertex.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost16 = nil
+				}
+				cacheWriteCost16 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCost.IsNull() {
+					*cacheWriteCost16 = r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost16 = nil
+				}
+				cacheWriteCostList16 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList))
+				for cacheWriteCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList {
+					var ttl16 string
+					ttl16 = r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex16].TTL.ValueString()
+
+					var cost16 float64
+					cost16 = r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex16].Cost.ValueFloat64()
+
+					cacheWriteCostList16 = append(cacheWriteCostList16, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl16,
+						Cost: cost16,
+					})
+				}
+				contextWindowFactor16 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor))
+				for contextWindowFactorIndex16 := range r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor {
+					var above16 string
+					above16 = r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex16].Above.ValueString()
+
+					var inputFactor16 float64
+					inputFactor16 = r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex16].InputFactor.ValueFloat64()
+
+					var outputFactor16 float64
+					outputFactor16 = r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex16].OutputFactor.ValueFloat64()
+
+					contextWindowFactor16 = append(contextWindowFactor16, shared.AIGatewayContextWindowFactor{
+						Above:        above16,
+						InputFactor:  inputFactor16,
+						OutputFactor: outputFactor16,
+					})
+				}
+				serviceTierFactor16 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor))
+				for serviceTierFactorIndex16 := range r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor {
+					var tier16 string
+					tier16 = r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex16].Tier.ValueString()
+
+					var factor16 float64
+					factor16 = r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex16].Factor.ValueFloat64()
+
+					serviceTierFactor16 = append(serviceTierFactor16, shared.AIGatewayServiceTierFactor{
+						Tier:   tier16,
+						Factor: factor16,
+					})
 				}
 				temperature16 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Vertex.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vertex.Temperature.IsNull() {
@@ -3100,6 +5427,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens16,
 					InputCost:            inputCost16,
 					OutputCost:           outputCost16,
+					CacheReadCost:        cacheReadCost16,
+					CacheWriteCost:       cacheWriteCost16,
+					CacheWriteCostList:   cacheWriteCostList16,
+					ContextWindowFactor:  contextWindowFactor16,
+					ServiceTierFactor:    serviceTierFactor16,
 					Temperature:          temperature16,
 					TopK:                 topK16,
 					TopP:                 topP16,
@@ -3138,6 +5470,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost17 = nil
 				}
+				cacheReadCost17 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vllm.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vllm.CacheReadCost.IsNull() {
+					*cacheReadCost17 = r.API.Targets[targetsIndex].Config.Vllm.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost17 = nil
+				}
+				cacheWriteCost17 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCost.IsNull() {
+					*cacheWriteCost17 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost17 = nil
+				}
+				cacheWriteCostList17 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList))
+				for cacheWriteCostListIndex17 := range r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList {
+					var ttl17 string
+					ttl17 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex17].TTL.ValueString()
+
+					var cost17 float64
+					cost17 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex17].Cost.ValueFloat64()
+
+					cacheWriteCostList17 = append(cacheWriteCostList17, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl17,
+						Cost: cost17,
+					})
+				}
+				contextWindowFactor17 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor))
+				for contextWindowFactorIndex17 := range r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor {
+					var above17 string
+					above17 = r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex17].Above.ValueString()
+
+					var inputFactor17 float64
+					inputFactor17 = r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex17].InputFactor.ValueFloat64()
+
+					var outputFactor17 float64
+					outputFactor17 = r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex17].OutputFactor.ValueFloat64()
+
+					contextWindowFactor17 = append(contextWindowFactor17, shared.AIGatewayContextWindowFactor{
+						Above:        above17,
+						InputFactor:  inputFactor17,
+						OutputFactor: outputFactor17,
+					})
+				}
+				serviceTierFactor17 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor))
+				for serviceTierFactorIndex17 := range r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor {
+					var tier17 string
+					tier17 = r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex17].Tier.ValueString()
+
+					var factor17 float64
+					factor17 = r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex17].Factor.ValueFloat64()
+
+					serviceTierFactor17 = append(serviceTierFactor17, shared.AIGatewayServiceTierFactor{
+						Tier:   tier17,
+						Factor: factor17,
+					})
+				}
 				temperature17 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Vllm.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vllm.Temperature.IsNull() {
 					*temperature17 = r.API.Targets[targetsIndex].Config.Vllm.Temperature.ValueFloat64()
@@ -3164,6 +5551,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens17,
 					InputCost:            inputCost17,
 					OutputCost:           outputCost17,
+					CacheReadCost:        cacheReadCost17,
+					CacheWriteCost:       cacheWriteCost17,
+					CacheWriteCostList:   cacheWriteCostList17,
+					ContextWindowFactor:  contextWindowFactor17,
+					ServiceTierFactor:    serviceTierFactor17,
 					Temperature:          temperature17,
 					TopK:                 topK17,
 					TopP:                 topP17,
@@ -3201,6 +5593,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost18 = nil
 				}
+				cacheReadCost18 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Xai.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Xai.CacheReadCost.IsNull() {
+					*cacheReadCost18 = r.API.Targets[targetsIndex].Config.Xai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost18 = nil
+				}
+				cacheWriteCost18 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Xai.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Xai.CacheWriteCost.IsNull() {
+					*cacheWriteCost18 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost18 = nil
+				}
+				cacheWriteCostList18 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList))
+				for cacheWriteCostListIndex18 := range r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList {
+					var ttl18 string
+					ttl18 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex18].TTL.ValueString()
+
+					var cost18 float64
+					cost18 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex18].Cost.ValueFloat64()
+
+					cacheWriteCostList18 = append(cacheWriteCostList18, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl18,
+						Cost: cost18,
+					})
+				}
+				contextWindowFactor18 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor))
+				for contextWindowFactorIndex18 := range r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor {
+					var above18 string
+					above18 = r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor[contextWindowFactorIndex18].Above.ValueString()
+
+					var inputFactor18 float64
+					inputFactor18 = r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor[contextWindowFactorIndex18].InputFactor.ValueFloat64()
+
+					var outputFactor18 float64
+					outputFactor18 = r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor[contextWindowFactorIndex18].OutputFactor.ValueFloat64()
+
+					contextWindowFactor18 = append(contextWindowFactor18, shared.AIGatewayContextWindowFactor{
+						Above:        above18,
+						InputFactor:  inputFactor18,
+						OutputFactor: outputFactor18,
+					})
+				}
+				serviceTierFactor18 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor))
+				for serviceTierFactorIndex18 := range r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor {
+					var tier18 string
+					tier18 = r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor[serviceTierFactorIndex18].Tier.ValueString()
+
+					var factor18 float64
+					factor18 = r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor[serviceTierFactorIndex18].Factor.ValueFloat64()
+
+					serviceTierFactor18 = append(serviceTierFactor18, shared.AIGatewayServiceTierFactor{
+						Tier:   tier18,
+						Factor: factor18,
+					})
+				}
 				temperature18 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Xai.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Xai.Temperature.IsNull() {
 					*temperature18 = r.API.Targets[targetsIndex].Config.Xai.Temperature.ValueFloat64()
@@ -3230,6 +5677,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens18,
 					InputCost:            inputCost18,
 					OutputCost:           outputCost18,
+					CacheReadCost:        cacheReadCost18,
+					CacheWriteCost:       cacheWriteCost18,
+					CacheWriteCostList:   cacheWriteCostList18,
+					ContextWindowFactor:  contextWindowFactor18,
+					ServiceTierFactor:    serviceTierFactor18,
 					Temperature:          temperature18,
 					TopK:                 topK18,
 					TopP:                 topP18,
@@ -3266,6 +5718,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.ValueFloat64()
 				} else {
 					outputCost19 = nil
+				}
+				cacheReadCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCost.IsNull() {
+					*cacheReadCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost19 = nil
+				}
+				cacheWriteCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCost.IsNull() {
+					*cacheWriteCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost19 = nil
+				}
+				cacheWriteCostList19 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList))
+				for cacheWriteCostListIndex19 := range r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList {
+					var ttl19 string
+					ttl19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex19].TTL.ValueString()
+
+					var cost19 float64
+					cost19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex19].Cost.ValueFloat64()
+
+					cacheWriteCostList19 = append(cacheWriteCostList19, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl19,
+						Cost: cost19,
+					})
+				}
+				contextWindowFactor19 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor))
+				for contextWindowFactorIndex19 := range r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor {
+					var above19 string
+					above19 = r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex19].Above.ValueString()
+
+					var inputFactor19 float64
+					inputFactor19 = r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex19].InputFactor.ValueFloat64()
+
+					var outputFactor19 float64
+					outputFactor19 = r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex19].OutputFactor.ValueFloat64()
+
+					contextWindowFactor19 = append(contextWindowFactor19, shared.AIGatewayContextWindowFactor{
+						Above:        above19,
+						InputFactor:  inputFactor19,
+						OutputFactor: outputFactor19,
+					})
+				}
+				serviceTierFactor19 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor))
+				for serviceTierFactorIndex19 := range r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor {
+					var tier19 string
+					tier19 = r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex19].Tier.ValueString()
+
+					var factor19 float64
+					factor19 = r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex19].Factor.ValueFloat64()
+
+					serviceTierFactor19 = append(serviceTierFactor19, shared.AIGatewayServiceTierFactor{
+						Tier:   tier19,
+						Factor: factor19,
+					})
 				}
 				temperature19 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsNull() {
@@ -3355,6 +5862,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens19,
 					InputCost:            inputCost19,
 					OutputCost:           outputCost19,
+					CacheReadCost:        cacheReadCost19,
+					CacheWriteCost:       cacheWriteCost19,
+					CacheWriteCostList:   cacheWriteCostList19,
+					ContextWindowFactor:  contextWindowFactor19,
+					ServiceTierFactor:    serviceTierFactor19,
 					Temperature:          temperature19,
 					TopK:                 topK19,
 					TopP:                 topP19,
@@ -3459,62 +5971,33 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 		}
 		var model1 *shared.AIGatewayModelSelectorConfig
 		if r.API.Config.Route.Model != nil {
-			var bodySelector *shared.BodySelector
-			if r.API.Config.Route.Model.BodySelector != nil {
-				var bodyParam string
-				bodyParam = r.API.Config.Route.Model.BodySelector.BodyParam.ValueString()
-
-				values := make([]string, 0, len(r.API.Config.Route.Model.BodySelector.Values))
-				for valuesIndex := range r.API.Config.Route.Model.BodySelector.Values {
-					values = append(values, r.API.Config.Route.Model.BodySelector.Values[valuesIndex].ValueString())
-				}
-				bodySelector = &shared.BodySelector{
-					BodyParam: bodyParam,
-					Values:    values,
-				}
+			bodyParam := new(string)
+			if !r.API.Config.Route.Model.BodyParam.IsUnknown() && !r.API.Config.Route.Model.BodyParam.IsNull() {
+				*bodyParam = r.API.Config.Route.Model.BodyParam.ValueString()
+			} else {
+				bodyParam = nil
 			}
-			if bodySelector != nil {
-				model1 = &shared.AIGatewayModelSelectorConfig{
-					BodySelector: bodySelector,
-				}
+			headerParam := new(string)
+			if !r.API.Config.Route.Model.HeaderParam.IsUnknown() && !r.API.Config.Route.Model.HeaderParam.IsNull() {
+				*headerParam = r.API.Config.Route.Model.HeaderParam.ValueString()
+			} else {
+				headerParam = nil
 			}
-			var headersSelector *shared.HeadersSelector
-			if r.API.Config.Route.Model.HeadersSelector != nil {
-				var headerParam string
-				headerParam = r.API.Config.Route.Model.HeadersSelector.HeaderParam.ValueString()
-
-				values1 := make([]string, 0, len(r.API.Config.Route.Model.HeadersSelector.Values))
-				for valuesIndex1 := range r.API.Config.Route.Model.HeadersSelector.Values {
-					values1 = append(values1, r.API.Config.Route.Model.HeadersSelector.Values[valuesIndex1].ValueString())
-				}
-				headersSelector = &shared.HeadersSelector{
-					HeaderParam: headerParam,
-					Values:      values1,
-				}
+			pathParam := new(string)
+			if !r.API.Config.Route.Model.PathParam.IsUnknown() && !r.API.Config.Route.Model.PathParam.IsNull() {
+				*pathParam = r.API.Config.Route.Model.PathParam.ValueString()
+			} else {
+				pathParam = nil
 			}
-			if headersSelector != nil {
-				model1 = &shared.AIGatewayModelSelectorConfig{
-					HeadersSelector: headersSelector,
-				}
+			values := make([]string, 0, len(r.API.Config.Route.Model.Values))
+			for valuesIndex := range r.API.Config.Route.Model.Values {
+				values = append(values, r.API.Config.Route.Model.Values[valuesIndex].ValueString())
 			}
-			var pathSelector *shared.PathSelector
-			if r.API.Config.Route.Model.PathSelector != nil {
-				var pathParam string
-				pathParam = r.API.Config.Route.Model.PathSelector.PathParam.ValueString()
-
-				values2 := make([]string, 0, len(r.API.Config.Route.Model.PathSelector.Values))
-				for valuesIndex2 := range r.API.Config.Route.Model.PathSelector.Values {
-					values2 = append(values2, r.API.Config.Route.Model.PathSelector.Values[valuesIndex2].ValueString())
-				}
-				pathSelector = &shared.PathSelector{
-					PathParam: pathParam,
-					Values:    values2,
-				}
-			}
-			if pathSelector != nil {
-				model1 = &shared.AIGatewayModelSelectorConfig{
-					PathSelector: pathSelector,
-				}
+			model1 = &shared.AIGatewayModelSelectorConfig{
+				BodyParam:   bodyParam,
+				HeaderParam: headerParam,
+				PathParam:   pathParam,
+				Values:      values,
 			}
 		}
 		route := shared.AIGatewayModelRouteConfig{
@@ -4032,6 +6515,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl20 = nil
 					}
+					typeVar1 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId1 string
 					deploymentId1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -4043,6 +6527,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					}
 					aiGatewayAzureEmbeddingsModelConfig = &shared.AIGatewayAzureEmbeddingsModelConfig{
 						UpstreamURL:  upstreamUrl20,
+						Type:         typeVar1,
 						DeploymentID: deploymentId1,
 						APIVersion:   apiVersion2,
 					}
@@ -4178,10 +6663,10 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl24 = nil
 					}
-					typeVar1 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar2 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig = &shared.AIGatewayMistralEmbeddingsModelConfig{
 						UpstreamURL: upstreamUrl24,
-						Type:        typeVar1,
+						Type:        typeVar2,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig != nil {
@@ -4943,6 +7428,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost20 = nil
 				}
+				cacheReadCost20 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCost.IsNull() {
+					*cacheReadCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost20 = nil
+				}
+				cacheWriteCost20 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCost.IsNull() {
+					*cacheWriteCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost20 = nil
+				}
+				cacheWriteCostList20 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList))
+				for cacheWriteCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList {
+					var ttl20 string
+					ttl20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex20].TTL.ValueString()
+
+					var cost20 float64
+					cost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex20].Cost.ValueFloat64()
+
+					cacheWriteCostList20 = append(cacheWriteCostList20, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl20,
+						Cost: cost20,
+					})
+				}
+				contextWindowFactor20 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor))
+				for contextWindowFactorIndex20 := range r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor {
+					var above20 string
+					above20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex20].Above.ValueString()
+
+					var inputFactor20 float64
+					inputFactor20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex20].InputFactor.ValueFloat64()
+
+					var outputFactor20 float64
+					outputFactor20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex20].OutputFactor.ValueFloat64()
+
+					contextWindowFactor20 = append(contextWindowFactor20, shared.AIGatewayContextWindowFactor{
+						Above:        above20,
+						InputFactor:  inputFactor20,
+						OutputFactor: outputFactor20,
+					})
+				}
+				serviceTierFactor20 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor))
+				for serviceTierFactorIndex20 := range r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor {
+					var tier20 string
+					tier20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex20].Tier.ValueString()
+
+					var factor20 float64
+					factor20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex20].Factor.ValueFloat64()
+
+					serviceTierFactor20 = append(serviceTierFactor20, shared.AIGatewayServiceTierFactor{
+						Tier:   tier20,
+						Factor: factor20,
+					})
+				}
 				temperature20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsNull() {
 					*temperature20 = r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.ValueFloat64()
@@ -4978,6 +7518,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens20,
 					InputCost:            inputCost20,
 					OutputCost:           outputCost20,
+					CacheReadCost:        cacheReadCost20,
+					CacheWriteCost:       cacheWriteCost20,
+					CacheWriteCostList:   cacheWriteCostList20,
+					ContextWindowFactor:  contextWindowFactor20,
+					ServiceTierFactor:    serviceTierFactor20,
 					Temperature:          temperature20,
 					TopK:                 topK20,
 					TopP:                 topP20,
@@ -5016,6 +7561,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost21 = nil
 				}
+				cacheReadCost21 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCost.IsNull() {
+					*cacheReadCost21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost21 = nil
+				}
+				cacheWriteCost21 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCost.IsNull() {
+					*cacheWriteCost21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost21 = nil
+				}
+				cacheWriteCostList21 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList))
+				for cacheWriteCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList {
+					var ttl21 string
+					ttl21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex21].TTL.ValueString()
+
+					var cost21 float64
+					cost21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex21].Cost.ValueFloat64()
+
+					cacheWriteCostList21 = append(cacheWriteCostList21, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl21,
+						Cost: cost21,
+					})
+				}
+				contextWindowFactor21 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor))
+				for contextWindowFactorIndex21 := range r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor {
+					var above21 string
+					above21 = r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor[contextWindowFactorIndex21].Above.ValueString()
+
+					var inputFactor21 float64
+					inputFactor21 = r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor[contextWindowFactorIndex21].InputFactor.ValueFloat64()
+
+					var outputFactor21 float64
+					outputFactor21 = r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor[contextWindowFactorIndex21].OutputFactor.ValueFloat64()
+
+					contextWindowFactor21 = append(contextWindowFactor21, shared.AIGatewayContextWindowFactor{
+						Above:        above21,
+						InputFactor:  inputFactor21,
+						OutputFactor: outputFactor21,
+					})
+				}
+				serviceTierFactor21 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor))
+				for serviceTierFactorIndex21 := range r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor {
+					var tier21 string
+					tier21 = r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor[serviceTierFactorIndex21].Tier.ValueString()
+
+					var factor21 float64
+					factor21 = r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor[serviceTierFactorIndex21].Factor.ValueFloat64()
+
+					serviceTierFactor21 = append(serviceTierFactor21, shared.AIGatewayServiceTierFactor{
+						Tier:   tier21,
+						Factor: factor21,
+					})
+				}
 				temperature21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsNull() {
 					*temperature21 = r.Model.Targets[targetsIndex1].Config.Azure.Temperature.ValueFloat64()
@@ -5040,26 +7640,41 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl29 = nil
 				}
-				var deploymentId2 string
-				deploymentId2 = r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.ValueString()
-
+				deploymentId2 := new(string)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.IsNull() {
+					*deploymentId2 = r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.ValueString()
+				} else {
+					deploymentId2 = nil
+				}
 				apiVersion3 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.APIVersion.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.APIVersion.IsNull() {
 					*apiVersion3 = r.Model.Targets[targetsIndex1].Config.Azure.APIVersion.ValueString()
 				} else {
 					apiVersion3 = nil
 				}
+				foundryPathPrefix1 := new(shared.FoundryPathPrefix)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.FoundryPathPrefix.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.FoundryPathPrefix.IsNull() {
+					*foundryPathPrefix1 = shared.FoundryPathPrefix(r.Model.Targets[targetsIndex1].Config.Azure.FoundryPathPrefix.ValueString())
+				} else {
+					foundryPathPrefix1 = nil
+				}
 				aiGatewayTargetAzureConfig1 = &shared.AIGatewayTargetAzureConfig{
 					EmbeddingsDimensions: embeddingsDimensions21,
 					MaxTokens:            maxTokens21,
 					InputCost:            inputCost21,
 					OutputCost:           outputCost21,
+					CacheReadCost:        cacheReadCost21,
+					CacheWriteCost:       cacheWriteCost21,
+					CacheWriteCostList:   cacheWriteCostList21,
+					ContextWindowFactor:  contextWindowFactor21,
+					ServiceTierFactor:    serviceTierFactor21,
 					Temperature:          temperature21,
 					TopK:                 topK21,
 					TopP:                 topP21,
 					UpstreamURL:          upstreamUrl29,
 					DeploymentID:         deploymentId2,
 					APIVersion:           apiVersion3,
+					FoundryPathPrefix:    foundryPathPrefix1,
 				}
 			}
 			if aiGatewayTargetAzureConfig1 != nil {
@@ -5092,6 +7707,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.ValueFloat64()
 				} else {
 					outputCost22 = nil
+				}
+				cacheReadCost22 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCost.IsNull() {
+					*cacheReadCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost22 = nil
+				}
+				cacheWriteCost22 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCost.IsNull() {
+					*cacheWriteCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost22 = nil
+				}
+				cacheWriteCostList22 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList))
+				for cacheWriteCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList {
+					var ttl22 string
+					ttl22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex22].TTL.ValueString()
+
+					var cost22 float64
+					cost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex22].Cost.ValueFloat64()
+
+					cacheWriteCostList22 = append(cacheWriteCostList22, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl22,
+						Cost: cost22,
+					})
+				}
+				contextWindowFactor22 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor))
+				for contextWindowFactorIndex22 := range r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor {
+					var above22 string
+					above22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex22].Above.ValueString()
+
+					var inputFactor22 float64
+					inputFactor22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex22].InputFactor.ValueFloat64()
+
+					var outputFactor22 float64
+					outputFactor22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex22].OutputFactor.ValueFloat64()
+
+					contextWindowFactor22 = append(contextWindowFactor22, shared.AIGatewayContextWindowFactor{
+						Above:        above22,
+						InputFactor:  inputFactor22,
+						OutputFactor: outputFactor22,
+					})
+				}
+				serviceTierFactor22 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor))
+				for serviceTierFactorIndex22 := range r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor {
+					var tier22 string
+					tier22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex22].Tier.ValueString()
+
+					var factor22 float64
+					factor22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex22].Factor.ValueFloat64()
+
+					serviceTierFactor22 = append(serviceTierFactor22, shared.AIGatewayServiceTierFactor{
+						Tier:   tier22,
+						Factor: factor22,
+					})
 				}
 				temperature22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsNull() {
@@ -5152,6 +7822,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:                maxTokens22,
 					InputCost:                inputCost22,
 					OutputCost:               outputCost22,
+					CacheReadCost:            cacheReadCost22,
+					CacheWriteCost:           cacheWriteCost22,
+					CacheWriteCostList:       cacheWriteCostList22,
+					ContextWindowFactor:      contextWindowFactor22,
+					ServiceTierFactor:        serviceTierFactor22,
 					Temperature:              temperature22,
 					TopK:                     topK22,
 					TopP:                     topP22,
@@ -5194,6 +7869,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost23 = nil
 				}
+				cacheReadCost23 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCost.IsNull() {
+					*cacheReadCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost23 = nil
+				}
+				cacheWriteCost23 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCost.IsNull() {
+					*cacheWriteCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost23 = nil
+				}
+				cacheWriteCostList23 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList))
+				for cacheWriteCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList {
+					var ttl23 string
+					ttl23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex23].TTL.ValueString()
+
+					var cost23 float64
+					cost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex23].Cost.ValueFloat64()
+
+					cacheWriteCostList23 = append(cacheWriteCostList23, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl23,
+						Cost: cost23,
+					})
+				}
+				contextWindowFactor23 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor))
+				for contextWindowFactorIndex23 := range r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor {
+					var above23 string
+					above23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex23].Above.ValueString()
+
+					var inputFactor23 float64
+					inputFactor23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex23].InputFactor.ValueFloat64()
+
+					var outputFactor23 float64
+					outputFactor23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex23].OutputFactor.ValueFloat64()
+
+					contextWindowFactor23 = append(contextWindowFactor23, shared.AIGatewayContextWindowFactor{
+						Above:        above23,
+						InputFactor:  inputFactor23,
+						OutputFactor: outputFactor23,
+					})
+				}
+				serviceTierFactor23 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor))
+				for serviceTierFactorIndex23 := range r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor {
+					var tier23 string
+					tier23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex23].Tier.ValueString()
+
+					var factor23 float64
+					factor23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex23].Factor.ValueFloat64()
+
+					serviceTierFactor23 = append(serviceTierFactor23, shared.AIGatewayServiceTierFactor{
+						Tier:   tier23,
+						Factor: factor23,
+					})
+				}
 				temperature23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsNull() {
 					*temperature23 = r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.ValueFloat64()
@@ -5223,6 +7953,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens23,
 					InputCost:            inputCost23,
 					OutputCost:           outputCost23,
+					CacheReadCost:        cacheReadCost23,
+					CacheWriteCost:       cacheWriteCost23,
+					CacheWriteCostList:   cacheWriteCostList23,
+					ContextWindowFactor:  contextWindowFactor23,
+					ServiceTierFactor:    serviceTierFactor23,
 					Temperature:          temperature23,
 					TopK:                 topK23,
 					TopP:                 topP23,
@@ -5259,6 +7994,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.ValueFloat64()
 				} else {
 					outputCost24 = nil
+				}
+				cacheReadCost24 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCost.IsNull() {
+					*cacheReadCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost24 = nil
+				}
+				cacheWriteCost24 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCost.IsNull() {
+					*cacheWriteCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost24 = nil
+				}
+				cacheWriteCostList24 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList))
+				for cacheWriteCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList {
+					var ttl24 string
+					ttl24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex24].TTL.ValueString()
+
+					var cost24 float64
+					cost24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex24].Cost.ValueFloat64()
+
+					cacheWriteCostList24 = append(cacheWriteCostList24, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl24,
+						Cost: cost24,
+					})
+				}
+				contextWindowFactor24 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor))
+				for contextWindowFactorIndex24 := range r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor {
+					var above24 string
+					above24 = r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex24].Above.ValueString()
+
+					var inputFactor24 float64
+					inputFactor24 = r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex24].InputFactor.ValueFloat64()
+
+					var outputFactor24 float64
+					outputFactor24 = r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex24].OutputFactor.ValueFloat64()
+
+					contextWindowFactor24 = append(contextWindowFactor24, shared.AIGatewayContextWindowFactor{
+						Above:        above24,
+						InputFactor:  inputFactor24,
+						OutputFactor: outputFactor24,
+					})
+				}
+				serviceTierFactor24 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor))
+				for serviceTierFactorIndex24 := range r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor {
+					var tier24 string
+					tier24 = r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex24].Tier.ValueString()
+
+					var factor24 float64
+					factor24 = r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex24].Factor.ValueFloat64()
+
+					serviceTierFactor24 = append(serviceTierFactor24, shared.AIGatewayServiceTierFactor{
+						Tier:   tier24,
+						Factor: factor24,
+					})
 				}
 				temperature24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsNull() {
@@ -5307,6 +8097,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens24,
 					InputCost:            inputCost24,
 					OutputCost:           outputCost24,
+					CacheReadCost:        cacheReadCost24,
+					CacheWriteCost:       cacheWriteCost24,
+					CacheWriteCostList:   cacheWriteCostList24,
+					ContextWindowFactor:  contextWindowFactor24,
+					ServiceTierFactor:    serviceTierFactor24,
 					Temperature:          temperature24,
 					TopK:                 topK24,
 					TopP:                 topP24,
@@ -5347,6 +8142,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost25 = nil
 				}
+				cacheReadCost25 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCost.IsNull() {
+					*cacheReadCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost25 = nil
+				}
+				cacheWriteCost25 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCost.IsNull() {
+					*cacheWriteCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost25 = nil
+				}
+				cacheWriteCostList25 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList))
+				for cacheWriteCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList {
+					var ttl25 string
+					ttl25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex25].TTL.ValueString()
+
+					var cost25 float64
+					cost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex25].Cost.ValueFloat64()
+
+					cacheWriteCostList25 = append(cacheWriteCostList25, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl25,
+						Cost: cost25,
+					})
+				}
+				contextWindowFactor25 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor))
+				for contextWindowFactorIndex25 := range r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor {
+					var above25 string
+					above25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex25].Above.ValueString()
+
+					var inputFactor25 float64
+					inputFactor25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex25].InputFactor.ValueFloat64()
+
+					var outputFactor25 float64
+					outputFactor25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex25].OutputFactor.ValueFloat64()
+
+					contextWindowFactor25 = append(contextWindowFactor25, shared.AIGatewayContextWindowFactor{
+						Above:        above25,
+						InputFactor:  inputFactor25,
+						OutputFactor: outputFactor25,
+					})
+				}
+				serviceTierFactor25 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor))
+				for serviceTierFactorIndex25 := range r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor {
+					var tier25 string
+					tier25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex25].Tier.ValueString()
+
+					var factor25 float64
+					factor25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex25].Factor.ValueFloat64()
+
+					serviceTierFactor25 = append(serviceTierFactor25, shared.AIGatewayServiceTierFactor{
+						Tier:   tier25,
+						Factor: factor25,
+					})
+				}
 				temperature25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsNull() {
 					*temperature25 = r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.ValueFloat64()
@@ -5382,6 +8232,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens25,
 					InputCost:            inputCost25,
 					OutputCost:           outputCost25,
+					CacheReadCost:        cacheReadCost25,
+					CacheWriteCost:       cacheWriteCost25,
+					CacheWriteCostList:   cacheWriteCostList25,
+					ContextWindowFactor:  contextWindowFactor25,
+					ServiceTierFactor:    serviceTierFactor25,
 					Temperature:          temperature25,
 					TopK:                 topK25,
 					TopP:                 topP25,
@@ -5420,6 +8275,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost26 = nil
 				}
+				cacheReadCost26 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCost.IsNull() {
+					*cacheReadCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost26 = nil
+				}
+				cacheWriteCost26 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCost.IsNull() {
+					*cacheWriteCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost26 = nil
+				}
+				cacheWriteCostList26 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList))
+				for cacheWriteCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList {
+					var ttl26 string
+					ttl26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex26].TTL.ValueString()
+
+					var cost26 float64
+					cost26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex26].Cost.ValueFloat64()
+
+					cacheWriteCostList26 = append(cacheWriteCostList26, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl26,
+						Cost: cost26,
+					})
+				}
+				contextWindowFactor26 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor))
+				for contextWindowFactorIndex26 := range r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor {
+					var above26 string
+					above26 = r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex26].Above.ValueString()
+
+					var inputFactor26 float64
+					inputFactor26 = r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex26].InputFactor.ValueFloat64()
+
+					var outputFactor26 float64
+					outputFactor26 = r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex26].OutputFactor.ValueFloat64()
+
+					contextWindowFactor26 = append(contextWindowFactor26, shared.AIGatewayContextWindowFactor{
+						Above:        above26,
+						InputFactor:  inputFactor26,
+						OutputFactor: outputFactor26,
+					})
+				}
+				serviceTierFactor26 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor))
+				for serviceTierFactorIndex26 := range r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor {
+					var tier26 string
+					tier26 = r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex26].Tier.ValueString()
+
+					var factor26 float64
+					factor26 = r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex26].Factor.ValueFloat64()
+
+					serviceTierFactor26 = append(serviceTierFactor26, shared.AIGatewayServiceTierFactor{
+						Tier:   tier26,
+						Factor: factor26,
+					})
+				}
 				temperature26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsNull() {
 					*temperature26 = r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.ValueFloat64()
@@ -5452,6 +8362,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens26,
 					InputCost:            inputCost26,
 					OutputCost:           outputCost26,
+					CacheReadCost:        cacheReadCost26,
+					CacheWriteCost:       cacheWriteCost26,
+					CacheWriteCostList:   cacheWriteCostList26,
+					ContextWindowFactor:  contextWindowFactor26,
+					ServiceTierFactor:    serviceTierFactor26,
 					Temperature:          temperature26,
 					TopK:                 topK26,
 					TopP:                 topP26,
@@ -5490,6 +8405,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost27 = nil
 				}
+				cacheReadCost27 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCost.IsNull() {
+					*cacheReadCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost27 = nil
+				}
+				cacheWriteCost27 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCost.IsNull() {
+					*cacheWriteCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost27 = nil
+				}
+				cacheWriteCostList27 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList))
+				for cacheWriteCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList {
+					var ttl27 string
+					ttl27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex27].TTL.ValueString()
+
+					var cost27 float64
+					cost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex27].Cost.ValueFloat64()
+
+					cacheWriteCostList27 = append(cacheWriteCostList27, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl27,
+						Cost: cost27,
+					})
+				}
+				contextWindowFactor27 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor))
+				for contextWindowFactorIndex27 := range r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor {
+					var above27 string
+					above27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex27].Above.ValueString()
+
+					var inputFactor27 float64
+					inputFactor27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex27].InputFactor.ValueFloat64()
+
+					var outputFactor27 float64
+					outputFactor27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex27].OutputFactor.ValueFloat64()
+
+					contextWindowFactor27 = append(contextWindowFactor27, shared.AIGatewayContextWindowFactor{
+						Above:        above27,
+						InputFactor:  inputFactor27,
+						OutputFactor: outputFactor27,
+					})
+				}
+				serviceTierFactor27 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor))
+				for serviceTierFactorIndex27 := range r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor {
+					var tier27 string
+					tier27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex27].Tier.ValueString()
+
+					var factor27 float64
+					factor27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex27].Factor.ValueFloat64()
+
+					serviceTierFactor27 = append(serviceTierFactor27, shared.AIGatewayServiceTierFactor{
+						Tier:   tier27,
+						Factor: factor27,
+					})
+				}
 				temperature27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsNull() {
 					*temperature27 = r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.ValueFloat64()
@@ -5519,6 +8489,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens27,
 					InputCost:            inputCost27,
 					OutputCost:           outputCost27,
+					CacheReadCost:        cacheReadCost27,
+					CacheWriteCost:       cacheWriteCost27,
+					CacheWriteCostList:   cacheWriteCostList27,
+					ContextWindowFactor:  contextWindowFactor27,
+					ServiceTierFactor:    serviceTierFactor27,
 					Temperature:          temperature27,
 					TopK:                 topK27,
 					TopP:                 topP27,
@@ -5555,6 +8530,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.ValueFloat64()
 				} else {
 					outputCost28 = nil
+				}
+				cacheReadCost28 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCost.IsNull() {
+					*cacheReadCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost28 = nil
+				}
+				cacheWriteCost28 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCost.IsNull() {
+					*cacheWriteCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost28 = nil
+				}
+				cacheWriteCostList28 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList))
+				for cacheWriteCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList {
+					var ttl28 string
+					ttl28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex28].TTL.ValueString()
+
+					var cost28 float64
+					cost28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex28].Cost.ValueFloat64()
+
+					cacheWriteCostList28 = append(cacheWriteCostList28, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl28,
+						Cost: cost28,
+					})
+				}
+				contextWindowFactor28 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor))
+				for contextWindowFactorIndex28 := range r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor {
+					var above28 string
+					above28 = r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex28].Above.ValueString()
+
+					var inputFactor28 float64
+					inputFactor28 = r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex28].InputFactor.ValueFloat64()
+
+					var outputFactor28 float64
+					outputFactor28 = r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex28].OutputFactor.ValueFloat64()
+
+					contextWindowFactor28 = append(contextWindowFactor28, shared.AIGatewayContextWindowFactor{
+						Above:        above28,
+						InputFactor:  inputFactor28,
+						OutputFactor: outputFactor28,
+					})
+				}
+				serviceTierFactor28 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor))
+				for serviceTierFactorIndex28 := range r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor {
+					var tier28 string
+					tier28 = r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex28].Tier.ValueString()
+
+					var factor28 float64
+					factor28 = r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex28].Factor.ValueFloat64()
+
+					serviceTierFactor28 = append(serviceTierFactor28, shared.AIGatewayServiceTierFactor{
+						Tier:   tier28,
+						Factor: factor28,
+					})
 				}
 				temperature28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsNull() {
@@ -5602,6 +8632,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens28,
 					InputCost:            inputCost28,
 					OutputCost:           outputCost28,
+					CacheReadCost:        cacheReadCost28,
+					CacheWriteCost:       cacheWriteCost28,
+					CacheWriteCostList:   cacheWriteCostList28,
+					ContextWindowFactor:  contextWindowFactor28,
+					ServiceTierFactor:    serviceTierFactor28,
 					Temperature:          temperature28,
 					TopK:                 topK28,
 					TopP:                 topP28,
@@ -5639,6 +8674,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.ValueFloat64()
 				} else {
 					outputCost29 = nil
+				}
+				cacheReadCost29 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCost.IsNull() {
+					*cacheReadCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost29 = nil
+				}
+				cacheWriteCost29 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCost.IsNull() {
+					*cacheWriteCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost29 = nil
+				}
+				cacheWriteCostList29 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList))
+				for cacheWriteCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList {
+					var ttl29 string
+					ttl29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex29].TTL.ValueString()
+
+					var cost29 float64
+					cost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex29].Cost.ValueFloat64()
+
+					cacheWriteCostList29 = append(cacheWriteCostList29, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl29,
+						Cost: cost29,
+					})
+				}
+				contextWindowFactor29 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor))
+				for contextWindowFactorIndex29 := range r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor {
+					var above29 string
+					above29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex29].Above.ValueString()
+
+					var inputFactor29 float64
+					inputFactor29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex29].InputFactor.ValueFloat64()
+
+					var outputFactor29 float64
+					outputFactor29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex29].OutputFactor.ValueFloat64()
+
+					contextWindowFactor29 = append(contextWindowFactor29, shared.AIGatewayContextWindowFactor{
+						Above:        above29,
+						InputFactor:  inputFactor29,
+						OutputFactor: outputFactor29,
+					})
+				}
+				serviceTierFactor29 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor))
+				for serviceTierFactorIndex29 := range r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor {
+					var tier29 string
+					tier29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex29].Tier.ValueString()
+
+					var factor29 float64
+					factor29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex29].Factor.ValueFloat64()
+
+					serviceTierFactor29 = append(serviceTierFactor29, shared.AIGatewayServiceTierFactor{
+						Tier:   tier29,
+						Factor: factor29,
+					})
 				}
 				temperature29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsNull() {
@@ -5681,6 +8771,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens29,
 					InputCost:            inputCost29,
 					OutputCost:           outputCost29,
+					CacheReadCost:        cacheReadCost29,
+					CacheWriteCost:       cacheWriteCost29,
+					CacheWriteCostList:   cacheWriteCostList29,
+					ContextWindowFactor:  contextWindowFactor29,
+					ServiceTierFactor:    serviceTierFactor29,
 					Temperature:          temperature29,
 					TopK:                 topK29,
 					TopP:                 topP29,
@@ -5720,6 +8815,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost30 = nil
 				}
+				cacheReadCost30 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCost.IsNull() {
+					*cacheReadCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost30 = nil
+				}
+				cacheWriteCost30 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCost.IsNull() {
+					*cacheWriteCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost30 = nil
+				}
+				cacheWriteCostList30 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList))
+				for cacheWriteCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList {
+					var ttl30 string
+					ttl30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex30].TTL.ValueString()
+
+					var cost30 float64
+					cost30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex30].Cost.ValueFloat64()
+
+					cacheWriteCostList30 = append(cacheWriteCostList30, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl30,
+						Cost: cost30,
+					})
+				}
+				contextWindowFactor30 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor))
+				for contextWindowFactorIndex30 := range r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor {
+					var above30 string
+					above30 = r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex30].Above.ValueString()
+
+					var inputFactor30 float64
+					inputFactor30 = r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex30].InputFactor.ValueFloat64()
+
+					var outputFactor30 float64
+					outputFactor30 = r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex30].OutputFactor.ValueFloat64()
+
+					contextWindowFactor30 = append(contextWindowFactor30, shared.AIGatewayContextWindowFactor{
+						Above:        above30,
+						InputFactor:  inputFactor30,
+						OutputFactor: outputFactor30,
+					})
+				}
+				serviceTierFactor30 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor))
+				for serviceTierFactorIndex30 := range r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor {
+					var tier30 string
+					tier30 = r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex30].Tier.ValueString()
+
+					var factor30 float64
+					factor30 = r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex30].Factor.ValueFloat64()
+
+					serviceTierFactor30 = append(serviceTierFactor30, shared.AIGatewayServiceTierFactor{
+						Tier:   tier30,
+						Factor: factor30,
+					})
+				}
 				temperature30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsNull() {
 					*temperature30 = r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.ValueFloat64()
@@ -5755,6 +8905,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens30,
 					InputCost:            inputCost30,
 					OutputCost:           outputCost30,
+					CacheReadCost:        cacheReadCost30,
+					CacheWriteCost:       cacheWriteCost30,
+					CacheWriteCostList:   cacheWriteCostList30,
+					ContextWindowFactor:  contextWindowFactor30,
+					ServiceTierFactor:    serviceTierFactor30,
 					Temperature:          temperature30,
 					TopK:                 topK30,
 					TopP:                 topP30,
@@ -5793,6 +8948,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost31 = nil
 				}
+				cacheReadCost31 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCost.IsNull() {
+					*cacheReadCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost31 = nil
+				}
+				cacheWriteCost31 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCost.IsNull() {
+					*cacheWriteCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost31 = nil
+				}
+				cacheWriteCostList31 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList))
+				for cacheWriteCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList {
+					var ttl31 string
+					ttl31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex31].TTL.ValueString()
+
+					var cost31 float64
+					cost31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex31].Cost.ValueFloat64()
+
+					cacheWriteCostList31 = append(cacheWriteCostList31, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl31,
+						Cost: cost31,
+					})
+				}
+				contextWindowFactor31 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor))
+				for contextWindowFactorIndex31 := range r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor {
+					var above31 string
+					above31 = r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex31].Above.ValueString()
+
+					var inputFactor31 float64
+					inputFactor31 = r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex31].InputFactor.ValueFloat64()
+
+					var outputFactor31 float64
+					outputFactor31 = r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex31].OutputFactor.ValueFloat64()
+
+					contextWindowFactor31 = append(contextWindowFactor31, shared.AIGatewayContextWindowFactor{
+						Above:        above31,
+						InputFactor:  inputFactor31,
+						OutputFactor: outputFactor31,
+					})
+				}
+				serviceTierFactor31 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor))
+				for serviceTierFactorIndex31 := range r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor {
+					var tier31 string
+					tier31 = r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex31].Tier.ValueString()
+
+					var factor31 float64
+					factor31 = r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex31].Factor.ValueFloat64()
+
+					serviceTierFactor31 = append(serviceTierFactor31, shared.AIGatewayServiceTierFactor{
+						Tier:   tier31,
+						Factor: factor31,
+					})
+				}
 				temperature31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsNull() {
 					*temperature31 = r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.ValueFloat64()
@@ -5820,6 +9030,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens31,
 					InputCost:            inputCost31,
 					OutputCost:           outputCost31,
+					CacheReadCost:        cacheReadCost31,
+					CacheWriteCost:       cacheWriteCost31,
+					CacheWriteCostList:   cacheWriteCostList31,
+					ContextWindowFactor:  contextWindowFactor31,
+					ServiceTierFactor:    serviceTierFactor31,
 					Temperature:          temperature31,
 					TopK:                 topK31,
 					TopP:                 topP31,
@@ -5858,6 +9073,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost32 = nil
 				}
+				cacheReadCost32 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCost.IsNull() {
+					*cacheReadCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost32 = nil
+				}
+				cacheWriteCost32 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCost.IsNull() {
+					*cacheWriteCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost32 = nil
+				}
+				cacheWriteCostList32 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList))
+				for cacheWriteCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList {
+					var ttl32 string
+					ttl32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex32].TTL.ValueString()
+
+					var cost32 float64
+					cost32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex32].Cost.ValueFloat64()
+
+					cacheWriteCostList32 = append(cacheWriteCostList32, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl32,
+						Cost: cost32,
+					})
+				}
+				contextWindowFactor32 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor))
+				for contextWindowFactorIndex32 := range r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor {
+					var above32 string
+					above32 = r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex32].Above.ValueString()
+
+					var inputFactor32 float64
+					inputFactor32 = r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex32].InputFactor.ValueFloat64()
+
+					var outputFactor32 float64
+					outputFactor32 = r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex32].OutputFactor.ValueFloat64()
+
+					contextWindowFactor32 = append(contextWindowFactor32, shared.AIGatewayContextWindowFactor{
+						Above:        above32,
+						InputFactor:  inputFactor32,
+						OutputFactor: outputFactor32,
+					})
+				}
+				serviceTierFactor32 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor))
+				for serviceTierFactorIndex32 := range r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor {
+					var tier32 string
+					tier32 = r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex32].Tier.ValueString()
+
+					var factor32 float64
+					factor32 = r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex32].Factor.ValueFloat64()
+
+					serviceTierFactor32 = append(serviceTierFactor32, shared.AIGatewayServiceTierFactor{
+						Tier:   tier32,
+						Factor: factor32,
+					})
+				}
 				temperature32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsNull() {
 					*temperature32 = r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.ValueFloat64()
@@ -5888,6 +9158,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens32,
 					InputCost:            inputCost32,
 					OutputCost:           outputCost32,
+					CacheReadCost:        cacheReadCost32,
+					CacheWriteCost:       cacheWriteCost32,
+					CacheWriteCostList:   cacheWriteCostList32,
+					ContextWindowFactor:  contextWindowFactor32,
+					ServiceTierFactor:    serviceTierFactor32,
 					Temperature:          temperature32,
 					TopK:                 topK32,
 					TopP:                 topP32,
@@ -5926,6 +9201,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost33 = nil
 				}
+				cacheReadCost33 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCost.IsNull() {
+					*cacheReadCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost33 = nil
+				}
+				cacheWriteCost33 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCost.IsNull() {
+					*cacheWriteCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost33 = nil
+				}
+				cacheWriteCostList33 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList))
+				for cacheWriteCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList {
+					var ttl33 string
+					ttl33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex33].TTL.ValueString()
+
+					var cost33 float64
+					cost33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex33].Cost.ValueFloat64()
+
+					cacheWriteCostList33 = append(cacheWriteCostList33, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl33,
+						Cost: cost33,
+					})
+				}
+				contextWindowFactor33 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor))
+				for contextWindowFactorIndex33 := range r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor {
+					var above33 string
+					above33 = r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex33].Above.ValueString()
+
+					var inputFactor33 float64
+					inputFactor33 = r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex33].InputFactor.ValueFloat64()
+
+					var outputFactor33 float64
+					outputFactor33 = r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex33].OutputFactor.ValueFloat64()
+
+					contextWindowFactor33 = append(contextWindowFactor33, shared.AIGatewayContextWindowFactor{
+						Above:        above33,
+						InputFactor:  inputFactor33,
+						OutputFactor: outputFactor33,
+					})
+				}
+				serviceTierFactor33 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor))
+				for serviceTierFactorIndex33 := range r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor {
+					var tier33 string
+					tier33 = r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex33].Tier.ValueString()
+
+					var factor33 float64
+					factor33 = r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex33].Factor.ValueFloat64()
+
+					serviceTierFactor33 = append(serviceTierFactor33, shared.AIGatewayServiceTierFactor{
+						Tier:   tier33,
+						Factor: factor33,
+					})
+				}
 				temperature33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsNull() {
 					*temperature33 = r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.ValueFloat64()
@@ -5955,6 +9285,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens33,
 					InputCost:            inputCost33,
 					OutputCost:           outputCost33,
+					CacheReadCost:        cacheReadCost33,
+					CacheWriteCost:       cacheWriteCost33,
+					CacheWriteCostList:   cacheWriteCostList33,
+					ContextWindowFactor:  contextWindowFactor33,
+					ServiceTierFactor:    serviceTierFactor33,
 					Temperature:          temperature33,
 					TopK:                 topK33,
 					TopP:                 topP33,
@@ -5992,6 +9327,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost34 = nil
 				}
+				cacheReadCost34 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCost.IsNull() {
+					*cacheReadCost34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost34 = nil
+				}
+				cacheWriteCost34 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCost.IsNull() {
+					*cacheWriteCost34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost34 = nil
+				}
+				cacheWriteCostList34 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList))
+				for cacheWriteCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList {
+					var ttl34 string
+					ttl34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex34].TTL.ValueString()
+
+					var cost34 float64
+					cost34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex34].Cost.ValueFloat64()
+
+					cacheWriteCostList34 = append(cacheWriteCostList34, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl34,
+						Cost: cost34,
+					})
+				}
+				contextWindowFactor34 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor))
+				for contextWindowFactorIndex34 := range r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor {
+					var above34 string
+					above34 = r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor[contextWindowFactorIndex34].Above.ValueString()
+
+					var inputFactor34 float64
+					inputFactor34 = r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor[contextWindowFactorIndex34].InputFactor.ValueFloat64()
+
+					var outputFactor34 float64
+					outputFactor34 = r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor[contextWindowFactorIndex34].OutputFactor.ValueFloat64()
+
+					contextWindowFactor34 = append(contextWindowFactor34, shared.AIGatewayContextWindowFactor{
+						Above:        above34,
+						InputFactor:  inputFactor34,
+						OutputFactor: outputFactor34,
+					})
+				}
+				serviceTierFactor34 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor))
+				for serviceTierFactorIndex34 := range r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor {
+					var tier34 string
+					tier34 = r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor[serviceTierFactorIndex34].Tier.ValueString()
+
+					var factor34 float64
+					factor34 = r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor[serviceTierFactorIndex34].Factor.ValueFloat64()
+
+					serviceTierFactor34 = append(serviceTierFactor34, shared.AIGatewayServiceTierFactor{
+						Tier:   tier34,
+						Factor: factor34,
+					})
+				}
 				temperature34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsNull() {
 					*temperature34 = r.Model.Targets[targetsIndex1].Config.Openai.Temperature.ValueFloat64()
@@ -6021,6 +9411,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens34,
 					InputCost:            inputCost34,
 					OutputCost:           outputCost34,
+					CacheReadCost:        cacheReadCost34,
+					CacheWriteCost:       cacheWriteCost34,
+					CacheWriteCostList:   cacheWriteCostList34,
+					ContextWindowFactor:  contextWindowFactor34,
+					ServiceTierFactor:    serviceTierFactor34,
 					Temperature:          temperature34,
 					TopK:                 topK34,
 					TopP:                 topP34,
@@ -6058,6 +9453,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost35 = nil
 				}
+				cacheReadCost35 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCost.IsNull() {
+					*cacheReadCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost35 = nil
+				}
+				cacheWriteCost35 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCost.IsNull() {
+					*cacheWriteCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost35 = nil
+				}
+				cacheWriteCostList35 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList))
+				for cacheWriteCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList {
+					var ttl35 string
+					ttl35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex35].TTL.ValueString()
+
+					var cost35 float64
+					cost35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex35].Cost.ValueFloat64()
+
+					cacheWriteCostList35 = append(cacheWriteCostList35, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl35,
+						Cost: cost35,
+					})
+				}
+				contextWindowFactor35 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor))
+				for contextWindowFactorIndex35 := range r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor {
+					var above35 string
+					above35 = r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex35].Above.ValueString()
+
+					var inputFactor35 float64
+					inputFactor35 = r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex35].InputFactor.ValueFloat64()
+
+					var outputFactor35 float64
+					outputFactor35 = r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex35].OutputFactor.ValueFloat64()
+
+					contextWindowFactor35 = append(contextWindowFactor35, shared.AIGatewayContextWindowFactor{
+						Above:        above35,
+						InputFactor:  inputFactor35,
+						OutputFactor: outputFactor35,
+					})
+				}
+				serviceTierFactor35 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor))
+				for serviceTierFactorIndex35 := range r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor {
+					var tier35 string
+					tier35 = r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex35].Tier.ValueString()
+
+					var factor35 float64
+					factor35 = r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex35].Factor.ValueFloat64()
+
+					serviceTierFactor35 = append(serviceTierFactor35, shared.AIGatewayServiceTierFactor{
+						Tier:   tier35,
+						Factor: factor35,
+					})
+				}
 				temperature35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsNull() {
 					*temperature35 = r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.ValueFloat64()
@@ -6087,6 +9537,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens35,
 					InputCost:            inputCost35,
 					OutputCost:           outputCost35,
+					CacheReadCost:        cacheReadCost35,
+					CacheWriteCost:       cacheWriteCost35,
+					CacheWriteCostList:   cacheWriteCostList35,
+					ContextWindowFactor:  contextWindowFactor35,
+					ServiceTierFactor:    serviceTierFactor35,
 					Temperature:          temperature35,
 					TopK:                 topK35,
 					TopP:                 topP35,
@@ -6123,6 +9578,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.ValueFloat64()
 				} else {
 					outputCost36 = nil
+				}
+				cacheReadCost36 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vertex.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.CacheReadCost.IsNull() {
+					*cacheReadCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost36 = nil
+				}
+				cacheWriteCost36 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCost.IsNull() {
+					*cacheWriteCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost36 = nil
+				}
+				cacheWriteCostList36 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList))
+				for cacheWriteCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList {
+					var ttl36 string
+					ttl36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex36].TTL.ValueString()
+
+					var cost36 float64
+					cost36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex36].Cost.ValueFloat64()
+
+					cacheWriteCostList36 = append(cacheWriteCostList36, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl36,
+						Cost: cost36,
+					})
+				}
+				contextWindowFactor36 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor))
+				for contextWindowFactorIndex36 := range r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor {
+					var above36 string
+					above36 = r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex36].Above.ValueString()
+
+					var inputFactor36 float64
+					inputFactor36 = r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex36].InputFactor.ValueFloat64()
+
+					var outputFactor36 float64
+					outputFactor36 = r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex36].OutputFactor.ValueFloat64()
+
+					contextWindowFactor36 = append(contextWindowFactor36, shared.AIGatewayContextWindowFactor{
+						Above:        above36,
+						InputFactor:  inputFactor36,
+						OutputFactor: outputFactor36,
+					})
+				}
+				serviceTierFactor36 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor))
+				for serviceTierFactorIndex36 := range r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor {
+					var tier36 string
+					tier36 = r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex36].Tier.ValueString()
+
+					var factor36 float64
+					factor36 = r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex36].Factor.ValueFloat64()
+
+					serviceTierFactor36 = append(serviceTierFactor36, shared.AIGatewayServiceTierFactor{
+						Tier:   tier36,
+						Factor: factor36,
+					})
 				}
 				temperature36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsNull() {
@@ -6177,6 +9687,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens36,
 					InputCost:            inputCost36,
 					OutputCost:           outputCost36,
+					CacheReadCost:        cacheReadCost36,
+					CacheWriteCost:       cacheWriteCost36,
+					CacheWriteCostList:   cacheWriteCostList36,
+					ContextWindowFactor:  contextWindowFactor36,
+					ServiceTierFactor:    serviceTierFactor36,
 					Temperature:          temperature36,
 					TopK:                 topK36,
 					TopP:                 topP36,
@@ -6215,6 +9730,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost37 = nil
 				}
+				cacheReadCost37 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCost.IsNull() {
+					*cacheReadCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost37 = nil
+				}
+				cacheWriteCost37 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCost.IsNull() {
+					*cacheWriteCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost37 = nil
+				}
+				cacheWriteCostList37 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList))
+				for cacheWriteCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList {
+					var ttl37 string
+					ttl37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex37].TTL.ValueString()
+
+					var cost37 float64
+					cost37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex37].Cost.ValueFloat64()
+
+					cacheWriteCostList37 = append(cacheWriteCostList37, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl37,
+						Cost: cost37,
+					})
+				}
+				contextWindowFactor37 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor))
+				for contextWindowFactorIndex37 := range r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor {
+					var above37 string
+					above37 = r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex37].Above.ValueString()
+
+					var inputFactor37 float64
+					inputFactor37 = r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex37].InputFactor.ValueFloat64()
+
+					var outputFactor37 float64
+					outputFactor37 = r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex37].OutputFactor.ValueFloat64()
+
+					contextWindowFactor37 = append(contextWindowFactor37, shared.AIGatewayContextWindowFactor{
+						Above:        above37,
+						InputFactor:  inputFactor37,
+						OutputFactor: outputFactor37,
+					})
+				}
+				serviceTierFactor37 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor))
+				for serviceTierFactorIndex37 := range r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor {
+					var tier37 string
+					tier37 = r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex37].Tier.ValueString()
+
+					var factor37 float64
+					factor37 = r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex37].Factor.ValueFloat64()
+
+					serviceTierFactor37 = append(serviceTierFactor37, shared.AIGatewayServiceTierFactor{
+						Tier:   tier37,
+						Factor: factor37,
+					})
+				}
 				temperature37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsNull() {
 					*temperature37 = r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.ValueFloat64()
@@ -6241,6 +9811,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens37,
 					InputCost:            inputCost37,
 					OutputCost:           outputCost37,
+					CacheReadCost:        cacheReadCost37,
+					CacheWriteCost:       cacheWriteCost37,
+					CacheWriteCostList:   cacheWriteCostList37,
+					ContextWindowFactor:  contextWindowFactor37,
+					ServiceTierFactor:    serviceTierFactor37,
 					Temperature:          temperature37,
 					TopK:                 topK37,
 					TopP:                 topP37,
@@ -6278,6 +9853,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost38 = nil
 				}
+				cacheReadCost38 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCost.IsNull() {
+					*cacheReadCost38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost38 = nil
+				}
+				cacheWriteCost38 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCost.IsNull() {
+					*cacheWriteCost38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost38 = nil
+				}
+				cacheWriteCostList38 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList))
+				for cacheWriteCostListIndex38 := range r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList {
+					var ttl38 string
+					ttl38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex38].TTL.ValueString()
+
+					var cost38 float64
+					cost38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex38].Cost.ValueFloat64()
+
+					cacheWriteCostList38 = append(cacheWriteCostList38, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl38,
+						Cost: cost38,
+					})
+				}
+				contextWindowFactor38 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor))
+				for contextWindowFactorIndex38 := range r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor {
+					var above38 string
+					above38 = r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor[contextWindowFactorIndex38].Above.ValueString()
+
+					var inputFactor38 float64
+					inputFactor38 = r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor[contextWindowFactorIndex38].InputFactor.ValueFloat64()
+
+					var outputFactor38 float64
+					outputFactor38 = r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor[contextWindowFactorIndex38].OutputFactor.ValueFloat64()
+
+					contextWindowFactor38 = append(contextWindowFactor38, shared.AIGatewayContextWindowFactor{
+						Above:        above38,
+						InputFactor:  inputFactor38,
+						OutputFactor: outputFactor38,
+					})
+				}
+				serviceTierFactor38 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor))
+				for serviceTierFactorIndex38 := range r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor {
+					var tier38 string
+					tier38 = r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor[serviceTierFactorIndex38].Tier.ValueString()
+
+					var factor38 float64
+					factor38 = r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor[serviceTierFactorIndex38].Factor.ValueFloat64()
+
+					serviceTierFactor38 = append(serviceTierFactor38, shared.AIGatewayServiceTierFactor{
+						Tier:   tier38,
+						Factor: factor38,
+					})
+				}
 				temperature38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsNull() {
 					*temperature38 = r.Model.Targets[targetsIndex1].Config.Xai.Temperature.ValueFloat64()
@@ -6307,6 +9937,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens38,
 					InputCost:            inputCost38,
 					OutputCost:           outputCost38,
+					CacheReadCost:        cacheReadCost38,
+					CacheWriteCost:       cacheWriteCost38,
+					CacheWriteCostList:   cacheWriteCostList38,
+					ContextWindowFactor:  contextWindowFactor38,
+					ServiceTierFactor:    serviceTierFactor38,
 					Temperature:          temperature38,
 					TopK:                 topK38,
 					TopP:                 topP38,
@@ -6343,6 +9978,61 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					*outputCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.ValueFloat64()
 				} else {
 					outputCost39 = nil
+				}
+				cacheReadCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCost.IsNull() {
+					*cacheReadCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost39 = nil
+				}
+				cacheWriteCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCost.IsNull() {
+					*cacheWriteCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost39 = nil
+				}
+				cacheWriteCostList39 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList))
+				for cacheWriteCostListIndex39 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList {
+					var ttl39 string
+					ttl39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex39].TTL.ValueString()
+
+					var cost39 float64
+					cost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex39].Cost.ValueFloat64()
+
+					cacheWriteCostList39 = append(cacheWriteCostList39, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl39,
+						Cost: cost39,
+					})
+				}
+				contextWindowFactor39 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor))
+				for contextWindowFactorIndex39 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor {
+					var above39 string
+					above39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex39].Above.ValueString()
+
+					var inputFactor39 float64
+					inputFactor39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex39].InputFactor.ValueFloat64()
+
+					var outputFactor39 float64
+					outputFactor39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex39].OutputFactor.ValueFloat64()
+
+					contextWindowFactor39 = append(contextWindowFactor39, shared.AIGatewayContextWindowFactor{
+						Above:        above39,
+						InputFactor:  inputFactor39,
+						OutputFactor: outputFactor39,
+					})
+				}
+				serviceTierFactor39 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor))
+				for serviceTierFactorIndex39 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor {
+					var tier39 string
+					tier39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex39].Tier.ValueString()
+
+					var factor39 float64
+					factor39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex39].Factor.ValueFloat64()
+
+					serviceTierFactor39 = append(serviceTierFactor39, shared.AIGatewayServiceTierFactor{
+						Tier:   tier39,
+						Factor: factor39,
+					})
 				}
 				temperature39 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsNull() {
@@ -6432,6 +10122,11 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens39,
 					InputCost:            inputCost39,
 					OutputCost:           outputCost39,
+					CacheReadCost:        cacheReadCost39,
+					CacheWriteCost:       cacheWriteCost39,
+					CacheWriteCostList:   cacheWriteCostList39,
+					ContextWindowFactor:  contextWindowFactor39,
+					ServiceTierFactor:    serviceTierFactor39,
 					Temperature:          temperature39,
 					TopK:                 topK39,
 					TopP:                 topP39,
@@ -6536,62 +10231,33 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 		}
 		var model3 *shared.AIGatewayModelSelectorConfig
 		if r.Model.Config.Route.Model != nil {
-			var bodySelector1 *shared.BodySelector
-			if r.Model.Config.Route.Model.BodySelector != nil {
-				var bodyParam1 string
-				bodyParam1 = r.Model.Config.Route.Model.BodySelector.BodyParam.ValueString()
-
-				values3 := make([]string, 0, len(r.Model.Config.Route.Model.BodySelector.Values))
-				for valuesIndex3 := range r.Model.Config.Route.Model.BodySelector.Values {
-					values3 = append(values3, r.Model.Config.Route.Model.BodySelector.Values[valuesIndex3].ValueString())
-				}
-				bodySelector1 = &shared.BodySelector{
-					BodyParam: bodyParam1,
-					Values:    values3,
-				}
+			bodyParam1 := new(string)
+			if !r.Model.Config.Route.Model.BodyParam.IsUnknown() && !r.Model.Config.Route.Model.BodyParam.IsNull() {
+				*bodyParam1 = r.Model.Config.Route.Model.BodyParam.ValueString()
+			} else {
+				bodyParam1 = nil
 			}
-			if bodySelector1 != nil {
-				model3 = &shared.AIGatewayModelSelectorConfig{
-					BodySelector: bodySelector1,
-				}
+			headerParam1 := new(string)
+			if !r.Model.Config.Route.Model.HeaderParam.IsUnknown() && !r.Model.Config.Route.Model.HeaderParam.IsNull() {
+				*headerParam1 = r.Model.Config.Route.Model.HeaderParam.ValueString()
+			} else {
+				headerParam1 = nil
 			}
-			var headersSelector1 *shared.HeadersSelector
-			if r.Model.Config.Route.Model.HeadersSelector != nil {
-				var headerParam1 string
-				headerParam1 = r.Model.Config.Route.Model.HeadersSelector.HeaderParam.ValueString()
-
-				values4 := make([]string, 0, len(r.Model.Config.Route.Model.HeadersSelector.Values))
-				for valuesIndex4 := range r.Model.Config.Route.Model.HeadersSelector.Values {
-					values4 = append(values4, r.Model.Config.Route.Model.HeadersSelector.Values[valuesIndex4].ValueString())
-				}
-				headersSelector1 = &shared.HeadersSelector{
-					HeaderParam: headerParam1,
-					Values:      values4,
-				}
+			pathParam1 := new(string)
+			if !r.Model.Config.Route.Model.PathParam.IsUnknown() && !r.Model.Config.Route.Model.PathParam.IsNull() {
+				*pathParam1 = r.Model.Config.Route.Model.PathParam.ValueString()
+			} else {
+				pathParam1 = nil
 			}
-			if headersSelector1 != nil {
-				model3 = &shared.AIGatewayModelSelectorConfig{
-					HeadersSelector: headersSelector1,
-				}
+			values1 := make([]string, 0, len(r.Model.Config.Route.Model.Values))
+			for valuesIndex1 := range r.Model.Config.Route.Model.Values {
+				values1 = append(values1, r.Model.Config.Route.Model.Values[valuesIndex1].ValueString())
 			}
-			var pathSelector1 *shared.PathSelector
-			if r.Model.Config.Route.Model.PathSelector != nil {
-				var pathParam1 string
-				pathParam1 = r.Model.Config.Route.Model.PathSelector.PathParam.ValueString()
-
-				values5 := make([]string, 0, len(r.Model.Config.Route.Model.PathSelector.Values))
-				for valuesIndex5 := range r.Model.Config.Route.Model.PathSelector.Values {
-					values5 = append(values5, r.Model.Config.Route.Model.PathSelector.Values[valuesIndex5].ValueString())
-				}
-				pathSelector1 = &shared.PathSelector{
-					PathParam: pathParam1,
-					Values:    values5,
-				}
-			}
-			if pathSelector1 != nil {
-				model3 = &shared.AIGatewayModelSelectorConfig{
-					PathSelector: pathSelector1,
-				}
+			model3 = &shared.AIGatewayModelSelectorConfig{
+				BodyParam:   bodyParam1,
+				HeaderParam: headerParam1,
+				PathParam:   pathParam1,
+				Values:      values1,
 			}
 		}
 		route1 := shared.AIGatewayModelRouteConfig{
@@ -7121,6 +10787,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl48 = nil
 					}
+					typeVar3 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId3 string
 					deploymentId3 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -7132,6 +10799,7 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					}
 					aiGatewayAzureEmbeddingsModelConfig1 = &shared.AIGatewayAzureEmbeddingsModelConfig{
 						UpstreamURL:  upstreamUrl48,
+						Type:         typeVar3,
 						DeploymentID: deploymentId3,
 						APIVersion:   apiVersion5,
 					}
@@ -7267,10 +10935,10 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl52 = nil
 					}
-					typeVar2 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar4 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig1 = &shared.AIGatewayMistralEmbeddingsModelConfig{
 						UpstreamURL: upstreamUrl52,
-						Type:        typeVar2,
+						Type:        typeVar4,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig1 != nil {
@@ -8041,6 +11709,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost = nil
 				}
+				cacheReadCost := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCost.IsNull() {
+					*cacheReadCost = r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost = nil
+				}
+				cacheWriteCost := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCost.IsNull() {
+					*cacheWriteCost = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost = nil
+				}
+				cacheWriteCostList := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList))
+				for cacheWriteCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList {
+					var ttl string
+					ttl = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].TTL.ValueString()
+
+					var cost float64
+					cost = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
+
+					cacheWriteCostList = append(cacheWriteCostList, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl,
+						Cost: cost,
+					})
+				}
+				contextWindowFactor := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor))
+				for contextWindowFactorIndex := range r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor {
+					var above string
+					above = r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex].Above.ValueString()
+
+					var inputFactor float64
+					inputFactor = r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex].InputFactor.ValueFloat64()
+
+					var outputFactor float64
+					outputFactor = r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex].OutputFactor.ValueFloat64()
+
+					contextWindowFactor = append(contextWindowFactor, shared.AIGatewayContextWindowFactor{
+						Above:        above,
+						InputFactor:  inputFactor,
+						OutputFactor: outputFactor,
+					})
+				}
+				serviceTierFactor := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor))
+				for serviceTierFactorIndex := range r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor {
+					var tier string
+					tier = r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex].Tier.ValueString()
+
+					var factor float64
+					factor = r.API.Targets[targetsIndex].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex].Factor.ValueFloat64()
+
+					serviceTierFactor = append(serviceTierFactor, shared.AIGatewayServiceTierFactor{
+						Tier:   tier,
+						Factor: factor,
+					})
+				}
 				temperature := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Anthropic.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Anthropic.Temperature.IsNull() {
 					*temperature = r.API.Targets[targetsIndex].Config.Anthropic.Temperature.ValueFloat64()
@@ -8076,6 +11799,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens,
 					InputCost:            inputCost,
 					OutputCost:           outputCost,
+					CacheReadCost:        cacheReadCost,
+					CacheWriteCost:       cacheWriteCost,
+					CacheWriteCostList:   cacheWriteCostList,
+					ContextWindowFactor:  contextWindowFactor,
+					ServiceTierFactor:    serviceTierFactor,
 					Temperature:          temperature,
 					TopK:                 topK,
 					TopP:                 topP,
@@ -8114,6 +11842,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost1 = nil
 				}
+				cacheReadCost1 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Azure.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.CacheReadCost.IsNull() {
+					*cacheReadCost1 = r.API.Targets[targetsIndex].Config.Azure.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost1 = nil
+				}
+				cacheWriteCost1 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Azure.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.CacheWriteCost.IsNull() {
+					*cacheWriteCost1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost1 = nil
+				}
+				cacheWriteCostList1 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList))
+				for cacheWriteCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList {
+					var ttl1 string
+					ttl1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].TTL.ValueString()
+
+					var cost1 float64
+					cost1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].Cost.ValueFloat64()
+
+					cacheWriteCostList1 = append(cacheWriteCostList1, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl1,
+						Cost: cost1,
+					})
+				}
+				contextWindowFactor1 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor))
+				for contextWindowFactorIndex1 := range r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor {
+					var above1 string
+					above1 = r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor[contextWindowFactorIndex1].Above.ValueString()
+
+					var inputFactor1 float64
+					inputFactor1 = r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor[contextWindowFactorIndex1].InputFactor.ValueFloat64()
+
+					var outputFactor1 float64
+					outputFactor1 = r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor[contextWindowFactorIndex1].OutputFactor.ValueFloat64()
+
+					contextWindowFactor1 = append(contextWindowFactor1, shared.AIGatewayContextWindowFactor{
+						Above:        above1,
+						InputFactor:  inputFactor1,
+						OutputFactor: outputFactor1,
+					})
+				}
+				serviceTierFactor1 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor))
+				for serviceTierFactorIndex1 := range r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor {
+					var tier1 string
+					tier1 = r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor[serviceTierFactorIndex1].Tier.ValueString()
+
+					var factor1 float64
+					factor1 = r.API.Targets[targetsIndex].Config.Azure.ServiceTierFactor[serviceTierFactorIndex1].Factor.ValueFloat64()
+
+					serviceTierFactor1 = append(serviceTierFactor1, shared.AIGatewayServiceTierFactor{
+						Tier:   tier1,
+						Factor: factor1,
+					})
+				}
 				temperature1 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Azure.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.Temperature.IsNull() {
 					*temperature1 = r.API.Targets[targetsIndex].Config.Azure.Temperature.ValueFloat64()
@@ -8138,26 +11921,41 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl1 = nil
 				}
-				var deploymentID string
-				deploymentID = r.API.Targets[targetsIndex].Config.Azure.DeploymentID.ValueString()
-
+				deploymentID := new(string)
+				if !r.API.Targets[targetsIndex].Config.Azure.DeploymentID.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.DeploymentID.IsNull() {
+					*deploymentID = r.API.Targets[targetsIndex].Config.Azure.DeploymentID.ValueString()
+				} else {
+					deploymentID = nil
+				}
 				apiVersion := new(string)
 				if !r.API.Targets[targetsIndex].Config.Azure.APIVersion.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.APIVersion.IsNull() {
 					*apiVersion = r.API.Targets[targetsIndex].Config.Azure.APIVersion.ValueString()
 				} else {
 					apiVersion = nil
 				}
+				foundryPathPrefix := new(shared.FoundryPathPrefix)
+				if !r.API.Targets[targetsIndex].Config.Azure.FoundryPathPrefix.IsUnknown() && !r.API.Targets[targetsIndex].Config.Azure.FoundryPathPrefix.IsNull() {
+					*foundryPathPrefix = shared.FoundryPathPrefix(r.API.Targets[targetsIndex].Config.Azure.FoundryPathPrefix.ValueString())
+				} else {
+					foundryPathPrefix = nil
+				}
 				aiGatewayTargetAzureConfig = &shared.AIGatewayTargetAzureConfig{
 					EmbeddingsDimensions: embeddingsDimensions1,
 					MaxTokens:            maxTokens1,
 					InputCost:            inputCost1,
 					OutputCost:           outputCost1,
+					CacheReadCost:        cacheReadCost1,
+					CacheWriteCost:       cacheWriteCost1,
+					CacheWriteCostList:   cacheWriteCostList1,
+					ContextWindowFactor:  contextWindowFactor1,
+					ServiceTierFactor:    serviceTierFactor1,
 					Temperature:          temperature1,
 					TopK:                 topK1,
 					TopP:                 topP1,
 					UpstreamURL:          upstreamUrl1,
 					DeploymentID:         deploymentID,
 					APIVersion:           apiVersion,
+					FoundryPathPrefix:    foundryPathPrefix,
 				}
 			}
 			if aiGatewayTargetAzureConfig != nil {
@@ -8190,6 +11988,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost2 = r.API.Targets[targetsIndex].Config.Bedrock.OutputCost.ValueFloat64()
 				} else {
 					outputCost2 = nil
+				}
+				cacheReadCost2 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCost.IsNull() {
+					*cacheReadCost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost2 = nil
+				}
+				cacheWriteCost2 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCost.IsNull() {
+					*cacheWriteCost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost2 = nil
+				}
+				cacheWriteCostList2 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList))
+				for cacheWriteCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList {
+					var ttl2 string
+					ttl2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].TTL.ValueString()
+
+					var cost2 float64
+					cost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].Cost.ValueFloat64()
+
+					cacheWriteCostList2 = append(cacheWriteCostList2, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl2,
+						Cost: cost2,
+					})
+				}
+				contextWindowFactor2 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor))
+				for contextWindowFactorIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor {
+					var above2 string
+					above2 = r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex2].Above.ValueString()
+
+					var inputFactor2 float64
+					inputFactor2 = r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex2].InputFactor.ValueFloat64()
+
+					var outputFactor2 float64
+					outputFactor2 = r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex2].OutputFactor.ValueFloat64()
+
+					contextWindowFactor2 = append(contextWindowFactor2, shared.AIGatewayContextWindowFactor{
+						Above:        above2,
+						InputFactor:  inputFactor2,
+						OutputFactor: outputFactor2,
+					})
+				}
+				serviceTierFactor2 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor))
+				for serviceTierFactorIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor {
+					var tier2 string
+					tier2 = r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex2].Tier.ValueString()
+
+					var factor2 float64
+					factor2 = r.API.Targets[targetsIndex].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex2].Factor.ValueFloat64()
+
+					serviceTierFactor2 = append(serviceTierFactor2, shared.AIGatewayServiceTierFactor{
+						Tier:   tier2,
+						Factor: factor2,
+					})
 				}
 				temperature2 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Bedrock.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Bedrock.Temperature.IsNull() {
@@ -8250,6 +12103,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:                maxTokens2,
 					InputCost:                inputCost2,
 					OutputCost:               outputCost2,
+					CacheReadCost:            cacheReadCost2,
+					CacheWriteCost:           cacheWriteCost2,
+					CacheWriteCostList:       cacheWriteCostList2,
+					ContextWindowFactor:      contextWindowFactor2,
+					ServiceTierFactor:        serviceTierFactor2,
 					Temperature:              temperature2,
 					TopK:                     topK2,
 					TopP:                     topP2,
@@ -8292,6 +12150,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost3 = nil
 				}
+				cacheReadCost3 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCost.IsNull() {
+					*cacheReadCost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost3 = nil
+				}
+				cacheWriteCost3 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCost.IsNull() {
+					*cacheWriteCost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost3 = nil
+				}
+				cacheWriteCostList3 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList))
+				for cacheWriteCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList {
+					var ttl3 string
+					ttl3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].TTL.ValueString()
+
+					var cost3 float64
+					cost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].Cost.ValueFloat64()
+
+					cacheWriteCostList3 = append(cacheWriteCostList3, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl3,
+						Cost: cost3,
+					})
+				}
+				contextWindowFactor3 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor))
+				for contextWindowFactorIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor {
+					var above3 string
+					above3 = r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex3].Above.ValueString()
+
+					var inputFactor3 float64
+					inputFactor3 = r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex3].InputFactor.ValueFloat64()
+
+					var outputFactor3 float64
+					outputFactor3 = r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex3].OutputFactor.ValueFloat64()
+
+					contextWindowFactor3 = append(contextWindowFactor3, shared.AIGatewayContextWindowFactor{
+						Above:        above3,
+						InputFactor:  inputFactor3,
+						OutputFactor: outputFactor3,
+					})
+				}
+				serviceTierFactor3 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor))
+				for serviceTierFactorIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor {
+					var tier3 string
+					tier3 = r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex3].Tier.ValueString()
+
+					var factor3 float64
+					factor3 = r.API.Targets[targetsIndex].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex3].Factor.ValueFloat64()
+
+					serviceTierFactor3 = append(serviceTierFactor3, shared.AIGatewayServiceTierFactor{
+						Tier:   tier3,
+						Factor: factor3,
+					})
+				}
 				temperature3 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Cerebras.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cerebras.Temperature.IsNull() {
 					*temperature3 = r.API.Targets[targetsIndex].Config.Cerebras.Temperature.ValueFloat64()
@@ -8321,6 +12234,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens3,
 					InputCost:            inputCost3,
 					OutputCost:           outputCost3,
+					CacheReadCost:        cacheReadCost3,
+					CacheWriteCost:       cacheWriteCost3,
+					CacheWriteCostList:   cacheWriteCostList3,
+					ContextWindowFactor:  contextWindowFactor3,
+					ServiceTierFactor:    serviceTierFactor3,
 					Temperature:          temperature3,
 					TopK:                 topK3,
 					TopP:                 topP3,
@@ -8357,6 +12275,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost4 = r.API.Targets[targetsIndex].Config.Cohere.OutputCost.ValueFloat64()
 				} else {
 					outputCost4 = nil
+				}
+				cacheReadCost4 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cohere.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.CacheReadCost.IsNull() {
+					*cacheReadCost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost4 = nil
+				}
+				cacheWriteCost4 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCost.IsNull() {
+					*cacheWriteCost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost4 = nil
+				}
+				cacheWriteCostList4 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList))
+				for cacheWriteCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList {
+					var ttl4 string
+					ttl4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].TTL.ValueString()
+
+					var cost4 float64
+					cost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].Cost.ValueFloat64()
+
+					cacheWriteCostList4 = append(cacheWriteCostList4, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl4,
+						Cost: cost4,
+					})
+				}
+				contextWindowFactor4 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor))
+				for contextWindowFactorIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor {
+					var above4 string
+					above4 = r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex4].Above.ValueString()
+
+					var inputFactor4 float64
+					inputFactor4 = r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex4].InputFactor.ValueFloat64()
+
+					var outputFactor4 float64
+					outputFactor4 = r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex4].OutputFactor.ValueFloat64()
+
+					contextWindowFactor4 = append(contextWindowFactor4, shared.AIGatewayContextWindowFactor{
+						Above:        above4,
+						InputFactor:  inputFactor4,
+						OutputFactor: outputFactor4,
+					})
+				}
+				serviceTierFactor4 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor))
+				for serviceTierFactorIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor {
+					var tier4 string
+					tier4 = r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex4].Tier.ValueString()
+
+					var factor4 float64
+					factor4 = r.API.Targets[targetsIndex].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex4].Factor.ValueFloat64()
+
+					serviceTierFactor4 = append(serviceTierFactor4, shared.AIGatewayServiceTierFactor{
+						Tier:   tier4,
+						Factor: factor4,
+					})
 				}
 				temperature4 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Cohere.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Cohere.Temperature.IsNull() {
@@ -8405,6 +12378,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens4,
 					InputCost:            inputCost4,
 					OutputCost:           outputCost4,
+					CacheReadCost:        cacheReadCost4,
+					CacheWriteCost:       cacheWriteCost4,
+					CacheWriteCostList:   cacheWriteCostList4,
+					ContextWindowFactor:  contextWindowFactor4,
+					ServiceTierFactor:    serviceTierFactor4,
 					Temperature:          temperature4,
 					TopK:                 topK4,
 					TopP:                 topP4,
@@ -8445,6 +12423,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost5 = nil
 				}
+				cacheReadCost5 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCost.IsNull() {
+					*cacheReadCost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost5 = nil
+				}
+				cacheWriteCost5 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCost.IsNull() {
+					*cacheWriteCost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost5 = nil
+				}
+				cacheWriteCostList5 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList))
+				for cacheWriteCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList {
+					var ttl5 string
+					ttl5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].TTL.ValueString()
+
+					var cost5 float64
+					cost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].Cost.ValueFloat64()
+
+					cacheWriteCostList5 = append(cacheWriteCostList5, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl5,
+						Cost: cost5,
+					})
+				}
+				contextWindowFactor5 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor))
+				for contextWindowFactorIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor {
+					var above5 string
+					above5 = r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex5].Above.ValueString()
+
+					var inputFactor5 float64
+					inputFactor5 = r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex5].InputFactor.ValueFloat64()
+
+					var outputFactor5 float64
+					outputFactor5 = r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex5].OutputFactor.ValueFloat64()
+
+					contextWindowFactor5 = append(contextWindowFactor5, shared.AIGatewayContextWindowFactor{
+						Above:        above5,
+						InputFactor:  inputFactor5,
+						OutputFactor: outputFactor5,
+					})
+				}
+				serviceTierFactor5 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor))
+				for serviceTierFactorIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor {
+					var tier5 string
+					tier5 = r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex5].Tier.ValueString()
+
+					var factor5 float64
+					factor5 = r.API.Targets[targetsIndex].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex5].Factor.ValueFloat64()
+
+					serviceTierFactor5 = append(serviceTierFactor5, shared.AIGatewayServiceTierFactor{
+						Tier:   tier5,
+						Factor: factor5,
+					})
+				}
 				temperature5 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Dashscope.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Dashscope.Temperature.IsNull() {
 					*temperature5 = r.API.Targets[targetsIndex].Config.Dashscope.Temperature.ValueFloat64()
@@ -8480,6 +12513,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens5,
 					InputCost:            inputCost5,
 					OutputCost:           outputCost5,
+					CacheReadCost:        cacheReadCost5,
+					CacheWriteCost:       cacheWriteCost5,
+					CacheWriteCostList:   cacheWriteCostList5,
+					ContextWindowFactor:  contextWindowFactor5,
+					ServiceTierFactor:    serviceTierFactor5,
 					Temperature:          temperature5,
 					TopK:                 topK5,
 					TopP:                 topP5,
@@ -8518,6 +12556,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost6 = nil
 				}
+				cacheReadCost6 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Databricks.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Databricks.CacheReadCost.IsNull() {
+					*cacheReadCost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost6 = nil
+				}
+				cacheWriteCost6 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCost.IsNull() {
+					*cacheWriteCost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost6 = nil
+				}
+				cacheWriteCostList6 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList))
+				for cacheWriteCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList {
+					var ttl6 string
+					ttl6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].TTL.ValueString()
+
+					var cost6 float64
+					cost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].Cost.ValueFloat64()
+
+					cacheWriteCostList6 = append(cacheWriteCostList6, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl6,
+						Cost: cost6,
+					})
+				}
+				contextWindowFactor6 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor))
+				for contextWindowFactorIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor {
+					var above6 string
+					above6 = r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex6].Above.ValueString()
+
+					var inputFactor6 float64
+					inputFactor6 = r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex6].InputFactor.ValueFloat64()
+
+					var outputFactor6 float64
+					outputFactor6 = r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex6].OutputFactor.ValueFloat64()
+
+					contextWindowFactor6 = append(contextWindowFactor6, shared.AIGatewayContextWindowFactor{
+						Above:        above6,
+						InputFactor:  inputFactor6,
+						OutputFactor: outputFactor6,
+					})
+				}
+				serviceTierFactor6 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor))
+				for serviceTierFactorIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor {
+					var tier6 string
+					tier6 = r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex6].Tier.ValueString()
+
+					var factor6 float64
+					factor6 = r.API.Targets[targetsIndex].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex6].Factor.ValueFloat64()
+
+					serviceTierFactor6 = append(serviceTierFactor6, shared.AIGatewayServiceTierFactor{
+						Tier:   tier6,
+						Factor: factor6,
+					})
+				}
 				temperature6 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Databricks.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Databricks.Temperature.IsNull() {
 					*temperature6 = r.API.Targets[targetsIndex].Config.Databricks.Temperature.ValueFloat64()
@@ -8550,6 +12643,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens6,
 					InputCost:            inputCost6,
 					OutputCost:           outputCost6,
+					CacheReadCost:        cacheReadCost6,
+					CacheWriteCost:       cacheWriteCost6,
+					CacheWriteCostList:   cacheWriteCostList6,
+					ContextWindowFactor:  contextWindowFactor6,
+					ServiceTierFactor:    serviceTierFactor6,
 					Temperature:          temperature6,
 					TopK:                 topK6,
 					TopP:                 topP6,
@@ -8588,6 +12686,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost7 = nil
 				}
+				cacheReadCost7 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCost.IsNull() {
+					*cacheReadCost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost7 = nil
+				}
+				cacheWriteCost7 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCost.IsNull() {
+					*cacheWriteCost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost7 = nil
+				}
+				cacheWriteCostList7 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList))
+				for cacheWriteCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList {
+					var ttl7 string
+					ttl7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].TTL.ValueString()
+
+					var cost7 float64
+					cost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].Cost.ValueFloat64()
+
+					cacheWriteCostList7 = append(cacheWriteCostList7, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl7,
+						Cost: cost7,
+					})
+				}
+				contextWindowFactor7 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor))
+				for contextWindowFactorIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor {
+					var above7 string
+					above7 = r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex7].Above.ValueString()
+
+					var inputFactor7 float64
+					inputFactor7 = r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex7].InputFactor.ValueFloat64()
+
+					var outputFactor7 float64
+					outputFactor7 = r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex7].OutputFactor.ValueFloat64()
+
+					contextWindowFactor7 = append(contextWindowFactor7, shared.AIGatewayContextWindowFactor{
+						Above:        above7,
+						InputFactor:  inputFactor7,
+						OutputFactor: outputFactor7,
+					})
+				}
+				serviceTierFactor7 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor))
+				for serviceTierFactorIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor {
+					var tier7 string
+					tier7 = r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex7].Tier.ValueString()
+
+					var factor7 float64
+					factor7 = r.API.Targets[targetsIndex].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex7].Factor.ValueFloat64()
+
+					serviceTierFactor7 = append(serviceTierFactor7, shared.AIGatewayServiceTierFactor{
+						Tier:   tier7,
+						Factor: factor7,
+					})
+				}
 				temperature7 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Deepseek.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Deepseek.Temperature.IsNull() {
 					*temperature7 = r.API.Targets[targetsIndex].Config.Deepseek.Temperature.ValueFloat64()
@@ -8617,6 +12770,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens7,
 					InputCost:            inputCost7,
 					OutputCost:           outputCost7,
+					CacheReadCost:        cacheReadCost7,
+					CacheWriteCost:       cacheWriteCost7,
+					CacheWriteCostList:   cacheWriteCostList7,
+					ContextWindowFactor:  contextWindowFactor7,
+					ServiceTierFactor:    serviceTierFactor7,
 					Temperature:          temperature7,
 					TopK:                 topK7,
 					TopP:                 topP7,
@@ -8653,6 +12811,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost8 = r.API.Targets[targetsIndex].Config.Gemini.OutputCost.ValueFloat64()
 				} else {
 					outputCost8 = nil
+				}
+				cacheReadCost8 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Gemini.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Gemini.CacheReadCost.IsNull() {
+					*cacheReadCost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost8 = nil
+				}
+				cacheWriteCost8 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCost.IsNull() {
+					*cacheWriteCost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost8 = nil
+				}
+				cacheWriteCostList8 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList))
+				for cacheWriteCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList {
+					var ttl8 string
+					ttl8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].TTL.ValueString()
+
+					var cost8 float64
+					cost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].Cost.ValueFloat64()
+
+					cacheWriteCostList8 = append(cacheWriteCostList8, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl8,
+						Cost: cost8,
+					})
+				}
+				contextWindowFactor8 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor))
+				for contextWindowFactorIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor {
+					var above8 string
+					above8 = r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex8].Above.ValueString()
+
+					var inputFactor8 float64
+					inputFactor8 = r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex8].InputFactor.ValueFloat64()
+
+					var outputFactor8 float64
+					outputFactor8 = r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex8].OutputFactor.ValueFloat64()
+
+					contextWindowFactor8 = append(contextWindowFactor8, shared.AIGatewayContextWindowFactor{
+						Above:        above8,
+						InputFactor:  inputFactor8,
+						OutputFactor: outputFactor8,
+					})
+				}
+				serviceTierFactor8 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor))
+				for serviceTierFactorIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor {
+					var tier8 string
+					tier8 = r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex8].Tier.ValueString()
+
+					var factor8 float64
+					factor8 = r.API.Targets[targetsIndex].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex8].Factor.ValueFloat64()
+
+					serviceTierFactor8 = append(serviceTierFactor8, shared.AIGatewayServiceTierFactor{
+						Tier:   tier8,
+						Factor: factor8,
+					})
 				}
 				temperature8 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Gemini.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Gemini.Temperature.IsNull() {
@@ -8700,6 +12913,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens8,
 					InputCost:            inputCost8,
 					OutputCost:           outputCost8,
+					CacheReadCost:        cacheReadCost8,
+					CacheWriteCost:       cacheWriteCost8,
+					CacheWriteCostList:   cacheWriteCostList8,
+					ContextWindowFactor:  contextWindowFactor8,
+					ServiceTierFactor:    serviceTierFactor8,
 					Temperature:          temperature8,
 					TopK:                 topK8,
 					TopP:                 topP8,
@@ -8737,6 +12955,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost9 = r.API.Targets[targetsIndex].Config.Huggingface.OutputCost.ValueFloat64()
 				} else {
 					outputCost9 = nil
+				}
+				cacheReadCost9 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCost.IsNull() {
+					*cacheReadCost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost9 = nil
+				}
+				cacheWriteCost9 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCost.IsNull() {
+					*cacheWriteCost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost9 = nil
+				}
+				cacheWriteCostList9 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList))
+				for cacheWriteCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList {
+					var ttl9 string
+					ttl9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].TTL.ValueString()
+
+					var cost9 float64
+					cost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].Cost.ValueFloat64()
+
+					cacheWriteCostList9 = append(cacheWriteCostList9, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl9,
+						Cost: cost9,
+					})
+				}
+				contextWindowFactor9 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor))
+				for contextWindowFactorIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor {
+					var above9 string
+					above9 = r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex9].Above.ValueString()
+
+					var inputFactor9 float64
+					inputFactor9 = r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex9].InputFactor.ValueFloat64()
+
+					var outputFactor9 float64
+					outputFactor9 = r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex9].OutputFactor.ValueFloat64()
+
+					contextWindowFactor9 = append(contextWindowFactor9, shared.AIGatewayContextWindowFactor{
+						Above:        above9,
+						InputFactor:  inputFactor9,
+						OutputFactor: outputFactor9,
+					})
+				}
+				serviceTierFactor9 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor))
+				for serviceTierFactorIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor {
+					var tier9 string
+					tier9 = r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex9].Tier.ValueString()
+
+					var factor9 float64
+					factor9 = r.API.Targets[targetsIndex].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex9].Factor.ValueFloat64()
+
+					serviceTierFactor9 = append(serviceTierFactor9, shared.AIGatewayServiceTierFactor{
+						Tier:   tier9,
+						Factor: factor9,
+					})
 				}
 				temperature9 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Huggingface.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Huggingface.Temperature.IsNull() {
@@ -8779,6 +13052,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens9,
 					InputCost:            inputCost9,
 					OutputCost:           outputCost9,
+					CacheReadCost:        cacheReadCost9,
+					CacheWriteCost:       cacheWriteCost9,
+					CacheWriteCostList:   cacheWriteCostList9,
+					ContextWindowFactor:  contextWindowFactor9,
+					ServiceTierFactor:    serviceTierFactor9,
 					Temperature:          temperature9,
 					TopK:                 topK9,
 					TopP:                 topP9,
@@ -8818,6 +13096,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost10 = nil
 				}
+				cacheReadCost10 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Kimi.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.CacheReadCost.IsNull() {
+					*cacheReadCost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost10 = nil
+				}
+				cacheWriteCost10 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCost.IsNull() {
+					*cacheWriteCost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost10 = nil
+				}
+				cacheWriteCostList10 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList))
+				for cacheWriteCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList {
+					var ttl10 string
+					ttl10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].TTL.ValueString()
+
+					var cost10 float64
+					cost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].Cost.ValueFloat64()
+
+					cacheWriteCostList10 = append(cacheWriteCostList10, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl10,
+						Cost: cost10,
+					})
+				}
+				contextWindowFactor10 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor))
+				for contextWindowFactorIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor {
+					var above10 string
+					above10 = r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex10].Above.ValueString()
+
+					var inputFactor10 float64
+					inputFactor10 = r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex10].InputFactor.ValueFloat64()
+
+					var outputFactor10 float64
+					outputFactor10 = r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex10].OutputFactor.ValueFloat64()
+
+					contextWindowFactor10 = append(contextWindowFactor10, shared.AIGatewayContextWindowFactor{
+						Above:        above10,
+						InputFactor:  inputFactor10,
+						OutputFactor: outputFactor10,
+					})
+				}
+				serviceTierFactor10 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor))
+				for serviceTierFactorIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor {
+					var tier10 string
+					tier10 = r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex10].Tier.ValueString()
+
+					var factor10 float64
+					factor10 = r.API.Targets[targetsIndex].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex10].Factor.ValueFloat64()
+
+					serviceTierFactor10 = append(serviceTierFactor10, shared.AIGatewayServiceTierFactor{
+						Tier:   tier10,
+						Factor: factor10,
+					})
+				}
 				temperature10 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Kimi.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Kimi.Temperature.IsNull() {
 					*temperature10 = r.API.Targets[targetsIndex].Config.Kimi.Temperature.ValueFloat64()
@@ -8853,6 +13186,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens10,
 					InputCost:            inputCost10,
 					OutputCost:           outputCost10,
+					CacheReadCost:        cacheReadCost10,
+					CacheWriteCost:       cacheWriteCost10,
+					CacheWriteCostList:   cacheWriteCostList10,
+					ContextWindowFactor:  contextWindowFactor10,
+					ServiceTierFactor:    serviceTierFactor10,
 					Temperature:          temperature10,
 					TopK:                 topK10,
 					TopP:                 topP10,
@@ -8891,6 +13229,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost11 = nil
 				}
+				cacheReadCost11 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Llama2.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Llama2.CacheReadCost.IsNull() {
+					*cacheReadCost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost11 = nil
+				}
+				cacheWriteCost11 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCost.IsNull() {
+					*cacheWriteCost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost11 = nil
+				}
+				cacheWriteCostList11 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList))
+				for cacheWriteCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList {
+					var ttl11 string
+					ttl11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].TTL.ValueString()
+
+					var cost11 float64
+					cost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].Cost.ValueFloat64()
+
+					cacheWriteCostList11 = append(cacheWriteCostList11, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl11,
+						Cost: cost11,
+					})
+				}
+				contextWindowFactor11 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor))
+				for contextWindowFactorIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor {
+					var above11 string
+					above11 = r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex11].Above.ValueString()
+
+					var inputFactor11 float64
+					inputFactor11 = r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex11].InputFactor.ValueFloat64()
+
+					var outputFactor11 float64
+					outputFactor11 = r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex11].OutputFactor.ValueFloat64()
+
+					contextWindowFactor11 = append(contextWindowFactor11, shared.AIGatewayContextWindowFactor{
+						Above:        above11,
+						InputFactor:  inputFactor11,
+						OutputFactor: outputFactor11,
+					})
+				}
+				serviceTierFactor11 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor))
+				for serviceTierFactorIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor {
+					var tier11 string
+					tier11 = r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex11].Tier.ValueString()
+
+					var factor11 float64
+					factor11 = r.API.Targets[targetsIndex].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex11].Factor.ValueFloat64()
+
+					serviceTierFactor11 = append(serviceTierFactor11, shared.AIGatewayServiceTierFactor{
+						Tier:   tier11,
+						Factor: factor11,
+					})
+				}
 				temperature11 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Llama2.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Llama2.Temperature.IsNull() {
 					*temperature11 = r.API.Targets[targetsIndex].Config.Llama2.Temperature.ValueFloat64()
@@ -8918,6 +13311,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens11,
 					InputCost:            inputCost11,
 					OutputCost:           outputCost11,
+					CacheReadCost:        cacheReadCost11,
+					CacheWriteCost:       cacheWriteCost11,
+					CacheWriteCostList:   cacheWriteCostList11,
+					ContextWindowFactor:  contextWindowFactor11,
+					ServiceTierFactor:    serviceTierFactor11,
 					Temperature:          temperature11,
 					TopK:                 topK11,
 					TopP:                 topP11,
@@ -8956,6 +13354,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost12 = nil
 				}
+				cacheReadCost12 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Mistral.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Mistral.CacheReadCost.IsNull() {
+					*cacheReadCost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost12 = nil
+				}
+				cacheWriteCost12 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCost.IsNull() {
+					*cacheWriteCost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost12 = nil
+				}
+				cacheWriteCostList12 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList))
+				for cacheWriteCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList {
+					var ttl12 string
+					ttl12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].TTL.ValueString()
+
+					var cost12 float64
+					cost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].Cost.ValueFloat64()
+
+					cacheWriteCostList12 = append(cacheWriteCostList12, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl12,
+						Cost: cost12,
+					})
+				}
+				contextWindowFactor12 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor))
+				for contextWindowFactorIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor {
+					var above12 string
+					above12 = r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex12].Above.ValueString()
+
+					var inputFactor12 float64
+					inputFactor12 = r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex12].InputFactor.ValueFloat64()
+
+					var outputFactor12 float64
+					outputFactor12 = r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex12].OutputFactor.ValueFloat64()
+
+					contextWindowFactor12 = append(contextWindowFactor12, shared.AIGatewayContextWindowFactor{
+						Above:        above12,
+						InputFactor:  inputFactor12,
+						OutputFactor: outputFactor12,
+					})
+				}
+				serviceTierFactor12 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor))
+				for serviceTierFactorIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor {
+					var tier12 string
+					tier12 = r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex12].Tier.ValueString()
+
+					var factor12 float64
+					factor12 = r.API.Targets[targetsIndex].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex12].Factor.ValueFloat64()
+
+					serviceTierFactor12 = append(serviceTierFactor12, shared.AIGatewayServiceTierFactor{
+						Tier:   tier12,
+						Factor: factor12,
+					})
+				}
 				temperature12 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Mistral.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Mistral.Temperature.IsNull() {
 					*temperature12 = r.API.Targets[targetsIndex].Config.Mistral.Temperature.ValueFloat64()
@@ -8986,6 +13439,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens12,
 					InputCost:            inputCost12,
 					OutputCost:           outputCost12,
+					CacheReadCost:        cacheReadCost12,
+					CacheWriteCost:       cacheWriteCost12,
+					CacheWriteCostList:   cacheWriteCostList12,
+					ContextWindowFactor:  contextWindowFactor12,
+					ServiceTierFactor:    serviceTierFactor12,
 					Temperature:          temperature12,
 					TopK:                 topK12,
 					TopP:                 topP12,
@@ -9024,6 +13482,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost13 = nil
 				}
+				cacheReadCost13 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Ollama.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Ollama.CacheReadCost.IsNull() {
+					*cacheReadCost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost13 = nil
+				}
+				cacheWriteCost13 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCost.IsNull() {
+					*cacheWriteCost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost13 = nil
+				}
+				cacheWriteCostList13 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList))
+				for cacheWriteCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList {
+					var ttl13 string
+					ttl13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].TTL.ValueString()
+
+					var cost13 float64
+					cost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].Cost.ValueFloat64()
+
+					cacheWriteCostList13 = append(cacheWriteCostList13, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl13,
+						Cost: cost13,
+					})
+				}
+				contextWindowFactor13 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor))
+				for contextWindowFactorIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor {
+					var above13 string
+					above13 = r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex13].Above.ValueString()
+
+					var inputFactor13 float64
+					inputFactor13 = r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex13].InputFactor.ValueFloat64()
+
+					var outputFactor13 float64
+					outputFactor13 = r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex13].OutputFactor.ValueFloat64()
+
+					contextWindowFactor13 = append(contextWindowFactor13, shared.AIGatewayContextWindowFactor{
+						Above:        above13,
+						InputFactor:  inputFactor13,
+						OutputFactor: outputFactor13,
+					})
+				}
+				serviceTierFactor13 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor))
+				for serviceTierFactorIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor {
+					var tier13 string
+					tier13 = r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex13].Tier.ValueString()
+
+					var factor13 float64
+					factor13 = r.API.Targets[targetsIndex].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex13].Factor.ValueFloat64()
+
+					serviceTierFactor13 = append(serviceTierFactor13, shared.AIGatewayServiceTierFactor{
+						Tier:   tier13,
+						Factor: factor13,
+					})
+				}
 				temperature13 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Ollama.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Ollama.Temperature.IsNull() {
 					*temperature13 = r.API.Targets[targetsIndex].Config.Ollama.Temperature.ValueFloat64()
@@ -9053,6 +13566,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens13,
 					InputCost:            inputCost13,
 					OutputCost:           outputCost13,
+					CacheReadCost:        cacheReadCost13,
+					CacheWriteCost:       cacheWriteCost13,
+					CacheWriteCostList:   cacheWriteCostList13,
+					ContextWindowFactor:  contextWindowFactor13,
+					ServiceTierFactor:    serviceTierFactor13,
 					Temperature:          temperature13,
 					TopK:                 topK13,
 					TopP:                 topP13,
@@ -9090,6 +13608,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost14 = nil
 				}
+				cacheReadCost14 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Openai.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Openai.CacheReadCost.IsNull() {
+					*cacheReadCost14 = r.API.Targets[targetsIndex].Config.Openai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost14 = nil
+				}
+				cacheWriteCost14 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Openai.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Openai.CacheWriteCost.IsNull() {
+					*cacheWriteCost14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost14 = nil
+				}
+				cacheWriteCostList14 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList))
+				for cacheWriteCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList {
+					var ttl14 string
+					ttl14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].TTL.ValueString()
+
+					var cost14 float64
+					cost14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].Cost.ValueFloat64()
+
+					cacheWriteCostList14 = append(cacheWriteCostList14, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl14,
+						Cost: cost14,
+					})
+				}
+				contextWindowFactor14 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor))
+				for contextWindowFactorIndex14 := range r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor {
+					var above14 string
+					above14 = r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor[contextWindowFactorIndex14].Above.ValueString()
+
+					var inputFactor14 float64
+					inputFactor14 = r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor[contextWindowFactorIndex14].InputFactor.ValueFloat64()
+
+					var outputFactor14 float64
+					outputFactor14 = r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor[contextWindowFactorIndex14].OutputFactor.ValueFloat64()
+
+					contextWindowFactor14 = append(contextWindowFactor14, shared.AIGatewayContextWindowFactor{
+						Above:        above14,
+						InputFactor:  inputFactor14,
+						OutputFactor: outputFactor14,
+					})
+				}
+				serviceTierFactor14 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor))
+				for serviceTierFactorIndex14 := range r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor {
+					var tier14 string
+					tier14 = r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor[serviceTierFactorIndex14].Tier.ValueString()
+
+					var factor14 float64
+					factor14 = r.API.Targets[targetsIndex].Config.Openai.ServiceTierFactor[serviceTierFactorIndex14].Factor.ValueFloat64()
+
+					serviceTierFactor14 = append(serviceTierFactor14, shared.AIGatewayServiceTierFactor{
+						Tier:   tier14,
+						Factor: factor14,
+					})
+				}
 				temperature14 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Openai.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Openai.Temperature.IsNull() {
 					*temperature14 = r.API.Targets[targetsIndex].Config.Openai.Temperature.ValueFloat64()
@@ -9119,6 +13692,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens14,
 					InputCost:            inputCost14,
 					OutputCost:           outputCost14,
+					CacheReadCost:        cacheReadCost14,
+					CacheWriteCost:       cacheWriteCost14,
+					CacheWriteCostList:   cacheWriteCostList14,
+					ContextWindowFactor:  contextWindowFactor14,
+					ServiceTierFactor:    serviceTierFactor14,
 					Temperature:          temperature14,
 					TopK:                 topK14,
 					TopP:                 topP14,
@@ -9156,6 +13734,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost15 = nil
 				}
+				cacheReadCost15 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vercel.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vercel.CacheReadCost.IsNull() {
+					*cacheReadCost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost15 = nil
+				}
+				cacheWriteCost15 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCost.IsNull() {
+					*cacheWriteCost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost15 = nil
+				}
+				cacheWriteCostList15 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList))
+				for cacheWriteCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList {
+					var ttl15 string
+					ttl15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].TTL.ValueString()
+
+					var cost15 float64
+					cost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].Cost.ValueFloat64()
+
+					cacheWriteCostList15 = append(cacheWriteCostList15, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl15,
+						Cost: cost15,
+					})
+				}
+				contextWindowFactor15 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor))
+				for contextWindowFactorIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor {
+					var above15 string
+					above15 = r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex15].Above.ValueString()
+
+					var inputFactor15 float64
+					inputFactor15 = r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex15].InputFactor.ValueFloat64()
+
+					var outputFactor15 float64
+					outputFactor15 = r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex15].OutputFactor.ValueFloat64()
+
+					contextWindowFactor15 = append(contextWindowFactor15, shared.AIGatewayContextWindowFactor{
+						Above:        above15,
+						InputFactor:  inputFactor15,
+						OutputFactor: outputFactor15,
+					})
+				}
+				serviceTierFactor15 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor))
+				for serviceTierFactorIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor {
+					var tier15 string
+					tier15 = r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex15].Tier.ValueString()
+
+					var factor15 float64
+					factor15 = r.API.Targets[targetsIndex].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex15].Factor.ValueFloat64()
+
+					serviceTierFactor15 = append(serviceTierFactor15, shared.AIGatewayServiceTierFactor{
+						Tier:   tier15,
+						Factor: factor15,
+					})
+				}
 				temperature15 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Vercel.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vercel.Temperature.IsNull() {
 					*temperature15 = r.API.Targets[targetsIndex].Config.Vercel.Temperature.ValueFloat64()
@@ -9185,6 +13818,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens15,
 					InputCost:            inputCost15,
 					OutputCost:           outputCost15,
+					CacheReadCost:        cacheReadCost15,
+					CacheWriteCost:       cacheWriteCost15,
+					CacheWriteCostList:   cacheWriteCostList15,
+					ContextWindowFactor:  contextWindowFactor15,
+					ServiceTierFactor:    serviceTierFactor15,
 					Temperature:          temperature15,
 					TopK:                 topK15,
 					TopP:                 topP15,
@@ -9221,6 +13859,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost16 = r.API.Targets[targetsIndex].Config.Vertex.OutputCost.ValueFloat64()
 				} else {
 					outputCost16 = nil
+				}
+				cacheReadCost16 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vertex.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vertex.CacheReadCost.IsNull() {
+					*cacheReadCost16 = r.API.Targets[targetsIndex].Config.Vertex.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost16 = nil
+				}
+				cacheWriteCost16 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCost.IsNull() {
+					*cacheWriteCost16 = r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost16 = nil
+				}
+				cacheWriteCostList16 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList))
+				for cacheWriteCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList {
+					var ttl16 string
+					ttl16 = r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex16].TTL.ValueString()
+
+					var cost16 float64
+					cost16 = r.API.Targets[targetsIndex].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex16].Cost.ValueFloat64()
+
+					cacheWriteCostList16 = append(cacheWriteCostList16, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl16,
+						Cost: cost16,
+					})
+				}
+				contextWindowFactor16 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor))
+				for contextWindowFactorIndex16 := range r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor {
+					var above16 string
+					above16 = r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex16].Above.ValueString()
+
+					var inputFactor16 float64
+					inputFactor16 = r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex16].InputFactor.ValueFloat64()
+
+					var outputFactor16 float64
+					outputFactor16 = r.API.Targets[targetsIndex].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex16].OutputFactor.ValueFloat64()
+
+					contextWindowFactor16 = append(contextWindowFactor16, shared.AIGatewayContextWindowFactor{
+						Above:        above16,
+						InputFactor:  inputFactor16,
+						OutputFactor: outputFactor16,
+					})
+				}
+				serviceTierFactor16 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor))
+				for serviceTierFactorIndex16 := range r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor {
+					var tier16 string
+					tier16 = r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex16].Tier.ValueString()
+
+					var factor16 float64
+					factor16 = r.API.Targets[targetsIndex].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex16].Factor.ValueFloat64()
+
+					serviceTierFactor16 = append(serviceTierFactor16, shared.AIGatewayServiceTierFactor{
+						Tier:   tier16,
+						Factor: factor16,
+					})
 				}
 				temperature16 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Vertex.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vertex.Temperature.IsNull() {
@@ -9275,6 +13968,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens16,
 					InputCost:            inputCost16,
 					OutputCost:           outputCost16,
+					CacheReadCost:        cacheReadCost16,
+					CacheWriteCost:       cacheWriteCost16,
+					CacheWriteCostList:   cacheWriteCostList16,
+					ContextWindowFactor:  contextWindowFactor16,
+					ServiceTierFactor:    serviceTierFactor16,
 					Temperature:          temperature16,
 					TopK:                 topK16,
 					TopP:                 topP16,
@@ -9313,6 +14011,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost17 = nil
 				}
+				cacheReadCost17 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vllm.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vllm.CacheReadCost.IsNull() {
+					*cacheReadCost17 = r.API.Targets[targetsIndex].Config.Vllm.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost17 = nil
+				}
+				cacheWriteCost17 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCost.IsNull() {
+					*cacheWriteCost17 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost17 = nil
+				}
+				cacheWriteCostList17 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList))
+				for cacheWriteCostListIndex17 := range r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList {
+					var ttl17 string
+					ttl17 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex17].TTL.ValueString()
+
+					var cost17 float64
+					cost17 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex17].Cost.ValueFloat64()
+
+					cacheWriteCostList17 = append(cacheWriteCostList17, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl17,
+						Cost: cost17,
+					})
+				}
+				contextWindowFactor17 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor))
+				for contextWindowFactorIndex17 := range r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor {
+					var above17 string
+					above17 = r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex17].Above.ValueString()
+
+					var inputFactor17 float64
+					inputFactor17 = r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex17].InputFactor.ValueFloat64()
+
+					var outputFactor17 float64
+					outputFactor17 = r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex17].OutputFactor.ValueFloat64()
+
+					contextWindowFactor17 = append(contextWindowFactor17, shared.AIGatewayContextWindowFactor{
+						Above:        above17,
+						InputFactor:  inputFactor17,
+						OutputFactor: outputFactor17,
+					})
+				}
+				serviceTierFactor17 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor))
+				for serviceTierFactorIndex17 := range r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor {
+					var tier17 string
+					tier17 = r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex17].Tier.ValueString()
+
+					var factor17 float64
+					factor17 = r.API.Targets[targetsIndex].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex17].Factor.ValueFloat64()
+
+					serviceTierFactor17 = append(serviceTierFactor17, shared.AIGatewayServiceTierFactor{
+						Tier:   tier17,
+						Factor: factor17,
+					})
+				}
 				temperature17 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Vllm.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Vllm.Temperature.IsNull() {
 					*temperature17 = r.API.Targets[targetsIndex].Config.Vllm.Temperature.ValueFloat64()
@@ -9339,6 +14092,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens17,
 					InputCost:            inputCost17,
 					OutputCost:           outputCost17,
+					CacheReadCost:        cacheReadCost17,
+					CacheWriteCost:       cacheWriteCost17,
+					CacheWriteCostList:   cacheWriteCostList17,
+					ContextWindowFactor:  contextWindowFactor17,
+					ServiceTierFactor:    serviceTierFactor17,
 					Temperature:          temperature17,
 					TopK:                 topK17,
 					TopP:                 topP17,
@@ -9376,6 +14134,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost18 = nil
 				}
+				cacheReadCost18 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Xai.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Xai.CacheReadCost.IsNull() {
+					*cacheReadCost18 = r.API.Targets[targetsIndex].Config.Xai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost18 = nil
+				}
+				cacheWriteCost18 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Xai.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Xai.CacheWriteCost.IsNull() {
+					*cacheWriteCost18 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost18 = nil
+				}
+				cacheWriteCostList18 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList))
+				for cacheWriteCostListIndex18 := range r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList {
+					var ttl18 string
+					ttl18 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex18].TTL.ValueString()
+
+					var cost18 float64
+					cost18 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex18].Cost.ValueFloat64()
+
+					cacheWriteCostList18 = append(cacheWriteCostList18, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl18,
+						Cost: cost18,
+					})
+				}
+				contextWindowFactor18 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor))
+				for contextWindowFactorIndex18 := range r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor {
+					var above18 string
+					above18 = r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor[contextWindowFactorIndex18].Above.ValueString()
+
+					var inputFactor18 float64
+					inputFactor18 = r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor[contextWindowFactorIndex18].InputFactor.ValueFloat64()
+
+					var outputFactor18 float64
+					outputFactor18 = r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor[contextWindowFactorIndex18].OutputFactor.ValueFloat64()
+
+					contextWindowFactor18 = append(contextWindowFactor18, shared.AIGatewayContextWindowFactor{
+						Above:        above18,
+						InputFactor:  inputFactor18,
+						OutputFactor: outputFactor18,
+					})
+				}
+				serviceTierFactor18 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor))
+				for serviceTierFactorIndex18 := range r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor {
+					var tier18 string
+					tier18 = r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor[serviceTierFactorIndex18].Tier.ValueString()
+
+					var factor18 float64
+					factor18 = r.API.Targets[targetsIndex].Config.Xai.ServiceTierFactor[serviceTierFactorIndex18].Factor.ValueFloat64()
+
+					serviceTierFactor18 = append(serviceTierFactor18, shared.AIGatewayServiceTierFactor{
+						Tier:   tier18,
+						Factor: factor18,
+					})
+				}
 				temperature18 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Xai.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Xai.Temperature.IsNull() {
 					*temperature18 = r.API.Targets[targetsIndex].Config.Xai.Temperature.ValueFloat64()
@@ -9405,6 +14218,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens18,
 					InputCost:            inputCost18,
 					OutputCost:           outputCost18,
+					CacheReadCost:        cacheReadCost18,
+					CacheWriteCost:       cacheWriteCost18,
+					CacheWriteCostList:   cacheWriteCostList18,
+					ContextWindowFactor:  contextWindowFactor18,
+					ServiceTierFactor:    serviceTierFactor18,
 					Temperature:          temperature18,
 					TopK:                 topK18,
 					TopP:                 topP18,
@@ -9441,6 +14259,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.OutputCost.ValueFloat64()
 				} else {
 					outputCost19 = nil
+				}
+				cacheReadCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCost.IsNull() {
+					*cacheReadCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost19 = nil
+				}
+				cacheWriteCost19 := new(float64)
+				if !r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCost.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCost.IsNull() {
+					*cacheWriteCost19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost19 = nil
+				}
+				cacheWriteCostList19 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList))
+				for cacheWriteCostListIndex19 := range r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList {
+					var ttl19 string
+					ttl19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex19].TTL.ValueString()
+
+					var cost19 float64
+					cost19 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex19].Cost.ValueFloat64()
+
+					cacheWriteCostList19 = append(cacheWriteCostList19, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl19,
+						Cost: cost19,
+					})
+				}
+				contextWindowFactor19 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor))
+				for contextWindowFactorIndex19 := range r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor {
+					var above19 string
+					above19 = r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex19].Above.ValueString()
+
+					var inputFactor19 float64
+					inputFactor19 = r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex19].InputFactor.ValueFloat64()
+
+					var outputFactor19 float64
+					outputFactor19 = r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex19].OutputFactor.ValueFloat64()
+
+					contextWindowFactor19 = append(contextWindowFactor19, shared.AIGatewayContextWindowFactor{
+						Above:        above19,
+						InputFactor:  inputFactor19,
+						OutputFactor: outputFactor19,
+					})
+				}
+				serviceTierFactor19 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor))
+				for serviceTierFactorIndex19 := range r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor {
+					var tier19 string
+					tier19 = r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex19].Tier.ValueString()
+
+					var factor19 float64
+					factor19 = r.API.Targets[targetsIndex].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex19].Factor.ValueFloat64()
+
+					serviceTierFactor19 = append(serviceTierFactor19, shared.AIGatewayServiceTierFactor{
+						Tier:   tier19,
+						Factor: factor19,
+					})
 				}
 				temperature19 := new(float64)
 				if !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsUnknown() && !r.API.Targets[targetsIndex].Config.Sagemaker.Temperature.IsNull() {
@@ -9530,6 +14403,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens19,
 					InputCost:            inputCost19,
 					OutputCost:           outputCost19,
+					CacheReadCost:        cacheReadCost19,
+					CacheWriteCost:       cacheWriteCost19,
+					CacheWriteCostList:   cacheWriteCostList19,
+					ContextWindowFactor:  contextWindowFactor19,
+					ServiceTierFactor:    serviceTierFactor19,
 					Temperature:          temperature19,
 					TopK:                 topK19,
 					TopP:                 topP19,
@@ -9634,62 +14512,33 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 		}
 		var model1 *shared.AIGatewayModelSelectorConfig
 		if r.API.Config.Route.Model != nil {
-			var bodySelector *shared.BodySelector
-			if r.API.Config.Route.Model.BodySelector != nil {
-				var bodyParam string
-				bodyParam = r.API.Config.Route.Model.BodySelector.BodyParam.ValueString()
-
-				values := make([]string, 0, len(r.API.Config.Route.Model.BodySelector.Values))
-				for valuesIndex := range r.API.Config.Route.Model.BodySelector.Values {
-					values = append(values, r.API.Config.Route.Model.BodySelector.Values[valuesIndex].ValueString())
-				}
-				bodySelector = &shared.BodySelector{
-					BodyParam: bodyParam,
-					Values:    values,
-				}
+			bodyParam := new(string)
+			if !r.API.Config.Route.Model.BodyParam.IsUnknown() && !r.API.Config.Route.Model.BodyParam.IsNull() {
+				*bodyParam = r.API.Config.Route.Model.BodyParam.ValueString()
+			} else {
+				bodyParam = nil
 			}
-			if bodySelector != nil {
-				model1 = &shared.AIGatewayModelSelectorConfig{
-					BodySelector: bodySelector,
-				}
+			headerParam := new(string)
+			if !r.API.Config.Route.Model.HeaderParam.IsUnknown() && !r.API.Config.Route.Model.HeaderParam.IsNull() {
+				*headerParam = r.API.Config.Route.Model.HeaderParam.ValueString()
+			} else {
+				headerParam = nil
 			}
-			var headersSelector *shared.HeadersSelector
-			if r.API.Config.Route.Model.HeadersSelector != nil {
-				var headerParam string
-				headerParam = r.API.Config.Route.Model.HeadersSelector.HeaderParam.ValueString()
-
-				values1 := make([]string, 0, len(r.API.Config.Route.Model.HeadersSelector.Values))
-				for valuesIndex1 := range r.API.Config.Route.Model.HeadersSelector.Values {
-					values1 = append(values1, r.API.Config.Route.Model.HeadersSelector.Values[valuesIndex1].ValueString())
-				}
-				headersSelector = &shared.HeadersSelector{
-					HeaderParam: headerParam,
-					Values:      values1,
-				}
+			pathParam := new(string)
+			if !r.API.Config.Route.Model.PathParam.IsUnknown() && !r.API.Config.Route.Model.PathParam.IsNull() {
+				*pathParam = r.API.Config.Route.Model.PathParam.ValueString()
+			} else {
+				pathParam = nil
 			}
-			if headersSelector != nil {
-				model1 = &shared.AIGatewayModelSelectorConfig{
-					HeadersSelector: headersSelector,
-				}
+			values := make([]string, 0, len(r.API.Config.Route.Model.Values))
+			for valuesIndex := range r.API.Config.Route.Model.Values {
+				values = append(values, r.API.Config.Route.Model.Values[valuesIndex].ValueString())
 			}
-			var pathSelector *shared.PathSelector
-			if r.API.Config.Route.Model.PathSelector != nil {
-				var pathParam string
-				pathParam = r.API.Config.Route.Model.PathSelector.PathParam.ValueString()
-
-				values2 := make([]string, 0, len(r.API.Config.Route.Model.PathSelector.Values))
-				for valuesIndex2 := range r.API.Config.Route.Model.PathSelector.Values {
-					values2 = append(values2, r.API.Config.Route.Model.PathSelector.Values[valuesIndex2].ValueString())
-				}
-				pathSelector = &shared.PathSelector{
-					PathParam: pathParam,
-					Values:    values2,
-				}
-			}
-			if pathSelector != nil {
-				model1 = &shared.AIGatewayModelSelectorConfig{
-					PathSelector: pathSelector,
-				}
+			model1 = &shared.AIGatewayModelSelectorConfig{
+				BodyParam:   bodyParam,
+				HeaderParam: headerParam,
+				PathParam:   pathParam,
+				Values:      values,
 			}
 		}
 		route := shared.AIGatewayModelRouteConfig{
@@ -10207,6 +15056,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl20 = nil
 					}
+					typeVar1 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId1 string
 					deploymentId1 = r.API.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -10218,6 +15068,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					}
 					aiGatewayAzureEmbeddingsModelConfig = &shared.AIGatewayAzureEmbeddingsModelConfig{
 						UpstreamURL:  upstreamUrl20,
+						Type:         typeVar1,
 						DeploymentID: deploymentId1,
 						APIVersion:   apiVersion2,
 					}
@@ -10353,10 +15204,10 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl24 = nil
 					}
-					typeVar1 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar2 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.API.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig = &shared.AIGatewayMistralEmbeddingsModelConfig{
 						UpstreamURL: upstreamUrl24,
-						Type:        typeVar1,
+						Type:        typeVar2,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig != nil {
@@ -11118,6 +15969,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost20 = nil
 				}
+				cacheReadCost20 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCost.IsNull() {
+					*cacheReadCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost20 = nil
+				}
+				cacheWriteCost20 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCost.IsNull() {
+					*cacheWriteCost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost20 = nil
+				}
+				cacheWriteCostList20 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList))
+				for cacheWriteCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList {
+					var ttl20 string
+					ttl20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex20].TTL.ValueString()
+
+					var cost20 float64
+					cost20 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex20].Cost.ValueFloat64()
+
+					cacheWriteCostList20 = append(cacheWriteCostList20, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl20,
+						Cost: cost20,
+					})
+				}
+				contextWindowFactor20 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor))
+				for contextWindowFactorIndex20 := range r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor {
+					var above20 string
+					above20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex20].Above.ValueString()
+
+					var inputFactor20 float64
+					inputFactor20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex20].InputFactor.ValueFloat64()
+
+					var outputFactor20 float64
+					outputFactor20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor[contextWindowFactorIndex20].OutputFactor.ValueFloat64()
+
+					contextWindowFactor20 = append(contextWindowFactor20, shared.AIGatewayContextWindowFactor{
+						Above:        above20,
+						InputFactor:  inputFactor20,
+						OutputFactor: outputFactor20,
+					})
+				}
+				serviceTierFactor20 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor))
+				for serviceTierFactorIndex20 := range r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor {
+					var tier20 string
+					tier20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex20].Tier.ValueString()
+
+					var factor20 float64
+					factor20 = r.Model.Targets[targetsIndex1].Config.Anthropic.ServiceTierFactor[serviceTierFactorIndex20].Factor.ValueFloat64()
+
+					serviceTierFactor20 = append(serviceTierFactor20, shared.AIGatewayServiceTierFactor{
+						Tier:   tier20,
+						Factor: factor20,
+					})
+				}
 				temperature20 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.IsNull() {
 					*temperature20 = r.Model.Targets[targetsIndex1].Config.Anthropic.Temperature.ValueFloat64()
@@ -11153,6 +16059,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens20,
 					InputCost:            inputCost20,
 					OutputCost:           outputCost20,
+					CacheReadCost:        cacheReadCost20,
+					CacheWriteCost:       cacheWriteCost20,
+					CacheWriteCostList:   cacheWriteCostList20,
+					ContextWindowFactor:  contextWindowFactor20,
+					ServiceTierFactor:    serviceTierFactor20,
 					Temperature:          temperature20,
 					TopK:                 topK20,
 					TopP:                 topP20,
@@ -11191,6 +16102,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost21 = nil
 				}
+				cacheReadCost21 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCost.IsNull() {
+					*cacheReadCost21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost21 = nil
+				}
+				cacheWriteCost21 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCost.IsNull() {
+					*cacheWriteCost21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost21 = nil
+				}
+				cacheWriteCostList21 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList))
+				for cacheWriteCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList {
+					var ttl21 string
+					ttl21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex21].TTL.ValueString()
+
+					var cost21 float64
+					cost21 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex21].Cost.ValueFloat64()
+
+					cacheWriteCostList21 = append(cacheWriteCostList21, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl21,
+						Cost: cost21,
+					})
+				}
+				contextWindowFactor21 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor))
+				for contextWindowFactorIndex21 := range r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor {
+					var above21 string
+					above21 = r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor[contextWindowFactorIndex21].Above.ValueString()
+
+					var inputFactor21 float64
+					inputFactor21 = r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor[contextWindowFactorIndex21].InputFactor.ValueFloat64()
+
+					var outputFactor21 float64
+					outputFactor21 = r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor[contextWindowFactorIndex21].OutputFactor.ValueFloat64()
+
+					contextWindowFactor21 = append(contextWindowFactor21, shared.AIGatewayContextWindowFactor{
+						Above:        above21,
+						InputFactor:  inputFactor21,
+						OutputFactor: outputFactor21,
+					})
+				}
+				serviceTierFactor21 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor))
+				for serviceTierFactorIndex21 := range r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor {
+					var tier21 string
+					tier21 = r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor[serviceTierFactorIndex21].Tier.ValueString()
+
+					var factor21 float64
+					factor21 = r.Model.Targets[targetsIndex1].Config.Azure.ServiceTierFactor[serviceTierFactorIndex21].Factor.ValueFloat64()
+
+					serviceTierFactor21 = append(serviceTierFactor21, shared.AIGatewayServiceTierFactor{
+						Tier:   tier21,
+						Factor: factor21,
+					})
+				}
 				temperature21 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.Temperature.IsNull() {
 					*temperature21 = r.Model.Targets[targetsIndex1].Config.Azure.Temperature.ValueFloat64()
@@ -11215,26 +16181,41 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					upstreamUrl29 = nil
 				}
-				var deploymentId2 string
-				deploymentId2 = r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.ValueString()
-
+				deploymentId2 := new(string)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.IsNull() {
+					*deploymentId2 = r.Model.Targets[targetsIndex1].Config.Azure.DeploymentID.ValueString()
+				} else {
+					deploymentId2 = nil
+				}
 				apiVersion3 := new(string)
 				if !r.Model.Targets[targetsIndex1].Config.Azure.APIVersion.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.APIVersion.IsNull() {
 					*apiVersion3 = r.Model.Targets[targetsIndex1].Config.Azure.APIVersion.ValueString()
 				} else {
 					apiVersion3 = nil
 				}
+				foundryPathPrefix1 := new(shared.FoundryPathPrefix)
+				if !r.Model.Targets[targetsIndex1].Config.Azure.FoundryPathPrefix.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Azure.FoundryPathPrefix.IsNull() {
+					*foundryPathPrefix1 = shared.FoundryPathPrefix(r.Model.Targets[targetsIndex1].Config.Azure.FoundryPathPrefix.ValueString())
+				} else {
+					foundryPathPrefix1 = nil
+				}
 				aiGatewayTargetAzureConfig1 = &shared.AIGatewayTargetAzureConfig{
 					EmbeddingsDimensions: embeddingsDimensions21,
 					MaxTokens:            maxTokens21,
 					InputCost:            inputCost21,
 					OutputCost:           outputCost21,
+					CacheReadCost:        cacheReadCost21,
+					CacheWriteCost:       cacheWriteCost21,
+					CacheWriteCostList:   cacheWriteCostList21,
+					ContextWindowFactor:  contextWindowFactor21,
+					ServiceTierFactor:    serviceTierFactor21,
 					Temperature:          temperature21,
 					TopK:                 topK21,
 					TopP:                 topP21,
 					UpstreamURL:          upstreamUrl29,
 					DeploymentID:         deploymentId2,
 					APIVersion:           apiVersion3,
+					FoundryPathPrefix:    foundryPathPrefix1,
 				}
 			}
 			if aiGatewayTargetAzureConfig1 != nil {
@@ -11267,6 +16248,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCost.ValueFloat64()
 				} else {
 					outputCost22 = nil
+				}
+				cacheReadCost22 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCost.IsNull() {
+					*cacheReadCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost22 = nil
+				}
+				cacheWriteCost22 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCost.IsNull() {
+					*cacheWriteCost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost22 = nil
+				}
+				cacheWriteCostList22 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList))
+				for cacheWriteCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList {
+					var ttl22 string
+					ttl22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex22].TTL.ValueString()
+
+					var cost22 float64
+					cost22 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex22].Cost.ValueFloat64()
+
+					cacheWriteCostList22 = append(cacheWriteCostList22, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl22,
+						Cost: cost22,
+					})
+				}
+				contextWindowFactor22 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor))
+				for contextWindowFactorIndex22 := range r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor {
+					var above22 string
+					above22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex22].Above.ValueString()
+
+					var inputFactor22 float64
+					inputFactor22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex22].InputFactor.ValueFloat64()
+
+					var outputFactor22 float64
+					outputFactor22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor[contextWindowFactorIndex22].OutputFactor.ValueFloat64()
+
+					contextWindowFactor22 = append(contextWindowFactor22, shared.AIGatewayContextWindowFactor{
+						Above:        above22,
+						InputFactor:  inputFactor22,
+						OutputFactor: outputFactor22,
+					})
+				}
+				serviceTierFactor22 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor))
+				for serviceTierFactorIndex22 := range r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor {
+					var tier22 string
+					tier22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex22].Tier.ValueString()
+
+					var factor22 float64
+					factor22 = r.Model.Targets[targetsIndex1].Config.Bedrock.ServiceTierFactor[serviceTierFactorIndex22].Factor.ValueFloat64()
+
+					serviceTierFactor22 = append(serviceTierFactor22, shared.AIGatewayServiceTierFactor{
+						Tier:   tier22,
+						Factor: factor22,
+					})
 				}
 				temperature22 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Bedrock.Temperature.IsNull() {
@@ -11327,6 +16363,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:                maxTokens22,
 					InputCost:                inputCost22,
 					OutputCost:               outputCost22,
+					CacheReadCost:            cacheReadCost22,
+					CacheWriteCost:           cacheWriteCost22,
+					CacheWriteCostList:       cacheWriteCostList22,
+					ContextWindowFactor:      contextWindowFactor22,
+					ServiceTierFactor:        serviceTierFactor22,
 					Temperature:              temperature22,
 					TopK:                     topK22,
 					TopP:                     topP22,
@@ -11369,6 +16410,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost23 = nil
 				}
+				cacheReadCost23 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCost.IsNull() {
+					*cacheReadCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost23 = nil
+				}
+				cacheWriteCost23 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCost.IsNull() {
+					*cacheWriteCost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost23 = nil
+				}
+				cacheWriteCostList23 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList))
+				for cacheWriteCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList {
+					var ttl23 string
+					ttl23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex23].TTL.ValueString()
+
+					var cost23 float64
+					cost23 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex23].Cost.ValueFloat64()
+
+					cacheWriteCostList23 = append(cacheWriteCostList23, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl23,
+						Cost: cost23,
+					})
+				}
+				contextWindowFactor23 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor))
+				for contextWindowFactorIndex23 := range r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor {
+					var above23 string
+					above23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex23].Above.ValueString()
+
+					var inputFactor23 float64
+					inputFactor23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex23].InputFactor.ValueFloat64()
+
+					var outputFactor23 float64
+					outputFactor23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor[contextWindowFactorIndex23].OutputFactor.ValueFloat64()
+
+					contextWindowFactor23 = append(contextWindowFactor23, shared.AIGatewayContextWindowFactor{
+						Above:        above23,
+						InputFactor:  inputFactor23,
+						OutputFactor: outputFactor23,
+					})
+				}
+				serviceTierFactor23 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor))
+				for serviceTierFactorIndex23 := range r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor {
+					var tier23 string
+					tier23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex23].Tier.ValueString()
+
+					var factor23 float64
+					factor23 = r.Model.Targets[targetsIndex1].Config.Cerebras.ServiceTierFactor[serviceTierFactorIndex23].Factor.ValueFloat64()
+
+					serviceTierFactor23 = append(serviceTierFactor23, shared.AIGatewayServiceTierFactor{
+						Tier:   tier23,
+						Factor: factor23,
+					})
+				}
 				temperature23 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.IsNull() {
 					*temperature23 = r.Model.Targets[targetsIndex1].Config.Cerebras.Temperature.ValueFloat64()
@@ -11398,6 +16494,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens23,
 					InputCost:            inputCost23,
 					OutputCost:           outputCost23,
+					CacheReadCost:        cacheReadCost23,
+					CacheWriteCost:       cacheWriteCost23,
+					CacheWriteCostList:   cacheWriteCostList23,
+					ContextWindowFactor:  contextWindowFactor23,
+					ServiceTierFactor:    serviceTierFactor23,
 					Temperature:          temperature23,
 					TopK:                 topK23,
 					TopP:                 topP23,
@@ -11434,6 +16535,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCost.ValueFloat64()
 				} else {
 					outputCost24 = nil
+				}
+				cacheReadCost24 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCost.IsNull() {
+					*cacheReadCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost24 = nil
+				}
+				cacheWriteCost24 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCost.IsNull() {
+					*cacheWriteCost24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost24 = nil
+				}
+				cacheWriteCostList24 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList))
+				for cacheWriteCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList {
+					var ttl24 string
+					ttl24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex24].TTL.ValueString()
+
+					var cost24 float64
+					cost24 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex24].Cost.ValueFloat64()
+
+					cacheWriteCostList24 = append(cacheWriteCostList24, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl24,
+						Cost: cost24,
+					})
+				}
+				contextWindowFactor24 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor))
+				for contextWindowFactorIndex24 := range r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor {
+					var above24 string
+					above24 = r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex24].Above.ValueString()
+
+					var inputFactor24 float64
+					inputFactor24 = r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex24].InputFactor.ValueFloat64()
+
+					var outputFactor24 float64
+					outputFactor24 = r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor[contextWindowFactorIndex24].OutputFactor.ValueFloat64()
+
+					contextWindowFactor24 = append(contextWindowFactor24, shared.AIGatewayContextWindowFactor{
+						Above:        above24,
+						InputFactor:  inputFactor24,
+						OutputFactor: outputFactor24,
+					})
+				}
+				serviceTierFactor24 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor))
+				for serviceTierFactorIndex24 := range r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor {
+					var tier24 string
+					tier24 = r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex24].Tier.ValueString()
+
+					var factor24 float64
+					factor24 = r.Model.Targets[targetsIndex1].Config.Cohere.ServiceTierFactor[serviceTierFactorIndex24].Factor.ValueFloat64()
+
+					serviceTierFactor24 = append(serviceTierFactor24, shared.AIGatewayServiceTierFactor{
+						Tier:   tier24,
+						Factor: factor24,
+					})
 				}
 				temperature24 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Cohere.Temperature.IsNull() {
@@ -11482,6 +16638,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens24,
 					InputCost:            inputCost24,
 					OutputCost:           outputCost24,
+					CacheReadCost:        cacheReadCost24,
+					CacheWriteCost:       cacheWriteCost24,
+					CacheWriteCostList:   cacheWriteCostList24,
+					ContextWindowFactor:  contextWindowFactor24,
+					ServiceTierFactor:    serviceTierFactor24,
 					Temperature:          temperature24,
 					TopK:                 topK24,
 					TopP:                 topP24,
@@ -11522,6 +16683,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost25 = nil
 				}
+				cacheReadCost25 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCost.IsNull() {
+					*cacheReadCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost25 = nil
+				}
+				cacheWriteCost25 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCost.IsNull() {
+					*cacheWriteCost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost25 = nil
+				}
+				cacheWriteCostList25 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList))
+				for cacheWriteCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList {
+					var ttl25 string
+					ttl25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex25].TTL.ValueString()
+
+					var cost25 float64
+					cost25 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex25].Cost.ValueFloat64()
+
+					cacheWriteCostList25 = append(cacheWriteCostList25, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl25,
+						Cost: cost25,
+					})
+				}
+				contextWindowFactor25 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor))
+				for contextWindowFactorIndex25 := range r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor {
+					var above25 string
+					above25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex25].Above.ValueString()
+
+					var inputFactor25 float64
+					inputFactor25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex25].InputFactor.ValueFloat64()
+
+					var outputFactor25 float64
+					outputFactor25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor[contextWindowFactorIndex25].OutputFactor.ValueFloat64()
+
+					contextWindowFactor25 = append(contextWindowFactor25, shared.AIGatewayContextWindowFactor{
+						Above:        above25,
+						InputFactor:  inputFactor25,
+						OutputFactor: outputFactor25,
+					})
+				}
+				serviceTierFactor25 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor))
+				for serviceTierFactorIndex25 := range r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor {
+					var tier25 string
+					tier25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex25].Tier.ValueString()
+
+					var factor25 float64
+					factor25 = r.Model.Targets[targetsIndex1].Config.Dashscope.ServiceTierFactor[serviceTierFactorIndex25].Factor.ValueFloat64()
+
+					serviceTierFactor25 = append(serviceTierFactor25, shared.AIGatewayServiceTierFactor{
+						Tier:   tier25,
+						Factor: factor25,
+					})
+				}
 				temperature25 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.IsNull() {
 					*temperature25 = r.Model.Targets[targetsIndex1].Config.Dashscope.Temperature.ValueFloat64()
@@ -11557,6 +16773,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens25,
 					InputCost:            inputCost25,
 					OutputCost:           outputCost25,
+					CacheReadCost:        cacheReadCost25,
+					CacheWriteCost:       cacheWriteCost25,
+					CacheWriteCostList:   cacheWriteCostList25,
+					ContextWindowFactor:  contextWindowFactor25,
+					ServiceTierFactor:    serviceTierFactor25,
 					Temperature:          temperature25,
 					TopK:                 topK25,
 					TopP:                 topP25,
@@ -11595,6 +16816,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost26 = nil
 				}
+				cacheReadCost26 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCost.IsNull() {
+					*cacheReadCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost26 = nil
+				}
+				cacheWriteCost26 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCost.IsNull() {
+					*cacheWriteCost26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost26 = nil
+				}
+				cacheWriteCostList26 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList))
+				for cacheWriteCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList {
+					var ttl26 string
+					ttl26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex26].TTL.ValueString()
+
+					var cost26 float64
+					cost26 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex26].Cost.ValueFloat64()
+
+					cacheWriteCostList26 = append(cacheWriteCostList26, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl26,
+						Cost: cost26,
+					})
+				}
+				contextWindowFactor26 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor))
+				for contextWindowFactorIndex26 := range r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor {
+					var above26 string
+					above26 = r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex26].Above.ValueString()
+
+					var inputFactor26 float64
+					inputFactor26 = r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex26].InputFactor.ValueFloat64()
+
+					var outputFactor26 float64
+					outputFactor26 = r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor[contextWindowFactorIndex26].OutputFactor.ValueFloat64()
+
+					contextWindowFactor26 = append(contextWindowFactor26, shared.AIGatewayContextWindowFactor{
+						Above:        above26,
+						InputFactor:  inputFactor26,
+						OutputFactor: outputFactor26,
+					})
+				}
+				serviceTierFactor26 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor))
+				for serviceTierFactorIndex26 := range r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor {
+					var tier26 string
+					tier26 = r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex26].Tier.ValueString()
+
+					var factor26 float64
+					factor26 = r.Model.Targets[targetsIndex1].Config.Databricks.ServiceTierFactor[serviceTierFactorIndex26].Factor.ValueFloat64()
+
+					serviceTierFactor26 = append(serviceTierFactor26, shared.AIGatewayServiceTierFactor{
+						Tier:   tier26,
+						Factor: factor26,
+					})
+				}
 				temperature26 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.IsNull() {
 					*temperature26 = r.Model.Targets[targetsIndex1].Config.Databricks.Temperature.ValueFloat64()
@@ -11627,6 +16903,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens26,
 					InputCost:            inputCost26,
 					OutputCost:           outputCost26,
+					CacheReadCost:        cacheReadCost26,
+					CacheWriteCost:       cacheWriteCost26,
+					CacheWriteCostList:   cacheWriteCostList26,
+					ContextWindowFactor:  contextWindowFactor26,
+					ServiceTierFactor:    serviceTierFactor26,
 					Temperature:          temperature26,
 					TopK:                 topK26,
 					TopP:                 topP26,
@@ -11665,6 +16946,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost27 = nil
 				}
+				cacheReadCost27 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCost.IsNull() {
+					*cacheReadCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost27 = nil
+				}
+				cacheWriteCost27 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCost.IsNull() {
+					*cacheWriteCost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost27 = nil
+				}
+				cacheWriteCostList27 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList))
+				for cacheWriteCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList {
+					var ttl27 string
+					ttl27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex27].TTL.ValueString()
+
+					var cost27 float64
+					cost27 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex27].Cost.ValueFloat64()
+
+					cacheWriteCostList27 = append(cacheWriteCostList27, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl27,
+						Cost: cost27,
+					})
+				}
+				contextWindowFactor27 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor))
+				for contextWindowFactorIndex27 := range r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor {
+					var above27 string
+					above27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex27].Above.ValueString()
+
+					var inputFactor27 float64
+					inputFactor27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex27].InputFactor.ValueFloat64()
+
+					var outputFactor27 float64
+					outputFactor27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor[contextWindowFactorIndex27].OutputFactor.ValueFloat64()
+
+					contextWindowFactor27 = append(contextWindowFactor27, shared.AIGatewayContextWindowFactor{
+						Above:        above27,
+						InputFactor:  inputFactor27,
+						OutputFactor: outputFactor27,
+					})
+				}
+				serviceTierFactor27 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor))
+				for serviceTierFactorIndex27 := range r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor {
+					var tier27 string
+					tier27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex27].Tier.ValueString()
+
+					var factor27 float64
+					factor27 = r.Model.Targets[targetsIndex1].Config.Deepseek.ServiceTierFactor[serviceTierFactorIndex27].Factor.ValueFloat64()
+
+					serviceTierFactor27 = append(serviceTierFactor27, shared.AIGatewayServiceTierFactor{
+						Tier:   tier27,
+						Factor: factor27,
+					})
+				}
 				temperature27 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.IsNull() {
 					*temperature27 = r.Model.Targets[targetsIndex1].Config.Deepseek.Temperature.ValueFloat64()
@@ -11694,6 +17030,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens27,
 					InputCost:            inputCost27,
 					OutputCost:           outputCost27,
+					CacheReadCost:        cacheReadCost27,
+					CacheWriteCost:       cacheWriteCost27,
+					CacheWriteCostList:   cacheWriteCostList27,
+					ContextWindowFactor:  contextWindowFactor27,
+					ServiceTierFactor:    serviceTierFactor27,
 					Temperature:          temperature27,
 					TopK:                 topK27,
 					TopP:                 topP27,
@@ -11730,6 +17071,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCost.ValueFloat64()
 				} else {
 					outputCost28 = nil
+				}
+				cacheReadCost28 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCost.IsNull() {
+					*cacheReadCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost28 = nil
+				}
+				cacheWriteCost28 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCost.IsNull() {
+					*cacheWriteCost28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost28 = nil
+				}
+				cacheWriteCostList28 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList))
+				for cacheWriteCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList {
+					var ttl28 string
+					ttl28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex28].TTL.ValueString()
+
+					var cost28 float64
+					cost28 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex28].Cost.ValueFloat64()
+
+					cacheWriteCostList28 = append(cacheWriteCostList28, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl28,
+						Cost: cost28,
+					})
+				}
+				contextWindowFactor28 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor))
+				for contextWindowFactorIndex28 := range r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor {
+					var above28 string
+					above28 = r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex28].Above.ValueString()
+
+					var inputFactor28 float64
+					inputFactor28 = r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex28].InputFactor.ValueFloat64()
+
+					var outputFactor28 float64
+					outputFactor28 = r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor[contextWindowFactorIndex28].OutputFactor.ValueFloat64()
+
+					contextWindowFactor28 = append(contextWindowFactor28, shared.AIGatewayContextWindowFactor{
+						Above:        above28,
+						InputFactor:  inputFactor28,
+						OutputFactor: outputFactor28,
+					})
+				}
+				serviceTierFactor28 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor))
+				for serviceTierFactorIndex28 := range r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor {
+					var tier28 string
+					tier28 = r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex28].Tier.ValueString()
+
+					var factor28 float64
+					factor28 = r.Model.Targets[targetsIndex1].Config.Gemini.ServiceTierFactor[serviceTierFactorIndex28].Factor.ValueFloat64()
+
+					serviceTierFactor28 = append(serviceTierFactor28, shared.AIGatewayServiceTierFactor{
+						Tier:   tier28,
+						Factor: factor28,
+					})
 				}
 				temperature28 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Gemini.Temperature.IsNull() {
@@ -11777,6 +17173,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens28,
 					InputCost:            inputCost28,
 					OutputCost:           outputCost28,
+					CacheReadCost:        cacheReadCost28,
+					CacheWriteCost:       cacheWriteCost28,
+					CacheWriteCostList:   cacheWriteCostList28,
+					ContextWindowFactor:  contextWindowFactor28,
+					ServiceTierFactor:    serviceTierFactor28,
 					Temperature:          temperature28,
 					TopK:                 topK28,
 					TopP:                 topP28,
@@ -11814,6 +17215,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCost.ValueFloat64()
 				} else {
 					outputCost29 = nil
+				}
+				cacheReadCost29 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCost.IsNull() {
+					*cacheReadCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost29 = nil
+				}
+				cacheWriteCost29 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCost.IsNull() {
+					*cacheWriteCost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost29 = nil
+				}
+				cacheWriteCostList29 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList))
+				for cacheWriteCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList {
+					var ttl29 string
+					ttl29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex29].TTL.ValueString()
+
+					var cost29 float64
+					cost29 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex29].Cost.ValueFloat64()
+
+					cacheWriteCostList29 = append(cacheWriteCostList29, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl29,
+						Cost: cost29,
+					})
+				}
+				contextWindowFactor29 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor))
+				for contextWindowFactorIndex29 := range r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor {
+					var above29 string
+					above29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex29].Above.ValueString()
+
+					var inputFactor29 float64
+					inputFactor29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex29].InputFactor.ValueFloat64()
+
+					var outputFactor29 float64
+					outputFactor29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor[contextWindowFactorIndex29].OutputFactor.ValueFloat64()
+
+					contextWindowFactor29 = append(contextWindowFactor29, shared.AIGatewayContextWindowFactor{
+						Above:        above29,
+						InputFactor:  inputFactor29,
+						OutputFactor: outputFactor29,
+					})
+				}
+				serviceTierFactor29 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor))
+				for serviceTierFactorIndex29 := range r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor {
+					var tier29 string
+					tier29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex29].Tier.ValueString()
+
+					var factor29 float64
+					factor29 = r.Model.Targets[targetsIndex1].Config.Huggingface.ServiceTierFactor[serviceTierFactorIndex29].Factor.ValueFloat64()
+
+					serviceTierFactor29 = append(serviceTierFactor29, shared.AIGatewayServiceTierFactor{
+						Tier:   tier29,
+						Factor: factor29,
+					})
 				}
 				temperature29 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Huggingface.Temperature.IsNull() {
@@ -11856,6 +17312,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens29,
 					InputCost:            inputCost29,
 					OutputCost:           outputCost29,
+					CacheReadCost:        cacheReadCost29,
+					CacheWriteCost:       cacheWriteCost29,
+					CacheWriteCostList:   cacheWriteCostList29,
+					ContextWindowFactor:  contextWindowFactor29,
+					ServiceTierFactor:    serviceTierFactor29,
 					Temperature:          temperature29,
 					TopK:                 topK29,
 					TopP:                 topP29,
@@ -11895,6 +17356,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost30 = nil
 				}
+				cacheReadCost30 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCost.IsNull() {
+					*cacheReadCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost30 = nil
+				}
+				cacheWriteCost30 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCost.IsNull() {
+					*cacheWriteCost30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost30 = nil
+				}
+				cacheWriteCostList30 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList))
+				for cacheWriteCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList {
+					var ttl30 string
+					ttl30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex30].TTL.ValueString()
+
+					var cost30 float64
+					cost30 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex30].Cost.ValueFloat64()
+
+					cacheWriteCostList30 = append(cacheWriteCostList30, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl30,
+						Cost: cost30,
+					})
+				}
+				contextWindowFactor30 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor))
+				for contextWindowFactorIndex30 := range r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor {
+					var above30 string
+					above30 = r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex30].Above.ValueString()
+
+					var inputFactor30 float64
+					inputFactor30 = r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex30].InputFactor.ValueFloat64()
+
+					var outputFactor30 float64
+					outputFactor30 = r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor[contextWindowFactorIndex30].OutputFactor.ValueFloat64()
+
+					contextWindowFactor30 = append(contextWindowFactor30, shared.AIGatewayContextWindowFactor{
+						Above:        above30,
+						InputFactor:  inputFactor30,
+						OutputFactor: outputFactor30,
+					})
+				}
+				serviceTierFactor30 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor))
+				for serviceTierFactorIndex30 := range r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor {
+					var tier30 string
+					tier30 = r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex30].Tier.ValueString()
+
+					var factor30 float64
+					factor30 = r.Model.Targets[targetsIndex1].Config.Kimi.ServiceTierFactor[serviceTierFactorIndex30].Factor.ValueFloat64()
+
+					serviceTierFactor30 = append(serviceTierFactor30, shared.AIGatewayServiceTierFactor{
+						Tier:   tier30,
+						Factor: factor30,
+					})
+				}
 				temperature30 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.IsNull() {
 					*temperature30 = r.Model.Targets[targetsIndex1].Config.Kimi.Temperature.ValueFloat64()
@@ -11930,6 +17446,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens30,
 					InputCost:            inputCost30,
 					OutputCost:           outputCost30,
+					CacheReadCost:        cacheReadCost30,
+					CacheWriteCost:       cacheWriteCost30,
+					CacheWriteCostList:   cacheWriteCostList30,
+					ContextWindowFactor:  contextWindowFactor30,
+					ServiceTierFactor:    serviceTierFactor30,
 					Temperature:          temperature30,
 					TopK:                 topK30,
 					TopP:                 topP30,
@@ -11968,6 +17489,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost31 = nil
 				}
+				cacheReadCost31 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCost.IsNull() {
+					*cacheReadCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost31 = nil
+				}
+				cacheWriteCost31 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCost.IsNull() {
+					*cacheWriteCost31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost31 = nil
+				}
+				cacheWriteCostList31 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList))
+				for cacheWriteCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList {
+					var ttl31 string
+					ttl31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex31].TTL.ValueString()
+
+					var cost31 float64
+					cost31 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex31].Cost.ValueFloat64()
+
+					cacheWriteCostList31 = append(cacheWriteCostList31, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl31,
+						Cost: cost31,
+					})
+				}
+				contextWindowFactor31 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor))
+				for contextWindowFactorIndex31 := range r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor {
+					var above31 string
+					above31 = r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex31].Above.ValueString()
+
+					var inputFactor31 float64
+					inputFactor31 = r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex31].InputFactor.ValueFloat64()
+
+					var outputFactor31 float64
+					outputFactor31 = r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor[contextWindowFactorIndex31].OutputFactor.ValueFloat64()
+
+					contextWindowFactor31 = append(contextWindowFactor31, shared.AIGatewayContextWindowFactor{
+						Above:        above31,
+						InputFactor:  inputFactor31,
+						OutputFactor: outputFactor31,
+					})
+				}
+				serviceTierFactor31 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor))
+				for serviceTierFactorIndex31 := range r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor {
+					var tier31 string
+					tier31 = r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex31].Tier.ValueString()
+
+					var factor31 float64
+					factor31 = r.Model.Targets[targetsIndex1].Config.Llama2.ServiceTierFactor[serviceTierFactorIndex31].Factor.ValueFloat64()
+
+					serviceTierFactor31 = append(serviceTierFactor31, shared.AIGatewayServiceTierFactor{
+						Tier:   tier31,
+						Factor: factor31,
+					})
+				}
 				temperature31 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.IsNull() {
 					*temperature31 = r.Model.Targets[targetsIndex1].Config.Llama2.Temperature.ValueFloat64()
@@ -11995,6 +17571,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens31,
 					InputCost:            inputCost31,
 					OutputCost:           outputCost31,
+					CacheReadCost:        cacheReadCost31,
+					CacheWriteCost:       cacheWriteCost31,
+					CacheWriteCostList:   cacheWriteCostList31,
+					ContextWindowFactor:  contextWindowFactor31,
+					ServiceTierFactor:    serviceTierFactor31,
 					Temperature:          temperature31,
 					TopK:                 topK31,
 					TopP:                 topP31,
@@ -12033,6 +17614,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost32 = nil
 				}
+				cacheReadCost32 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCost.IsNull() {
+					*cacheReadCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost32 = nil
+				}
+				cacheWriteCost32 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCost.IsNull() {
+					*cacheWriteCost32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost32 = nil
+				}
+				cacheWriteCostList32 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList))
+				for cacheWriteCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList {
+					var ttl32 string
+					ttl32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex32].TTL.ValueString()
+
+					var cost32 float64
+					cost32 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex32].Cost.ValueFloat64()
+
+					cacheWriteCostList32 = append(cacheWriteCostList32, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl32,
+						Cost: cost32,
+					})
+				}
+				contextWindowFactor32 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor))
+				for contextWindowFactorIndex32 := range r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor {
+					var above32 string
+					above32 = r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex32].Above.ValueString()
+
+					var inputFactor32 float64
+					inputFactor32 = r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex32].InputFactor.ValueFloat64()
+
+					var outputFactor32 float64
+					outputFactor32 = r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor[contextWindowFactorIndex32].OutputFactor.ValueFloat64()
+
+					contextWindowFactor32 = append(contextWindowFactor32, shared.AIGatewayContextWindowFactor{
+						Above:        above32,
+						InputFactor:  inputFactor32,
+						OutputFactor: outputFactor32,
+					})
+				}
+				serviceTierFactor32 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor))
+				for serviceTierFactorIndex32 := range r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor {
+					var tier32 string
+					tier32 = r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex32].Tier.ValueString()
+
+					var factor32 float64
+					factor32 = r.Model.Targets[targetsIndex1].Config.Mistral.ServiceTierFactor[serviceTierFactorIndex32].Factor.ValueFloat64()
+
+					serviceTierFactor32 = append(serviceTierFactor32, shared.AIGatewayServiceTierFactor{
+						Tier:   tier32,
+						Factor: factor32,
+					})
+				}
 				temperature32 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.IsNull() {
 					*temperature32 = r.Model.Targets[targetsIndex1].Config.Mistral.Temperature.ValueFloat64()
@@ -12063,6 +17699,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens32,
 					InputCost:            inputCost32,
 					OutputCost:           outputCost32,
+					CacheReadCost:        cacheReadCost32,
+					CacheWriteCost:       cacheWriteCost32,
+					CacheWriteCostList:   cacheWriteCostList32,
+					ContextWindowFactor:  contextWindowFactor32,
+					ServiceTierFactor:    serviceTierFactor32,
 					Temperature:          temperature32,
 					TopK:                 topK32,
 					TopP:                 topP32,
@@ -12101,6 +17742,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost33 = nil
 				}
+				cacheReadCost33 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCost.IsNull() {
+					*cacheReadCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost33 = nil
+				}
+				cacheWriteCost33 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCost.IsNull() {
+					*cacheWriteCost33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost33 = nil
+				}
+				cacheWriteCostList33 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList))
+				for cacheWriteCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList {
+					var ttl33 string
+					ttl33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex33].TTL.ValueString()
+
+					var cost33 float64
+					cost33 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex33].Cost.ValueFloat64()
+
+					cacheWriteCostList33 = append(cacheWriteCostList33, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl33,
+						Cost: cost33,
+					})
+				}
+				contextWindowFactor33 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor))
+				for contextWindowFactorIndex33 := range r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor {
+					var above33 string
+					above33 = r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex33].Above.ValueString()
+
+					var inputFactor33 float64
+					inputFactor33 = r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex33].InputFactor.ValueFloat64()
+
+					var outputFactor33 float64
+					outputFactor33 = r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor[contextWindowFactorIndex33].OutputFactor.ValueFloat64()
+
+					contextWindowFactor33 = append(contextWindowFactor33, shared.AIGatewayContextWindowFactor{
+						Above:        above33,
+						InputFactor:  inputFactor33,
+						OutputFactor: outputFactor33,
+					})
+				}
+				serviceTierFactor33 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor))
+				for serviceTierFactorIndex33 := range r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor {
+					var tier33 string
+					tier33 = r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex33].Tier.ValueString()
+
+					var factor33 float64
+					factor33 = r.Model.Targets[targetsIndex1].Config.Ollama.ServiceTierFactor[serviceTierFactorIndex33].Factor.ValueFloat64()
+
+					serviceTierFactor33 = append(serviceTierFactor33, shared.AIGatewayServiceTierFactor{
+						Tier:   tier33,
+						Factor: factor33,
+					})
+				}
 				temperature33 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.IsNull() {
 					*temperature33 = r.Model.Targets[targetsIndex1].Config.Ollama.Temperature.ValueFloat64()
@@ -12130,6 +17826,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens33,
 					InputCost:            inputCost33,
 					OutputCost:           outputCost33,
+					CacheReadCost:        cacheReadCost33,
+					CacheWriteCost:       cacheWriteCost33,
+					CacheWriteCostList:   cacheWriteCostList33,
+					ContextWindowFactor:  contextWindowFactor33,
+					ServiceTierFactor:    serviceTierFactor33,
 					Temperature:          temperature33,
 					TopK:                 topK33,
 					TopP:                 topP33,
@@ -12167,6 +17868,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost34 = nil
 				}
+				cacheReadCost34 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCost.IsNull() {
+					*cacheReadCost34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost34 = nil
+				}
+				cacheWriteCost34 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCost.IsNull() {
+					*cacheWriteCost34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost34 = nil
+				}
+				cacheWriteCostList34 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList))
+				for cacheWriteCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList {
+					var ttl34 string
+					ttl34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex34].TTL.ValueString()
+
+					var cost34 float64
+					cost34 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex34].Cost.ValueFloat64()
+
+					cacheWriteCostList34 = append(cacheWriteCostList34, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl34,
+						Cost: cost34,
+					})
+				}
+				contextWindowFactor34 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor))
+				for contextWindowFactorIndex34 := range r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor {
+					var above34 string
+					above34 = r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor[contextWindowFactorIndex34].Above.ValueString()
+
+					var inputFactor34 float64
+					inputFactor34 = r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor[contextWindowFactorIndex34].InputFactor.ValueFloat64()
+
+					var outputFactor34 float64
+					outputFactor34 = r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor[contextWindowFactorIndex34].OutputFactor.ValueFloat64()
+
+					contextWindowFactor34 = append(contextWindowFactor34, shared.AIGatewayContextWindowFactor{
+						Above:        above34,
+						InputFactor:  inputFactor34,
+						OutputFactor: outputFactor34,
+					})
+				}
+				serviceTierFactor34 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor))
+				for serviceTierFactorIndex34 := range r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor {
+					var tier34 string
+					tier34 = r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor[serviceTierFactorIndex34].Tier.ValueString()
+
+					var factor34 float64
+					factor34 = r.Model.Targets[targetsIndex1].Config.Openai.ServiceTierFactor[serviceTierFactorIndex34].Factor.ValueFloat64()
+
+					serviceTierFactor34 = append(serviceTierFactor34, shared.AIGatewayServiceTierFactor{
+						Tier:   tier34,
+						Factor: factor34,
+					})
+				}
 				temperature34 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Openai.Temperature.IsNull() {
 					*temperature34 = r.Model.Targets[targetsIndex1].Config.Openai.Temperature.ValueFloat64()
@@ -12196,6 +17952,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens34,
 					InputCost:            inputCost34,
 					OutputCost:           outputCost34,
+					CacheReadCost:        cacheReadCost34,
+					CacheWriteCost:       cacheWriteCost34,
+					CacheWriteCostList:   cacheWriteCostList34,
+					ContextWindowFactor:  contextWindowFactor34,
+					ServiceTierFactor:    serviceTierFactor34,
 					Temperature:          temperature34,
 					TopK:                 topK34,
 					TopP:                 topP34,
@@ -12233,6 +17994,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost35 = nil
 				}
+				cacheReadCost35 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCost.IsNull() {
+					*cacheReadCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost35 = nil
+				}
+				cacheWriteCost35 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCost.IsNull() {
+					*cacheWriteCost35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost35 = nil
+				}
+				cacheWriteCostList35 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList))
+				for cacheWriteCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList {
+					var ttl35 string
+					ttl35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex35].TTL.ValueString()
+
+					var cost35 float64
+					cost35 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex35].Cost.ValueFloat64()
+
+					cacheWriteCostList35 = append(cacheWriteCostList35, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl35,
+						Cost: cost35,
+					})
+				}
+				contextWindowFactor35 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor))
+				for contextWindowFactorIndex35 := range r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor {
+					var above35 string
+					above35 = r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex35].Above.ValueString()
+
+					var inputFactor35 float64
+					inputFactor35 = r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex35].InputFactor.ValueFloat64()
+
+					var outputFactor35 float64
+					outputFactor35 = r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor[contextWindowFactorIndex35].OutputFactor.ValueFloat64()
+
+					contextWindowFactor35 = append(contextWindowFactor35, shared.AIGatewayContextWindowFactor{
+						Above:        above35,
+						InputFactor:  inputFactor35,
+						OutputFactor: outputFactor35,
+					})
+				}
+				serviceTierFactor35 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor))
+				for serviceTierFactorIndex35 := range r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor {
+					var tier35 string
+					tier35 = r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex35].Tier.ValueString()
+
+					var factor35 float64
+					factor35 = r.Model.Targets[targetsIndex1].Config.Vercel.ServiceTierFactor[serviceTierFactorIndex35].Factor.ValueFloat64()
+
+					serviceTierFactor35 = append(serviceTierFactor35, shared.AIGatewayServiceTierFactor{
+						Tier:   tier35,
+						Factor: factor35,
+					})
+				}
 				temperature35 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.IsNull() {
 					*temperature35 = r.Model.Targets[targetsIndex1].Config.Vercel.Temperature.ValueFloat64()
@@ -12262,6 +18078,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens35,
 					InputCost:            inputCost35,
 					OutputCost:           outputCost35,
+					CacheReadCost:        cacheReadCost35,
+					CacheWriteCost:       cacheWriteCost35,
+					CacheWriteCostList:   cacheWriteCostList35,
+					ContextWindowFactor:  contextWindowFactor35,
+					ServiceTierFactor:    serviceTierFactor35,
 					Temperature:          temperature35,
 					TopK:                 topK35,
 					TopP:                 topP35,
@@ -12298,6 +18119,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.OutputCost.ValueFloat64()
 				} else {
 					outputCost36 = nil
+				}
+				cacheReadCost36 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vertex.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.CacheReadCost.IsNull() {
+					*cacheReadCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost36 = nil
+				}
+				cacheWriteCost36 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCost.IsNull() {
+					*cacheWriteCost36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost36 = nil
+				}
+				cacheWriteCostList36 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList))
+				for cacheWriteCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList {
+					var ttl36 string
+					ttl36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex36].TTL.ValueString()
+
+					var cost36 float64
+					cost36 = r.Model.Targets[targetsIndex1].Config.Vertex.CacheWriteCostList[cacheWriteCostListIndex36].Cost.ValueFloat64()
+
+					cacheWriteCostList36 = append(cacheWriteCostList36, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl36,
+						Cost: cost36,
+					})
+				}
+				contextWindowFactor36 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor))
+				for contextWindowFactorIndex36 := range r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor {
+					var above36 string
+					above36 = r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex36].Above.ValueString()
+
+					var inputFactor36 float64
+					inputFactor36 = r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex36].InputFactor.ValueFloat64()
+
+					var outputFactor36 float64
+					outputFactor36 = r.Model.Targets[targetsIndex1].Config.Vertex.ContextWindowFactor[contextWindowFactorIndex36].OutputFactor.ValueFloat64()
+
+					contextWindowFactor36 = append(contextWindowFactor36, shared.AIGatewayContextWindowFactor{
+						Above:        above36,
+						InputFactor:  inputFactor36,
+						OutputFactor: outputFactor36,
+					})
+				}
+				serviceTierFactor36 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor))
+				for serviceTierFactorIndex36 := range r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor {
+					var tier36 string
+					tier36 = r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex36].Tier.ValueString()
+
+					var factor36 float64
+					factor36 = r.Model.Targets[targetsIndex1].Config.Vertex.ServiceTierFactor[serviceTierFactorIndex36].Factor.ValueFloat64()
+
+					serviceTierFactor36 = append(serviceTierFactor36, shared.AIGatewayServiceTierFactor{
+						Tier:   tier36,
+						Factor: factor36,
+					})
 				}
 				temperature36 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vertex.Temperature.IsNull() {
@@ -12352,6 +18228,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens36,
 					InputCost:            inputCost36,
 					OutputCost:           outputCost36,
+					CacheReadCost:        cacheReadCost36,
+					CacheWriteCost:       cacheWriteCost36,
+					CacheWriteCostList:   cacheWriteCostList36,
+					ContextWindowFactor:  contextWindowFactor36,
+					ServiceTierFactor:    serviceTierFactor36,
 					Temperature:          temperature36,
 					TopK:                 topK36,
 					TopP:                 topP36,
@@ -12390,6 +18271,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost37 = nil
 				}
+				cacheReadCost37 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCost.IsNull() {
+					*cacheReadCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost37 = nil
+				}
+				cacheWriteCost37 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCost.IsNull() {
+					*cacheWriteCost37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost37 = nil
+				}
+				cacheWriteCostList37 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList))
+				for cacheWriteCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList {
+					var ttl37 string
+					ttl37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex37].TTL.ValueString()
+
+					var cost37 float64
+					cost37 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex37].Cost.ValueFloat64()
+
+					cacheWriteCostList37 = append(cacheWriteCostList37, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl37,
+						Cost: cost37,
+					})
+				}
+				contextWindowFactor37 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor))
+				for contextWindowFactorIndex37 := range r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor {
+					var above37 string
+					above37 = r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex37].Above.ValueString()
+
+					var inputFactor37 float64
+					inputFactor37 = r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex37].InputFactor.ValueFloat64()
+
+					var outputFactor37 float64
+					outputFactor37 = r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor[contextWindowFactorIndex37].OutputFactor.ValueFloat64()
+
+					contextWindowFactor37 = append(contextWindowFactor37, shared.AIGatewayContextWindowFactor{
+						Above:        above37,
+						InputFactor:  inputFactor37,
+						OutputFactor: outputFactor37,
+					})
+				}
+				serviceTierFactor37 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor))
+				for serviceTierFactorIndex37 := range r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor {
+					var tier37 string
+					tier37 = r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex37].Tier.ValueString()
+
+					var factor37 float64
+					factor37 = r.Model.Targets[targetsIndex1].Config.Vllm.ServiceTierFactor[serviceTierFactorIndex37].Factor.ValueFloat64()
+
+					serviceTierFactor37 = append(serviceTierFactor37, shared.AIGatewayServiceTierFactor{
+						Tier:   tier37,
+						Factor: factor37,
+					})
+				}
 				temperature37 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.IsNull() {
 					*temperature37 = r.Model.Targets[targetsIndex1].Config.Vllm.Temperature.ValueFloat64()
@@ -12416,6 +18352,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens37,
 					InputCost:            inputCost37,
 					OutputCost:           outputCost37,
+					CacheReadCost:        cacheReadCost37,
+					CacheWriteCost:       cacheWriteCost37,
+					CacheWriteCostList:   cacheWriteCostList37,
+					ContextWindowFactor:  contextWindowFactor37,
+					ServiceTierFactor:    serviceTierFactor37,
 					Temperature:          temperature37,
 					TopK:                 topK37,
 					TopP:                 topP37,
@@ -12453,6 +18394,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					outputCost38 = nil
 				}
+				cacheReadCost38 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCost.IsNull() {
+					*cacheReadCost38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost38 = nil
+				}
+				cacheWriteCost38 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCost.IsNull() {
+					*cacheWriteCost38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost38 = nil
+				}
+				cacheWriteCostList38 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList))
+				for cacheWriteCostListIndex38 := range r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList {
+					var ttl38 string
+					ttl38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex38].TTL.ValueString()
+
+					var cost38 float64
+					cost38 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex38].Cost.ValueFloat64()
+
+					cacheWriteCostList38 = append(cacheWriteCostList38, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl38,
+						Cost: cost38,
+					})
+				}
+				contextWindowFactor38 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor))
+				for contextWindowFactorIndex38 := range r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor {
+					var above38 string
+					above38 = r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor[contextWindowFactorIndex38].Above.ValueString()
+
+					var inputFactor38 float64
+					inputFactor38 = r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor[contextWindowFactorIndex38].InputFactor.ValueFloat64()
+
+					var outputFactor38 float64
+					outputFactor38 = r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor[contextWindowFactorIndex38].OutputFactor.ValueFloat64()
+
+					contextWindowFactor38 = append(contextWindowFactor38, shared.AIGatewayContextWindowFactor{
+						Above:        above38,
+						InputFactor:  inputFactor38,
+						OutputFactor: outputFactor38,
+					})
+				}
+				serviceTierFactor38 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor))
+				for serviceTierFactorIndex38 := range r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor {
+					var tier38 string
+					tier38 = r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor[serviceTierFactorIndex38].Tier.ValueString()
+
+					var factor38 float64
+					factor38 = r.Model.Targets[targetsIndex1].Config.Xai.ServiceTierFactor[serviceTierFactorIndex38].Factor.ValueFloat64()
+
+					serviceTierFactor38 = append(serviceTierFactor38, shared.AIGatewayServiceTierFactor{
+						Tier:   tier38,
+						Factor: factor38,
+					})
+				}
 				temperature38 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Xai.Temperature.IsNull() {
 					*temperature38 = r.Model.Targets[targetsIndex1].Config.Xai.Temperature.ValueFloat64()
@@ -12482,6 +18478,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens38,
 					InputCost:            inputCost38,
 					OutputCost:           outputCost38,
+					CacheReadCost:        cacheReadCost38,
+					CacheWriteCost:       cacheWriteCost38,
+					CacheWriteCostList:   cacheWriteCostList38,
+					ContextWindowFactor:  contextWindowFactor38,
+					ServiceTierFactor:    serviceTierFactor38,
 					Temperature:          temperature38,
 					TopK:                 topK38,
 					TopP:                 topP38,
@@ -12518,6 +18519,61 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					*outputCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCost.ValueFloat64()
 				} else {
 					outputCost39 = nil
+				}
+				cacheReadCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCost.IsNull() {
+					*cacheReadCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCost.ValueFloat64()
+				} else {
+					cacheReadCost39 = nil
+				}
+				cacheWriteCost39 := new(float64)
+				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCost.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCost.IsNull() {
+					*cacheWriteCost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCost.ValueFloat64()
+				} else {
+					cacheWriteCost39 = nil
+				}
+				cacheWriteCostList39 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList))
+				for cacheWriteCostListIndex39 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList {
+					var ttl39 string
+					ttl39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex39].TTL.ValueString()
+
+					var cost39 float64
+					cost39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex39].Cost.ValueFloat64()
+
+					cacheWriteCostList39 = append(cacheWriteCostList39, shared.AIGatewayCacheWriteCost{
+						TTL:  ttl39,
+						Cost: cost39,
+					})
+				}
+				contextWindowFactor39 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor))
+				for contextWindowFactorIndex39 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor {
+					var above39 string
+					above39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex39].Above.ValueString()
+
+					var inputFactor39 float64
+					inputFactor39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex39].InputFactor.ValueFloat64()
+
+					var outputFactor39 float64
+					outputFactor39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor[contextWindowFactorIndex39].OutputFactor.ValueFloat64()
+
+					contextWindowFactor39 = append(contextWindowFactor39, shared.AIGatewayContextWindowFactor{
+						Above:        above39,
+						InputFactor:  inputFactor39,
+						OutputFactor: outputFactor39,
+					})
+				}
+				serviceTierFactor39 := make([]shared.AIGatewayServiceTierFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor))
+				for serviceTierFactorIndex39 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor {
+					var tier39 string
+					tier39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex39].Tier.ValueString()
+
+					var factor39 float64
+					factor39 = r.Model.Targets[targetsIndex1].Config.Sagemaker.ServiceTierFactor[serviceTierFactorIndex39].Factor.ValueFloat64()
+
+					serviceTierFactor39 = append(serviceTierFactor39, shared.AIGatewayServiceTierFactor{
+						Tier:   tier39,
+						Factor: factor39,
+					})
 				}
 				temperature39 := new(float64)
 				if !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsUnknown() && !r.Model.Targets[targetsIndex1].Config.Sagemaker.Temperature.IsNull() {
@@ -12607,6 +18663,11 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					MaxTokens:            maxTokens39,
 					InputCost:            inputCost39,
 					OutputCost:           outputCost39,
+					CacheReadCost:        cacheReadCost39,
+					CacheWriteCost:       cacheWriteCost39,
+					CacheWriteCostList:   cacheWriteCostList39,
+					ContextWindowFactor:  contextWindowFactor39,
+					ServiceTierFactor:    serviceTierFactor39,
 					Temperature:          temperature39,
 					TopK:                 topK39,
 					TopP:                 topP39,
@@ -12711,62 +18772,33 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 		}
 		var model3 *shared.AIGatewayModelSelectorConfig
 		if r.Model.Config.Route.Model != nil {
-			var bodySelector1 *shared.BodySelector
-			if r.Model.Config.Route.Model.BodySelector != nil {
-				var bodyParam1 string
-				bodyParam1 = r.Model.Config.Route.Model.BodySelector.BodyParam.ValueString()
-
-				values3 := make([]string, 0, len(r.Model.Config.Route.Model.BodySelector.Values))
-				for valuesIndex3 := range r.Model.Config.Route.Model.BodySelector.Values {
-					values3 = append(values3, r.Model.Config.Route.Model.BodySelector.Values[valuesIndex3].ValueString())
-				}
-				bodySelector1 = &shared.BodySelector{
-					BodyParam: bodyParam1,
-					Values:    values3,
-				}
+			bodyParam1 := new(string)
+			if !r.Model.Config.Route.Model.BodyParam.IsUnknown() && !r.Model.Config.Route.Model.BodyParam.IsNull() {
+				*bodyParam1 = r.Model.Config.Route.Model.BodyParam.ValueString()
+			} else {
+				bodyParam1 = nil
 			}
-			if bodySelector1 != nil {
-				model3 = &shared.AIGatewayModelSelectorConfig{
-					BodySelector: bodySelector1,
-				}
+			headerParam1 := new(string)
+			if !r.Model.Config.Route.Model.HeaderParam.IsUnknown() && !r.Model.Config.Route.Model.HeaderParam.IsNull() {
+				*headerParam1 = r.Model.Config.Route.Model.HeaderParam.ValueString()
+			} else {
+				headerParam1 = nil
 			}
-			var headersSelector1 *shared.HeadersSelector
-			if r.Model.Config.Route.Model.HeadersSelector != nil {
-				var headerParam1 string
-				headerParam1 = r.Model.Config.Route.Model.HeadersSelector.HeaderParam.ValueString()
-
-				values4 := make([]string, 0, len(r.Model.Config.Route.Model.HeadersSelector.Values))
-				for valuesIndex4 := range r.Model.Config.Route.Model.HeadersSelector.Values {
-					values4 = append(values4, r.Model.Config.Route.Model.HeadersSelector.Values[valuesIndex4].ValueString())
-				}
-				headersSelector1 = &shared.HeadersSelector{
-					HeaderParam: headerParam1,
-					Values:      values4,
-				}
+			pathParam1 := new(string)
+			if !r.Model.Config.Route.Model.PathParam.IsUnknown() && !r.Model.Config.Route.Model.PathParam.IsNull() {
+				*pathParam1 = r.Model.Config.Route.Model.PathParam.ValueString()
+			} else {
+				pathParam1 = nil
 			}
-			if headersSelector1 != nil {
-				model3 = &shared.AIGatewayModelSelectorConfig{
-					HeadersSelector: headersSelector1,
-				}
+			values1 := make([]string, 0, len(r.Model.Config.Route.Model.Values))
+			for valuesIndex1 := range r.Model.Config.Route.Model.Values {
+				values1 = append(values1, r.Model.Config.Route.Model.Values[valuesIndex1].ValueString())
 			}
-			var pathSelector1 *shared.PathSelector
-			if r.Model.Config.Route.Model.PathSelector != nil {
-				var pathParam1 string
-				pathParam1 = r.Model.Config.Route.Model.PathSelector.PathParam.ValueString()
-
-				values5 := make([]string, 0, len(r.Model.Config.Route.Model.PathSelector.Values))
-				for valuesIndex5 := range r.Model.Config.Route.Model.PathSelector.Values {
-					values5 = append(values5, r.Model.Config.Route.Model.PathSelector.Values[valuesIndex5].ValueString())
-				}
-				pathSelector1 = &shared.PathSelector{
-					PathParam: pathParam1,
-					Values:    values5,
-				}
-			}
-			if pathSelector1 != nil {
-				model3 = &shared.AIGatewayModelSelectorConfig{
-					PathSelector: pathSelector1,
-				}
+			model3 = &shared.AIGatewayModelSelectorConfig{
+				BodyParam:   bodyParam1,
+				HeaderParam: headerParam1,
+				PathParam:   pathParam1,
+				Values:      values1,
 			}
 		}
 		route1 := shared.AIGatewayModelRouteConfig{
@@ -13296,6 +19328,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl48 = nil
 					}
+					typeVar3 := shared.AIGatewayAzureEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.Type.ValueString())
 					var deploymentId3 string
 					deploymentId3 = r.Model.Config.Balancer.Semantic.Embeddings.Config.Azure.DeploymentID.ValueString()
 
@@ -13307,6 +19340,7 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					}
 					aiGatewayAzureEmbeddingsModelConfig1 = &shared.AIGatewayAzureEmbeddingsModelConfig{
 						UpstreamURL:  upstreamUrl48,
+						Type:         typeVar3,
 						DeploymentID: deploymentId3,
 						APIVersion:   apiVersion5,
 					}
@@ -13442,10 +19476,10 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					} else {
 						upstreamUrl52 = nil
 					}
-					typeVar2 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
+					typeVar4 := shared.AIGatewayMistralEmbeddingsModelConfigType(r.Model.Config.Balancer.Semantic.Embeddings.Config.Mistral.Type.ValueString())
 					aiGatewayMistralEmbeddingsModelConfig1 = &shared.AIGatewayMistralEmbeddingsModelConfig{
 						UpstreamURL: upstreamUrl52,
-						Type:        typeVar2,
+						Type:        typeVar4,
 					}
 				}
 				if aiGatewayMistralEmbeddingsModelConfig1 != nil {

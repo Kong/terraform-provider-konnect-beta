@@ -12,5 +12,6 @@ type AIGatewayModelProviderConfigAuthAWS struct {
 	BatchRoleArn    types.String `tfsdk:"batch_role_arn"`
 	RoleSessionName types.String `tfsdk:"role_session_name"`
 	SecretAccessKey types.String `tfsdk:"secret_access_key"`
+	SessionToken    types.String `tfsdk:"session_token"`
 	StsEndpointURL  types.String `tfsdk:"sts_endpoint_url"`
 }

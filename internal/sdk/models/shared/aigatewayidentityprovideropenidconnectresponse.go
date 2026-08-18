@@ -35,7 +35,7 @@ type AIGatewayIdentityProviderOpenIDConnectResponse struct {
 	// For advanced use cases, additional config properties can be sent in the request body.
 	// See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
 	//
-	Config map[string]any `json:"config,omitempty"`
+	Config any `json:"config,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -87,7 +87,7 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponse) GetType() string {
 	return "openid-connect"
 }
 
-func (a *AIGatewayIdentityProviderOpenIDConnectResponse) GetConfig() map[string]any {
+func (a *AIGatewayIdentityProviderOpenIDConnectResponse) GetConfig() any {
 	if a == nil {
 		return nil
 	}

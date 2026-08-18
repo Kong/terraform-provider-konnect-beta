@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -392,13 +393,38 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 									speakeasy_objectvalidators.NotNull(),
 								},
 							},
-							"instance": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+							"foundry": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"domain": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`services.ai.azure.com`),
+										Description: `The domain for Azure AI Foundry hosted models. Default: "services.ai.azure.com"`,
+									},
+									"resource": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The Azure AI Foundry resource name. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
+									},
 								},
+								MarkdownDescription: `Endpoint configuration for Azure AI Foundry hosted models. Required when` + "\n" +
+									`` + "`" + `service` + "`" + ` is ` + "`" + `azure-foundry` + "`" + `.`,
+							},
+							"instance": schema.StringAttribute{
+								Optional:    true,
+								Description: `The Azure OpenAI instance name. Required when ` + "`" + `service` + "`" + ` is ` + "`" + `azure-openai` + "`" + `.`,
+							},
+							"service": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								Default:  stringdefault.StaticString(`azure-openai`),
+								MarkdownDescription: `Selects the Azure backend for this provider instance. Use ` + "`" + `azure-openai` + "`" + `` + "\n" +
+									`for Azure OpenAI deployments or ` + "`" + `azure-foundry` + "`" + ` for Azure AI Foundry.` + "\n" +
+									`possible known values include one of ["azure-openai", "azure-foundry"]; Default: "azure-openai"`,
 							},
 						},
 						Description: `Not Null`,
@@ -533,6 +559,12 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 											"secret_access_key": schema.StringAttribute{
 												Optional: true,
 												MarkdownDescription: `The secret access key for authenticating with static IAM User credentials.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"session_token": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The session token for authenticating with temporary IAM credentials (issued by AWS STS, Vault, or SSO/SAML).` + "\n" +
+													`It is sent to AWS as the ` + "`" + `X-Amz-Security-Token` + "`" + ` header. Because temporary credentials are short-lived, reference this from a secrets backend so it is refreshed before it expires.` + "\n" +
 													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 											},
 											"sts_endpoint_url": schema.StringAttribute{

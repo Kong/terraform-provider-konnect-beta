@@ -9,9 +9,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver_listener" {
   listener = {
     access = {
       consumer = {
-        allow = [
-          "my-test-allow-consumer"
-        ]
+        acls = {
+          allow = [
+            "my-test-allow-consumer"
+          ]
+        }
       }
     }
     config = {

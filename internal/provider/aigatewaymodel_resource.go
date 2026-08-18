@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
@@ -33,6 +34,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	speakeasy_float64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/float64validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
@@ -730,9 +732,18 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	"deployment_id": schema.StringAttribute{
 																		Computed:    true,
 																		Optional:    true,
-																		Description: `The Azure deployment ID for the model. Not Null`,
+																		Description: `The Azure OpenAI deployment ID for the embeddings model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
+																		},
+																	},
+																	"type": schema.StringAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Description: `Not Null; must be "azure"`,
+																		Validators: []validator.String{
+																			speakeasy_stringvalidators.NotNull(),
+																			stringvalidator.OneOf("azure"),
 																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
@@ -743,7 +754,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
 																	`` + "\n" +
-																	`Azure-specific configuration for a model.`,
+																	`Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry` + "\n" +
+																	`embeddings are not supported.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("bedrock"),
@@ -1783,105 +1795,42 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"body_selector": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"body_param": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The body property name to match for routing. Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
-													},
-													"values": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														MarkdownDescription: `The list of values that are matched against the body property value.` + "\n" +
-															`If the body property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
-															`Not Null`,
-														Validators: []validator.List{
-															speakeasy_listvalidators.NotNull(),
-															listvalidator.SizeAtMost(1),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a request body property.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("headers_selector"),
-														path.MatchRelative().AtParent().AtName("path_selector"),
-													}...),
+											"body_param": schema.StringAttribute{
+												Optional:    true,
+												Description: `The body property name to match for routing.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
-											"headers_selector": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"header_param": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The header property name to match for routing. Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
-													},
-													"values": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														MarkdownDescription: `The list of values that are matched against the header property value.` + "\n" +
-															`If the header property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
-															`Not Null`,
-														Validators: []validator.List{
-															speakeasy_listvalidators.NotNull(),
-															listvalidator.SizeAtMost(1),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a header.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("body_selector"),
-														path.MatchRelative().AtParent().AtName("path_selector"),
-													}...),
+											"header_param": schema.StringAttribute{
+												Optional:    true,
+												Description: `The header property name to match for routing.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
-											"path_selector": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"path_param": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The name of the regex capture group defined in the route path for routing. Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
-													},
-													"values": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														MarkdownDescription: `The list of values that are matched against the path param value.` + "\n" +
-															`If the path param value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
-															`Not Null`,
-														Validators: []validator.List{
-															speakeasy_listvalidators.NotNull(),
-															listvalidator.SizeAtMost(1),
-														},
-													},
+											"path_param": schema.StringAttribute{
+												Optional:    true,
+												Description: `The name of the regex capture group defined in the route path for routing.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
-												Description: `Configuration for routing requests to a specific model using a path selector.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("body_selector"),
-														path.MatchRelative().AtParent().AtName("headers_selector"),
-													}...),
+											},
+											"values": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `An optional model alias. When omitted, the model name is used.` + "\n" +
+													`When no selector location is configured, the format default selector is used.`,
+												Validators: []validator.List{
+													listvalidator.SizeAtLeast(1),
+													listvalidator.SizeAtMost(1),
 												},
 											},
 										},
 										MarkdownDescription: `Configuration for overriding routing to this model using a selector.` + "\n" +
-											`When not set, a default model selector will be created using the model's name and format.`,
+											`When no selector location is set, the format default selector is used.` + "\n" +
+											`When values are not set, the model name is used as the selector value.`,
 									},
 									"paths": schema.ListAttribute{
 										Computed:    true,
@@ -2061,13 +2010,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"anthropic": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2075,7 +2101,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2137,21 +2193,105 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Default:     stringdefault.StaticString(`2023-05-15`),
 													Description: `The Azure OpenAI API version to use. Default: "2023-05-15"`,
 												},
-												"deployment_id": schema.StringAttribute{
-													Computed:    true,
+												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `The Azure deployment ID for the model. Not Null`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
 													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"deployment_id": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `The Azure deployment ID for the model. Applies when the Azure provider's` + "\n" +
+														`` + "`" + `service` + "`" + ` is ` + "`" + `azure-openai` + "`" + `; not used for ` + "`" + `azure-foundry` + "`" + `.`,
 												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
+												"foundry_path_prefix": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													Default:  stringdefault.StaticString(`/openai/v1`),
+													MarkdownDescription: `The API path prefix for the Azure AI Foundry endpoint, selecting the model's` + "\n" +
+														`API surface. ` + "`" + `/openai/v1` + "`" + ` targets the OpenAI-compatible surface; ` + "`" + `/anthropic/v1` + "`" + `` + "\n" +
+														`targets the Anthropic surface. Applies when the Azure provider's ` + "`" + `service` + "`" + ` is` + "\n" +
+														`` + "`" + `azure-foundry` + "`" + `.` + "\n" +
+														`possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "/openai/v1"`,
+												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2159,7 +2299,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2213,6 +2383,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `S3 bucket prefix for batch inference jobs.`,
 												},
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -2225,7 +2472,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2233,7 +2480,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
 												},
 												"performance_config_latency": schema.StringAttribute{
 													Optional:    true,
@@ -2243,6 +2490,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional: true,
 													MarkdownDescription: `The AWS region for the model.` + "\n" +
 														`Setting this option overrides the AWS_REGION environment variable.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2296,13 +2573,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"cerebras": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2310,7 +2664,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2368,6 +2752,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														`uses ` + "`" + `/v2/chat` + "`" + ` and supports tool calling.` + "\n" +
 														`possible known values include one of ["v1", "v2"]; Default: "v2"`,
 												},
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embedding_input_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
@@ -2380,7 +2841,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2388,7 +2849,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2444,13 +2935,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"dashscope": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed:    true,
@@ -2464,7 +3032,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2514,13 +3112,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"databricks": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2528,7 +3203,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2586,13 +3291,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"deepseek": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2600,7 +3382,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2650,6 +3462,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"gemini": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -2690,7 +3579,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2698,7 +3587,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2748,13 +3667,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"huggingface": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2762,7 +3758,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2824,13 +3850,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"kimi": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed: true,
@@ -2846,7 +3949,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2896,6 +4029,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"llama2": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -2910,7 +4120,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2918,7 +4128,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -2971,6 +4211,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"mistral": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -2985,7 +4302,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2993,7 +4310,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -3043,13 +4390,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"ollama": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3057,7 +4481,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -3107,13 +4561,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"openai": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3121,7 +4652,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -3201,13 +4762,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													MarkdownDescription: `**Pre-release Feature**` + "\n" +
 														`This feature is currently in beta and is subject to change.`,
 												},
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3215,7 +4853,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
 													Computed: true,
@@ -3288,13 +4956,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"vercel": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3302,7 +5047,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -3352,6 +5127,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"vertex": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -3403,7 +5255,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3411,7 +5263,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -3461,13 +5343,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"vllm": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3475,7 +5434,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -3528,13 +5517,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"xai": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3542,7 +5608,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -4340,9 +6436,18 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	"deployment_id": schema.StringAttribute{
 																		Computed:    true,
 																		Optional:    true,
-																		Description: `The Azure deployment ID for the model. Not Null`,
+																		Description: `The Azure OpenAI deployment ID for the embeddings model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
+																		},
+																	},
+																	"type": schema.StringAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Description: `Not Null; must be "azure"`,
+																		Validators: []validator.String{
+																			speakeasy_stringvalidators.NotNull(),
+																			stringvalidator.OneOf("azure"),
 																		},
 																	},
 																	"upstream_url": schema.StringAttribute{
@@ -4353,7 +6458,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																MarkdownDescription: `**Pre-release Feature**` + "\n" +
 																	`This feature is currently in beta and is subject to change.` + "\n" +
 																	`` + "\n" +
-																	`Azure-specific configuration for a model.`,
+																	`Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry` + "\n" +
+																	`embeddings are not supported.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("bedrock"),
@@ -5411,105 +7517,42 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"body_selector": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"body_param": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The body property name to match for routing. Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
-													},
-													"values": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														MarkdownDescription: `The list of values that are matched against the body property value.` + "\n" +
-															`If the body property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
-															`Not Null`,
-														Validators: []validator.List{
-															speakeasy_listvalidators.NotNull(),
-															listvalidator.SizeAtMost(1),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a request body property.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("headers_selector"),
-														path.MatchRelative().AtParent().AtName("path_selector"),
-													}...),
+											"body_param": schema.StringAttribute{
+												Optional:    true,
+												Description: `The body property name to match for routing.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
-											"headers_selector": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"header_param": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The header property name to match for routing. Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
-													},
-													"values": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														MarkdownDescription: `The list of values that are matched against the header property value.` + "\n" +
-															`If the header property value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
-															`Not Null`,
-														Validators: []validator.List{
-															speakeasy_listvalidators.NotNull(),
-															listvalidator.SizeAtMost(1),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a header.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("body_selector"),
-														path.MatchRelative().AtParent().AtName("path_selector"),
-													}...),
+											"header_param": schema.StringAttribute{
+												Optional:    true,
+												Description: `The header property name to match for routing.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
-											"path_selector": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"path_param": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The name of the regex capture group defined in the route path for routing. Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
-													},
-													"values": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														MarkdownDescription: `The list of values that are matched against the path param value.` + "\n" +
-															`If the path param value matches any of the specified values, the request will be routed to the corresponding model.` + "\n" +
-															`Not Null`,
-														Validators: []validator.List{
-															speakeasy_listvalidators.NotNull(),
-															listvalidator.SizeAtMost(1),
-														},
-													},
+											"path_param": schema.StringAttribute{
+												Optional:    true,
+												Description: `The name of the regex capture group defined in the route path for routing.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
-												Description: `Configuration for routing requests to a specific model using a path selector.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("body_selector"),
-														path.MatchRelative().AtParent().AtName("headers_selector"),
-													}...),
+											},
+											"values": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `An optional model alias. When omitted, the model name is used.` + "\n" +
+													`When no selector location is configured, the format default selector is used.`,
+												Validators: []validator.List{
+													listvalidator.SizeAtLeast(1),
+													listvalidator.SizeAtMost(1),
 												},
 											},
 										},
 										MarkdownDescription: `Configuration for overriding routing to this model using a selector.` + "\n" +
-											`When not set, a default model selector will be created using the model's name and format.`,
+											`When no selector location is set, the format default selector is used.` + "\n" +
+											`When values are not set, the model name is used as the selector value.`,
 									},
 									"paths": schema.ListAttribute{
 										Computed:    true,
@@ -5689,13 +7732,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"anthropic": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -5703,7 +7823,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -5765,21 +7915,105 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Default:     stringdefault.StaticString(`2023-05-15`),
 													Description: `The Azure OpenAI API version to use. Default: "2023-05-15"`,
 												},
-												"deployment_id": schema.StringAttribute{
-													Computed:    true,
+												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `The Azure deployment ID for the model. Not Null`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
 													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"deployment_id": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `The Azure deployment ID for the model. Applies when the Azure provider's` + "\n" +
+														`` + "`" + `service` + "`" + ` is ` + "`" + `azure-openai` + "`" + `; not used for ` + "`" + `azure-foundry` + "`" + `.`,
 												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
+												"foundry_path_prefix": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													Default:  stringdefault.StaticString(`/openai/v1`),
+													MarkdownDescription: `The API path prefix for the Azure AI Foundry endpoint, selecting the model's` + "\n" +
+														`API surface. ` + "`" + `/openai/v1` + "`" + ` targets the OpenAI-compatible surface; ` + "`" + `/anthropic/v1` + "`" + `` + "\n" +
+														`targets the Anthropic surface. Applies when the Azure provider's ` + "`" + `service` + "`" + ` is` + "\n" +
+														`` + "`" + `azure-foundry` + "`" + `.` + "\n" +
+														`possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "/openai/v1"`,
+												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -5787,7 +8021,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -5841,6 +8105,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `S3 bucket prefix for batch inference jobs.`,
 												},
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -5853,7 +8194,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -5861,7 +8202,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
 												},
 												"performance_config_latency": schema.StringAttribute{
 													Optional:    true,
@@ -5871,6 +8212,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional: true,
 													MarkdownDescription: `The AWS region for the model.` + "\n" +
 														`Setting this option overrides the AWS_REGION environment variable.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -5924,13 +8295,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"cerebras": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -5938,7 +8386,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -5996,6 +8474,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														`uses ` + "`" + `/v2/chat` + "`" + ` and supports tool calling.` + "\n" +
 														`possible known values include one of ["v1", "v2"]; Default: "v2"`,
 												},
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embedding_input_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
@@ -6008,7 +8563,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6016,7 +8571,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6072,13 +8657,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"dashscope": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed:    true,
@@ -6092,7 +8754,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6142,13 +8834,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"databricks": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6156,7 +8925,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6214,13 +9013,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"deepseek": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6228,7 +9104,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6278,6 +9184,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"gemini": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -6318,7 +9301,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6326,7 +9309,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6376,13 +9389,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"huggingface": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6390,7 +9480,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6452,13 +9572,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"kimi": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed: true,
@@ -6474,7 +9671,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6524,6 +9751,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"llama2": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -6538,7 +9842,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6546,7 +9850,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6599,6 +9933,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"mistral": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -6613,7 +10024,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6621,7 +10032,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6671,13 +10112,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"ollama": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6685,7 +10203,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6735,13 +10283,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"openai": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6749,7 +10374,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6829,13 +10484,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													MarkdownDescription: `**Pre-release Feature**` + "\n" +
 														`This feature is currently in beta and is subject to change.`,
 												},
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6843,7 +10575,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
 													Computed: true,
@@ -6916,13 +10678,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"vercel": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6930,7 +10769,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -6980,6 +10849,83 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"vertex": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
@@ -7031,7 +10977,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -7039,7 +10985,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -7089,13 +11065,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"vllm": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -7103,7 +11156,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
@@ -7156,13 +11239,90 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										"xai": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per input token for billing and cost tracking.`,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -7170,7 +11330,37 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
-													Description: `Cost per output token for billing and cost tracking.`,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,

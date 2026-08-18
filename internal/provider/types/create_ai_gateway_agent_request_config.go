@@ -9,6 +9,8 @@ import (
 type CreateAIGatewayAgentRequestConfig struct {
 	Logging            *CreateAIGatewayAgentRequestLogging `tfsdk:"logging"`
 	MaxRequestBodySize types.Int64                         `tfsdk:"max_request_body_size"`
+	Proxy              *AIGatewayProxyConfig               `tfsdk:"proxy"`
 	Route              *AIGatewayRouteConfig               `tfsdk:"route"`
+	Upstream           *AIGatewayUpstreamConfig            `tfsdk:"upstream"`
 	URL                types.String                        `tfsdk:"url"`
 }

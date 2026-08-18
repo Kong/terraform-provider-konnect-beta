@@ -144,6 +144,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
+      }
       url = "https://mcp.internal.kongair.com"
     }
     display_name = "Kong Air Flights"
@@ -233,6 +246,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         tags = [
           "..."
         ]
+      }
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
       }
       url = "https://mcp.internal.kongair.com"
     }
@@ -619,6 +645,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
+      }
       url = "https://mcp.internal.kongair.com"
     }
     display_name = "Kong Air Flights"
@@ -797,7 +836,20 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       }
       tools_cache_ttl_seconds = 7
-      url                     = "https://mcp.internal.kongair.com"
+      upstream = {
+        auth = {
+          aws = {
+            access_key_id     = "...my_access_key_id..."
+            assume_role_arn   = "...my_assume_role_arn..."
+            region            = "...my_region..."
+            role_session_name = "...my_role_session_name..."
+            secret_access_key = "...my_secret_access_key..."
+            session_token     = "...my_session_token..."
+            sts_endpoint_url  = "...my_sts_endpoint_url..."
+          }
+        }
+      }
+      url = "https://mcp.internal.kongair.com"
     }
     display_name = "Kong Air Flights"
     enabled      = true
@@ -984,8 +1036,8 @@ Optional:
 Optional:
 
 - `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
-- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
-- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `discovery_endpoint` (String) The authorization server metadata discovery URL.
+- `endpoint` (String) The URL path where the OAuth 2.0 Protected Resource Metadata is served.
 - `resource` (String) The protected resource's identifier (resource URI).
 - `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
@@ -1035,8 +1087,8 @@ Optional:
 Optional:
 
 - `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
-- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
-- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `discovery_endpoint` (String) The authorization server metadata discovery URL.
+- `endpoint` (String) The URL path where the OAuth 2.0 Protected Resource Metadata is served.
 - `resource` (String) The protected resource's identifier (resource URI).
 - `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
@@ -1061,6 +1113,10 @@ Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt
 This feature is currently in beta and is subject to change.
 
 Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--config--server))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
@@ -1270,6 +1326,48 @@ Optional:
 
 
 
+<a id="nestedatt--conversion_listener--config--upstream"></a>
+### Nested Schema for `conversion_listener.config.upstream`
+
+Optional:
+
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream--auth))
+
+<a id="nestedatt--conversion_listener--config--upstream--auth"></a>
+### Nested Schema for `conversion_listener.config.upstream.auth`
+
+Optional:
+
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream--auth--aws))
+
+<a id="nestedatt--conversion_listener--config--upstream--auth--aws"></a>
+### Nested Schema for `conversion_listener.config.upstream.auth.aws`
+
+Optional:
+
+- `access_key_id` (String) The access key id for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `region` (String) The AWS region of the upstream service. Overrides the region inferred from the environment.
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `session_token` (String) The session token for authenticating with temporary IAM credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens.
+If not specified, the default AWS STS endpoint will be used.
+
+
+
+
 
 <a id="nestedatt--conversion_listener--tools"></a>
 ### Nested Schema for `conversion_listener.tools`
@@ -1403,6 +1501,10 @@ Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt-
 This feature is currently in beta and is subject to change.
 
 Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--conversion_only--config--route))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_only--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
@@ -1433,6 +1535,48 @@ Optional:
 - `response_buffering` (Boolean) Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding. Default: true
 - `strip_path` (Boolean) When matching a route via one of the `paths`, strip the matching prefix from the upstream request URL. Default: true
 - `tags` (List of String) An optional set of strings associated with the route for grouping and filtering.
+
+
+<a id="nestedatt--conversion_only--config--upstream"></a>
+### Nested Schema for `conversion_only.config.upstream`
+
+Optional:
+
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--conversion_only--config--upstream--auth))
+
+<a id="nestedatt--conversion_only--config--upstream--auth"></a>
+### Nested Schema for `conversion_only.config.upstream.auth`
+
+Optional:
+
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--conversion_only--config--upstream--auth--aws))
+
+<a id="nestedatt--conversion_only--config--upstream--auth--aws"></a>
+### Nested Schema for `conversion_only.config.upstream.auth.aws`
+
+Optional:
+
+- `access_key_id` (String) The access key id for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `region` (String) The AWS region of the upstream service. Overrides the region inferred from the environment.
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `session_token` (String) The session token for authenticating with temporary IAM credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens.
+If not specified, the default AWS STS endpoint will be used.
+
+
 
 
 
@@ -1613,8 +1757,8 @@ Optional:
 Optional:
 
 - `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
-- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
-- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `discovery_endpoint` (String) The authorization server metadata discovery URL.
+- `endpoint` (String) The URL path where the OAuth 2.0 Protected Resource Metadata is served.
 - `resource` (String) The protected resource's identifier (resource URI).
 - `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
@@ -1664,8 +1808,8 @@ Optional:
 Optional:
 
 - `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
-- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
-- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `discovery_endpoint` (String) The authorization server metadata discovery URL.
+- `endpoint` (String) The URL path where the OAuth 2.0 Protected Resource Metadata is served.
 - `resource` (String) The protected resource's identifier (resource URI).
 - `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
@@ -2074,8 +2218,8 @@ Optional:
 Optional:
 
 - `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
-- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
-- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `discovery_endpoint` (String) The authorization server metadata discovery URL.
+- `endpoint` (String) The URL path where the OAuth 2.0 Protected Resource Metadata is served.
 - `resource` (String) The protected resource's identifier (resource URI).
 - `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
@@ -2125,8 +2269,8 @@ Optional:
 Optional:
 
 - `authorization_servers` (List of String) List of authorization server issuer URLs that can issue tokens for this resource.
-- `discovery_endpoint` (String) The URL where the protected resource metadata is served.
-- `endpoint` (String) The protected resource endpoint the metadata describes.
+- `discovery_endpoint` (String) The authorization server metadata discovery URL.
+- `endpoint` (String) The URL path where the OAuth 2.0 Protected Resource Metadata is served.
 - `resource` (String) The protected resource's identifier (resource URI).
 - `scopes_supported` (List of String) List of OAuth scopes supported by the protected resource.
 
@@ -2152,6 +2296,10 @@ Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt
 This feature is currently in beta and is subject to change.
 
 Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
@@ -2402,6 +2550,48 @@ Optional:
 
 
 
+<a id="nestedatt--passthrough_listener--config--upstream"></a>
+### Nested Schema for `passthrough_listener.config.upstream`
+
+Optional:
+
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream--auth))
+
+<a id="nestedatt--passthrough_listener--config--upstream--auth"></a>
+### Nested Schema for `passthrough_listener.config.upstream.auth`
+
+Optional:
+
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream--auth--aws))
+
+<a id="nestedatt--passthrough_listener--config--upstream--auth--aws"></a>
+### Nested Schema for `passthrough_listener.config.upstream.auth.aws`
+
+Optional:
+
+- `access_key_id` (String) The access key id for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `region` (String) The AWS region of the upstream service. Overrides the region inferred from the environment.
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `session_token` (String) The session token for authenticating with temporary IAM credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens.
+If not specified, the default AWS STS endpoint will be used.
+
+
+
+
 
 <a id="nestedatt--passthrough_listener--tools"></a>
 ### Nested Schema for `passthrough_listener.tools`
@@ -2621,6 +2811,10 @@ Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt
 - `tools_cache_ttl_seconds` (Number) The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 every client call.
 Not Null
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--upstream_server--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
@@ -2883,6 +3077,48 @@ include the header name and the token prefix if needed. Leave empty to omit the 
 when fetching the tools list.
 - `scope` (String) The scopes for the OAuth 2.0 client-credentials.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+
+<a id="nestedatt--upstream_server--config--upstream"></a>
+### Nested Schema for `upstream_server.config.upstream`
+
+Optional:
+
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--upstream_server--config--upstream--auth))
+
+<a id="nestedatt--upstream_server--config--upstream--auth"></a>
+### Nested Schema for `upstream_server.config.upstream.auth`
+
+Optional:
+
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--upstream_server--config--upstream--auth--aws))
+
+<a id="nestedatt--upstream_server--config--upstream--auth--aws"></a>
+### Nested Schema for `upstream_server.config.upstream.auth.aws`
+
+Optional:
+
+- `access_key_id` (String) The access key id for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `region` (String) The AWS region of the upstream service. Overrides the region inferred from the environment.
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `session_token` (String) The session token for authenticating with temporary IAM credentials.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens.
+If not specified, the default AWS STS endpoint will be used.
 
 
 

@@ -7,10 +7,10 @@ import (
 )
 
 type PlatformTabularQuery struct {
-	Columns    []types.String   `tfsdk:"columns"`
-	Cursor     types.String     `tfsdk:"cursor"`
-	Datasource types.String     `tfsdk:"datasource"`
-	Entity     types.String     `tfsdk:"entity"`
-	Filters    []PlatformFilter `tfsdk:"filters"`
-	PageSize   types.Int64      `tfsdk:"page_size"`
+	Columns    []types.String       `tfsdk:"columns"`
+	Cursor     types.String         `tfsdk:"cursor"`
+	Datasource types.String         `tfsdk:"datasource"`
+	Entity     types.String         `tfsdk:"entity"`
+	Filters    []MultiselectFilters `tfsdk:"filters"`
+	PageSize   types.Int64          `tfsdk:"page_size"`
 }

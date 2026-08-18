@@ -15,4 +15,5 @@ resource "konnect_identity_directory" "my_identitydirectory" {
   name              = "...my_name..."
   negative_ttl_secs = 600
   ttl_secs          = 600
+  vault_enabled     = false
 }

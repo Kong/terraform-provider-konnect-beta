@@ -41,8 +41,9 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx c
 		r.Ai = &tfTypes.AISettings{}
 		r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
 		r.Ai.Features = &tfTypes.Features{}
-		r.Ai.Features.McpServer = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+		r.Ai.Features.McpServer = &tfTypes.McpServer{}
 		r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
+		r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
 	}
 	r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 	r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)

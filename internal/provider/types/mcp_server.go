@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PathSelector struct {
-	PathParam types.String   `tfsdk:"path_param"`
-	Values    []types.String `tfsdk:"values"`
+type McpServer struct {
+	Enabled                types.Bool `tfsdk:"enabled"`
+	WriteOperationsEnabled types.Bool `tfsdk:"write_operations_enabled"`
 }

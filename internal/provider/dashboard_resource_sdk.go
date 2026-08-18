@@ -263,6 +263,176 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 							}
 						}
 					}
+					if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery != nil {
+						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage = &tfTypes.ManagedCacheUsageQuery{}
+						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Datasource))
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions))
+							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions {
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions, types.StringValue(string(v)))
+							}
+						} else {
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = nil
+						}
+						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters = []tfTypes.ManagedCacheUsageFilters{}
+
+						for _, filtersItem3 := range tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Filters {
+							var filters3 tfTypes.ManagedCacheUsageFilters
+
+							if filtersItem3.MetricsControlPlaneFilterByField != nil {
+								filters3.ControlPlane = &tfTypes.MetricsControlPlaneFilterByField{}
+								if filters3.ControlPlane == nil {
+									filters3.ControlPlane = &tfTypes.MetricsControlPlaneFilterByField{}
+								}
+								if filtersItem3.MetricsControlPlaneFilterByField.EmptyFilters != nil {
+									filters3.ControlPlane.EmptyFilters = &tfTypes.EmptyFilters{}
+									filters3.ControlPlane.EmptyFilters.Field = types.StringValue(string(filtersItem3.MetricsControlPlaneFilterByField.EmptyFilters.Field))
+									filters3.ControlPlane.EmptyFilters.Operator = types.StringValue(string(filtersItem3.MetricsControlPlaneFilterByField.EmptyFilters.Operator))
+								}
+								if filtersItem3.MetricsControlPlaneFilterByField.MultiselectFilters != nil {
+									filters3.ControlPlane.MultiselectFilters = &tfTypes.MultiselectFilters{}
+									filters3.ControlPlane.MultiselectFilters.Field = types.StringValue(string(filtersItem3.MetricsControlPlaneFilterByField.MultiselectFilters.Field))
+									filters3.ControlPlane.MultiselectFilters.Operator = types.StringValue(string(filtersItem3.MetricsControlPlaneFilterByField.MultiselectFilters.Operator))
+									filters3.ControlPlane.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem3.MetricsControlPlaneFilterByField.MultiselectFilters.Value))
+									for _, v := range filtersItem3.MetricsControlPlaneFilterByField.MultiselectFilters.Value {
+										filters3.ControlPlane.MultiselectFilters.Value = append(filters3.ControlPlane.MultiselectFilters.Value, types.StringValue(v))
+									}
+								}
+							}
+							if filtersItem3.MetricsDataPlaneGroupFilterByField != nil {
+								filters3.DataPlaneGroup = &tfTypes.MetricsControlPlaneFilterByField{}
+								if filters3.DataPlaneGroup == nil {
+									filters3.DataPlaneGroup = &tfTypes.MetricsControlPlaneFilterByField{}
+								}
+								if filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldEmptyFilters != nil {
+									filters3.DataPlaneGroup.EmptyFilters = &tfTypes.EmptyFilters{}
+									filters3.DataPlaneGroup.EmptyFilters.Field = types.StringValue(string(filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldEmptyFilters.Field))
+									filters3.DataPlaneGroup.EmptyFilters.Operator = types.StringValue(string(filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldEmptyFilters.Operator))
+								}
+								if filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldMultiselectFilters != nil {
+									filters3.DataPlaneGroup.MultiselectFilters = &tfTypes.MultiselectFilters{}
+									filters3.DataPlaneGroup.MultiselectFilters.Field = types.StringValue(string(filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldMultiselectFilters.Field))
+									filters3.DataPlaneGroup.MultiselectFilters.Operator = types.StringValue(string(filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldMultiselectFilters.Operator))
+									filters3.DataPlaneGroup.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldMultiselectFilters.Value))
+									for _, v := range filtersItem3.MetricsDataPlaneGroupFilterByField.MetricsDataPlaneGroupFilterByFieldMultiselectFilters.Value {
+										filters3.DataPlaneGroup.MultiselectFilters.Value = append(filters3.DataPlaneGroup.MultiselectFilters.Value, types.StringValue(v))
+									}
+								}
+							}
+							if filtersItem3.MetricsManagedCacheFilterByField != nil {
+								filters3.ManagedCache = &tfTypes.MetricsControlPlaneFilterByField{}
+								if filters3.ManagedCache == nil {
+									filters3.ManagedCache = &tfTypes.MetricsControlPlaneFilterByField{}
+								}
+								if filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldEmptyFilters != nil {
+									filters3.ManagedCache.EmptyFilters = &tfTypes.EmptyFilters{}
+									filters3.ManagedCache.EmptyFilters.Field = types.StringValue(string(filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldEmptyFilters.Field))
+									filters3.ManagedCache.EmptyFilters.Operator = types.StringValue(string(filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldEmptyFilters.Operator))
+								}
+								if filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldMultiselectFilters != nil {
+									filters3.ManagedCache.MultiselectFilters = &tfTypes.MultiselectFilters{}
+									filters3.ManagedCache.MultiselectFilters.Field = types.StringValue(string(filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldMultiselectFilters.Field))
+									filters3.ManagedCache.MultiselectFilters.Operator = types.StringValue(string(filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldMultiselectFilters.Operator))
+									filters3.ManagedCache.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldMultiselectFilters.Value))
+									for _, v := range filtersItem3.MetricsManagedCacheFilterByField.MetricsManagedCacheFilterByFieldMultiselectFilters.Value {
+										filters3.ManagedCache.MultiselectFilters.Value = append(filters3.ManagedCache.MultiselectFilters.Value, types.StringValue(v))
+									}
+								}
+							}
+							if filtersItem3.MetricsNetworkFilterByField != nil {
+								filters3.Network = &tfTypes.MetricsControlPlaneFilterByField{}
+								if filters3.Network == nil {
+									filters3.Network = &tfTypes.MetricsControlPlaneFilterByField{}
+								}
+								if filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldEmptyFilters != nil {
+									filters3.Network.EmptyFilters = &tfTypes.EmptyFilters{}
+									filters3.Network.EmptyFilters.Field = types.StringValue(string(filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldEmptyFilters.Field))
+									filters3.Network.EmptyFilters.Operator = types.StringValue(string(filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldEmptyFilters.Operator))
+								}
+								if filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldMultiselectFilters != nil {
+									filters3.Network.MultiselectFilters = &tfTypes.MultiselectFilters{}
+									filters3.Network.MultiselectFilters.Field = types.StringValue(string(filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldMultiselectFilters.Field))
+									filters3.Network.MultiselectFilters.Operator = types.StringValue(string(filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldMultiselectFilters.Operator))
+									filters3.Network.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldMultiselectFilters.Value))
+									for _, v := range filtersItem3.MetricsNetworkFilterByField.MetricsNetworkFilterByFieldMultiselectFilters.Value {
+										filters3.Network.MultiselectFilters.Value = append(filters3.Network.MultiselectFilters.Value, types.StringValue(v))
+									}
+								}
+							}
+							if filtersItem3.MetricsProviderFilterByField != nil {
+								filters3.Provider = &tfTypes.MetricsControlPlaneFilterByField{}
+								if filters3.Provider == nil {
+									filters3.Provider = &tfTypes.MetricsControlPlaneFilterByField{}
+								}
+								if filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldEmptyFilters != nil {
+									filters3.Provider.EmptyFilters = &tfTypes.EmptyFilters{}
+									filters3.Provider.EmptyFilters.Field = types.StringValue(string(filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldEmptyFilters.Field))
+									filters3.Provider.EmptyFilters.Operator = types.StringValue(string(filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldEmptyFilters.Operator))
+								}
+								if filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldMultiselectFilters != nil {
+									filters3.Provider.MultiselectFilters = &tfTypes.MultiselectFilters{}
+									filters3.Provider.MultiselectFilters.Field = types.StringValue(string(filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldMultiselectFilters.Field))
+									filters3.Provider.MultiselectFilters.Operator = types.StringValue(string(filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldMultiselectFilters.Operator))
+									filters3.Provider.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldMultiselectFilters.Value))
+									for _, v := range filtersItem3.MetricsProviderFilterByField.MetricsProviderFilterByFieldMultiselectFilters.Value {
+										filters3.Provider.MultiselectFilters.Value = append(filters3.Provider.MultiselectFilters.Value, types.StringValue(v))
+									}
+								}
+							}
+							if filtersItem3.MetricsProviderRegionFilterByField != nil {
+								filters3.ProviderRegion = &tfTypes.MetricsControlPlaneFilterByField{}
+								if filters3.ProviderRegion == nil {
+									filters3.ProviderRegion = &tfTypes.MetricsControlPlaneFilterByField{}
+								}
+								if filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldEmptyFilters != nil {
+									filters3.ProviderRegion.EmptyFilters = &tfTypes.EmptyFilters{}
+									filters3.ProviderRegion.EmptyFilters.Field = types.StringValue(string(filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldEmptyFilters.Field))
+									filters3.ProviderRegion.EmptyFilters.Operator = types.StringValue(string(filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldEmptyFilters.Operator))
+								}
+								if filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldMultiselectFilters != nil {
+									filters3.ProviderRegion.MultiselectFilters = &tfTypes.MultiselectFilters{}
+									filters3.ProviderRegion.MultiselectFilters.Field = types.StringValue(string(filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldMultiselectFilters.Field))
+									filters3.ProviderRegion.MultiselectFilters.Operator = types.StringValue(string(filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldMultiselectFilters.Operator))
+									filters3.ProviderRegion.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldMultiselectFilters.Value))
+									for _, v := range filtersItem3.MetricsProviderRegionFilterByField.MetricsProviderRegionFilterByFieldMultiselectFilters.Value {
+										filters3.ProviderRegion.MultiselectFilters.Value = append(filters3.ProviderRegion.MultiselectFilters.Value, types.StringValue(v))
+									}
+								}
+							}
+
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters = append(tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters, filters3)
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Granularity != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Granularity))
+						} else {
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Granularity = types.StringNull()
+						}
+						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Limit)
+						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Metrics))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Metrics {
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Metrics = append(tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Metrics, types.StringValue(string(v)))
+						}
+						if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange != nil {
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange = &tfTypes.TimeRange{}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
+							}
+							if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
+								if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
+									tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+								} else {
+									tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.TimeRange = types.StringNull()
+								}
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
+								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
+							}
+						}
+					}
 					if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery != nil {
 						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage = &tfTypes.PlatformQuery{}
 						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Datasource))
@@ -274,19 +444,19 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						} else {
 							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = nil
 						}
-						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters = []tfTypes.PlatformFilter{}
+						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters = []tfTypes.MultiselectFilters{}
 
-						for _, filtersItem3 := range tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Filters {
-							var filters3 tfTypes.PlatformFilter
+						for _, filtersItem4 := range tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Filters {
+							var filters4 tfTypes.MultiselectFilters
 
-							filters3.Field = types.StringValue(string(filtersItem3.Field))
-							filters3.Operator = types.StringValue(string(filtersItem3.Operator))
-							filters3.Value = make([]types.String, 0, len(filtersItem3.Value))
-							for _, v := range filtersItem3.Value {
-								filters3.Value = append(filters3.Value, types.StringValue(v))
+							filters4.Field = types.StringValue(string(filtersItem4.Field))
+							filters4.Operator = types.StringValue(string(filtersItem4.Operator))
+							filters4.Value = make([]types.String, 0, len(filtersItem4.Value))
+							for _, v := range filtersItem4.Value {
+								filters4.Value = append(filters4.Value, types.StringValue(v))
 							}
 
-							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters = append(tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters, filters3)
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters = append(tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters, filters4)
 						}
 						if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Granularity != nil {
 							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Granularity))
@@ -341,19 +511,19 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Cursor = types.StringPointerValue(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Cursor)
 						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Datasource))
 						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Entity = types.StringPointerValue(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Entity)
-						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters = []tfTypes.PlatformFilter{}
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters = []tfTypes.MultiselectFilters{}
 
-						for _, filtersItem4 := range tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Filters {
-							var filters4 tfTypes.PlatformFilter
+						for _, filtersItem5 := range tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Filters {
+							var filters5 tfTypes.MultiselectFilters
 
-							filters4.Field = types.StringValue(string(filtersItem4.Field))
-							filters4.Operator = types.StringValue(string(filtersItem4.Operator))
-							filters4.Value = make([]types.String, 0, len(filtersItem4.Value))
-							for _, v := range filtersItem4.Value {
-								filters4.Value = append(filters4.Value, types.StringValue(v))
+							filters5.Field = types.StringValue(string(filtersItem5.Field))
+							filters5.Operator = types.StringValue(string(filtersItem5.Operator))
+							filters5.Value = make([]types.String, 0, len(filtersItem5.Value))
+							for _, v := range filtersItem5.Value {
+								filters5.Value = append(filters5.Value, types.StringValue(v))
 							}
 
-							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters = append(tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters, filters4)
+							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters = append(tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Filters, filters5)
 						}
 						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.PageSize = types.Int64PointerValue(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.PageSize)
 					}
@@ -937,6 +1107,346 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 						PlatformQuery: platformQuery,
 					}
 				}
+				var managedCacheUsageQuery *shared.ManagedCacheUsageQuery
+				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage != nil {
+					datasource4 := shared.ManagedCacheUsageQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Datasource.ValueString())
+					metrics4 := make([]shared.ManagedCacheUsageMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Metrics))
+					for _, metricsItem4 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Metrics {
+						metrics4 = append(metrics4, shared.ManagedCacheUsageMetrics(metricsItem4.ValueString()))
+					}
+					var dimensions4 []shared.ManagedCacheUsageQueryDimensions
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions != nil {
+						dimensions4 = make([]shared.ManagedCacheUsageQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions))
+						for _, dimensionsItem4 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions {
+							dimensions4 = append(dimensions4, shared.ManagedCacheUsageQueryDimensions(dimensionsItem4.ValueString()))
+						}
+					}
+					filters4 := make([]shared.ManagedCacheUsageFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters))
+					for filtersItem := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters {
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane != nil {
+							var metricsControlPlaneFilterByField shared.MetricsControlPlaneFilterByField
+							var multiselectFilters *shared.MultiselectFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.MultiselectFilters != nil {
+								operator4 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Operator.ValueString())
+								value4 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Value))
+								for valueIndex1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Value {
+									value4 = append(value4, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Value[valueIndex1].ValueString())
+								}
+								field4 := shared.MetricsControlPlaneFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Field.ValueString())
+								multiselectFilters = &shared.MultiselectFilters{
+									Operator: operator4,
+									Value:    value4,
+									Field:    field4,
+								}
+							}
+							if multiselectFilters != nil {
+								metricsControlPlaneFilterByField = shared.MetricsControlPlaneFilterByField{
+									MultiselectFilters: multiselectFilters,
+								}
+							}
+							var emptyFilters *shared.EmptyFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.EmptyFilters != nil {
+								operator5 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.EmptyFilters.Operator.ValueString())
+								field5 := shared.MetricsControlPlaneFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ControlPlane.EmptyFilters.Field.ValueString())
+								emptyFilters = &shared.EmptyFilters{
+									Operator: operator5,
+									Field:    field5,
+								}
+							}
+							if emptyFilters != nil {
+								metricsControlPlaneFilterByField = shared.MetricsControlPlaneFilterByField{
+									EmptyFilters: emptyFilters,
+								}
+							}
+							filters4 = append(filters4, shared.ManagedCacheUsageFilters{
+								MetricsControlPlaneFilterByField: &metricsControlPlaneFilterByField,
+							})
+						}
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup != nil {
+							var metricsDataPlaneGroupFilterByField shared.MetricsDataPlaneGroupFilterByField
+							var metricsDataPlaneGroupFilterByFieldMultiselectFilters *shared.MetricsDataPlaneGroupFilterByFieldMultiselectFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.MultiselectFilters != nil {
+								operator6 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.MultiselectFilters.Operator.ValueString())
+								value5 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.MultiselectFilters.Value))
+								for valueIndex2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.MultiselectFilters.Value {
+									value5 = append(value5, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.MultiselectFilters.Value[valueIndex2].ValueString())
+								}
+								field6 := shared.MetricsDataPlaneGroupFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.MultiselectFilters.Field.ValueString())
+								metricsDataPlaneGroupFilterByFieldMultiselectFilters = &shared.MetricsDataPlaneGroupFilterByFieldMultiselectFilters{
+									Operator: operator6,
+									Value:    value5,
+									Field:    field6,
+								}
+							}
+							if metricsDataPlaneGroupFilterByFieldMultiselectFilters != nil {
+								metricsDataPlaneGroupFilterByField = shared.MetricsDataPlaneGroupFilterByField{
+									MetricsDataPlaneGroupFilterByFieldMultiselectFilters: metricsDataPlaneGroupFilterByFieldMultiselectFilters,
+								}
+							}
+							var metricsDataPlaneGroupFilterByFieldEmptyFilters *shared.MetricsDataPlaneGroupFilterByFieldEmptyFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.EmptyFilters != nil {
+								operator7 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.EmptyFilters.Operator.ValueString())
+								field7 := shared.MetricsDataPlaneGroupFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].DataPlaneGroup.EmptyFilters.Field.ValueString())
+								metricsDataPlaneGroupFilterByFieldEmptyFilters = &shared.MetricsDataPlaneGroupFilterByFieldEmptyFilters{
+									Operator: operator7,
+									Field:    field7,
+								}
+							}
+							if metricsDataPlaneGroupFilterByFieldEmptyFilters != nil {
+								metricsDataPlaneGroupFilterByField = shared.MetricsDataPlaneGroupFilterByField{
+									MetricsDataPlaneGroupFilterByFieldEmptyFilters: metricsDataPlaneGroupFilterByFieldEmptyFilters,
+								}
+							}
+							filters4 = append(filters4, shared.ManagedCacheUsageFilters{
+								MetricsDataPlaneGroupFilterByField: &metricsDataPlaneGroupFilterByField,
+							})
+						}
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache != nil {
+							var metricsManagedCacheFilterByField shared.MetricsManagedCacheFilterByField
+							var metricsManagedCacheFilterByFieldMultiselectFilters *shared.MetricsManagedCacheFilterByFieldMultiselectFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.MultiselectFilters != nil {
+								operator8 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.MultiselectFilters.Operator.ValueString())
+								value6 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.MultiselectFilters.Value))
+								for valueIndex3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.MultiselectFilters.Value {
+									value6 = append(value6, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.MultiselectFilters.Value[valueIndex3].ValueString())
+								}
+								field8 := shared.MetricsManagedCacheFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.MultiselectFilters.Field.ValueString())
+								metricsManagedCacheFilterByFieldMultiselectFilters = &shared.MetricsManagedCacheFilterByFieldMultiselectFilters{
+									Operator: operator8,
+									Value:    value6,
+									Field:    field8,
+								}
+							}
+							if metricsManagedCacheFilterByFieldMultiselectFilters != nil {
+								metricsManagedCacheFilterByField = shared.MetricsManagedCacheFilterByField{
+									MetricsManagedCacheFilterByFieldMultiselectFilters: metricsManagedCacheFilterByFieldMultiselectFilters,
+								}
+							}
+							var metricsManagedCacheFilterByFieldEmptyFilters *shared.MetricsManagedCacheFilterByFieldEmptyFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.EmptyFilters != nil {
+								operator9 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.EmptyFilters.Operator.ValueString())
+								field9 := shared.MetricsManagedCacheFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ManagedCache.EmptyFilters.Field.ValueString())
+								metricsManagedCacheFilterByFieldEmptyFilters = &shared.MetricsManagedCacheFilterByFieldEmptyFilters{
+									Operator: operator9,
+									Field:    field9,
+								}
+							}
+							if metricsManagedCacheFilterByFieldEmptyFilters != nil {
+								metricsManagedCacheFilterByField = shared.MetricsManagedCacheFilterByField{
+									MetricsManagedCacheFilterByFieldEmptyFilters: metricsManagedCacheFilterByFieldEmptyFilters,
+								}
+							}
+							filters4 = append(filters4, shared.ManagedCacheUsageFilters{
+								MetricsManagedCacheFilterByField: &metricsManagedCacheFilterByField,
+							})
+						}
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network != nil {
+							var metricsNetworkFilterByField shared.MetricsNetworkFilterByField
+							var metricsNetworkFilterByFieldMultiselectFilters *shared.MetricsNetworkFilterByFieldMultiselectFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.MultiselectFilters != nil {
+								operator10 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.MultiselectFilters.Operator.ValueString())
+								value7 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.MultiselectFilters.Value))
+								for valueIndex4 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.MultiselectFilters.Value {
+									value7 = append(value7, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.MultiselectFilters.Value[valueIndex4].ValueString())
+								}
+								field10 := shared.MetricsNetworkFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.MultiselectFilters.Field.ValueString())
+								metricsNetworkFilterByFieldMultiselectFilters = &shared.MetricsNetworkFilterByFieldMultiselectFilters{
+									Operator: operator10,
+									Value:    value7,
+									Field:    field10,
+								}
+							}
+							if metricsNetworkFilterByFieldMultiselectFilters != nil {
+								metricsNetworkFilterByField = shared.MetricsNetworkFilterByField{
+									MetricsNetworkFilterByFieldMultiselectFilters: metricsNetworkFilterByFieldMultiselectFilters,
+								}
+							}
+							var metricsNetworkFilterByFieldEmptyFilters *shared.MetricsNetworkFilterByFieldEmptyFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.EmptyFilters != nil {
+								operator11 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.EmptyFilters.Operator.ValueString())
+								field11 := shared.MetricsNetworkFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Network.EmptyFilters.Field.ValueString())
+								metricsNetworkFilterByFieldEmptyFilters = &shared.MetricsNetworkFilterByFieldEmptyFilters{
+									Operator: operator11,
+									Field:    field11,
+								}
+							}
+							if metricsNetworkFilterByFieldEmptyFilters != nil {
+								metricsNetworkFilterByField = shared.MetricsNetworkFilterByField{
+									MetricsNetworkFilterByFieldEmptyFilters: metricsNetworkFilterByFieldEmptyFilters,
+								}
+							}
+							filters4 = append(filters4, shared.ManagedCacheUsageFilters{
+								MetricsNetworkFilterByField: &metricsNetworkFilterByField,
+							})
+						}
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider != nil {
+							var metricsProviderFilterByField shared.MetricsProviderFilterByField
+							var metricsProviderFilterByFieldMultiselectFilters *shared.MetricsProviderFilterByFieldMultiselectFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.MultiselectFilters != nil {
+								operator12 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.MultiselectFilters.Operator.ValueString())
+								value8 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.MultiselectFilters.Value))
+								for valueIndex5 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.MultiselectFilters.Value {
+									value8 = append(value8, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.MultiselectFilters.Value[valueIndex5].ValueString())
+								}
+								field12 := shared.MetricsProviderFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.MultiselectFilters.Field.ValueString())
+								metricsProviderFilterByFieldMultiselectFilters = &shared.MetricsProviderFilterByFieldMultiselectFilters{
+									Operator: operator12,
+									Value:    value8,
+									Field:    field12,
+								}
+							}
+							if metricsProviderFilterByFieldMultiselectFilters != nil {
+								metricsProviderFilterByField = shared.MetricsProviderFilterByField{
+									MetricsProviderFilterByFieldMultiselectFilters: metricsProviderFilterByFieldMultiselectFilters,
+								}
+							}
+							var metricsProviderFilterByFieldEmptyFilters *shared.MetricsProviderFilterByFieldEmptyFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.EmptyFilters != nil {
+								operator13 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.EmptyFilters.Operator.ValueString())
+								field13 := shared.MetricsProviderFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].Provider.EmptyFilters.Field.ValueString())
+								metricsProviderFilterByFieldEmptyFilters = &shared.MetricsProviderFilterByFieldEmptyFilters{
+									Operator: operator13,
+									Field:    field13,
+								}
+							}
+							if metricsProviderFilterByFieldEmptyFilters != nil {
+								metricsProviderFilterByField = shared.MetricsProviderFilterByField{
+									MetricsProviderFilterByFieldEmptyFilters: metricsProviderFilterByFieldEmptyFilters,
+								}
+							}
+							filters4 = append(filters4, shared.ManagedCacheUsageFilters{
+								MetricsProviderFilterByField: &metricsProviderFilterByField,
+							})
+						}
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion != nil {
+							var metricsProviderRegionFilterByField shared.MetricsProviderRegionFilterByField
+							var metricsProviderRegionFilterByFieldMultiselectFilters *shared.MetricsProviderRegionFilterByFieldMultiselectFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.MultiselectFilters != nil {
+								operator14 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.MultiselectFilters.Operator.ValueString())
+								value9 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.MultiselectFilters.Value))
+								for valueIndex6 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.MultiselectFilters.Value {
+									value9 = append(value9, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.MultiselectFilters.Value[valueIndex6].ValueString())
+								}
+								field14 := shared.MetricsProviderRegionFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.MultiselectFilters.Field.ValueString())
+								metricsProviderRegionFilterByFieldMultiselectFilters = &shared.MetricsProviderRegionFilterByFieldMultiselectFilters{
+									Operator: operator14,
+									Value:    value9,
+									Field:    field14,
+								}
+							}
+							if metricsProviderRegionFilterByFieldMultiselectFilters != nil {
+								metricsProviderRegionFilterByField = shared.MetricsProviderRegionFilterByField{
+									MetricsProviderRegionFilterByFieldMultiselectFilters: metricsProviderRegionFilterByFieldMultiselectFilters,
+								}
+							}
+							var metricsProviderRegionFilterByFieldEmptyFilters *shared.MetricsProviderRegionFilterByFieldEmptyFilters
+							if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.EmptyFilters != nil {
+								operator15 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.EmptyFilters.Operator.ValueString())
+								field15 := shared.MetricsProviderRegionFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters[filtersItem].ProviderRegion.EmptyFilters.Field.ValueString())
+								metricsProviderRegionFilterByFieldEmptyFilters = &shared.MetricsProviderRegionFilterByFieldEmptyFilters{
+									Operator: operator15,
+									Field:    field15,
+								}
+							}
+							if metricsProviderRegionFilterByFieldEmptyFilters != nil {
+								metricsProviderRegionFilterByField = shared.MetricsProviderRegionFilterByField{
+									MetricsProviderRegionFilterByFieldEmptyFilters: metricsProviderRegionFilterByFieldEmptyFilters,
+								}
+							}
+							filters4 = append(filters4, shared.ManagedCacheUsageFilters{
+								MetricsProviderRegionFilterByField: &metricsProviderRegionFilterByField,
+							})
+						}
+					}
+					granularity4 := new(shared.Granularity)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Granularity.IsNull() {
+						*granularity4 = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Granularity.ValueString())
+					} else {
+						granularity4 = nil
+					}
+					var timeRange8 *shared.TimeRange
+					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange != nil {
+						var metricsRelativeTimeRangeDtoV23 *shared.MetricsRelativeTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative != nil {
+							tz8 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.Tz.IsNull() {
+								*tz8 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.Tz.ValueString()
+							} else {
+								tz8 = nil
+							}
+							typeVar9 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.Type.ValueString())
+							timeRange9 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.TimeRange.IsNull() {
+								*timeRange9 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Relative.TimeRange.ValueString())
+							} else {
+								timeRange9 = nil
+							}
+							metricsRelativeTimeRangeDtoV23 = &shared.MetricsRelativeTimeRangeDtoV2{
+								Tz:        tz8,
+								Type:      typeVar9,
+								TimeRange: timeRange9,
+							}
+						}
+						if metricsRelativeTimeRangeDtoV23 != nil {
+							timeRange8 = &shared.TimeRange{
+								MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV23,
+							}
+						}
+						var metricsAbsoluteTimeRangeDtoV24 *shared.MetricsAbsoluteTimeRangeDtoV2
+						if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute != nil {
+							tz9 := new(string)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Tz.IsNull() {
+								*tz9 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Tz.ValueString()
+							} else {
+								tz9 = nil
+							}
+							typeVar10 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Type.ValueString())
+							start4 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Start.IsNull() {
+								*start4, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.Start.ValueString())
+							} else {
+								start4 = nil
+							}
+							end4 := new(time.Time)
+							if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.End.IsNull() {
+								*end4, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.TimeRange.Absolute.End.ValueString())
+							} else {
+								end4 = nil
+							}
+							metricsAbsoluteTimeRangeDtoV24 = &shared.MetricsAbsoluteTimeRangeDtoV2{
+								Tz:    tz9,
+								Type:  typeVar10,
+								Start: start4,
+								End:   end4,
+							}
+						}
+						if metricsAbsoluteTimeRangeDtoV24 != nil {
+							timeRange8 = &shared.TimeRange{
+								MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV24,
+							}
+						}
+					}
+					limit4 := new(float64)
+					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Limit.IsNull() {
+						*limit4 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Limit.ValueFloat64()
+					} else {
+						limit4 = nil
+					}
+					managedCacheUsageQuery = &shared.ManagedCacheUsageQuery{
+						Datasource:  datasource4,
+						Metrics:     metrics4,
+						Dimensions:  dimensions4,
+						Filters:     filters4,
+						Granularity: granularity4,
+						TimeRange:   timeRange8,
+						Limit:       limit4,
+					}
+				}
+				if managedCacheUsageQuery != nil {
+					query = shared.Query{
+						ManagedCacheUsageQuery: managedCacheUsageQuery,
+					}
+				}
 				var chart shared.Chart
 				var donutChart *shared.DonutChart
 				if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut != nil {
@@ -946,10 +1456,10 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					} else {
 						chartTitle = nil
 					}
-					typeVar9 := shared.DonutChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut.Type.ValueString())
+					typeVar11 := shared.DonutChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.Donut.Type.ValueString())
 					donutChart = &shared.DonutChart{
 						ChartTitle: chartTitle,
-						Type:       typeVar9,
+						Type:       typeVar11,
 					}
 				}
 				if donutChart != nil {
@@ -965,7 +1475,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					} else {
 						chartTitle1 = nil
 					}
-					typeVar10 := shared.TimeseriesChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Type.ValueString())
+					typeVar12 := shared.TimeseriesChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Type.ValueString())
 					stacked := new(bool)
 					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Stacked.IsNull() {
 						*stacked = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TimeseriesLine.Stacked.ValueBool()
@@ -974,7 +1484,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					}
 					timeseriesChart = &shared.TimeseriesChart{
 						ChartTitle: chartTitle1,
-						Type:       typeVar10,
+						Type:       typeVar12,
 						Stacked:    stacked,
 					}
 				}
@@ -991,7 +1501,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					} else {
 						chartTitle2 = nil
 					}
-					typeVar11 := shared.BarChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Type.ValueString())
+					typeVar13 := shared.BarChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Type.ValueString())
 					stacked1 := new(bool)
 					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Stacked.IsNull() {
 						*stacked1 = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.HorizontalBar.Stacked.ValueBool()
@@ -1000,7 +1510,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					}
 					barChart = &shared.BarChart{
 						ChartTitle: chartTitle2,
-						Type:       typeVar11,
+						Type:       typeVar13,
 						Stacked:    stacked1,
 					}
 				}
@@ -1017,10 +1527,10 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					} else {
 						chartTitle3 = nil
 					}
-					typeVar12 := shared.TopNChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TopN.Type.ValueString())
+					typeVar14 := shared.TopNChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.TopN.Type.ValueString())
 					topNChart = &shared.TopNChart{
 						ChartTitle: chartTitle3,
-						Type:       typeVar12,
+						Type:       typeVar14,
 					}
 				}
 				if topNChart != nil {
@@ -1036,7 +1546,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					} else {
 						chartTitle4 = nil
 					}
-					typeVar13 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.Type.ValueString())
+					typeVar15 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.Type.ValueString())
 					decimalPoints := new(float64)
 					if !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.DecimalPoints.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.DecimalPoints.IsNull() {
 						*decimalPoints = r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.SingleValue.DecimalPoints.ValueFloat64()
@@ -1045,7 +1555,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					}
 					singleValueChart = &shared.SingleValueChart{
 						ChartTitle:    chartTitle4,
-						Type:          typeVar13,
+						Type:          typeVar15,
 						DecimalPoints: decimalPoints,
 					}
 				}
@@ -1062,10 +1572,10 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					} else {
 						chartTitle5 = nil
 					}
-					typeVar14 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.ChoroplethMap.Type.ValueString())
+					typeVar16 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Chart.ChoroplethMap.Type.ValueString())
 					choroplethMapChart = &shared.ChoroplethMapChart{
 						ChartTitle: chartTitle5,
-						Type:       typeVar14,
+						Type:       typeVar16,
 					}
 				}
 				if choroplethMapChart != nil {
@@ -1088,7 +1598,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				var query1 shared.TableVisualizationQuery
 				var platformTabularQuery *shared.PlatformTabularQuery
 				if r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage != nil {
-					datasource4 := shared.PlatformTabularQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Datasource.ValueString())
+					datasource5 := shared.PlatformTabularQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Datasource.ValueString())
 					entity := new(string)
 					if !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Entity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Entity.IsNull() {
 						*entity = r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Entity.ValueString()
@@ -1102,18 +1612,18 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 							columns = append(columns, r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns[columnsIndex].ValueString())
 						}
 					}
-					filters4 := make([]shared.PlatformFilter, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters))
+					filters5 := make([]shared.PlatformFilter, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters))
 					for filtersIndex4 := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters {
-						field4 := shared.PlatformFilterField(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Field.ValueString())
-						operator4 := shared.PlatformFilterOperator(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Operator.ValueString())
-						value4 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value))
-						for valueIndex1 := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value {
-							value4 = append(value4, r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value[valueIndex1].ValueString())
+						field16 := shared.PlatformFilterField(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Field.ValueString())
+						operator16 := shared.PlatformFilterOperator(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Operator.ValueString())
+						value10 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value))
+						for valueIndex7 := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value {
+							value10 = append(value10, r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters[filtersIndex4].Value[valueIndex7].ValueString())
 						}
-						filters4 = append(filters4, shared.PlatformFilter{
-							Field:    field4,
-							Operator: operator4,
-							Value:    value4,
+						filters5 = append(filters5, shared.PlatformFilter{
+							Field:    field16,
+							Operator: operator16,
+							Value:    value10,
 						})
 					}
 					cursor := new(string)
@@ -1129,10 +1639,10 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 						pageSize = nil
 					}
 					platformTabularQuery = &shared.PlatformTabularQuery{
-						Datasource: datasource4,
+						Datasource: datasource5,
 						Entity:     entity,
 						Columns:    columns,
-						Filters:    filters4,
+						Filters:    filters5,
 						Cursor:     cursor,
 						PageSize:   pageSize,
 					}
@@ -1148,10 +1658,10 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				} else {
 					chartTitle6 = nil
 				}
-				typeVar15 := shared.TableChartType(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Chart.Type.ValueString())
+				typeVar17 := shared.TableChartType(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Chart.Type.ValueString())
 				chart1 := shared.TableChart{
 					ChartTitle: chartTitle6,
-					Type:       typeVar15,
+					Type:       typeVar17,
 				}
 				tableVisualization = &shared.TableVisualization{
 					Query: query1,
@@ -1175,16 +1685,16 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 	}
 	presetFilters := make([]shared.AllFilterItems, 0, len(r.Definition.PresetFilters))
 	for presetFiltersIndex := range r.Definition.PresetFilters {
-		field5 := shared.AllFilterItemsField(r.Definition.PresetFilters[presetFiltersIndex].Field.ValueString())
-		operator5 := shared.AllFilterItemsOperator(r.Definition.PresetFilters[presetFiltersIndex].Operator.ValueString())
-		var value5 interface{}
+		field17 := shared.AllFilterItemsField(r.Definition.PresetFilters[presetFiltersIndex].Field.ValueString())
+		operator17 := shared.AllFilterItemsOperator(r.Definition.PresetFilters[presetFiltersIndex].Operator.ValueString())
+		var value11 interface{}
 		if !r.Definition.PresetFilters[presetFiltersIndex].Value.IsUnknown() && !r.Definition.PresetFilters[presetFiltersIndex].Value.IsNull() {
-			_ = json.Unmarshal([]byte(r.Definition.PresetFilters[presetFiltersIndex].Value.ValueString()), &value5)
+			_ = json.Unmarshal([]byte(r.Definition.PresetFilters[presetFiltersIndex].Value.ValueString()), &value11)
 		}
 		presetFilters = append(presetFilters, shared.AllFilterItems{
-			Field:    field5,
-			Operator: operator5,
-			Value:    value5,
+			Field:    field17,
+			Operator: operator17,
+			Value:    value11,
 		})
 	}
 	definition := shared.Dashboard{

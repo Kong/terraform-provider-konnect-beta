@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PlatformFilter struct {
+type MultiselectFilters struct {
 	Field    types.String   `tfsdk:"field"`
 	Operator types.String   `tfsdk:"operator"`
 	Value    []types.String `tfsdk:"value"`
