@@ -3,14 +3,14 @@ id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
   docChecksum: 32a0c336467de52cc7d1bf41fea92298
   docVersion: 2.0.0
-  speakeasyVersion: 1.794.1
-  generationVersion: 2.931.0
+  speakeasyVersion: 1.795.3
+  generationVersion: 2.932.9
   releaseVersion: 0.21.0
   configChecksum: 66a3884abe41e29cca4d9f7327c98bdd
 persistentEdits:
-  generation_id: 819cb75d-5d63-4ba1-a600-71b48072c606
-  pristine_commit_hash: b201b6eb14c60673d27ba08e5f1a7c24ae51e4b5
-  pristine_tree_hash: 4e307d39d243dcfbee6bdd98aeefc0e6961918c2
+  generation_id: a049a0fa-00e2-4415-983b-3d636e45d227
+  pristine_commit_hash: dec13e79a4e9a98052efa140f9698a080a655542
+  pristine_tree_hash: e826f9c7cf33f29091cb97a41cdc40c4cf593844
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4940,8 +4940,8 @@ trackedFiles:
     pristine_git_object: 74da12d3f21867c6acf6ad1cfc98f03cda3da5c0
   internal/sdk/konnectbeta.go:
     id: 34b8a82d72ce
-    last_write_checksum: sha1:0556a2cd69523da86a649b13c77f38ddf038ee7e
-    pristine_git_object: 6312ff56e8c2d25b38b33adafd5f5f6384763188
+    last_write_checksum: sha1:ed9beadbc8bb4e039deba402ea5256a4fccf30ff
+    pristine_git_object: 7f63e13533b8e7937b9f2999351270de6cc12d91
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:8ebf7afb1e0baa8fde373eff36037b4ca1391d0a
