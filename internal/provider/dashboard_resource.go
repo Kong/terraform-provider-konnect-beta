@@ -240,7 +240,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"chart_title": schema.StringAttribute{
-																			Computed:    true,
 																			Optional:    true,
 																			Description: `The title of the chart, which is displayed in the tile's header.`,
 																		},

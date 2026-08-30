@@ -89,7 +89,7 @@ type AgenticQuery struct {
 	//
 	Metrics []AgenticMetrics `json:"metrics,omitempty"`
 	// List of attributes or entity types to group by.
-	Dimensions []AgenticQueryDimensions `json:"dimensions"`
+	Dimensions []AgenticQueryDimensions `json:"dimensions,omitempty"`
 	// A list of filters to apply to the query.
 	Filters []AgenticFilters `json:"filters,omitempty"`
 	// Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.

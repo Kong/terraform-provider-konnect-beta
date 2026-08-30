@@ -36,8 +36,8 @@ func (e *MetricsAbsoluteTimeRangeDtoV2Type) UnmarshalJSON(data []byte) error {
 type MetricsAbsoluteTimeRangeDtoV2 struct {
 	Tz    *string                           `default:"Etc/UTC" json:"tz"`
 	Type  MetricsAbsoluteTimeRangeDtoV2Type `json:"type"`
-	Start *time.Time                        `default:"null" json:"start"`
-	End   *time.Time                        `default:"null" json:"end"`
+	Start *time.Time                        `json:"start,omitempty"`
+	End   *time.Time                        `json:"end,omitempty"`
 }
 
 func (m MetricsAbsoluteTimeRangeDtoV2) MarshalJSON() ([]byte, error) {

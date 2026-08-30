@@ -66,7 +66,7 @@ type ManagedCacheUsageQuery struct {
 	// List of aggregated metrics to collect across the requested time span.
 	Metrics []ManagedCacheUsageMetrics `json:"metrics,omitempty"`
 	// List of attributes or entity types to group by.
-	Dimensions []ManagedCacheUsageQueryDimensions `json:"dimensions"`
+	Dimensions []ManagedCacheUsageQueryDimensions `json:"dimensions,omitempty"`
 	// A list of filters to apply to the query.
 	Filters []ManagedCacheUsageFilters `json:"filters,omitempty"`
 	// Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
