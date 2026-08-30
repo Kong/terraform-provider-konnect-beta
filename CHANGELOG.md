@@ -10,6 +10,9 @@
   - `konnect_ai_gateway_certificate`
   - `konnect_ai_gateway_sni`
 
+### Bug Fixes
+* Fixed HTTP 400 schema for `konnect_analytics_dashboard`, making actionable error messages available to user
+
 ## 0.21.0
 > Released on 2026/08/18
 
