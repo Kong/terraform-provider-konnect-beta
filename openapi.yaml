@@ -9445,7 +9445,9 @@ paths:
         '400':
           description: Bad request; returned when the request payload was not valid.
           content:
-            application/problem+json: {}
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -9508,7 +9510,9 @@ paths:
         '400':
           description: Bad request; returned when the request payload was not valid.
           content:
-            application/problem+json: {}
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -32916,9 +32920,7 @@ components:
             x-speakeasy-unknown-values: allow
           example:
             - status_code_grouped
-          default: null
           maxItems: 2
-          nullable: true
           x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/AdvancedFilters'
@@ -32987,9 +32989,7 @@ components:
               - status_code_grouped
               - ai_plugin
             x-speakeasy-unknown-values: allow
-          default: null
           maxItems: 2
-          nullable: true
           x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/LLMFilters'
@@ -33070,9 +33070,7 @@ components:
               - upstream_status_code
               - upstream_status_code_grouped
             x-speakeasy-unknown-values: allow
-          default: null
           maxItems: 2
-          nullable: true
           x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/AgenticFilters'
@@ -33132,9 +33130,7 @@ components:
               - provider_region
               - time
             x-speakeasy-unknown-values: allow
-          default: null
           maxItems: 2
-          nullable: true
           x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/ManagedCacheUsageFilters'
@@ -33198,9 +33194,7 @@ components:
               - region
               - hostname
             x-speakeasy-unknown-values: allow
-          default: null
           maxItems: 2
-          nullable: true
           x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/PlatformFilters'
@@ -33238,28 +33232,20 @@ components:
             - platform_usage
         entity:
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         columns:
           type: array
           items:
             type: string
-          default: null
           minItems: 1
-          nullable: true
           x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/PlatformFilters'
         cursor:
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         page_size:
           type: integer
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
@@ -34453,14 +34439,10 @@ components:
         start:
           type: string
           format: date-time
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         end:
           type: string
           format: date-time
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       required:
         - type
@@ -35614,6 +35596,7 @@ components:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
           nullable: false
+          x-speakeasy-param-computed: false
         type:
           type: string
           enum:
@@ -35621,8 +35604,6 @@ components:
         decimal_points:
           description: 'The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.'
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
