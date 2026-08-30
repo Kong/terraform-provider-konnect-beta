@@ -409,3 +409,51 @@ resource "konnect_dashboard" "my_dashboard" {
     ]
   }
 }
+
+resource "konnect_dashboard" "test_simple_platform_metrics" {
+  provider = konnect-beta
+  name     = "Platform CP count"
+
+  definition = {
+    preset_filters = null
+    tiles = [
+      {
+        chart = {
+          definition = {
+            chart_visualization = {
+              chart = {
+                donut          = null
+                horizontal_bar = null
+                single_value = {
+                  chart_title = "Total Control Planes"
+                  type        = "single_value"
+                }
+                timeseries_line = null
+              }
+              query = {
+                api_usage     = null
+                llm_usage     = null
+                platform_usage = {
+                  datasource = "platform_usage"
+                  metrics    = ["control_plane_count"]
+                  dimensions = []
+                }
+              }
+            }
+          }
+          layout = {
+            position = {
+              col = 0
+              row = 0
+            }
+            size = {
+              cols = 3
+              rows = 2
+            }
+          }
+          type = "chart"
+        }
+      },
+    ]
+  }
+}
