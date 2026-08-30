@@ -10,5 +10,4 @@ type AIGatewayEmbeddingsModelConfig struct {
 	Mistral     *AIGatewayMistralEmbeddingsModelConfig     `queryParam:"inline" tfsdk:"mistral"`
 	Ollama      *AIGatewayOllamaEmbeddingsModelConfig      `queryParam:"inline" tfsdk:"ollama"`
 	Openai      *AIGatewayOllamaEmbeddingsModelConfig      `queryParam:"inline" tfsdk:"openai"`
-	Vertex      *AIGatewayGeminiEmbeddingsModelConfig      `queryParam:"inline" tfsdk:"vertex"`
 }

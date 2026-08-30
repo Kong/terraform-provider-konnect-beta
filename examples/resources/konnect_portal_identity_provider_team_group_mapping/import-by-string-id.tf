@@ -1,0 +1,9 @@
+import {
+  provider = konnect-beta
+  to = konnect_portal_identity_provider_team_group_mapping.my_konnect-beta_portal_identity_provider_team_group_mapping
+  id = jsonencode({
+    id                   = "..."
+    identity_provider_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+    portal_id            = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+  })
+}

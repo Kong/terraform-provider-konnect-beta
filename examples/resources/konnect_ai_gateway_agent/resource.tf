@@ -9,6 +9,9 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
         "..."
       ]
     }
+    auth_strategies = [
+      "okta-ai-se"
+    ]
     identity_providers = [
       "okta-ai-se"
     ]

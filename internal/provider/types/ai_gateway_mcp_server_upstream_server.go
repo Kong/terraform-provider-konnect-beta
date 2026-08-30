@@ -7,7 +7,6 @@ import (
 )
 
 type AIGatewayMCPServerUpstreamServer struct {
-	Access      *AIGatewayMCPServerBaseACLProperties    `tfsdk:"access"`
 	Config      *AIGatewayMCPServerUpstreamServerConfig `tfsdk:"config"`
 	CreatedAt   types.String                            `tfsdk:"created_at"`
 	DisplayName types.String                            `tfsdk:"display_name"`

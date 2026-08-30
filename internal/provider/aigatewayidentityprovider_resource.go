@@ -41,15 +41,15 @@ type AIGatewayIdentityProviderResource struct {
 
 // AIGatewayIdentityProviderResourceModel describes the resource data model.
 type AIGatewayIdentityProviderResourceModel struct {
-	Config        jsontypes.Normalized                      `tfsdk:"config"`
-	CreatedAt     types.String                              `tfsdk:"created_at"`
-	DisplayName   types.String                              `tfsdk:"display_name"`
-	GatewayID     types.String                              `tfsdk:"gateway_id"`
-	ID            types.String                              `tfsdk:"id"`
-	KeyAuth       *tfTypes.AIGatewayIdentityProviderKeyAuth `queryParam:"inline" tfsdk:"key_auth"`
-	Name          types.String                              `tfsdk:"name"`
-	OpenidConnect *tfTypes.AIGatewayIdentityProviderKeyAuth `queryParam:"inline" tfsdk:"openid_connect"`
-	UpdatedAt     types.String                              `tfsdk:"updated_at"`
+	Config        jsontypes.Normalized                  `tfsdk:"config"`
+	CreatedAt     types.String                          `tfsdk:"created_at"`
+	DisplayName   types.String                          `tfsdk:"display_name"`
+	GatewayID     types.String                          `tfsdk:"gateway_id"`
+	ID            types.String                          `tfsdk:"id"`
+	KeyAuth       *tfTypes.AIGatewayAuthStrategyKeyAuth `queryParam:"inline" tfsdk:"key_auth"`
+	Name          types.String                          `tfsdk:"name"`
+	OpenidConnect *tfTypes.AIGatewayAuthStrategyKeyAuth `queryParam:"inline" tfsdk:"openid_connect"`
+	UpdatedAt     types.String                          `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayIdentityProviderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -171,6 +171,7 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +
 					`This feature is currently in beta and is subject to change.` + "\n" +
 					`` + "\n" +
@@ -266,6 +267,7 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +
 					`This feature is currently in beta and is subject to change.` + "\n" +
 					`` + "\n" +

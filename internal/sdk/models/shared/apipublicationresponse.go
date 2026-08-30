@@ -24,8 +24,9 @@ type APIPublicationResponse struct {
 	// The visibility of the API in the portal.
 	// Public API publications do not require authentication to view and retrieve information about them.
 	// Private API publications require authentication to retrieve information about them.
+	// If omitted, this defaults to the target portal's configured default API visibility.
 	//
-	Visibility *APIPublicationVisibility `default:"private" json:"visibility"`
+	Visibility APIPublicationVisibility `json:"visibility"`
 	// UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
 	FormID *string `json:"form_id,omitempty"`
 	// Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
@@ -68,9 +69,9 @@ func (a *APIPublicationResponse) GetAuthStrategyIds() []string {
 	return a.AuthStrategyIds
 }
 
-func (a *APIPublicationResponse) GetVisibility() *APIPublicationVisibility {
+func (a *APIPublicationResponse) GetVisibility() APIPublicationVisibility {
 	if a == nil {
-		return nil
+		return APIPublicationVisibility("")
 	}
 	return a.Visibility
 }

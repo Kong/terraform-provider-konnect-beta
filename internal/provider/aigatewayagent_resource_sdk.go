@@ -35,6 +35,10 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 					r.Access.Acls.Deny = append(r.Access.Acls.Deny, types.StringValue(v))
 				}
 			}
+			r.Access.AuthStrategies = make([]types.String, 0, len(resp.Access.AuthStrategies))
+			for _, v := range resp.Access.AuthStrategies {
+				r.Access.AuthStrategies = append(r.Access.AuthStrategies, types.StringValue(v))
+			}
 			r.Access.IdentityProviders = make([]types.String, 0, len(resp.Access.IdentityProviders))
 			for _, v := range resp.Access.IdentityProviders {
 				r.Access.IdentityProviders = append(r.Access.IdentityProviders, types.StringValue(v))
@@ -309,9 +313,14 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 		for identityProvidersIndex := range r.Access.IdentityProviders {
 			identityProviders = append(identityProviders, r.Access.IdentityProviders[identityProvidersIndex].ValueString())
 		}
+		authStrategies := make([]string, 0, len(r.Access.AuthStrategies))
+		for authStrategiesIndex := range r.Access.AuthStrategies {
+			authStrategies = append(authStrategies, r.Access.AuthStrategies[authStrategiesIndex].ValueString())
+		}
 		access = &shared.AIGatewayAgentAccess{
 			Acls:              acls,
 			IdentityProviders: identityProviders,
+			AuthStrategies:    authStrategies,
 		}
 	}
 	var url string
@@ -646,9 +655,14 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 		for identityProvidersIndex := range r.Access.IdentityProviders {
 			identityProviders = append(identityProviders, r.Access.IdentityProviders[identityProvidersIndex].ValueString())
 		}
+		authStrategies := make([]string, 0, len(r.Access.AuthStrategies))
+		for authStrategiesIndex := range r.Access.AuthStrategies {
+			authStrategies = append(authStrategies, r.Access.AuthStrategies[authStrategiesIndex].ValueString())
+		}
 		access = &shared.AIGatewayAgentAccess{
 			Acls:              acls,
 			IdentityProviders: identityProviders,
+			AuthStrategies:    authStrategies,
 		}
 	}
 	var url string

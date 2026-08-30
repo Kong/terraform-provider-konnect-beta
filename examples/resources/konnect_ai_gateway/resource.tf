@@ -1,7 +1,8 @@
 resource "konnect_ai_gateway" "my_aigateway" {
   provider = konnect-beta
-  description  = "An AI Gateway for my organization."
-  display_name = "My AI Gateway"
+  deployment_type = "hybrid"
+  description     = "An AI Gateway for my organization."
+  display_name    = "My AI Gateway"
   labels = {
     key = "value"
   }

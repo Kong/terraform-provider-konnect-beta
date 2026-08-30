@@ -25,6 +25,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
       }
+      auth_strategies = [
+        "okta-ai-se"
+      ]
       identity_providers = [
         "okta-ai-se"
       ]
@@ -125,37 +128,36 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          anthropic = {
-            cache_read_cost  = 8.86
-            cache_write_cost = 7.72
+          xai = {
+            cache_read_cost  = 4.42
+            cache_write_cost = 3.9
             cache_write_cost_list = [
               {
-                cost = 1.85
+                cost = 7.32
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 7.89
-                output_factor = 6.2
+                input_factor  = 1.42
+                output_factor = 1.31
               }
             ]
-            embeddings_dimensions = 3
-            input_cost            = 9.85
-            max_tokens            = 1
-            output_cost           = 1.7
+            embeddings_dimensions = 1556463673
+            input_cost            = 3.7
+            max_tokens            = 1227329724
+            output_cost           = 6.56
             service_tier_factor = [
               {
-                factor = 7.15
+                factor = 8.57
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 6.58
-            top_k        = 3
-            top_p        = 4.84
-            upstream_url = "https://ajar-summer.biz"
-            version      = "2023-06-01"
+            temperature  = 3.27
+            top_k        = 483136424
+            top_p        = 2.83
+            upstream_url = "https://baggy-trash.biz/"
           }
         }
         name                 = "gpt-5-model"
@@ -176,6 +178,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
       }
+      auth_strategies = [
+        "okta-ai-se"
+      ]
       identity_providers = [
         "okta-ai-se"
       ]
@@ -190,10 +195,8 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           embeddings = {
             allow_auth_override = false
             config = {
-              huggingface = {
-                upstream_url   = "...my_upstream_url..."
-                use_cache      = false
-                wait_for_model = false
+              ollama = {
+                upstream_url = "...my_upstream_url..."
               }
             }
             name     = "...my_name..."
@@ -311,37 +314,37 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          mistral = {
-            cache_read_cost  = 9.91
-            cache_write_cost = 1.14
+          databricks = {
+            cache_read_cost  = 8.45
+            cache_write_cost = 3.62
             cache_write_cost_list = [
               {
-                cost = 5.09
+                cost = 3.12
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 1.3
-                output_factor = 9.49
+                input_factor  = 4.94
+                output_factor = 9.43
               }
             ]
-            embeddings_dimensions = 10
-            format                = "ollama"
-            input_cost            = 1.29
-            max_tokens            = 5
-            output_cost           = 5.4
+            embeddings_dimensions = 1316728274
+            input_cost            = 9.06
+            max_tokens            = 1585442569
+            output_cost           = 7.78
             service_tier_factor = [
               {
-                factor = 5.81
+                factor = 6.01
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 4.9
-            top_k        = 6
-            top_p        = 5.29
-            upstream_url = "https://sad-thigh.net"
+            temperature           = 3.33
+            top_k                 = 896181225
+            top_p                 = 7.55
+            upstream_url          = "https://distant-antelope.com"
+            workspace_instance_id = "...my_workspace_instance_id..."
           }
         }
         name                 = "gpt-5-model"
@@ -423,8 +426,12 @@ Optional:
 This feature is currently in beta and is subject to change.
 
 Access control rules. Configure exactly one of `allow` or `deny`. (see [below for nested schema](#nestedatt--api--access--acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the model.
+- `auth_strategies` (List of String) List of auth strategies for granting access to the model.
+At most 1 auth strategy of each auth strategy type can be referenced.
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the model.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 
 <a id="nestedatt--api--access--acls"></a>
 ### Nested Schema for `api.access.acls`
@@ -637,10 +644,6 @@ Ollama-specific configuration for a model. (see [below for nested schema](#neste
 This feature is currently in beta and is subject to change.
 
 Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings--config--openai))
-- `vertex` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Google Vertex-specific configuration for a model. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings--config--vertex))
 
 <a id="nestedatt--api--config--balancer--semantic--embeddings--config--azure"></a>
 ### Nested Schema for `api.config.balancer.semantic.embeddings.config.azure`
@@ -722,28 +725,6 @@ Optional:
 Optional:
 
 - `upstream_url` (String) The URL of the embeddings model.
-
-
-<a id="nestedatt--api--config--balancer--semantic--embeddings--config--vertex"></a>
-### Nested Schema for `api.config.balancer.semantic.embeddings.config.vertex`
-
-Optional:
-
-- `gcp_environment` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--embeddings--config--vertex--gcp_environment))
-- `upstream_url` (String) The URL of the embeddings model.
-
-<a id="nestedatt--api--config--balancer--semantic--embeddings--config--vertex--gcp_environment"></a>
-### Nested Schema for `api.config.balancer.semantic.embeddings.config.vertex.gcp_environment`
-
-Optional:
-
-- `api_endpoint` (String) The custom API endpoint for the Gemini model. Not Null
-- `location_id` (String) The Google Cloud location ID for the model endpoint. Not Null
-- `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
-
 
 
 
@@ -1029,7 +1010,7 @@ When no selector location is configured, the format default selector is used.
 
 Optional:
 
-- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "vertex"]
+- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 
 
 <a id="nestedatt--api--targets"></a>
@@ -1122,10 +1103,6 @@ AWS SageMaker-specific configuration for a model. (see [below for nested schema]
 This feature is currently in beta and is subject to change.
 
 Vercel AI Gateway-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--vercel))
-- `vertex` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Google Vertex-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--vertex))
 - `vllm` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -2018,70 +1995,6 @@ Optional:
 
 
 
-<a id="nestedatt--api--targets--config--vertex"></a>
-### Nested Schema for `api.targets.config.vertex`
-
-Optional:
-
-- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
-- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
-- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--vertex--cache_write_cost_list))
-- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--vertex--context_window_factor))
-- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `gcp_environment` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--api--targets--config--vertex--gcp_environment))
-- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
-- `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
-- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--vertex--service_tier_factor))
-- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
-- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
-- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `upstream_url` (String) The upstream URL for the model endpoint.
-
-<a id="nestedatt--api--targets--config--vertex--cache_write_cost_list"></a>
-### Nested Schema for `api.targets.config.vertex.cache_write_cost_list`
-
-Optional:
-
-- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
-- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
-
-
-<a id="nestedatt--api--targets--config--vertex--context_window_factor"></a>
-### Nested Schema for `api.targets.config.vertex.context_window_factor`
-
-Optional:
-
-- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
-- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
-- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
-
-
-<a id="nestedatt--api--targets--config--vertex--gcp_environment"></a>
-### Nested Schema for `api.targets.config.vertex.gcp_environment`
-
-Optional:
-
-- `api_endpoint` (String) The custom API endpoint for the Gemini model. Not Null
-- `endpoint_id` (String) The endpoint ID for the model.
-This must be set when running a target model on Gemini on Vertex Model Garden.
-- `location_id` (String) The Google Cloud location ID for the model endpoint. Not Null
-- `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
-
-
-<a id="nestedatt--api--targets--config--vertex--service_tier_factor"></a>
-### Nested Schema for `api.targets.config.vertex.service_tier_factor`
-
-Optional:
-
-- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
-- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
-
-
-
 <a id="nestedatt--api--targets--config--vllm"></a>
 ### Nested Schema for `api.targets.config.vllm`
 
@@ -2226,8 +2139,12 @@ Optional:
 This feature is currently in beta and is subject to change.
 
 Access control rules. Configure exactly one of `allow` or `deny`. (see [below for nested schema](#nestedatt--model--access--acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the model.
+- `auth_strategies` (List of String) List of auth strategies for granting access to the model.
+At most 1 auth strategy of each auth strategy type can be referenced.
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the model.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 
 <a id="nestedatt--model--access--acls"></a>
 ### Nested Schema for `model.access.acls`
@@ -2442,10 +2359,6 @@ Ollama-specific configuration for a model. (see [below for nested schema](#neste
 This feature is currently in beta and is subject to change.
 
 Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings--config--openai))
-- `vertex` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Google Vertex-specific configuration for a model. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings--config--vertex))
 
 <a id="nestedatt--model--config--balancer--semantic--embeddings--config--azure"></a>
 ### Nested Schema for `model.config.balancer.semantic.embeddings.config.azure`
@@ -2527,28 +2440,6 @@ Optional:
 Optional:
 
 - `upstream_url` (String) The URL of the embeddings model.
-
-
-<a id="nestedatt--model--config--balancer--semantic--embeddings--config--vertex"></a>
-### Nested Schema for `model.config.balancer.semantic.embeddings.config.vertex`
-
-Optional:
-
-- `gcp_environment` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--embeddings--config--vertex--gcp_environment))
-- `upstream_url` (String) The URL of the embeddings model.
-
-<a id="nestedatt--model--config--balancer--semantic--embeddings--config--vertex--gcp_environment"></a>
-### Nested Schema for `model.config.balancer.semantic.embeddings.config.vertex.gcp_environment`
-
-Optional:
-
-- `api_endpoint` (String) The custom API endpoint for the Gemini model. Not Null
-- `location_id` (String) The Google Cloud location ID for the model endpoint. Not Null
-- `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
-
 
 
 
@@ -2846,7 +2737,7 @@ When no selector location is configured, the format default selector is used.
 
 Optional:
 
-- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "vertex"]
+- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 
 
 <a id="nestedatt--model--targets"></a>
@@ -2939,10 +2830,6 @@ AWS SageMaker-specific configuration for a model. (see [below for nested schema]
 This feature is currently in beta and is subject to change.
 
 Vercel AI Gateway-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--vercel))
-- `vertex` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Google Vertex-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--vertex))
 - `vllm` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -3827,70 +3714,6 @@ Optional:
 
 <a id="nestedatt--model--targets--config--vercel--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.vercel.service_tier_factor`
-
-Optional:
-
-- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
-- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
-
-
-
-<a id="nestedatt--model--targets--config--vertex"></a>
-### Nested Schema for `model.targets.config.vertex`
-
-Optional:
-
-- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
-- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
-- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--vertex--cache_write_cost_list))
-- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--vertex--context_window_factor))
-- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
-- `gcp_environment` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--model--targets--config--vertex--gcp_environment))
-- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
-- `max_tokens` (Number) The maximum number of tokens to generate in the response.
-- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
-- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--vertex--service_tier_factor))
-- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
-- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
-- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-- `upstream_url` (String) The upstream URL for the model endpoint.
-
-<a id="nestedatt--model--targets--config--vertex--cache_write_cost_list"></a>
-### Nested Schema for `model.targets.config.vertex.cache_write_cost_list`
-
-Optional:
-
-- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
-- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
-
-
-<a id="nestedatt--model--targets--config--vertex--context_window_factor"></a>
-### Nested Schema for `model.targets.config.vertex.context_window_factor`
-
-Optional:
-
-- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
-- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
-- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
-
-
-<a id="nestedatt--model--targets--config--vertex--gcp_environment"></a>
-### Nested Schema for `model.targets.config.vertex.gcp_environment`
-
-Optional:
-
-- `api_endpoint` (String) The custom API endpoint for the Gemini model. Not Null
-- `endpoint_id` (String) The endpoint ID for the model.
-This must be set when running a target model on Gemini on Vertex Model Garden.
-- `location_id` (String) The Google Cloud location ID for the model endpoint. Not Null
-- `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
-
-
-<a id="nestedatt--model--targets--config--vertex--service_tier_factor"></a>
-### Nested Schema for `model.targets.config.vertex.service_tier_factor`
 
 Optional:
 

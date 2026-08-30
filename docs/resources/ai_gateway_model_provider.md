@@ -465,23 +465,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
     }
     name = "azure-ai-se"
   }
-  vertex = {
-    config = {
-      auth = {
-        vertex = {
-          service_account_json = "...my_service_account_json..."
-        }
-      }
-    }
-    display_name = "Azure AI SE"
-    labels = {
-      key = "value"
-    }
-    managed_by = {
-      key = "value"
-    }
-    name = "azure-ai-se"
-  }
   vllm = {
     config = {
       auth = {
@@ -590,10 +573,6 @@ This feature is currently in beta and is subject to change.
 Config for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker))
 - `vercel` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--vercel))
-- `vertex` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Config for Vertex model provider. (see [below for nested schema](#nestedatt--vertex))
 - `vllm` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--vllm))
 - `xai` (Attributes) **Pre-release Feature**
@@ -1940,97 +1919,6 @@ Optional:
 - `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-
-
-<a id="nestedatt--vertex"></a>
-### Nested Schema for `vertex`
-
-Optional:
-
-- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--vertex--config))
-- `display_name` (String) The display name for this model provider instance. Not Null
-- `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
-
-Public labels are intended to store **PUBLIC** metadata. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
-Not Null
-
-Read-Only:
-
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) Contains a unique identifier used for this resource.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--vertex--config"></a>
-### Nested Schema for `vertex.config`
-
-Optional:
-
-- `auth` (Attributes) Not Null (see [below for nested schema](#nestedatt--vertex--config--auth))
-
-<a id="nestedatt--vertex--config--auth"></a>
-### Nested Schema for `vertex.config.auth`
-
-Optional:
-
-- `basic` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--vertex--config--auth--basic))
-- `vertex` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Configuration for Vertex model provider. (see [below for nested schema](#nestedatt--vertex--config--auth--vertex))
-
-<a id="nestedatt--vertex--config--auth--basic"></a>
-### Nested Schema for `vertex.config.auth.basic`
-
-Optional:
-
-- `headers` (Attributes List) (see [below for nested schema](#nestedatt--vertex--config--auth--basic--headers))
-- `params` (Attributes List) (see [below for nested schema](#nestedatt--vertex--config--auth--basic--params))
-
-<a id="nestedatt--vertex--config--auth--basic--headers"></a>
-### Nested Schema for `vertex.config.auth.basic.headers`
-
-Optional:
-
-- `name` (String) The name of the header used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Not Null
-- `value` (String) The auth header value for ‘header_name’, for example ‘Bearer key...’.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--vertex--config--auth--basic--params"></a>
-### Nested Schema for `vertex.config.auth.basic.params`
-
-Optional:
-
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
-- `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
-- `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-<a id="nestedatt--vertex--config--auth--vertex"></a>
-### Nested Schema for `vertex.config.auth.vertex`
-
-Optional:
-
-- `service_account_json` (String) Full JSON string of the GCP service account to authenticate. If not set, the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 

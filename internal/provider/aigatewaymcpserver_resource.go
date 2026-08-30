@@ -33,6 +33,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -106,7 +107,20 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
+											`Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
+											`top-level gate: a caller's consumer group must pass this check before any MCP protocol` + "\n" +
+											`operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `, ` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level` + "\n" +
+											`` + "`" + `default_tool_acls` + "`" + ` or per-tool ` + "`" + `access.acls` + "`" + ` check is evaluated.`,
+									},
+									"auth_strategies": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of auth strategies for granting access to the MCP server.` + "\n" +
+											`At most 1 auth strategy of each auth strategy type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
 									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
@@ -128,14 +142,20 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
+											`Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
+											`tools. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above.` + "\n" +
+											`Applies to every tool exposed by this MCP Server unless a specific tool overrides it via` + "\n" +
+											`that tool's own ` + "`" + `access.acls` + "`" + `.`,
 									},
 									"identity_providers": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
+										Computed:           true,
+										Optional:           true,
+										ElementType:        types.StringType,
+										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
-											`At most 1 identity provider of each identity provider type can be referenced.`,
+											`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+											`` + "\n" +
+											`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
 										},
@@ -173,7 +193,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -214,7 +234,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
+											`Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
+											`value of the configured ` + "`" + `access_token_claim_field` + "`" + `. This is the top-level gate: a caller` + "\n" +
+											`must pass this check before any MCP protocol operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `,` + "\n" +
+											`` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level ` + "`" + `default_tool_acls` + "`" + ` or per-tool` + "\n" +
+											`` + "`" + `access.acls` + "`" + ` check is evaluated.`,
+									},
+									"auth_strategies": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of auth strategies for granting access to the MCP server.` + "\n" +
+											`At most 1 auth strategy of each auth strategy type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
 									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
@@ -236,14 +270,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
+											`Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every tool` + "\n" +
+											`exposed by this MCP Server unless a specific tool overrides it via that tool's own` + "\n" +
+											`` + "`" + `access.acls` + "`" + `.`,
 									},
 									"identity_providers": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
+										Computed:           true,
+										Optional:           true,
+										ElementType:        types.StringType,
+										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
-											`At most 1 identity provider of each identity provider type can be referenced.`,
+											`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+											`` + "\n" +
+											`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
 										},
@@ -281,7 +322,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -324,6 +365,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 2147483646),
+								},
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -348,6 +392,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(426),
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 599),
+										},
 									},
 									"methods": schema.ListAttribute{
 										Computed:    true,
@@ -382,6 +429,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
 									},
 									"request_buffering": schema.BoolAttribute{
 										Computed:    true,
@@ -411,7 +461,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Configuration for an AI Gateway route.`,
+									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
+									`incoming requests.`,
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -422,10 +474,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     booldefault.StaticBool(true),
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
-									},
-									"label": schema.StringAttribute{
-										Optional:    true,
-										Description: `The label of the MCP server. This is used to filter the exported MCP tools.`,
 									},
 									"session": schema.SingleNestedAttribute{
 										Computed: true,
@@ -680,6 +728,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																Optional:    true,
 																Default:     int64default.StaticInt64(5),
 																Description: `Maximum retry attempts for redirection. Default: 5`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 2147483646),
+																},
 															},
 															"nodes": schema.ListNestedAttribute{
 																Optional: true,
@@ -733,6 +784,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Optional:    true,
 														Default:     int64default.StaticInt64(0),
 														Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
 													},
 													"host": schema.StringAttribute{
 														Computed: true,
@@ -902,6 +956,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Optional:    true,
 												Default:     int64default.StaticInt64(86400),
 												Description: `The time-to-live (TTL) for each session in seconds. Default: 86400`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
 											},
 											"strategy": schema.StringAttribute{
 												Computed:    true,
@@ -917,6 +974,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(10000),
 										Description: `The timeout for calling the tools in milliseconds. Default: 10000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1083,6 +1143,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
+									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
@@ -1109,6 +1170,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
+									MarkdownDescription: `**Pre-release Feature**` + "\n" +
+										`This feature is currently in beta and is subject to change.` + "\n" +
+										`` + "\n" +
+										`Access-control rules for a tool.`,
 								},
 								"annotations": schema.SingleNestedAttribute{
 									Computed: true,
@@ -1158,12 +1223,12 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								"host": schema.StringAttribute{
 									Optional:    true,
-									Description: `The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
+									Description: `The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
 								},
 								"method": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null`,
+									Description: `The HTTP method used when forwarding the request to the upstream API. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -1171,7 +1236,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null`,
+									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -1222,8 +1287,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										`This feature is currently in beta and is subject to change.`,
 								},
 								"path": schema.StringAttribute{
-									Optional:    true,
-									Description: `The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.`,
+									Optional: true,
+									MarkdownDescription: `The path of the exported API. Always treated as relative to the path component of` + "\n" +
+										`` + "`" + `config.url` + "`" + ` and simply concatenated onto it — a leading ` + "`" + `/` + "`" + ` has no special` + "\n" +
+										`"absolute path" meaning. If this tool's ` + "`" + `host` + "`" + ` or ` + "`" + `scheme` + "`" + ` overrides the source's` + "\n" +
+										`URL, ` + "`" + `path` + "`" + ` is instead relative to the root of that overridden host, since there is` + "\n" +
+										`no URL path from a different host to append to. By default, Kong will extract the` + "\n" +
+										`path from API configuration.`,
 								},
 								"query": schema.StringAttribute{
 									CustomType: jsontypes.NormalizedType{},
@@ -1262,7 +1332,14 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 						},
-						Description: `List of tools exposed by this MCP Server.`,
+						MarkdownDescription: `List of tools exposed by this MCP Server. Each tool's ` + "`" + `path` + "`" + `, ` + "`" + `method` + "`" + `, and ` + "`" + `host` + "`" + `` + "\n" +
+							`describe the backend HTTP operation on the upstream selected by ` + "`" + `config.url` + "`" + ` — they` + "\n" +
+							`do not need to match the public MCP Route configured in ` + "`" + `config.route` + "`" + `.` + "\n" +
+							`Not Null`,
+						Validators: []validator.List{
+							speakeasy_listvalidators.NotNull(),
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
@@ -1341,6 +1418,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(426),
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 599),
+										},
 									},
 									"methods": schema.ListAttribute{
 										Computed:    true,
@@ -1375,6 +1455,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
 									},
 									"request_buffering": schema.BoolAttribute{
 										Computed:    true,
@@ -1404,7 +1487,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Configuration for an AI Gateway route.`,
+									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
+									`incoming requests.`,
 							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
@@ -1565,6 +1650,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
+									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
@@ -1591,6 +1677,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
+									MarkdownDescription: `**Pre-release Feature**` + "\n" +
+										`This feature is currently in beta and is subject to change.` + "\n" +
+										`` + "\n" +
+										`Access-control rules for a tool.`,
 								},
 								"annotations": schema.SingleNestedAttribute{
 									Computed: true,
@@ -1640,12 +1730,12 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								"host": schema.StringAttribute{
 									Optional:    true,
-									Description: `The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
+									Description: `The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
 								},
 								"method": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null`,
+									Description: `The HTTP method used when forwarding the request to the upstream API. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -1653,7 +1743,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null`,
+									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -1704,8 +1794,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										`This feature is currently in beta and is subject to change.`,
 								},
 								"path": schema.StringAttribute{
-									Optional:    true,
-									Description: `The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.`,
+									Optional: true,
+									MarkdownDescription: `The path of the exported API. Always treated as relative to the path component of` + "\n" +
+										`` + "`" + `config.url` + "`" + ` and simply concatenated onto it — a leading ` + "`" + `/` + "`" + ` has no special` + "\n" +
+										`"absolute path" meaning. If this tool's ` + "`" + `host` + "`" + ` or ` + "`" + `scheme` + "`" + ` overrides the source's` + "\n" +
+										`URL, ` + "`" + `path` + "`" + ` is instead relative to the root of that overridden host, since there is` + "\n" +
+										`no URL path from a different host to append to. By default, Kong will extract the` + "\n" +
+										`path from API configuration.`,
 								},
 								"query": schema.StringAttribute{
 									CustomType: jsontypes.NormalizedType{},
@@ -1744,7 +1839,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 						},
-						Description: `List of tools exposed by this MCP Server.`,
+						Description: `List of tools exposed by this MCP Server. Not Null`,
+						Validators: []validator.List{
+							speakeasy_listvalidators.NotNull(),
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
@@ -1827,7 +1926,20 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
+											`Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
+											`top-level gate: a caller's consumer group must pass this check before any MCP protocol` + "\n" +
+											`operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `, ` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level` + "\n" +
+											`` + "`" + `default_tool_acls` + "`" + ` or per-tool ` + "`" + `access.acls` + "`" + ` check is evaluated.`,
+									},
+									"auth_strategies": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of auth strategies for granting access to the MCP server.` + "\n" +
+											`At most 1 auth strategy of each auth strategy type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
 									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
@@ -1849,14 +1961,20 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
+											`Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
+											`tools. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above.` + "\n" +
+											`Applies to every tool exposed by this MCP Server unless a specific tool overrides it via` + "\n" +
+											`that tool's own ` + "`" + `access.acls` + "`" + `.`,
 									},
 									"identity_providers": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
+										Computed:           true,
+										Optional:           true,
+										ElementType:        types.StringType,
+										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
-											`At most 1 identity provider of each identity provider type can be referenced.`,
+											`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+											`` + "\n" +
+											`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
 										},
@@ -1894,7 +2012,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -1935,7 +2053,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
+											`Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
+											`value of the configured ` + "`" + `access_token_claim_field` + "`" + `. This is the top-level gate: a caller` + "\n" +
+											`must pass this check before any MCP protocol operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `,` + "\n" +
+											`` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level ` + "`" + `default_tool_acls` + "`" + ` or per-tool` + "\n" +
+											`` + "`" + `access.acls` + "`" + ` check is evaluated.`,
+									},
+									"auth_strategies": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of auth strategies for granting access to the MCP server.` + "\n" +
+											`At most 1 auth strategy of each auth strategy type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
 									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
@@ -1957,14 +2089,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
+											`Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every tool` + "\n" +
+											`exposed by this MCP Server unless a specific tool overrides it via that tool's own` + "\n" +
+											`` + "`" + `access.acls` + "`" + `.`,
 									},
 									"identity_providers": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
+										Computed:           true,
+										Optional:           true,
+										ElementType:        types.StringType,
+										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
-											`At most 1 identity provider of each identity provider type can be referenced.`,
+											`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+											`` + "\n" +
+											`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
 										},
@@ -2002,7 +2141,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -2045,6 +2184,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 2147483646),
+								},
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -2069,6 +2211,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(426),
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 599),
+										},
 									},
 									"methods": schema.ListAttribute{
 										Computed:    true,
@@ -2103,6 +2248,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
 									},
 									"request_buffering": schema.BoolAttribute{
 										Computed:    true,
@@ -2132,7 +2280,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Configuration for an AI Gateway route.`,
+									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
+									`incoming requests.`,
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -2143,10 +2293,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     booldefault.StaticBool(true),
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
-									},
-									"label": schema.StringAttribute{
-										Optional:    true,
-										Description: `The label of the MCP server. This is used to filter the exported MCP tools.`,
 									},
 									"session": schema.SingleNestedAttribute{
 										Computed: true,
@@ -2401,6 +2547,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																Optional:    true,
 																Default:     int64default.StaticInt64(5),
 																Description: `Maximum retry attempts for redirection. Default: 5`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 2147483646),
+																},
 															},
 															"nodes": schema.ListNestedAttribute{
 																Optional: true,
@@ -2454,6 +2603,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Optional:    true,
 														Default:     int64default.StaticInt64(0),
 														Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
 													},
 													"host": schema.StringAttribute{
 														Computed: true,
@@ -2623,6 +2775,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Optional:    true,
 												Default:     int64default.StaticInt64(86400),
 												Description: `The time-to-live (TTL) for each session in seconds. Default: 86400`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
 											},
 											"strategy": schema.StringAttribute{
 												Computed:    true,
@@ -2638,6 +2793,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(10000),
 										Description: `The timeout for calling the tools in milliseconds. Default: 10000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -2722,192 +2880,19 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						Description: `List of policy references.`,
 					},
-					"tools": schema.ListNestedAttribute{
-						Computed: true,
-						Optional: true,
-						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
-							},
-							Attributes: map[string]schema.Attribute{
-								"access": schema.SingleNestedAttribute{
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"acls": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"allow": schema.ListAttribute{
-													Computed:    true,
-													Optional:    true,
-													ElementType: types.StringType,
-													Description: `List of consumer groups that are permitted access.`,
-												},
-												"deny": schema.ListAttribute{
-													Computed:    true,
-													Optional:    true,
-													ElementType: types.StringType,
-													Description: `List of consumer groups that are denied access.`,
-												},
-											},
-											MarkdownDescription: `**Pre-release Feature**` + "\n" +
-												`This feature is currently in beta and is subject to change.` + "\n" +
-												`` + "\n" +
-												`Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
-												`When configured, these will override the default access control rules defined on the MCP Server.`,
-										},
-									},
-								},
-								"annotations": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"destructive_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, the tool may perform destructive updates`,
-										},
-										"idempotent_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, repeated calls with same args have no additional effect`,
-										},
-										"open_world_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, tool interacts with external entities`,
-										},
-										"read_only_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, the tool does not modify its environment`,
-										},
-										"title": schema.StringAttribute{
-											Optional:    true,
-											Description: `Human-readable title for the tool`,
-										},
-									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
-								},
-								"description": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `A description of what the tool does. Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
-								},
-								"headers": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"host": schema.StringAttribute{
-									Optional:    true,
-									Description: `The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
-								},
-								"method": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]`,
-								},
-								"name": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
-								},
-								"parameters": schema.ListNestedAttribute{
-									Computed: true,
-									Optional: true,
-									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
-										},
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Optional:    true,
-												Description: `A description of the parameter.`,
-											},
-											"in": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The location of the parameter in the request. possible known values include one of ["query", "path", "header", "body"]; Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-												},
-											},
-											"name": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The name of the parameter. Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-												},
-											},
-											"required": schema.BoolAttribute{
-												Optional:    true,
-												Description: `Whether this parameter is required.`,
-											},
-											"schema": schema.MapAttribute{
-												Optional:    true,
-												ElementType: jsontypes.NormalizedType{},
-												Description: `JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.`,
-												Validators: []validator.Map{
-													mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-												},
-											},
-										},
-									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
-								},
-								"path": schema.StringAttribute{
-									Optional:    true,
-									Description: `The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.`,
-								},
-								"query": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"request_body": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"responses": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"scheme": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]`,
-								},
-							},
+					"sources": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `The explicit list of source MCP Servers whose tools this listener exposes.` + "\n" +
+							`Each entry is the immutable ` + "`" + `name` + "`" + ` of a ` + "`" + `conversion-only` + "`" + ` (toolset) or` + "\n" +
+							`` + "`" + `upstream-server` + "`" + ` (third-party MCP server) MCP Server in the same AI Gateway.` + "\n" +
+							`All of the referenced source's tools are exposed.` + "\n" +
+							`Not Null`,
+						Validators: []validator.List{
+							speakeasy_listvalidators.NotNull(),
+							listvalidator.SizeAtLeast(1),
 						},
-						Description: `List of tools exposed by this MCP Server.`,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
@@ -2968,7 +2953,20 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
+											`Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
+											`top-level gate: a caller's consumer group must pass this check before any MCP protocol` + "\n" +
+											`operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `, ` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level` + "\n" +
+											`` + "`" + `default_tool_acls` + "`" + ` or per-tool ` + "`" + `access.acls` + "`" + ` check is evaluated.`,
+									},
+									"auth_strategies": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of auth strategies for granting access to the MCP server.` + "\n" +
+											`At most 1 auth strategy of each auth strategy type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
 									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
@@ -2990,14 +2988,20 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
+											`Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
+											`tools. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above.` + "\n" +
+											`Applies to every tool exposed by this MCP Server unless a specific tool overrides it via` + "\n" +
+											`that tool's own ` + "`" + `access.acls` + "`" + `.`,
 									},
 									"identity_providers": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
+										Computed:           true,
+										Optional:           true,
+										ElementType:        types.StringType,
+										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
-											`At most 1 identity provider of each identity provider type can be referenced.`,
+											`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+											`` + "\n" +
+											`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
 										},
@@ -3035,7 +3039,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -3076,7 +3080,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
+											`Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
+											`value of the configured ` + "`" + `access_token_claim_field` + "`" + `. This is the top-level gate: a caller` + "\n" +
+											`must pass this check before any MCP protocol operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `,` + "\n" +
+											`` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level ` + "`" + `default_tool_acls` + "`" + ` or per-tool` + "\n" +
+											`` + "`" + `access.acls` + "`" + ` check is evaluated.`,
+									},
+									"auth_strategies": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `List of auth strategies for granting access to the MCP server.` + "\n" +
+											`At most 1 auth strategy of each auth strategy type can be referenced.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
 									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
@@ -3098,14 +3116,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										MarkdownDescription: `**Pre-release Feature**` + "\n" +
 											`This feature is currently in beta and is subject to change.` + "\n" +
 											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
+											`Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every tool` + "\n" +
+											`exposed by this MCP Server unless a specific tool overrides it via that tool's own` + "\n" +
+											`` + "`" + `access.acls` + "`" + `.`,
 									},
 									"identity_providers": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
+										Computed:           true,
+										Optional:           true,
+										ElementType:        types.StringType,
+										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 										MarkdownDescription: `List of identity providers for granting access to the MCP server.` + "\n" +
-											`At most 1 identity provider of each identity provider type can be referenced.`,
+											`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+											`` + "\n" +
+											`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtMost(1),
 										},
@@ -3143,7 +3168,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Identity provider and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -3186,6 +3211,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 2147483646),
+								},
 							},
 							"proxy": schema.SingleNestedAttribute{
 								Optional: true,
@@ -3279,6 +3307,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(426),
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 599),
+										},
 									},
 									"methods": schema.ListAttribute{
 										Computed:    true,
@@ -3313,6 +3344,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
 									},
 									"request_buffering": schema.BoolAttribute{
 										Computed:    true,
@@ -3342,7 +3376,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Configuration for an AI Gateway route.`,
+									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
+									`incoming requests.`,
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -3353,10 +3389,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     booldefault.StaticBool(true),
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
-									},
-									"label": schema.StringAttribute{
-										Optional:    true,
-										Description: `The label of the MCP server. This is used to filter the exported MCP tools.`,
 									},
 									"session": schema.SingleNestedAttribute{
 										Computed: true,
@@ -3611,6 +3643,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																Optional:    true,
 																Default:     int64default.StaticInt64(5),
 																Description: `Maximum retry attempts for redirection. Default: 5`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 2147483646),
+																},
 															},
 															"nodes": schema.ListNestedAttribute{
 																Optional: true,
@@ -3664,6 +3699,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Optional:    true,
 														Default:     int64default.StaticInt64(0),
 														Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
 													},
 													"host": schema.StringAttribute{
 														Computed: true,
@@ -3833,6 +3871,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Optional:    true,
 												Default:     int64default.StaticInt64(86400),
 												Description: `The time-to-live (TTL) for each session in seconds. Default: 86400`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
 											},
 											"strategy": schema.StringAttribute{
 												Computed:    true,
@@ -3848,6 +3889,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(10000),
 										Description: `The timeout for calling the tools in milliseconds. Default: 10000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -4014,6 +4058,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
+									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
@@ -4040,157 +4085,27 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
-								},
-								"annotations": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"destructive_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, the tool may perform destructive updates`,
-										},
-										"idempotent_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, repeated calls with same args have no additional effect`,
-										},
-										"open_world_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, tool interacts with external entities`,
-										},
-										"read_only_hint": schema.BoolAttribute{
-											Optional:    true,
-											Description: `If true, the tool does not modify its environment`,
-										},
-										"title": schema.StringAttribute{
-											Optional:    true,
-											Description: `Human-readable title for the tool`,
-										},
-									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
-								},
-								"description": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `A description of what the tool does. Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
-								},
-								"headers": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
 									MarkdownDescription: `**Pre-release Feature**` + "\n" +
 										`This feature is currently in beta and is subject to change.` + "\n" +
 										`` + "\n" +
-										`The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"host": schema.StringAttribute{
-									Optional:    true,
-									Description: `The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
-								},
-								"method": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]`,
+										`Access-control rules for a tool.` + "\n" +
+										`Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null`,
+									Description: `Tool identifier used to match remote MCP Server tools for ACL enforcement. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
 								},
-								"parameters": schema.ListNestedAttribute{
-									Computed: true,
-									Optional: true,
-									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
-										},
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Optional:    true,
-												Description: `A description of the parameter.`,
-											},
-											"in": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The location of the parameter in the request. possible known values include one of ["query", "path", "header", "body"]; Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-												},
-											},
-											"name": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The name of the parameter. Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-												},
-											},
-											"required": schema.BoolAttribute{
-												Optional:    true,
-												Description: `Whether this parameter is required.`,
-											},
-											"schema": schema.MapAttribute{
-												Optional:    true,
-												ElementType: jsontypes.NormalizedType{},
-												Description: `JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.`,
-												Validators: []validator.Map{
-													mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-												},
-											},
-										},
-									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
-								},
-								"path": schema.StringAttribute{
-									Optional:    true,
-									Description: `The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.`,
-								},
-								"query": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"request_body": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"responses": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"scheme": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]`,
-								},
 							},
 						},
-						Description: `List of tools exposed by this MCP Server.`,
+						MarkdownDescription: `Per-tool access-control overrides for tools advertised by the remote MCP Server. Each` + "\n" +
+							`entry is matched to a remote tool by ` + "`" + `name` + "`" + `; only its access-control rules are applied.`,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
@@ -4221,136 +4136,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 			"upstream_server": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"access": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"consumer": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"acls": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"allow": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are permitted access.`,
-											},
-											"deny": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are denied access.`,
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
-									},
-									"default_tool_acls": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"allow": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are permitted access.`,
-											},
-											"deny": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are denied access.`,
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
-									},
-								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("oauth_access_token"),
-									}...),
-								},
-							},
-							"oauth_access_token": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"access_token_claim_field": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `The claim in the OAuth2 access token to use as the subject for ACL evaluation when ` + "`" + `acl_attribute_type` + "`" + ` is set to ` + "`" + `oauth_access_token` + "`" + `.` + "\n" +
-											`Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index` + "\n" +
-											`Not Null`,
-										Validators: []validator.String{
-											speakeasy_stringvalidators.NotNull(),
-										},
-									},
-									"acls": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"allow": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are permitted access.`,
-											},
-											"deny": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are denied access.`,
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Access control rules for allowing or denying consumer groups.`,
-									},
-									"default_tool_acls": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"allow": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are permitted access.`,
-											},
-											"deny": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of consumer groups that are denied access.`,
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default access control rules for allowing or denying consumer groups to tools.`,
-									},
-								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("consumer"),
-									}...),
-								},
-							},
-						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.`,
-					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -4382,6 +4167,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 2147483646),
+								},
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -4406,6 +4194,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(426),
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 599),
+										},
 									},
 									"methods": schema.ListAttribute{
 										Computed:    true,
@@ -4440,6 +4231,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
 									},
 									"request_buffering": schema.BoolAttribute{
 										Computed:    true,
@@ -4469,7 +4263,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
 									`This feature is currently in beta and is subject to change.` + "\n" +
 									`` + "\n" +
-									`Configuration for an AI Gateway route.`,
+									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
+									`incoming requests.`,
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -4480,10 +4276,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     booldefault.StaticBool(true),
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
-									},
-									"label": schema.StringAttribute{
-										Optional:    true,
-										Description: `The label of the MCP server. This is used to filter the exported MCP tools.`,
 									},
 									"preserve_upstream_tool_names": schema.BoolAttribute{
 										Computed: true,
@@ -4747,6 +4539,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																Optional:    true,
 																Default:     int64default.StaticInt64(5),
 																Description: `Maximum retry attempts for redirection. Default: 5`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 2147483646),
+																},
 															},
 															"nodes": schema.ListNestedAttribute{
 																Optional: true,
@@ -4800,6 +4595,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Optional:    true,
 														Default:     int64default.StaticInt64(0),
 														Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
 													},
 													"host": schema.StringAttribute{
 														Computed: true,
@@ -4969,6 +4767,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Optional:    true,
 												Default:     int64default.StaticInt64(86400),
 												Description: `The time-to-live (TTL) for each session in seconds. Default: 86400`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
 											},
 											"strategy": schema.StringAttribute{
 												Computed:    true,
@@ -4984,6 +4785,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Optional:    true,
 										Default:     int64default.StaticInt64(10000),
 										Description: `The timeout for calling the tools in milliseconds. Default: 10000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
 									},
 									"tools_list_auth": schema.SingleNestedAttribute{
 										Computed: true,
@@ -5255,6 +5059,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"access": schema.SingleNestedAttribute{
+									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"acls": schema.SingleNestedAttribute{
@@ -5281,6 +5086,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
+									MarkdownDescription: `**Pre-release Feature**` + "\n" +
+										`This feature is currently in beta and is subject to change.` + "\n" +
+										`` + "\n" +
+										`Access-control rules for a tool.`,
 								},
 								"annotations": schema.SingleNestedAttribute{
 									Computed: true,
@@ -5311,26 +5120,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										`This feature is currently in beta and is subject to change.`,
 								},
 								"description": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
-									Description: `A description of what the tool does. Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
-								},
-								"headers": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"host": schema.StringAttribute{
-									Optional:    true,
-									Description: `The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
+									Description: `A description of what the tool does.`,
 								},
 								"input_schema": schema.StringAttribute{
 									CustomType: jsontypes.NormalizedType{},
@@ -5339,15 +5130,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										`for the same tool name, if present.` + "\n" +
 										`Parsed as JSON.`,
 								},
-								"method": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `When provided, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]`,
-								},
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null`,
+									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -5358,90 +5144,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									MarkdownDescription: `The entire ` + "`" + `outputSchema` + "`" + ` section for the tool. Overrides the upstream server's ` + "`" + `outputSchema` + "`" + `` + "\n" +
 										`for the same tool name, if present.` + "\n" +
 										`Parsed as JSON.`,
-								},
-								"parameters": schema.ListNestedAttribute{
-									Computed: true,
-									Optional: true,
-									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
-										},
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Optional:    true,
-												Description: `A description of the parameter.`,
-											},
-											"in": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The location of the parameter in the request. possible known values include one of ["query", "path", "header", "body"]; Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-												},
-											},
-											"name": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The name of the parameter. Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-												},
-											},
-											"required": schema.BoolAttribute{
-												Optional:    true,
-												Description: `Whether this parameter is required.`,
-											},
-											"schema": schema.MapAttribute{
-												Optional:    true,
-												ElementType: jsontypes.NormalizedType{},
-												Description: `JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.`,
-												Validators: []validator.Map{
-													mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-												},
-											},
-										},
-									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
-								},
-								"path": schema.StringAttribute{
-									Optional:    true,
-									Description: `The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.`,
-								},
-								"query": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"request_body": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"responses": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
-								},
-								"scheme": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]`,
 								},
 							},
 						},

@@ -10,6 +10,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
       }
+      auth_strategies = [
+        "okta-ai-se"
+      ]
       identity_providers = [
         "okta-ai-se"
       ]
@@ -110,37 +113,36 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          anthropic = {
-            cache_read_cost  = 8.86
-            cache_write_cost = 7.72
+          xai = {
+            cache_read_cost  = 4.42
+            cache_write_cost = 3.9
             cache_write_cost_list = [
               {
-                cost = 1.85
+                cost = 7.32
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 7.89
-                output_factor = 6.2
+                input_factor  = 1.42
+                output_factor = 1.31
               }
             ]
-            embeddings_dimensions = 3
-            input_cost            = 9.85
-            max_tokens            = 1
-            output_cost           = 1.7
+            embeddings_dimensions = 1556463673
+            input_cost            = 3.7
+            max_tokens            = 1227329724
+            output_cost           = 6.56
             service_tier_factor = [
               {
-                factor = 7.15
+                factor = 8.57
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 6.58
-            top_k        = 3
-            top_p        = 4.84
-            upstream_url = "https://ajar-summer.biz"
-            version      = "2023-06-01"
+            temperature  = 3.27
+            top_k        = 483136424
+            top_p        = 2.83
+            upstream_url = "https://baggy-trash.biz/"
           }
         }
         name                 = "gpt-5-model"
@@ -161,6 +163,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
       }
+      auth_strategies = [
+        "okta-ai-se"
+      ]
       identity_providers = [
         "okta-ai-se"
       ]
@@ -175,10 +180,8 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           embeddings = {
             allow_auth_override = false
             config = {
-              huggingface = {
-                upstream_url   = "...my_upstream_url..."
-                use_cache      = false
-                wait_for_model = false
+              ollama = {
+                upstream_url = "...my_upstream_url..."
               }
             }
             name     = "...my_name..."
@@ -296,37 +299,37 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          mistral = {
-            cache_read_cost  = 9.91
-            cache_write_cost = 1.14
+          databricks = {
+            cache_read_cost  = 8.45
+            cache_write_cost = 3.62
             cache_write_cost_list = [
               {
-                cost = 5.09
+                cost = 3.12
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 1.3
-                output_factor = 9.49
+                input_factor  = 4.94
+                output_factor = 9.43
               }
             ]
-            embeddings_dimensions = 10
-            format                = "ollama"
-            input_cost            = 1.29
-            max_tokens            = 5
-            output_cost           = 5.4
+            embeddings_dimensions = 1316728274
+            input_cost            = 9.06
+            max_tokens            = 1585442569
+            output_cost           = 7.78
             service_tier_factor = [
               {
-                factor = 5.81
+                factor = 6.01
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 4.9
-            top_k        = 6
-            top_p        = 5.29
-            upstream_url = "https://sad-thigh.net"
+            temperature           = 3.33
+            top_k                 = 896181225
+            top_p                 = 7.55
+            upstream_url          = "https://distant-antelope.com"
+            workspace_instance_id = "...my_workspace_instance_id..."
           }
         }
         name                 = "gpt-5-model"

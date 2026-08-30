@@ -16,8 +16,12 @@ type AIGatewayMCPServerListener struct {
 	//
 	// Routing, logging, and server configuration for the MCP Server.
 	Config AIGatewayMCPServerNoUpstreamConfig `json:"config"`
-	// List of tools exposed by this MCP Server.
-	Tools []AIGatewayMCPToolBase `json:"tools,omitempty"`
+	// The explicit list of source MCP Servers whose tools this listener exposes.
+	// Each entry is the immutable `name` of a `conversion-only` (toolset) or
+	// `upstream-server` (third-party MCP server) MCP Server in the same AI Gateway.
+	// All of the referenced source's tools are exposed.
+	//
+	Sources []string `json:"sources"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	Access *AIGatewayMCPServerListenerAccess `json:"access,omitempty"`
@@ -68,11 +72,11 @@ func (a *AIGatewayMCPServerListener) GetConfig() AIGatewayMCPServerNoUpstreamCon
 	return a.Config
 }
 
-func (a *AIGatewayMCPServerListener) GetTools() []AIGatewayMCPToolBase {
+func (a *AIGatewayMCPServerListener) GetSources() []string {
 	if a == nil {
-		return nil
+		return []string{}
 	}
-	return a.Tools
+	return a.Sources
 }
 
 func (a *AIGatewayMCPServerListener) GetAccess() *AIGatewayMCPServerListenerAccess {

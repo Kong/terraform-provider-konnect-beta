@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // APIPublication - An API publication in a portal
 type APIPublication struct {
 	// Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal's auto_approve_applications value.
@@ -19,21 +15,11 @@ type APIPublication struct {
 	// The visibility of the API in the portal.
 	// Public API publications do not require authentication to view and retrieve information about them.
 	// Private API publications require authentication to retrieve information about them.
+	// If omitted, this defaults to the target portal's configured default API visibility.
 	//
-	Visibility *APIPublicationVisibility `default:"private" json:"visibility"`
+	Visibility *APIPublicationVisibility `json:"visibility,omitempty"`
 	// UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
 	FormID *string `json:"form_id,omitempty"`
-}
-
-func (a APIPublication) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *APIPublication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (a *APIPublication) GetAutoApproveRegistrations() *bool {

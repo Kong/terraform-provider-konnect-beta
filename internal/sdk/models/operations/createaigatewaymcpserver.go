@@ -98,37 +98,37 @@ func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServer() *shared.AIGat
 	return c.AIGatewayMCPServer
 }
 
-func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionOnly() *shared.AIGatewayMCPServerAIGatewayMCPServerConversionOnly {
+func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionOnly() *shared.AIGatewayMCPServerConversionOnlyResponse {
 	if v := c.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerConversionOnly
+		return v.AIGatewayMCPServerConversionOnlyResponse
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionListener() *shared.AIGatewayMCPServerAIGatewayMCPServerConversionListener {
+func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionListener() *shared.AIGatewayMCPServerConversionListenerResponse {
 	if v := c.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerConversionListener
+		return v.AIGatewayMCPServerConversionListenerResponse
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerListener() *shared.AIGatewayMCPServerAIGatewayMCPServerListener {
+func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerListener() *shared.AIGatewayMCPServerListenerResponse {
 	if v := c.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerListener
+		return v.AIGatewayMCPServerListenerResponse
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerPassthroughListener() *shared.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener {
+func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerPassthroughListener() *shared.AIGatewayMCPServerPassthroughListenerResponse {
 	if v := c.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener
+		return v.AIGatewayMCPServerPassthroughListenerResponse
 	}
 	return nil
 }
 
-func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerUpstreamServer() *shared.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer {
+func (c *CreateAiGatewayMcpServerResponse) GetAIGatewayMCPServerUpstreamServer() *shared.AIGatewayMCPServerUpstreamServerResponse {
 	if v := c.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer
+		return v.AIGatewayMCPServerUpstreamServerResponse
 	}
 	return nil
 }

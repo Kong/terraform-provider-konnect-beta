@@ -17,6 +17,6 @@ type AIGatewayMCPServerListener struct {
 	ManagedBy   map[string]types.String             `tfsdk:"managed_by"`
 	Name        types.String                        `tfsdk:"name"`
 	Policies    []types.String                      `tfsdk:"policies"`
-	Tools       []AIGatewayMCPToolBase              `tfsdk:"tools"`
+	Sources     []types.String                      `tfsdk:"sources"`
 	UpdatedAt   types.String                        `tfsdk:"updated_at"`
 }

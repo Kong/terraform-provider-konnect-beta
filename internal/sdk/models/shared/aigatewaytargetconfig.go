@@ -28,7 +28,6 @@ const (
 	AIGatewayTargetConfigTypeOllama      AIGatewayTargetConfigType = "ollama"
 	AIGatewayTargetConfigTypeOpenai      AIGatewayTargetConfigType = "openai"
 	AIGatewayTargetConfigTypeVercel      AIGatewayTargetConfigType = "vercel"
-	AIGatewayTargetConfigTypeVertex      AIGatewayTargetConfigType = "vertex"
 	AIGatewayTargetConfigTypeVllm        AIGatewayTargetConfigType = "vllm"
 	AIGatewayTargetConfigTypeXai         AIGatewayTargetConfigType = "xai"
 	AIGatewayTargetConfigTypeSagemaker   AIGatewayTargetConfigType = "sagemaker"
@@ -55,7 +54,6 @@ type AIGatewayTargetConfig struct {
 	AIGatewayTargetOllamaConfig      *AIGatewayTargetOllamaConfig      `queryParam:"inline" union:"member"`
 	AIGatewayTargetOpenaiConfig      *AIGatewayTargetOpenaiConfig      `queryParam:"inline" union:"member"`
 	AIGatewayTargetVercelConfig      *AIGatewayTargetVercelConfig      `queryParam:"inline" union:"member"`
-	AIGatewayTargetVertexConfig      *AIGatewayTargetVertexConfig      `queryParam:"inline" union:"member"`
 	AIGatewayTargetVllmConfig        *AIGatewayTargetVllmConfig        `queryParam:"inline" union:"member"`
 	AIGatewayTargetXaiConfig         *AIGatewayTargetXaiConfig         `queryParam:"inline" union:"member"`
 	AIGatewayTargetSagemakerConfig   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" union:"member"`
@@ -203,15 +201,6 @@ func CreateAIGatewayTargetConfigVercel(vercel AIGatewayTargetVercelConfig) AIGat
 
 	return AIGatewayTargetConfig{
 		AIGatewayTargetVercelConfig: &vercel,
-		Type:                        typ,
-	}
-}
-
-func CreateAIGatewayTargetConfigVertex(vertex AIGatewayTargetVertexConfig) AIGatewayTargetConfig {
-	typ := AIGatewayTargetConfigTypeVertex
-
-	return AIGatewayTargetConfig{
-		AIGatewayTargetVertexConfig: &vertex,
 		Type:                        typ,
 	}
 }
@@ -399,15 +388,6 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 		u.AIGatewayTargetVercelConfig = aiGatewayTargetVercelConfig
 		u.Type = AIGatewayTargetConfigTypeVercel
 		return nil
-	case "vertex":
-		aiGatewayTargetVertexConfig := new(AIGatewayTargetVertexConfig)
-		if err := utils.UnmarshalJSON(data, &aiGatewayTargetVertexConfig, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vertex) type AIGatewayTargetVertexConfig within AIGatewayTargetConfig: %w", string(data), err)
-		}
-
-		u.AIGatewayTargetVertexConfig = aiGatewayTargetVertexConfig
-		u.Type = AIGatewayTargetConfigTypeVertex
-		return nil
 	case "vllm":
 		aiGatewayTargetVllmConfig := new(AIGatewayTargetVllmConfig)
 		if err := utils.UnmarshalJSON(data, &aiGatewayTargetVllmConfig, "", true, nil); err != nil {
@@ -503,10 +483,6 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetVercelConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetVercelConfig, "", true)
-	}
-
-	if u.AIGatewayTargetVertexConfig != nil {
-		return utils.MarshalJSON(u.AIGatewayTargetVertexConfig, "", true)
 	}
 
 	if u.AIGatewayTargetVllmConfig != nil {
