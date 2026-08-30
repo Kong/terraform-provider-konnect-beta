@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.22.0
+> Released on 2026/08/31
+
+### Features
+* Add support for more AI Gateway 2.0 resources 
+  - `konnect_ai_gateway_auth_strategy` which replaces the deprecated `konnect_ai_gateway_identity_provider` resource
+  - `konnect_ai_gateway_ca_certificate`
+  - `konnect_ai_gateway_certificate`
+  - `konnect_ai_gateway_sni`
+
 ## 0.21.0
 > Released on 2026/08/18
 
