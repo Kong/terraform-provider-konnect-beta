@@ -3,12 +3,18 @@
 ## 0.22.0
 > Released on 2026/08/31
 
+### BREAKING CHANGES
+* Vertex model and provider support is removed from `konnect_ai_gateway_*` resources
+* `dcr_default_access_token_duration` is now nested under `dcr` field in `konnect_identity_auth_server` resource as `dcr.default_access_token_duration`
+* `environment` field is renamed to `environment_id` in `konnect_api_implementation` resource
+
 ### Features
 * Add support for more AI Gateway 2.0 resources 
   - `konnect_ai_gateway_auth_strategy` which replaces the deprecated `konnect_ai_gateway_identity_provider` resource
   - `konnect_ai_gateway_ca_certificate`
   - `konnect_ai_gateway_certificate`
   - `konnect_ai_gateway_sni`
+* Add support for `konnect_portal_identity_provider` and `konnect_portal_identity_provider_team_group_mapping` resources, using which you can manage Developer Portal Identity Providers, as well as Identity Provider Group <> Portal Team mapping
 
 ## 0.21.0
 > Released on 2026/08/18
