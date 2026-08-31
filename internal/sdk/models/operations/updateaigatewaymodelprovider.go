@@ -108,10 +108,6 @@ func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderReq
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderXai
 }
 
-func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestVertex() *shared.AIGatewayModelProviderVertex {
-	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderVertex
-}
-
 func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestSagemaker() *shared.AIGatewayModelProviderSagemaker {
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderSagemaker
 }
@@ -287,13 +283,6 @@ func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVllm() *
 func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *shared.AIGatewayModelProviderAIGatewayModelProviderXai {
 	if v := u.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderXai
-	}
-	return nil
-}
-
-func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderVertex() *shared.AIGatewayModelProviderAIGatewayModelProviderVertex {
-	if v := u.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderAIGatewayModelProviderVertex
 	}
 	return nil
 }

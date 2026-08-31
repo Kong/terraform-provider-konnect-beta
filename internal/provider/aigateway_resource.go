@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -38,16 +40,17 @@ type AIGatewayResource struct {
 
 // AIGatewayResourceModel describes the resource data model.
 type AIGatewayResourceModel struct {
-	ConfigVersion types.String                `tfsdk:"config_version"`
-	CreatedAt     types.String                `tfsdk:"created_at"`
-	Description   types.String                `tfsdk:"description"`
-	DisplayName   types.String                `tfsdk:"display_name"`
-	Endpoints     *tfTypes.Endpoints          `tfsdk:"endpoints"`
-	ID            types.String                `tfsdk:"id"`
-	Labels        map[string]types.String     `tfsdk:"labels"`
-	Name          types.String                `tfsdk:"name"`
-	ProxyUrls     []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
-	UpdatedAt     types.String                `tfsdk:"updated_at"`
+	ConfigVersion  types.String                `tfsdk:"config_version"`
+	CreatedAt      types.String                `tfsdk:"created_at"`
+	DeploymentType types.String                `tfsdk:"deployment_type"`
+	Description    types.String                `tfsdk:"description"`
+	DisplayName    types.String                `tfsdk:"display_name"`
+	Endpoints      *tfTypes.Endpoints          `tfsdk:"endpoints"`
+	ID             types.String                `tfsdk:"id"`
+	Labels         map[string]types.String     `tfsdk:"labels"`
+	Name           types.String                `tfsdk:"name"`
+	ProxyUrls      []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
+	UpdatedAt      types.String                `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -74,6 +77,16 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
+			"deployment_type": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`hybrid`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `How this AI Gateway's control plane is deployed. Set at creation time and cannot be changed afterward. possible known values include one of ["hybrid", "managed", "serverless"]; Default: "hybrid"; Requires replacement if changed.`,
 			},
 			"description": schema.StringAttribute{
 				Optional:    true,

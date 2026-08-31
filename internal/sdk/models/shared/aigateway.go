@@ -7,6 +7,30 @@ import (
 	"time"
 )
 
+// AIGatewayDeploymentType - How this AI Gateway's control plane is deployed.
+type AIGatewayDeploymentType string
+
+const (
+	AIGatewayDeploymentTypeHybrid     AIGatewayDeploymentType = "hybrid"
+	AIGatewayDeploymentTypeManaged    AIGatewayDeploymentType = "managed"
+	AIGatewayDeploymentTypeServerless AIGatewayDeploymentType = "serverless"
+)
+
+func (e AIGatewayDeploymentType) ToPointer() *AIGatewayDeploymentType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayDeploymentType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "hybrid", "managed", "serverless":
+			return true
+		}
+	}
+	return false
+}
+
 // Endpoints - Object containing AI Gateway access endpoints.
 type Endpoints struct {
 	// Configuration Endpoint.
@@ -49,6 +73,8 @@ type AIGateway struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
+	// How this AI Gateway's control plane is deployed.
+	DeploymentType *AIGatewayDeploymentType `default:"hybrid" json:"deployment_type"`
 	// Object containing AI Gateway access endpoints.
 	Endpoints Endpoints `json:"endpoints"`
 	// The version identification of the latest configuration of the gateway.
@@ -114,6 +140,13 @@ func (a *AIGateway) GetID() string {
 		return ""
 	}
 	return a.ID
+}
+
+func (a *AIGateway) GetDeploymentType() *AIGatewayDeploymentType {
+	if a == nil {
+		return nil
+	}
+	return a.DeploymentType
 }
 
 func (a *AIGateway) GetEndpoints() Endpoints {

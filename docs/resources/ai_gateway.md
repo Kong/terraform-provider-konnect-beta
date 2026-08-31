@@ -15,8 +15,9 @@ AIGateway Resource
 ```terraform
 resource "konnect_ai_gateway" "my_aigateway" {
   provider = konnect-beta
-  description  = "An AI Gateway for my organization."
-  display_name = "My AI Gateway"
+  deployment_type = "hybrid"
+  description     = "An AI Gateway for my organization."
+  display_name    = "My AI Gateway"
   labels = {
     key = "value"
   }
@@ -41,6 +42,7 @@ resource "konnect_ai_gateway" "my_aigateway" {
 
 ### Optional
 
+- `deployment_type` (String) How this AI Gateway's control plane is deployed. Set at creation time and cannot be changed afterward. possible known values include one of ["hybrid", "managed", "serverless"]; Default: "hybrid"; Requires replacement if changed.
 - `description` (String) The description of the AI Gateway.
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 

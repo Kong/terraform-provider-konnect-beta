@@ -8,5 +8,6 @@ import (
 
 type AIGatewayAgentAccess struct {
 	Acls              *AIGatewayACLS `tfsdk:"acls"`
+	AuthStrategies    []types.String `tfsdk:"auth_strategies"`
 	IdentityProviders []types.String `tfsdk:"identity_providers"`
 }

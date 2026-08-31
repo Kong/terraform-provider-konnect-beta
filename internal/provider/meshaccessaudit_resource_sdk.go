@@ -160,15 +160,15 @@ func (r *MeshAccessAuditResourceModel) ToSharedAccessAuditItemInput(ctx context.
 	if r.Rules != nil {
 		rules = make([]shared.Rules, 0, len(r.Rules))
 		for rulesIndex := range r.Rules {
-			var access []shared.AccessAuditItemAccess
+			var access []shared.Access
 			if r.Rules[rulesIndex].Access != nil {
-				access = make([]shared.AccessAuditItemAccess, 0, len(r.Rules[rulesIndex].Access))
+				access = make([]shared.Access, 0, len(r.Rules[rulesIndex].Access))
 				for accessItem := range r.Rules[rulesIndex].Access {
 					if !r.Rules[rulesIndex].Access[accessItem].Str.IsUnknown() && !r.Rules[rulesIndex].Access[accessItem].Str.IsNull() {
 						var str string
 						str = r.Rules[rulesIndex].Access[accessItem].Str.ValueString()
 
-						access = append(access, shared.AccessAuditItemAccess{
+						access = append(access, shared.Access{
 							Str: &str,
 						})
 					}
@@ -176,7 +176,7 @@ func (r *MeshAccessAuditResourceModel) ToSharedAccessAuditItemInput(ctx context.
 						var integer int64
 						integer = r.Rules[rulesIndex].Access[accessItem].Integer.ValueInt64()
 
-						access = append(access, shared.AccessAuditItemAccess{
+						access = append(access, shared.Access{
 							Integer: &integer,
 						})
 					}

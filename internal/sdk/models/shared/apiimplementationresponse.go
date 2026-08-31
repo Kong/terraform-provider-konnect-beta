@@ -17,13 +17,17 @@ type APIImplementationResponseControlPlaneReference struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// The environment this implementation is scoped to, by name. On write, selects the
-	// target environment: required when the API is configured across multiple
-	// environments, and optional otherwise (accepted only if it matches the API's sole
-	// environment). On read, the resolved environment name. Present only for APIs
-	// configured across multiple environments.
+	// UUID of the organization environment this control-plane implementation is scoped
+	// to. Environment names are not accepted. Not applicable to gateway-service
+	// implementations.
+	// On create: must be an environment associated with the API. Required when the API
+	// has multiple associated environments (`400` if omitted). Optional for a
+	// single-environment API and accepted only if it matches that environment. Returns
+	// `404` if the UUID is unknown or not associated with the API.
+	// On read: optional; present when the implementation is associated with an
+	// environment.
 	//
-	Environment *string `default:"null" json:"environment"`
+	EnvironmentID *string `json:"environment_id,omitempty"`
 	// A Control plane that implements an API
 	ControlPlane *APIImplementationControlPlane `json:"control_plane,omitempty"`
 }
@@ -60,11 +64,11 @@ func (a *APIImplementationResponseControlPlaneReference) GetUpdatedAt() time.Tim
 	return a.UpdatedAt
 }
 
-func (a *APIImplementationResponseControlPlaneReference) GetEnvironment() *string {
+func (a *APIImplementationResponseControlPlaneReference) GetEnvironmentID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.Environment
+	return a.EnvironmentID
 }
 
 func (a *APIImplementationResponseControlPlaneReference) GetControlPlane() *APIImplementationControlPlane {
@@ -82,13 +86,17 @@ type APIImplementationResponseServiceReference struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// The environment this implementation is scoped to, by name. On write, selects the
-	// target environment: required when the API is configured across multiple
-	// environments, and optional otherwise (accepted only if it matches the API's sole
-	// environment). On read, the resolved environment name. Present only for APIs
-	// configured across multiple environments.
+	// UUID of the organization environment this control-plane implementation is scoped
+	// to. Environment names are not accepted. Not applicable to gateway-service
+	// implementations.
+	// On create: must be an environment associated with the API. Required when the API
+	// has multiple associated environments (`400` if omitted). Optional for a
+	// single-environment API and accepted only if it matches that environment. Returns
+	// `404` if the UUID is unknown or not associated with the API.
+	// On read: optional; present when the implementation is associated with an
+	// environment.
 	//
-	Environment *string `default:"null" json:"environment"`
+	EnvironmentID *string `json:"environment_id,omitempty"`
 	// A Gateway service that implements an API
 	Service *APIImplementationService `json:"service,omitempty"`
 }
@@ -125,11 +133,11 @@ func (a *APIImplementationResponseServiceReference) GetUpdatedAt() time.Time {
 	return a.UpdatedAt
 }
 
-func (a *APIImplementationResponseServiceReference) GetEnvironment() *string {
+func (a *APIImplementationResponseServiceReference) GetEnvironmentID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.Environment
+	return a.EnvironmentID
 }
 
 func (a *APIImplementationResponseServiceReference) GetService() *APIImplementationService {

@@ -8,7 +8,6 @@ import (
 
 type AIGatewayMCPServerUpstreamServerServerConfig struct {
 	ForwardClientHeaders      types.Bool                                            `tfsdk:"forward_client_headers"`
-	Label                     types.String                                          `tfsdk:"label"`
 	PreserveUpstreamToolNames types.Bool                                            `tfsdk:"preserve_upstream_tool_names"`
 	Session                   *Session                                              `tfsdk:"session"`
 	Timeout                   types.Int64                                           `tfsdk:"timeout"`

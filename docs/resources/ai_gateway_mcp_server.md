@@ -27,6 +27,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        auth_strategies = [
+          "okta-ai-se"
+        ]
         default_tool_acls = {
           allow = [
             "..."
@@ -85,7 +88,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers = true
-        label                  = "...my_label..."
         session = {
           client = {
             secrets = [
@@ -330,6 +332,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        auth_strategies = [
+          "okta-ai-se"
+        ]
         default_tool_acls = {
           allow = [
             "..."
@@ -388,7 +393,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers = true
-        label                  = "...my_label..."
         session = {
           client = {
             secrets = [
@@ -458,47 +462,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
-    tools = [
-      {
-        access = {
-          acls = {
-            allow = [
-              "..."
-            ]
-            deny = [
-              "..."
-            ]
-          }
-        }
-        annotations = {
-          destructive_hint = true
-          idempotent_hint  = false
-          open_world_hint  = false
-          read_only_hint   = true
-          title            = "...my_title..."
-        }
-        description = "Search for available flights"
-        headers     = "{ \"see\": \"documentation\" }"
-        host        = "...my_host..."
-        method      = "PUT"
-        name        = "...my_name..."
-        parameters = [
-          {
-            description = "The origin airport code."
-            in          = "query"
-            name        = "origin"
-            required    = true
-            schema = {
-              key = jsonencode("value")
-            }
-          }
-        ]
-        path         = "...my_path..."
-        query        = "{ \"see\": \"documentation\" }"
-        request_body = "{ \"see\": \"documentation\" }"
-        responses    = "{ \"see\": \"documentation\" }"
-        scheme       = "https"
-      }
+    sources = [
+      "kongair-flights",
+      "github-mcp",
     ]
   }
   passthrough_listener = {
@@ -512,6 +478,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        auth_strategies = [
+          "okta-ai-se"
+        ]
         default_tool_acls = {
           allow = [
             "..."
@@ -586,7 +555,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers = true
-        label                  = "...my_label..."
         session = {
           client = {
             secrets = [
@@ -684,58 +652,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             ]
           }
         }
-        annotations = {
-          destructive_hint = true
-          idempotent_hint  = false
-          open_world_hint  = false
-          read_only_hint   = true
-          title            = "...my_title..."
-        }
-        description = "Search for available flights"
-        headers     = "{ \"see\": \"documentation\" }"
-        host        = "...my_host..."
-        method      = "PUT"
-        name        = "...my_name..."
-        parameters = [
-          {
-            description = "The origin airport code."
-            in          = "query"
-            name        = "origin"
-            required    = true
-            schema = {
-              key = jsonencode("value")
-            }
-          }
-        ]
-        path         = "...my_path..."
-        query        = "{ \"see\": \"documentation\" }"
-        request_body = "{ \"see\": \"documentation\" }"
-        responses    = "{ \"see\": \"documentation\" }"
-        scheme       = "http"
+        name = "...my_name..."
       }
     ]
   }
   upstream_server = {
-    access = {
-      consumer = {
-        acls = {
-          allow = [
-            "..."
-          ]
-          deny = [
-            "..."
-          ]
-        }
-        default_tool_acls = {
-          allow = [
-            "..."
-          ]
-          deny = [
-            "..."
-          ]
-        }
-      }
-    }
     config = {
       logging = {
         audits   = false
@@ -770,7 +691,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers       = true
-        label                        = "...my_label..."
         preserve_upstream_tool_names = false
         session = {
           client = {
@@ -883,28 +803,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           title            = "...my_title..."
         }
         description   = "Search for available flights"
-        headers       = "{ \"see\": \"documentation\" }"
-        host          = "...my_host..."
         input_schema  = "{ \"see\": \"documentation\" }"
-        method        = "PUT"
         name          = "...my_name..."
         output_schema = "{ \"see\": \"documentation\" }"
-        parameters = [
-          {
-            description = "The origin airport code."
-            in          = "query"
-            name        = "origin"
-            required    = true
-            schema = {
-              key = jsonencode("value")
-            }
-          }
-        ]
-        path         = "...my_path..."
-        query        = "{ \"see\": \"documentation\" }"
-        request_body = "{ \"see\": \"documentation\" }"
-        responses    = "{ \"see\": \"documentation\" }"
-        scheme       = "http"
       }
     ]
   }
@@ -971,7 +872,10 @@ This feature is currently in beta and is subject to change.
 A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
 - `policies` (List of String) List of policy references.
-- `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--tools))
+- `tools` (Attributes List) List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
+describe the backend HTTP operation on the upstream selected by `config.url` — they
+do not need to match the public MCP Route configured in `config.route`.
+Not Null (see [below for nested schema](#nestedatt--conversion_listener--tools))
 
 Read-Only:
 
@@ -987,12 +891,12 @@ Optional:
 - `consumer` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer))
 - `oauth_access_token` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token))
 
 <a id="nestedatt--conversion_listener--access--consumer"></a>
@@ -1003,13 +907,23 @@ Optional:
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--acls))
+Server-level access control rules for allowing or denying consumer groups. This is the
+top-level gate: a caller's consumer group must pass this check before any MCP protocol
+operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
+`default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--acls))
+- `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
+At most 1 auth strategy of each auth strategy type can be referenced.
 - `default_tool_acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--default_tool_acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+Default per-tool access control rules for allowing or denying consumer groups access to
+tools. Evaluated only for callers that already passed the server-level `acls` check above.
+Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
+that tool's own `access.acls`. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--default_tool_acls))
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the MCP server.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 - `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--metadata))
 
 <a id="nestedatt--conversion_listener--access--consumer--acls"></a>
@@ -1054,13 +968,25 @@ Not Null
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--acls))
+Server-level access control rules for allowing or denying callers, evaluated against the
+value of the configured `access_token_claim_field`. This is the top-level gate: a caller
+must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
+`tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
+`access.acls` check is evaluated. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--acls))
+- `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
+At most 1 auth strategy of each auth strategy type can be referenced.
 - `default_tool_acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--default_tool_acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+Default per-tool access control rules for allowing or denying callers access to tools,
+evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+for callers that already passed the server-level `acls` check above. Applies to every tool
+exposed by this MCP Server unless a specific tool overrides it via that tool's own
+`access.acls`. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--default_tool_acls))
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the MCP server.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 - `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--metadata))
 
 <a id="nestedatt--conversion_listener--access--oauth_access_token--acls"></a>
@@ -1108,7 +1034,9 @@ Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt-
 - `route` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--conversion_listener--config--route))
+Route configuration for an MCP Server that terminates its own listener. At least one
+of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+incoming requests. (see [below for nested schema](#nestedatt--conversion_listener--config--route))
 - `server` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1155,7 +1083,6 @@ Optional:
 Optional:
 
 - `forward_client_headers` (Boolean) Whether to forward the client request headers to the upstream server when calling the tools. Default: true
-- `label` (String) The label of the MCP server. This is used to filter the exported MCP tools.
 - `session` (Attributes) Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session))
 - `timeout` (Number) The timeout for calling the tools in milliseconds. Default: 10000
@@ -1374,7 +1301,10 @@ If not specified, the default AWS STS endpoint will be used.
 
 Optional:
 
-- `access` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--tools--access))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access-control rules for a tool. (see [below for nested schema](#nestedatt--conversion_listener--tools--access))
 - `annotations` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--tools--annotations))
 - `description` (String) A description of what the tool does. Not Null
@@ -1383,12 +1313,17 @@ This feature is currently in beta and is subject to change.
 
 The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
 Parsed as JSON.
-- `host` (String) The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
-- `method` (String) For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null
-- `name` (String) Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null
+- `host` (String) The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
+- `method` (String) The HTTP method used when forwarding the request to the upstream API. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null
+- `name` (String) The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null
 - `parameters` (Attributes List) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--tools--parameters))
-- `path` (String) The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.
+- `path` (String) The path of the exported API. Always treated as relative to the path component of
+`config.url` and simply concatenated onto it — a leading `/` has no special
+"absolute path" meaning. If this tool's `host` or `scheme` overrides the source's
+URL, `path` is instead relative to the root of that overridden host, since there is
+no URL path from a different host to append to. By default, Kong will extract the
+path from API configuration.
 - `query` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1479,7 +1414,7 @@ This feature is currently in beta and is subject to change.
 A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
 - `policies` (List of String) List of policy references.
-- `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--conversion_only--tools))
+- `tools` (Attributes List) List of tools exposed by this MCP Server. Not Null (see [below for nested schema](#nestedatt--conversion_only--tools))
 
 Read-Only:
 
@@ -1500,7 +1435,9 @@ Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt-
 - `route` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--conversion_only--config--route))
+Route configuration for an MCP Server that terminates its own listener. At least one
+of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+incoming requests. (see [below for nested schema](#nestedatt--conversion_only--config--route))
 - `upstream` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1585,7 +1522,10 @@ If not specified, the default AWS STS endpoint will be used.
 
 Optional:
 
-- `access` (Attributes) (see [below for nested schema](#nestedatt--conversion_only--tools--access))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access-control rules for a tool. (see [below for nested schema](#nestedatt--conversion_only--tools--access))
 - `annotations` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_only--tools--annotations))
 - `description` (String) A description of what the tool does. Not Null
@@ -1594,12 +1534,17 @@ This feature is currently in beta and is subject to change.
 
 The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
 Parsed as JSON.
-- `host` (String) The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
-- `method` (String) For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null
-- `name` (String) Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null
+- `host` (String) The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
+- `method` (String) The HTTP method used when forwarding the request to the upstream API. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null
+- `name` (String) The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null
 - `parameters` (Attributes List) **Pre-release Feature**
 This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_only--tools--parameters))
-- `path` (String) The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.
+- `path` (String) The path of the exported API. Always treated as relative to the path component of
+`config.url` and simply concatenated onto it — a leading `/` has no special
+"absolute path" meaning. If this tool's `host` or `scheme` overrides the source's
+URL, `path` is instead relative to the root of that overridden host, since there is
+no URL path from a different host to append to. By default, Kong will extract the
+path from API configuration.
 - `query` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1692,7 +1637,11 @@ This feature is currently in beta and is subject to change.
 A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
 - `policies` (List of String) List of policy references.
-- `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--listener--tools))
+- `sources` (List of String) The explicit list of source MCP Servers whose tools this listener exposes.
+Each entry is the immutable `name` of a `conversion-only` (toolset) or
+`upstream-server` (third-party MCP server) MCP Server in the same AI Gateway.
+All of the referenced source's tools are exposed.
+Not Null
 
 Read-Only:
 
@@ -1708,12 +1657,12 @@ Optional:
 - `consumer` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--listener--access--consumer))
 - `oauth_access_token` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token))
 
 <a id="nestedatt--listener--access--consumer"></a>
@@ -1724,13 +1673,23 @@ Optional:
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--listener--access--consumer--acls))
+Server-level access control rules for allowing or denying consumer groups. This is the
+top-level gate: a caller's consumer group must pass this check before any MCP protocol
+operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
+`default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--listener--access--consumer--acls))
+- `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
+At most 1 auth strategy of each auth strategy type can be referenced.
 - `default_tool_acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--listener--access--consumer--default_tool_acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+Default per-tool access control rules for allowing or denying consumer groups access to
+tools. Evaluated only for callers that already passed the server-level `acls` check above.
+Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
+that tool's own `access.acls`. (see [below for nested schema](#nestedatt--listener--access--consumer--default_tool_acls))
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the MCP server.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 - `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--listener--access--consumer--metadata))
 
 <a id="nestedatt--listener--access--consumer--acls"></a>
@@ -1775,13 +1734,25 @@ Not Null
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--acls))
+Server-level access control rules for allowing or denying callers, evaluated against the
+value of the configured `access_token_claim_field`. This is the top-level gate: a caller
+must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
+`tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
+`access.acls` check is evaluated. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--acls))
+- `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
+At most 1 auth strategy of each auth strategy type can be referenced.
 - `default_tool_acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--default_tool_acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+Default per-tool access control rules for allowing or denying callers access to tools,
+evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+for callers that already passed the server-level `acls` check above. Applies to every tool
+exposed by this MCP Server unless a specific tool overrides it via that tool's own
+`access.acls`. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--default_tool_acls))
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the MCP server.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 - `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--metadata))
 
 <a id="nestedatt--listener--access--oauth_access_token--acls"></a>
@@ -1829,7 +1800,9 @@ Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt-
 - `route` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--listener--config--route))
+Route configuration for an MCP Server that terminates its own listener. At least one
+of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+incoming requests. (see [below for nested schema](#nestedatt--listener--config--route))
 - `server` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -1869,7 +1842,6 @@ Optional:
 Optional:
 
 - `forward_client_headers` (Boolean) Whether to forward the client request headers to the upstream server when calling the tools. Default: true
-- `label` (String) The label of the MCP server. This is used to filter the exported MCP tools.
 - `session` (Attributes) Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers. (see [below for nested schema](#nestedatt--listener--config--server--session))
 - `timeout` (Number) The timeout for calling the tools in milliseconds. Default: 10000
@@ -2041,89 +2013,6 @@ Optional:
 
 
 
-<a id="nestedatt--listener--tools"></a>
-### Nested Schema for `listener.tools`
-
-Optional:
-
-- `access` (Attributes) (see [below for nested schema](#nestedatt--listener--tools--access))
-- `annotations` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--listener--tools--annotations))
-- `description` (String) A description of what the tool does. Not Null
-- `headers` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
-Parsed as JSON.
-- `host` (String) The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
-- `method` (String) For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]
-- `name` (String) Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null
-- `parameters` (Attributes List) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--listener--tools--parameters))
-- `path` (String) The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.
-- `query` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-Parsed as JSON.
-- `request_body` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported.
-Parsed as JSON.
-- `responses` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported.
-Parsed as JSON.
-- `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]
-
-<a id="nestedatt--listener--tools--access"></a>
-### Nested Schema for `listener.tools.access`
-
-Optional:
-
-- `acls` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Access control rules for allowing or denying consumer groups access to this tool.
-When configured, these will override the default access control rules defined on the MCP Server. (see [below for nested schema](#nestedatt--listener--tools--access--acls))
-
-<a id="nestedatt--listener--tools--access--acls"></a>
-### Nested Schema for `listener.tools.access.acls`
-
-Optional:
-
-- `allow` (List of String) List of consumer groups that are permitted access.
-- `deny` (List of String) List of consumer groups that are denied access.
-
-
-
-<a id="nestedatt--listener--tools--annotations"></a>
-### Nested Schema for `listener.tools.annotations`
-
-Optional:
-
-- `destructive_hint` (Boolean) If true, the tool may perform destructive updates
-- `idempotent_hint` (Boolean) If true, repeated calls with same args have no additional effect
-- `open_world_hint` (Boolean) If true, tool interacts with external entities
-- `read_only_hint` (Boolean) If true, the tool does not modify its environment
-- `title` (String) Human-readable title for the tool
-
-
-<a id="nestedatt--listener--tools--parameters"></a>
-### Nested Schema for `listener.tools.parameters`
-
-Optional:
-
-- `description` (String) A description of the parameter.
-- `in` (String) The location of the parameter in the request. possible known values include one of ["query", "path", "header", "body"]; Not Null
-- `name` (String) The name of the parameter. Not Null
-- `required` (Boolean) Whether this parameter is required.
-- `schema` (Map of String) JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.
-
-
-
 
 <a id="nestedatt--passthrough_listener"></a>
 ### Nested Schema for `passthrough_listener`
@@ -2153,7 +2042,8 @@ This feature is currently in beta and is subject to change.
 A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
 - `policies` (List of String) List of policy references.
-- `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--tools))
+- `tools` (Attributes List) Per-tool access-control overrides for tools advertised by the remote MCP Server. Each
+entry is matched to a remote tool by `name`; only its access-control rules are applied. (see [below for nested schema](#nestedatt--passthrough_listener--tools))
 
 Read-Only:
 
@@ -2169,12 +2059,12 @@ Optional:
 - `consumer` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer))
 - `oauth_access_token` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token))
 
 <a id="nestedatt--passthrough_listener--access--consumer"></a>
@@ -2185,13 +2075,23 @@ Optional:
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--acls))
+Server-level access control rules for allowing or denying consumer groups. This is the
+top-level gate: a caller's consumer group must pass this check before any MCP protocol
+operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
+`default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--acls))
+- `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
+At most 1 auth strategy of each auth strategy type can be referenced.
 - `default_tool_acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--default_tool_acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+Default per-tool access control rules for allowing or denying consumer groups access to
+tools. Evaluated only for callers that already passed the server-level `acls` check above.
+Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
+that tool's own `access.acls`. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--default_tool_acls))
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the MCP server.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 - `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--metadata))
 
 <a id="nestedatt--passthrough_listener--access--consumer--acls"></a>
@@ -2236,13 +2136,25 @@ Not Null
 - `acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--acls))
+Server-level access control rules for allowing or denying callers, evaluated against the
+value of the configured `access_token_claim_field`. This is the top-level gate: a caller
+must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
+`tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
+`access.acls` check is evaluated. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--acls))
+- `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
+At most 1 auth strategy of each auth strategy type can be referenced.
 - `default_tool_acls` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--default_tool_acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the MCP server.
+Default per-tool access control rules for allowing or denying callers access to tools,
+evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+for callers that already passed the server-level `acls` check above. Applies to every tool
+exposed by this MCP Server unless a specific tool overrides it via that tool's own
+`access.acls`. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--default_tool_acls))
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the MCP server.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 - `metadata` (Attributes) OAuth 2.0 Protected Resource Metadata advertised for this MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--metadata))
 
 <a id="nestedatt--passthrough_listener--access--oauth_access_token--acls"></a>
@@ -2291,7 +2203,9 @@ Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt-
 - `route` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
+Route configuration for an MCP Server that terminates its own listener. At least one
+of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+incoming requests. (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
 - `server` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -2379,7 +2293,6 @@ Optional:
 Optional:
 
 - `forward_client_headers` (Boolean) Whether to forward the client request headers to the upstream server when calling the tools. Default: true
-- `label` (String) The label of the MCP server. This is used to filter the exported MCP tools.
 - `session` (Attributes) Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session))
 - `timeout` (Number) The timeout for calling the tools in milliseconds. Default: 10000
@@ -2598,37 +2511,12 @@ If not specified, the default AWS STS endpoint will be used.
 
 Optional:
 
-- `access` (Attributes) (see [below for nested schema](#nestedatt--passthrough_listener--tools--access))
-- `annotations` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--passthrough_listener--tools--annotations))
-- `description` (String) A description of what the tool does. Not Null
-- `headers` (String) **Pre-release Feature**
+- `access` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
-Parsed as JSON.
-- `host` (String) The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
-- `method` (String) For conversion-only and conversion-listener modes, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]
-- `name` (String) Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null
-- `parameters` (Attributes List) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--passthrough_listener--tools--parameters))
-- `path` (String) The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.
-- `query` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-Parsed as JSON.
-- `request_body` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported.
-Parsed as JSON.
-- `responses` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported.
-Parsed as JSON.
-- `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]
+Access-control rules for a tool.
+Not Null (see [below for nested schema](#nestedatt--passthrough_listener--tools--access))
+- `name` (String) Tool identifier used to match remote MCP Server tools for ACL enforcement. Not Null
 
 <a id="nestedatt--passthrough_listener--tools--access"></a>
 ### Nested Schema for `passthrough_listener.tools.access`
@@ -2651,30 +2539,6 @@ Optional:
 
 
 
-<a id="nestedatt--passthrough_listener--tools--annotations"></a>
-### Nested Schema for `passthrough_listener.tools.annotations`
-
-Optional:
-
-- `destructive_hint` (Boolean) If true, the tool may perform destructive updates
-- `idempotent_hint` (Boolean) If true, repeated calls with same args have no additional effect
-- `open_world_hint` (Boolean) If true, tool interacts with external entities
-- `read_only_hint` (Boolean) If true, the tool does not modify its environment
-- `title` (String) Human-readable title for the tool
-
-
-<a id="nestedatt--passthrough_listener--tools--parameters"></a>
-### Nested Schema for `passthrough_listener.tools.parameters`
-
-Optional:
-
-- `description` (String) A description of the parameter.
-- `in` (String) The location of the parameter in the request. possible known values include one of ["query", "path", "header", "body"]; Not Null
-- `name` (String) The name of the parameter. Not Null
-- `required` (Boolean) Whether this parameter is required.
-- `schema` (Map of String) JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.
-
-
 
 
 <a id="nestedatt--upstream_server"></a>
@@ -2682,8 +2546,6 @@ Optional:
 
 Optional:
 
-- `access` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--access))
 - `config` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -2713,86 +2575,6 @@ Read-Only:
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
-<a id="nestedatt--upstream_server--access"></a>
-### Nested Schema for `upstream_server.access`
-
-Optional:
-
-- `consumer` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--access--consumer))
-- `oauth_access_token` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--access--oauth_access_token))
-
-<a id="nestedatt--upstream_server--access--consumer"></a>
-### Nested Schema for `upstream_server.access.consumer`
-
-Optional:
-
-- `acls` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--upstream_server--access--consumer--acls))
-- `default_tool_acls` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--upstream_server--access--consumer--default_tool_acls))
-
-<a id="nestedatt--upstream_server--access--consumer--acls"></a>
-### Nested Schema for `upstream_server.access.consumer.acls`
-
-Optional:
-
-- `allow` (List of String) List of consumer groups that are permitted access.
-- `deny` (List of String) List of consumer groups that are denied access.
-
-
-<a id="nestedatt--upstream_server--access--consumer--default_tool_acls"></a>
-### Nested Schema for `upstream_server.access.consumer.default_tool_acls`
-
-Optional:
-
-- `allow` (List of String) List of consumer groups that are permitted access.
-- `deny` (List of String) List of consumer groups that are denied access.
-
-
-
-<a id="nestedatt--upstream_server--access--oauth_access_token"></a>
-### Nested Schema for `upstream_server.access.oauth_access_token`
-
-Optional:
-
-- `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
-Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
-Not Null
-- `acls` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Access control rules for allowing or denying consumer groups. (see [below for nested schema](#nestedatt--upstream_server--access--oauth_access_token--acls))
-- `default_tool_acls` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Default access control rules for allowing or denying consumer groups to tools. (see [below for nested schema](#nestedatt--upstream_server--access--oauth_access_token--default_tool_acls))
-
-<a id="nestedatt--upstream_server--access--oauth_access_token--acls"></a>
-### Nested Schema for `upstream_server.access.oauth_access_token.acls`
-
-Optional:
-
-- `allow` (List of String) List of consumer groups that are permitted access.
-- `deny` (List of String) List of consumer groups that are denied access.
-
-
-<a id="nestedatt--upstream_server--access--oauth_access_token--default_tool_acls"></a>
-### Nested Schema for `upstream_server.access.oauth_access_token.default_tool_acls`
-
-Optional:
-
-- `allow` (List of String) List of consumer groups that are permitted access.
-- `deny` (List of String) List of consumer groups that are denied access.
-
-
-
-
 <a id="nestedatt--upstream_server--config"></a>
 ### Nested Schema for `upstream_server.config`
 
@@ -2806,7 +2588,9 @@ Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt-
 - `route` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--upstream_server--config--route))
+Route configuration for an MCP Server that terminates its own listener. At least one
+of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+incoming requests. (see [below for nested schema](#nestedatt--upstream_server--config--route))
 - `server` (Attributes) Server-side configuration specific to `upstream-server` mode. (see [below for nested schema](#nestedatt--upstream_server--config--server))
 - `tools_cache_ttl_seconds` (Number) The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 every client call.
@@ -2853,7 +2637,6 @@ Optional:
 Optional:
 
 - `forward_client_headers` (Boolean) Whether to forward the client request headers to the upstream server when calling the tools. Default: true
-- `label` (String) The label of the MCP server. This is used to filter the exported MCP tools.
 - `preserve_upstream_tool_names` (Boolean) If enabled, the original upstream tool names are preserved as-is when Kong acts as an MCP server.
 If disabled (`false`), the service name will be prepended to the MCP tool names to avoid name
 collisions when multiple services are used.
@@ -3129,43 +2912,20 @@ If not specified, the default AWS STS endpoint will be used.
 
 Optional:
 
-- `access` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--tools--access))
-- `annotations` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--tools--annotations))
-- `description` (String) A description of what the tool does. Not Null
-- `headers` (String) **Pre-release Feature**
+- `access` (Attributes) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
-The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
-Parsed as JSON.
-- `host` (String) The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
+Access-control rules for a tool. (see [below for nested schema](#nestedatt--upstream_server--tools--access))
+- `annotations` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--tools--annotations))
+- `description` (String) A description of what the tool does.
 - `input_schema` (String) The entire `inputSchema` section for the tool. Overrides the upstream server's `inputSchema`
 for the same tool name, if present.
 Parsed as JSON.
-- `method` (String) When provided, the method of the exported API, which must match the route's methods. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]
-- `name` (String) Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present). Not Null
+- `name` (String) The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null
 - `output_schema` (String) The entire `outputSchema` section for the tool. Overrides the upstream server's `outputSchema`
 for the same tool name, if present.
 Parsed as JSON.
-- `parameters` (Attributes List) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--tools--parameters))
-- `path` (String) The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.
-- `query` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-Parsed as JSON.
-- `request_body` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported.
-Parsed as JSON.
-- `responses` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported.
-Parsed as JSON.
-- `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]
 
 <a id="nestedatt--upstream_server--tools--access"></a>
 ### Nested Schema for `upstream_server.tools.access`
@@ -3198,18 +2958,6 @@ Optional:
 - `open_world_hint` (Boolean) If true, tool interacts with external entities
 - `read_only_hint` (Boolean) If true, the tool does not modify its environment
 - `title` (String) Human-readable title for the tool
-
-
-<a id="nestedatt--upstream_server--tools--parameters"></a>
-### Nested Schema for `upstream_server.tools.parameters`
-
-Optional:
-
-- `description` (String) A description of the parameter.
-- `in` (String) The location of the parameter in the request. possible known values include one of ["query", "path", "header", "body"]; Not Null
-- `name` (String) The name of the parameter. Not Null
-- `required` (Boolean) Whether this parameter is required.
-- `schema` (Map of String) JSON Schema definition for the parameter value. See https://swagger.io/docs/specification/v3_0/describing-parameters/#schema-vs-content for more details.
 
 ## Import
 

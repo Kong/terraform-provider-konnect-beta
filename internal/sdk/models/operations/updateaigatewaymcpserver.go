@@ -105,37 +105,37 @@ func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServer() *shared.AIGat
 	return u.AIGatewayMCPServer
 }
 
-func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionOnly() *shared.AIGatewayMCPServerAIGatewayMCPServerConversionOnly {
+func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionOnly() *shared.AIGatewayMCPServerConversionOnlyResponse {
 	if v := u.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerConversionOnly
+		return v.AIGatewayMCPServerConversionOnlyResponse
 	}
 	return nil
 }
 
-func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionListener() *shared.AIGatewayMCPServerAIGatewayMCPServerConversionListener {
+func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerConversionListener() *shared.AIGatewayMCPServerConversionListenerResponse {
 	if v := u.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerConversionListener
+		return v.AIGatewayMCPServerConversionListenerResponse
 	}
 	return nil
 }
 
-func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerListener() *shared.AIGatewayMCPServerAIGatewayMCPServerListener {
+func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerListener() *shared.AIGatewayMCPServerListenerResponse {
 	if v := u.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerListener
+		return v.AIGatewayMCPServerListenerResponse
 	}
 	return nil
 }
 
-func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerPassthroughListener() *shared.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener {
+func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerPassthroughListener() *shared.AIGatewayMCPServerPassthroughListenerResponse {
 	if v := u.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener
+		return v.AIGatewayMCPServerPassthroughListenerResponse
 	}
 	return nil
 }
 
-func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerUpstreamServer() *shared.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer {
+func (u *UpdateAiGatewayMcpServerResponse) GetAIGatewayMCPServerUpstreamServer() *shared.AIGatewayMCPServerUpstreamServerResponse {
 	if v := u.GetAIGatewayMCPServer(); v != nil {
-		return v.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer
+		return v.AIGatewayMCPServerUpstreamServerResponse
 	}
 	return nil
 }

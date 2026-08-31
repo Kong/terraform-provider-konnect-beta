@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.931.0
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.932.9
 
 import (
 	"context"
@@ -129,9 +129,11 @@ type KonnectBeta struct {
 	// Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.
 	AuthServerScopes *AuthServerScopes
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
-	AuthServerClients    *AuthServerClients
-	Dashboards           *Dashboards
-	PersonalAccessTokens *PersonalAccessTokens
+	AuthServerClients *AuthServerClients
+	// Trusted IdPs allow an Auth Server to accept identity assertions from an external identity provider and exchange them for Konnect-issued tokens. The management API will give you the ability to configure the trusted IdP for an Auth Server.
+	AuthServerTrustedIDPs *AuthServerTrustedIDPs
+	Dashboards            *Dashboards
+	PersonalAccessTokens  *PersonalAccessTokens
 	// Create an Event Gateway Control Plane, used to store Event Gateway configuration
 	//
 	EventGateways *EventGateways
@@ -194,6 +196,11 @@ type KonnectBeta struct {
 	AIGateways *AIGateways
 	// API related to the management of AI Gateway DataPlane Certificates.
 	AIGatewayDataPlaneCertificates *AIGatewayDataPlaneCertificates
+	// API related to the management of AI Gateway CA Certificates.
+	AIGatewayCACertificates *AIGatewayCACertificates
+	// API related to the management of AI Gateway Certificates.
+	AIGatewayCertificates *AIGatewayCertificates
+	AIGatewaySNIs         *AIGatewaySNIs
 	// API related to the management of AI Gateway vaults for storing secrets.
 	AIGatewayVaults *AIGatewayVaults
 	// Policies that control security, rate-limiting, and guardrail behavior for the AI Gateway.
@@ -210,8 +217,10 @@ type KonnectBeta struct {
 	AIGatewayMCPServers *AIGatewayMCPServers
 	// Model providers that define the backend AI service connections for the AI Gateway.
 	AIGatewayModelProviders *AIGatewayModelProviders
-	// Identity providers for authenticating users and accessing AI Gateway resources.
+	// Deprecated in favor of AI Gateway Auth Strategies. Identity providers for authenticating users and accessing AI Gateway resources.
 	AIGatewayIdentityProviders *AIGatewayIdentityProviders
+	// Auth strategies for authenticating clients accessing AI Gateway resources.
+	AIGatewayAuthStrategies *AIGatewayAuthStrategies
 	// API related to the management of AI Gateway Config Stores.
 	AIGatewayConfigStores *AIGatewayConfigStores
 
@@ -291,7 +300,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
 		SDKVersion: "0.21.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.21.0 2.931.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.21.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -371,6 +380,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AuthServerClaims = newAuthServerClaims(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AuthServerTrustedIDPs = newAuthServerTrustedIDPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGateways = newEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -390,6 +400,9 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.KongIdentityDirectories = newKongIdentityDirectories(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGateways = newAIGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCACertificates = newAIGatewayCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCertificates = newAIGatewayCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewaySNIs = newAIGatewaySNIs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayVaults = newAIGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayPolicies = newAIGatewayPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModels = newAIGatewayModels(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -399,6 +412,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayIdentityProviders = newAIGatewayIdentityProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayAuthStrategies = newAIGatewayAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk

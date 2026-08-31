@@ -100,6 +100,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 									`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"region": schema.StringAttribute{
 								Optional:    true,
@@ -114,6 +117,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 									`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 									`Default: 100000000`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"role_session_name": schema.StringAttribute{
 								Computed:    true,
@@ -134,6 +140,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 									`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 						},
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -263,6 +272,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 									`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"resurrect_ttl": schema.Int64Attribute{
 								Computed: true,
@@ -273,6 +285,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 									`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 									`Default: 100000000`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"tenant_id": schema.StringAttribute{
 								Optional: true,
@@ -286,6 +301,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 									`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"type": schema.StringAttribute{
 								Computed:    true,
@@ -441,6 +459,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 									`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"resurrect_ttl": schema.Int64Attribute{
 								Computed: true,
@@ -451,6 +472,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 									`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 									`Default: 100000000`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"ttl": schema.Int64Attribute{
 								Computed: true,
@@ -459,6 +483,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 									`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 						},
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -689,6 +716,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 									`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"project_id": schema.StringAttribute{
 								Computed: true,
@@ -709,6 +739,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 									`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 									`Default: 100000000`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 							"ttl": schema.Int64Attribute{
 								Computed: true,
@@ -717,6 +750,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 									`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 									`Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 4294967295),
+								},
 							},
 						},
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -852,6 +888,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"path": schema.StringAttribute{
 										Computed:    true,
@@ -891,6 +930,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role_id": schema.StringAttribute{
 										Optional: true,
@@ -919,6 +961,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -984,6 +1029,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"nonce": schema.StringAttribute{
 										Computed:    true,
@@ -1016,6 +1064,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role": schema.StringAttribute{
 										Computed:    true,
@@ -1038,6 +1089,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1113,6 +1167,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -1145,6 +1202,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role": schema.StringAttribute{
 										Computed:    true,
@@ -1184,6 +1244,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1249,6 +1312,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -1273,6 +1339,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role": schema.StringAttribute{
 										Computed:    true,
@@ -1295,6 +1364,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1366,6 +1438,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -1390,6 +1465,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role_name": schema.StringAttribute{
 										Optional:    true,
@@ -1408,6 +1486,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1473,6 +1554,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -1497,6 +1581,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role": schema.StringAttribute{
 										Computed:    true,
@@ -1519,6 +1606,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1587,6 +1677,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -1611,6 +1704,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role": schema.StringAttribute{
 										Computed:    true,
@@ -1641,6 +1737,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1716,6 +1815,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -1740,6 +1842,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role": schema.StringAttribute{
 										Computed: true,
@@ -1773,6 +1878,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1838,6 +1946,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"path": schema.StringAttribute{
 										Computed:    true,
@@ -1868,6 +1979,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"role": schema.StringAttribute{
 										Optional:    true,
@@ -1886,6 +2000,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -1945,6 +2062,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for caching failed secret lookups.` + "\n" +
 											`A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -1969,6 +2089,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Kong continues to retry for resurrect_ttl seconds before giving up.` + "\n" +
 											`The default is ~3 years to support uninterrupted service during outages.` + "\n" +
 											`Default: 100000000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
@@ -1987,6 +2110,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: `Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.` + "\n" +
 											`For non-zero values, use a minimum of 60 seconds.` + "\n" +
 											`Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +

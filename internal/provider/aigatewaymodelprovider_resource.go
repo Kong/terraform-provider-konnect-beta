@@ -68,7 +68,6 @@ type AIGatewayModelProviderResourceModel struct {
 	Sagemaker   *tfTypes.AIGatewayModelProviderSagemaker `queryParam:"inline" tfsdk:"sagemaker"`
 	UpdatedAt   types.String                             `tfsdk:"updated_at"`
 	Vercel      *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"vercel"`
-	Vertex      *tfTypes.AIGatewayModelProviderVertex    `queryParam:"inline" tfsdk:"vertex"`
 	Vllm        *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"vllm"`
 	Xai         *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"xai"`
 }
@@ -257,7 +256,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -517,7 +515,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -759,7 +756,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -941,7 +937,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -1123,7 +1118,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -1132,7 +1126,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("created_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("created_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
@@ -1312,7 +1306,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -1494,7 +1487,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -1676,7 +1668,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -1685,7 +1676,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"display_name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("display_name")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("display_name")}}),
 				},
 				Description: `The display name for this model provider instance.`,
 			},
@@ -1914,7 +1905,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -2096,7 +2086,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -2105,7 +2094,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("id")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
@@ -2285,7 +2274,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -2467,7 +2455,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -2649,7 +2636,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -2658,7 +2644,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("name")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("name")}}),
 				},
 				MarkdownDescription: `**Pre-release Feature**` + "\n" +
 					`This feature is currently in beta and is subject to change.` + "\n" +
@@ -2841,7 +2827,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -3023,7 +3008,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -3267,7 +3251,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -3276,7 +3259,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vertex"), FieldPath: path.Root("vertex").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("updated_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("updated_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
@@ -3456,220 +3439,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("ollama"),
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
-						path.MatchRelative().AtParent().AtName("vertex"),
-						path.MatchRelative().AtParent().AtName("vllm"),
-						path.MatchRelative().AtParent().AtName("xai"),
-					}...),
-				},
-			},
-			"vertex": schema.SingleNestedAttribute{
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"config": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"auth": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"basic": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"headers": schema.ListNestedAttribute{
-												Computed: true,
-												Optional: true,
-												NestedObject: schema.NestedAttributeObject{
-													Validators: []validator.Object{
-														speakeasy_objectvalidators.NotNull(),
-													},
-													Attributes: map[string]schema.Attribute{
-														"name": schema.StringAttribute{
-															Computed: true,
-															Optional: true,
-															MarkdownDescription: `The name of the header used for authentication.` + "\n" +
-																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-																`Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-														"value": schema.StringAttribute{
-															Optional: true,
-															PlanModifiers: []planmodifier.String{
-																speakeasy_stringplanmodifier.UseConfigValue(),
-															},
-															MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
-																`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-														},
-													},
-												},
-												Validators: []validator.List{
-													listvalidator.SizeAtMost(1),
-												},
-											},
-											"params": schema.ListNestedAttribute{
-												Computed: true,
-												Optional: true,
-												NestedObject: schema.NestedAttributeObject{
-													Validators: []validator.Object{
-														speakeasy_objectvalidators.NotNull(),
-													},
-													Attributes: map[string]schema.Attribute{
-														"location": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
-														},
-														"name": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-														"value": schema.StringAttribute{
-															Optional: true,
-															PlanModifiers: []planmodifier.String{
-																speakeasy_stringplanmodifier.UseConfigValue(),
-															},
-															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-														},
-													},
-												},
-												Validators: []validator.List{
-													listvalidator.SizeAtMost(1),
-												},
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Basic auth config for an upstream model provider.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("vertex"),
-											}...),
-										},
-									},
-									"vertex": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"service_account_json": schema.StringAttribute{
-												Optional: true,
-												MarkdownDescription: `Full JSON string of the GCP service account to authenticate. If not set, the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.` + "\n" +
-													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Configuration for Vertex model provider.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("basic"),
-											}...),
-										},
-									},
-								},
-								Description: `Not Null`,
-								Validators: []validator.Object{
-									speakeasy_objectvalidators.NotNull(),
-								},
-							},
-						},
-						Description: `Not Null`,
-						Validators: []validator.Object{
-							speakeasy_objectvalidators.NotNull(),
-						},
-					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"display_name": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The display name for this model provider instance. Not Null`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.UTF8LengthBetween(1, 256),
-						},
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
-							`` + "\n" +
-							`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"managed_by": schema.MapAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
-							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
-					},
-					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
-						},
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`Config for Vertex model provider.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("anthropic"),
-						path.MatchRelative().AtParent().AtName("azure"),
-						path.MatchRelative().AtParent().AtName("bedrock"),
-						path.MatchRelative().AtParent().AtName("cerebras"),
-						path.MatchRelative().AtParent().AtName("cohere"),
-						path.MatchRelative().AtParent().AtName("dashscope"),
-						path.MatchRelative().AtParent().AtName("databricks"),
-						path.MatchRelative().AtParent().AtName("deepseek"),
-						path.MatchRelative().AtParent().AtName("gemini"),
-						path.MatchRelative().AtParent().AtName("huggingface"),
-						path.MatchRelative().AtParent().AtName("kimi"),
-						path.MatchRelative().AtParent().AtName("llama2"),
-						path.MatchRelative().AtParent().AtName("mistral"),
-						path.MatchRelative().AtParent().AtName("ollama"),
-						path.MatchRelative().AtParent().AtName("openai"),
-						path.MatchRelative().AtParent().AtName("sagemaker"),
-						path.MatchRelative().AtParent().AtName("vercel"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
@@ -3852,7 +3621,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("xai"),
 					}...),
 				},
@@ -4034,7 +3802,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						path.MatchRelative().AtParent().AtName("openai"),
 						path.MatchRelative().AtParent().AtName("sagemaker"),
 						path.MatchRelative().AtParent().AtName("vercel"),
-						path.MatchRelative().AtParent().AtName("vertex"),
 						path.MatchRelative().AtParent().AtName("vllm"),
 					}...),
 				},

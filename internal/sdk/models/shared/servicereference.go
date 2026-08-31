@@ -8,13 +8,17 @@ import (
 
 // ServiceReference - A gateway service that implements an API
 type ServiceReference struct {
-	// The environment this implementation is scoped to, by name. On write, selects the
-	// target environment: required when the API is configured across multiple
-	// environments, and optional otherwise (accepted only if it matches the API's sole
-	// environment). On read, the resolved environment name. Present only for APIs
-	// configured across multiple environments.
+	// UUID of the organization environment this control-plane implementation is scoped
+	// to. Environment names are not accepted. Not applicable to gateway-service
+	// implementations.
+	// On create: must be an environment associated with the API. Required when the API
+	// has multiple associated environments (`400` if omitted). Optional for a
+	// single-environment API and accepted only if it matches that environment. Returns
+	// `404` if the UUID is unknown or not associated with the API.
+	// On read: optional; present when the implementation is associated with an
+	// environment.
 	//
-	Environment *string `default:"null" json:"environment"`
+	EnvironmentID *string `json:"environment_id,omitempty"`
 	// A Gateway service that implements an API
 	Service *APIImplementationService `json:"service,omitempty"`
 }
@@ -30,11 +34,11 @@ func (s *ServiceReference) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (s *ServiceReference) GetEnvironment() *string {
+func (s *ServiceReference) GetEnvironmentID() *string {
 	if s == nil {
 		return nil
 	}
-	return s.Environment
+	return s.EnvironmentID
 }
 
 func (s *ServiceReference) GetService() *APIImplementationService {

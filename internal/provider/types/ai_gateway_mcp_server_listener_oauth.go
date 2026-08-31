@@ -9,6 +9,7 @@ import (
 type AIGatewayMCPServerListenerOauth struct {
 	AccessTokenClaimField types.String                                 `tfsdk:"access_token_claim_field"`
 	Acls                  *AIGatewayACLS                               `tfsdk:"acls"`
+	AuthStrategies        []types.String                               `tfsdk:"auth_strategies"`
 	DefaultToolAcls       *AIGatewayACLS                               `tfsdk:"default_tool_acls"`
 	IdentityProviders     []types.String                               `tfsdk:"identity_providers"`
 	Metadata              *AIGatewayMCPServerProtectedResourceMetadata `tfsdk:"metadata"`

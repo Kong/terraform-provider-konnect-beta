@@ -9,7 +9,7 @@ import (
 // AIGatewayMCPServerListenerOauth - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
-// Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+// Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 // for granting access to an MCP server.
 type AIGatewayMCPServerListenerOauth struct {
 	// The type of attributes that ACL is evaluated with.
@@ -22,17 +22,33 @@ type AIGatewayMCPServerListenerOauth struct {
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
-	// Access control rules for allowing or denying consumer groups.
+	// Server-level access control rules for allowing or denying callers, evaluated against the
+	// value of the configured `access_token_claim_field`. This is the top-level gate: a caller
+	// must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
+	// `tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
+	// `access.acls` check is evaluated.
 	Acls *AIGatewayMCPACLs `json:"acls,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
-	// Default access control rules for allowing or denying consumer groups to tools.
+	// Default per-tool access control rules for allowing or denying callers access to tools,
+	// evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+	// for callers that already passed the server-level `acls` check above. Applies to every tool
+	// exposed by this MCP Server unless a specific tool overrides it via that tool's own
+	// `access.acls`.
 	DefaultToolAcls *AIGatewayMCPACLs `json:"default_tool_acls,omitempty"`
 	// List of identity providers for granting access to the MCP server.
 	// At most 1 identity provider of each identity provider type can be referenced.
 	//
+	// Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
+	//
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	IdentityProviders []string `json:"identity_providers,omitempty"`
+	// List of auth strategies for granting access to the MCP server.
+	// At most 1 auth strategy of each auth strategy type can be referenced.
+	//
+	AuthStrategies []string `json:"auth_strategies,omitempty"`
 	// OAuth 2.0 Protected Resource Metadata advertised for this MCP server.
 	Metadata *AIGatewayMCPServerProtectedResourceMetadata `json:"metadata,omitempty"`
 }
@@ -78,6 +94,13 @@ func (a *AIGatewayMCPServerListenerOauth) GetIdentityProviders() []string {
 		return nil
 	}
 	return a.IdentityProviders
+}
+
+func (a *AIGatewayMCPServerListenerOauth) GetAuthStrategies() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AuthStrategies
 }
 
 func (a *AIGatewayMCPServerListenerOauth) GetMetadata() *AIGatewayMCPServerProtectedResourceMetadata {

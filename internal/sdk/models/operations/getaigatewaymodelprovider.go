@@ -201,13 +201,6 @@ func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *shar
 	return nil
 }
 
-func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderVertex() *shared.AIGatewayModelProviderAIGatewayModelProviderVertex {
-	if v := g.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderAIGatewayModelProviderVertex
-	}
-	return nil
-}
-
 func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker() *shared.AIGatewayModelProviderAIGatewayModelProviderSagemaker {
 	if v := g.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderSagemaker

@@ -450,23 +450,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
     }
     name = "azure-ai-se"
   }
-  vertex = {
-    config = {
-      auth = {
-        vertex = {
-          service_account_json = "...my_service_account_json..."
-        }
-      }
-    }
-    display_name = "Azure AI SE"
-    labels = {
-      key = "value"
-    }
-    managed_by = {
-      key = "value"
-    }
-    name = "azure-ai-se"
-  }
   vllm = {
     config = {
       auth = {

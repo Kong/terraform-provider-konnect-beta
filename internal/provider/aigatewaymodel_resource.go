@@ -106,12 +106,22 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									`` + "\n" +
 									`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 							},
-							"identity_providers": schema.ListAttribute{
+							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
+								MarkdownDescription: `List of auth strategies for granting access to the model.` + "\n" +
+									`At most 1 auth strategy of each auth strategy type can be referenced.`,
+							},
+							"identity_providers": schema.ListAttribute{
+								Computed:           true,
+								Optional:           true,
+								ElementType:        types.StringType,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 								MarkdownDescription: `List of identity providers for granting access to the model.` + "\n" +
-									`At most 1 identity provider of each identity provider type can be referenced.`,
+									`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+									`` + "\n" +
+									`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 							},
 						},
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -764,7 +774,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -811,7 +820,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -869,7 +877,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -905,7 +912,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -936,7 +942,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("huggingface"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -960,7 +965,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("huggingface"),
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -984,65 +988,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("huggingface"),
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
-																	}...),
-																},
-															},
-															"vertex": schema.SingleNestedAttribute{
-																Optional: true,
-																Attributes: map[string]schema.Attribute{
-																	"gcp_environment": schema.SingleNestedAttribute{
-																		Computed: true,
-																		Optional: true,
-																		Attributes: map[string]schema.Attribute{
-																			"api_endpoint": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `The custom API endpoint for the Gemini model. Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"location_id": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `The Google Cloud location ID for the model endpoint. Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"project_id": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `The Google Cloud project ID for the model endpoint. Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																		},
-																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																			`This feature is currently in beta and is subject to change.` + "\n" +
-																			`` + "\n" +
-																			`Configuration for a model hosted on Google Cloud Project.`,
-																	},
-																	"upstream_url": schema.StringAttribute{
-																		Optional:    true,
-																		Description: `The URL of the embeddings model.`,
-																	},
-																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`Google Vertex-specific configuration for a model.`,
-																Validators: []validator.Object{
-																	objectvalidator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("azure"),
-																		path.MatchRelative().AtParent().AtName("bedrock"),
-																		path.MatchRelative().AtParent().AtName("gemini"),
-																		path.MatchRelative().AtParent().AtName("huggingface"),
-																		path.MatchRelative().AtParent().AtName("mistral"),
-																		path.MatchRelative().AtParent().AtName("ollama"),
-																		path.MatchRelative().AtParent().AtName("openai"),
 																	}...),
 																},
 															},
@@ -1178,6 +1123,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Optional:    true,
 																Default:     int64default.StaticInt64(5432),
 																Description: `the port of the pgvector database. Default: 5432`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 65535),
+																},
 															},
 															"ssl": schema.SingleNestedAttribute{
 																Computed: true,
@@ -1383,6 +1331,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Optional:    true,
 																		Default:     int64default.StaticInt64(5),
 																		Description: `Maximum retry attempts for redirection. Default: 5`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
 																	},
 																	"nodes": schema.ListNestedAttribute{
 																		Optional: true,
@@ -1436,6 +1387,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Optional:    true,
 																Default:     int64default.StaticInt64(0),
 																Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 2147483646),
+																},
 															},
 															"dimensions": schema.Int64Attribute{
 																Computed:    true,
@@ -1685,6 +1639,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 2147483646),
+								},
 							},
 							"proxy": schema.SingleNestedAttribute{
 								Optional: true,
@@ -1784,6 +1741,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     int64default.StaticInt64(426),
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 599),
+										},
 									},
 									"methods": schema.ListAttribute{
 										Computed:    true,
@@ -1859,6 +1819,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
 									},
 									"request_buffering": schema.BoolAttribute{
 										Computed:    true,
@@ -1933,7 +1896,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								"type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "vertex"]`,
+									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 								},
 							},
 						},
@@ -2090,6 +2053,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2098,6 +2064,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2140,6 +2109,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -2178,7 +2150,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -2278,6 +2249,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"foundry_path_prefix": schema.StringAttribute{
 													Computed: true,
@@ -2296,6 +2270,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2338,6 +2315,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -2370,7 +2350,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -2463,6 +2442,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"embeddings_normalize": schema.BoolAttribute{
 													Computed:    true,
@@ -2477,6 +2459,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2528,6 +2513,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -2564,7 +2552,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -2653,6 +2640,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2661,6 +2651,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2703,6 +2696,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -2735,7 +2731,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -2838,6 +2833,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2846,6 +2844,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2888,6 +2889,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -2926,7 +2930,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -3015,6 +3018,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3029,6 +3035,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3071,6 +3080,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -3103,7 +3115,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -3192,6 +3203,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3200,6 +3214,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3242,6 +3259,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -3282,7 +3302,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -3371,6 +3390,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3379,6 +3401,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3421,6 +3446,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -3453,7 +3481,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -3542,6 +3569,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"gcp_environment": schema.SingleNestedAttribute{
 													Computed: true,
@@ -3584,6 +3614,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3626,6 +3659,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -3658,7 +3694,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -3747,6 +3782,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3755,6 +3793,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3797,6 +3838,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -3841,7 +3885,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -3930,6 +3973,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3946,6 +3992,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3988,6 +4037,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -4020,7 +4072,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -4109,6 +4160,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"format": schema.StringAttribute{
 													Computed:    true,
@@ -4125,6 +4179,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4167,6 +4224,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -4202,7 +4262,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -4291,6 +4350,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"format": schema.StringAttribute{
 													Computed:    true,
@@ -4307,6 +4369,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4349,6 +4414,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -4381,7 +4449,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -4470,6 +4537,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4478,6 +4548,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4520,6 +4593,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -4552,7 +4628,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -4641,6 +4716,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4649,6 +4727,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4691,6 +4772,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -4723,7 +4807,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -4842,6 +4925,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4850,6 +4936,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4915,6 +5004,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -4947,7 +5039,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -5036,6 +5127,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -5044,6 +5138,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -5086,6 +5183,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -5118,223 +5218,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("vertex"),
-													path.MatchRelative().AtParent().AtName("vllm"),
-													path.MatchRelative().AtParent().AtName("xai"),
-												}...),
-											},
-										},
-										"vertex": schema.SingleNestedAttribute{
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"cache_read_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-												},
-												"cache_write_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-												},
-												"cache_write_cost_list": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"ttl": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
-																},
-															},
-														},
-													},
-													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
-												},
-												"context_window_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"above": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
-																},
-															},
-															"input_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"output_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-														},
-													},
-													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
-												},
-												"embeddings_dimensions": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The number of dimensions for embedding outputs.`,
-												},
-												"gcp_environment": schema.SingleNestedAttribute{
-													Computed: true,
-													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"api_endpoint": types.StringType,
-														"endpoint_id":  types.StringType,
-														"location_id":  types.StringType,
-														"project_id":   types.StringType,
-													})),
-													Attributes: map[string]schema.Attribute{
-														"api_endpoint": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `The custom API endpoint for the Gemini model. Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-														"endpoint_id": schema.StringAttribute{
-															Optional: true,
-															MarkdownDescription: `The endpoint ID for the model.` + "\n" +
-																`This must be set when running a target model on Gemini on Vertex Model Garden.`,
-														},
-														"location_id": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `The Google Cloud location ID for the model endpoint. Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-														"project_id": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `The Google Cloud project ID for the model endpoint. Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-													},
-													MarkdownDescription: `**Pre-release Feature**` + "\n" +
-														`This feature is currently in beta and is subject to change.` + "\n" +
-														`` + "\n" +
-														`Configuration for a model hosted on Google Cloud Project.`,
-												},
-												"input_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-												},
-												"max_tokens": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The maximum number of tokens to generate in the response.`,
-												},
-												"output_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-												},
-												"service_tier_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"tier": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.UTF8LengthAtLeast(1),
-																},
-															},
-														},
-													},
-													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
-												},
-												"temperature": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-												},
-												"top_k": schema.Int64Attribute{
-													Optional:    true,
-													Description: `Limits the number of highest-probability tokens considered during generation.`,
-												},
-												"top_p": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-												},
-												"upstream_url": schema.StringAttribute{
-													Optional:    true,
-													Description: `The upstream URL for the model endpoint.`,
-												},
-											},
-											MarkdownDescription: `**Pre-release Feature**` + "\n" +
-												`This feature is currently in beta and is subject to change.` + "\n" +
-												`` + "\n" +
-												`Google Vertex-specific configuration for a model.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("bedrock"),
-													path.MatchRelative().AtParent().AtName("cerebras"),
-													path.MatchRelative().AtParent().AtName("cohere"),
-													path.MatchRelative().AtParent().AtName("dashscope"),
-													path.MatchRelative().AtParent().AtName("databricks"),
-													path.MatchRelative().AtParent().AtName("deepseek"),
-													path.MatchRelative().AtParent().AtName("gemini"),
-													path.MatchRelative().AtParent().AtName("huggingface"),
-													path.MatchRelative().AtParent().AtName("kimi"),
-													path.MatchRelative().AtParent().AtName("llama2"),
-													path.MatchRelative().AtParent().AtName("mistral"),
-													path.MatchRelative().AtParent().AtName("ollama"),
-													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -5423,6 +5306,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -5431,6 +5317,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -5473,6 +5362,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -5509,7 +5401,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
 											},
@@ -5597,6 +5488,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -5605,6 +5499,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -5647,6 +5544,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -5680,7 +5580,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 												}...),
 											},
@@ -5809,12 +5708,22 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									`` + "\n" +
 									`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 							},
-							"identity_providers": schema.ListAttribute{
+							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
+								MarkdownDescription: `List of auth strategies for granting access to the model.` + "\n" +
+									`At most 1 auth strategy of each auth strategy type can be referenced.`,
+							},
+							"identity_providers": schema.ListAttribute{
+								Computed:           true,
+								Optional:           true,
+								ElementType:        types.StringType,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 								MarkdownDescription: `List of identity providers for granting access to the model.` + "\n" +
-									`At most 1 identity provider of each identity provider type can be referenced.`,
+									`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+									`` + "\n" +
+									`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 							},
 						},
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -6468,7 +6377,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -6515,7 +6423,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -6573,7 +6480,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -6609,7 +6515,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -6640,7 +6545,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("huggingface"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -6664,7 +6568,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("huggingface"),
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("openai"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
 																	}...),
 																},
 															},
@@ -6688,65 +6591,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		path.MatchRelative().AtParent().AtName("huggingface"),
 																		path.MatchRelative().AtParent().AtName("mistral"),
 																		path.MatchRelative().AtParent().AtName("ollama"),
-																		path.MatchRelative().AtParent().AtName("vertex"),
-																	}...),
-																},
-															},
-															"vertex": schema.SingleNestedAttribute{
-																Optional: true,
-																Attributes: map[string]schema.Attribute{
-																	"gcp_environment": schema.SingleNestedAttribute{
-																		Computed: true,
-																		Optional: true,
-																		Attributes: map[string]schema.Attribute{
-																			"api_endpoint": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `The custom API endpoint for the Gemini model. Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"location_id": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `The Google Cloud location ID for the model endpoint. Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																			"project_id": schema.StringAttribute{
-																				Computed:    true,
-																				Optional:    true,
-																				Description: `The Google Cloud project ID for the model endpoint. Not Null`,
-																				Validators: []validator.String{
-																					speakeasy_stringvalidators.NotNull(),
-																				},
-																			},
-																		},
-																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																			`This feature is currently in beta and is subject to change.` + "\n" +
-																			`` + "\n" +
-																			`Configuration for a model hosted on Google Cloud Project.`,
-																	},
-																	"upstream_url": schema.StringAttribute{
-																		Optional:    true,
-																		Description: `The URL of the embeddings model.`,
-																	},
-																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`Google Vertex-specific configuration for a model.`,
-																Validators: []validator.Object{
-																	objectvalidator.ConflictsWith(path.Expressions{
-																		path.MatchRelative().AtParent().AtName("azure"),
-																		path.MatchRelative().AtParent().AtName("bedrock"),
-																		path.MatchRelative().AtParent().AtName("gemini"),
-																		path.MatchRelative().AtParent().AtName("huggingface"),
-																		path.MatchRelative().AtParent().AtName("mistral"),
-																		path.MatchRelative().AtParent().AtName("ollama"),
-																		path.MatchRelative().AtParent().AtName("openai"),
 																	}...),
 																},
 															},
@@ -6882,6 +6726,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Optional:    true,
 																Default:     int64default.StaticInt64(5432),
 																Description: `the port of the pgvector database. Default: 5432`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 65535),
+																},
 															},
 															"ssl": schema.SingleNestedAttribute{
 																Computed: true,
@@ -7087,6 +6934,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Optional:    true,
 																		Default:     int64default.StaticInt64(5),
 																		Description: `Maximum retry attempts for redirection. Default: 5`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
 																	},
 																	"nodes": schema.ListNestedAttribute{
 																		Optional: true,
@@ -7140,6 +6990,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Optional:    true,
 																Default:     int64default.StaticInt64(0),
 																Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 2147483646),
+																},
 															},
 															"dimensions": schema.Int64Attribute{
 																Computed:    true,
@@ -7389,6 +7242,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 2147483646),
+								},
 							},
 							"model": schema.SingleNestedAttribute{
 								Computed: true,
@@ -7506,6 +7362,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     int64default.StaticInt64(426),
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 599),
+										},
 									},
 									"methods": schema.ListAttribute{
 										Computed:    true,
@@ -7581,6 +7440,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
 									},
 									"request_buffering": schema.BoolAttribute{
 										Computed:    true,
@@ -7655,7 +7517,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								"type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "vertex"]`,
+									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 								},
 							},
 						},
@@ -7812,6 +7674,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -7820,6 +7685,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -7862,6 +7730,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -7900,7 +7771,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -8000,6 +7870,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"foundry_path_prefix": schema.StringAttribute{
 													Computed: true,
@@ -8018,6 +7891,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8060,6 +7936,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -8092,7 +7971,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -8185,6 +8063,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"embeddings_normalize": schema.BoolAttribute{
 													Computed:    true,
@@ -8199,6 +8080,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8250,6 +8134,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -8286,7 +8173,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -8375,6 +8261,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8383,6 +8272,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8425,6 +8317,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -8457,7 +8352,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -8560,6 +8454,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8568,6 +8465,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8610,6 +8510,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -8648,7 +8551,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -8737,6 +8639,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8751,6 +8656,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8793,6 +8701,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -8825,7 +8736,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -8914,6 +8824,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8922,6 +8835,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8964,6 +8880,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -9004,7 +8923,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -9093,6 +9011,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9101,6 +9022,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9143,6 +9067,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -9175,7 +9102,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -9264,6 +9190,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"gcp_environment": schema.SingleNestedAttribute{
 													Computed: true,
@@ -9306,6 +9235,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9348,6 +9280,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -9380,7 +9315,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -9469,6 +9403,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9477,6 +9414,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9519,6 +9459,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -9563,7 +9506,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -9652,6 +9594,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9668,6 +9613,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9710,6 +9658,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -9742,7 +9693,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -9831,6 +9781,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"format": schema.StringAttribute{
 													Computed:    true,
@@ -9847,6 +9800,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9889,6 +9845,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -9924,7 +9883,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -10013,6 +9971,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"format": schema.StringAttribute{
 													Computed:    true,
@@ -10029,6 +9990,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10071,6 +10035,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -10103,7 +10070,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -10192,6 +10158,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10200,6 +10169,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10242,6 +10214,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -10274,7 +10249,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -10363,6 +10337,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10371,6 +10348,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10413,6 +10393,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -10445,7 +10428,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -10564,6 +10546,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10572,6 +10557,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10637,6 +10625,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -10669,7 +10660,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -10758,6 +10748,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10766,6 +10759,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -10808,6 +10804,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -10840,223 +10839,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("vertex"),
-													path.MatchRelative().AtParent().AtName("vllm"),
-													path.MatchRelative().AtParent().AtName("xai"),
-												}...),
-											},
-										},
-										"vertex": schema.SingleNestedAttribute{
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"cache_read_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-												},
-												"cache_write_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-												},
-												"cache_write_cost_list": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"ttl": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
-																},
-															},
-														},
-													},
-													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
-												},
-												"context_window_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"above": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
-																},
-															},
-															"input_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"output_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-														},
-													},
-													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
-												},
-												"embeddings_dimensions": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The number of dimensions for embedding outputs.`,
-												},
-												"gcp_environment": schema.SingleNestedAttribute{
-													Computed: true,
-													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"api_endpoint": types.StringType,
-														"endpoint_id":  types.StringType,
-														"location_id":  types.StringType,
-														"project_id":   types.StringType,
-													})),
-													Attributes: map[string]schema.Attribute{
-														"api_endpoint": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `The custom API endpoint for the Gemini model. Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-														"endpoint_id": schema.StringAttribute{
-															Optional: true,
-															MarkdownDescription: `The endpoint ID for the model.` + "\n" +
-																`This must be set when running a target model on Gemini on Vertex Model Garden.`,
-														},
-														"location_id": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `The Google Cloud location ID for the model endpoint. Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-														"project_id": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Description: `The Google Cloud project ID for the model endpoint. Not Null`,
-															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
-															},
-														},
-													},
-													MarkdownDescription: `**Pre-release Feature**` + "\n" +
-														`This feature is currently in beta and is subject to change.` + "\n" +
-														`` + "\n" +
-														`Configuration for a model hosted on Google Cloud Project.`,
-												},
-												"input_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-												},
-												"max_tokens": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The maximum number of tokens to generate in the response.`,
-												},
-												"output_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-												},
-												"service_tier_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"tier": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.UTF8LengthAtLeast(1),
-																},
-															},
-														},
-													},
-													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
-												},
-												"temperature": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-												},
-												"top_k": schema.Int64Attribute{
-													Optional:    true,
-													Description: `Limits the number of highest-probability tokens considered during generation.`,
-												},
-												"top_p": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-												},
-												"upstream_url": schema.StringAttribute{
-													Optional:    true,
-													Description: `The upstream URL for the model endpoint.`,
-												},
-											},
-											MarkdownDescription: `**Pre-release Feature**` + "\n" +
-												`This feature is currently in beta and is subject to change.` + "\n" +
-												`` + "\n" +
-												`Google Vertex-specific configuration for a model.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("bedrock"),
-													path.MatchRelative().AtParent().AtName("cerebras"),
-													path.MatchRelative().AtParent().AtName("cohere"),
-													path.MatchRelative().AtParent().AtName("dashscope"),
-													path.MatchRelative().AtParent().AtName("databricks"),
-													path.MatchRelative().AtParent().AtName("deepseek"),
-													path.MatchRelative().AtParent().AtName("gemini"),
-													path.MatchRelative().AtParent().AtName("huggingface"),
-													path.MatchRelative().AtParent().AtName("kimi"),
-													path.MatchRelative().AtParent().AtName("llama2"),
-													path.MatchRelative().AtParent().AtName("mistral"),
-													path.MatchRelative().AtParent().AtName("ollama"),
-													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -11145,6 +10927,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -11153,6 +10938,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -11195,6 +10983,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -11231,7 +11022,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
 											},
@@ -11319,6 +11109,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"embeddings_dimensions": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -11327,6 +11120,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -11369,6 +11165,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
@@ -11402,7 +11201,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vertex"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 												}...),
 											},

@@ -15,14 +15,20 @@ IdentityAuthServer Resource
 ```terraform
 resource "konnect_identity_auth_server" "my_identityauthserver" {
   provider = konnect-beta
-  audience                          = "...my_audience..."
-  dcr_default_access_token_duration = 300
-  description                       = "...my_description..."
-  force_destroy                     = "false"
+  audience = "...my_audience..."
+  dcr = {
+    default_access_token_duration = 300
+    redirect_uri_allowlist = [
+      "https://example.com/callback"
+    ]
+  }
+  description   = "...my_description..."
+  force_destroy = "false"
   labels = {
     key = "value"
   }
   name              = "...my_name..."
+  open_dcr_enabled  = true
   signing_algorithm = "RS256"
   trusted_origins = [
     "https://example.com"
@@ -40,12 +46,13 @@ resource "konnect_identity_auth_server" "my_identityauthserver" {
 
 ### Optional
 
-- `dcr_default_access_token_duration` (Number) The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300
+- `dcr` (Attributes) Dynamic Client Registration settings for the auth server. Both fields are optional; an omitted field falls back to its default. (see [below for nested schema](#nestedatt--dcr))
 - `description` (String) The description of the auth server
 - `force_destroy` (String) If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `open_dcr_enabled` (Boolean) Whether open (unauthenticated) Dynamic Client Registration is enabled for the auth server
 - `signing_algorithm` (String) Algorithm used in the key signing process. possible known values include one of ["RS256", "RS384", "RS512", "PS256", "PS384", "PS512"]; Default: "RS256"
 - `trusted_origins` (List of String) A list or trusted origins to apply the CORS header on for the auth server
 
@@ -57,6 +64,14 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `jwks_uri` (String) The URI of the JWKS endpoint for the auth server
 - `metadata_uri` (String) The URI of the metadata document for the auth server
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+<a id="nestedatt--dcr"></a>
+### Nested Schema for `dcr`
+
+Optional:
+
+- `default_access_token_duration` (Number) The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300
+- `redirect_uri_allowlist` (List of String) Redirect URIs allowed for clients registered via open Dynamic Client Registration
 
 ## Import
 

@@ -12,6 +12,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        auth_strategies = [
+          "okta-ai-se"
+        ]
         default_tool_acls = {
           allow = [
             "..."
@@ -70,7 +73,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers = true
-        label                  = "...my_label..."
         session = {
           client = {
             secrets = [
@@ -315,6 +317,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        auth_strategies = [
+          "okta-ai-se"
+        ]
         default_tool_acls = {
           allow = [
             "..."
@@ -373,7 +378,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers = true
-        label                  = "...my_label..."
         session = {
           client = {
             secrets = [
@@ -443,47 +447,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
-    tools = [
-      {
-        access = {
-          acls = {
-            allow = [
-              "..."
-            ]
-            deny = [
-              "..."
-            ]
-          }
-        }
-        annotations = {
-          destructive_hint = true
-          idempotent_hint  = false
-          open_world_hint  = false
-          read_only_hint   = true
-          title            = "...my_title..."
-        }
-        description = "Search for available flights"
-        headers     = "{ \"see\": \"documentation\" }"
-        host        = "...my_host..."
-        method      = "PUT"
-        name        = "...my_name..."
-        parameters = [
-          {
-            description = "The origin airport code."
-            in          = "query"
-            name        = "origin"
-            required    = true
-            schema = {
-              key = jsonencode("value")
-            }
-          }
-        ]
-        path         = "...my_path..."
-        query        = "{ \"see\": \"documentation\" }"
-        request_body = "{ \"see\": \"documentation\" }"
-        responses    = "{ \"see\": \"documentation\" }"
-        scheme       = "https"
-      }
+    sources = [
+      "kongair-flights",
+      "github-mcp",
     ]
   }
   passthrough_listener = {
@@ -497,6 +463,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             "..."
           ]
         }
+        auth_strategies = [
+          "okta-ai-se"
+        ]
         default_tool_acls = {
           allow = [
             "..."
@@ -571,7 +540,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers = true
-        label                  = "...my_label..."
         session = {
           client = {
             secrets = [
@@ -669,58 +637,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             ]
           }
         }
-        annotations = {
-          destructive_hint = true
-          idempotent_hint  = false
-          open_world_hint  = false
-          read_only_hint   = true
-          title            = "...my_title..."
-        }
-        description = "Search for available flights"
-        headers     = "{ \"see\": \"documentation\" }"
-        host        = "...my_host..."
-        method      = "PUT"
-        name        = "...my_name..."
-        parameters = [
-          {
-            description = "The origin airport code."
-            in          = "query"
-            name        = "origin"
-            required    = true
-            schema = {
-              key = jsonencode("value")
-            }
-          }
-        ]
-        path         = "...my_path..."
-        query        = "{ \"see\": \"documentation\" }"
-        request_body = "{ \"see\": \"documentation\" }"
-        responses    = "{ \"see\": \"documentation\" }"
-        scheme       = "http"
+        name = "...my_name..."
       }
     ]
   }
   upstream_server = {
-    access = {
-      consumer = {
-        acls = {
-          allow = [
-            "..."
-          ]
-          deny = [
-            "..."
-          ]
-        }
-        default_tool_acls = {
-          allow = [
-            "..."
-          ]
-          deny = [
-            "..."
-          ]
-        }
-      }
-    }
     config = {
       logging = {
         audits   = false
@@ -755,7 +676,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       server = {
         forward_client_headers       = true
-        label                        = "...my_label..."
         preserve_upstream_tool_names = false
         session = {
           client = {
@@ -868,28 +788,9 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           title            = "...my_title..."
         }
         description   = "Search for available flights"
-        headers       = "{ \"see\": \"documentation\" }"
-        host          = "...my_host..."
         input_schema  = "{ \"see\": \"documentation\" }"
-        method        = "PUT"
         name          = "...my_name..."
         output_schema = "{ \"see\": \"documentation\" }"
-        parameters = [
-          {
-            description = "The origin airport code."
-            in          = "query"
-            name        = "origin"
-            required    = true
-            schema = {
-              key = jsonencode("value")
-            }
-          }
-        ]
-        path         = "...my_path..."
-        query        = "{ \"see\": \"documentation\" }"
-        request_body = "{ \"see\": \"documentation\" }"
-        responses    = "{ \"see\": \"documentation\" }"
-        scheme       = "http"
       }
     ]
   }

@@ -16,7 +16,7 @@ import (
 	"net/http"
 )
 
-// AIGatewayIdentityProviders - Identity providers for authenticating users and accessing AI Gateway resources.
+// AIGatewayIdentityProviders - Deprecated in favor of AI Gateway Auth Strategies. Identity providers for authenticating users and accessing AI Gateway resources.
 type AIGatewayIdentityProviders struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration
@@ -36,6 +36,10 @@ func newAIGatewayIdentityProviders(rootSDK *KonnectBeta, sdkConfig config.SDKCon
 // This endpoint is currently in beta and is subject to change.
 //
 // Registers a new identity provider for the AI Gateway.
+//
+// Deprecated: use `POST /ai-gateways/{gatewayId}/auth-strategies` instead.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 func (s *AIGatewayIdentityProviders) CreateAiGatewayIdentityProvider(ctx context.Context, request operations.CreateAiGatewayIdentityProviderRequest, opts ...operations.Option) (*operations.CreateAiGatewayIdentityProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -356,6 +360,10 @@ func (s *AIGatewayIdentityProviders) CreateAiGatewayIdentityProvider(ctx context
 // This endpoint is currently in beta and is subject to change.
 //
 // Returns the details of a specific AI Gateway identity provider.
+//
+// Deprecated: use `GET /ai-gateways/{gatewayId}/auth-strategies/{authStrategyIdOrName}` instead.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 func (s *AIGatewayIdentityProviders) GetAiGatewayIdentityProvider(ctx context.Context, request operations.GetAiGatewayIdentityProviderRequest, opts ...operations.Option) (*operations.GetAiGatewayIdentityProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -648,6 +656,10 @@ func (s *AIGatewayIdentityProviders) GetAiGatewayIdentityProvider(ctx context.Co
 // This endpoint is currently in beta and is subject to change.
 //
 // Updates the configuration of an existing AI Gateway Identity provider.
+//
+// Deprecated: use `PUT /ai-gateways/{gatewayId}/auth-strategies/{authStrategyIdOrName}` instead.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 func (s *AIGatewayIdentityProviders) UpdateAiGatewayIdentityProvider(ctx context.Context, request operations.UpdateAiGatewayIdentityProviderRequest, opts ...operations.Option) (*operations.UpdateAiGatewayIdentityProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -968,6 +980,10 @@ func (s *AIGatewayIdentityProviders) UpdateAiGatewayIdentityProvider(ctx context
 // This endpoint is currently in beta and is subject to change.
 //
 // Removes a specific AI Gateway Identity provider.
+//
+// Deprecated: use `DELETE /ai-gateways/{gatewayId}/auth-strategies/{authStrategyIdOrName}` instead.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 func (s *AIGatewayIdentityProviders) DeleteAiGatewayIdentityProvider(ctx context.Context, request operations.DeleteAiGatewayIdentityProviderRequest, opts ...operations.Option) (*operations.DeleteAiGatewayIdentityProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
