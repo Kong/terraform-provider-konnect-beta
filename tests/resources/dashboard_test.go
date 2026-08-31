@@ -17,6 +17,7 @@ func TestDashboard(t *testing.T) {
 					ConfigDirectory:          config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_dashboard.my_dashboard", "name", "Example Dashboard"),
+						resource.TestCheckResourceAttr("konnect_dashboard.test_simple_platform_metrics", "name", "Platform CP count"),
 					),
 				},
 				{

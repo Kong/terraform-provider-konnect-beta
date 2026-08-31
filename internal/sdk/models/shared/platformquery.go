@@ -71,7 +71,7 @@ type PlatformQuery struct {
 	// List of aggregated metrics to collect across the requested time span.
 	Metrics []PlatformMetrics `json:"metrics,omitempty"`
 	// List of attributes or entity types to group by.
-	Dimensions []PlatformQueryDimensions `json:"dimensions"`
+	Dimensions []PlatformQueryDimensions `json:"dimensions,omitempty"`
 	// A list of filters to apply to the query.
 	Filters []PlatformFilter `json:"filters,omitempty"`
 	// Force time grouping into buckets of the specified duration. Only has an effect if "time" is in the "dimensions" list.

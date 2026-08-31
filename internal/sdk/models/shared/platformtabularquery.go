@@ -34,12 +34,12 @@ func (e *PlatformTabularQueryDatasource) UnmarshalJSON(data []byte) error {
 // PlatformTabularQuery - A query targeting tabular platform usage analytics data.
 type PlatformTabularQuery struct {
 	Datasource PlatformTabularQueryDatasource `json:"datasource"`
-	Entity     *string                        `default:"null" json:"entity"`
-	Columns    []string                       `json:"columns"`
+	Entity     *string                        `json:"entity,omitempty"`
+	Columns    []string                       `json:"columns,omitempty"`
 	// A list of filters to apply to the query.
 	Filters  []PlatformFilter `json:"filters,omitempty"`
-	Cursor   *string          `default:"null" json:"cursor"`
-	PageSize *int64           `default:"null" json:"page_size"`
+	Cursor   *string          `json:"cursor,omitempty"`
+	PageSize *int64           `json:"page_size,omitempty"`
 }
 
 func (p PlatformTabularQuery) MarshalJSON() ([]byte, error) {

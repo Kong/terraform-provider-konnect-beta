@@ -37,7 +37,7 @@ type SingleValueChart struct {
 	ChartTitle *string              `json:"chart_title,omitempty"`
 	Type       SingleValueChartType `json:"type"`
 	// The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.
-	DecimalPoints *float64 `default:"null" json:"decimal_points"`
+	DecimalPoints *float64 `json:"decimal_points,omitempty"`
 }
 
 func (s SingleValueChart) MarshalJSON() ([]byte, error) {

@@ -16,6 +16,8 @@ type DashboardsCreateResponse struct {
 	RawResponse *http.Response
 	// The created dashboard, including generated fields.
 	DashboardResponse *shared.DashboardResponse
+	// Bad request; returned when the request payload was not valid.
+	BadRequestError *shared.BadRequestError
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -48,6 +50,13 @@ func (d *DashboardsCreateResponse) GetDashboardResponse() *shared.DashboardRespo
 		return nil
 	}
 	return d.DashboardResponse
+}
+
+func (d *DashboardsCreateResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
+		return nil
+	}
+	return d.BadRequestError
 }
 
 func (d *DashboardsCreateResponse) GetUnauthorizedError() *shared.UnauthorizedError {

@@ -17,6 +17,9 @@
   - `konnect_ai_gateway_sni`
 * Add support for `konnect_portal_identity_provider` and `konnect_portal_identity_provider_team_group_mapping` resources, using which you can manage Developer Portal Identity Providers, as well as Identity Provider Group <> Portal Team mapping
 
+### Bug Fixes
+* Fixed HTTP 400 schema for `konnect_analytics_dashboard`, making actionable error messages available to user
+
 ## 0.21.0
 > Released on 2026/08/18
 

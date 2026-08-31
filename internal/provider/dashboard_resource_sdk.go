@@ -92,13 +92,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery != nil {
 						tiles.Chart.Definition.ChartVisualization.Query.APIUsage = &tfTypes.AdvancedQuery{}
 						tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Datasource))
-						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions != nil {
-							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions))
-							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions {
-								tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions, types.StringValue(string(v)))
-							}
-						} else {
-							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = nil
+						tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AdvancedQuery.Dimensions {
+							tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions, types.StringValue(string(v)))
 						}
 						tiles.Chart.Definition.ChartVisualization.Query.APIUsage.Filters = []tfTypes.AllFilterItems{}
 
@@ -150,13 +146,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery != nil {
 						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage = &tfTypes.AdvancedQuery{}
 						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Datasource))
-						if tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions != nil {
-							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions))
-							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions {
-								tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions, types.StringValue(string(v)))
-							}
-						} else {
-							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = nil
+						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.AgenticQuery.Dimensions {
+							tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions, types.StringValue(string(v)))
 						}
 						tiles.Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters = []tfTypes.AllFilterItems{}
 
@@ -208,13 +200,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery != nil {
 						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage = &tfTypes.AdvancedQuery{}
 						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Datasource))
-						if tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions != nil {
-							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions))
-							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions {
-								tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
-							}
-						} else {
-							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = nil
+						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.LLMQuery.Dimensions {
+							tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
 						}
 						tiles.Chart.Definition.ChartVisualization.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
 
@@ -266,13 +254,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery != nil {
 						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage = &tfTypes.ManagedCacheUsageQuery{}
 						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Datasource))
-						if tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions != nil {
-							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions))
-							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions {
-								tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions, types.StringValue(string(v)))
-							}
-						} else {
-							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = nil
+						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.ManagedCacheUsageQuery.Dimensions {
+							tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions, types.StringValue(string(v)))
 						}
 						tiles.Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters = []tfTypes.ManagedCacheUsageFilters{}
 
@@ -436,13 +420,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery != nil {
 						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage = &tfTypes.PlatformQuery{}
 						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Datasource))
-						if tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions != nil {
-							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions))
-							for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions {
-								tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions, types.StringValue(string(v)))
-							}
-						} else {
-							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = nil
+						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.ChartVisualization.Query.PlatformQuery.Dimensions {
+							tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions = append(tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions, types.StringValue(string(v)))
 						}
 						tiles.Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters = []tfTypes.MultiselectFilters{}
 
@@ -500,13 +480,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					}
 					if tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery != nil {
 						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage = &tfTypes.PlatformTabularQuery{}
-						if tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns != nil {
-							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = make([]types.String, 0, len(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns))
-							for _, v := range tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns {
-								tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = append(tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns, types.StringValue(v))
-							}
-						} else {
-							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = nil
+						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = make([]types.String, 0, len(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns))
+						for _, v := range tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Columns {
+							tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns = append(tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Columns, types.StringValue(v))
 						}
 						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Cursor = types.StringPointerValue(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Cursor)
 						tiles.Chart.Definition.TableVisualization.Query.PlatformUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.TableVisualization.Query.PlatformTabularQuery.Datasource))
@@ -646,12 +622,9 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					for _, metricsItem := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Metrics {
 						metrics = append(metrics, shared.AdvancedMetrics(metricsItem.ValueString()))
 					}
-					var dimensions []shared.Dimensions
-					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions != nil {
-						dimensions = make([]shared.Dimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions))
-						for _, dimensionsItem := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions {
-							dimensions = append(dimensions, shared.Dimensions(dimensionsItem.ValueString()))
-						}
+					dimensions := make([]shared.Dimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions))
+					for _, dimensionsItem := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Dimensions {
+						dimensions = append(dimensions, shared.Dimensions(dimensionsItem.ValueString()))
 					}
 					filters := make([]shared.AdvancedFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters))
 					for filtersIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.APIUsage.Filters {
@@ -763,12 +736,9 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					for _, metricsItem1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Metrics {
 						metrics1 = append(metrics1, shared.LLMMetrics(metricsItem1.ValueString()))
 					}
-					var dimensions1 []shared.LLMQueryDimensions
-					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions != nil {
-						dimensions1 = make([]shared.LLMQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions))
-						for _, dimensionsItem1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions {
-							dimensions1 = append(dimensions1, shared.LLMQueryDimensions(dimensionsItem1.ValueString()))
-						}
+					dimensions1 := make([]shared.LLMQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions))
+					for _, dimensionsItem1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Dimensions {
+						dimensions1 = append(dimensions1, shared.LLMQueryDimensions(dimensionsItem1.ValueString()))
 					}
 					filters1 := make([]shared.LLMFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters))
 					for filtersIndex1 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.LlmUsage.Filters {
@@ -880,12 +850,9 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					for _, metricsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Metrics {
 						metrics2 = append(metrics2, shared.AgenticMetrics(metricsItem2.ValueString()))
 					}
-					var dimensions2 []shared.AgenticQueryDimensions
-					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions != nil {
-						dimensions2 = make([]shared.AgenticQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions))
-						for _, dimensionsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions {
-							dimensions2 = append(dimensions2, shared.AgenticQueryDimensions(dimensionsItem2.ValueString()))
-						}
+					dimensions2 := make([]shared.AgenticQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions))
+					for _, dimensionsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Dimensions {
+						dimensions2 = append(dimensions2, shared.AgenticQueryDimensions(dimensionsItem2.ValueString()))
 					}
 					filters2 := make([]shared.AgenticFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters))
 					for filtersIndex2 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.AgenticUsage.Filters {
@@ -997,12 +964,9 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					for _, metricsItem3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Metrics {
 						metrics3 = append(metrics3, shared.PlatformMetrics(metricsItem3.ValueString()))
 					}
-					var dimensions3 []shared.PlatformQueryDimensions
-					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions != nil {
-						dimensions3 = make([]shared.PlatformQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions))
-						for _, dimensionsItem3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions {
-							dimensions3 = append(dimensions3, shared.PlatformQueryDimensions(dimensionsItem3.ValueString()))
-						}
+					dimensions3 := make([]shared.PlatformQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions))
+					for _, dimensionsItem3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Dimensions {
+						dimensions3 = append(dimensions3, shared.PlatformQueryDimensions(dimensionsItem3.ValueString()))
 					}
 					filters3 := make([]shared.PlatformFilter, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters))
 					for filtersIndex3 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.PlatformUsage.Filters {
@@ -1114,12 +1078,9 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					for _, metricsItem4 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Metrics {
 						metrics4 = append(metrics4, shared.ManagedCacheUsageMetrics(metricsItem4.ValueString()))
 					}
-					var dimensions4 []shared.ManagedCacheUsageQueryDimensions
-					if r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions != nil {
-						dimensions4 = make([]shared.ManagedCacheUsageQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions))
-						for _, dimensionsItem4 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions {
-							dimensions4 = append(dimensions4, shared.ManagedCacheUsageQueryDimensions(dimensionsItem4.ValueString()))
-						}
+					dimensions4 := make([]shared.ManagedCacheUsageQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions))
+					for _, dimensionsItem4 := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Dimensions {
+						dimensions4 = append(dimensions4, shared.ManagedCacheUsageQueryDimensions(dimensionsItem4.ValueString()))
 					}
 					filters4 := make([]shared.ManagedCacheUsageFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters))
 					for filtersItem := range r.Definition.Tiles[tilesItem].Chart.Definition.ChartVisualization.Query.ManagedCacheUsage.Filters {
@@ -1605,12 +1566,9 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					} else {
 						entity = nil
 					}
-					var columns []string
-					if r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns != nil {
-						columns = make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns))
-						for columnsIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns {
-							columns = append(columns, r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns[columnsIndex].ValueString())
-						}
+					columns := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns))
+					for columnsIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns {
+						columns = append(columns, r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Columns[columnsIndex].ValueString())
 					}
 					filters5 := make([]shared.PlatformFilter, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters))
 					for filtersIndex4 := range r.Definition.Tiles[tilesItem].Chart.Definition.TableVisualization.Query.PlatformUsage.Filters {
