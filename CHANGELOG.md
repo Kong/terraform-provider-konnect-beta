@@ -7,6 +7,7 @@
 * Vertex model and provider support is removed from `konnect_ai_gateway_*` resources
 * `dcr_default_access_token_duration` is now nested under `dcr` field in `konnect_identity_auth_server` resource as `dcr.default_access_token_duration`
 * `environment` field is renamed to `environment_id` in `konnect_api_implementation` resource
+* Tool definitions have been adjusted based on `listener` type in `konnect_ai_gateway_mcp_server` resource
 
 ### Features
 * Add support for more AI Gateway 2.0 resources 
