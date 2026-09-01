@@ -35,6 +35,8 @@ type DeleteAiGatewayMcpServerResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Bad Request
+	BadRequestError *shared.BadRequestError
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -64,6 +66,13 @@ func (d *DeleteAiGatewayMcpServerResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return d.RawResponse
+}
+
+func (d *DeleteAiGatewayMcpServerResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
+		return nil
+	}
+	return d.BadRequestError
 }
 
 func (d *DeleteAiGatewayMcpServerResponse) GetUnauthorizedError() *shared.UnauthorizedError {

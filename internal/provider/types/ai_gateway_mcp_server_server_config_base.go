@@ -7,8 +7,7 @@ import (
 )
 
 type AIGatewayMCPServerServerConfigBase struct {
-	ForwardClientHeaders types.Bool   `tfsdk:"forward_client_headers"`
-	Label                types.String `tfsdk:"label"`
-	Session              *Session     `tfsdk:"session"`
-	Timeout              types.Int64  `tfsdk:"timeout"`
+	ForwardClientHeaders types.Bool  `tfsdk:"forward_client_headers"`
+	Session              *Session    `tfsdk:"session"`
+	Timeout              types.Int64 `tfsdk:"timeout"`
 }

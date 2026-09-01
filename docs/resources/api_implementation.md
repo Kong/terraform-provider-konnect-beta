@@ -20,10 +20,10 @@ resource "konnect_api_implementation" "my_apiimplementation" {
     control_plane = {
       id = "7710d5c4-d902-410b-992f-18b814155b53"
     }
-    environment = "production"
+    environment_id = "2747d1e5-8246-4f65-a939-b392f1ee17f8"
   }
   service_reference = {
-    environment = "production"
+    environment_id = "2747d1e5-8246-4f65-a939-b392f1ee17f8"
     service = {
       control_plane_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       id               = "7710d5c4-d902-410b-992f-18b814155b53"
@@ -47,11 +47,15 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `environment` (String) The environment this implementation is scoped to, by name. On write, selects the
-target environment: required when the API is configured across multiple
-environments, and optional otherwise (accepted only if it matches the API's sole
-environment). On read, the resolved environment name. Present only for APIs
-configured across multiple environments.
+- `environment_id` (String) UUID of the organization environment this control-plane implementation is scoped
+to. Environment names are not accepted. Not applicable to gateway-service
+implementations.
+On create: must be an environment associated with the API. Required when the API
+has multiple associated environments (`400` if omitted). Optional for a
+single-environment API and accepted only if it matches that environment. Returns
+`404` if the UUID is unknown or not associated with the API.
+On read: optional; present when the implementation is associated with an
+environment.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -61,11 +65,15 @@ configured across multiple environments.
 Optional:
 
 - `control_plane` (Attributes) A Control plane that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--control_plane_reference--control_plane))
-- `environment` (String) The environment this implementation is scoped to, by name. On write, selects the
-target environment: required when the API is configured across multiple
-environments, and optional otherwise (accepted only if it matches the API's sole
-environment). On read, the resolved environment name. Present only for APIs
-configured across multiple environments.
+- `environment_id` (String) UUID of the organization environment this control-plane implementation is scoped
+to. Environment names are not accepted. Not applicable to gateway-service
+implementations.
+On create: must be an environment associated with the API. Required when the API
+has multiple associated environments (`400` if omitted). Optional for a
+single-environment API and accepted only if it matches that environment. Returns
+`404` if the UUID is unknown or not associated with the API.
+On read: optional; present when the implementation is associated with an
+environment.
 Requires replacement if changed.
 
 Read-Only:
@@ -92,11 +100,15 @@ Read-Only:
 
 Optional:
 
-- `environment` (String) The environment this implementation is scoped to, by name. On write, selects the
-target environment: required when the API is configured across multiple
-environments, and optional otherwise (accepted only if it matches the API's sole
-environment). On read, the resolved environment name. Present only for APIs
-configured across multiple environments.
+- `environment_id` (String) UUID of the organization environment this control-plane implementation is scoped
+to. Environment names are not accepted. Not applicable to gateway-service
+implementations.
+On create: must be an environment associated with the API. Required when the API
+has multiple associated environments (`400` if omitted). Optional for a
+single-environment API and accepted only if it matches that environment. Returns
+`404` if the UUID is unknown or not associated with the API.
+On read: optional; present when the implementation is associated with an
+environment.
 Requires replacement if changed.
 - `service` (Attributes) A Gateway service that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--service_reference--service))
 

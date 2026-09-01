@@ -50,11 +50,11 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
 
 ### Optional
 
-- `key_auth` (Attributes) **Pre-release Feature**
+- `key_auth` (Attributes, Deprecated) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Configuration for an identity provider. (see [below for nested schema](#nestedatt--key_auth))
-- `openid_connect` (Attributes) **Pre-release Feature**
+- `openid_connect` (Attributes, Deprecated) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Configuration for an identity provider. (see [below for nested schema](#nestedatt--openid_connect))

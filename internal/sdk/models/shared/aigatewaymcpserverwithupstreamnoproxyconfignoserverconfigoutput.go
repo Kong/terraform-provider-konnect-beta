@@ -48,8 +48,10 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
-	// Configuration for an AI Gateway route.
-	Route *AIGatewayRouteConfig `json:"route,omitempty"`
+	// Route configuration for an MCP Server that terminates its own listener. At least one
+	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+	// incoming requests.
+	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -79,7 +81,7 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) Unmars
 	return nil
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetRoute() *AIGatewayRouteConfig {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
 		return nil
 	}
@@ -122,8 +124,10 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
-	// Configuration for an AI Gateway route.
-	Route *AIGatewayRouteConfig `json:"route,omitempty"`
+	// Route configuration for an MCP Server that terminates its own listener. At least one
+	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+	// incoming requests.
+	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
 	// **Pre-release Feature**
 	// This feature is currently in beta and is subject to change.
 	//
@@ -153,7 +157,7 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) UnmarshalJSO
 	return nil
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetRoute() *AIGatewayRouteConfig {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
 		return nil
 	}

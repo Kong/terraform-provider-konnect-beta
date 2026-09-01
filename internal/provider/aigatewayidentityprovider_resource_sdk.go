@@ -19,7 +19,7 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 
 	if resp != nil {
 		if resp.AIGatewayIdentityProviderKeyAuthResponse != nil {
-			r.KeyAuth = &tfTypes.AIGatewayIdentityProviderKeyAuth{}
+			r.KeyAuth = &tfTypes.AIGatewayAuthStrategyKeyAuth{}
 			if resp.AIGatewayIdentityProviderKeyAuthResponse.Config == nil {
 				r.KeyAuth.Config = jsontypes.NewNormalizedNull()
 			} else {
@@ -51,7 +51,7 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 			r.UpdatedAt = r.KeyAuth.UpdatedAt
 		}
 		if resp.AIGatewayIdentityProviderOpenIDConnectResponse != nil {
-			r.OpenidConnect = &tfTypes.AIGatewayIdentityProviderKeyAuth{}
+			r.OpenidConnect = &tfTypes.AIGatewayAuthStrategyKeyAuth{}
 			if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config == nil {
 				r.OpenidConnect.Config = jsontypes.NewNormalizedNull()
 			} else {

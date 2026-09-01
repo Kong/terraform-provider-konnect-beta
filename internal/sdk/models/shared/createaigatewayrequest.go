@@ -2,9 +2,39 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
+// DeploymentType - How this AI Gateway's control plane is deployed. Set at creation time and cannot be changed afterward.
+type DeploymentType string
+
+const (
+	DeploymentTypeHybrid     DeploymentType = "hybrid"
+	DeploymentTypeManaged    DeploymentType = "managed"
+	DeploymentTypeServerless DeploymentType = "serverless"
+)
+
+func (e DeploymentType) ToPointer() *DeploymentType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DeploymentType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "hybrid", "managed", "serverless":
+			return true
+		}
+	}
+	return false
+}
+
 // CreateAIGatewayRequest - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 type CreateAIGatewayRequest struct {
+	// How this AI Gateway's control plane is deployed. Set at creation time and cannot be changed afterward.
+	DeploymentType *DeploymentType `default:"hybrid" json:"deployment_type"`
 	// The display name for this AI Gateway.
 	DisplayName string `json:"display_name"`
 	// The name for this AI Gateway. This value is immutable after creation.
@@ -20,6 +50,24 @@ type CreateAIGatewayRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
+}
+
+func (c CreateAIGatewayRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAIGatewayRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayRequest) GetDeploymentType() *DeploymentType {
+	if c == nil {
+		return nil
+	}
+	return c.DeploymentType
 }
 
 func (c *CreateAIGatewayRequest) GetDisplayName() string {

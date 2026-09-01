@@ -8,19 +8,10 @@ import (
 )
 
 type AIGatewayMCPUpstreamTool struct {
-	Access       *Access                      `tfsdk:"access"`
+	Access       *AIGatewayMCPToolAccess      `tfsdk:"access"`
 	Annotations  *AIGatewayMCPToolAnnotations `tfsdk:"annotations"`
 	Description  types.String                 `tfsdk:"description"`
-	Headers      jsontypes.Normalized         `tfsdk:"headers"`
-	Host         types.String                 `tfsdk:"host"`
 	InputSchema  jsontypes.Normalized         `tfsdk:"input_schema"`
-	Method       types.String                 `tfsdk:"method"`
 	Name         types.String                 `tfsdk:"name"`
 	OutputSchema jsontypes.Normalized         `tfsdk:"output_schema"`
-	Parameters   []AIGatewayMCPToolParameter  `tfsdk:"parameters"`
-	Path         types.String                 `tfsdk:"path"`
-	Query        jsontypes.Normalized         `tfsdk:"query"`
-	RequestBody  jsontypes.Normalized         `tfsdk:"request_body"`
-	Responses    jsontypes.Normalized         `tfsdk:"responses"`
-	Scheme       types.String                 `tfsdk:"scheme"`
 }

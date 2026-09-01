@@ -18,6 +18,11 @@ func (r *AIGatewayResourceModel) RefreshFromSharedAIGateway(ctx context.Context,
 	if resp != nil {
 		r.ConfigVersion = types.StringPointerValue(resp.ConfigVersion)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		if resp.DeploymentType != nil {
+			r.DeploymentType = types.StringValue(string(*resp.DeploymentType))
+		} else {
+			r.DeploymentType = types.StringNull()
+		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Endpoints = &tfTypes.Endpoints{}
@@ -98,6 +103,12 @@ func (r *AIGatewayResourceModel) ToOperationsUpdateAiGatewayRequest(ctx context.
 func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Context) (*shared.CreateAIGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	deploymentType := new(shared.DeploymentType)
+	if !r.DeploymentType.IsUnknown() && !r.DeploymentType.IsNull() {
+		*deploymentType = shared.DeploymentType(r.DeploymentType.ValueString())
+	} else {
+		deploymentType = nil
+	}
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
@@ -135,11 +146,12 @@ func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Cont
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateAIGatewayRequest{
-		DisplayName: displayName,
-		Name:        name,
-		Description: description,
-		ProxyUrls:   proxyUrls,
-		Labels:      labels,
+		DeploymentType: deploymentType,
+		DisplayName:    displayName,
+		Name:           name,
+		Description:    description,
+		ProxyUrls:      proxyUrls,
+		Labels:         labels,
 	}
 
 	return &out, diags

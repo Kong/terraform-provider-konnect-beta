@@ -1090,6 +1090,180 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Developers
+  '/v3/portals/{portalId}/identity-providers':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation: PortalIdentityProvider#create
+      operationId: create-portal-identity-provider
+      summary: Create Identity Provider
+      description: |
+        Creates a new identity provider. This operation allows the creation of a new identity provider for
+        authentication purposes.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalCreateIdentityProviderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/IdentityProviderId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIdentityProvider#read
+        terraform-datasource: null
+      operationId: get-portal-identity-provider
+      summary: Get Identity Provider
+      description: |
+        Retrieves the configuration of a single identity provider. This operation returns information about a
+        specific identity provider's settings and authentication integration details.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    patch:
+      x-speakeasy-entity-operation: PortalIdentityProvider#update
+      operationId: update-portal-identity-provider
+      summary: Update Identity Provider
+      description: |
+        Updates the configuration of an existing identity provider. This operation allows modifications to be made
+        to an existing identity provider's configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalUpdateIdentityProviderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+    delete:
+      x-speakeasy-entity-operation: PortalIdentityProvider#delete
+      operationId: delete-portal-identity-provider
+      summary: Delete Identity Provider
+      description: |
+        Deletes an existing identity provider configuration. This operation removes a specific identity provider
+        from the portal.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}/team-group-mappings':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/PortalIdentityProviderId'
+    post:
+      x-speakeasy-entity-operation: PortalIdentityProviderTeamGroupMapping#create
+      operationId: create-portal-idp-team-group-mapping
+      summary: Create Team Group Mapping
+      description: |
+        Creates a new team group mapping for the specified identity provider.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalIdpTeamGroupMapping'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalIdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}/team-group-mappings/{mappingId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/PortalIdentityProviderId'
+      - name: mappingId
+        in: path
+        description: ID of the team group mapping.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIdentityProviderTeamGroupMapping#read
+        terraform-datasource: null
+      operationId: get-portal-idp-team-group-mapping
+      summary: Get Team Group Mapping
+      description: Returns the team group mapping for the specified ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    delete:
+      x-speakeasy-entity-operation: PortalIdentityProviderTeamGroupMapping#delete
+      operationId: delete-portal-idp-team-group-mapping
+      summary: Delete Team Group Mapping
+      description: |
+        Deletes a team group mapping by ID.
+        Returns 204 if the mapping was deleted, or 404 if the mapping was not found.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
   '/v3/portals/{portalId}/audit-log-webhook':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -9189,6 +9363,64 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Auth Server Clients
+  '/v1/auth-servers/{authServerId}/trusted-idps/{authServerTrustedIdpId}':
+    parameters:
+      - $ref: '#/components/parameters/authServerId'
+      - $ref: '#/components/parameters/authServerTrustedIdpId'
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerTrustedIdp#read
+        terraform-datasource: null
+      operationId: getAuthServerTrustedIdp
+      summary: Get an auth server trusted IdP
+      description: Get a trusted IdP for a given auth server.
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthServerTrustedIdp'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Trusted IdPs
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerTrustedIdp#update
+        terraform-datasource: null
+      operationId: updateAuthServerTrustedIdp
+      summary: Update an auth server trusted IdP
+      description: Replace a trusted IdP for a given auth server. The request body is the full representation; omitted optional fields are reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthServerTrustedIdp'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthServerTrustedIdp'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server Trusted IdPs
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerTrustedIdp#delete
+        terraform-datasource: null
+      operationId: deleteAuthServerTrustedIdp
+      summary: Delete an auth server trusted IdP
+      description: Delete a trusted IdP for a given auth server.
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Trusted IdPs
   /v2/dashboards:
     post:
       x-speakeasy-entity-operation:
@@ -12188,6 +12420,381 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
       tags:
         - AI Gateway DataPlane Certificates
+  '/v1/ai-gateways/{gatewayId}/ca-certificates':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+    post:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCACertificate#create
+        terraform-datasource: null
+      operationId: create-ai-gateway-ca-certificate
+      summary: Create an AI Gateway CA Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Creates a new CA certificate for the AI Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAIGatewayCACertificateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAIGatewayCACertificateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway CA Certificates
+  '/v1/ai-gateways/{gatewayId}/ca-certificates/{caCertificateIdOrName}':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+      - $ref: '#/components/parameters/AIGatewayCACertificateIdMatchingParam'
+    get:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCACertificate#read
+        terraform-datasource: null
+      operationId: get-ai-gateway-ca-certificate
+      summary: Get an AI Gateway CA Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns the details of a specific AI Gateway CA certificate.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAIGatewayCACertificateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway CA Certificates
+    put:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCACertificate#update
+        terraform-datasource: null
+      operationId: update-ai-gateway-ca-certificate
+      summary: Update an AI Gateway CA Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates an existing AI Gateway CA certificate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAIGatewayCACertificateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAIGatewayCACertificateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway CA Certificates
+    delete:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCACertificate#delete
+        terraform-datasource: null
+      operationId: delete-ai-gateway-ca-certificate
+      summary: Delete an AI Gateway CA Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Removes a specific AI Gateway CA certificate.
+      responses:
+        '204':
+          description: CA certificate deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway CA Certificates
+  '/v1/ai-gateways/{gatewayId}/certificates':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+    post:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCertificate#create
+        terraform-datasource: null
+      operationId: create-ai-gateway-certificate
+      summary: Create an AI Gateway Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Creates a new certificate for the AI Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAIGatewayCertificateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAIGatewayCertificateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Certificates
+  '/v1/ai-gateways/{gatewayId}/certificates/{certificateIdOrName}':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+      - $ref: '#/components/parameters/AIGatewayCertificateIdMatchingParam'
+    get:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCertificate#read
+        terraform-datasource: null
+      operationId: get-ai-gateway-certificate
+      summary: Get an AI Gateway Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns the details of a specific AI Gateway certificate.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAIGatewayCertificateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Certificates
+    put:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCertificate#update
+        terraform-datasource: null
+      operationId: update-ai-gateway-certificate
+      summary: Update an AI Gateway Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates an existing AI Gateway certificate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAIGatewayCertificateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAIGatewayCertificateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Certificates
+    delete:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCertificate#delete
+        terraform-datasource: null
+      operationId: delete-ai-gateway-certificate
+      summary: Delete an AI Gateway Certificate
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Removes a specific AI Gateway certificate.
+      responses:
+        '204':
+          description: Certificate deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Certificates
+  '/v1/ai-gateways/{gatewayId}/snis':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+    post:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewaySNI#create
+        terraform-datasource: null
+      operationId: create-ai-gateway-sni
+      summary: Create an AI Gateway SNI
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Creates a new SNI for the AI Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAIGatewaySNIRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAIGatewaySNIResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway SNIs
+  '/v1/ai-gateways/{gatewayId}/snis/{sniIdOrName}':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+      - $ref: '#/components/parameters/AIGatewaySNIIdMatchingParam'
+    get:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewaySNI#read
+        terraform-datasource: null
+      operationId: get-ai-gateway-sni
+      summary: Get an AI Gateway SNI
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns the details of a specific AI Gateway SNI.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAIGatewaySNIResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway SNIs
+    put:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewaySNI#update
+        terraform-datasource: null
+      operationId: update-ai-gateway-sni
+      summary: Update an AI Gateway SNI
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates an existing AI Gateway SNI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAIGatewaySNIRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAIGatewaySNIResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway SNIs
+    delete:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewaySNI#delete
+        terraform-datasource: null
+      operationId: delete-ai-gateway-sni
+      summary: Delete an AI Gateway SNI
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Removes a specific AI Gateway SNI.
+      responses:
+        '204':
+          description: SNI deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway SNIs
   '/v1/ai-gateways/{gatewayId}/vaults':
     parameters:
       - $ref: '#/components/parameters/AIGatewayId'
@@ -13208,6 +13815,8 @@ paths:
       responses:
         '204':
           description: MCP Server deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -13360,6 +13969,8 @@ paths:
         This endpoint is currently in beta and is subject to change.
 
         Registers a new identity provider for the AI Gateway.
+
+        Deprecated: use `POST /ai-gateways/{gatewayId}/auth-strategies` instead.
       requestBody:
         required: true
         content:
@@ -13379,6 +13990,7 @@ paths:
           $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      deprecated: true
       tags:
         - AI Gateway Identity Providers
   '/v1/ai-gateways/{gatewayId}/identity/{identityProviderIdOrName}':
@@ -13397,6 +14009,8 @@ paths:
         This endpoint is currently in beta and is subject to change.
 
         Returns the details of a specific AI Gateway identity provider.
+
+        Deprecated: use `GET /ai-gateways/{gatewayId}/auth-strategies/{authStrategyIdOrName}` instead.
       responses:
         '200':
           $ref: '#/components/responses/GetAIGatewayIdentityProviderResponse'
@@ -13408,6 +14022,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      deprecated: true
       tags:
         - AI Gateway Identity Providers
     put:
@@ -13422,6 +14037,8 @@ paths:
         This endpoint is currently in beta and is subject to change.
 
         Updates the configuration of an existing AI Gateway Identity provider.
+
+        Deprecated: use `PUT /ai-gateways/{gatewayId}/auth-strategies/{authStrategyIdOrName}` instead.
       requestBody:
         required: true
         content:
@@ -13441,6 +14058,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      deprecated: true
       tags:
         - AI Gateway Identity Providers
     delete:
@@ -13455,6 +14073,8 @@ paths:
         This endpoint is currently in beta and is subject to change.
 
         Removes a specific AI Gateway Identity provider.
+
+        Deprecated: use `DELETE /ai-gateways/{gatewayId}/auth-strategies/{authStrategyIdOrName}` instead.
       responses:
         '204':
           description: Identity provider deleted successfully.
@@ -13470,8 +14090,136 @@ paths:
           $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      deprecated: true
       tags:
         - AI Gateway Identity Providers
+  '/v1/ai-gateways/{gatewayId}/auth-strategies':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+    post:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayAuthStrategy#create
+        terraform-datasource: null
+      operationId: create-ai-gateway-auth-strategy
+      summary: Create an AI Gateway Auth Strategy
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Registers a new auth strategy for the AI Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAIGatewayAuthStrategyRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAIGatewayAuthStrategyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Auth Strategies
+  '/v1/ai-gateways/{gatewayId}/auth-strategies/{authStrategyIdOrName}':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+      - $ref: '#/components/parameters/AIGatewayAuthStrategyIdMatchingParam'
+    get:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayAuthStrategy#read
+        terraform-datasource: null
+      operationId: get-ai-gateway-auth-strategy
+      summary: Get an AI Gateway Auth Strategy
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns the details of a specific AI Gateway auth strategy.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAIGatewayAuthStrategyResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Auth Strategies
+    put:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayAuthStrategy#update
+        terraform-datasource: null
+      operationId: update-ai-gateway-auth-strategy
+      summary: Update an AI Gateway Auth Strategy
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the configuration of an existing AI Gateway auth strategy.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAIGatewayAuthStrategyRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAIGatewayAuthStrategyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Auth Strategies
+    delete:
+      x-unstable: true
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayAuthStrategy#delete
+        terraform-datasource: null
+      operationId: delete-ai-gateway-auth-strategy
+      summary: Delete an AI Gateway Auth Strategy
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Removes a specific AI Gateway auth strategy.
+      responses:
+        '204':
+          description: Auth strategy deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Auth Strategies
   '/v1/ai-gateways/{gatewayId}/config-stores':
     parameters:
       - $ref: '#/components/parameters/AIGatewayId'
@@ -13760,6 +14508,36 @@ components:
       x-speakeasy-match: id
       schema:
         $ref: '#/components/schemas/UUID'
+    AIGatewayAuthStrategyIdMatchingParam:
+      name: authStrategyIdOrName
+      in: path
+      required: true
+      description: The unique ID of the AI Gateway Auth Strategy.
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-name-override: authStrategyId
+      x-speakeasy-match: id
+      schema:
+        $ref: '#/components/schemas/UUID'
+    AIGatewayCACertificateIdMatchingParam:
+      name: caCertificateIdOrName
+      in: path
+      required: true
+      description: The unique ID of the AI Gateway CA Certificate.
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-name-override: caCertificateId
+      x-speakeasy-match: id
+      schema:
+        $ref: '#/components/schemas/UUID'
+    AIGatewayCertificateIdMatchingParam:
+      name: certificateIdOrName
+      in: path
+      required: true
+      description: The unique ID of the AI Gateway Certificate.
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-name-override: certificateId
+      x-speakeasy-match: id
+      schema:
+        $ref: '#/components/schemas/UUID'
     AIGatewayConfigStoreIdMatchingParam:
       name: configStoreIdOrName
       in: path
@@ -13909,6 +14687,16 @@ components:
       x-speakeasy-match: id
       schema:
         $ref: '#/components/schemas/UUID'
+    AIGatewaySNIIdMatchingParam:
+      name: sniIdOrName
+      in: path
+      required: true
+      description: The unique ID of the AI Gateway SNI.
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-name-override: sniId
+      x-speakeasy-match: id
+      schema:
+        $ref: '#/components/schemas/UUID'
     AIGatewayVaultIdMatchingParam:
       name: vaultIdOrName
       in: path
@@ -13965,6 +14753,16 @@ components:
       required: true
       description: The auth server ID
       x-speakeasy-name-override: auth_server_id
+    authServerTrustedIdpId:
+      schema:
+        type: string
+        format: uuid
+        example: 7b5c1c2e-9f3a-4b6d-8e21-0a1b2c3d4e5f
+      name: authServerTrustedIdpId
+      in: path
+      required: true
+      description: The trusted IdP ID
+      x-speakeasy-match: id
     claimId:
       schema:
         type: string
@@ -14078,6 +14876,15 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your Gateway.
+    IdentityProviderId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: id
+      in: path
+      required: true
+      description: ID of the identity provider.
     ImplementationId:
       schema:
         type: string
@@ -14135,6 +14942,16 @@ components:
       in: path
       required: true
       description: The Portal identifier
+    PortalIdentityProviderId:
+      name: id
+      in: path
+      required: true
+      description: ID of the identity provider.
+      schema:
+        type: string
+        format: uuid
+      example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      x-speakeasy-name-override: identityProviderId
     RegistrationIdToMatchResourceID:
       name: registrationId
       in: path
@@ -14220,6 +15037,60 @@ components:
       required: true
       description: The ID of the Virtual Cluster.
   schemas:
+    CreatePortalIdpTeamGroupMappingRequest:
+      type: object
+      properties:
+        team_id:
+          description: The Konnect team ID.
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+        group:
+          description: The IdP group name.
+          type: string
+          example: API Engineers
+      required:
+        - team_id
+        - group
+    PortalIdpTeamGroupMapping:
+      type: object
+      properties:
+        id:
+          description: The mapping ID.
+          type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-4a8b-9c0d-1e2f3a4b5c6d
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        team_id:
+          description: The Konnect team ID.
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+        group:
+          description: The IdP group name.
+          type: string
+          example: API Engineers
+        created_at:
+          description: Creation timestamp.
+          type: string
+          format: date-time
+          example: '2024-01-15T10:30:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: Last update timestamp.
+          type: string
+          format: date-time
+          example: '2024-01-15T10:30:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - id
+        - team_id
+        - group
+        - created_at
+        - updated_at
     PortalImageDataUri:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       type: string
@@ -16535,6 +17406,184 @@ components:
       type: boolean
       example: false
       title: KonnectManaged
+    IdentityProviderType:
+      description: Specifies the type of identity provider.
+      type: string
+      example: oidc
+      enum:
+        - oidc
+        - saml
+      x-speakeasy-unknown-values: allow
+    IdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+      type: boolean
+      example: true
+      default: false
+      title: Identity Provider Enabled Property
+    OIDCIdentityProviderIssuer:
+      description: The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
+      type: string
+      format: uri
+      example: 'https://konghq.okta.com/oauth2/default'
+      title: OIDC Identity Provider Issuer Property
+    OIDCIdentityProviderClientId:
+      description: The client ID assigned to your application by the identity provider.
+      type: string
+      example: YOUR_CLIENT_ID
+      title: OIDC Identity Provider Login Client Id Property
+    OIDCIdentityProviderClientSecret:
+      description: The Client Secret assigned to your application by the identity provider.
+      type: string
+      example: YOUR_CLIENT_SECRET
+      title: OIDC Identity Provider Login Client Secret Property
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
+    OIDCIdentityProviderScopes:
+      description: The scopes requested by your application when authenticating with the identity provider.
+      type: array
+      items:
+        type: string
+      default:
+        - email
+        - openid
+        - profile
+      title: OIDC Identity Provider Scopes Property
+    OIDCIdentityProviderClaimMappings:
+      description: |
+        Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for 
+        authentication.
+      type: object
+      properties:
+        name:
+          description: The claim mapping for the user's name.
+          type: string
+          example: name
+          default: name
+        email:
+          description: The claim mapping for the user's email address.
+          type: string
+          example: email
+          default: email
+        groups:
+          description: The claim mapping for the user's group membership information.
+          type: string
+          example: groups
+          default: groups
+      title: OIDC Claim Mappings
+    OIDCIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the OIDC authentication integration.
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/OIDCIdentityProviderIssuer'
+        client_id:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientId'
+        client_secret:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientSecret'
+        scopes:
+          $ref: '#/components/schemas/OIDCIdentityProviderScopes'
+        claim_mappings:
+          $ref: '#/components/schemas/OIDCIdentityProviderClaimMappings'
+      additionalProperties: false
+      required:
+        - issuer_url
+        - client_id
+      title: OIDC Identity Provider Config
+    SAMLIdentityProviderMetadataURL:
+      description: The identity provider's metadata URL where the identity provider's metadata can be obtained.
+      type: string
+      format: uri
+      example: 'https://mocksaml.com/api/saml/metadata'
+      title: SAML Identity Provider Metadata URL
+    SAMLIdentityProviderMetadata:
+      description: |
+        The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
+      type: string
+      example: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+          <!-- SAML metadata content here -->
+        </EntityDescriptor>
+      title: SAML Identity Provider Metadata
+    PortalSAMLIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the SAML authentication integration.
+      type: object
+      properties:
+        idp_metadata_url:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadataURL'
+        idp_metadata_xml:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadata'
+        sp_metadata_url:
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/metadata
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        sp_entity_id:
+          description: The entity ID of the service provider (SP).
+          type: string
+          example: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        callback_url:
+          description: The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/acs
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      title: Portal SAML Identity Provider Config
+      x-speakeasy-name-override: SAMLIdentityProviderConfig
+    PortalIdentityProvider:
+      description: The identity provider that contains configuration data for authentication integration.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      title: Portal Identity Provider
+    PortalCreateIdentityProvider:
+      description: The identity provider that contains configuration data for creating an authentication integration.
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Identity Provider
+    PortalUpdateIdentityProvider:
+      description: The identity provider that contains configuration data for updating an authentication integration.
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Identity Provider
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -17028,8 +18077,8 @@ components:
         The visibility of the API in the portal.
         Public API publications do not require authentication to view and retrieve information about them.
         Private API publications require authentication to retrieve information about them.
+        If omitted, this defaults to the target portal's configured default API visibility.
       type: string
-      default: private
       enum:
         - public
         - private
@@ -17147,20 +18196,20 @@ components:
       readOnly: true
       x-speakeasy-param-computed: false
       x-speakeasy-param-suppress-computed-diff: true
-    ApiImplementationEnvironment:
+    ApiImplementationEnvironmentId:
       description: |
-        The environment this implementation is scoped to, by name. On write, selects the
-        target environment: required when the API is configured across multiple
-        environments, and optional otherwise (accepted only if it matches the API's sole
-        environment). On read, the resolved environment name. Present only for APIs
-        configured across multiple environments.
-      type: string
-      example: production
-      default: null
-      maxLength: 256
-      minLength: 1
-      nullable: true
-      x-speakeasy-param-computed: false
+        UUID of the organization environment this control-plane implementation is scoped
+        to. Environment names are not accepted. Not applicable to gateway-service
+        implementations.
+        On create: must be an environment associated with the API. Required when the API
+        has multiple associated environments (`400` if omitted). Optional for a
+        single-environment API and accepted only if it matches that environment. Returns
+        `404` if the UUID is unknown or not associated with the API.
+        On read: optional; present when the implementation is associated with an
+        environment.
+      example: 2747d1e5-8246-4f65-a939-b392f1ee17f8
+      allOf:
+        - $ref: '#/components/schemas/UUID_RW'
     ApiImplementation:
       description: An entity that implements an API
       type: object
@@ -17178,14 +18227,14 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-        environment:
-          $ref: '#/components/schemas/ApiImplementationEnvironment'
+        environment_id:
+          $ref: '#/components/schemas/ApiImplementationEnvironmentId'
         service:
           $ref: '#/components/schemas/ApiImplementationService'
       additionalProperties: false
       title: ApiImplementationGatewayServiceEntity
       x-property-annotations:
-        environment:
+        environment_id:
           - x-internal
           - x-unstable
       x-speakeasy-name-override: Service Reference
@@ -17199,14 +18248,14 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-        environment:
-          $ref: '#/components/schemas/ApiImplementationEnvironment'
+        environment_id:
+          $ref: '#/components/schemas/ApiImplementationEnvironmentId'
         control_plane:
           $ref: '#/components/schemas/ApiImplementationControlPlane'
       additionalProperties: false
       title: ApiImplementationControlPlaneEntity
       x-property-annotations:
-        environment:
+        environment_id:
           - x-internal
           - x-unstable
       x-speakeasy-name-override: Control Plane Reference
@@ -17375,6 +18424,11 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: UnsupportedMediaType
+    UUID_RW:
+      description: Contains a unique identifier used for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
     PrometheusMetricsBackendConfig:
       description: PrometheusMetricsBackendConfig defines configuration of Prometheus backend
       type: object
@@ -31319,6 +32373,7 @@ components:
         - implicit
         - client_credentials
         - refresh_token
+        - 'urn:ietf:params:oauth:grant-type:jwt-bearer'
       x-enum-dev:
         - authorization_code
         - refresh_token
@@ -31419,6 +32474,7 @@ components:
       type: string
       default: client_secret_post
       enum:
+        - private_key_jwt
         - client_secret_post
         - none
       x-speakeasy-unknown-values: allow
@@ -31445,6 +32501,48 @@ components:
       type: integer
       maximum: 2592000
       minimum: 60
+    OpenDcrEnabled:
+      description: Whether open (unauthenticated) Dynamic Client Registration is enabled for the auth server
+      type: boolean
+    DcrRedirectUriAllowlist:
+      description: Redirect URIs allowed for clients registered via open Dynamic Client Registration
+      type: array
+      items:
+        $ref: '#/components/schemas/DcrRedirectUri'
+      maxLength: 16
+      uniqueItems: true
+    DcrRedirectUri:
+      description: A redirect URI allowed for open Dynamic Client Registration
+      type: string
+      format: uri
+      example: 'https://example.com/callback'
+    DcrSettings:
+      description: Dynamic Client Registration settings for the auth server
+      type: object
+      properties:
+        redirect_uri_allowlist:
+          $ref: '#/components/schemas/DcrRedirectUriAllowlist'
+        default_access_token_duration:
+          $ref: '#/components/schemas/DcrDefaultAccessTokenDuration'
+      required:
+        - redirect_uri_allowlist
+        - default_access_token_duration
+    UpdateDcrSettings:
+      description: Dynamic Client Registration settings for the auth server
+      type: object
+      properties:
+        redirect_uri_allowlist:
+          $ref: '#/components/schemas/DcrRedirectUriAllowlist'
+        default_access_token_duration:
+          $ref: '#/components/schemas/UpdateDcrDefaultAccessTokenDuration'
+    CreateDcrSettings:
+      description: Dynamic Client Registration settings for the auth server. Both fields are optional; an omitted field falls back to its default.
+      type: object
+      properties:
+        redirect_uri_allowlist:
+          $ref: '#/components/schemas/DcrRedirectUriAllowlist'
+        default_access_token_duration:
+          $ref: '#/components/schemas/DcrDefaultAccessTokenDuration'
     AuthServer:
       type: object
       properties:
@@ -31480,8 +32578,10 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         trusted_origins:
           $ref: '#/components/schemas/TrustedOrigins'
-        dcr_default_access_token_duration:
-          $ref: '#/components/schemas/DcrDefaultAccessTokenDuration'
+        dcr:
+          $ref: '#/components/schemas/DcrSettings'
+        open_dcr_enabled:
+          $ref: '#/components/schemas/OpenDcrEnabled'
       required:
         - id
         - name
@@ -31494,7 +32594,10 @@ components:
         - created_at
         - updated_at
       x-property-annotations:
-        dcr_default_access_token_duration:
+        dcr:
+          - x-unstable
+          - x-internal
+        open_dcr_enabled:
           - x-unstable
           - x-internal
     ClaimName:
@@ -31702,6 +32805,75 @@ components:
       writeOnly: true
       x-speakeasy-param-sensitive: true
       x-speakeasy-terraform-plan-only: true
+    AuthServerTrustedIdpIssuerUrl:
+      description: The issuer URL of the trusted IdP. Unique per auth server.
+      type: string
+      format: uri
+      example: 'https://acme.okta.com/oauth2/default'
+    AuthServerTrustedIdpJwksUri:
+      description: JWKS URI of the trusted IdP. Overrides OIDC discovery when set.
+      type: string
+      format: uri
+    AuthServerTrustedIdpDirectoryId:
+      description: The Kong Identity directory used for principal lookup and provisioning.
+      type: string
+      format: uuid
+    UpdateAuthServerTrustedIdpPayload:
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/AuthServerTrustedIdpIssuerUrl'
+        jwks_uri:
+          $ref: '#/components/schemas/AuthServerTrustedIdpJwksUri'
+        directory_id:
+          $ref: '#/components/schemas/AuthServerTrustedIdpDirectoryId'
+        id_jag_enabled:
+          description: Whether ID-JAG (jwt-bearer) token exchange is enabled.
+          type: boolean
+          default: false
+        jit_provisioning_enabled:
+          description: Whether principals are provisioned just-in-time on first exchange. Defaults to true; set false to opt out.
+          type: boolean
+          default: true
+      required:
+        - issuer_url
+        - directory_id
+    AuthServerTrustedIdp:
+      type: object
+      properties:
+        id:
+          description: The ID of the trusted IdP.
+          type: string
+          format: uuid
+        auth_server_id:
+          description: The auth server this trusted IdP belongs to.
+          type: string
+          format: uuid
+        issuer_url:
+          $ref: '#/components/schemas/AuthServerTrustedIdpIssuerUrl'
+        jwks_uri:
+          $ref: '#/components/schemas/AuthServerTrustedIdpJwksUri'
+        directory_id:
+          $ref: '#/components/schemas/AuthServerTrustedIdpDirectoryId'
+        id_jag_enabled:
+          description: Whether ID-JAG (jwt-bearer) token exchange is enabled.
+          type: boolean
+        jit_provisioning_enabled:
+          description: Whether principals are provisioned just-in-time on first exchange.
+          type: boolean
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - auth_server_id
+        - issuer_url
+        - directory_id
+        - id_jag_enabled
+        - jit_provisioning_enabled
+        - created_at
+        - updated_at
     AdvancedQuery:
       description: A query targeting the API usage analytics datasource.
       type: object
@@ -39840,6 +41012,16 @@ components:
         This feature is currently in beta and is subject to change.
       type: object
       properties:
+        deployment_type:
+          description: How this AI Gateway's control plane is deployed. Set at creation time and cannot be changed afterward.
+          type: string
+          example: hybrid
+          default: hybrid
+          enum:
+            - hybrid
+            - managed
+            - serverless
+          x-speakeasy-unknown-values: allow
         display_name:
           description: The display name for this AI Gateway.
           type: string
@@ -39872,6 +41054,9 @@ components:
       required:
         - display_name
         - name
+      x-property-annotations:
+        deployment_type:
+          - x-unstable
       x-unstable: true
     UpdateAIGatewayRequest:
       description: |-
@@ -39948,6 +41133,18 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         id:
           $ref: '#/components/schemas/UUID'
+        deployment_type:
+          description: How this AI Gateway's control plane is deployed.
+          type: string
+          example: hybrid
+          default: hybrid
+          enum:
+            - hybrid
+            - managed
+            - serverless
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
         endpoints:
           description: Object containing AI Gateway access endpoints.
           type: object
@@ -39988,6 +41185,491 @@ components:
         - name
         - id
         - endpoints
+        - created_at
+        - updated_at
+        - deployment_type
+      x-property-annotations:
+        deployment_type:
+          - x-unstable
+      x-unstable: true
+    CreateAIGatewayCACertificateRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A CA certificate represents a trusted CA. These objects are used to verify the validity of a client or server certificate.
+      type: object
+      properties:
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-root-ca
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        cert:
+          description: PEM-encoded public certificate of the CA.
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          x-referenceable: true
+        cert_digest:
+          description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
+          type: string
+          default: null
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - cert
+      x-unstable: true
+    UpdateAIGatewayCACertificateRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A CA certificate represents a trusted CA. These objects are used to verify the validity of a client or server certificate.
+      type: object
+      properties:
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-root-ca
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        cert:
+          description: PEM-encoded public certificate of the CA.
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          x-referenceable: true
+        cert_digest:
+          description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
+          type: string
+          default: null
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - cert
+      x-unstable: true
+    AIGatewayCACertificate:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A CA certificate represents a trusted CA. These objects are used to verify the validity of a client or server certificate.
+      type: object
+      properties:
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-root-ca
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        cert:
+          description: PEM-encoded public certificate of the CA.
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          x-referenceable: true
+        cert_digest:
+          description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
+          type: string
+          default: null
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - name
+        - cert
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    CreateAIGatewayCertificateRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A certificate holds a PEM-encoded certificate and its matching private key, used to terminate or originate TLS connections.
+      type: object
+      properties:
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-tls-cert
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        cert:
+          description: PEM-encoded public certificate chain.
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          x-referenceable: true
+        key:
+          description: PEM-encoded private key matching `cert`.
+          type: string
+          example: |
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+          writeOnly: true
+          x-referenceable: true
+        cert_alt:
+          description: 'PEM-encoded public certificate chain of the alternative certificate. It must use a different key algorithm than `cert`, and requires `key_alt` to be set.'
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          default: null
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        key_alt:
+          description: PEM-encoded private key matching `cert_alt`. Requires `cert_alt` to be set.
+          type: string
+          example: |
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+          default: null
+          nullable: true
+          writeOnly: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - cert
+        - key
+      x-unstable: true
+    UpdateAIGatewayCertificateRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A certificate holds a PEM-encoded certificate and its matching private key, used to terminate or originate TLS connections.
+      type: object
+      properties:
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-tls-cert
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        cert:
+          description: PEM-encoded public certificate chain.
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          x-referenceable: true
+        key:
+          description: PEM-encoded private key matching `cert`.
+          type: string
+          example: |
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+          writeOnly: true
+          x-referenceable: true
+        cert_alt:
+          description: 'PEM-encoded public certificate chain of the alternative certificate. It must use a different key algorithm than `cert`, and requires `key_alt` to be set.'
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          default: null
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        key_alt:
+          description: PEM-encoded private key matching `cert_alt`. Requires `cert_alt` to be set.
+          type: string
+          example: |
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+          default: null
+          nullable: true
+          writeOnly: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - cert
+        - key
+      x-unstable: true
+    AIGatewayCertificate:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A certificate holds a PEM-encoded certificate and its matching private key, used to terminate or originate TLS connections.
+      type: object
+      properties:
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.
+          example: my-tls-cert
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        cert:
+          description: PEM-encoded public certificate chain.
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          x-referenceable: true
+        key:
+          description: PEM-encoded private key matching `cert`.
+          type: string
+          example: |
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+          writeOnly: true
+          x-referenceable: true
+        cert_alt:
+          description: 'PEM-encoded public certificate chain of the alternative certificate. It must use a different key algorithm than `cert`, and requires `key_alt` to be set.'
+          type: string
+          example: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+          default: null
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        key_alt:
+          description: PEM-encoded private key matching `cert_alt`. Requires `cert_alt` to be set.
+          type: string
+          example: |
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+          default: null
+          nullable: true
+          writeOnly: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - name
+        - cert
+        - key
+        - id
+        - created_at
+        - updated_at
+      x-unstable: true
+    AIGatewaySNICertificateReference:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.
+      type: string
+      example: my-certificate
+      x-unstable: true
+    AIGatewayHostname:
+      description: A hostname used for TLS Server Name Indication (SNI) matching. Supports an optional wildcard segment at either end of the hostname (for example `*.example.com` or `example.*`).
+      type: string
+      example: example.org
+    CreateAIGatewaySNIRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        An SNI represents a many-to-one mapping of hostnames to a certificate. A certificate can have many hostnames associated with it; when the AI Gateway receives an SSL request, it uses the SNI field in the Client Hello to look up the certificate associated with the SNI.
+      type: object
+      properties:
+        name:
+          description: The name for this SNI. This value is immutable after creation.
+          type: string
+          example: my-sni
+          maxLength: 256
+          minLength: 1
+          pattern: '^[0-9a-z-]+$'
+        display_name:
+          description: The display name for this SNI.
+          type: string
+          example: My SNI
+          maxLength: 256
+          minLength: 1
+        hostname:
+          $ref: '#/components/schemas/AIGatewayHostname'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        certificate:
+          $ref: '#/components/schemas/AIGatewaySNICertificateReference'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+        - hostname
+        - certificate
+      x-unstable: true
+    UpdateAIGatewaySNIRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        An SNI represents a many-to-one mapping of hostnames to a certificate. A certificate can have many hostnames associated with it; when the AI Gateway receives an SSL request, it uses the SNI field in the Client Hello to look up the certificate associated with the SNI.
+      type: object
+      properties:
+        name:
+          description: The name for this SNI. This value is immutable after creation.
+          type: string
+          example: my-sni
+          maxLength: 256
+          minLength: 1
+          pattern: '^[0-9a-z-]+$'
+        display_name:
+          description: The display name for this SNI.
+          type: string
+          example: My SNI
+          maxLength: 256
+          minLength: 1
+        hostname:
+          $ref: '#/components/schemas/AIGatewayHostname'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        certificate:
+          $ref: '#/components/schemas/AIGatewaySNICertificateReference'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+        - hostname
+        - certificate
+      x-unstable: true
+    AIGatewaySNI:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        An SNI represents a many-to-one mapping of hostnames to a certificate. A certificate can have many hostnames associated with it; when the AI Gateway receives an SSL request, it uses the SNI field in the Client Hello to look up the certificate associated with the SNI.
+      type: object
+      properties:
+        name:
+          description: The name for this SNI. This value is immutable after creation.
+          type: string
+          example: my-sni
+          maxLength: 256
+          minLength: 1
+          pattern: '^[0-9a-z-]+$'
+        display_name:
+          description: The display name for this SNI.
+          type: string
+          example: My SNI
+          maxLength: 256
+          minLength: 1
+        hostname:
+          $ref: '#/components/schemas/AIGatewayHostname'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        certificate:
+          $ref: '#/components/schemas/AIGatewaySNICertificateReference'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+        - hostname
+        - certificate
+        - id
         - created_at
         - updated_at
       x-unstable: true
@@ -40328,6 +42010,8 @@ components:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
           type: integer
           default: 8388608
+          maximum: 2147483646
+          minimum: 0
         model:
           description: |-
             **Pre-release Feature**
@@ -40374,6 +42058,8 @@ components:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
           type: integer
           default: 8388608
+          maximum: 2147483646
+          minimum: 0
         balancer:
           $ref: '#/components/schemas/AIGatewayModelBalancerConfig'
         proxy:
@@ -40409,6 +42095,8 @@ components:
           description: 'The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol.'
           type: integer
           default: 426
+          maximum: 599
+          minimum: 100
         methods:
           description: A list of HTTP methods that match this route.
           type: array
@@ -40437,6 +42125,8 @@ components:
           description: 'A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).'
           type: integer
           default: 0
+          maximum: 2147483647
+          minimum: -2147483648
         request_buffering:
           description: 'Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.'
           type: boolean
@@ -41100,7 +42790,6 @@ components:
           mistral: '#/components/schemas/AIGatewayMistralEmbeddingsModelConfig'
           ollama: '#/components/schemas/AIGatewayOllamaEmbeddingsModelConfig'
           openai: '#/components/schemas/AIGatewayOpenaiEmbeddingsModelConfig'
-          vertex: '#/components/schemas/AIGatewayVertexEmbeddingsModelConfig'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayAzureEmbeddingsModelConfig'
         - $ref: '#/components/schemas/AIGatewayBedrockEmbeddingsModelConfig'
@@ -41109,7 +42798,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayMistralEmbeddingsModelConfig'
         - $ref: '#/components/schemas/AIGatewayOllamaEmbeddingsModelConfig'
         - $ref: '#/components/schemas/AIGatewayOpenaiEmbeddingsModelConfig'
-        - $ref: '#/components/schemas/AIGatewayVertexEmbeddingsModelConfig'
       x-unstable: true
     AIGatewayAzureEmbeddingsModelConfig:
       description: |-
@@ -41308,29 +42996,6 @@ components:
       required:
         - type
       x-unstable: true
-    AIGatewayVertexEmbeddingsModelConfig:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-
-        Google Vertex-specific configuration for a model.
-      type: object
-      properties:
-        upstream_url:
-          description: The URL of the embeddings model.
-          type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        type:
-          type: string
-          const: vertex
-        gcp_environment:
-          $ref: '#/components/schemas/GCPModelConfig'
-      additionalProperties: false
-      required:
-        - type
-      x-unstable: true
     AIGatewayModelVectorDBConfig:
       description: |-
         **Pre-release Feature**
@@ -41396,6 +43061,8 @@ components:
               description: Maximum retry attempts for redirection.
               type: integer
               default: 5
+              maximum: 2147483646
+              minimum: 0
             nodes:
               description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
               type: array
@@ -41431,6 +43098,8 @@ components:
           description: Database to use for the Redis connection when using the `redis` strategy
           type: integer
           default: 0
+          maximum: 2147483646
+          minimum: 0
         host:
           description: |
             A string representing a host name, such as example.com.
@@ -41640,6 +43309,8 @@ components:
           description: the port of the pgvector database
           type: integer
           default: 5432
+          maximum: 65535
+          minimum: 0
         ssl:
           type: object
           default: null
@@ -41712,7 +43383,6 @@ components:
             - gemini
             - huggingface
             - openai
-            - vertex
           x-speakeasy-unknown-values: allow
       additionalProperties: false
     AIGatewayTarget:
@@ -41775,7 +43445,6 @@ components:
           ollama: '#/components/schemas/AIGatewayTargetOllamaConfig'
           openai: '#/components/schemas/AIGatewayTargetOpenaiConfig'
           vercel: '#/components/schemas/AIGatewayTargetVercelConfig'
-          vertex: '#/components/schemas/AIGatewayTargetVertexConfig'
           vllm: '#/components/schemas/AIGatewayTargetVllmConfig'
           xai: '#/components/schemas/AIGatewayTargetXaiConfig'
           sagemaker: '#/components/schemas/AIGatewayTargetSagemakerConfig'
@@ -41796,7 +43465,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayTargetOllamaConfig'
         - $ref: '#/components/schemas/AIGatewayTargetOpenaiConfig'
         - $ref: '#/components/schemas/AIGatewayTargetVercelConfig'
-        - $ref: '#/components/schemas/AIGatewayTargetVertexConfig'
         - $ref: '#/components/schemas/AIGatewayTargetVllmConfig'
         - $ref: '#/components/schemas/AIGatewayTargetXaiConfig'
         - $ref: '#/components/schemas/AIGatewayTargetSagemakerConfig'
@@ -41880,10 +43548,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -41926,6 +43598,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -41957,10 +43631,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42003,6 +43681,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42052,10 +43732,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42098,6 +43782,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42155,10 +43841,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42201,6 +43891,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42228,10 +43920,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42274,6 +43970,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42326,10 +44024,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42372,6 +44074,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42403,10 +44107,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42449,6 +44157,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42480,10 +44190,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42526,6 +44240,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42553,10 +44269,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42599,6 +44319,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42628,10 +44350,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42674,6 +44400,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42709,10 +44437,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42755,6 +44487,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42788,10 +44522,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42834,6 +44572,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42871,10 +44611,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42917,6 +44661,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -42952,10 +44698,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -42998,6 +44748,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -43025,10 +44777,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -43071,6 +44827,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -43098,10 +44856,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -43144,6 +44906,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -43160,112 +44924,6 @@ components:
       required:
         - type
       x-unstable: true
-    AIGatewayTargetVertexConfig:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-
-        Google Vertex-specific configuration for a model.
-      type: object
-      properties:
-        embeddings_dimensions:
-          description: The number of dimensions for embedding outputs.
-          type: integer
-          x-speakeasy-param-computed: false
-        max_tokens:
-          description: The maximum number of tokens to generate in the response.
-          type: integer
-          x-speakeasy-param-computed: false
-        input_cost:
-          description: Cost per 1M input tokens for billing and cost tracking.
-          type: number
-          x-speakeasy-param-computed: false
-        output_cost:
-          description: Cost per 1M output tokens for billing and cost tracking.
-          type: number
-          x-speakeasy-param-computed: false
-        cache_read_cost:
-          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
-          type: number
-          x-speakeasy-param-computed: false
-        cache_write_cost:
-          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
-          type: number
-          x-speakeasy-param-computed: false
-        cache_write_cost_list:
-          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
-          type: array
-          items:
-            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
-          x-speakeasy-param-computed: true
-        context_window_factor:
-          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
-          type: array
-          items:
-            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
-          x-speakeasy-param-computed: true
-        service_tier_factor:
-          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
-          type: array
-          items:
-            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
-          x-speakeasy-param-computed: true
-        temperature:
-          description: Controls randomness in the model output. Higher values produce more varied responses.
-          type: number
-          x-speakeasy-param-computed: false
-        top_k:
-          description: Limits the number of highest-probability tokens considered during generation.
-          type: integer
-          x-speakeasy-param-computed: false
-        top_p:
-          description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
-          type: number
-          x-speakeasy-param-computed: false
-        upstream_url:
-          description: The upstream URL for the model endpoint.
-          type: string
-          format: uri
-          x-speakeasy-param-computed: false
-        type:
-          type: string
-          const: vertex
-        gcp_environment:
-          description: |-
-            **Pre-release Feature**
-            This feature is currently in beta and is subject to change.
-
-            Configuration for a model hosted on Google Cloud Project.
-          type: object
-          default: null
-          nullable: true
-          properties:
-            api_endpoint:
-              description: The custom API endpoint for the Gemini model.
-              type: string
-            location_id:
-              description: The Google Cloud location ID for the model endpoint.
-              type: string
-            project_id:
-              description: The Google Cloud project ID for the model endpoint.
-              type: string
-            endpoint_id:
-              description: |
-                The endpoint ID for the model.
-                This must be set when running a target model on Gemini on Vertex Model Garden.
-              type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-          required:
-            - api_endpoint
-            - location_id
-            - project_id
-          x-speakeasy-param-computed: false
-          x-unstable: true
-      required:
-        - type
-      x-unstable: true
     AIGatewayTargetVllmConfig:
       description: |-
         **Pre-release Feature**
@@ -43277,10 +44935,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -43323,6 +44985,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -43351,10 +45015,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -43397,6 +45065,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -43424,10 +45094,14 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         max_tokens:
           description: The maximum number of tokens to generate in the response.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
@@ -43470,6 +45144,8 @@ components:
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
+          maximum: 2147483646
+          minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
@@ -43602,9 +45278,21 @@ components:
           description: |
             List of identity providers for granting access to the agent.
             At most 1 identity provider of each identity provider type can be referenced.
+
+            Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayIdentityProviderReference'
+          deprecated: true
+          maxItems: 1
+          x-speakeasy-param-computed: true
+        auth_strategies:
+          description: |
+            List of auth strategies for granting access to the agent.
+            At most 1 auth strategy of each auth strategy type can be referenced.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayAuthStrategyReference'
           maxItems: 1
           x-speakeasy-param-computed: true
       additionalProperties: false
@@ -43623,9 +45311,20 @@ components:
           description: |
             List of identity providers for granting access to the model.
             At most 1 identity provider of each identity provider type can be referenced.
+
+            Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayIdentityProviderReference'
+          deprecated: true
+          x-speakeasy-param-computed: true
+        auth_strategies:
+          description: |
+            List of auth strategies for granting access to the model.
+            At most 1 auth strategy of each auth strategy type can be referenced.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayAuthStrategyReference'
           x-speakeasy-param-computed: true
       additionalProperties: false
       x-unstable: true
@@ -43815,6 +45514,8 @@ components:
                 A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             resurrect_ttl:
               description: |
                 Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -43823,12 +45524,16 @@ components:
                 The default is ~3 years to support uninterrupted service during outages.
               type: integer
               default: 100000000
+              maximum: 4294967295
+              minimum: 0
             ttl:
               description: |
                 Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
                 For non-zero values, use a minimum of 60 seconds.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             assume_role_arn:
               description: |
                 The ARN of the role to assume when retrieving secrets from AWS Secrets Manager.
@@ -43916,6 +45621,8 @@ components:
                 A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             resurrect_ttl:
               description: |
                 Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -43924,12 +45631,16 @@ components:
                 The default is ~3 years to support uninterrupted service during outages.
               type: integer
               default: 100000000
+              maximum: 4294967295
+              minimum: 0
             ttl:
               description: |
                 Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
                 For non-zero values, use a minimum of 60 seconds.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             project_id:
               description: |
                 The project ID from your Google API Console.
@@ -43994,6 +45705,8 @@ components:
                 A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             resurrect_ttl:
               description: |
                 Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44002,12 +45715,16 @@ components:
                 The default is ~3 years to support uninterrupted service during outages.
               type: integer
               default: 100000000
+              maximum: 4294967295
+              minimum: 0
             ttl:
               description: |
                 Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
                 For non-zero values, use a minimum of 60 seconds.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             credentials_prefix:
               description: |
                 The prefix for the credentials stored in the Azure Key Vault.
@@ -44101,6 +45818,8 @@ components:
                 A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             resurrect_ttl:
               description: |
                 Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44109,12 +45828,16 @@ components:
                 The default is ~3 years to support uninterrupted service during outages.
               type: integer
               default: 100000000
+              maximum: 4294967295
+              minimum: 0
             ttl:
               description: |
                 Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
                 For non-zero values, use a minimum of 60 seconds.
               type: integer
               default: 0
+              maximum: 4294967295
+              minimum: 0
             account:
               description: |
                 The CyberArk Secrets Manager organization account name.
@@ -44233,6 +45956,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44241,12 +45966,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44318,6 +46047,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44326,12 +46057,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44421,6 +46156,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44429,12 +46166,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44528,6 +46269,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44536,12 +46279,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44640,6 +46387,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44648,12 +46397,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44735,6 +46488,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44743,12 +46498,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44827,6 +46586,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44835,12 +46596,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44913,6 +46678,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -44921,12 +46688,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -44999,6 +46770,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -45007,12 +46780,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -45089,6 +46866,8 @@ components:
             A value of 0 disables negative caching. Kong will retry fetching the secret after neg_ttl expires.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         resurrect_ttl:
           description: |
             Time (in seconds) that secrets remain in use after expiration (config.ttl ends).
@@ -45097,12 +46876,16 @@ components:
             The default is ~3 years to support uninterrupted service during outages.
           type: integer
           default: 100000000
+          maximum: 4294967295
+          minimum: 0
         ttl:
           description: |
             Time-to-live (in seconds) for a cached secret. A value of 0 disables rotation.
             For non-zero values, use a minimum of 60 seconds.
           type: integer
           default: 0
+          maximum: 4294967295
+          minimum: 0
         host:
           description: The hostname of your HashiCorp vault.
           type: string
@@ -45546,6 +47329,8 @@ components:
               description: Maximum size of request body to parse. Set to 0 for unlimited.
               type: integer
               default: 8388608
+              maximum: 2147483646
+              minimum: 0
             logging:
               description: |-
                 **Pre-release Feature**
@@ -45563,6 +47348,8 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
+                  maximum: 2147483646
+                  minimum: 0
               x-speakeasy-param-computed: true
               x-unstable: true
           required:
@@ -45639,6 +47426,8 @@ components:
               description: Maximum size of request body to parse. Set to 0 for unlimited.
               type: integer
               default: 8388608
+              maximum: 2147483646
+              minimum: 0
             logging:
               description: |-
                 **Pre-release Feature**
@@ -45656,6 +47445,8 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
+                  maximum: 2147483646
+                  minimum: 0
               x-speakeasy-param-computed: true
               x-unstable: true
           required:
@@ -45732,6 +47523,8 @@ components:
               description: Maximum size of request body to parse. Set to 0 for unlimited.
               type: integer
               default: 8388608
+              maximum: 2147483646
+              minimum: 0
             logging:
               description: |-
                 **Pre-release Feature**
@@ -45749,6 +47542,8 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
+                  maximum: 2147483646
+                  minimum: 0
               x-speakeasy-param-computed: true
               x-unstable: true
           required:
@@ -46199,6 +47994,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPConversionTool'
+          minItems: 1
           x-speakeasy-param-computed: true
         display_name:
           description: The display name for the MCP Server.
@@ -46231,6 +48027,7 @@ components:
       required:
         - type
         - config
+        - tools
         - display_name
         - name
       x-unstable: true
@@ -46246,10 +48043,14 @@ components:
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamNoProxyConfig'
         tools:
-          description: List of tools exposed by this MCP Server.
+          description: |
+            List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
+            describe the backend HTTP operation on the upstream selected by `config.url` — they
+            do not need to match the public MCP Route configured in `config.route`.
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPConversionTool'
+          minItems: 1
           x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
@@ -46284,6 +48085,7 @@ components:
       required:
         - type
         - config
+        - tools
         - display_name
         - name
       x-unstable: true
@@ -46298,12 +48100,19 @@ components:
           const: listener
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerNoUpstreamConfig'
-        tools:
-          description: List of tools exposed by this MCP Server.
+        sources:
+          description: |
+            The explicit list of source MCP Servers whose tools this listener exposes.
+            Each entry is the immutable `name` of a `conversion-only` (toolset) or
+            `upstream-server` (third-party MCP server) MCP Server in the same AI Gateway.
+            All of the referenced source's tools are exposed.
           type: array
           items:
-            $ref: '#/components/schemas/AIGatewayMCPToolBase'
-          x-speakeasy-param-computed: true
+            $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          example:
+            - kongair-flights
+            - github-mcp
+          minItems: 1
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
         display_name:
@@ -46337,6 +48146,7 @@ components:
       required:
         - type
         - config
+        - sources
         - display_name
         - name
       x-unstable: true
@@ -46352,10 +48162,12 @@ components:
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamConfig'
         tools:
-          description: List of tools exposed by this MCP Server.
+          description: |
+            Per-tool access-control overrides for tools advertised by the remote MCP Server. Each
+            entry is matched to a remote tool by `name`; only its access-control rules are applied.
           type: array
           items:
-            $ref: '#/components/schemas/AIGatewayMCPToolBase'
+            $ref: '#/components/schemas/AIGatewayMCPPassthroughTool'
           x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
@@ -46405,13 +48217,12 @@ components:
         config:
           $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServerConfig'
         tools:
-          description: List of tools exposed by this MCP Server.
+          description: |
+            List of tools exposed by this MCP Server.
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayMCPUpstreamTool'
           x-speakeasy-param-computed: true
-        access:
-          $ref: '#/components/schemas/AIGatewayMCPServerBaseACLProperties'
         display_name:
           description: The display name for the MCP Server.
           type: string
@@ -46446,42 +48257,70 @@ components:
         - display_name
         - name
       x-unstable: true
+    AIGatewayMCPToolAccess:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Access-control rules for a tool.
+      type: object
+      properties:
+        acls:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            Access control rules for allowing or denying consumer groups access to this tool.
+            When configured, these will override the default access control rules defined on the MCP Server.
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayMCPACLs'
+          x-unstable: true
+      additionalProperties: false
+      x-unstable: true
+    AIGatewayMCPPassthroughTool:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A tool exposed by an MCP Server in `passthrough-listener` mode.
+      type: object
+      properties:
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPToolAccess'
+        name:
+          description: Tool identifier used to match remote MCP Server tools for ACL enforcement.
+          type: string
+      additionalProperties: false
+      required:
+        - name
+        - access
+      title: AIGatewayMCPPassthroughTool
+      x-unstable: true
     AIGatewayMCPConversionTool:
       description: A tool exposed by an MCP Server in `conversion-only` or `conversion-listener` mode.
       type: object
       properties:
         access:
-          type: object
-          additionalProperties: false
-          properties:
-            acls:
-              description: |-
-                **Pre-release Feature**
-                This feature is currently in beta and is subject to change.
-
-                Access control rules for allowing or denying consumer groups access to this tool.
-                When configured, these will override the default access control rules defined on the MCP Server.
-              allOf:
-                - $ref: '#/components/schemas/AIGatewayMCPACLs'
-              x-unstable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/AIGatewayMCPToolAccess'
         annotations:
           $ref: '#/components/schemas/AIGatewayMCPToolAnnotations'
         description:
           description: A description of what the tool does.
           type: string
           example: Search for available flights
+        name:
+          description: 'The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides.'
+          type: string
         headers:
           $ref: '#/components/schemas/AIGatewayMCPToolHeaders'
         host:
-          description: 'The host of the exported API, which must match the route''s hosts. It should be the route''s host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
+          description: 'The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
-        name:
-          description: 'Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present).'
-          type: string
         method:
-          description: 'For conversion-only and conversion-listener modes, the method of the exported API, which must match the route''s methods.'
+          description: The HTTP method used when forwarding the request to the upstream API.
           type: string
           enum:
             - DELETE
@@ -46491,8 +48330,16 @@ components:
             - PUT
           x-speakeasy-unknown-values: allow
         path:
-          description: 'The path of the exported API, which must match the route''s paths. Path not starting with ''/'' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.'
+          description: |
+            The path of the exported API. Always treated as relative to the path component of
+            `config.url` and simply concatenated onto it — a leading `/` has no special
+            "absolute path" meaning. If this tool's `host` or `scheme` overrides the source's
+            URL, `path` is instead relative to the root of that overridden host, since there is
+            no URL path from a different host to append to. By default, Kong will extract the
+            path from API configuration.
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         query:
           $ref: '#/components/schemas/AIGatewayMCPToolQuery'
@@ -46514,91 +48361,6 @@ components:
         - name
         - description
         - method
-    AIGatewayMCPServerBaseACLProperties:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-      default:
-        acl_attribute_type: consumer
-      discriminator:
-        propertyName: acl_attribute_type
-        mapping:
-          consumer: '#/components/schemas/AIGatewayMCPServerBaseACLPropertiesConsumer'
-          oauth_access_token: '#/components/schemas/AIGatewayMCPServerBaseACLPropertiesOauth'
-      oneOf:
-        - $ref: '#/components/schemas/AIGatewayMCPServerBaseACLPropertiesConsumer'
-        - $ref: '#/components/schemas/AIGatewayMCPServerBaseACLPropertiesOauth'
-      x-unstable: true
-    AIGatewayMCPServerBaseACLPropertiesConsumer:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-      type: object
-      properties:
-        acl_attribute_type:
-          description: The type of attributes that ACL is evaluated with.
-          type: string
-          default: consumer
-          const: consumer
-        acls:
-          description: |-
-            **Pre-release Feature**
-            This feature is currently in beta and is subject to change.
-
-            Access control rules for allowing or denying consumer groups.
-          allOf:
-            - $ref: '#/components/schemas/AIGatewayMCPACLs'
-          x-unstable: true
-        default_tool_acls:
-          description: |-
-            **Pre-release Feature**
-            This feature is currently in beta and is subject to change.
-
-            Default access control rules for allowing or denying consumer groups to tools.
-          allOf:
-            - $ref: '#/components/schemas/AIGatewayMCPACLs'
-          x-unstable: true
-      required:
-        - acl_attribute_type
-      title: AIGatewayMCPServerBaseACLPropertiesConsumer
-      x-unstable: true
-    AIGatewayMCPServerBaseACLPropertiesOauth:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-      type: object
-      properties:
-        acl_attribute_type:
-          description: The type of attributes that ACL is evaluated with.
-          type: string
-          const: oauth_access_token
-        access_token_claim_field:
-          description: |
-            The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
-            Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
-          type: string
-        acls:
-          description: |-
-            **Pre-release Feature**
-            This feature is currently in beta and is subject to change.
-
-            Access control rules for allowing or denying consumer groups.
-          allOf:
-            - $ref: '#/components/schemas/AIGatewayMCPACLs'
-          x-unstable: true
-        default_tool_acls:
-          description: |-
-            **Pre-release Feature**
-            This feature is currently in beta and is subject to change.
-
-            Default access control rules for allowing or denying consumer groups to tools.
-          allOf:
-            - $ref: '#/components/schemas/AIGatewayMCPACLs'
-          x-unstable: true
-      required:
-        - acl_attribute_type
-        - access_token_claim_field
-      title: AIGatewayMCPServerBaseACLPropertiesOauth
       x-unstable: true
     AIGatewayMCPServerListenerAccess:
       description: |-
@@ -46620,7 +48382,7 @@ components:
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
 
-        Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+        Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
         for granting access to an MCP server.
       type: object
       properties:
@@ -46634,7 +48396,10 @@ components:
             **Pre-release Feature**
             This feature is currently in beta and is subject to change.
 
-            Access control rules for allowing or denying consumer groups.
+            Server-level access control rules for allowing or denying consumer groups. This is the
+            top-level gate: a caller's consumer group must pass this check before any MCP protocol
+            operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
+            `default_tool_acls` or per-tool `access.acls` check is evaluated.
           allOf:
             - $ref: '#/components/schemas/AIGatewayMCPACLs'
           x-unstable: true
@@ -46643,7 +48408,10 @@ components:
             **Pre-release Feature**
             This feature is currently in beta and is subject to change.
 
-            Default access control rules for allowing or denying consumer groups to tools.
+            Default per-tool access control rules for allowing or denying consumer groups access to
+            tools. Evaluated only for callers that already passed the server-level `acls` check above.
+            Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
+            that tool's own `access.acls`.
           allOf:
             - $ref: '#/components/schemas/AIGatewayMCPACLs'
           x-unstable: true
@@ -46651,15 +48419,28 @@ components:
           description: |
             List of identity providers for granting access to the MCP server.
             At most 1 identity provider of each identity provider type can be referenced.
+
+            Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayIdentityProviderReference'
+          deprecated: true
+          maxItems: 1
+          x-speakeasy-param-computed: true
+        auth_strategies:
+          description: |
+            List of auth strategies for granting access to the MCP server.
+            At most 1 auth strategy of each auth strategy type can be referenced.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayAuthStrategyReference'
           maxItems: 1
           x-speakeasy-param-computed: true
         metadata:
           description: OAuth 2.0 Protected Resource Metadata advertised for this MCP server.
           allOf:
             - $ref: '#/components/schemas/AIGatewayMCPServerProtectedResourceMetadata'
+      additionalProperties: false
       required:
         - acl_attribute_type
       title: AIGatewayMCPServerBaseACLPropertiesConsumer
@@ -46669,7 +48450,7 @@ components:
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
 
-        Identity provider and OAuth 2.0 Protected Resource Metadata configuration
+        Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
         for granting access to an MCP server.
       type: object
       properties:
@@ -46687,7 +48468,11 @@ components:
             **Pre-release Feature**
             This feature is currently in beta and is subject to change.
 
-            Access control rules for allowing or denying consumer groups.
+            Server-level access control rules for allowing or denying callers, evaluated against the
+            value of the configured `access_token_claim_field`. This is the top-level gate: a caller
+            must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
+            `tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
+            `access.acls` check is evaluated.
           allOf:
             - $ref: '#/components/schemas/AIGatewayMCPACLs'
           x-unstable: true
@@ -46696,7 +48481,11 @@ components:
             **Pre-release Feature**
             This feature is currently in beta and is subject to change.
 
-            Default access control rules for allowing or denying consumer groups to tools.
+            Default per-tool access control rules for allowing or denying callers access to tools,
+            evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+            for callers that already passed the server-level `acls` check above. Applies to every tool
+            exposed by this MCP Server unless a specific tool overrides it via that tool's own
+            `access.acls`.
           allOf:
             - $ref: '#/components/schemas/AIGatewayMCPACLs'
           x-unstable: true
@@ -46704,15 +48493,28 @@ components:
           description: |
             List of identity providers for granting access to the MCP server.
             At most 1 identity provider of each identity provider type can be referenced.
+
+            Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayIdentityProviderReference'
+          deprecated: true
+          maxItems: 1
+          x-speakeasy-param-computed: true
+        auth_strategies:
+          description: |
+            List of auth strategies for granting access to the MCP server.
+            At most 1 auth strategy of each auth strategy type can be referenced.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayAuthStrategyReference'
           maxItems: 1
           x-speakeasy-param-computed: true
         metadata:
           description: OAuth 2.0 Protected Resource Metadata advertised for this MCP server.
           allOf:
             - $ref: '#/components/schemas/AIGatewayMCPServerProtectedResourceMetadata'
+      additionalProperties: false
       required:
         - acl_attribute_type
         - access_token_claim_field
@@ -46930,6 +48732,8 @@ components:
               description: Maximum retry attempts for redirection.
               type: integer
               default: 5
+              maximum: 2147483646
+              minimum: 0
             nodes:
               description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
               type: array
@@ -46965,6 +48769,8 @@ components:
           description: Database to use for the Redis connection when using the `redis` strategy
           type: integer
           default: 0
+          maximum: 2147483646
+          minimum: 0
         host:
           description: |
             A string representing a host name, such as example.com.
@@ -47232,6 +49038,8 @@ components:
           description: 'The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol.'
           type: integer
           default: 426
+          maximum: 599
+          minimum: 100
         methods:
           description: A list of HTTP methods that match this route.
           type: array
@@ -47260,6 +49068,8 @@ components:
           description: 'A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).'
           type: integer
           default: 0
+          maximum: 2147483647
+          minimum: -2147483648
         request_buffering:
           description: 'Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.'
           type: boolean
@@ -47303,7 +49113,7 @@ components:
       type: object
       properties:
         route:
-          $ref: '#/components/schemas/AIGatewayRouteConfig'
+          $ref: '#/components/schemas/AIGatewayMCPServerRouteWithMatcher'
         logging:
           description: |-
             **Pre-release Feature**
@@ -47325,6 +49135,8 @@ components:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
           type: integer
           default: 8388608
+          maximum: 2147483646
+          minimum: 0
         server:
           $ref: '#/components/schemas/AIGatewayMCPServerServerConfigBase'
       additionalProperties: false
@@ -47338,7 +49150,7 @@ components:
       type: object
       properties:
         route:
-          $ref: '#/components/schemas/AIGatewayRouteConfig'
+          $ref: '#/components/schemas/AIGatewayMCPServerRouteWithMatcher'
         logging:
           description: |-
             **Pre-release Feature**
@@ -47382,7 +49194,7 @@ components:
       type: object
       properties:
         route:
-          $ref: '#/components/schemas/AIGatewayRouteConfig'
+          $ref: '#/components/schemas/AIGatewayMCPServerRouteWithMatcher'
         logging:
           description: |-
             **Pre-release Feature**
@@ -47404,6 +49216,8 @@ components:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
           type: integer
           default: 8388608
+          maximum: 2147483646
+          minimum: 0
         server:
           $ref: '#/components/schemas/AIGatewayMCPServerServerConfigBase'
         url:
@@ -47428,7 +49242,7 @@ components:
       type: object
       properties:
         route:
-          $ref: '#/components/schemas/AIGatewayRouteConfig'
+          $ref: '#/components/schemas/AIGatewayMCPServerRouteWithMatcher'
         logging:
           description: |-
             **Pre-release Feature**
@@ -47450,6 +49264,8 @@ components:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
           type: integer
           default: 8388608
+          maximum: 2147483646
+          minimum: 0
         server:
           $ref: '#/components/schemas/AIGatewayMCPServerServerConfigBase'
         url:
@@ -47467,6 +49283,18 @@ components:
       required:
         - url
       x-unstable: true
+    AIGatewayMCPServerRouteWithMatcher:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Route configuration for an MCP Server that terminates its own listener. At least one
+        of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
+        incoming requests.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AIGatewayRouteConfig'
+      x-unstable: true
     AIGatewayMCPServerUpstreamServerConfig:
       description: |-
         **Pre-release Feature**
@@ -47476,7 +49304,7 @@ components:
       type: object
       properties:
         route:
-          $ref: '#/components/schemas/AIGatewayRouteConfig'
+          $ref: '#/components/schemas/AIGatewayMCPServerRouteWithMatcher'
         logging:
           description: |-
             **Pre-release Feature**
@@ -47498,6 +49326,8 @@ components:
           description: Maximum size of request body to parse. Set to 0 for unlimited.
           type: integer
           default: 8388608
+          maximum: 2147483646
+          minimum: 0
         server:
           $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServerServerConfig'
         url:
@@ -47574,6 +49404,8 @@ components:
               description: The time-to-live (TTL) for each session in seconds.
               type: integer
               default: 86400
+              maximum: 2147483646
+              minimum: 0
             strategy:
               description: 'The strategy for the session. If the value is ''client'', the session is encrypted into MCP session id assigned to the client. If the value is not ''client'', the session is stored in the configured database.'
               type: string
@@ -47582,16 +49414,12 @@ components:
                 - redis
               x-speakeasy-unknown-values: allow
           x-speakeasy-param-computed: false
-        label:
-          description: The label of the MCP server. This is used to filter the exported MCP tools.
-          type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         timeout:
           description: The timeout for calling the tools in milliseconds.
           type: integer
           default: 10000
+          maximum: 2147483646
+          minimum: 0
       additionalProperties: false
       x-unstable: true
     AIGatewayMCPServerUpstreamServerServerConfig:
@@ -47644,6 +49472,8 @@ components:
               description: The time-to-live (TTL) for each session in seconds.
               type: integer
               default: 86400
+              maximum: 2147483646
+              minimum: 0
             strategy:
               description: 'The strategy for the session. If the value is ''client'', the session is encrypted into MCP session id assigned to the client. If the value is not ''client'', the session is stored in the configured database.'
               type: string
@@ -47652,16 +49482,12 @@ components:
                 - redis
               x-speakeasy-unknown-values: allow
           x-speakeasy-param-computed: false
-        label:
-          description: The label of the MCP server. This is used to filter the exported MCP tools.
-          type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         timeout:
           description: The timeout for calling the tools in milliseconds.
           type: integer
           default: 10000
+          maximum: 2147483646
+          minimum: 0
         preserve_upstream_tool_names:
           description: |
             If enabled, the original upstream tool names are preserved as-is when Kong acts as an MCP server.
@@ -47840,152 +49666,373 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          conversion-only: '#/components/schemas/AIGatewayMCPServerConversionOnly'
-          conversion-listener: '#/components/schemas/AIGatewayMCPServerConversionListener'
-          listener: '#/components/schemas/AIGatewayMCPServerListener'
-          passthrough-listener: '#/components/schemas/AIGatewayMCPServerPassthroughListener'
-          upstream-server: '#/components/schemas/AIGatewayMCPServerUpstreamServer'
+          conversion-only: '#/components/schemas/AIGatewayMCPServerConversionOnlyResponse'
+          conversion-listener: '#/components/schemas/AIGatewayMCPServerConversionListenerResponse'
+          listener: '#/components/schemas/AIGatewayMCPServerListenerResponse'
+          passthrough-listener: '#/components/schemas/AIGatewayMCPServerPassthroughListenerResponse'
+          upstream-server: '#/components/schemas/AIGatewayMCPServerUpstreamServerResponse'
       oneOf:
-        - $ref: '#/components/schemas/AIGatewayMCPServerConversionOnly'
-        - $ref: '#/components/schemas/AIGatewayMCPServerConversionListener'
-        - $ref: '#/components/schemas/AIGatewayMCPServerListener'
-        - $ref: '#/components/schemas/AIGatewayMCPServerPassthroughListener'
-        - $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServer'
+        - $ref: '#/components/schemas/AIGatewayMCPServerConversionOnlyResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerConversionListenerResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerListenerResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerPassthroughListenerResponse'
+        - $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServerResponse'
       required:
         - id
         - created_at
         - updated_at
       x-unstable: true
-    AIGatewayMCPToolBase:
-      description: 'A tool exposed by the MCP Server, mapped to a backend HTTP endpoint.'
+    AIGatewayMCPServerConversionOnlyResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
       type: object
       properties:
-        access:
-          type: object
-          additionalProperties: false
-          properties:
-            acls:
-              description: |-
-                **Pre-release Feature**
-                This feature is currently in beta and is subject to change.
-
-                Access control rules for allowing or denying consumer groups access to this tool.
-                When configured, these will override the default access control rules defined on the MCP Server.
-              allOf:
-                - $ref: '#/components/schemas/AIGatewayMCPACLs'
-              x-unstable: true
-          x-speakeasy-param-computed: false
-        annotations:
-          $ref: '#/components/schemas/AIGatewayMCPToolAnnotations'
-        description:
-          description: A description of what the tool does.
+        type:
           type: string
-          example: Search for available flights
-        headers:
-          $ref: '#/components/schemas/AIGatewayMCPToolHeaders'
-        host:
-          description: 'The host of the exported API, which must match the route''s hosts. It should be the route''s host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
+          const: conversion-only
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig'
+        tools:
+          description: List of tools exposed by this MCP Server.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPConversionTool'
+          minItems: 1
+          x-speakeasy-param-computed: true
+        display_name:
+          description: The display name for the MCP Server.
           type: string
-          x-speakeasy-param-computed: false
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
         name:
-          description: 'Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present).'
-          type: string
-        method:
-          description: 'For conversion-only and conversion-listener modes, the method of the exported API, which must match the route''s methods.'
-          type: string
-          enum:
-            - DELETE
-            - GET
-            - PATCH
-            - POST
-            - PUT
-          x-speakeasy-unknown-values: allow
-        path:
-          description: 'The path of the exported API, which must match the route''s paths. Path not starting with ''/'' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.'
-          type: string
-          x-speakeasy-param-computed: false
-        query:
-          $ref: '#/components/schemas/AIGatewayMCPToolQuery'
-        request_body:
-          $ref: '#/components/schemas/AIGatewayMCPToolRequestBody'
-        responses:
-          $ref: '#/components/schemas/AIGatewayMCPToolResponses'
-        scheme:
-          description: 'The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.'
-          type: string
-          enum:
-            - http
-            - https
-          x-speakeasy-unknown-values: allow
-        parameters:
-          $ref: '#/components/schemas/AIGatewayMCPToolParameters'
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       required:
+        - type
+        - config
+        - tools
+        - display_name
         - name
-        - description
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayMCPServerConversionOnlyResponse
+      x-unstable: true
+    AIGatewayMCPServerConversionListenerResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: conversion-listener
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamNoProxyConfig'
+        tools:
+          description: |
+            List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
+            describe the backend HTTP operation on the upstream selected by `config.url` — they
+            do not need to match the public MCP Route configured in `config.route`.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPConversionTool'
+          minItems: 1
+          x-speakeasy-param-computed: true
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - tools
+        - display_name
+        - name
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayMCPServerConversionListenerResponse
+      x-unstable: true
+    AIGatewayMCPServerListenerResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: listener
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerNoUpstreamConfig'
+        sources:
+          description: |
+            The explicit list of source MCP Servers whose tools this listener exposes.
+            Each entry is the immutable `name` of a `conversion-only` (toolset) or
+            `upstream-server` (third-party MCP server) MCP Server in the same AI Gateway.
+            All of the referenced source's tools are exposed.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          example:
+            - kongair-flights
+            - github-mcp
+          minItems: 1
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - sources
+        - display_name
+        - name
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayMCPServerListenerResponse
+      x-unstable: true
+    AIGatewayMCPServerPassthroughListenerResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: passthrough-listener
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerWithUpstreamConfig'
+        tools:
+          description: |
+            Per-tool access-control overrides for tools advertised by the remote MCP Server. Each
+            entry is matched to a remote tool by `name`; only its access-control rules are applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPPassthroughTool'
+          x-speakeasy-param-computed: true
+        access:
+          $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - display_name
+        - name
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayMCPServerPassthroughListenerResponse
+      x-unstable: true
+    AIGatewayMCPServerUpstreamServerResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        type:
+          type: string
+          const: upstream-server
+        config:
+          $ref: '#/components/schemas/AIGatewayMCPServerUpstreamServerConfig'
+        tools:
+          description: |
+            List of tools exposed by this MCP Server.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPUpstreamTool'
+          x-speakeasy-param-computed: true
+        display_name:
+          description: The display name for the MCP Server.
+          type: string
+          example: Kong Air Flights
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+          example: kongair-flights
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        enabled:
+          description: Whether the MCP Server is enabled.
+          type: boolean
+          example: true
+          default: true
+        policies:
+          $ref: '#/components/schemas/AIGatewayPolicyReferences'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - type
+        - config
+        - display_name
+        - name
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayMCPServerUpstreamServerResponse
+      x-unstable: true
     AIGatewayMCPUpstreamTool:
-      description: A tool exposed by an MCP Server in `upstream-server` mode. Extends the base tool with input/output schema overrides for the upstream server's advertised tool.
+      description: |
+        A tool exposed by an MCP Server in `upstream-server` mode. Provides optional metadata
+        overrides (`description`, `annotations`, `input_schema`, `output_schema`) and per-tool
+        ACLs for a tool advertised by the upstream MCP server; any field not overridden here
+        falls back to the remote tool's own definition.
       type: object
       properties:
         access:
-          type: object
-          additionalProperties: false
-          properties:
-            acls:
-              description: |-
-                **Pre-release Feature**
-                This feature is currently in beta and is subject to change.
-
-                Access control rules for allowing or denying consumer groups access to this tool.
-                When configured, these will override the default access control rules defined on the MCP Server.
-              allOf:
-                - $ref: '#/components/schemas/AIGatewayMCPACLs'
-              x-unstable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/AIGatewayMCPToolAccess'
         annotations:
           $ref: '#/components/schemas/AIGatewayMCPToolAnnotations'
         description:
           description: A description of what the tool does.
           type: string
           example: Search for available flights
-        headers:
-          $ref: '#/components/schemas/AIGatewayMCPToolHeaders'
-        host:
-          description: 'The host of the exported API, which must match the route''s hosts. It should be the route''s host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
-          type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         name:
-          description: 'Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides annotations.title if present).'
+          description: 'The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides.'
           type: string
-        method:
-          description: 'When provided, the method of the exported API, which must match the route''s methods.'
-          type: string
-          enum:
-            - DELETE
-            - GET
-            - PATCH
-            - POST
-            - PUT
-          x-speakeasy-unknown-values: allow
-        path:
-          description: 'The path of the exported API, which must match the route''s paths. Path not starting with ''/'' are treated as relative path and the route path will be added as the prefix. By default, Kong will extract the path from API configuration.'
-          type: string
-          x-speakeasy-param-computed: false
-        query:
-          $ref: '#/components/schemas/AIGatewayMCPToolQuery'
-        request_body:
-          $ref: '#/components/schemas/AIGatewayMCPToolRequestBody'
-        responses:
-          $ref: '#/components/schemas/AIGatewayMCPToolResponses'
-        scheme:
-          description: 'The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.'
-          type: string
-          enum:
-            - http
-            - https
-          x-speakeasy-unknown-values: allow
-        parameters:
-          $ref: '#/components/schemas/AIGatewayMCPToolParameters'
         input_schema:
           description: |
             The entire `inputSchema` section for the tool. Overrides the upstream server's `inputSchema`
@@ -48009,7 +50056,7 @@ components:
       additionalProperties: false
       required:
         - name
-        - description
+      x-unstable: true
     AIGatewayMCPToolAnnotations:
       description: |-
         **Pre-release Feature**
@@ -48127,6 +50174,7 @@ components:
       description: Reference to a identity provider instance by name.
       type: string
       example: okta-ai-se
+      deprecated: true
     AIGatewayIdentityProviderKeyAuth:
       description: |-
         **Pre-release Feature**
@@ -48167,6 +50215,7 @@ components:
           additionalProperties: true
           x-speakeasy-param-computed: true
           x-speakeasy-type-override: any
+      deprecated: true
       required:
         - display_name
         - name
@@ -48213,11 +50262,108 @@ components:
           additionalProperties: true
           x-speakeasy-param-computed: true
           x-speakeasy-type-override: any
+      deprecated: true
       required:
         - display_name
         - name
         - type
       title: AIGatewayIdentityProviderOpenIDConnectConfig
+      x-unstable: true
+    AIGatewayAuthStrategyReference:
+      description: Reference to an auth strategy instance by name.
+      type: string
+      example: okta-ai-se
+    AIGatewayAuthStrategyKeyAuth:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Configuration for an auth strategy.
+      type: object
+      properties:
+        display_name:
+          description: The display name for this auth strategy instance.
+          type: string
+          example: Okta AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: okta-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: key-auth
+        config:
+          description: |
+            Configuration for the key-auth auth strategy.
+            For advanced use cases, additional config properties can be sent in the request body.
+            See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
+          type: object
+          additionalProperties: true
+          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
+      required:
+        - display_name
+        - name
+        - type
+      title: AIGatewayAuthStrategyKeyAuthConfig
+      x-unstable: true
+    AIGatewayAuthStrategyOpenIDConnect:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Configuration for an auth strategy.
+      type: object
+      properties:
+        display_name:
+          description: The display name for this auth strategy instance.
+          type: string
+          example: Okta AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: okta-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: openid-connect
+        config:
+          description: |
+            Configuration for the OpenID Connect auth strategy.
+            For advanced use cases, additional config properties can be sent in the request body.
+            See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
+          type: object
+          additionalProperties: true
+          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
+      required:
+        - display_name
+        - name
+        - type
+      title: AIGatewayAuthStrategyOpenIDConnectConfig
       x-unstable: true
     AIGatewayModelProviderReference:
       description: Reference to a model provider instance by name.
@@ -49379,58 +51525,6 @@ components:
         - type
       title: AIGatewayModelProviderConfigAuthGCP
       x-unstable: true
-    AIGatewayModelProviderVertex:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-
-        Config for Vertex model provider.
-      type: object
-      properties:
-        type:
-          type: string
-          const: vertex
-        display_name:
-          description: The display name for this model provider instance.
-          type: string
-          example: Azure AI SE
-          maxLength: 256
-          minLength: 1
-        name:
-          description: |-
-            **Pre-release Feature**
-            This feature is currently in beta and is subject to change.
-
-            A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
-          example: azure-ai-se
-          allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
-          x-unstable: true
-        labels:
-          $ref: '#/components/schemas/PublicLabels'
-        managed_by:
-          $ref: '#/components/schemas/ManagedBy'
-        config:
-          type: object
-          additionalProperties: false
-          properties:
-            auth:
-              discriminator:
-                propertyName: type
-                mapping:
-                  basic: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
-                  vertex: '#/components/schemas/AIGatewayModelProviderConfigAuthVertex'
-              oneOf:
-                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
-                - $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthVertex'
-          required:
-            - auth
-      required:
-        - type
-        - display_name
-        - name
-        - config
-      x-unstable: true
     AIGatewayModelProviderSagemaker:
       description: |-
         **Pre-release Feature**
@@ -49528,36 +51622,6 @@ components:
       required:
         - type
       title: AIGatewayModelProviderConfigAuthSagemaker
-      x-unstable: true
-    AIGatewayModelProviderConfigAuthVertex:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-
-        Configuration for Vertex model provider.
-      type: object
-      properties:
-        type:
-          type: string
-          const: vertex
-        use_gcp_service_account:
-          description: Use the Google Cloud Service Account (or user-assigned identity) to authenticate with Vertex-provider models.
-          type: boolean
-          default: true
-          enum:
-            - true
-        service_account_json:
-          description: |
-            Full JSON string of the GCP service account to authenticate. If not set, the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.
-            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-          type: string
-          writeOnly: true
-          x-referenceable: true
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      required:
-        - type
-      title: AIGatewayModelProviderConfigAuthVertex
       x-unstable: true
     CreateAIGatewayConfigStoreRequest:
       description: |-
@@ -49724,7 +51788,6 @@ components:
           vercel: '#/components/schemas/AIGatewayModelProviderVercel'
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
-          vertex: '#/components/schemas/AIGatewayModelProviderVertex'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
@@ -49745,7 +51808,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVercel'
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
-        - $ref: '#/components/schemas/AIGatewayModelProviderVertex'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
       x-unstable: true
     UpdateAIGatewayModelProviderRequest:
@@ -49773,7 +51835,6 @@ components:
           vercel: '#/components/schemas/AIGatewayModelProviderVercel'
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
-          vertex: '#/components/schemas/AIGatewayModelProviderVertex'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
@@ -49794,7 +51855,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVercel'
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
-        - $ref: '#/components/schemas/AIGatewayModelProviderVertex'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
       x-unstable: true
     AIGatewayModelProvider:
@@ -49830,7 +51890,6 @@ components:
           vercel: '#/components/schemas/AIGatewayModelProviderVercel'
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
-          vertex: '#/components/schemas/AIGatewayModelProviderVertex'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
@@ -49851,7 +51910,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVercel'
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
-        - $ref: '#/components/schemas/AIGatewayModelProviderVertex'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
       required:
         - id
@@ -49862,6 +51920,7 @@ components:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
+      deprecated: true
       discriminator:
         propertyName: type
         mapping:
@@ -49875,6 +51934,7 @@ components:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
+      deprecated: true
       discriminator:
         propertyName: type
         mapping:
@@ -49888,6 +51948,7 @@ components:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
+      deprecated: true
       discriminator:
         propertyName: type
         mapping:
@@ -49941,6 +52002,7 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+      deprecated: true
       required:
         - display_name
         - name
@@ -49994,6 +52056,7 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+      deprecated: true
       required:
         - display_name
         - name
@@ -50002,6 +52065,151 @@ components:
         - created_at
         - updated_at
       title: AIGatewayIdentityProviderOpenIDConnectConfig
+      x-unstable: true
+    CreateAIGatewayAuthStrategyRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      discriminator:
+        propertyName: type
+        mapping:
+          key-auth: '#/components/schemas/AIGatewayAuthStrategyKeyAuth'
+          openid-connect: '#/components/schemas/AIGatewayAuthStrategyOpenIDConnect'
+      oneOf:
+        - $ref: '#/components/schemas/AIGatewayAuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/AIGatewayAuthStrategyOpenIDConnect'
+      x-unstable: true
+    UpdateAIGatewayAuthStrategyRequest:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      discriminator:
+        propertyName: type
+        mapping:
+          key-auth: '#/components/schemas/AIGatewayAuthStrategyKeyAuth'
+          openid-connect: '#/components/schemas/AIGatewayAuthStrategyOpenIDConnect'
+      oneOf:
+        - $ref: '#/components/schemas/AIGatewayAuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/AIGatewayAuthStrategyOpenIDConnect'
+      x-unstable: true
+    AIGatewayAuthStrategy:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      discriminator:
+        propertyName: type
+        mapping:
+          key-auth: '#/components/schemas/AIGatewayAuthStrategyKeyAuthResponse'
+          openid-connect: '#/components/schemas/AIGatewayAuthStrategyOpenIDConnectResponse'
+      oneOf:
+        - $ref: '#/components/schemas/AIGatewayAuthStrategyKeyAuthResponse'
+        - $ref: '#/components/schemas/AIGatewayAuthStrategyOpenIDConnectResponse'
+      x-unstable: true
+    AIGatewayAuthStrategyKeyAuthResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        display_name:
+          description: The display name for this auth strategy instance.
+          type: string
+          example: Okta AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: okta-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: key-auth
+        config:
+          description: |
+            Configuration for the key-auth auth strategy.
+            For advanced use cases, additional config properties can be sent in the request body.
+            See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
+          type: object
+          additionalProperties: true
+          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - display_name
+        - name
+        - type
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayAuthStrategyKeyAuthConfig
+      x-unstable: true
+    AIGatewayAuthStrategyOpenIDConnectResponse:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+      type: object
+      properties:
+        display_name:
+          description: The display name for this auth strategy instance.
+          type: string
+          example: Okta AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: okta-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: openid-connect
+        config:
+          description: |
+            Configuration for the OpenID Connect auth strategy.
+            For advanced use cases, additional config properties can be sent in the request body.
+            See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
+          type: object
+          additionalProperties: true
+          x-speakeasy-param-computed: true
+          x-speakeasy-type-override: any
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - display_name
+        - name
+        - type
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayAuthStrategyOpenIDConnectConfig
       x-unstable: true
     PublicLabels:
       description: |
@@ -50175,6 +52383,13 @@ components:
         - updated_at
         - config
   requestBodies:
+    CreatePortalIdpTeamGroupMapping:
+      description: Create a team group mapping for an identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalIdpTeamGroupMappingRequest'
     CreatePortalCustomDomain:
       description: Create a portal custom domain.
       required: true
@@ -50550,6 +52765,22 @@ components:
             additionalProperties: false
             required:
               - allowed_ips
+    PortalCreateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for creating a new identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCreateIdentityProvider'
+    PortalUpdateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for updating an identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalUpdateIdentityProvider'
     CreateApiRequest:
       required: true
       content:
@@ -50949,13 +53180,18 @@ components:
                 $ref: '#/components/schemas/Labels'
               trusted_origins:
                 $ref: '#/components/schemas/TrustedOrigins'
-              dcr_default_access_token_duration:
-                $ref: '#/components/schemas/DcrDefaultAccessTokenDuration'
+              dcr:
+                $ref: '#/components/schemas/CreateDcrSettings'
+              open_dcr_enabled:
+                $ref: '#/components/schemas/OpenDcrEnabled'
             required:
               - name
               - audience
             x-property-annotations:
-              dcr_default_access_token_duration:
+              dcr:
+                - x-unstable
+                - x-internal
+              open_dcr_enabled:
                 - x-unstable
                 - x-internal
     UpdateAuthServer:
@@ -50978,10 +53214,15 @@ components:
                 $ref: '#/components/schemas/LabelsUpdate'
               trusted_origins:
                 $ref: '#/components/schemas/TrustedOrigins'
-              dcr_default_access_token_duration:
-                $ref: '#/components/schemas/UpdateDcrDefaultAccessTokenDuration'
+              dcr:
+                $ref: '#/components/schemas/UpdateDcrSettings'
+              open_dcr_enabled:
+                $ref: '#/components/schemas/OpenDcrEnabled'
             x-property-annotations:
-              dcr_default_access_token_duration:
+              dcr:
+                - x-unstable
+                - x-internal
+              open_dcr_enabled:
                 - x-unstable
                 - x-internal
     CreateClaim:
@@ -51165,6 +53406,13 @@ components:
               refresh_token_duration:
                 - x-unstable
                 - x-internal
+    UpdateAuthServerTrustedIdp:
+      description: Full trusted IdP representation to replace the existing one. Omitted optional fields are reset to their defaults.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAuthServerTrustedIdpPayload'
     PersonalAccessTokenSettingsUpdateRequest:
       description: Request body schema for updating personal access token settings.
       content:
@@ -51536,6 +53784,12 @@ components:
           schema:
             $ref: '#/components/schemas/ReplaceDirectoryBody'
   responses:
+    PortalIdpTeamGroupMapping:
+      description: A team group mapping for an identity provider.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalIdpTeamGroupMapping'
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
       content:
@@ -51943,6 +54197,13 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
+    PortalIdentityProvider:
+      description: |
+        An identity provider configuration. This response represents the configuration of a specific identity provider, which can be either OIDC or SAML.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalIdentityProvider'
     Internal:
       description: Internal
       content:
@@ -54019,6 +56280,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    AuthServerTrustedIdp:
+      description: A trusted IdP
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthServerTrustedIdp'
     PersonalAccessTokenSettingsResponse:
       description: Response containing personal access token settings.
       content:
@@ -54114,6 +56381,60 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AIGatewayModel'
+    CreateAIGatewayCACertificateResponse:
+      description: AI Gateway CA Certificate created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCACertificate'
+    GetAIGatewayCACertificateResponse:
+      description: A successful response returning an AI Gateway CA Certificate.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCACertificate'
+    UpdateAIGatewayCACertificateResponse:
+      description: CA Certificate updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCACertificate'
+    CreateAIGatewayCertificateResponse:
+      description: AI Gateway Certificate created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCertificate'
+    GetAIGatewayCertificateResponse:
+      description: A successful response returning an AI Gateway Certificate.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCertificate'
+    UpdateAIGatewayCertificateResponse:
+      description: Certificate updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCertificate'
+    CreateAIGatewaySNIResponse:
+      description: AI Gateway SNI created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewaySNI'
+    GetAIGatewaySNIResponse:
+      description: A successful response returning an AI Gateway SNI.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewaySNI'
+    UpdateAIGatewaySNIResponse:
+      description: SNI updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewaySNI'
     CreateAIGatewayDataPlaneCertificateResponse:
       description: Response body for creating a DataPlane certificate.
       content:
@@ -54335,6 +56656,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AIGatewayIdentityProvider'
+    CreateAIGatewayAuthStrategyResponse:
+      description: Auth strategy created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayAuthStrategy'
+    GetAIGatewayAuthStrategyResponse:
+      description: A successful response returning an AI Gateway Auth Strategy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayAuthStrategy'
+    UpdateAIGatewayAuthStrategyResponse:
+      description: Auth strategy updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayAuthStrategy'
     TooManyRequests:
       description: Too Many Requests
       content:
@@ -54413,6 +56752,8 @@ tags:
     description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
   - name: Auth Server Scopes
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
+  - name: Auth Server Trusted IdPs
+    description: Trusted IdPs allow an Auth Server to accept identity assertions from an external identity provider and exchange them for Konnect-issued tokens. The management API will give you the ability to configure the trusted IdP for an Auth Server.
   - name: Dashboards
   - name: Event Gateways
     description: |
@@ -54478,6 +56819,10 @@ tags:
     description: API related to the management of Konnect AI Gateway resources.
   - name: AI Gateway DataPlane Certificates
     description: API related to the management of AI Gateway DataPlane Certificates.
+  - name: AI Gateway CA Certificates
+    description: API related to the management of AI Gateway CA Certificates.
+  - name: AI Gateway Certificates
+    description: API related to the management of AI Gateway Certificates.
   - name: AI Gateway Config Stores
     description: API related to the management of AI Gateway Config Stores.
   - name: AI Gateway Vaults
@@ -54489,7 +56834,9 @@ tags:
   - name: AI Gateway Consumer Groups
     description: Consumer groups for applying rate-limiting and access policies to AI Gateway traffic.
   - name: AI Gateway Identity Providers
-    description: Identity providers for authenticating users and accessing AI Gateway resources.
+    description: Deprecated in favor of AI Gateway Auth Strategies. Identity providers for authenticating users and accessing AI Gateway resources.
+  - name: AI Gateway Auth Strategies
+    description: Auth strategies for authenticating clients accessing AI Gateway resources.
   - name: AI Gateway Models
     description: 'Models that define routing, capabilities, and backend targets for the AI Gateway.'
   - name: AI Gateway Policies

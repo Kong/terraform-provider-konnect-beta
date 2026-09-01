@@ -96,12 +96,25 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 							`` + "\n" +
 							`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 					},
-					"identity_providers": schema.ListAttribute{
+					"auth_strategies": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
+						MarkdownDescription: `List of auth strategies for granting access to the agent.` + "\n" +
+							`At most 1 auth strategy of each auth strategy type can be referenced.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtMost(1),
+						},
+					},
+					"identity_providers": schema.ListAttribute{
+						Computed:           true,
+						Optional:           true,
+						ElementType:        types.StringType,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 						MarkdownDescription: `List of identity providers for granting access to the agent.` + "\n" +
-							`At most 1 identity provider of each identity provider type can be referenced.`,
+							`At most 1 identity provider of each identity provider type can be referenced.` + "\n" +
+							`` + "\n" +
+							`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 						Validators: []validator.List{
 							listvalidator.SizeAtMost(1),
 						},
@@ -124,6 +137,9 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(1048576),
 								Description: `Maximum size in bytes for logged request/response payloads. Payloads exceeding this size will be truncated. Default: 1048576`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 2147483646),
+								},
 							},
 							"payloads": schema.BoolAttribute{
 								Computed:    true,
@@ -142,6 +158,9 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 						Optional:    true,
 						Default:     int64default.StaticInt64(8388608),
 						Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 2147483646),
+						},
 					},
 					"proxy": schema.SingleNestedAttribute{
 						Optional: true,
@@ -235,6 +254,9 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(426),
 								Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
+								Validators: []validator.Int64{
+									int64validator.Between(100, 599),
+								},
 							},
 							"methods": schema.ListAttribute{
 								Computed:    true,
@@ -269,6 +291,9 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(0),
 								Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(-2147483648, 2147483647),
+								},
 							},
 							"request_buffering": schema.BoolAttribute{
 								Computed:    true,

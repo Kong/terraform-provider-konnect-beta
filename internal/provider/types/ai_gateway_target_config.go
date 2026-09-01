@@ -20,7 +20,6 @@ type AIGatewayTargetConfig struct {
 	Openai      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"openai"`
 	Sagemaker   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" tfsdk:"sagemaker"`
 	Vercel      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"vercel"`
-	Vertex      *AIGatewayTargetVertexConfig      `queryParam:"inline" tfsdk:"vertex"`
 	Vllm        *AIGatewayTargetVllmConfig        `queryParam:"inline" tfsdk:"vllm"`
 	Xai         *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"xai"`
 }

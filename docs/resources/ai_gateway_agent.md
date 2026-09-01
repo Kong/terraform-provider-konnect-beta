@@ -24,6 +24,9 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
         "..."
       ]
     }
+    auth_strategies = [
+      "okta-ai-se"
+    ]
     identity_providers = [
       "okta-ai-se"
     ]
@@ -291,8 +294,12 @@ Optional:
 This feature is currently in beta and is subject to change.
 
 Access control rules. Configure exactly one of `allow` or `deny`. (see [below for nested schema](#nestedatt--access--acls))
-- `identity_providers` (List of String) List of identity providers for granting access to the agent.
+- `auth_strategies` (List of String) List of auth strategies for granting access to the agent.
+At most 1 auth strategy of each auth strategy type can be referenced.
+- `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the agent.
 At most 1 identity provider of each identity provider type can be referenced.
+
+Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 
 <a id="nestedatt--access--acls"></a>
 ### Nested Schema for `access.acls`
