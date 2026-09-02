@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabled": true,
+  "extends": [
+    "Kong/public-shared-renovate"
+  ],
+  "packageRules": [
+    {
+      "description": "Keep all dependencies disabled except Terraform",
+      "enabled": false,
+      "matchPackageNames": ["*"]
+    },
+    {
+      "description": "Enable only Terraform version updates in CI",
+      "enabled": true,
+      "matchDatasources": ["terraform-version"],
+      "ignoreUnstable": true,
+      "extends": ["schedule:monthly"]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^\\.github/workflows/.*\\.ya?ml$"],
+      "matchStrings": [
+        "terraform[_-]version:\\s+['\"]?(?<currentValue>\\d+\\.\\d+(?:\\.\\d+)?)(?:\\.\\*)?['\"]?"
+      ],
+      "datasourceTemplate": "terraform-version",
+      "versioningTemplate": "hashicorp"
+    }
+  ]
+}
