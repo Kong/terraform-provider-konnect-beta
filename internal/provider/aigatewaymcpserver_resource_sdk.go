@@ -2005,7 +2005,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Tags:                    tags,
 			}
 		}
-		var logging *shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging
+		var logging *shared.Logging
 		if r.ConversionOnly.Config.Logging != nil {
 			payloads := new(bool)
 			if !r.ConversionOnly.Config.Logging.Payloads.IsUnknown() && !r.ConversionOnly.Config.Logging.Payloads.IsNull() {
@@ -2019,7 +2019,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				audits = nil
 			}
-			logging = &shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging{
+			logging = &shared.Logging{
 				Payloads: payloads,
 				Audits:   audits,
 			}
@@ -5745,7 +5745,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Tags:                    tags,
 			}
 		}
-		var logging *shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging
+		var logging *shared.Logging
 		if r.ConversionOnly.Config.Logging != nil {
 			payloads := new(bool)
 			if !r.ConversionOnly.Config.Logging.Payloads.IsUnknown() && !r.ConversionOnly.Config.Logging.Payloads.IsNull() {
@@ -5759,7 +5759,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				audits = nil
 			}
-			logging = &shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging{
+			logging = &shared.Logging{
 				Payloads: payloads,
 				Audits:   audits,
 			}

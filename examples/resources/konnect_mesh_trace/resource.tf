@@ -21,7 +21,6 @@ resource "konnect_mesh_trace" "my_meshtrace" {
                 key = "value"
               }
             }
-            endpoint = "otel-collector:4317"
           }
           type = "OpenTelemetry"
           zipkin = {
@@ -59,16 +58,7 @@ resource "konnect_mesh_trace" "my_meshtrace" {
       labels = {
         key = "value"
       }
-      mesh      = "...my_mesh..."
-      name      = "...my_name..."
-      namespace = "...my_namespace..."
-      proxy_types = [
-        "Gateway"
-      ]
       section_name = "...my_section_name..."
-      tags = {
-        key = "value"
-      }
     }
   }
   type = "MeshTrace"

@@ -64,7 +64,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 					if resp.Spec.Provider.Bundled.Ca.Certificate == nil {
 						r.Spec.Provider.Bundled.Ca.Certificate = nil
 					} else {
-						r.Spec.Provider.Bundled.Ca.Certificate = &tfTypes.Certificate{}
+						r.Spec.Provider.Bundled.Ca.Certificate = &tfTypes.CaCert{}
 						if resp.Spec.Provider.Bundled.Ca.Certificate.EnvVar == nil {
 							r.Spec.Provider.Bundled.Ca.Certificate.EnvVar = nil
 						} else {
@@ -74,7 +74,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.Certificate.File == nil {
 							r.Spec.Provider.Bundled.Ca.Certificate.File = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.Certificate.File = &tfTypes.MeshIdentityItemFile{}
+							r.Spec.Provider.Bundled.Ca.Certificate.File = &tfTypes.MeshExternalServiceItemFile{}
 							r.Spec.Provider.Bundled.Ca.Certificate.File.Path = types.StringValue(resp.Spec.Provider.Bundled.Ca.Certificate.File.Path)
 						}
 						if resp.Spec.Provider.Bundled.Ca.Certificate.InsecureInline == nil {
@@ -86,7 +86,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.Certificate.SecretRef == nil {
 							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef = &tfTypes.SecretRef{}
+							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef = &tfTypes.MeshExternalServiceItemSpecTLSSecretRef{}
 							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Kind = types.StringValue(string(resp.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Kind))
 							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Name)
 						}
@@ -95,7 +95,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 					if resp.Spec.Provider.Bundled.Ca.PrivateKey == nil {
 						r.Spec.Provider.Bundled.Ca.PrivateKey = nil
 					} else {
-						r.Spec.Provider.Bundled.Ca.PrivateKey = &tfTypes.Certificate{}
+						r.Spec.Provider.Bundled.Ca.PrivateKey = &tfTypes.CaCert{}
 						if resp.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar == nil {
 							r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar = nil
 						} else {
@@ -105,7 +105,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.PrivateKey.File == nil {
 							r.Spec.Provider.Bundled.Ca.PrivateKey.File = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.PrivateKey.File = &tfTypes.MeshIdentityItemFile{}
+							r.Spec.Provider.Bundled.Ca.PrivateKey.File = &tfTypes.MeshExternalServiceItemFile{}
 							r.Spec.Provider.Bundled.Ca.PrivateKey.File.Path = types.StringValue(resp.Spec.Provider.Bundled.Ca.PrivateKey.File.Path)
 						}
 						if resp.Spec.Provider.Bundled.Ca.PrivateKey.InsecureInline == nil {
@@ -117,7 +117,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef == nil {
 							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef = &tfTypes.SecretRef{}
+							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef = &tfTypes.MeshExternalServiceItemSpecTLSSecretRef{}
 							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Kind = types.StringValue(string(resp.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Kind))
 							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Name)
 						}
@@ -188,7 +188,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 		if resp.Status == nil {
 			r.Status = nil
 		} else {
-			r.Status = &tfTypes.MeshAccessLogItemStatus{}
+			r.Status = &tfTypes.MeshIdentityItemStatus{}
 			r.Status.Conditions = []tfTypes.Conditions{}
 
 			for _, conditionsItem := range resp.Status.Conditions {
@@ -201,6 +201,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 
 				r.Status.Conditions = append(r.Status.Conditions, conditions)
 			}
+			r.Status.TrustDomain = types.StringPointerValue(resp.Status.TrustDomain)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}
@@ -245,6 +246,31 @@ func (r *MeshIdentityResourceModel) ToOperationsGetMeshIdentityRequest(ctx conte
 		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshIdentityResourceModel) ToOperationsPostMeshIdentityRequest(ctx context.Context) (*operations.PostMeshIdentityRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshIdentityItem, meshIdentityItemDiags := r.ToSharedMeshIdentityItemInput(ctx)
+	diags.Append(meshIdentityItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshIdentityRequest{
+		CpID:             cpID,
+		Mesh:             mesh,
+		MeshIdentityItem: *meshIdentityItem,
 	}
 
 	return &out, diags
@@ -316,12 +342,12 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 			if r.Spec.Provider.Bundled.Ca != nil {
 				var certificate *shared.Certificate
 				if r.Spec.Provider.Bundled.Ca.Certificate != nil {
-					var envVar *shared.EnvVar
+					var envVar *shared.MeshIdentityItemEnvVar
 					if r.Spec.Provider.Bundled.Ca.Certificate.EnvVar != nil {
 						var name1 string
 						name1 = r.Spec.Provider.Bundled.Ca.Certificate.EnvVar.Name.ValueString()
 
-						envVar = &shared.EnvVar{
+						envVar = &shared.MeshIdentityItemEnvVar{
 							Name: name1,
 						}
 					}
@@ -334,22 +360,22 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 							Path: path,
 						}
 					}
-					var insecureInline *shared.InsecureInline
+					var insecureInline *shared.MeshIdentityItemInsecureInline
 					if r.Spec.Provider.Bundled.Ca.Certificate.InsecureInline != nil {
 						var value string
 						value = r.Spec.Provider.Bundled.Ca.Certificate.InsecureInline.Value.ValueString()
 
-						insecureInline = &shared.InsecureInline{
+						insecureInline = &shared.MeshIdentityItemInsecureInline{
 							Value: value,
 						}
 					}
-					var secretRef *shared.SecretRef
+					var secretRef *shared.MeshIdentityItemSecretRef
 					if r.Spec.Provider.Bundled.Ca.Certificate.SecretRef != nil {
 						kind := shared.MeshIdentityItemKind(r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Kind.ValueString())
 						var name2 string
 						name2 = r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Name.ValueString()
 
-						secretRef = &shared.SecretRef{
+						secretRef = &shared.MeshIdentityItemSecretRef{
 							Kind: kind,
 							Name: name2,
 						}
@@ -365,12 +391,12 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 				}
 				var privateKey *shared.PrivateKey
 				if r.Spec.Provider.Bundled.Ca.PrivateKey != nil {
-					var envVar1 *shared.MeshIdentityItemEnvVar
+					var envVar1 *shared.MeshIdentityItemSpecEnvVar
 					if r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar != nil {
 						var name3 string
 						name3 = r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar.Name.ValueString()
 
-						envVar1 = &shared.MeshIdentityItemEnvVar{
+						envVar1 = &shared.MeshIdentityItemSpecEnvVar{
 							Name: name3,
 						}
 					}
@@ -383,22 +409,22 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 							Path: path1,
 						}
 					}
-					var insecureInline1 *shared.MeshIdentityItemInsecureInline
+					var insecureInline1 *shared.MeshIdentityItemSpecInsecureInline
 					if r.Spec.Provider.Bundled.Ca.PrivateKey.InsecureInline != nil {
 						var value1 string
 						value1 = r.Spec.Provider.Bundled.Ca.PrivateKey.InsecureInline.Value.ValueString()
 
-						insecureInline1 = &shared.MeshIdentityItemInsecureInline{
+						insecureInline1 = &shared.MeshIdentityItemSpecInsecureInline{
 							Value: value1,
 						}
 					}
-					var secretRef1 *shared.MeshIdentityItemSecretRef
+					var secretRef1 *shared.MeshIdentityItemSpecSecretRef
 					if r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef != nil {
 						kind1 := shared.MeshIdentityItemSpecKind(r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Kind.ValueString())
 						var name4 string
 						name4 = r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Name.ValueString()
 
-						secretRef1 = &shared.MeshIdentityItemSecretRef{
+						secretRef1 = &shared.MeshIdentityItemSpecSecretRef{
 							Kind: kind1,
 							Name: name4,
 						}

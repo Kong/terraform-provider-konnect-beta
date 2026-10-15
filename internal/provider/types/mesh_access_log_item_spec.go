@@ -3,8 +3,7 @@
 package types
 
 type MeshAccessLogItemSpec struct {
-	From      []From                      `tfsdk:"from"`
-	Rules     []MeshAccessLogItemRules    `tfsdk:"rules"`
-	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
-	To        []From                      `tfsdk:"to"`
+	Rules     []MeshAccessLogItemRules `tfsdk:"rules"`
+	TargetRef *TargetRef               `tfsdk:"target_ref"`
+	To        []To                     `tfsdk:"to"`
 }

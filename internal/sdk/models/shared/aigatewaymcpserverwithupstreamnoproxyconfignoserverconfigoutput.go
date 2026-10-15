@@ -6,38 +6,38 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging - **Pre-release Feature**
+// Logging - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
 // Configuration for AI Gateway logging.
-type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging struct {
+type Logging struct {
 	Payloads *bool `default:"false" json:"payloads"`
 	Audits   *bool `default:"false" json:"audits"`
 }
 
-func (a AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (l Logging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+func (l *Logging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging) GetPayloads() *bool {
-	if a == nil {
+func (l *Logging) GetPayloads() *bool {
+	if l == nil {
 		return nil
 	}
-	return a.Payloads
+	return l.Payloads
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging) GetAudits() *bool {
-	if a == nil {
+func (l *Logging) GetAudits() *bool {
+	if l == nil {
 		return nil
 	}
-	return a.Audits
+	return l.Audits
 }
 
 // AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput - **Pre-release Feature**
@@ -56,7 +56,7 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
 	// This feature is currently in beta and is subject to change.
 	//
 	// Configuration for AI Gateway logging.
-	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging `json:"logging,omitempty"`
+	Logging *Logging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
@@ -88,7 +88,7 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetRou
 	return a.Route
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetLogging() *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetLogging() *Logging {
 	if a == nil {
 		return nil
 	}
@@ -132,7 +132,7 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
 	// This feature is currently in beta and is subject to change.
 	//
 	// Configuration for AI Gateway logging.
-	Logging *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging `json:"logging,omitempty"`
+	Logging *Logging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
@@ -164,7 +164,7 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetRoute() *
 	return a.Route
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetLogging() *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetLogging() *Logging {
 	if a == nil {
 		return nil
 	}

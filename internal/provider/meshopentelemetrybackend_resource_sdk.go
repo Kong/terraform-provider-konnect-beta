@@ -135,6 +135,31 @@ func (r *MeshOpenTelemetryBackendResourceModel) ToOperationsGetMeshOpenTelemetry
 	return &out, diags
 }
 
+func (r *MeshOpenTelemetryBackendResourceModel) ToOperationsPostMeshOpenTelemetryBackendRequest(ctx context.Context) (*operations.PostMeshOpenTelemetryBackendRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshOpenTelemetryBackendItem, meshOpenTelemetryBackendItemDiags := r.ToSharedMeshOpenTelemetryBackendItemInput(ctx)
+	diags.Append(meshOpenTelemetryBackendItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshOpenTelemetryBackendRequest{
+		CpID:                         cpID,
+		Mesh:                         mesh,
+		MeshOpenTelemetryBackendItem: *meshOpenTelemetryBackendItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshOpenTelemetryBackendResourceModel) ToOperationsPutMeshOpenTelemetryBackendRequest(ctx context.Context) (*operations.PutMeshOpenTelemetryBackendRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

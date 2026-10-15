@@ -30,6 +30,7 @@ func (r *MeshAccessAuditResourceModel) RefreshFromSharedAccessAuditItem(ctx cont
 
 	if resp != nil {
 		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
+		r.Kri = types.StringPointerValue(resp.Kri)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
@@ -45,19 +46,9 @@ func (r *MeshAccessAuditResourceModel) RefreshFromSharedAccessAuditItem(ctx cont
 				var rules tfTypes.Rules
 
 				if rulesItem.Access != nil {
-					rules.Access = []tfTypes.MeshItemMode{}
-
-					for _, accessItem := range rulesItem.Access {
-						var access tfTypes.MeshItemMode
-
-						if accessItem.Str != nil {
-							access.Str = types.StringPointerValue(accessItem.Str)
-						}
-						if accessItem.Integer != nil {
-							access.Integer = types.Int64PointerValue(accessItem.Integer)
-						}
-
-						rules.Access = append(rules.Access, access)
+					rules.Access = make([]types.String, 0, len(rulesItem.Access))
+					for _, v := range rulesItem.Access {
+						rules.Access = append(rules.Access, types.StringValue(string(v)))
 					}
 				} else {
 					rules.Access = nil
@@ -118,6 +109,27 @@ func (r *MeshAccessAuditResourceModel) ToOperationsGetAccessAuditRequest(ctx con
 	return &out, diags
 }
 
+func (r *MeshAccessAuditResourceModel) ToOperationsPostAccessAuditRequest(ctx context.Context) (*operations.PostAccessAuditRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	accessAuditItem, accessAuditItemDiags := r.ToSharedAccessAuditItemInput(ctx)
+	diags.Append(accessAuditItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostAccessAuditRequest{
+		CpID:            cpID,
+		AccessAuditItem: *accessAuditItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshAccessAuditResourceModel) ToOperationsPutAccessAuditRequest(ctx context.Context) (*operations.PutAccessAuditRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -163,23 +175,8 @@ func (r *MeshAccessAuditResourceModel) ToSharedAccessAuditItemInput(ctx context.
 			var access []shared.Access
 			if r.Rules[rulesIndex].Access != nil {
 				access = make([]shared.Access, 0, len(r.Rules[rulesIndex].Access))
-				for accessItem := range r.Rules[rulesIndex].Access {
-					if !r.Rules[rulesIndex].Access[accessItem].Str.IsUnknown() && !r.Rules[rulesIndex].Access[accessItem].Str.IsNull() {
-						var str string
-						str = r.Rules[rulesIndex].Access[accessItem].Str.ValueString()
-
-						access = append(access, shared.Access{
-							Str: &str,
-						})
-					}
-					if !r.Rules[rulesIndex].Access[accessItem].Integer.IsUnknown() && !r.Rules[rulesIndex].Access[accessItem].Integer.IsNull() {
-						var integer int64
-						integer = r.Rules[rulesIndex].Access[accessItem].Integer.ValueInt64()
-
-						access = append(access, shared.Access{
-							Integer: &integer,
-						})
-					}
+				for _, accessItem := range r.Rules[rulesIndex].Access {
+					access = append(access, shared.Access(accessItem.ValueString()))
 				}
 			}
 			accessAll := new(bool)

@@ -25,7 +25,6 @@ resource "konnect_mesh_metric" "my_meshmetric" {
                 key = "value"
               }
             }
-            endpoint         = ""
             refresh_interval = "...my_refresh_interval..."
           }
           prometheus = {
@@ -63,20 +62,11 @@ resource "konnect_mesh_metric" "my_meshmetric" {
       }
     }
     target_ref = {
-      kind = "MeshSubset"
+      kind = "Mesh"
       labels = {
         key = "value"
       }
-      mesh      = "...my_mesh..."
-      name      = "...my_name..."
-      namespace = "...my_namespace..."
-      proxy_types = [
-        "Gateway"
-      ]
       section_name = "...my_section_name..."
-      tags = {
-        key = "value"
-      }
     }
   }
   type = "MeshMetric"

@@ -10,11 +10,11 @@ import (
 type MeshDefaultsHook struct{}
 
 var konnectMatchFeatures = func(req *http.Request) bool {
-	return req.URL.Path == "/v1/mesh/control-planes" && req.Method == http.MethodPost
+	return req.URL.Path == "/v3/mesh/control-planes" && req.Method == http.MethodPost
 }
 
 var konnectMatchPolicies = func(req *http.Request) bool {
-	match, err := regexp.MatchString(`^/v1/mesh/control-planes/[^/]+/api/meshes/[^/]+$`, req.URL.Path)
+	match, err := regexp.MatchString(`^/v3/mesh/control-planes/[^/]+/meshes/[^/]+$`, req.URL.Path)
 	if err != nil {
 		return false
 	}

@@ -23,7 +23,7 @@ func (r *AIGatewayDataPlaneCertificateResourceModel) RefreshFromSharedAIGatewayD
 		if resp.Metadata == nil {
 			r.Metadata = nil
 		} else {
-			r.Metadata = &tfTypes.Metadata{}
+			r.Metadata = &tfTypes.AIGatewayDataPlaneClientCertificateMetadata{}
 			r.Metadata.DNSNames = make([]types.String, 0, len(resp.Metadata.DNSNames))
 			for _, v := range resp.Metadata.DNSNames {
 				r.Metadata.DNSNames = append(r.Metadata.DNSNames, types.StringValue(v))

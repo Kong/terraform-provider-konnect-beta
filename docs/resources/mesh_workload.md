@@ -35,7 +35,7 @@ resource "konnect_mesh_workload" "my_meshworkload" {
 
 - `cp_id` (String) Id of the Konnect resource. Requires replacement if changed.
 - `mesh` (String) name of the mesh
-- `name` (String) name of the Workload
+- `name` (String) Name of the Kuma resource
 - `spec` (Attributes) Spec is the specification of the Kuma Workload resource. (see [below for nested schema](#nestedatt--spec))
 - `type` (String) the type of the resource. must be "Workload"
 

@@ -194,6 +194,31 @@ func (r *MeshMultiZoneServiceResourceModel) ToOperationsGetMeshMultiZoneServiceR
 	return &out, diags
 }
 
+func (r *MeshMultiZoneServiceResourceModel) ToOperationsPostMeshMultiZoneServiceRequest(ctx context.Context) (*operations.PostMeshMultiZoneServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshMultiZoneServiceItem, meshMultiZoneServiceItemDiags := r.ToSharedMeshMultiZoneServiceItemInput(ctx)
+	diags.Append(meshMultiZoneServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshMultiZoneServiceRequest{
+		CpID:                     cpID,
+		Mesh:                     mesh,
+		MeshMultiZoneServiceItem: *meshMultiZoneServiceItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshMultiZoneServiceResourceModel) ToOperationsPutMeshMultiZoneServiceRequest(ctx context.Context) (*operations.PutMeshMultiZoneServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

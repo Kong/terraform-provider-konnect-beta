@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// Metadata extracted from the certificate.
-type Metadata struct {
+// AIGatewayDataPlaneClientCertificateMetadata - Metadata extracted from the certificate.
+type AIGatewayDataPlaneClientCertificateMetadata struct {
 	// The certificate subject.
 	Subject *string `json:"subject,omitempty"`
 	// The certificate issuer.
@@ -35,81 +35,81 @@ type Metadata struct {
 	IsCa *bool `json:"is_ca,omitempty"`
 }
 
-func (m *Metadata) GetSubject() *string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetSubject() *string {
+	if a == nil {
 		return nil
 	}
-	return m.Subject
+	return a.Subject
 }
 
-func (m *Metadata) GetIssuer() *string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetIssuer() *string {
+	if a == nil {
 		return nil
 	}
-	return m.Issuer
+	return a.Issuer
 }
 
-func (m *Metadata) GetSanNames() []string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetSanNames() []string {
+	if a == nil {
 		return nil
 	}
-	return m.SanNames
+	return a.SanNames
 }
 
-func (m *Metadata) GetExpiry() *int64 {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetExpiry() *int64 {
+	if a == nil {
 		return nil
 	}
-	return m.Expiry
+	return a.Expiry
 }
 
-func (m *Metadata) GetKeyUsages() []string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetKeyUsages() []string {
+	if a == nil {
 		return nil
 	}
-	return m.KeyUsages
+	return a.KeyUsages
 }
 
-func (m *Metadata) GetSnis() []string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetSnis() []string {
+	if a == nil {
 		return nil
 	}
-	return m.Snis
+	return a.Snis
 }
 
-func (m *Metadata) GetDNSNames() []string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetDNSNames() []string {
+	if a == nil {
 		return nil
 	}
-	return m.DNSNames
+	return a.DNSNames
 }
 
-func (m *Metadata) GetEmailAddresses() []string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetEmailAddresses() []string {
+	if a == nil {
 		return nil
 	}
-	return m.EmailAddresses
+	return a.EmailAddresses
 }
 
-func (m *Metadata) GetIPAddresses() []string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetIPAddresses() []string {
+	if a == nil {
 		return nil
 	}
-	return m.IPAddresses
+	return a.IPAddresses
 }
 
-func (m *Metadata) GetUris() []string {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetUris() []string {
+	if a == nil {
 		return nil
 	}
-	return m.Uris
+	return a.Uris
 }
 
-func (m *Metadata) GetIsCa() *bool {
-	if m == nil {
+func (a *AIGatewayDataPlaneClientCertificateMetadata) GetIsCa() *bool {
+	if a == nil {
 		return nil
 	}
-	return m.IsCa
+	return a.IsCa
 }
 
 // AIGatewayDataPlaneClientCertificate - **Pre-release Feature**
@@ -128,7 +128,7 @@ type AIGatewayDataPlaneClientCertificate struct {
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	// Metadata extracted from the certificate.
-	Metadata *Metadata `json:"metadata,omitempty"`
+	Metadata *AIGatewayDataPlaneClientCertificateMetadata `json:"metadata,omitempty"`
 }
 
 func (a AIGatewayDataPlaneClientCertificate) MarshalJSON() ([]byte, error) {
@@ -184,7 +184,7 @@ func (a *AIGatewayDataPlaneClientCertificate) GetUpdatedAt() time.Time {
 	return a.UpdatedAt
 }
 
-func (a *AIGatewayDataPlaneClientCertificate) GetMetadata() *Metadata {
+func (a *AIGatewayDataPlaneClientCertificate) GetMetadata() *AIGatewayDataPlaneClientCertificateMetadata {
 	if a == nil {
 		return nil
 	}

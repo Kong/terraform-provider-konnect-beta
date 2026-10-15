@@ -186,7 +186,7 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`v2`),
-				Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. Default: "v2"`,
+				Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. A version only moves forward - once a control plane runs a newer version, setting an older one is rejected. Omitting the field falls back to the default, so a create lands on the default version and a whole-record update of a control plane that already runs a newer version is rejected. Default: "v2"`,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`^v[0-9]{1,9}$`), "must match pattern "+regexp.MustCompile(`^v[0-9]{1,9}$`).String()),
 				},

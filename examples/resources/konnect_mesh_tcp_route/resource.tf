@@ -12,16 +12,7 @@ resource "konnect_mesh_tcp_route" "my_meshtcproute" {
       labels = {
         key = "value"
       }
-      mesh      = "...my_mesh..."
-      name      = "...my_name..."
-      namespace = "...my_namespace..."
-      proxy_types = [
-        "Sidecar"
-      ]
       section_name = "...my_section_name..."
-      tags = {
-        key = "value"
-      }
     }
     to = [
       {
@@ -30,22 +21,13 @@ resource "konnect_mesh_tcp_route" "my_meshtcproute" {
             default = {
               backend_refs = [
                 {
-                  kind = "MeshService"
+                  kind = "MeshExternalService"
                   labels = {
                     key = "value"
                   }
-                  mesh      = "...my_mesh..."
-                  name      = "...my_name..."
-                  namespace = "...my_namespace..."
-                  port      = 6
-                  proxy_types = [
-                    "Gateway"
-                  ]
+                  port         = 6
                   section_name = "...my_section_name..."
-                  tags = {
-                    key = "value"
-                  }
-                  weight = 1
+                  weight       = 4274592322
                 }
               ]
             }
@@ -56,16 +38,7 @@ resource "konnect_mesh_tcp_route" "my_meshtcproute" {
           labels = {
             key = "value"
           }
-          mesh      = "...my_mesh..."
-          name      = "...my_name..."
-          namespace = "...my_namespace..."
-          proxy_types = [
-            "Gateway"
-          ]
           section_name = "...my_section_name..."
-          tags = {
-            key = "value"
-          }
         }
       }
     ]

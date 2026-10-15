@@ -30,6 +30,7 @@ func (r *MeshAccessRoleBindingResourceModel) RefreshFromSharedAccessRoleBindingI
 
 	if resp != nil {
 		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
+		r.Kri = types.StringPointerValue(resp.Kri)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
@@ -95,6 +96,27 @@ func (r *MeshAccessRoleBindingResourceModel) ToOperationsGetAccessRoleBindingReq
 	out := operations.GetAccessRoleBindingRequest{
 		CpID: cpID,
 		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshAccessRoleBindingResourceModel) ToOperationsPostAccessRoleBindingRequest(ctx context.Context) (*operations.PostAccessRoleBindingRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	accessRoleBindingItem, accessRoleBindingItemDiags := r.ToSharedAccessRoleBindingItemInput(ctx)
+	diags.Append(accessRoleBindingItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostAccessRoleBindingRequest{
+		CpID:                  cpID,
+		AccessRoleBindingItem: *accessRoleBindingItem,
 	}
 
 	return &out, diags

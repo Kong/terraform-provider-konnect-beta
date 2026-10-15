@@ -41,14 +41,14 @@ type AIGatewayDataPlaneCertificateResource struct {
 
 // AIGatewayDataPlaneCertificateResourceModel describes the resource data model.
 type AIGatewayDataPlaneCertificateResourceModel struct {
-	Cert        types.String      `tfsdk:"cert"`
-	CreatedAt   types.String      `tfsdk:"created_at"`
-	Description types.String      `tfsdk:"description"`
-	GatewayID   types.String      `tfsdk:"gateway_id"`
-	ID          types.String      `tfsdk:"id"`
-	Metadata    *tfTypes.Metadata `tfsdk:"metadata"`
-	Title       types.String      `tfsdk:"title"`
-	UpdatedAt   types.String      `tfsdk:"updated_at"`
+	Cert        types.String                                         `tfsdk:"cert"`
+	CreatedAt   types.String                                         `tfsdk:"created_at"`
+	Description types.String                                         `tfsdk:"description"`
+	GatewayID   types.String                                         `tfsdk:"gateway_id"`
+	ID          types.String                                         `tfsdk:"id"`
+	Metadata    *tfTypes.AIGatewayDataPlaneClientCertificateMetadata `tfsdk:"metadata"`
+	Title       types.String                                         `tfsdk:"title"`
+	UpdatedAt   types.String                                         `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayDataPlaneCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

@@ -24,6 +24,7 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -42,17 +43,17 @@ type MeshIdentityResource struct {
 
 // MeshIdentityResourceModel describes the resource data model.
 type MeshIdentityResourceModel struct {
-	CpID             types.String                     `tfsdk:"cp_id"`
-	CreationTime     types.String                     `tfsdk:"creation_time"`
-	Kri              types.String                     `tfsdk:"kri"`
-	Labels           kumalabels.KumaLabelsMapValue    `tfsdk:"labels"`
-	Mesh             types.String                     `tfsdk:"mesh"`
-	ModificationTime types.String                     `tfsdk:"modification_time"`
-	Name             types.String                     `tfsdk:"name"`
-	Spec             *tfTypes.MeshIdentityItemSpec    `tfsdk:"spec"`
-	Status           *tfTypes.MeshAccessLogItemStatus `tfsdk:"status"`
-	Type             types.String                     `tfsdk:"type"`
-	Warnings         []types.String                   `tfsdk:"warnings"`
+	CpID             types.String                    `tfsdk:"cp_id"`
+	CreationTime     types.String                    `tfsdk:"creation_time"`
+	Kri              types.String                    `tfsdk:"kri"`
+	Labels           kumalabels.KumaLabelsMapValue   `tfsdk:"labels"`
+	Mesh             types.String                    `tfsdk:"mesh"`
+	ModificationTime types.String                    `tfsdk:"modification_time"`
+	Name             types.String                    `tfsdk:"name"`
+	Spec             *tfTypes.MeshIdentityItemSpec   `tfsdk:"spec"`
+	Status           *tfTypes.MeshIdentityItemStatus `tfsdk:"status"`
+	Type             types.String                    `tfsdk:"type"`
+	Warnings         []types.String                  `tfsdk:"warnings"`
 }
 
 func (r *MeshIdentityResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,6 +96,10 @@ func (r *MeshIdentityResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Description: `name of the mesh. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(253),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-z-_.]*$`), "must match pattern "+regexp.MustCompile(`^[0-9a-z-_.]*$`).String()),
+				},
 			},
 			"modification_time": schema.StringAttribute{
 				Computed: true,
@@ -108,7 +113,11 @@ func (r *MeshIdentityResource) Schema(ctx context.Context, req resource.SchemaRe
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `name of the MeshIdentity. Requires replacement if changed.`,
+				Description: `Name of the Kuma resource. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(253),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`).String()),
+				},
 			},
 			"spec": schema.SingleNestedAttribute{
 				Required: true,
@@ -367,6 +376,15 @@ func (r *MeshIdentityResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 						Description: `Conditions is an array of hostname generator conditions.`,
 					},
+					"trust_domain": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `TrustDomain is the trust domain this identity issues certificates in. The` + "\n" +
+							`control plane renders ` + "`" + `spec.spiffeID.trustDomain` + "`" + ` once, when it first` + "\n" +
+							`initializes the identity, and then keeps issuing in the recorded value.` + "\n" +
+							`Templates such as ` + "`" + `{{ .Zone }}` + "`" + ` therefore stop following the zone name,` + "\n" +
+							`which would otherwise silently move every workload into a trust domain no` + "\n" +
+							`MeshTrust publishes yet.`,
+					},
 				},
 				Description: `Status is the current status of the Kuma MeshIdentity resource.`,
 			},
@@ -430,13 +448,13 @@ func (r *MeshIdentityResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsPutMeshIdentityRequest(ctx)
+	request, requestDiags := data.ToOperationsPostMeshIdentityRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshIdentity.PutMeshIdentity(ctx, *request)
+	res, err := r.client.MeshIdentity.PostMeshIdentity(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -448,10 +466,14 @@ func (r *MeshIdentityResource) Create(ctx context.Context, req resource.CreateRe
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 201:
-		break
-	default:
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
+		return
+	}
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
