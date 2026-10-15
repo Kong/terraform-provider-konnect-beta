@@ -5,11 +5,14 @@ package sdk
 // Generated from OpenAPI doc version 2.0.0 and generator version 2.910.1
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/errors"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/retry"
 	"net/http"
@@ -71,10 +74,12 @@ type KonnectBeta struct {
 	MeshTLS                   *MeshTLS
 	MeshTrace                 *MeshTrace
 	MeshTrafficPermission     *MeshTrafficPermission
+	DataplaneInsight          *DataplaneInsight
+	GlobalSecret              *GlobalSecret
 	Mesh                      *Mesh
 	Secret                    *Secret
-	ZoneEgress                *ZoneEgress
-	ZoneIngress               *ZoneIngress
+	Zone                      *Zone
+	ZoneInsight               *ZoneInsight
 	HostnameGenerator         *HostnameGenerator
 	MeshExternalService       *MeshExternalService
 	MeshIdentity              *MeshIdentity
@@ -89,6 +94,7 @@ type KonnectBeta struct {
 	AccessAudit               *AccessAudit
 	AccessRole                *AccessRole
 	AccessRoleBinding         *AccessRoleBinding
+	License                   *License
 	// APIs related to configuration of Konnect Developer Portals.
 	Portals *Portals
 	// APIs related to configuration of Konnect Developer Portals custom domains.
@@ -108,6 +114,8 @@ type KonnectBeta struct {
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portal developer teams.
 	PortalTeams *PortalTeams
+	// APIs related to Konnect Developer Portal developer team membership.
+	PortalTeamMembership *PortalTeamMembership
 	// APIs related to Konnect Developer Portal developer team roles.
 	PortalTeamRoles *PortalTeamRoles
 	// APIs related to Konnect Developer Portal developers.
@@ -191,6 +199,37 @@ type KonnectBeta struct {
 	// directories can be used across multiple control planes.
 	//
 	KongIdentityDirectories *KongIdentityDirectories
+	// API related to the management of Konnect AI Gateway resources.
+	AIGateways *AIGateways
+	// API related to the management of AI Gateway DataPlane Certificates.
+	AIGatewayDataPlaneCertificates *AIGatewayDataPlaneCertificates
+	// API related to the management of AI Gateway CA Certificates.
+	AIGatewayCACertificates *AIGatewayCACertificates
+	// API related to the management of AI Gateway Certificates.
+	AIGatewayCertificates *AIGatewayCertificates
+	AIGatewaySNIs         *AIGatewaySNIs
+	// API related to the management of AI Gateway vaults for storing secrets.
+	AIGatewayVaults *AIGatewayVaults
+	// Policies that control security, rate-limiting, and guardrail behavior for the AI Gateway.
+	AIGatewayPolicies *AIGatewayPolicies
+	// Custom policies that let you bring your own Lua plugin schema and handler to the AI Gateway.
+	AIGatewayCustomPolicies *AIGatewayCustomPolicies
+	// Models that define routing, capabilities, and backend targets for the AI Gateway.
+	AIGatewayModels *AIGatewayModels
+	// AI Agents registered with the AI Gateway.
+	AIGatewayAgents *AIGatewayAgents
+	// Individual consumers with credentials and group memberships for AI Gateway access control.
+	AIGatewayConsumers *AIGatewayConsumers
+	// Consumer groups for applying rate-limiting and access policies to AI Gateway traffic.
+	AIGatewayConsumerGroups *AIGatewayConsumerGroups
+	// MCP Servers that expose tools for AI Gateway integrations.
+	AIGatewayMCPServers *AIGatewayMCPServers
+	// Model providers that define the backend AI service connections for the AI Gateway.
+	AIGatewayModelProviders *AIGatewayModelProviders
+	// Auth strategies for authenticating clients accessing AI Gateway resources.
+	AIGatewayAuthStrategies *AIGatewayAuthStrategies
+	// API related to the management of AI Gateway Config Stores.
+	AIGatewayConfigStores *AIGatewayConfigStores
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -305,10 +344,12 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshTLS = newMeshTLS(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshTrace = newMeshTrace(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshTrafficPermission = newMeshTrafficPermission(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.DataplaneInsight = newDataplaneInsight(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.GlobalSecret = newGlobalSecret(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Secret = newSecret(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.ZoneEgress = newZoneEgress(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.ZoneIngress = newZoneIngress(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Zone = newZone(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ZoneInsight = newZoneInsight(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.HostnameGenerator = newHostnameGenerator(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshIdentity = newMeshIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -323,6 +364,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AccessAudit = newAccessAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessRole = newAccessRole(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessRoleBinding = newAccessRoleBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.License = newLicense(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -333,6 +375,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.ApplicationRegistrations = newApplicationRegistrations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamMembership = newPortalTeamMembership(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -365,6 +408,543 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CloudGateways = newCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.KongIdentityDirectories = newKongIdentityDirectories(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGateways = newAIGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCACertificates = newAIGatewayCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCertificates = newAIGatewayCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewaySNIs = newAIGatewaySNIs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayVaults = newAIGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayPolicies = newAIGatewayPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCustomPolicies = newAIGatewayCustomPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayModels = newAIGatewayModels(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayAgents = newAIGatewayAgents(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConsumerGroups = newAIGatewayConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayAuthStrategies = newAIGatewayAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
+}
+
+// GetMeshInsight - Get the insight of a mesh
+// Returns the observed state of a mesh, computed by the control plane. Read only.
+func (s *KonnectBeta) GetMeshInsight(ctx context.Context, request operations.GetMeshInsightRequest, opts ...operations.Option) (*operations.GetMeshInsightResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionRetries,
+		operations.SupportedOptionTimeout,
+		operations.SupportedOptionAcceptHeaderOverride,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/mesh-insights/{name}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "getMeshInsight",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	if o.AcceptHeaderOverride != nil {
+		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
+	} else {
+		req.Header.Set("Accept", "application/json;q=1, application/problem+json;q=0")
+	}
+
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	globalRetryConfig := s.sdkConfiguration.RetryConfig
+	retryConfig := o.Retries
+	if retryConfig == nil {
+		if globalRetryConfig != nil {
+			retryConfig = globalRetryConfig
+		} else {
+			retryConfig = &retry.Config{
+				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
+					InitialInterval: 500,
+					MaxInterval:     60000,
+					Exponent:        1.5,
+					MaxElapsedTime:  3600000,
+				},
+				RetryConnectionErrors: true,
+			}
+		}
+	}
+
+	var httpRes *http.Response
+	if retryConfig != nil {
+		httpRes, err = utils.Retry(ctx, utils.Retries{
+			Config: retryConfig,
+			StatusCodes: []string{
+				"429",
+			},
+		}, func() (*http.Response, error) {
+			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
+				copyBody, err := req.GetBody()
+
+				if err != nil {
+					return nil, err
+				}
+
+				req.Body = copyBody
+			}
+
+			req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+			if err != nil {
+				if retry.IsPermanentError(err) || retry.IsTemporaryError(err) {
+					return nil, err
+				}
+
+				return nil, retry.Permanent(err)
+			}
+
+			httpRes, err := s.sdkConfiguration.Client.Do(req)
+			if err != nil || httpRes == nil {
+				if err != nil {
+					err = fmt.Errorf("error sending request: %w", err)
+				} else {
+					err = fmt.Errorf("error sending request: no response")
+				}
+
+				_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+			}
+			return httpRes, err
+		})
+
+		if err != nil {
+			return nil, err
+		} else {
+			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+		if err != nil {
+			return nil, err
+		}
+
+		httpRes, err = s.sdkConfiguration.Client.Do(req)
+		if err != nil || httpRes == nil {
+			if err != nil {
+				err = fmt.Errorf("error sending request: %w", err)
+			} else {
+				err = fmt.Errorf("error sending request: no response")
+			}
+
+			_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+			return nil, err
+		} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+			_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+			if err != nil {
+				return nil, err
+			} else if _httpRes != nil {
+				httpRes = _httpRes
+			}
+		} else {
+			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	res := &operations.GetMeshInsightResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.MeshInsightWithMeta
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.MeshInsightWithMeta = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 400:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BadRequestError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BadRequestError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 404:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.NotFoundError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.NotFoundError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 500:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.InternalError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.InternalError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// GetMeshInsightList - List mesh insights
+// Returns the observed state of every mesh, computed by the control plane. Read only.
+func (s *KonnectBeta) GetMeshInsightList(ctx context.Context, request operations.GetMeshInsightListRequest, opts ...operations.Option) (*operations.GetMeshInsightListResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionRetries,
+		operations.SupportedOptionTimeout,
+		operations.SupportedOptionAcceptHeaderOverride,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/mesh/control-planes/{cpId}/mesh-insights", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "getMeshInsightList",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	if o.AcceptHeaderOverride != nil {
+		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
+	} else {
+		req.Header.Set("Accept", "application/json;q=1, application/problem+json;q=0")
+	}
+
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
+		return nil, fmt.Errorf("error populating query params: %w", err)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	globalRetryConfig := s.sdkConfiguration.RetryConfig
+	retryConfig := o.Retries
+	if retryConfig == nil {
+		if globalRetryConfig != nil {
+			retryConfig = globalRetryConfig
+		} else {
+			retryConfig = &retry.Config{
+				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
+					InitialInterval: 500,
+					MaxInterval:     60000,
+					Exponent:        1.5,
+					MaxElapsedTime:  3600000,
+				},
+				RetryConnectionErrors: true,
+			}
+		}
+	}
+
+	var httpRes *http.Response
+	if retryConfig != nil {
+		httpRes, err = utils.Retry(ctx, utils.Retries{
+			Config: retryConfig,
+			StatusCodes: []string{
+				"429",
+			},
+		}, func() (*http.Response, error) {
+			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
+				copyBody, err := req.GetBody()
+
+				if err != nil {
+					return nil, err
+				}
+
+				req.Body = copyBody
+			}
+
+			req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+			if err != nil {
+				if retry.IsPermanentError(err) || retry.IsTemporaryError(err) {
+					return nil, err
+				}
+
+				return nil, retry.Permanent(err)
+			}
+
+			httpRes, err := s.sdkConfiguration.Client.Do(req)
+			if err != nil || httpRes == nil {
+				if err != nil {
+					err = fmt.Errorf("error sending request: %w", err)
+				} else {
+					err = fmt.Errorf("error sending request: no response")
+				}
+
+				_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+			}
+			return httpRes, err
+		})
+
+		if err != nil {
+			return nil, err
+		} else {
+			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+		if err != nil {
+			return nil, err
+		}
+
+		httpRes, err = s.sdkConfiguration.Client.Do(req)
+		if err != nil || httpRes == nil {
+			if err != nil {
+				err = fmt.Errorf("error sending request: %w", err)
+			} else {
+				err = fmt.Errorf("error sending request: no response")
+			}
+
+			_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+			return nil, err
+		} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+			_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+			if err != nil {
+				return nil, err
+			} else if _httpRes != nil {
+				httpRes = _httpRes
+			}
+		} else {
+			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	res := &operations.GetMeshInsightListResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.GetMeshInsightListResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GetMeshInsightListResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 400:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BadRequestError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BadRequestError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 500:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.InternalError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.InternalError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
 }

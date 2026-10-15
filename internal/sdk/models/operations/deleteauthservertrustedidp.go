@@ -11,7 +11,7 @@ type DeleteAuthServerTrustedIdpRequest struct {
 	// The auth server ID
 	AuthServerID string `pathParam:"style=simple,explode=false,name=authServerId"`
 	// The trusted IdP ID
-	TrustedIdpID string `pathParam:"style=simple,explode=false,name=trustedIdpId"`
+	AuthServerTrustedIdpID string `pathParam:"style=simple,explode=false,name=authServerTrustedIdpId"`
 }
 
 func (d *DeleteAuthServerTrustedIdpRequest) GetAuthServerID() string {
@@ -21,11 +21,11 @@ func (d *DeleteAuthServerTrustedIdpRequest) GetAuthServerID() string {
 	return d.AuthServerID
 }
 
-func (d *DeleteAuthServerTrustedIdpRequest) GetTrustedIdpID() string {
+func (d *DeleteAuthServerTrustedIdpRequest) GetAuthServerTrustedIdpID() string {
 	if d == nil {
 		return ""
 	}
-	return d.TrustedIdpID
+	return d.AuthServerTrustedIdpID
 }
 
 type DeleteAuthServerTrustedIdpResponse struct {

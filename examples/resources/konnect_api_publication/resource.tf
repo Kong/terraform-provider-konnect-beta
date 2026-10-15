@@ -7,5 +7,9 @@ resource "konnect_api_publication" "my_apipublication" {
   auto_approve_registrations = true
   form_id                    = "deafd39d-fc2f-4b87-9ee2-8e8feb2eae76"
   portal_id                  = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
-  visibility                 = "private"
+  spec_renderer = {
+    try_it_ui          = true
+    try_it_ui_audience = "all"
+  }
+  visibility = "private"
 }

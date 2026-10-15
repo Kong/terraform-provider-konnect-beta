@@ -6,11 +6,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -19,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/boolvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 )
 
@@ -55,7 +56,6 @@ type PortalResourceModel struct {
 	ForceDestroy                               types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID                                         types.String            `tfsdk:"id"`
 	Labels                                     map[string]types.String `tfsdk:"labels"`
-	McpServerEnabled                           types.Bool              `tfsdk:"mcp_server_enabled"`
 	Name                                       types.String            `tfsdk:"name"`
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
@@ -78,15 +78,29 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					"enabled": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Is AI enabled?. Not Null`,
-						Validators: []validator.Bool{
-							speakeasy_boolvalidators.NotNull(),
-						},
+						Default:     booldefault.StaticBool(false),
+						Description: `Is AI enabled?. Default: false`,
 					},
 					"features": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"ai_search": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"enabled": types.BoolType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether AI Search is enabled or not. Default: false`,
+									},
+								},
+								Description: `AI Search config`,
+							},
 							"mcp_server": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -94,10 +108,14 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Is the MCP Server enabled?. Not Null`,
-										Validators: []validator.Bool{
-											speakeasy_boolvalidators.NotNull(),
-										},
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether the MCP Server is enabled or not. Default: false`,
+									},
+									"write_operations_enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Default: false`,
 									},
 								},
 								Description: `AI Features config. Not Null`,
@@ -105,8 +123,24 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									speakeasy_objectvalidators.NotNull(),
 								},
 							},
+							"portal_agent": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"enabled": types.BoolType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether the Portal Agent is enabled or not. Default: false`,
+									},
+								},
+								Description: `Portal Agent config`,
+							},
 						},
-						Description: `Not Null`,
+						Description: `AI features configuration. When top-level ` + "`" + `enabled` + "`" + ` is false, every feature toggle here is automatically reset to false. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -221,12 +255,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					`Labels are intended to store **INTERNAL** metadata.` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"mcp_server_enabled": schema.BoolAttribute{
-				Computed:           true,
-				Optional:           true,
-				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `Whether the portal has the MCP server enabled`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

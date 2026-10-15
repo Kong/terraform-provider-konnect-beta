@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 )
 
@@ -37,20 +38,21 @@ type IdentityAuthServerResource struct {
 
 // IdentityAuthServerResourceModel describes the resource data model.
 type IdentityAuthServerResourceModel struct {
-	Audience                      types.String            `tfsdk:"audience"`
-	CreatedAt                     types.String            `tfsdk:"created_at"`
-	DcrDefaultAccessTokenDuration types.Int64             `tfsdk:"dcr_default_access_token_duration"`
-	Description                   types.String            `tfsdk:"description"`
-	ForceDestroy                  types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
-	ID                            types.String            `tfsdk:"id"`
-	Issuer                        types.String            `tfsdk:"issuer"`
-	JwksURI                       types.String            `tfsdk:"jwks_uri"`
-	Labels                        map[string]types.String `tfsdk:"labels"`
-	MetadataURI                   types.String            `tfsdk:"metadata_uri"`
-	Name                          types.String            `tfsdk:"name"`
-	SigningAlgorithm              types.String            `tfsdk:"signing_algorithm"`
-	TrustedOrigins                []types.String          `tfsdk:"trusted_origins"`
-	UpdatedAt                     types.String            `tfsdk:"updated_at"`
+	Audience         types.String               `tfsdk:"audience"`
+	CreatedAt        types.String               `tfsdk:"created_at"`
+	Dcr              *tfTypes.CreateDcrSettings `tfsdk:"dcr"`
+	Description      types.String               `tfsdk:"description"`
+	ForceDestroy     types.String               `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
+	ID               types.String               `tfsdk:"id"`
+	Issuer           types.String               `tfsdk:"issuer"`
+	JwksURI          types.String               `tfsdk:"jwks_uri"`
+	Labels           map[string]types.String    `tfsdk:"labels"`
+	MetadataURI      types.String               `tfsdk:"metadata_uri"`
+	Name             types.String               `tfsdk:"name"`
+	OpenDcrEnabled   types.Bool                 `tfsdk:"open_dcr_enabled"`
+	SigningAlgorithm types.String               `tfsdk:"signing_algorithm"`
+	TrustedOrigins   []types.String             `tfsdk:"trusted_origins"`
+	UpdatedAt        types.String               `tfsdk:"updated_at"`
 }
 
 func (r *IdentityAuthServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -75,14 +77,30 @@ func (r *IdentityAuthServerResource) Schema(ctx context.Context, req resource.Sc
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
-			"dcr_default_access_token_duration": schema.Int64Attribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     int64default.StaticInt64(300),
-				Description: `The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300`,
-				Validators: []validator.Int64{
-					int64validator.Between(60, 2592000),
+			"dcr": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"default_access_token_duration": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(300),
+						Description: `The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300`,
+						Validators: []validator.Int64{
+							int64validator.Between(60, 2592000),
+						},
+					},
+					"redirect_uri_allowlist": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Redirect URIs allowed for clients registered via open Dynamic Client Registration`,
+						Validators: []validator.List{
+							listvalidator.UniqueValues(),
+						},
+					},
 				},
+				Description: `Dynamic Client Registration settings for the auth server. Both fields are optional; an omitted field falls back to its default.`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -134,6 +152,11 @@ func (r *IdentityAuthServerResource) Schema(ctx context.Context, req resource.Sc
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtLeast(1),
 				},
+			},
+			"open_dcr_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Whether open (unauthenticated) Dynamic Client Registration is enabled for the auth server`,
 			},
 			"signing_algorithm": schema.StringAttribute{
 				Computed:    true,

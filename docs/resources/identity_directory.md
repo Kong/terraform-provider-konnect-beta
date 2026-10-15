@@ -30,6 +30,7 @@ resource "konnect_identity_directory" "my_identitydirectory" {
   name              = "...my_name..."
   negative_ttl_secs = 600
   ttl_secs          = 600
+  vault_enabled     = false
 }
 ```
 
@@ -66,6 +67,8 @@ Default: 600
 - `ttl_secs` (Number) The time in seconds that a principal will be cached in memory on a running Gateway if it is
 successfully authenticated from this directory. Maximum is 86400 seconds (24 hours).
 Default: 600
+- `vault_enabled` (Boolean) Set to enabled to enable the Token Vault for this directory.
+Defaults to disabled when omitted.
 
 ### Read-Only
 

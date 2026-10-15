@@ -40,7 +40,12 @@ resource "konnect_portal_customization" "my_portalcustomization" {
     ]
   }
   portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
-  robots    = "...my_robots..."
+  portal_layout = {
+    footer = {
+      snippet_name = "my-snippet"
+    }
+  }
+  robots = "...my_robots..."
   spec_renderer = {
     allow_custom_server_urls = true
     hide_deprecated          = false
@@ -49,12 +54,13 @@ resource "konnect_portal_customization" "my_portalcustomization" {
     show_schemas             = true
     try_it_insomnia          = true
     try_it_ui                = true
+    try_it_ui_audience       = "all"
   }
   theme = {
     colors = {
       primary = "#000000"
     }
     mode = "system"
-    name = "...my_name..."
+    name = "ocean"
   }
 }

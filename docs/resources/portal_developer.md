@@ -15,16 +15,6 @@ PortalDeveloper Resource
 ```terraform
 resource "konnect_portal_developer" "my_portaldeveloper" {
   provider = konnect-beta
-  additional_data = {
-    key = {
-      array_of_str = [
-        "..."
-      ]
-      boolean = true
-      number  = 6.94
-      str     = "...my_str..."
-    }
-  }
   email                 = "Rhiannon.Johnson21@yahoo.com"
   full_name             = "...my_full_name..."
   portal_id             = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
@@ -44,7 +34,6 @@ resource "konnect_portal_developer" "my_portaldeveloper" {
 
 ### Optional
 
-- `additional_data` (Attributes Map) Optional developer-supplied answers to the portal's `developer_registration` form, supplied as a flat map keyed by field `name` (the field's non-built-in slug). Values match each field's input type. Built-in fields (`full_name`, `email`) come in via the top-level body properties — not here. Silently ignored when no developer registration form is active on the portal. Requires replacement if changed. (see [below for nested schema](#nestedatt--additional_data))
 - `send_invitation_email` (Boolean) When true, sends an invitation email to the developer. Default is false; no emails are sent unless explicitly requested. Default: false; Requires replacement if changed.
 - `status` (String) When omitted, the portal's `auto_approve_developers` setting determines the initial status. Set this property to override the portal default with any valid developer status. possible known values include one of ["approved", "pending", "revoked", "rejected"]
 
@@ -53,33 +42,6 @@ resource "konnect_portal_developer" "my_portaldeveloper" {
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--additional_data"></a>
-### Nested Schema for `additional_data`
-
-Optional:
-
-- `array_of_str` (List of String) Requires replacement if changed.
-- `boolean` (Boolean) Requires replacement if changed.
-- `number` (Number) Requires replacement if changed.
-- `str` (String) Requires replacement if changed.
-
-Read-Only:
-
-- `label` (String) Field label snapshotted at submission time.
-- `name` (String) Field slug, matches the parent object key.
-- `type` (String) Field input type at submission time.
-- `value` (Attributes) Submitted value. Type matches the field `type`: `text`/`email`/`textarea` return strings; `number` returns a number; `checkbox` returns a boolean; `select` returns a string for single-select or an array of strings for multi-select. (see [below for nested schema](#nestedatt--additional_data--value))
-
-<a id="nestedatt--additional_data--value"></a>
-### Nested Schema for `additional_data.value`
-
-Read-Only:
-
-- `array_of_str` (List of String)
-- `boolean` (Boolean)
-- `number` (Number)
-- `str` (String)
 
 ## Import
 

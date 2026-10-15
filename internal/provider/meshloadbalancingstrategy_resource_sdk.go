@@ -52,16 +52,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					r.Spec.TargetRef.Labels[key] = types.StringValue(value)
 				}
 			}
-			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
-			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
-			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
-			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
-				for key1, value1 := range resp.Spec.TargetRef.Tags {
-					r.Spec.TargetRef.Tags[key1] = types.StringValue(value1)
-				}
-			}
 		}
 		r.Spec.To = []tfTypes.MeshLoadBalancingStrategyItemTo{}
 
@@ -123,7 +114,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					} else {
 						to.Default.LoadBalancer.LeastRequest = &tfTypes.LeastRequest{}
 						if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias != nil {
-							to.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.AuthType{}
+							to.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.StandardDeviationFactor{}
 							if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer != nil {
 								to.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer = types.Int64PointerValue(toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer)
 							}
@@ -199,7 +190,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 						} else {
 							to.Default.LocalityAwareness.CrossZone.FailoverThreshold = &tfTypes.FailoverThreshold{}
 							if to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage == nil {
-								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage = &tfTypes.AuthType{}
+								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage = &tfTypes.StandardDeviationFactor{}
 							}
 							if toItem.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer != nil {
 								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer = types.Int64PointerValue(toItem.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer)
@@ -231,20 +222,11 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
-				for key2, value2 := range toItem.TargetRef.Labels {
-					to.TargetRef.Labels[key2] = types.StringValue(value2)
+				for key1, value1 := range toItem.TargetRef.Labels {
+					to.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
 			}
-			to.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
-			to.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
-			to.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
 			to.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
-			if len(toItem.TargetRef.Tags) > 0 {
-				to.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
-				for key3, value3 := range toItem.TargetRef.Tags {
-					to.TargetRef.Tags[key3] = types.StringValue(value3)
-				}
-			}
 
 			r.Spec.To = append(r.Spec.To, to)
 		}
@@ -291,6 +273,31 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsGetMeshLoadBalancin
 		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsPostMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.PostMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshLoadBalancingStrategyItem, meshLoadBalancingStrategyItemDiags := r.ToSharedMeshLoadBalancingStrategyItemInput(ctx)
+	diags.Append(meshLoadBalancingStrategyItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshLoadBalancingStrategyRequest{
+		CpID:                          cpID,
+		Mesh:                          mesh,
+		MeshLoadBalancingStrategyItem: *meshLoadBalancingStrategyItem,
 	}
 
 	return &out, diags
@@ -352,45 +359,16 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 
 			labels1[labelsKey] = labelsInst
 		}
-		mesh1 := new(string)
-		if !r.Spec.TargetRef.Mesh.IsUnknown() && !r.Spec.TargetRef.Mesh.IsNull() {
-			*mesh1 = r.Spec.TargetRef.Mesh.ValueString()
-		} else {
-			mesh1 = nil
-		}
-		name1 := new(string)
-		if !r.Spec.TargetRef.Name.IsUnknown() && !r.Spec.TargetRef.Name.IsNull() {
-			*name1 = r.Spec.TargetRef.Name.ValueString()
-		} else {
-			name1 = nil
-		}
-		namespace := new(string)
-		if !r.Spec.TargetRef.Namespace.IsUnknown() && !r.Spec.TargetRef.Namespace.IsNull() {
-			*namespace = r.Spec.TargetRef.Namespace.ValueString()
-		} else {
-			namespace = nil
-		}
 		sectionName := new(string)
 		if !r.Spec.TargetRef.SectionName.IsUnknown() && !r.Spec.TargetRef.SectionName.IsNull() {
 			*sectionName = r.Spec.TargetRef.SectionName.ValueString()
 		} else {
 			sectionName = nil
 		}
-		tags := make(map[string]string)
-		for tagsKey := range r.Spec.TargetRef.Tags {
-			var tagsInst string
-			tagsInst = r.Spec.TargetRef.Tags[tagsKey].ValueString()
-
-			tags[tagsKey] = tagsInst
-		}
 		targetRef = &shared.MeshLoadBalancingStrategyItemTargetRef{
 			Kind:        kind,
 			Labels:      labels1,
-			Mesh:        mesh1,
-			Name:        name1,
-			Namespace:   namespace,
 			SectionName: sectionName,
-			Tags:        tags,
 		}
 	}
 	to := make([]shared.MeshLoadBalancingStrategyItemTo, 0, len(r.Spec.To))
@@ -413,8 +391,8 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 				}
 				var cookie *shared.Cookie
 				if r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Cookie != nil {
-					var name2 string
-					name2 = r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Cookie.Name.ValueString()
+					var name1 string
+					name1 = r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Cookie.Name.ValueString()
 
 					path := new(string)
 					if !r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Cookie.Path.IsUnknown() && !r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Cookie.Path.IsNull() {
@@ -429,7 +407,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 						ttl = nil
 					}
 					cookie = &shared.Cookie{
-						Name: name2,
+						Name: name1,
 						Path: path,
 						TTL:  ttl,
 					}
@@ -445,20 +423,20 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 				}
 				var header *shared.MeshLoadBalancingStrategyItemHeader
 				if r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Header != nil {
-					var name3 string
-					name3 = r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Header.Name.ValueString()
+					var name2 string
+					name2 = r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].Header.Name.ValueString()
 
 					header = &shared.MeshLoadBalancingStrategyItemHeader{
-						Name: name3,
+						Name: name2,
 					}
 				}
 				var queryParameter *shared.QueryParameter
 				if r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].QueryParameter != nil {
-					var name4 string
-					name4 = r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].QueryParameter.Name.ValueString()
+					var name3 string
+					name3 = r.Spec.To[toIndex].Default.HashPolicies[hashPoliciesIndex].QueryParameter.Name.ValueString()
 
 					queryParameter = &shared.QueryParameter{
-						Name: name4,
+						Name: name3,
 					}
 				}
 				terminal := new(bool)
@@ -686,45 +664,16 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 
 			labels2[labelsKey1] = labelsInst1
 		}
-		mesh2 := new(string)
-		if !r.Spec.To[toIndex].TargetRef.Mesh.IsUnknown() && !r.Spec.To[toIndex].TargetRef.Mesh.IsNull() {
-			*mesh2 = r.Spec.To[toIndex].TargetRef.Mesh.ValueString()
-		} else {
-			mesh2 = nil
-		}
-		name5 := new(string)
-		if !r.Spec.To[toIndex].TargetRef.Name.IsUnknown() && !r.Spec.To[toIndex].TargetRef.Name.IsNull() {
-			*name5 = r.Spec.To[toIndex].TargetRef.Name.ValueString()
-		} else {
-			name5 = nil
-		}
-		namespace1 := new(string)
-		if !r.Spec.To[toIndex].TargetRef.Namespace.IsUnknown() && !r.Spec.To[toIndex].TargetRef.Namespace.IsNull() {
-			*namespace1 = r.Spec.To[toIndex].TargetRef.Namespace.ValueString()
-		} else {
-			namespace1 = nil
-		}
 		sectionName1 := new(string)
 		if !r.Spec.To[toIndex].TargetRef.SectionName.IsUnknown() && !r.Spec.To[toIndex].TargetRef.SectionName.IsNull() {
 			*sectionName1 = r.Spec.To[toIndex].TargetRef.SectionName.ValueString()
 		} else {
 			sectionName1 = nil
 		}
-		tags1 := make(map[string]string)
-		for tagsKey1 := range r.Spec.To[toIndex].TargetRef.Tags {
-			var tagsInst1 string
-			tagsInst1 = r.Spec.To[toIndex].TargetRef.Tags[tagsKey1].ValueString()
-
-			tags1[tagsKey1] = tagsInst1
-		}
 		targetRef1 := shared.MeshLoadBalancingStrategyItemSpecTargetRef{
 			Kind:        kind1,
 			Labels:      labels2,
-			Mesh:        mesh2,
-			Name:        name5,
-			Namespace:   namespace1,
 			SectionName: sectionName1,
-			Tags:        tags1,
 		}
 		to = append(to, shared.MeshLoadBalancingStrategyItemTo{
 			Default:   defaultVar,

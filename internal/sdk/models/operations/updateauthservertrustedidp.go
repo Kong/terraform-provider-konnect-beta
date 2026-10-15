@@ -11,9 +11,9 @@ type UpdateAuthServerTrustedIdpRequest struct {
 	// The auth server ID
 	AuthServerID string `pathParam:"style=simple,explode=false,name=authServerId"`
 	// The trusted IdP ID
-	TrustedIdpID string `pathParam:"style=simple,explode=false,name=trustedIdpId"`
+	AuthServerTrustedIdpID string `pathParam:"style=simple,explode=false,name=authServerTrustedIdpId"`
 	// Full trusted IdP representation to replace the existing one. Omitted optional fields are reset to their defaults.
-	UpdateTrustedIdpPayload shared.UpdateTrustedIdpPayload `request:"mediaType=application/json"`
+	UpdateAuthServerTrustedIdpPayload shared.UpdateAuthServerTrustedIdpPayload `request:"mediaType=application/json"`
 }
 
 func (u *UpdateAuthServerTrustedIdpRequest) GetAuthServerID() string {
@@ -23,18 +23,18 @@ func (u *UpdateAuthServerTrustedIdpRequest) GetAuthServerID() string {
 	return u.AuthServerID
 }
 
-func (u *UpdateAuthServerTrustedIdpRequest) GetTrustedIdpID() string {
+func (u *UpdateAuthServerTrustedIdpRequest) GetAuthServerTrustedIdpID() string {
 	if u == nil {
 		return ""
 	}
-	return u.TrustedIdpID
+	return u.AuthServerTrustedIdpID
 }
 
-func (u *UpdateAuthServerTrustedIdpRequest) GetUpdateTrustedIdpPayload() shared.UpdateTrustedIdpPayload {
+func (u *UpdateAuthServerTrustedIdpRequest) GetUpdateAuthServerTrustedIdpPayload() shared.UpdateAuthServerTrustedIdpPayload {
 	if u == nil {
-		return shared.UpdateTrustedIdpPayload{}
+		return shared.UpdateAuthServerTrustedIdpPayload{}
 	}
-	return u.UpdateTrustedIdpPayload
+	return u.UpdateAuthServerTrustedIdpPayload
 }
 
 type UpdateAuthServerTrustedIdpResponse struct {
@@ -45,7 +45,7 @@ type UpdateAuthServerTrustedIdpResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A trusted IdP
-	TrustedIdp *shared.TrustedIdp
+	AuthServerTrustedIdp *shared.AuthServerTrustedIdp
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Not Found
@@ -75,11 +75,11 @@ func (u *UpdateAuthServerTrustedIdpResponse) GetRawResponse() *http.Response {
 	return u.RawResponse
 }
 
-func (u *UpdateAuthServerTrustedIdpResponse) GetTrustedIdp() *shared.TrustedIdp {
+func (u *UpdateAuthServerTrustedIdpResponse) GetAuthServerTrustedIdp() *shared.AuthServerTrustedIdp {
 	if u == nil {
 		return nil
 	}
-	return u.TrustedIdp
+	return u.AuthServerTrustedIdp
 }
 
 func (u *UpdateAuthServerTrustedIdpResponse) GetBadRequestError() *shared.BadRequestError {

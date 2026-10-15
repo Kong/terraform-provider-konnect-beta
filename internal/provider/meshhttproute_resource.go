@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -101,6 +100,10 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Description: `name of the mesh. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(253),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-z-_.]*$`), "must match pattern "+regexp.MustCompile(`^[0-9a-z-_.]*$`).String()),
+				},
 			},
 			"modification_time": schema.StringAttribute{
 				Computed: true,
@@ -114,7 +117,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `name of the MeshHTTPRoute. Requires replacement if changed.`,
+				Description: `Name of the Kuma resource. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(253),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`).String()),
+				},
 			},
 			"spec": schema.SingleNestedAttribute{
 				Required: true,
@@ -124,38 +131,19 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,
 								ElementType: types.StringType,
-								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
-									`Name and Namespace can be used.`,
-							},
-							"mesh": schema.StringAttribute{
-								Optional:    true,
-								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
-							},
-							"name": schema.StringAttribute{
-								Optional: true,
-								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `` + "\n" +
-									`and ` + "`" + `MeshServiceSubset` + "`" + ``,
-							},
-							"namespace": schema.StringAttribute{
-								Optional: true,
-								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
-									`will be targeted.`,
+								MarkdownDescription: `Labels are used to select referenced real resources and to carry legacy` + "\n" +
+									`service identity when a common TargetRef must still target old` + "\n" +
+									`service-tag based paths.`,
 							},
 							"section_name": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
-							},
-							"tags": schema.MapAttribute{
-								Optional:    true,
-								ElementType: types.StringType,
-								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
-									`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 							},
 						},
 						MarkdownDescription: `TargetRef is a reference to the resource the policy takes an effect on.` + "\n" +
@@ -207,9 +195,359 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																speakeasy_objectvalidators.NotNull(),
 															},
 															Attributes: map[string]schema.Attribute{
+																"filters": schema.ListNestedAttribute{
+																	Computed: true,
+																	Optional: true,
+																	PlanModifiers: []planmodifier.List{
+																		custom_listplanmodifier.SupressZeroNullModifier(),
+																	},
+																	NestedObject: schema.NestedAttributeObject{
+																		Validators: []validator.Object{
+																			speakeasy_objectvalidators.NotNull(),
+																		},
+																		Attributes: map[string]schema.Attribute{
+																			"request_header_modifier": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"add": schema.ListNestedAttribute{
+																						Computed: true,
+																						Optional: true,
+																						PlanModifiers: []planmodifier.List{
+																							custom_listplanmodifier.SupressZeroNullModifier(),
+																						},
+																						NestedObject: schema.NestedAttributeObject{
+																							Validators: []validator.Object{
+																								speakeasy_objectvalidators.NotNull(),
+																							},
+																							Attributes: map[string]schema.Attribute{
+																								"name": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																										stringvalidator.UTF8LengthBetween(1, 256),
+																										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`).String()),
+																									},
+																								},
+																								"value": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																									},
+																								},
+																							},
+																						},
+																						Validators: []validator.List{
+																							listvalidator.SizeAtMost(16),
+																						},
+																					},
+																					"remove": schema.ListAttribute{
+																						Computed: true,
+																						Optional: true,
+																						PlanModifiers: []planmodifier.List{
+																							custom_listplanmodifier.SupressZeroNullModifier(),
+																						},
+																						ElementType: types.StringType,
+																						Validators: []validator.List{
+																							listvalidator.SizeAtMost(16),
+																						},
+																					},
+																					"set": schema.ListNestedAttribute{
+																						Computed: true,
+																						Optional: true,
+																						PlanModifiers: []planmodifier.List{
+																							custom_listplanmodifier.SupressZeroNullModifier(),
+																						},
+																						NestedObject: schema.NestedAttributeObject{
+																							Validators: []validator.Object{
+																								speakeasy_objectvalidators.NotNull(),
+																							},
+																							Attributes: map[string]schema.Attribute{
+																								"name": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																										stringvalidator.UTF8LengthBetween(1, 256),
+																										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`).String()),
+																									},
+																								},
+																								"value": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																									},
+																								},
+																							},
+																						},
+																						Validators: []validator.List{
+																							listvalidator.SizeAtMost(16),
+																						},
+																					},
+																				},
+																				MarkdownDescription: `Only one action is supported per header name.` + "\n" +
+																					`Configuration to set or add multiple values for a header must use RFC 7230` + "\n" +
+																					`header value formatting, separating each value with a comma.`,
+																			},
+																			"request_mirror": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"backend_ref": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"kind": schema.StringAttribute{
+																								Optional:    true,
+																								Description: `Kind of the referenced resource. possible known values include one of ["MeshService", "MeshExternalService", "MeshMultiZoneService"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"labels": schema.MapAttribute{
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `Labels are used to select the referenced real resource.`,
+																							},
+																							"port": schema.Int32Attribute{
+																								Optional:    true,
+																								Description: `Port is only supported when this ref refers to a real MeshService object`,
+																							},
+																							"section_name": schema.StringAttribute{
+																								Optional: true,
+																								MarkdownDescription: `SectionName is used to target a specific section of the resource.` + "\n" +
+																									`For example, you can target a port from MeshService.ports[] by its name.`,
+																							},
+																							"weight": schema.Int64Attribute{
+																								Optional: true,
+																								Validators: []validator.Int64{
+																									int64validator.Between(0, 4294967295),
+																								},
+																							},
+																						},
+																						Description: `BackendRef defines the destination traffic is routed to. Not Null`,
+																						Validators: []validator.Object{
+																							speakeasy_objectvalidators.NotNull(),
+																						},
+																					},
+																					"percentage": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"integer": schema.Int64Attribute{
+																								Optional: true,
+																								Validators: []validator.Int64{
+																									int64validator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("str"),
+																									}...),
+																								},
+																							},
+																							"str": schema.StringAttribute{
+																								Optional: true,
+																								Validators: []validator.String{
+																									stringvalidator.ConflictsWith(path.Expressions{
+																										path.MatchRelative().AtParent().AtName("integer"),
+																									}...),
+																								},
+																							},
+																						},
+																						MarkdownDescription: `Percentage of requests to mirror. If not specified, all requests` + "\n" +
+																							`to the target cluster will be mirrored.`,
+																					},
+																				},
+																			},
+																			"request_redirect": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"hostname": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `PreciseHostname is the fully qualified domain name of a network host. This` + "\n" +
+																							`matches the RFC 1123 definition of a hostname with 1 notable exception that` + "\n" +
+																							`numeric IP addresses are not allowed.` + "\n" +
+																							`` + "\n" +
+																							`Note that as per RFC1035 and RFC1123, a *label* must consist of lower case` + "\n" +
+																							`alphanumeric characters or '-', and must start and end with an alphanumeric` + "\n" +
+																							`character. No other punctuation is allowed.`,
+																						Validators: []validator.String{
+																							stringvalidator.UTF8LengthBetween(1, 253),
+																							stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`).String()),
+																						},
+																					},
+																					"path": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"replace_full_path": schema.StringAttribute{
+																								Optional: true,
+																							},
+																							"replace_prefix_match": schema.StringAttribute{
+																								Optional: true,
+																							},
+																							"type": schema.StringAttribute{
+																								Optional:    true,
+																								Description: `possible known values include one of ["ReplaceFullPath", "ReplacePrefixMatch"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						MarkdownDescription: `Path defines parameters used to modify the path of the incoming request.` + "\n" +
+																							`The modified path is then used to construct the location header.` + "\n" +
+																							`When empty, the request path is used as-is.`,
+																					},
+																					"port": schema.Int32Attribute{
+																						Optional: true,
+																						MarkdownDescription: `Port is the port to be used in the value of the ` + "`" + `Location` + "`" + `` + "\n" +
+																							`header in the response.` + "\n" +
+																							`When empty, port (if specified) of the request is used.`,
+																						Validators: []validator.Int32{
+																							int32validator.Between(1, 65535),
+																						},
+																					},
+																					"scheme": schema.StringAttribute{
+																						Optional:    true,
+																						Description: `possible known values include one of ["http", "https"]`,
+																					},
+																					"status_code": schema.Int64Attribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     int64default.StaticInt64(302),
+																						Description: `StatusCode is the HTTP status code to be used in response. possible known values include one of [301, 302, 303, 307, 308]; Default: 302`,
+																					},
+																				},
+																			},
+																			"response_header_modifier": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"add": schema.ListNestedAttribute{
+																						Computed: true,
+																						Optional: true,
+																						PlanModifiers: []planmodifier.List{
+																							custom_listplanmodifier.SupressZeroNullModifier(),
+																						},
+																						NestedObject: schema.NestedAttributeObject{
+																							Validators: []validator.Object{
+																								speakeasy_objectvalidators.NotNull(),
+																							},
+																							Attributes: map[string]schema.Attribute{
+																								"name": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																										stringvalidator.UTF8LengthBetween(1, 256),
+																										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`).String()),
+																									},
+																								},
+																								"value": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																									},
+																								},
+																							},
+																						},
+																						Validators: []validator.List{
+																							listvalidator.SizeAtMost(16),
+																						},
+																					},
+																					"remove": schema.ListAttribute{
+																						Computed: true,
+																						Optional: true,
+																						PlanModifiers: []planmodifier.List{
+																							custom_listplanmodifier.SupressZeroNullModifier(),
+																						},
+																						ElementType: types.StringType,
+																						Validators: []validator.List{
+																							listvalidator.SizeAtMost(16),
+																						},
+																					},
+																					"set": schema.ListNestedAttribute{
+																						Computed: true,
+																						Optional: true,
+																						PlanModifiers: []planmodifier.List{
+																							custom_listplanmodifier.SupressZeroNullModifier(),
+																						},
+																						NestedObject: schema.NestedAttributeObject{
+																							Validators: []validator.Object{
+																								speakeasy_objectvalidators.NotNull(),
+																							},
+																							Attributes: map[string]schema.Attribute{
+																								"name": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																										stringvalidator.UTF8LengthBetween(1, 256),
+																										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9!#$%&'*+\-.^_\x60|~]+$`).String()),
+																									},
+																								},
+																								"value": schema.StringAttribute{
+																									Optional:    true,
+																									Description: `Not Null`,
+																									Validators: []validator.String{
+																										speakeasy_stringvalidators.NotNull(),
+																									},
+																								},
+																							},
+																						},
+																						Validators: []validator.List{
+																							listvalidator.SizeAtMost(16),
+																						},
+																					},
+																				},
+																				MarkdownDescription: `Only one action is supported per header name.` + "\n" +
+																					`Configuration to set or add multiple values for a header must use RFC 7230` + "\n" +
+																					`header value formatting, separating each value with a comma.`,
+																			},
+																			"type": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `possible known values include one of ["RequestHeaderModifier", "ResponseHeaderModifier", "RequestRedirect", "URLRewrite", "RequestMirror"]; Not Null`,
+																				Validators: []validator.String{
+																					speakeasy_stringvalidators.NotNull(),
+																				},
+																			},
+																			"url_rewrite": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"host_to_backend_hostname": schema.BoolAttribute{
+																						Optional:    true,
+																						Description: `HostToBackendHostname is not currently supported and must not be set.`,
+																					},
+																					"hostname": schema.StringAttribute{
+																						Optional:    true,
+																						Description: `Hostname is the value to be used to replace the host header value during forwarding.`,
+																						Validators: []validator.String{
+																							stringvalidator.UTF8LengthBetween(1, 253),
+																							stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`).String()),
+																						},
+																					},
+																					"path": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"replace_full_path": schema.StringAttribute{
+																								Optional: true,
+																							},
+																							"replace_prefix_match": schema.StringAttribute{
+																								Optional: true,
+																							},
+																							"type": schema.StringAttribute{
+																								Optional:    true,
+																								Description: `possible known values include one of ["ReplaceFullPath", "ReplacePrefixMatch"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Description: `Path defines a path rewrite.`,
+																					},
+																				},
+																			},
+																		},
+																	},
+																},
 																"kind": schema.StringAttribute{
 																	Optional:    true,
-																	Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
+																	Description: `Kind of the referenced resource. possible known values include one of ["MeshService", "MeshExternalService", "MeshMultiZoneService"]; Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
 																	},
@@ -217,22 +555,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																"labels": schema.MapAttribute{
 																	Optional:    true,
 																	ElementType: types.StringType,
-																	MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
-																		`Name and Namespace can be used.`,
-																},
-																"mesh": schema.StringAttribute{
-																	Optional:    true,
-																	Description: `Mesh is reserved for future use to identify cross mesh resources.`,
-																},
-																"name": schema.StringAttribute{
-																	Optional: true,
-																	MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `` + "\n" +
-																		`and ` + "`" + `MeshServiceSubset` + "`" + ``,
-																},
-																"namespace": schema.StringAttribute{
-																	Optional: true,
-																	MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
-																		`will be targeted.`,
+																	Description: `Labels are used to select the referenced real resource.`,
 																},
 																"port": schema.Int32Attribute{
 																	Optional:    true,
@@ -240,22 +563,13 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																},
 																"section_name": schema.StringAttribute{
 																	Optional: true,
-																	MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
-																		`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
-																},
-																"tags": schema.MapAttribute{
-																	Optional:    true,
-																	ElementType: types.StringType,
-																	MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
-																		`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
+																	MarkdownDescription: `SectionName is used to target a specific section of the resource.` + "\n" +
+																		`For example, you can target a port from MeshService.ports[] by its name.`,
 																},
 																"weight": schema.Int64Attribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     int64default.StaticInt64(1),
-																	Description: `Default: 1`,
+																	Optional: true,
 																	Validators: []validator.Int64{
-																		int64validator.AtLeast(0),
+																		int64validator.Between(0, 4294967295),
 																	},
 																},
 															},
@@ -365,7 +679,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			Attributes: map[string]schema.Attribute{
 																				"kind": schema.StringAttribute{
 																					Optional:    true,
-																					Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
+																					Description: `Kind of the referenced resource. possible known values include one of ["MeshService", "MeshExternalService", "MeshMultiZoneService"]; Not Null`,
 																					Validators: []validator.String{
 																						speakeasy_stringvalidators.NotNull(),
 																					},
@@ -373,22 +687,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				"labels": schema.MapAttribute{
 																					Optional:    true,
 																					ElementType: types.StringType,
-																					MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
-																						`Name and Namespace can be used.`,
-																				},
-																				"mesh": schema.StringAttribute{
-																					Optional:    true,
-																					Description: `Mesh is reserved for future use to identify cross mesh resources.`,
-																				},
-																				"name": schema.StringAttribute{
-																					Optional: true,
-																					MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `` + "\n" +
-																						`and ` + "`" + `MeshServiceSubset` + "`" + ``,
-																				},
-																				"namespace": schema.StringAttribute{
-																					Optional: true,
-																					MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
-																						`will be targeted.`,
+																					Description: `Labels are used to select the referenced real resource.`,
 																				},
 																				"port": schema.Int32Attribute{
 																					Optional:    true,
@@ -396,26 +695,17 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				},
 																				"section_name": schema.StringAttribute{
 																					Optional: true,
-																					MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
-																						`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
-																				},
-																				"tags": schema.MapAttribute{
-																					Optional:    true,
-																					ElementType: types.StringType,
-																					MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
-																						`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
+																					MarkdownDescription: `SectionName is used to target a specific section of the resource.` + "\n" +
+																						`For example, you can target a port from MeshService.ports[] by its name.`,
 																				},
 																				"weight": schema.Int64Attribute{
-																					Computed:    true,
-																					Optional:    true,
-																					Default:     int64default.StaticInt64(1),
-																					Description: `Default: 1`,
+																					Optional: true,
 																					Validators: []validator.Int64{
-																						int64validator.AtLeast(0),
+																						int64validator.Between(0, 4294967295),
 																					},
 																				},
 																			},
-																			Description: `BackendRef defines where to forward traffic. Not Null`,
+																			Description: `BackendRef defines the destination traffic is routed to. Not Null`,
 																			Validators: []validator.Object{
 																				speakeasy_objectvalidators.NotNull(),
 																			},
@@ -677,10 +967,8 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
-																		Default:     stringdefault.StaticString(`Exact`),
-																		Description: `Type specifies how to match against the value of the header. possible known values include one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]; Default: "Exact"`,
+																		Description: `Type specifies how to match against the value of the header. possible known values include one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																	},
 																	"value": schema.StringAttribute{
 																		Optional:    true,
@@ -777,7 +1065,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
 											Optional:    true,
-											Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
+											Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshHTTPRoute"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
 											},
@@ -785,33 +1073,14 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 										"labels": schema.MapAttribute{
 											Optional:    true,
 											ElementType: types.StringType,
-											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
-												`Name and Namespace can be used.`,
-										},
-										"mesh": schema.StringAttribute{
-											Optional:    true,
-											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
-										},
-										"name": schema.StringAttribute{
-											Optional: true,
-											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `` + "\n" +
-												`and ` + "`" + `MeshServiceSubset` + "`" + ``,
-										},
-										"namespace": schema.StringAttribute{
-											Optional: true,
-											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
-												`will be targeted.`,
+											MarkdownDescription: `Labels are used to select referenced real resources and to carry legacy` + "\n" +
+												`service identity when a common TargetRef must still target old` + "\n" +
+												`service-tag based paths.`,
 										},
 										"section_name": schema.StringAttribute{
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
-										},
-										"tags": schema.MapAttribute{
-											Optional:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
-												`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 										},
 									},
 									MarkdownDescription: `TargetRef is a reference to the resource that represents a group of` + "\n" +
@@ -888,13 +1157,13 @@ func (r *MeshHTTPRouteResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsPutMeshHTTPRouteRequest(ctx)
+	request, requestDiags := data.ToOperationsPostMeshHTTPRouteRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshHTTPRoute.PutMeshHTTPRoute(ctx, *request)
+	res, err := r.client.MeshHTTPRoute.PostMeshHTTPRoute(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -906,10 +1175,14 @@ func (r *MeshHTTPRouteResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 201:
-		break
-	default:
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
+		return
+	}
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

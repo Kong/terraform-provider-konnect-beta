@@ -124,10 +124,10 @@ func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServic
 
 				r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)
 			}
-			r.Status.MeshServices = []tfTypes.MeshServices{}
+			r.Status.MeshServices = []tfTypes.MeshMultiZoneServiceItemMeshServices{}
 
 			for _, meshServicesItem := range resp.Status.MeshServices {
-				var meshServices tfTypes.MeshServices
+				var meshServices tfTypes.MeshMultiZoneServiceItemMeshServices
 
 				meshServices.Mesh = types.StringValue(meshServicesItem.Mesh)
 				meshServices.Name = types.StringValue(meshServicesItem.Name)
@@ -189,6 +189,31 @@ func (r *MeshMultiZoneServiceResourceModel) ToOperationsGetMeshMultiZoneServiceR
 		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshMultiZoneServiceResourceModel) ToOperationsPostMeshMultiZoneServiceRequest(ctx context.Context) (*operations.PostMeshMultiZoneServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshMultiZoneServiceItem, meshMultiZoneServiceItemDiags := r.ToSharedMeshMultiZoneServiceItemInput(ctx)
+	diags.Append(meshMultiZoneServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshMultiZoneServiceRequest{
+		CpID:                     cpID,
+		Mesh:                     mesh,
+		MeshMultiZoneServiceItem: *meshMultiZoneServiceItem,
 	}
 
 	return &out, diags

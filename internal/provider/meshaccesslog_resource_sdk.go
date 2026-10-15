@@ -57,11 +57,11 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 				if backendsItem.File == nil {
 					backends.File = nil
 				} else {
-					backends.File = &tfTypes.File{}
+					backends.File = &tfTypes.MeshAccessLogItemSpecFile{}
 					if backendsItem.File.Format == nil {
 						backends.File.Format = nil
 					} else {
-						backends.File.Format = &tfTypes.Format{}
+						backends.File.Format = &tfTypes.MeshAccessLogItemSpecRulesFormat{}
 						backends.File.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem := range backendsItem.File.Format.JSON {
@@ -119,7 +119,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 					if backendsItem.TCP.Format == nil {
 						backends.TCP.Format = nil
 					} else {
-						backends.TCP.Format = &tfTypes.Format{}
+						backends.TCP.Format = &tfTypes.MeshAccessLogItemSpecRulesFormat{}
 						backends.TCP.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem1 := range backendsItem.TCP.Format.JSON {
@@ -175,16 +175,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
 			}
-			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
-			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
-			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
-			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
-				for key2, value2 := range resp.Spec.TargetRef.Tags {
-					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
-				}
-			}
 		}
 		r.Spec.To = []tfTypes.To{}
 
@@ -200,11 +191,11 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 				if backendsItem1.File == nil {
 					backends1.File = nil
 				} else {
-					backends1.File = &tfTypes.File{}
+					backends1.File = &tfTypes.MeshAccessLogItemSpecFile{}
 					if backendsItem1.File.Format == nil {
 						backends1.File.Format = nil
 					} else {
-						backends1.File.Format = &tfTypes.Format{}
+						backends1.File.Format = &tfTypes.MeshAccessLogItemSpecRulesFormat{}
 						backends1.File.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem2 := range backendsItem1.File.Format.JSON {
@@ -242,8 +233,8 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 						backends1.OpenTelemetry.BackendRef.Kind = types.StringValue(string(backendsItem1.OpenTelemetry.BackendRef.Kind))
 						if len(backendsItem1.OpenTelemetry.BackendRef.Labels) > 0 {
 							backends1.OpenTelemetry.BackendRef.Labels = make(map[string]types.String, len(backendsItem1.OpenTelemetry.BackendRef.Labels))
-							for key3, value3 := range backendsItem1.OpenTelemetry.BackendRef.Labels {
-								backends1.OpenTelemetry.BackendRef.Labels[key3] = types.StringValue(value3)
+							for key2, value2 := range backendsItem1.OpenTelemetry.BackendRef.Labels {
+								backends1.OpenTelemetry.BackendRef.Labels[key2] = types.StringValue(value2)
 							}
 						}
 					}
@@ -262,7 +253,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 					if backendsItem1.TCP.Format == nil {
 						backends1.TCP.Format = nil
 					} else {
-						backends1.TCP.Format = &tfTypes.Format{}
+						backends1.TCP.Format = &tfTypes.MeshAccessLogItemSpecRulesFormat{}
 						backends1.TCP.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem3 := range backendsItem1.TCP.Format.JSON {
@@ -286,20 +277,11 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
-				for key4, value4 := range toItem.TargetRef.Labels {
-					to.TargetRef.Labels[key4] = types.StringValue(value4)
+				for key3, value3 := range toItem.TargetRef.Labels {
+					to.TargetRef.Labels[key3] = types.StringValue(value3)
 				}
 			}
-			to.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
-			to.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
-			to.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
 			to.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
-			if len(toItem.TargetRef.Tags) > 0 {
-				to.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
-				for key5, value5 := range toItem.TargetRef.Tags {
-					to.TargetRef.Tags[key5] = types.StringValue(value5)
-				}
-			}
 
 			r.Spec.To = append(r.Spec.To, to)
 		}
@@ -368,6 +350,31 @@ func (r *MeshAccessLogResourceModel) ToOperationsGetMeshAccessLogRequest(ctx con
 	return &out, diags
 }
 
+func (r *MeshAccessLogResourceModel) ToOperationsPostMeshAccessLogRequest(ctx context.Context) (*operations.PostMeshAccessLogRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshAccessLogItem, meshAccessLogItemDiags := r.ToSharedMeshAccessLogItemInput(ctx)
+	diags.Append(meshAccessLogItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshAccessLogRequest{
+		CpID:              cpID,
+		Mesh:              mesh,
+		MeshAccessLogItem: *meshAccessLogItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshAccessLogResourceModel) ToOperationsPutMeshAccessLogRequest(ctx context.Context) (*operations.PutMeshAccessLogRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -418,9 +425,9 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 	for rulesIndex := range r.Spec.Rules {
 		backends := make([]shared.MeshAccessLogItemSpecBackends, 0, len(r.Spec.Rules[rulesIndex].Default.Backends))
 		for backendsIndex := range r.Spec.Rules[rulesIndex].Default.Backends {
-			var file *shared.File
+			var file *shared.MeshAccessLogItemSpecFile
 			if r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex].File != nil {
-				var format *shared.Format
+				var format *shared.MeshAccessLogItemSpecRulesFormat
 				if r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex].File.Format != nil {
 					jsonVar := make([]shared.JSON, 0, len(r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex].File.Format.JSON))
 					for jsonIndex := range r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex].File.Format.JSON {
@@ -448,7 +455,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 						plain = nil
 					}
 					typeVar1 := shared.MeshAccessLogItemSpecRulesDefaultBackendsType(r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex].File.Format.Type.ValueString())
-					format = &shared.Format{
+					format = &shared.MeshAccessLogItemSpecRulesFormat{
 						JSON:            jsonVar,
 						OmitEmptyValues: omitEmptyValues,
 						Plain:           plain,
@@ -458,7 +465,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 				var path string
 				path = r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex].File.Path.ValueString()
 
-				file = &shared.File{
+				file = &shared.MeshAccessLogItemSpecFile{
 					Format: format,
 					Path:   path,
 				}
@@ -603,45 +610,16 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 
 			labels2[labelsKey1] = labelsInst1
 		}
-		mesh1 := new(string)
-		if !r.Spec.TargetRef.Mesh.IsUnknown() && !r.Spec.TargetRef.Mesh.IsNull() {
-			*mesh1 = r.Spec.TargetRef.Mesh.ValueString()
-		} else {
-			mesh1 = nil
-		}
-		name1 := new(string)
-		if !r.Spec.TargetRef.Name.IsUnknown() && !r.Spec.TargetRef.Name.IsNull() {
-			*name1 = r.Spec.TargetRef.Name.ValueString()
-		} else {
-			name1 = nil
-		}
-		namespace := new(string)
-		if !r.Spec.TargetRef.Namespace.IsUnknown() && !r.Spec.TargetRef.Namespace.IsNull() {
-			*namespace = r.Spec.TargetRef.Namespace.ValueString()
-		} else {
-			namespace = nil
-		}
 		sectionName := new(string)
 		if !r.Spec.TargetRef.SectionName.IsUnknown() && !r.Spec.TargetRef.SectionName.IsNull() {
 			*sectionName = r.Spec.TargetRef.SectionName.ValueString()
 		} else {
 			sectionName = nil
 		}
-		tags := make(map[string]string)
-		for tagsKey := range r.Spec.TargetRef.Tags {
-			var tagsInst string
-			tagsInst = r.Spec.TargetRef.Tags[tagsKey].ValueString()
-
-			tags[tagsKey] = tagsInst
-		}
 		targetRef = &shared.TargetRef{
 			Kind:        kind1,
 			Labels:      labels2,
-			Mesh:        mesh1,
-			Name:        name1,
-			Namespace:   namespace,
 			SectionName: sectionName,
-			Tags:        tags,
 		}
 	}
 	to := make([]shared.To, 0, len(r.Spec.To))
@@ -797,45 +775,16 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 
 			labels4[labelsKey3] = labelsInst3
 		}
-		mesh2 := new(string)
-		if !r.Spec.To[toIndex].TargetRef.Mesh.IsUnknown() && !r.Spec.To[toIndex].TargetRef.Mesh.IsNull() {
-			*mesh2 = r.Spec.To[toIndex].TargetRef.Mesh.ValueString()
-		} else {
-			mesh2 = nil
-		}
-		name2 := new(string)
-		if !r.Spec.To[toIndex].TargetRef.Name.IsUnknown() && !r.Spec.To[toIndex].TargetRef.Name.IsNull() {
-			*name2 = r.Spec.To[toIndex].TargetRef.Name.ValueString()
-		} else {
-			name2 = nil
-		}
-		namespace1 := new(string)
-		if !r.Spec.To[toIndex].TargetRef.Namespace.IsUnknown() && !r.Spec.To[toIndex].TargetRef.Namespace.IsNull() {
-			*namespace1 = r.Spec.To[toIndex].TargetRef.Namespace.ValueString()
-		} else {
-			namespace1 = nil
-		}
 		sectionName1 := new(string)
 		if !r.Spec.To[toIndex].TargetRef.SectionName.IsUnknown() && !r.Spec.To[toIndex].TargetRef.SectionName.IsNull() {
 			*sectionName1 = r.Spec.To[toIndex].TargetRef.SectionName.ValueString()
 		} else {
 			sectionName1 = nil
 		}
-		tags1 := make(map[string]string)
-		for tagsKey1 := range r.Spec.To[toIndex].TargetRef.Tags {
-			var tagsInst1 string
-			tagsInst1 = r.Spec.To[toIndex].TargetRef.Tags[tagsKey1].ValueString()
-
-			tags1[tagsKey1] = tagsInst1
-		}
 		targetRef1 := shared.MeshAccessLogItemTargetRef{
 			Kind:        kind3,
 			Labels:      labels4,
-			Mesh:        mesh2,
-			Name:        name2,
-			Namespace:   namespace1,
 			SectionName: sectionName1,
-			Tags:        tags1,
 		}
 		to = append(to, shared.To{
 			Default:   default1,

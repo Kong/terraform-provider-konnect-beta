@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -23,6 +22,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -92,6 +92,10 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `name of the AccessRole`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(253),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`).String()),
+				},
 			},
 			"rules": schema.ListNestedAttribute{
 				Optional: true,
@@ -103,34 +107,12 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
-						"access": schema.ListNestedAttribute{
+						"access": schema.ListAttribute{
 							Optional: true,
 							PlanModifiers: []planmodifier.List{
 								custom_listplanmodifier.SupressZeroNullModifier(),
 							},
-							NestedObject: schema.NestedAttributeObject{
-								Validators: []validator.Object{
-									speakeasy_objectvalidators.NotNull(),
-								},
-								Attributes: map[string]schema.Attribute{
-									"integer": schema.Int64Attribute{
-										Optional: true,
-										Validators: []validator.Int64{
-											int64validator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("str"),
-											}...),
-										},
-									},
-									"str": schema.StringAttribute{
-										Optional: true,
-										Validators: []validator.String{
-											stringvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("integer"),
-											}...),
-										},
-									},
-								},
-							},
+							ElementType: types.StringType,
 						},
 						"mesh": schema.StringAttribute{
 							Optional: true,
@@ -159,16 +141,6 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 									speakeasy_objectvalidators.NotNull(),
 								},
 								Attributes: map[string]schema.Attribute{
-									"destinations": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"match": schema.MapAttribute{
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `Tags to match, can be used for both source and destinations`,
-											},
-										},
-									},
 									"dp_token": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
@@ -206,37 +178,10 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 														Optional:    true,
 														ElementType: types.StringType,
 													},
-													"mesh": schema.StringAttribute{
-														Optional: true,
-													},
 													"name": schema.StringAttribute{
 														Optional: true,
 													},
-													"tags": schema.MapAttribute{
-														Optional:    true,
-														ElementType: types.StringType,
-													},
 												},
-											},
-										},
-									},
-									"selectors": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"match": schema.MapAttribute{
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `Tags to match, can be used for both source and destinations`,
-											},
-										},
-									},
-									"sources": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"match": schema.MapAttribute{
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `Tags to match, can be used for both source and destinations`,
 											},
 										},
 									},
@@ -250,15 +195,8 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 												Optional:    true,
 												ElementType: types.StringType,
 											},
-											"mesh": schema.StringAttribute{
-												Optional: true,
-											},
 											"name": schema.StringAttribute{
 												Optional: true,
-											},
-											"tags": schema.MapAttribute{
-												Optional:    true,
-												ElementType: types.StringType,
 											},
 										},
 									},
@@ -275,15 +213,8 @@ func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.Schema
 														Optional:    true,
 														ElementType: types.StringType,
 													},
-													"mesh": schema.StringAttribute{
-														Optional: true,
-													},
 													"name": schema.StringAttribute{
 														Optional: true,
-													},
-													"tags": schema.MapAttribute{
-														Optional:    true,
-														ElementType: types.StringType,
 													},
 												},
 											},
@@ -349,13 +280,13 @@ func (r *MeshAccessRoleResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	request, requestDiags := data.ToOperationsPutAccessRoleRequest(ctx)
+	request, requestDiags := data.ToOperationsPostAccessRoleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AccessRole.PutAccessRole(ctx, *request)
+	res, err := r.client.AccessRole.PostAccessRole(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -367,10 +298,14 @@ func (r *MeshAccessRoleResource) Create(ctx context.Context, req resource.Create
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 201:
-		break
-	default:
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
+		return
+	}
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

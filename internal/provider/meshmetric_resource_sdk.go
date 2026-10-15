@@ -65,7 +65,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 				if backendsItem.OpenTelemetry == nil {
 					backends.OpenTelemetry = nil
 				} else {
-					backends.OpenTelemetry = &tfTypes.OpenTelemetry{}
+					backends.OpenTelemetry = &tfTypes.MeshMetricItemOpenTelemetry{}
 					if backendsItem.OpenTelemetry.BackendRef == nil {
 						backends.OpenTelemetry.BackendRef = nil
 					} else {
@@ -90,7 +90,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 					if backendsItem.Prometheus.TLS == nil {
 						backends.Prometheus.TLS = nil
 					} else {
-						backends.Prometheus.TLS = &tfTypes.MeshMetricItemTLS{}
+						backends.Prometheus.TLS = &tfTypes.MeshServices{}
 						if backendsItem.Prometheus.TLS.Mode != nil {
 							backends.Prometheus.TLS.Mode = types.StringValue(string(*backendsItem.Prometheus.TLS.Mode))
 						} else {
@@ -154,16 +154,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
 			}
-			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
-			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
-			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
-			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
-				for key2, value2 := range resp.Spec.TargetRef.Tags {
-					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
-				}
-			}
 		}
 		if resp.Status == nil {
 			r.Status = nil
@@ -225,6 +216,31 @@ func (r *MeshMetricResourceModel) ToOperationsGetMeshMetricRequest(ctx context.C
 		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshMetricResourceModel) ToOperationsPostMeshMetricRequest(ctx context.Context) (*operations.PostMeshMetricRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshMetricItem, meshMetricItemDiags := r.ToSharedMeshMetricItemInput(ctx)
+	diags.Append(meshMetricItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshMetricRequest{
+		CpID:           cpID,
+		Mesh:           mesh,
+		MeshMetricItem: *meshMetricItem,
 	}
 
 	return &out, diags
@@ -310,7 +326,7 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput(ctx context.Contex
 		}
 		backends := make([]shared.MeshMetricItemBackends, 0, len(r.Spec.Default.Backends))
 		for backendsIndex := range r.Spec.Default.Backends {
-			var openTelemetry *shared.OpenTelemetry
+			var openTelemetry *shared.MeshMetricItemOpenTelemetry
 			if r.Spec.Default.Backends[backendsIndex].OpenTelemetry != nil {
 				var backendRef *shared.BackendRef
 				if r.Spec.Default.Backends[backendsIndex].OpenTelemetry.BackendRef != nil {
@@ -333,7 +349,7 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput(ctx context.Contex
 				} else {
 					refreshInterval = nil
 				}
-				openTelemetry = &shared.OpenTelemetry{
+				openTelemetry = &shared.MeshMetricItemOpenTelemetry{
 					BackendRef:      backendRef,
 					RefreshInterval: refreshInterval,
 				}
@@ -450,45 +466,16 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput(ctx context.Contex
 
 			labels2[labelsKey1] = labelsInst1
 		}
-		mesh1 := new(string)
-		if !r.Spec.TargetRef.Mesh.IsUnknown() && !r.Spec.TargetRef.Mesh.IsNull() {
-			*mesh1 = r.Spec.TargetRef.Mesh.ValueString()
-		} else {
-			mesh1 = nil
-		}
-		name3 := new(string)
-		if !r.Spec.TargetRef.Name.IsUnknown() && !r.Spec.TargetRef.Name.IsNull() {
-			*name3 = r.Spec.TargetRef.Name.ValueString()
-		} else {
-			name3 = nil
-		}
-		namespace := new(string)
-		if !r.Spec.TargetRef.Namespace.IsUnknown() && !r.Spec.TargetRef.Namespace.IsNull() {
-			*namespace = r.Spec.TargetRef.Namespace.ValueString()
-		} else {
-			namespace = nil
-		}
 		sectionName := new(string)
 		if !r.Spec.TargetRef.SectionName.IsUnknown() && !r.Spec.TargetRef.SectionName.IsNull() {
 			*sectionName = r.Spec.TargetRef.SectionName.ValueString()
 		} else {
 			sectionName = nil
 		}
-		tags := make(map[string]string)
-		for tagsKey := range r.Spec.TargetRef.Tags {
-			var tagsInst string
-			tagsInst = r.Spec.TargetRef.Tags[tagsKey].ValueString()
-
-			tags[tagsKey] = tagsInst
-		}
 		targetRef = &shared.MeshMetricItemTargetRef{
 			Kind:        kind1,
 			Labels:      labels2,
-			Mesh:        mesh1,
-			Name:        name3,
-			Namespace:   namespace,
 			SectionName: sectionName,
-			Tags:        tags,
 		}
 	}
 	spec := shared.MeshMetricItemSpec{

@@ -91,6 +91,31 @@ func (r *MeshZoneAddressResourceModel) ToOperationsGetMeshZoneAddressRequest(ctx
 	return &out, diags
 }
 
+func (r *MeshZoneAddressResourceModel) ToOperationsPostMeshZoneAddressRequest(ctx context.Context) (*operations.PostMeshZoneAddressRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshZoneAddressItem, meshZoneAddressItemDiags := r.ToSharedMeshZoneAddressItemInput(ctx)
+	diags.Append(meshZoneAddressItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshZoneAddressRequest{
+		CpID:                cpID,
+		Mesh:                mesh,
+		MeshZoneAddressItem: *meshZoneAddressItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshZoneAddressResourceModel) ToOperationsPutMeshZoneAddressRequest(ctx context.Context) (*operations.PutMeshZoneAddressRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

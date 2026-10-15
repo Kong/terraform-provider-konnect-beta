@@ -40,7 +40,7 @@ type GetTenantResponse struct {
 	// Not Found
 	NotFoundError *shared.NotFoundError
 	// Internal
-	BaseError *shared.BaseError
+	InternalError *shared.InternalError
 }
 
 func (g *GetTenantResponse) GetContentType() string {
@@ -78,9 +78,9 @@ func (g *GetTenantResponse) GetNotFoundError() *shared.NotFoundError {
 	return g.NotFoundError
 }
 
-func (g *GetTenantResponse) GetBaseError() *shared.BaseError {
+func (g *GetTenantResponse) GetInternalError() *shared.InternalError {
 	if g == nil {
 		return nil
 	}
-	return g.BaseError
+	return g.InternalError
 }

@@ -1,1 +1,0 @@
-terraform import konnect-beta_organization_personal_access_token_settings.my_konnect-beta_organization_personal_access_token_settings "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"

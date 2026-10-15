@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -17,7 +18,16 @@ func (r *IdentityAuthServerResourceModel) RefreshFromSharedAuthServer(ctx contex
 	if resp != nil {
 		r.Audience = types.StringValue(resp.Audience)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.DcrDefaultAccessTokenDuration = types.Int64PointerValue(resp.DcrDefaultAccessTokenDuration)
+		if resp.Dcr == nil {
+			r.Dcr = nil
+		} else {
+			r.Dcr = &tfTypes.CreateDcrSettings{}
+			r.Dcr.DefaultAccessTokenDuration = types.Int64PointerValue(resp.Dcr.DefaultAccessTokenDuration)
+			r.Dcr.RedirectURIAllowlist = make([]types.String, 0, len(resp.Dcr.RedirectURIAllowlist))
+			for _, v := range resp.Dcr.RedirectURIAllowlist {
+				r.Dcr.RedirectURIAllowlist = append(r.Dcr.RedirectURIAllowlist, types.StringValue(v))
+			}
+		}
 		r.Description = types.StringValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		r.Issuer = types.StringValue(resp.Issuer)
@@ -30,6 +40,7 @@ func (r *IdentityAuthServerResourceModel) RefreshFromSharedAuthServer(ctx contex
 		}
 		r.MetadataURI = types.StringValue(resp.MetadataURI)
 		r.Name = types.StringValue(resp.Name)
+		r.OpenDcrEnabled = types.BoolPointerValue(resp.OpenDcrEnabled)
 		if resp.SigningAlgorithm != nil {
 			r.SigningAlgorithm = types.StringValue(string(*resp.SigningAlgorithm))
 		} else {
@@ -134,20 +145,38 @@ func (r *IdentityAuthServerResourceModel) ToSharedCreateAuthServer(ctx context.C
 	for trustedOriginsIndex := range r.TrustedOrigins {
 		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
-	dcrDefaultAccessTokenDuration := new(int64)
-	if !r.DcrDefaultAccessTokenDuration.IsUnknown() && !r.DcrDefaultAccessTokenDuration.IsNull() {
-		*dcrDefaultAccessTokenDuration = r.DcrDefaultAccessTokenDuration.ValueInt64()
+	var dcr *shared.CreateDcrSettings
+	if r.Dcr != nil {
+		redirectURIAllowlist := make([]string, 0, len(r.Dcr.RedirectURIAllowlist))
+		for redirectURIAllowlistIndex := range r.Dcr.RedirectURIAllowlist {
+			redirectURIAllowlist = append(redirectURIAllowlist, r.Dcr.RedirectURIAllowlist[redirectURIAllowlistIndex].ValueString())
+		}
+		defaultAccessTokenDuration := new(int64)
+		if !r.Dcr.DefaultAccessTokenDuration.IsUnknown() && !r.Dcr.DefaultAccessTokenDuration.IsNull() {
+			*defaultAccessTokenDuration = r.Dcr.DefaultAccessTokenDuration.ValueInt64()
+		} else {
+			defaultAccessTokenDuration = nil
+		}
+		dcr = &shared.CreateDcrSettings{
+			RedirectURIAllowlist:       redirectURIAllowlist,
+			DefaultAccessTokenDuration: defaultAccessTokenDuration,
+		}
+	}
+	openDcrEnabled := new(bool)
+	if !r.OpenDcrEnabled.IsUnknown() && !r.OpenDcrEnabled.IsNull() {
+		*openDcrEnabled = r.OpenDcrEnabled.ValueBool()
 	} else {
-		dcrDefaultAccessTokenDuration = nil
+		openDcrEnabled = nil
 	}
 	out := shared.CreateAuthServer{
-		Name:                          name,
-		Description:                   description,
-		Audience:                      audience,
-		SigningAlgorithm:              signingAlgorithm,
-		Labels:                        labels,
-		TrustedOrigins:                trustedOrigins,
-		DcrDefaultAccessTokenDuration: dcrDefaultAccessTokenDuration,
+		Name:             name,
+		Description:      description,
+		Audience:         audience,
+		SigningAlgorithm: signingAlgorithm,
+		Labels:           labels,
+		TrustedOrigins:   trustedOrigins,
+		Dcr:              dcr,
+		OpenDcrEnabled:   openDcrEnabled,
 	}
 
 	return &out, diags
@@ -197,20 +226,38 @@ func (r *IdentityAuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.C
 	for trustedOriginsIndex := range r.TrustedOrigins {
 		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
-	dcrDefaultAccessTokenDuration := new(int64)
-	if !r.DcrDefaultAccessTokenDuration.IsUnknown() && !r.DcrDefaultAccessTokenDuration.IsNull() {
-		*dcrDefaultAccessTokenDuration = r.DcrDefaultAccessTokenDuration.ValueInt64()
+	var dcr *shared.UpdateDcrSettings
+	if r.Dcr != nil {
+		redirectURIAllowlist := make([]string, 0, len(r.Dcr.RedirectURIAllowlist))
+		for redirectURIAllowlistIndex := range r.Dcr.RedirectURIAllowlist {
+			redirectURIAllowlist = append(redirectURIAllowlist, r.Dcr.RedirectURIAllowlist[redirectURIAllowlistIndex].ValueString())
+		}
+		defaultAccessTokenDuration := new(int64)
+		if !r.Dcr.DefaultAccessTokenDuration.IsUnknown() && !r.Dcr.DefaultAccessTokenDuration.IsNull() {
+			*defaultAccessTokenDuration = r.Dcr.DefaultAccessTokenDuration.ValueInt64()
+		} else {
+			defaultAccessTokenDuration = nil
+		}
+		dcr = &shared.UpdateDcrSettings{
+			RedirectURIAllowlist:       redirectURIAllowlist,
+			DefaultAccessTokenDuration: defaultAccessTokenDuration,
+		}
+	}
+	openDcrEnabled := new(bool)
+	if !r.OpenDcrEnabled.IsUnknown() && !r.OpenDcrEnabled.IsNull() {
+		*openDcrEnabled = r.OpenDcrEnabled.ValueBool()
 	} else {
-		dcrDefaultAccessTokenDuration = nil
+		openDcrEnabled = nil
 	}
 	out := shared.UpdateAuthServer{
-		Name:                          name,
-		Description:                   description,
-		Audience:                      audience,
-		SigningAlgorithm:              signingAlgorithm,
-		Labels:                        labels,
-		TrustedOrigins:                trustedOrigins,
-		DcrDefaultAccessTokenDuration: dcrDefaultAccessTokenDuration,
+		Name:             name,
+		Description:      description,
+		Audience:         audience,
+		SigningAlgorithm: signingAlgorithm,
+		Labels:           labels,
+		TrustedOrigins:   trustedOrigins,
+		Dcr:              dcr,
+		OpenDcrEnabled:   openDcrEnabled,
 	}
 
 	return &out, diags

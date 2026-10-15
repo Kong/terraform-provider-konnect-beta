@@ -39,6 +39,7 @@ func (r *IdentityDirectoryResourceModel) RefreshFromSharedKongDirectory(ctx cont
 		r.NegativeTTLSecs = types.Int64PointerValue(resp.NegativeTTLSecs)
 		r.TTLSecs = types.Int64PointerValue(resp.TTLSecs)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.VaultEnabled = types.BoolPointerValue(resp.VaultEnabled)
 	}
 
 	return diags
@@ -149,6 +150,12 @@ func (r *IdentityDirectoryResourceModel) ToSharedCreateDirectoryBody(ctx context
 
 		managedBy[managedByKey] = managedByInst
 	}
+	vaultEnabled := new(bool)
+	if !r.VaultEnabled.IsUnknown() && !r.VaultEnabled.IsNull() {
+		*vaultEnabled = r.VaultEnabled.ValueBool()
+	} else {
+		vaultEnabled = nil
+	}
 	out := shared.CreateDirectoryBody{
 		Name:                  name,
 		Description:           description,
@@ -158,6 +165,7 @@ func (r *IdentityDirectoryResourceModel) ToSharedCreateDirectoryBody(ctx context
 		NegativeTTLSecs:       negativeTTLSecs,
 		Labels:                labels,
 		ManagedBy:             managedBy,
+		VaultEnabled:          vaultEnabled,
 	}
 
 	return &out, diags
@@ -214,6 +222,12 @@ func (r *IdentityDirectoryResourceModel) ToSharedReplaceDirectoryBody(ctx contex
 
 		managedBy[managedByKey] = managedByInst
 	}
+	vaultEnabled := new(bool)
+	if !r.VaultEnabled.IsUnknown() && !r.VaultEnabled.IsNull() {
+		*vaultEnabled = r.VaultEnabled.ValueBool()
+	} else {
+		vaultEnabled = nil
+	}
 	out := shared.ReplaceDirectoryBody{
 		Name:                  name,
 		Description:           description,
@@ -223,6 +237,7 @@ func (r *IdentityDirectoryResourceModel) ToSharedReplaceDirectoryBody(ctx contex
 		NegativeTTLSecs:       negativeTTLSecs,
 		Labels:                labels,
 		ManagedBy:             managedBy,
+		VaultEnabled:          vaultEnabled,
 	}
 
 	return &out, diags

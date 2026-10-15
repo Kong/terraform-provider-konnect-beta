@@ -3,6 +3,6 @@
 package types
 
 type RequestHeadersToAdd struct {
-	Add []MeshHTTPRouteItemAdd `tfsdk:"add"`
-	Set []MeshHTTPRouteItemAdd `tfsdk:"set"`
+	Add []MeshHTTPRouteItemSpecToAdd `tfsdk:"add"`
+	Set []MeshHTTPRouteItemSpecToAdd `tfsdk:"set"`
 }

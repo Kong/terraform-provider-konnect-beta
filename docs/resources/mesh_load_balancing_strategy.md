@@ -27,13 +27,7 @@ resource "konnect_mesh_load_balancing_strategy" "my_meshloadbalancingstrategy" {
       labels = {
         key = "value"
       }
-      mesh         = "...my_mesh..."
-      name         = "...my_name..."
-      namespace    = "...my_namespace..."
       section_name = "...my_section_name..."
-      tags = {
-        key = "value"
-      }
     }
     to = [
       {
@@ -123,13 +117,7 @@ resource "konnect_mesh_load_balancing_strategy" "my_meshloadbalancingstrategy" {
           labels = {
             key = "value"
           }
-          mesh         = "...my_mesh..."
-          name         = "...my_name..."
-          namespace    = "...my_namespace..."
           section_name = "...my_section_name..."
-          tags = {
-            key = "value"
-          }
         }
       }
     ]
@@ -145,7 +133,7 @@ resource "konnect_mesh_load_balancing_strategy" "my_meshloadbalancingstrategy" {
 
 - `cp_id` (String) Id of the Konnect resource. Requires replacement if changed.
 - `mesh` (String) name of the mesh. Requires replacement if changed.
-- `name` (String) name of the MeshLoadBalancingStrategy. Requires replacement if changed.
+- `name` (String) Name of the Kuma resource. Requires replacement if changed.
 - `spec` (Attributes) Spec is the specification of the Kuma MeshLoadBalancingStrategy resource. (see [below for nested schema](#nestedatt--spec))
 - `type` (String) the type of the resource. must be "MeshLoadBalancingStrategy"
 
@@ -176,21 +164,15 @@ defined inplace. (see [below for nested schema](#nestedatt--spec--target_ref))
 
 Required:
 
-- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "Dataplane"]
 
 Optional:
 
-- `labels` (Map of String) Labels are used to select group of MeshServices that match labels. Either Labels or
-Name and Namespace can be used.
-- `mesh` (String) Mesh is reserved for future use to identify cross mesh resources.
-- `name` (String) Name of the referenced resource. Can only be used with kinds: `MeshService`
-and `MeshServiceSubset`
-- `namespace` (String) Namespace specifies the namespace of target resource. If empty only resources in policy namespace
-will be targeted.
+- `labels` (Map of String) Labels are used to select referenced real resources and to carry legacy
+service identity when a common TargetRef must still target old
+service-tag based paths.
 - `section_name` (String) SectionName is used to target specific section of resource.
 For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
-- `tags` (Map of String) Tags used to select a subset of proxies by tags. Can only be used with kinds
-`MeshSubset` and `MeshServiceSubset`
 
 
 <a id="nestedatt--spec--to"></a>
@@ -230,7 +212,7 @@ Optional:
 a ‘fallback’ style of configuration: “if a terminal policy doesn’t work, fallback
 to rest of the policy list”, it saves time when the terminal policy works.
 If true, and there is already a hash computed, ignore rest of the list of hash polices.
-- `type` (String) possible known values include one of ["Header", "Cookie", "Connection", "SourceIP", "QueryParameter", "FilterState"]; Not Null
+- `type` (String) possible known values include one of ["Header", "Cookie", "Connection", "QueryParameter", "FilterState"]; Not Null
 
 <a id="nestedatt--spec--to--default--hash_policies--connection"></a>
 ### Nested Schema for `spec.to.default.hash_policies.connection`
@@ -369,7 +351,7 @@ will reflect the desired weights. Defaults to 1024 entries, and limited to 8M en
 Optional:
 
 - `cross_zone` (Attributes) CrossZone defines locality aware load balancing priorities when dataplane proxies inside local zone
-are unavailable (see [below for nested schema](#nestedatt--spec--to--default--locality_awareness--cross_zone))
+are unavailable. Supported only for to[].targetRef.kind MeshMultiZoneService. (see [below for nested schema](#nestedatt--spec--to--default--locality_awareness--cross_zone))
 - `disabled` (Boolean) Disabled allows to disable locality-aware load balancing.
 When disabled requests are distributed across all endpoints regardless of locality.
 - `local_zone` (Attributes) LocalZone defines locality aware load balancing priorities between dataplane proxies inside a zone (see [below for nested schema](#nestedatt--spec--to--default--locality_awareness--local_zone))
@@ -459,18 +441,12 @@ Default: If you do not specify weight we will adjust them so that 90% traffic go
 
 Optional:
 
-- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null
-- `labels` (Map of String) Labels are used to select group of MeshServices that match labels. Either Labels or
-Name and Namespace can be used.
-- `mesh` (String) Mesh is reserved for future use to identify cross mesh resources.
-- `name` (String) Name of the referenced resource. Can only be used with kinds: `MeshService`
-and `MeshServiceSubset`
-- `namespace` (String) Namespace specifies the namespace of target resource. If empty only resources in policy namespace
-will be targeted.
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshHTTPRoute"]; Not Null
+- `labels` (Map of String) Labels are used to select referenced real resources and to carry legacy
+service identity when a common TargetRef must still target old
+service-tag based paths.
 - `section_name` (String) SectionName is used to target specific section of resource.
 For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
-- `tags` (Map of String) Tags used to select a subset of proxies by tags. Can only be used with kinds
-`MeshSubset` and `MeshServiceSubset`
 
 ## Import
 

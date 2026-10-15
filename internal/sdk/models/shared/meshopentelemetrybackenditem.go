@@ -190,21 +190,21 @@ func (e *Env) GetPrecedence() *Precedence {
 	return e.Precedence
 }
 
-// Protocol selects gRPC or HTTP transport for the collector connection.
+// MeshOpenTelemetryBackendItemProtocol - Protocol selects gRPC or HTTP transport for the collector connection.
 // Defaults to grpc when omitted.
-type Protocol string
+type MeshOpenTelemetryBackendItemProtocol string
 
 const (
-	ProtocolGrpc Protocol = "grpc"
-	ProtocolHTTP Protocol = "http"
+	MeshOpenTelemetryBackendItemProtocolGrpc MeshOpenTelemetryBackendItemProtocol = "grpc"
+	MeshOpenTelemetryBackendItemProtocolHTTP MeshOpenTelemetryBackendItemProtocol = "http"
 )
 
-func (e Protocol) ToPointer() *Protocol {
+func (e MeshOpenTelemetryBackendItemProtocol) ToPointer() *MeshOpenTelemetryBackendItemProtocol {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Protocol) IsExact() bool {
+func (e *MeshOpenTelemetryBackendItemProtocol) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "grpc", "http":
@@ -227,7 +227,7 @@ type MeshOpenTelemetryBackendItemSpec struct {
 	Env *Env `json:"env,omitempty"`
 	// Protocol selects gRPC or HTTP transport for the collector connection.
 	// Defaults to grpc when omitted.
-	Protocol *Protocol `json:"protocol,omitempty"`
+	Protocol *MeshOpenTelemetryBackendItemProtocol `json:"protocol,omitempty"`
 }
 
 func (m *MeshOpenTelemetryBackendItemSpec) GetEndpoint() *Endpoint {
@@ -244,7 +244,7 @@ func (m *MeshOpenTelemetryBackendItemSpec) GetEnv() *Env {
 	return m.Env
 }
 
-func (m *MeshOpenTelemetryBackendItemSpec) GetProtocol() *Protocol {
+func (m *MeshOpenTelemetryBackendItemSpec) GetProtocol() *MeshOpenTelemetryBackendItemProtocol {
 	if m == nil {
 		return nil
 	}

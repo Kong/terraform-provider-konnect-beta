@@ -11,7 +11,7 @@ type GetAuthServerTrustedIdpRequest struct {
 	// The auth server ID
 	AuthServerID string `pathParam:"style=simple,explode=false,name=authServerId"`
 	// The trusted IdP ID
-	TrustedIdpID string `pathParam:"style=simple,explode=false,name=trustedIdpId"`
+	AuthServerTrustedIdpID string `pathParam:"style=simple,explode=false,name=authServerTrustedIdpId"`
 }
 
 func (g *GetAuthServerTrustedIdpRequest) GetAuthServerID() string {
@@ -21,11 +21,11 @@ func (g *GetAuthServerTrustedIdpRequest) GetAuthServerID() string {
 	return g.AuthServerID
 }
 
-func (g *GetAuthServerTrustedIdpRequest) GetTrustedIdpID() string {
+func (g *GetAuthServerTrustedIdpRequest) GetAuthServerTrustedIdpID() string {
 	if g == nil {
 		return ""
 	}
-	return g.TrustedIdpID
+	return g.AuthServerTrustedIdpID
 }
 
 type GetAuthServerTrustedIdpResponse struct {
@@ -36,7 +36,7 @@ type GetAuthServerTrustedIdpResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A trusted IdP
-	TrustedIdp *shared.TrustedIdp
+	AuthServerTrustedIdp *shared.AuthServerTrustedIdp
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -62,11 +62,11 @@ func (g *GetAuthServerTrustedIdpResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetAuthServerTrustedIdpResponse) GetTrustedIdp() *shared.TrustedIdp {
+func (g *GetAuthServerTrustedIdpResponse) GetAuthServerTrustedIdp() *shared.AuthServerTrustedIdp {
 	if g == nil {
 		return nil
 	}
-	return g.TrustedIdp
+	return g.AuthServerTrustedIdp
 }
 
 func (g *GetAuthServerTrustedIdpResponse) GetNotFoundError() *shared.NotFoundError {

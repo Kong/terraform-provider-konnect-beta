@@ -27,8 +27,8 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 			}
 			r.ControlPlaneReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseControlPlaneReference.CreatedAt))
 			r.CreatedAt = r.ControlPlaneReference.CreatedAt
-			r.ControlPlaneReference.Environment = types.StringPointerValue(resp.APIImplementationResponseControlPlaneReference.Environment)
-			r.Environment = r.ControlPlaneReference.Environment
+			r.ControlPlaneReference.EnvironmentID = types.StringPointerValue(resp.APIImplementationResponseControlPlaneReference.EnvironmentID)
+			r.EnvironmentID = r.ControlPlaneReference.EnvironmentID
 			r.ControlPlaneReference.ID = types.StringValue(resp.APIImplementationResponseControlPlaneReference.ID)
 			r.ID = r.ControlPlaneReference.ID
 			r.ControlPlaneReference.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseControlPlaneReference.UpdatedAt))
@@ -38,8 +38,8 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 			r.ServiceReference = &tfTypes.ServiceReference{}
 			r.ServiceReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.CreatedAt))
 			r.CreatedAt = r.ServiceReference.CreatedAt
-			r.ServiceReference.Environment = types.StringPointerValue(resp.APIImplementationResponseServiceReference.Environment)
-			r.Environment = r.ServiceReference.Environment
+			r.ServiceReference.EnvironmentID = types.StringPointerValue(resp.APIImplementationResponseServiceReference.EnvironmentID)
+			r.EnvironmentID = r.ServiceReference.EnvironmentID
 			r.ServiceReference.ID = types.StringValue(resp.APIImplementationResponseServiceReference.ID)
 			r.ID = r.ServiceReference.ID
 			if resp.APIImplementationResponseServiceReference.Service == nil {
@@ -118,11 +118,11 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 	var out shared.APIImplementation
 	var serviceReference *shared.ServiceReference
 	if r.ServiceReference != nil {
-		environment := new(string)
-		if !r.ServiceReference.Environment.IsUnknown() && !r.ServiceReference.Environment.IsNull() {
-			*environment = r.ServiceReference.Environment.ValueString()
+		environmentID := new(string)
+		if !r.ServiceReference.EnvironmentID.IsUnknown() && !r.ServiceReference.EnvironmentID.IsNull() {
+			*environmentID = r.ServiceReference.EnvironmentID.ValueString()
 		} else {
-			environment = nil
+			environmentID = nil
 		}
 		var service *shared.APIImplementationService
 		if r.ServiceReference.Service != nil {
@@ -138,8 +138,8 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 			}
 		}
 		serviceReference = &shared.ServiceReference{
-			Environment: environment,
-			Service:     service,
+			EnvironmentID: environmentID,
+			Service:       service,
 		}
 	}
 	if serviceReference != nil {
@@ -149,11 +149,11 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 	}
 	var controlPlaneReference *shared.ControlPlaneReference
 	if r.ControlPlaneReference != nil {
-		environment1 := new(string)
-		if !r.ControlPlaneReference.Environment.IsUnknown() && !r.ControlPlaneReference.Environment.IsNull() {
-			*environment1 = r.ControlPlaneReference.Environment.ValueString()
+		environmentId1 := new(string)
+		if !r.ControlPlaneReference.EnvironmentID.IsUnknown() && !r.ControlPlaneReference.EnvironmentID.IsNull() {
+			*environmentId1 = r.ControlPlaneReference.EnvironmentID.ValueString()
 		} else {
-			environment1 = nil
+			environmentId1 = nil
 		}
 		var controlPlane *shared.APIImplementationControlPlaneInput
 		if r.ControlPlaneReference.ControlPlane != nil {
@@ -165,8 +165,8 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 			}
 		}
 		controlPlaneReference = &shared.ControlPlaneReference{
-			Environment:  environment1,
-			ControlPlane: controlPlane,
+			EnvironmentID: environmentId1,
+			ControlPlane:  controlPlane,
 		}
 	}
 	if controlPlaneReference != nil {

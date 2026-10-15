@@ -30,6 +30,17 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
+		r.Environments = []tfTypes.APIEnvironmentSummary{}
+
+		for _, environmentsItem := range resp.Environments {
+			var environments tfTypes.APIEnvironmentSummary
+
+			environments.ID = types.StringValue(environmentsItem.ID)
+			environments.Name = types.StringValue(environmentsItem.Name)
+			environments.Version = types.StringValue(environmentsItem.Version)
+
+			r.Environments = append(r.Environments, environments)
+		}
 		r.ID = types.StringValue(resp.ID)
 		r.ImplementationMode = types.StringPointerValue(resp.ImplementationMode)
 		if len(resp.Labels) > 0 {

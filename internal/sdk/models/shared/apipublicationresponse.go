@@ -7,12 +7,81 @@ import (
 	"time"
 )
 
+// APIPublicationResponseTryItUIAudience - The audience for the Try It UI feature.
+//
+// `all` means that the Try It UI will be available to all users, including unauthenticated users.
+//
+// `authenticated` means that the Try It UI will only be available to authenticated users.
+//
+// `registered` means that the Try It UI will only be available to users who have registered for the API.
+type APIPublicationResponseTryItUIAudience string
+
+const (
+	APIPublicationResponseTryItUIAudienceAll           APIPublicationResponseTryItUIAudience = "all"
+	APIPublicationResponseTryItUIAudienceAuthenticated APIPublicationResponseTryItUIAudience = "authenticated"
+	APIPublicationResponseTryItUIAudienceRegistered    APIPublicationResponseTryItUIAudience = "registered"
+)
+
+func (e APIPublicationResponseTryItUIAudience) ToPointer() *APIPublicationResponseTryItUIAudience {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *APIPublicationResponseTryItUIAudience) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "all", "authenticated", "registered":
+			return true
+		}
+	}
+	return false
+}
+
+// APIPublicationResponseAPIPublicationSpecRenderer - Customization settings for the API spec renderer in the portal.
+type APIPublicationResponseAPIPublicationSpecRenderer struct {
+	// Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.
+	TryItUI *bool `default:"null" json:"try_it_ui"`
+	// The audience for the Try It UI feature.
+	//
+	// `all` means that the Try It UI will be available to all users, including unauthenticated users.
+	//
+	// `authenticated` means that the Try It UI will only be available to authenticated users.
+	//
+	// `registered` means that the Try It UI will only be available to users who have registered for the API.
+	//
+	TryItUIAudience *APIPublicationResponseTryItUIAudience `json:"try_it_ui_audience"`
+}
+
+func (a APIPublicationResponseAPIPublicationSpecRenderer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APIPublicationResponseAPIPublicationSpecRenderer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *APIPublicationResponseAPIPublicationSpecRenderer) GetTryItUI() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.TryItUI
+}
+
+func (a *APIPublicationResponseAPIPublicationSpecRenderer) GetTryItUIAudience() *APIPublicationResponseTryItUIAudience {
+	if a == nil {
+		return nil
+	}
+	return a.TryItUIAudience
+}
+
 // APIPublicationResponse - An API publication in a portal
 type APIPublicationResponse struct {
-	// The name of the environment this record is scoped to. Present only for APIs
-	// configured across multiple environments.
+	// The environment this record is scoped to.
 	//
-	Environment *string `default:"null" json:"environment"`
+	Environment *APIEnvironmentRef `json:"environment"`
 	// Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal's auto_approve_applications value.
 	AutoApproveRegistrations *bool `json:"auto_approve_registrations,omitempty"`
 	// The auth strategy the API enforces for applications in the portal.
@@ -24,10 +93,14 @@ type APIPublicationResponse struct {
 	// The visibility of the API in the portal.
 	// Public API publications do not require authentication to view and retrieve information about them.
 	// Private API publications require authentication to retrieve information about them.
+	// If omitted, this defaults to the target portal's configured default API visibility.
 	//
-	Visibility *APIPublicationVisibility `default:"private" json:"visibility"`
+	Visibility APIPublicationVisibility `json:"visibility"`
+	// Customization settings for the API spec renderer in the portal.
+	SpecRenderer *APIPublicationResponseAPIPublicationSpecRenderer `json:"spec_renderer"`
 	// UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
-	FormID *string `json:"form_id,omitempty"`
+	//
+	FormID *string `json:"form_id"`
 	// Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
 	Warnings []string `json:"warnings,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -47,7 +120,7 @@ func (a *APIPublicationResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *APIPublicationResponse) GetEnvironment() *string {
+func (a *APIPublicationResponse) GetEnvironment() *APIEnvironmentRef {
 	if a == nil {
 		return nil
 	}
@@ -68,11 +141,18 @@ func (a *APIPublicationResponse) GetAuthStrategyIds() []string {
 	return a.AuthStrategyIds
 }
 
-func (a *APIPublicationResponse) GetVisibility() *APIPublicationVisibility {
+func (a *APIPublicationResponse) GetVisibility() APIPublicationVisibility {
+	if a == nil {
+		return APIPublicationVisibility("")
+	}
+	return a.Visibility
+}
+
+func (a *APIPublicationResponse) GetSpecRenderer() *APIPublicationResponseAPIPublicationSpecRenderer {
 	if a == nil {
 		return nil
 	}
-	return a.Visibility
+	return a.SpecRenderer
 }
 
 func (a *APIPublicationResponse) GetFormID() *string {

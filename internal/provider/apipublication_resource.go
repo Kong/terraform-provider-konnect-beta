@@ -8,16 +8,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 )
 
@@ -37,16 +40,17 @@ type APIPublicationResource struct {
 
 // APIPublicationResourceModel describes the resource data model.
 type APIPublicationResourceModel struct {
-	APIID                    types.String   `tfsdk:"api_id"`
-	AuthStrategyIds          []types.String `tfsdk:"auth_strategy_ids"`
-	AutoApproveRegistrations types.Bool     `tfsdk:"auto_approve_registrations"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	Environment              types.String   `tfsdk:"environment"`
-	FormID                   types.String   `tfsdk:"form_id"`
-	PortalID                 types.String   `tfsdk:"portal_id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	Visibility               types.String   `tfsdk:"visibility"`
-	Warnings                 []types.String `tfsdk:"warnings"`
+	APIID                    types.String                        `tfsdk:"api_id"`
+	AuthStrategyIds          []types.String                      `tfsdk:"auth_strategy_ids"`
+	AutoApproveRegistrations types.Bool                          `tfsdk:"auto_approve_registrations"`
+	CreatedAt                types.String                        `tfsdk:"created_at"`
+	Environment              *tfTypes.APIEnvironmentRef          `tfsdk:"environment"`
+	FormID                   types.String                        `tfsdk:"form_id"`
+	PortalID                 types.String                        `tfsdk:"portal_id"`
+	SpecRenderer             *tfTypes.APIPublicationSpecRenderer `tfsdk:"spec_renderer"`
+	UpdatedAt                types.String                        `tfsdk:"updated_at"`
+	Visibility               types.String                        `tfsdk:"visibility"`
+	Warnings                 []types.String                      `tfsdk:"warnings"`
 }
 
 func (r *APIPublicationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -85,10 +89,32 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
-			"environment": schema.StringAttribute{
+			"environment": schema.SingleNestedAttribute{
 				Computed: true,
-				MarkdownDescription: `The name of the environment this record is scoped to. Present only for APIs` + "\n" +
-					`configured across multiple environments.`,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id":   types.StringType,
+					"name": types.StringType,
+				})),
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `The UUID of the environment.`,
+					},
+					"name": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `The name of the environment.`,
+					},
+				},
+				Description: `The environment this record is scoped to.`,
 			},
 			"form_id": schema.StringAttribute{
 				Computed:    true,
@@ -98,6 +124,28 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The Portal identifier`,
+			},
+			"spec_renderer": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"try_it_ui": schema.BoolAttribute{
+						Optional:    true,
+						Description: `Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.`,
+					},
+					"try_it_ui_audience": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The audience for the Try It UI feature.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `all` + "`" + ` means that the Try It UI will be available to all users, including unauthenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `authenticated` + "`" + ` means that the Try It UI will only be available to authenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `registered` + "`" + ` means that the Try It UI will only be available to users who have registered for the API.` + "\n" +
+							`possible known values include one of ["all", "authenticated", "registered"]`,
+					},
+				},
+				Description: `Customization settings for the API spec renderer in the portal.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -109,11 +157,11 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 			"visibility": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
-				Default:  stringdefault.StaticString(`private`),
 				MarkdownDescription: `The visibility of the API in the portal.` + "\n" +
 					`Public API publications do not require authentication to view and retrieve information about them.` + "\n" +
 					`Private API publications require authentication to retrieve information about them.` + "\n" +
-					`possible known values include one of ["public", "private"]; Default: "private"`,
+					`If omitted, this defaults to the target portal's configured default API visibility.` + "\n" +
+					`possible known values include one of ["public", "private"]`,
 			},
 			"warnings": schema.ListAttribute{
 				Computed: true,

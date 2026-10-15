@@ -102,6 +102,31 @@ func (r *MeshWorkloadResourceModel) ToOperationsGetWorkloadRequest(ctx context.C
 	return &out, diags
 }
 
+func (r *MeshWorkloadResourceModel) ToOperationsPostWorkloadRequest(ctx context.Context) (*operations.PostWorkloadRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	workloadItem, workloadItemDiags := r.ToSharedWorkloadItemInput(ctx)
+	diags.Append(workloadItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostWorkloadRequest{
+		CpID:         cpID,
+		Mesh:         mesh,
+		WorkloadItem: *workloadItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshWorkloadResourceModel) ToOperationsPutWorkloadRequest(ctx context.Context) (*operations.PutWorkloadRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

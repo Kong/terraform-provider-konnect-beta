@@ -15,16 +15,6 @@ PortalApplicationRegistration Resource
 ```terraform
 resource "konnect_portal_application_registration" "my_portalapplicationregistration" {
   provider = konnect-beta
-  additional_data = {
-    key = {
-      array_of_str = [
-        "..."
-      ]
-      boolean = false
-      number  = 7.82
-      str     = "...my_str..."
-    }
-  }
   api_id         = "15a8f0a0-e185-4b99-8591-c6319de5704a"
   application_id = "f5e17ae7-79e1-4181-931f-143b2159d313"
   portal_id      = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
@@ -43,7 +33,6 @@ resource "konnect_portal_application_registration" "my_portalapplicationregistra
 
 ### Optional
 
-- `additional_data` (Attributes Map) Optional developer answers to the `api_registration` form linked to the API publication, captured at admin-side creation time. Supplied as a flat map keyed by field `name`; values match each field's input type. Silently ignored when no form is linked to the publication. Requires replacement if changed. (see [below for nested schema](#nestedatt--additional_data))
 - `status` (String) The status of the application registration. It must be a valid status value for a registration creation. possible known values include one of ["approved", "pending"]
 
 ### Read-Only
@@ -54,35 +43,6 @@ resource "konnect_portal_application_registration" "my_portalapplicationregistra
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--additional_data"></a>
-### Nested Schema for `additional_data`
-
-Optional:
-
-- `array_of_str` (List of String) Requires replacement if changed.
-- `boolean` (Boolean) Requires replacement if changed.
-- `number` (Number) Requires replacement if changed.
-- `str` (String) Requires replacement if changed.
-
-Read-Only:
-
-- `label` (String) Field label snapshotted at submission time.
-- `name` (String) Field slug, matches the parent object key.
-- `type` (String) Field input type at submission time.
-- `value` (Attributes) Submitted value. Type matches the field `type`: `text`/`email`/`textarea` return strings; `number` returns a number; `checkbox` returns a boolean; `select` returns a string for single-select or an array of strings for multi-select. (see [below for nested schema](#nestedatt--additional_data--value))
-
-<a id="nestedatt--additional_data--value"></a>
-### Nested Schema for `additional_data.value`
-
-Read-Only:
-
-- `array_of_str` (List of String)
-- `boolean` (Boolean)
-- `number` (Number)
-- `str` (String)
-
-
 
 <a id="nestedatt--api"></a>
 ### Nested Schema for `api`

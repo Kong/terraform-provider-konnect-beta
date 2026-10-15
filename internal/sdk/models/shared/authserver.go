@@ -36,8 +36,10 @@ type AuthServer struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	// A list or trusted origins to apply the CORS header on for the auth server
 	TrustedOrigins []string `json:"trusted_origins,omitempty"`
-	// The default access token duration, in seconds, applied to DCR clients registered against this auth server
-	DcrDefaultAccessTokenDuration *int64 `default:"300" json:"dcr_default_access_token_duration"`
+	// Dynamic Client Registration settings for the auth server
+	Dcr *DcrSettings `json:"dcr,omitempty"`
+	// Whether open (unauthenticated) Dynamic Client Registration is enabled for the auth server
+	OpenDcrEnabled *bool `json:"open_dcr_enabled,omitempty"`
 }
 
 func (a AuthServer) MarshalJSON() ([]byte, error) {
@@ -135,9 +137,16 @@ func (a *AuthServer) GetTrustedOrigins() []string {
 	return a.TrustedOrigins
 }
 
-func (a *AuthServer) GetDcrDefaultAccessTokenDuration() *int64 {
+func (a *AuthServer) GetDcr() *DcrSettings {
 	if a == nil {
 		return nil
 	}
-	return a.DcrDefaultAccessTokenDuration
+	return a.Dcr
+}
+
+func (a *AuthServer) GetOpenDcrEnabled() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.OpenDcrEnabled
 }
