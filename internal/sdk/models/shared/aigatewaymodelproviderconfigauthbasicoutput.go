@@ -87,7 +87,10 @@ func (a *AIGatewayModelProviderConfigAuthBasicParams) GetLocation() *Location {
 	return a.Location
 }
 
-// AIGatewayModelProviderConfigAuthBasicOutput - Basic auth config for an upstream model provider.
+// AIGatewayModelProviderConfigAuthBasicOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Basic auth config for an upstream model provider.
 type AIGatewayModelProviderConfigAuthBasicOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_   string                                         `const:"basic" json:"type"`
@@ -203,7 +206,10 @@ func (p *Params) GetLocation() *Location {
 	return p.Location
 }
 
-// AIGatewayModelProviderConfigAuthBasic - Basic auth config for an upstream model provider.
+// AIGatewayModelProviderConfigAuthBasic - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Basic auth config for an upstream model provider.
 type AIGatewayModelProviderConfigAuthBasic struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_   string    `const:"basic" json:"type"`

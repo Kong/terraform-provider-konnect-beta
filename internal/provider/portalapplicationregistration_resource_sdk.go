@@ -21,7 +21,7 @@ func (r *PortalApplicationRegistrationResourceModel) RefreshFromSharedGetApplica
 		r.API.ID = types.StringValue(resp.API.ID)
 		r.API.Name = types.StringValue(resp.API.Name)
 		r.API.Version = types.StringPointerValue(resp.API.Version)
-		r.Application = &tfTypes.APIEnvironmentRef{}
+		r.Application = &tfTypes.Application{}
 		r.Application.ID = types.StringValue(resp.Application.ID)
 		r.Application.Name = types.StringValue(resp.Application.Name)
 		if resp.Consumer == nil {
@@ -144,9 +144,9 @@ func (r *PortalApplicationRegistrationResourceModel) ToSharedCreateApplicationRe
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	status := new(shared.CreateApplicationRegistrationRequestStatus)
+	status := new(shared.Status)
 	if !r.Status.IsUnknown() && !r.Status.IsNull() {
-		*status = shared.CreateApplicationRegistrationRequestStatus(r.Status.ValueString())
+		*status = shared.Status(r.Status.ValueString())
 	} else {
 		status = nil
 	}

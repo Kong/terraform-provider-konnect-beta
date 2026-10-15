@@ -68,33 +68,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
     }
     name = "azure-ai-se"
   }
-  baseten = {
-    config = {
-      auth = {
-        headers = [
-          {
-            name  = "...my_name..."
-            value = "...my_value..."
-          }
-        ]
-        params = [
-          {
-            location = "query"
-            name     = "...my_name..."
-            value    = "...my_value..."
-          }
-        ]
-      }
-    }
-    display_name = "Azure AI SE"
-    labels = {
-      key = "value"
-    }
-    managed_by = {
-      key = "value"
-    }
-    name = "azure-ai-se"
-  }
   bedrock = {
     config = {
       auth = {
@@ -262,21 +235,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           oauth_token_url         = "...my_oauth_token_url..."
           service_account_json    = "...my_service_account_json..."
           use_gcp_service_account = false
-          workload_identity_federation = {
-            aws_iam = {
-              auth_json = "...my_auth_json..."
-              aws = {
-                access_key_id     = "...my_access_key_id..."
-                assume_role_arn   = "...my_assume_role_arn..."
-                region            = "...my_region..."
-                role_session_name = "...my_role_session_name..."
-                secret_access_key = "...my_secret_access_key..."
-                session_token     = "...my_session_token..."
-                sts_endpoint_url  = "...my_sts_endpoint_url..."
-              }
-              source = "aws_iam"
-            }
-          }
         }
       }
     }
@@ -480,33 +438,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
     }
     name = "azure-ai-se"
   }
-  typesafe = {
-    config = {
-      auth = {
-        headers = [
-          {
-            name  = "...my_name..."
-            value = "...my_value..."
-          }
-        ]
-        params = [
-          {
-            location = "query"
-            name     = "...my_name..."
-            value    = "...my_value..."
-          }
-        ]
-      }
-    }
-    display_name = "Azure AI SE"
-    labels = {
-      key = "value"
-    }
-    managed_by = {
-      key = "value"
-    }
-    name = "azure-ai-se"
-  }
   vercel = {
     config = {
       auth = {
@@ -600,34 +531,62 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
 
 ### Optional
 
-- `anthropic` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--anthropic))
-- `azure` (Attributes) Config for Azure model provider. (see [below for nested schema](#nestedatt--azure))
-- `baseten` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--baseten))
-- `bedrock` (Attributes) Config for AWS model provider. (see [below for nested schema](#nestedatt--bedrock))
-- `cerebras` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--cerebras))
-- `cohere` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--cohere))
-- `dashscope` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--dashscope))
-- `databricks` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--databricks))
-- `deepseek` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--deepseek))
-- `gemini` (Attributes) Config for GCP model provider. (see [below for nested schema](#nestedatt--gemini))
-- `huggingface` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--huggingface))
-- `kimi` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--kimi))
-- `llama2` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--llama2))
-- `mistral` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--mistral))
-- `ollama` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--ollama))
-- `openai` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--openai))
-- `sagemaker` (Attributes) Config for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker))
-- `typesafe` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--typesafe))
-- `vercel` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--vercel))
-- `vllm` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--vllm))
-- `xai` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--xai))
+- `anthropic` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--anthropic))
+- `azure` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for Azure model provider. (see [below for nested schema](#nestedatt--azure))
+- `bedrock` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for AWS model provider. (see [below for nested schema](#nestedatt--bedrock))
+- `cerebras` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--cerebras))
+- `cohere` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--cohere))
+- `dashscope` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--dashscope))
+- `databricks` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--databricks))
+- `deepseek` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--deepseek))
+- `gemini` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for GCP model provider. (see [below for nested schema](#nestedatt--gemini))
+- `huggingface` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--huggingface))
+- `kimi` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--kimi))
+- `llama2` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--llama2))
+- `mistral` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--mistral))
+- `ollama` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--ollama))
+- `openai` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--openai))
+- `sagemaker` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker))
+- `vercel` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--vercel))
+- `vllm` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--vllm))
+- `xai` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--xai))
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `display_name` (String) The display name for this model provider instance.
 - `id` (String) Contains a unique identifier used for this resource.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--anthropic"></a>
@@ -645,7 +604,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -658,7 +621,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--anthropic--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--anthropic--config--auth))
 
 <a id="nestedatt--anthropic--config--auth"></a>
 ### Nested Schema for `anthropic.config.auth`
@@ -708,7 +675,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -734,8 +705,14 @@ possible known values include one of ["azure-openai", "azure-foundry"]; Default:
 
 Optional:
 
-- `azure` (Attributes) Configuration for Azure model provider. (see [below for nested schema](#nestedatt--azure--config--auth--azure))
-- `basic` (Attributes) Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--azure--config--auth--basic))
+- `azure` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration for Azure model provider. (see [below for nested schema](#nestedatt--azure--config--auth--azure))
+- `basic` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--azure--config--auth--basic))
 
 <a id="nestedatt--azure--config--auth--azure"></a>
 ### Nested Schema for `azure.config.auth.azure`
@@ -794,72 +771,6 @@ Optional:
 
 
 
-<a id="nestedatt--baseten"></a>
-### Nested Schema for `baseten`
-
-Required:
-
-- `config` (Attributes) Configuration for the model provider. (see [below for nested schema](#nestedatt--baseten--config))
-- `display_name` (String) The display name for this model provider instance.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
-
-Optional:
-
-- `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
-
-Public labels are intended to store **PUBLIC** metadata. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-Keys must be 1–63 characters long and start with an alphanumeric character.
-
-Read-Only:
-
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) Contains a unique identifier used for this resource.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--baseten--config"></a>
-### Nested Schema for `baseten.config`
-
-Required:
-
-- `auth` (Attributes) Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--baseten--config--auth))
-
-<a id="nestedatt--baseten--config--auth"></a>
-### Nested Schema for `baseten.config.auth`
-
-Optional:
-
-- `headers` (Attributes List) (see [below for nested schema](#nestedatt--baseten--config--auth--headers))
-- `params` (Attributes List) (see [below for nested schema](#nestedatt--baseten--config--auth--params))
-
-<a id="nestedatt--baseten--config--auth--headers"></a>
-### Nested Schema for `baseten.config.auth.headers`
-
-Optional:
-
-- `name` (String) The name of the header used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Not Null
-- `value` (String) The auth header value for ‘header_name’, for example ‘Bearer key...’.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--baseten--config--auth--params"></a>
-### Nested Schema for `baseten.config.auth.params`
-
-Optional:
-
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
-- `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
-- `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-
-
 <a id="nestedatt--bedrock"></a>
 ### Nested Schema for `bedrock`
 
@@ -875,7 +786,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -895,8 +810,14 @@ Optional:
 
 Optional:
 
-- `aws` (Attributes) Configuration for AWS model provider. (see [below for nested schema](#nestedatt--bedrock--config--auth--aws))
-- `basic` (Attributes) Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--bedrock--config--auth--basic))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration for AWS model provider. (see [below for nested schema](#nestedatt--bedrock--config--auth--aws))
+- `basic` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--bedrock--config--auth--basic))
 
 <a id="nestedatt--bedrock--config--auth--aws"></a>
 ### Nested Schema for `bedrock.config.auth.aws`
@@ -967,7 +888,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -980,7 +905,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--cerebras--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--cerebras--config--auth))
 
 <a id="nestedatt--cerebras--config--auth"></a>
 ### Nested Schema for `cerebras.config.auth`
@@ -1030,7 +959,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1043,7 +976,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--cohere--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--cohere--config--auth))
 
 <a id="nestedatt--cohere--config--auth"></a>
 ### Nested Schema for `cohere.config.auth`
@@ -1093,7 +1030,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1106,7 +1047,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--dashscope--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--dashscope--config--auth))
 
 <a id="nestedatt--dashscope--config--auth"></a>
 ### Nested Schema for `dashscope.config.auth`
@@ -1156,7 +1101,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1169,7 +1118,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--databricks--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--databricks--config--auth))
 
 <a id="nestedatt--databricks--config--auth"></a>
 ### Nested Schema for `databricks.config.auth`
@@ -1219,7 +1172,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1232,7 +1189,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--deepseek--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--deepseek--config--auth))
 
 <a id="nestedatt--deepseek--config--auth"></a>
 ### Nested Schema for `deepseek.config.auth`
@@ -1282,7 +1243,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1302,8 +1267,14 @@ Optional:
 
 Optional:
 
-- `basic` (Attributes) Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--gemini--config--auth--basic))
-- `gcp` (Attributes) Configuration for GCP model provider. (see [below for nested schema](#nestedatt--gemini--config--auth--gcp))
+- `basic` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--gemini--config--auth--basic))
+- `gcp` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration for GCP model provider. (see [below for nested schema](#nestedatt--gemini--config--auth--gcp))
 
 <a id="nestedatt--gemini--config--auth--basic"></a>
 ### Nested Schema for `gemini.config.auth.basic`
@@ -1348,50 +1319,6 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 - `service_account_json` (String) Full JSON string of the GCP service account to authenticate. If not set (and gcp_use_service_account is true), the service account JSON will be from the environment variable GCP_SERVICE_ACCOUNT.
 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `use_gcp_service_account` (Boolean) Use service account auth for GCP-based providers and models.
-- `workload_identity_federation` (Attributes) Config for GCP Workload Identity Federation. (see [below for nested schema](#nestedatt--gemini--config--auth--gcp--workload_identity_federation))
-
-<a id="nestedatt--gemini--config--auth--gcp--workload_identity_federation"></a>
-### Nested Schema for `gemini.config.auth.gcp.workload_identity_federation`
-
-Optional:
-
-- `aws_iam` (Attributes) Enables authenticating with GCP via Workload Identity Federation, obtaining temporary
-GCP credentials instead of using a static service account key. (see [below for nested schema](#nestedatt--gemini--config--auth--gcp--workload_identity_federation--aws_iam))
-
-<a id="nestedatt--gemini--config--auth--gcp--workload_identity_federation--aws_iam"></a>
-### Nested Schema for `gemini.config.auth.gcp.workload_identity_federation.aws_iam`
-
-Optional:
-
-- `auth_json` (String) JSON configuration for the Workload Identity Federation token exchange (Google's
-`external_account` credential config: audience, token URL, credential source, and
-optional service account impersonation URL). If not set, Kong falls back to the file
-path in the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `aws` (Attributes) AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--gemini--config--auth--gcp--workload_identity_federation--aws_iam--aws))
-- `source` (String) The source identity provider/system used to obtain temporary GCP credentials. Not Null; must be "aws_iam"
-
-<a id="nestedatt--gemini--config--auth--gcp--workload_identity_federation--aws_iam--aws"></a>
-### Nested Schema for `gemini.config.auth.gcp.workload_identity_federation.aws_iam.aws`
-
-Optional:
-
-- `access_key_id` (String) The access key id for authenticating with static IAM User credentials.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `assume_role_arn` (String) The ARN of the IAM role to assume for generating authentication tokens.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `region` (String) The AWS region of the upstream service. Overrides the region inferred from the environment.
-- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `secret_access_key` (String) The secret access key for authenticating with static IAM User credentials.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `session_token` (String) The session token for authenticating with temporary IAM credentials.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `sts_endpoint_url` (String) The STS endpoint URL to use for generating authentication tokens.
-If not specified, the default AWS STS endpoint will be used.
-
-
-
 
 
 
@@ -1412,7 +1339,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1425,7 +1356,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--huggingface--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--huggingface--config--auth))
 
 <a id="nestedatt--huggingface--config--auth"></a>
 ### Nested Schema for `huggingface.config.auth`
@@ -1475,7 +1410,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1488,7 +1427,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--kimi--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--kimi--config--auth))
 
 <a id="nestedatt--kimi--config--auth"></a>
 ### Nested Schema for `kimi.config.auth`
@@ -1538,7 +1481,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1551,7 +1498,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--llama2--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--llama2--config--auth))
 
 <a id="nestedatt--llama2--config--auth"></a>
 ### Nested Schema for `llama2.config.auth`
@@ -1601,7 +1552,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1614,7 +1569,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--mistral--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--mistral--config--auth))
 
 <a id="nestedatt--mistral--config--auth"></a>
 ### Nested Schema for `mistral.config.auth`
@@ -1664,7 +1623,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1677,7 +1640,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--ollama--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--ollama--config--auth))
 
 <a id="nestedatt--ollama--config--auth"></a>
 ### Nested Schema for `ollama.config.auth`
@@ -1727,7 +1694,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1740,7 +1711,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--openai--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--openai--config--auth))
 
 <a id="nestedatt--openai--config--auth"></a>
 ### Nested Schema for `openai.config.auth`
@@ -1780,7 +1755,9 @@ Optional:
 
 Optional:
 
-- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--sagemaker--config))
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+Not Null (see [below for nested schema](#nestedatt--sagemaker--config))
 - `display_name` (String) The display name for this model provider instance. Not Null
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -1790,7 +1767,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1810,8 +1791,14 @@ Optional:
 
 Optional:
 
-- `basic` (Attributes) Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--sagemaker--config--auth--basic))
-- `sagemaker` (Attributes) Auth configuration for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker--config--auth--sagemaker))
+- `basic` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--sagemaker--config--auth--basic))
+- `sagemaker` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth configuration for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker--config--auth--sagemaker))
 
 <a id="nestedatt--sagemaker--config--auth--basic"></a>
 ### Nested Schema for `sagemaker.config.auth.basic`
@@ -1866,72 +1853,6 @@ Optional:
 
 
 
-<a id="nestedatt--typesafe"></a>
-### Nested Schema for `typesafe`
-
-Required:
-
-- `config` (Attributes) Configuration for the model provider. (see [below for nested schema](#nestedatt--typesafe--config))
-- `display_name` (String) The display name for this model provider instance.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
-
-Optional:
-
-- `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
-
-Public labels are intended to store **PUBLIC** metadata. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-Keys must be 1–63 characters long and start with an alphanumeric character.
-
-Read-Only:
-
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) Contains a unique identifier used for this resource.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--typesafe--config"></a>
-### Nested Schema for `typesafe.config`
-
-Required:
-
-- `auth` (Attributes) Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--typesafe--config--auth))
-
-<a id="nestedatt--typesafe--config--auth"></a>
-### Nested Schema for `typesafe.config.auth`
-
-Optional:
-
-- `headers` (Attributes List) (see [below for nested schema](#nestedatt--typesafe--config--auth--headers))
-- `params` (Attributes List) (see [below for nested schema](#nestedatt--typesafe--config--auth--params))
-
-<a id="nestedatt--typesafe--config--auth--headers"></a>
-### Nested Schema for `typesafe.config.auth.headers`
-
-Optional:
-
-- `name` (String) The name of the header used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Not Null
-- `value` (String) The auth header value for ‘header_name’, for example ‘Bearer key...’.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--typesafe--config--auth--params"></a>
-### Nested Schema for `typesafe.config.auth.params`
-
-Optional:
-
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
-- `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
-- `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-
-
 <a id="nestedatt--vercel"></a>
 ### Nested Schema for `vercel`
 
@@ -1947,7 +1868,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -1960,7 +1885,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--vercel--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--vercel--config--auth))
 
 <a id="nestedatt--vercel--config--auth"></a>
 ### Nested Schema for `vercel.config.auth`
@@ -2010,7 +1939,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -2023,7 +1956,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--vllm--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--vllm--config--auth))
 
 <a id="nestedatt--vllm--config--auth"></a>
 ### Nested Schema for `vllm.config.auth`
@@ -2073,7 +2010,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 
 Read-Only:
 
@@ -2086,7 +2027,11 @@ Read-Only:
 
 Optional:
 
-- `auth` (Attributes) Basic auth config for an upstream model provider. Not Null (see [below for nested schema](#nestedatt--xai--config--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Basic auth config for an upstream model provider.
+Not Null (see [below for nested schema](#nestedatt--xai--config--auth))
 
 <a id="nestedatt--xai--config--auth"></a>
 ### Nested Schema for `xai.config.auth`

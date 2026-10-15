@@ -49,7 +49,7 @@ type PostMeshTrafficPermissionResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshTrafficPermissionResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshTrafficPermissionResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshTrafficPermissionResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshTrafficPermissionResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

@@ -54,13 +54,12 @@ resource "konnect_portal_customization" "my_portalcustomization" {
     show_schemas             = true
     try_it_insomnia          = true
     try_it_ui                = true
-    try_it_ui_audience       = "all"
   }
   theme = {
     colors = {
       primary = "#000000"
     }
     mode = "system"
-    name = "ocean"
+    name = "...my_name..."
   }
 }

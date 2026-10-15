@@ -32,6 +32,9 @@ func newAIGatewayConsumers(rootSDK *KonnectBeta, sdkConfig config.SDKConfigurati
 }
 
 // CreateAiGatewayConsumer - Create an AI Gateway Consumer
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Creates a new consumer for the AI Gateway.
 func (s *AIGatewayConsumers) CreateAiGatewayConsumer(ctx context.Context, request operations.CreateAiGatewayConsumerRequest, opts ...operations.Option) (*operations.CreateAiGatewayConsumerResponse, error) {
 	o := operations.Options{}
@@ -349,6 +352,9 @@ func (s *AIGatewayConsumers) CreateAiGatewayConsumer(ctx context.Context, reques
 }
 
 // GetAiGatewayConsumer - Get an AI Gateway Consumer
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific AI Gateway consumer.
 func (s *AIGatewayConsumers) GetAiGatewayConsumer(ctx context.Context, request operations.GetAiGatewayConsumerRequest, opts ...operations.Option) (*operations.GetAiGatewayConsumerResponse, error) {
 	o := operations.Options{}
@@ -638,6 +644,9 @@ func (s *AIGatewayConsumers) GetAiGatewayConsumer(ctx context.Context, request o
 }
 
 // UpdateAiGatewayConsumer - Update an AI Gateway Consumer
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of an existing AI Gateway consumer.
 func (s *AIGatewayConsumers) UpdateAiGatewayConsumer(ctx context.Context, request operations.UpdateAiGatewayConsumerRequest, opts ...operations.Option) (*operations.UpdateAiGatewayConsumerResponse, error) {
 	o := operations.Options{}
@@ -955,6 +964,9 @@ func (s *AIGatewayConsumers) UpdateAiGatewayConsumer(ctx context.Context, reques
 }
 
 // DeleteAiGatewayConsumer - Delete an AI Gateway Consumer
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a specific AI Gateway consumer.
 func (s *AIGatewayConsumers) DeleteAiGatewayConsumer(ctx context.Context, request operations.DeleteAiGatewayConsumerRequest, opts ...operations.Option) (*operations.DeleteAiGatewayConsumerResponse, error) {
 	o := operations.Options{}
@@ -1219,6 +1231,9 @@ func (s *AIGatewayConsumers) DeleteAiGatewayConsumer(ctx context.Context, reques
 }
 
 // CreateAiGatewayConsumerCredential - Create an AI Gateway Consumer Credential
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Creates a new credential for an AI Gateway consumer.
 func (s *AIGatewayConsumers) CreateAiGatewayConsumerCredential(ctx context.Context, request operations.CreateAiGatewayConsumerCredentialRequest, opts ...operations.Option) (*operations.CreateAiGatewayConsumerCredentialResponse, error) {
 	o := operations.Options{}
@@ -1536,6 +1551,9 @@ func (s *AIGatewayConsumers) CreateAiGatewayConsumerCredential(ctx context.Conte
 }
 
 // GetAiGatewayConsumerCredential - Get an AI Gateway Consumer Credential
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific credential for an AI Gateway consumer.
 func (s *AIGatewayConsumers) GetAiGatewayConsumerCredential(ctx context.Context, request operations.GetAiGatewayConsumerCredentialRequest, opts ...operations.Option) (*operations.GetAiGatewayConsumerCredentialResponse, error) {
 	o := operations.Options{}
@@ -1825,6 +1843,9 @@ func (s *AIGatewayConsumers) GetAiGatewayConsumerCredential(ctx context.Context,
 }
 
 // DeleteAiGatewayConsumerCredential - Delete an AI Gateway Consumer Credential
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a specific credential for an AI Gateway consumer.
 func (s *AIGatewayConsumers) DeleteAiGatewayConsumerCredential(ctx context.Context, request operations.DeleteAiGatewayConsumerCredentialRequest, opts ...operations.Option) (*operations.DeleteAiGatewayConsumerCredentialResponse, error) {
 	o := operations.Options{}

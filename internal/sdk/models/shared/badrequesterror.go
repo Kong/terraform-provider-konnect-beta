@@ -2,42 +2,12 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// BadRequestErrorStatus - The HTTP status code of the error. Useful when passing the response
-// body to child properties in a frontend UI. Must be returned as an integer.
-type BadRequestErrorStatus int64
-
-const (
-	BadRequestErrorStatusFourHundred BadRequestErrorStatus = 400
-)
-
-func (e BadRequestErrorStatus) ToPointer() *BadRequestErrorStatus {
-	return &e
-}
-func (e *BadRequestErrorStatus) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 400:
-		*e = BadRequestErrorStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BadRequestErrorStatus: %v", v)
-	}
-}
-
 // BadRequestError - standard error
 type BadRequestError struct {
 	// The HTTP status code of the error. Useful when passing the response
 	// body to child properties in a frontend UI. Must be returned as an integer.
 	//
-	Status BadRequestErrorStatus `json:"status"`
+	Status int64 `json:"status"`
 	// A short, human-readable summary of the problem. It should not
 	// change between occurences of a problem, except for localization.
 	// Should be provided as "Sentence case" for direct use in the UI.
@@ -60,9 +30,9 @@ type BadRequestError struct {
 	InvalidParameters []InvalidParameters `json:"invalid_parameters"`
 }
 
-func (b *BadRequestError) GetStatus() BadRequestErrorStatus {
+func (b *BadRequestError) GetStatus() int64 {
 	if b == nil {
-		return BadRequestErrorStatus(0)
+		return 0
 	}
 	return b.Status
 }

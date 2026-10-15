@@ -49,7 +49,7 @@ type PostMeshOPAResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshOPAResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshOPAResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshOPAResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshOPAResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

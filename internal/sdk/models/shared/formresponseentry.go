@@ -8,24 +8,24 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// FormResponseEntryType - The field's type at the time it was submitted.
-type FormResponseEntryType string
+// Type - Field input type at submission time.
+type Type string
 
 const (
-	FormResponseEntryTypeText     FormResponseEntryType = "text"
-	FormResponseEntryTypeEmail    FormResponseEntryType = "email"
-	FormResponseEntryTypeNumber   FormResponseEntryType = "number"
-	FormResponseEntryTypeTextarea FormResponseEntryType = "textarea"
-	FormResponseEntryTypeSelect   FormResponseEntryType = "select"
-	FormResponseEntryTypeCheckbox FormResponseEntryType = "checkbox"
+	TypeText     Type = "text"
+	TypeEmail    Type = "email"
+	TypeNumber   Type = "number"
+	TypeTextarea Type = "textarea"
+	TypeSelect   Type = "select"
+	TypeCheckbox Type = "checkbox"
 )
 
-func (e FormResponseEntryType) ToPointer() *FormResponseEntryType {
+func (e Type) ToPointer() *Type {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *FormResponseEntryType) IsExact() bool {
+func (e *Type) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "text", "email", "number", "textarea", "select", "checkbox":
@@ -44,12 +44,7 @@ const (
 	ValueTypeArrayOfStr ValueType = "arrayOfStr"
 )
 
-// Value - The submitted value. Its type matches the field's type:
-//
-// * `text`, `email`, `textarea` — string
-// * `number` — number
-// * `checkbox` — boolean
-// * `select` — string for single-select fields, or an array of strings for multi-select fields
+// Value - Submitted value. Type matches the field `type`: `text`/`email`/`textarea` return strings; `number` returns a number; `checkbox` returns a boolean; `select` returns a string for single-select or an array of strings for multi-select.
 type Value struct {
 	Str        *string  `queryParam:"inline" union:"member"`
 	Number     *float64 `queryParam:"inline" union:"member"`
@@ -182,20 +177,15 @@ func (u Value) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type Value: all fields are null")
 }
 
-// FormResponseEntry - One field's submitted answer, along with a snapshot of that field's details as they appeared when submitted.
+// FormResponseEntry - A single field's submitted answer, snapshotted with the field metadata as it appeared at submission time.
 type FormResponseEntry struct {
-	// The field's `name`. Matches the parent object's key.
+	// Field slug, matches the parent object key.
 	Name string `json:"name"`
-	// The field's label at the time it was submitted.
+	// Field label snapshotted at submission time.
 	Label string `json:"label"`
-	// The field's type at the time it was submitted.
-	Type FormResponseEntryType `json:"type"`
-	// The submitted value. Its type matches the field's type:
-	//
-	// * `text`, `email`, `textarea` — string
-	// * `number` — number
-	// * `checkbox` — boolean
-	// * `select` — string for single-select fields, or an array of strings for multi-select fields
+	// Field input type at submission time.
+	Type Type `json:"type"`
+	// Submitted value. Type matches the field `type`: `text`/`email`/`textarea` return strings; `number` returns a number; `checkbox` returns a boolean; `select` returns a string for single-select or an array of strings for multi-select.
 	//
 	Value Value `json:"value"`
 }
@@ -214,9 +204,9 @@ func (f *FormResponseEntry) GetLabel() string {
 	return f.Label
 }
 
-func (f *FormResponseEntry) GetType() FormResponseEntryType {
+func (f *FormResponseEntry) GetType() Type {
 	if f == nil {
-		return FormResponseEntryType("")
+		return Type("")
 	}
 	return f.Type
 }

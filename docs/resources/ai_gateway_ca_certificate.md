@@ -34,7 +34,10 @@ resource "konnect_ai_gateway_ca_certificate" "my_aigatewaycacertificate" {
 
 - `cert` (String) PEM-encoded public certificate of the CA.
 - `gateway_id` (String) The unique ID of the AI Gateway.
-- `name` (String) A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.
 
 ### Optional
 
@@ -52,7 +55,6 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 - `cert_digest` (String) SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
-- `konnect_managed` (Boolean) An immutable read-only flag to identify resource managed by Konnect services.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import

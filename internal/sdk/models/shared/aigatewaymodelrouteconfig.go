@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayModelRouteConfig - Configuration for an AI Gateway route.
+// AIGatewayModelRouteConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an AI Gateway route.
 type AIGatewayModelRouteConfig struct {
 	// One or more lists of values indexed by header name that will cause this route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
 	Headers map[string]any `json:"headers,omitempty"`

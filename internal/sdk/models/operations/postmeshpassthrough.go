@@ -49,7 +49,7 @@ type PostMeshPassthroughResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshPassthroughResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshPassthroughResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshPassthroughResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshPassthroughResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

@@ -20,7 +20,6 @@ func (r *AIGatewaySNIResourceModel) RefreshFromSharedAIGatewaySNI(ctx context.Co
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Hostname = types.StringValue(resp.Hostname)
 		r.ID = types.StringValue(resp.ID)
-		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {

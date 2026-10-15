@@ -20,13 +20,7 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       allow = [
         "..."
       ]
-      allow_when = [
-        "..."
-      ]
       deny = [
-        "..."
-      ]
-      deny_when = [
         "..."
       ]
     }
@@ -38,12 +32,6 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
     ]
   }
   config = {
-    ca_certificates = [
-      "my-ca-certificate"
-    ]
-    certificates = [
-      "my-certificate"
-    ]
     logging = {
       max_payload_size = 524288
       payloads         = false
@@ -131,12 +119,18 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
 - `config` (Attributes) Configuration for the agent. The structure varies depending on the agent type. (see [below for nested schema](#nestedatt--config))
 - `display_name` (String) The display name for this agent.
 - `gateway_id` (String) The unique ID of the AI Gateway.
-- `name` (String) A user-defined unique identifier for this agent, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this agent, used as a stable human-readable reference. This value is immutable after creation.
 - `type` (String) The type of the agent. possible known values include one of ["a2a", "http"]
 
 ### Optional
 
-- `access` (Attributes) Access control configuration for an agent. (see [below for nested schema](#nestedatt--access))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access control configuration for an agent. (see [below for nested schema](#nestedatt--access))
 - `enabled` (Boolean) Whether the Agent is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -164,29 +158,20 @@ This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${pa
 
 Optional:
 
-- `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream agent endpoint,
-referenced by name. Each entry must be the `name` of an existing AI CA Certificate on the
-same AI Gateway.
+- `logging` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-generated for this Agent, which proxies requests to `config.url`.
-
-If unset, the default trust store is used to verify the upstream's TLS certificate.
-- `certificates` (List of String) Client certificates used for mutual TLS (mTLS) authentication with the upstream agent
-endpoint, referenced by name. Each entry must be the `name` of an existing AI Certificate
-on the same AI Gateway.
-
-The certificates are applied to the Kong Gateway Service generated for this Agent, which
-proxies requests to `config.url`. The generated Service presents a single client
-certificate (`client_certificate`) during the TLS handshake with the upstream, so at most
-one certificate may be configured.
-
-If unset, no client certificate is presented to the upstream.
-- `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--config--logging))
+Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--config--proxy))
-- `route` (Attributes) Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--config--route))
-- `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--config--upstream))
+- `route` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--config--route))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--config--upstream))
 
 <a id="nestedatt--config--logging"></a>
 ### Nested Schema for `config.logging`
@@ -262,14 +247,20 @@ Optional:
 
 Optional:
 
-- `auth` (Attributes) Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--config--upstream--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--config--upstream--auth))
 
 <a id="nestedatt--config--upstream--auth"></a>
 ### Nested Schema for `config.upstream.auth`
 
 Optional:
 
-- `aws` (Attributes) AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--config--upstream--auth--aws))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--config--upstream--auth--aws))
 
 <a id="nestedatt--config--upstream--auth--aws"></a>
 ### Nested Schema for `config.upstream.auth.aws`
@@ -299,7 +290,10 @@ If not specified, the default AWS STS endpoint will be used.
 
 Optional:
 
-- `acls` (Attributes) Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`. (see [below for nested schema](#nestedatt--access--acls))
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access control rules. Configure exactly one of `allow` or `deny`. (see [below for nested schema](#nestedatt--access--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the agent.
 At most 1 auth strategy of each auth strategy type can be referenced.
 - `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the agent.
@@ -313,9 +307,7 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.
-- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.
 - `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access.
-- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.
 
 ## Import
 

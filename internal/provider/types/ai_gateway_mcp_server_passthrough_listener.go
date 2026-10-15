@@ -17,7 +17,6 @@ type AIGatewayMCPServerPassthroughListener struct {
 	ManagedBy   map[string]types.String               `tfsdk:"managed_by"`
 	Name        types.String                          `tfsdk:"name"`
 	Policies    []types.String                        `tfsdk:"policies"`
-	TokenVault  *AIGatewayTokenVault                  `tfsdk:"token_vault"`
 	Tools       []AIGatewayMCPPassthroughTool         `tfsdk:"tools"`
 	UpdatedAt   types.String                          `tfsdk:"updated_at"`
 }

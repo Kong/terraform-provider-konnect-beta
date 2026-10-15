@@ -24,7 +24,7 @@ func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx contex
 			r.Spec = &tfTypes.CreateAPIVersionRequestSpec{}
 			r.Spec.Content = types.StringPointerValue(resp.Spec.Content)
 			if resp.Spec.Provider != nil {
-				r.Spec.Provider = &tfTypes.CreateAPIVersionRequestProvider{}
+				r.Spec.Provider = &tfTypes.Provider{}
 				if resp.Spec.Provider.IntegrationProvider != nil {
 					r.Spec.Provider.IntegrationProvider = &tfTypes.IntegrationProvider{}
 					if len(resp.Spec.Provider.IntegrationProvider.Config) > 0 {
@@ -83,12 +83,6 @@ func (r *APIVersionResourceModel) ToOperationsCreateAPIVersionRequest(ctx contex
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	specFormat := new(shared.SpecFormatSchema)
-	if !r.SpecFormat.IsUnknown() && !r.SpecFormat.IsNull() {
-		*specFormat = shared.SpecFormatSchema(r.SpecFormat.ValueString())
-	} else {
-		specFormat = nil
-	}
 	createAPIVersionRequest, createAPIVersionRequestDiags := r.ToSharedCreateAPIVersionRequest(ctx)
 	diags.Append(createAPIVersionRequestDiags...)
 
@@ -98,7 +92,6 @@ func (r *APIVersionResourceModel) ToOperationsCreateAPIVersionRequest(ctx contex
 
 	out := operations.CreateAPIVersionRequest{
 		APIID:                   apiID,
-		SpecFormat:              specFormat,
 		CreateAPIVersionRequest: *createAPIVersionRequest,
 	}
 
@@ -131,16 +124,9 @@ func (r *APIVersionResourceModel) ToOperationsFetchAPIVersionRequest(ctx context
 	var versionID string
 	versionID = r.ID.ValueString()
 
-	specFormat := new(shared.SpecFormatSchema)
-	if !r.SpecFormat.IsUnknown() && !r.SpecFormat.IsNull() {
-		*specFormat = shared.SpecFormatSchema(r.SpecFormat.ValueString())
-	} else {
-		specFormat = nil
-	}
 	out := operations.FetchAPIVersionRequest{
-		APIID:      apiID,
-		VersionID:  versionID,
-		SpecFormat: specFormat,
+		APIID:     apiID,
+		VersionID: versionID,
 	}
 
 	return &out, diags
@@ -155,12 +141,6 @@ func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx contex
 	var versionID string
 	versionID = r.ID.ValueString()
 
-	specFormat := new(shared.SpecFormatSchema)
-	if !r.SpecFormat.IsUnknown() && !r.SpecFormat.IsNull() {
-		*specFormat = shared.SpecFormatSchema(r.SpecFormat.ValueString())
-	} else {
-		specFormat = nil
-	}
 	apiVersionRequest, apiVersionRequestDiags := r.ToSharedAPIVersionRequest(ctx)
 	diags.Append(apiVersionRequestDiags...)
 
@@ -171,7 +151,6 @@ func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx contex
 	out := operations.UpdateAPIVersionRequest{
 		APIID:             apiID,
 		VersionID:         versionID,
-		SpecFormat:        specFormat,
 		APIVersionRequest: *apiVersionRequest,
 	}
 
@@ -289,7 +268,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 	} else {
 		content = nil
 	}
-	var provider *shared.CreateAPIVersionRequestProvider
+	var provider *shared.Provider
 	if r.Spec.Provider != nil {
 		var urlProvider *shared.URLProvider
 		if r.Spec.Provider.URLProvider != nil {
@@ -306,7 +285,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 			}
 		}
 		if urlProvider != nil {
-			provider = &shared.CreateAPIVersionRequestProvider{
+			provider = &shared.Provider{
 				URLProvider: urlProvider,
 			}
 		}
@@ -331,7 +310,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 			}
 		}
 		if integrationProvider != nil {
-			provider = &shared.CreateAPIVersionRequestProvider{
+			provider = &shared.Provider{
 				IntegrationProvider: integrationProvider,
 			}
 		}
@@ -352,7 +331,7 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 			}
 		}
 		if resourceBoundIntegrationProvider != nil {
-			provider = &shared.CreateAPIVersionRequestProvider{
+			provider = &shared.Provider{
 				ResourceBoundIntegrationProvider: resourceBoundIntegrationProvider,
 			}
 		}

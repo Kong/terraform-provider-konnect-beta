@@ -6,9 +6,14 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
+// AIGatewayMCPServerUpstreamServer - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerUpstreamServer struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"upstream-server" json:"type"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Routing, logging, and server configuration for the MCP Server.
 	Config AIGatewayMCPServerUpstreamServerConfig `json:"config"`
 	// List of tools exposed by this MCP Server.
@@ -16,6 +21,9 @@ type AIGatewayMCPServerUpstreamServer struct {
 	Tools []AIGatewayMCPUpstreamTool `json:"tools,omitempty"`
 	// The display name for the MCP Server.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Whether the MCP Server is enabled.
@@ -34,15 +42,6 @@ type AIGatewayMCPServerUpstreamServer struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
-	// credential. Exchanged credentials are cached per node and, when `redis` is configured, shared
-	// across the cluster. Callers must enroll with the configured Token Vault provider before the
-	// upstream tools are exposed: until enrollment completes, the MCP Server serves virtual
-	// `authenticate` and `check_authentication_status` tools that guide the caller through the
-	// enrollment flow.
-	//
-	// **Requires a minimum runtime version of `2.3`**.
-	TokenVault *AIGatewayTokenVault `json:"token_vault,omitempty"`
 }
 
 func (a AIGatewayMCPServerUpstreamServer) MarshalJSON() ([]byte, error) {
@@ -114,11 +113,4 @@ func (a *AIGatewayMCPServerUpstreamServer) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
-}
-
-func (a *AIGatewayMCPServerUpstreamServer) GetTokenVault() *AIGatewayTokenVault {
-	if a == nil {
-		return nil
-	}
-	return a.TokenVault
 }

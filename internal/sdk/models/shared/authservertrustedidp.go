@@ -15,8 +15,6 @@ type AuthServerTrustedIdp struct {
 	AuthServerID string `json:"auth_server_id"`
 	// The issuer URL of the trusted IdP. Unique per auth server.
 	IssuerURL string `json:"issuer_url"`
-	// A human-friendly display name for the trusted IdP, distinct from its unique `issuer_url`.
-	DisplayName *string `default:"null" json:"display_name"`
 	// JWKS URI of the trusted IdP. Overrides OIDC discovery when set.
 	JwksURI *string `json:"jwks_uri,omitempty"`
 	// The Kong Identity directory used for principal lookup and provisioning.
@@ -61,13 +59,6 @@ func (a *AuthServerTrustedIdp) GetIssuerURL() string {
 		return ""
 	}
 	return a.IssuerURL
-}
-
-func (a *AuthServerTrustedIdp) GetDisplayName() *string {
-	if a == nil {
-		return nil
-	}
-	return a.DisplayName
 }
 
 func (a *AuthServerTrustedIdp) GetJwksURI() *string {

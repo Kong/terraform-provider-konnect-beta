@@ -53,7 +53,8 @@ func (e *Endpoints) GetTelemetry() string {
 	return e.Telemetry
 }
 
-// AIGateway - AI Gateway created successfully.
+// AIGateway - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGateway struct {
 	// The display name for this AI Gateway.
 	DisplayName string `json:"display_name"`
@@ -72,17 +73,6 @@ type AIGateway struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
-	// The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
-	//
-	// Data planes older than this version still connect for topology visibility.
-	//
-	// When not specified, the latest generally available runtime version is used.
-	//
-	// When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
-	//
-	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
-	// Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases.
-	RuntimeAutoUpgrade *bool `default:"true" json:"runtime_auto_upgrade"`
 	// How this AI Gateway's control plane is deployed.
 	DeploymentType *AIGatewayDeploymentType `default:"hybrid" json:"deployment_type"`
 	// Object containing AI Gateway access endpoints.
@@ -97,8 +87,6 @@ type AIGateway struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// An immutable read-only flag to identify resource managed by Konnect services.
-	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (a AIGateway) MarshalJSON() ([]byte, error) {
@@ -154,20 +142,6 @@ func (a *AIGateway) GetID() string {
 	return a.ID
 }
 
-func (a *AIGateway) GetMinRuntimeVersion() *string {
-	if a == nil {
-		return nil
-	}
-	return a.MinRuntimeVersion
-}
-
-func (a *AIGateway) GetRuntimeAutoUpgrade() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.RuntimeAutoUpgrade
-}
-
 func (a *AIGateway) GetDeploymentType() *AIGatewayDeploymentType {
 	if a == nil {
 		return nil
@@ -201,11 +175,4 @@ func (a *AIGateway) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
-}
-
-func (a *AIGateway) GetKonnectManaged() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.KonnectManaged
 }

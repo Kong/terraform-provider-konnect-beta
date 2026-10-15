@@ -16,7 +16,8 @@ const (
 	AIGatewayAuthStrategyTypeOpenidConnect AIGatewayAuthStrategyType = "openid-connect"
 )
 
-// AIGatewayAuthStrategy - Auth strategy created successfully.
+// AIGatewayAuthStrategy - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayAuthStrategy struct {
 	AIGatewayAuthStrategyKeyAuthResponse       *AIGatewayAuthStrategyKeyAuthResponse       `queryParam:"inline" union:"member"`
 	AIGatewayAuthStrategyOpenIDConnectResponse *AIGatewayAuthStrategyOpenIDConnectResponse `queryParam:"inline" union:"member"`

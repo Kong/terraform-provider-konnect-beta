@@ -16,8 +16,6 @@ const (
 	AIGatewayModelFormatTypeGemini      AIGatewayModelFormatType = "gemini"
 	AIGatewayModelFormatTypeHuggingface AIGatewayModelFormatType = "huggingface"
 	AIGatewayModelFormatTypeOpenai      AIGatewayModelFormatType = "openai"
-	AIGatewayModelFormatTypePassthrough AIGatewayModelFormatType = "passthrough"
-	AIGatewayModelFormatTypeTypesafe    AIGatewayModelFormatType = "typesafe"
 )
 
 func (e AIGatewayModelFormatType) ToPointer() *AIGatewayModelFormatType {
@@ -28,7 +26,7 @@ func (e AIGatewayModelFormatType) ToPointer() *AIGatewayModelFormatType {
 func (e *AIGatewayModelFormatType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe":
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
 			return true
 		}
 	}

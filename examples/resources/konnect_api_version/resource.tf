@@ -12,6 +12,5 @@ resource "konnect_api_version" "my_apiversion" {
       }
     }
   }
-  spec_format = "json"
-  version     = "1.0.0"
+  version = "1.0.0"
 }

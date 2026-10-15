@@ -108,7 +108,7 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 		if resp.SpecRenderer == nil {
 			r.SpecRenderer = nil
 		} else {
-			r.SpecRenderer = &tfTypes.PortalCustomizationSpecRenderer{}
+			r.SpecRenderer = &tfTypes.SpecRenderer{}
 			r.SpecRenderer.AllowCustomServerUrls = types.BoolPointerValue(resp.SpecRenderer.AllowCustomServerUrls)
 			r.SpecRenderer.HideDeprecated = types.BoolPointerValue(resp.SpecRenderer.HideDeprecated)
 			r.SpecRenderer.HideInternal = types.BoolPointerValue(resp.SpecRenderer.HideInternal)
@@ -116,11 +116,6 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.SpecRenderer.ShowSchemas = types.BoolPointerValue(resp.SpecRenderer.ShowSchemas)
 			r.SpecRenderer.TryItInsomnia = types.BoolPointerValue(resp.SpecRenderer.TryItInsomnia)
 			r.SpecRenderer.TryItUI = types.BoolPointerValue(resp.SpecRenderer.TryItUI)
-			if resp.SpecRenderer.TryItUIAudience != nil {
-				r.SpecRenderer.TryItUIAudience = types.StringValue(string(*resp.SpecRenderer.TryItUIAudience))
-			} else {
-				r.SpecRenderer.TryItUIAudience = types.StringNull()
-			}
 		}
 		if resp.Theme == nil {
 			r.Theme = nil
@@ -329,7 +324,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 			FooterBottom:   footerBottom,
 		}
 	}
-	var specRenderer *shared.PortalCustomizationSpecRenderer
+	var specRenderer *shared.SpecRenderer
 	if r.SpecRenderer != nil {
 		tryItUI := new(bool)
 		if !r.SpecRenderer.TryItUI.IsUnknown() && !r.SpecRenderer.TryItUI.IsNull() {
@@ -373,13 +368,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			allowCustomServerUrls = nil
 		}
-		tryItUIAudience := new(shared.PortalCustomizationTryItUIAudience)
-		if !r.SpecRenderer.TryItUIAudience.IsUnknown() && !r.SpecRenderer.TryItUIAudience.IsNull() {
-			*tryItUIAudience = shared.PortalCustomizationTryItUIAudience(r.SpecRenderer.TryItUIAudience.ValueString())
-		} else {
-			tryItUIAudience = nil
-		}
-		specRenderer = &shared.PortalCustomizationSpecRenderer{
+		specRenderer = &shared.SpecRenderer{
 			TryItUI:               tryItUI,
 			TryItInsomnia:         tryItInsomnia,
 			InfiniteScroll:        infiniteScroll,
@@ -387,7 +376,6 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 			HideInternal:          hideInternal,
 			HideDeprecated:        hideDeprecated,
 			AllowCustomServerUrls: allowCustomServerUrls,
-			TryItUIAudience:       tryItUIAudience,
 		}
 	}
 	robots := new(string)

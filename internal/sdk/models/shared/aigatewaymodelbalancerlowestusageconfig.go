@@ -10,25 +10,13 @@ type AIGatewayModelBalancerLowestUsageConfigFailoverCriteria string
 
 const (
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaError         AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "error"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp400       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_400"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp401       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_401"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp402       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_402"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp403       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_403"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp404       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_404"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp405       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_405"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp408       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_408"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp409       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_409"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp413       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_413"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp415       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_415"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp422       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_422"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp429       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_429"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp500       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_500"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp502       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_502"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp503       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_503"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp504       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_504"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp522       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_522"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp529       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_529"
-	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp5xx       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_5xx"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaInvalidHeader AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "invalid_header"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaNonIdempotent AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "non_idempotent"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaTimeout       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "timeout"
@@ -42,7 +30,7 @@ func (e AIGatewayModelBalancerLowestUsageConfigFailoverCriteria) ToPointer() *AI
 func (e *AIGatewayModelBalancerLowestUsageConfigFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}
@@ -75,6 +63,8 @@ func (e *TokensCountStrategy) IsExact() bool {
 	return false
 }
 
+// AIGatewayModelBalancerLowestUsageConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayModelBalancerLowestUsageConfig struct {
 	ConnectTimeout *int64 `default:"60000" json:"connect_timeout"`
 	// The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`.

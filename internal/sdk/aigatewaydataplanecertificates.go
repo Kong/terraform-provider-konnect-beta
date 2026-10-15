@@ -32,6 +32,9 @@ func newAIGatewayDataPlaneCertificates(rootSDK *KonnectBeta, sdkConfig config.SD
 }
 
 // CreateAiGatewayDataPlaneCertificate - Create New AI Gateway DataPlane Certificate
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Create a new DataPlane Certificate for this AI Gateway. A DataPlane certificate allows DataPlanes configured with the certificate and corresponding private key to establish connection with this AI Gateway.
 func (s *AIGatewayDataPlaneCertificates) CreateAiGatewayDataPlaneCertificate(ctx context.Context, request operations.CreateAiGatewayDataPlaneCertificateRequest, opts ...operations.Option) (*operations.CreateAiGatewayDataPlaneCertificateResponse, error) {
 	o := operations.Options{}
@@ -349,6 +352,9 @@ func (s *AIGatewayDataPlaneCertificates) CreateAiGatewayDataPlaneCertificate(ctx
 }
 
 // GetAiGatewayDataPlaneCertificate - Get a DataPlane Certificate
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Retrieve a DataPlane certificate associated to this AI Gateway. A DataPlane certificate allows DataPlanes configured with the certificate and corresponding private key to establish connection with this AI Gateway.
 func (s *AIGatewayDataPlaneCertificates) GetAiGatewayDataPlaneCertificate(ctx context.Context, request operations.GetAiGatewayDataPlaneCertificateRequest, opts ...operations.Option) (*operations.GetAiGatewayDataPlaneCertificateResponse, error) {
 	o := operations.Options{}
@@ -659,6 +665,9 @@ func (s *AIGatewayDataPlaneCertificates) GetAiGatewayDataPlaneCertificate(ctx co
 }
 
 // DeleteAiGatewayDataPlaneCertificate - Delete AI Gateway DataPlane Certificate
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Remove a DataPlane client certificate associated to this AI Gateway. Removing a DataPlane certificate would invalidate any DataPlanes currently connected to this AI Gateway using this certificate.
 func (s *AIGatewayDataPlaneCertificates) DeleteAiGatewayDataPlaneCertificate(ctx context.Context, request operations.DeleteAiGatewayDataPlaneCertificateRequest, opts ...operations.Option) (*operations.DeleteAiGatewayDataPlaneCertificateResponse, error) {
 	o := operations.Options{}

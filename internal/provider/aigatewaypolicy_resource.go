@@ -18,9 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	"regexp"
 )
 
@@ -40,20 +38,18 @@ type AIGatewayPolicyResource struct {
 
 // AIGatewayPolicyResourceModel describes the resource data model.
 type AIGatewayPolicyResourceModel struct {
-	Condition   types.String                    `tfsdk:"condition"`
-	Config      jsontypes.Normalized            `tfsdk:"config"`
-	CreatedAt   types.String                    `tfsdk:"created_at"`
-	Datastores  []tfTypes.AIGatewayDatastoreRef `tfsdk:"datastores"`
-	DisplayName types.String                    `tfsdk:"display_name"`
-	Enabled     types.Bool                      `tfsdk:"enabled"`
-	GatewayID   types.String                    `tfsdk:"gateway_id"`
-	Global      types.Bool                      `tfsdk:"global"`
-	ID          types.String                    `tfsdk:"id"`
-	Labels      map[string]types.String         `tfsdk:"labels"`
-	ManagedBy   map[string]types.String         `tfsdk:"managed_by"`
-	Name        types.String                    `tfsdk:"name"`
-	Type        types.String                    `tfsdk:"type"`
-	UpdatedAt   types.String                    `tfsdk:"updated_at"`
+	Config      jsontypes.Normalized    `tfsdk:"config"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	DisplayName types.String            `tfsdk:"display_name"`
+	Enabled     types.Bool              `tfsdk:"enabled"`
+	GatewayID   types.String            `tfsdk:"gateway_id"`
+	Global      types.Bool              `tfsdk:"global"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
+	Name        types.String            `tfsdk:"name"`
+	Type        types.String            `tfsdk:"type"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayPolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,15 +60,6 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayPolicy Resource",
 		Attributes: map[string]schema.Attribute{
-			"condition": schema.StringAttribute{
-				Optional: true,
-				MarkdownDescription: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.` + "\n" +
-					`` + "\n" +
-					`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(1024),
-				},
-			},
 			"config": schema.StringAttribute{
 				CustomType: jsontypes.NormalizedType{},
 				Required:   true,
@@ -86,26 +73,6 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-			},
-			"datastores": schema.ListNestedAttribute{
-				Optional: true,
-				NestedObject: schema.NestedAttributeObject{
-					Validators: []validator.Object{
-						speakeasy_objectvalidators.NotNull(),
-					},
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `An immutable user-defined identifier for this resource.`,
-							Validators: []validator.String{
-								stringvalidator.UTF8LengthBetween(2, 255),
-								stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
-							},
-						},
-					},
-				},
-				Description: `Names of the Datastores this policy references.`,
 			},
 			"display_name": schema.StringAttribute{
 				Required:    true,
@@ -156,11 +123,14 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
-				Description: `A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.`,
+				Required: true,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 				},
 			},
 			"type": schema.StringAttribute{

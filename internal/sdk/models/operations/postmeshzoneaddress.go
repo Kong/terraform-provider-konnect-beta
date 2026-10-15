@@ -49,7 +49,7 @@ type PostMeshZoneAddressResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshZoneAddressResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshZoneAddressResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshZoneAddressResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshZoneAddressResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

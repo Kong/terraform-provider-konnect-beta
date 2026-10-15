@@ -10,25 +10,13 @@ type AIGatewayModelBalancerSemanticConfigFailoverCriteria string
 
 const (
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaError         AIGatewayModelBalancerSemanticConfigFailoverCriteria = "error"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp400       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_400"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp401       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_401"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp402       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_402"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp403       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_403"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp404       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_404"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp405       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_405"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp408       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_408"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp409       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_409"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp413       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_413"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp415       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_415"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp422       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_422"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp429       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_429"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp500       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_500"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp502       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_502"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp503       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_503"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp504       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_504"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp522       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_522"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp529       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_529"
-	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp5xx       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_5xx"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaInvalidHeader AIGatewayModelBalancerSemanticConfigFailoverCriteria = "invalid_header"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaNonIdempotent AIGatewayModelBalancerSemanticConfigFailoverCriteria = "non_idempotent"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaTimeout       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "timeout"
@@ -42,7 +30,7 @@ func (e AIGatewayModelBalancerSemanticConfigFailoverCriteria) ToPointer() *AIGat
 func (e *AIGatewayModelBalancerSemanticConfigFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}
@@ -58,6 +46,9 @@ type Embeddings struct {
 	Provider string `json:"provider"`
 	// The name of the embeddings model.
 	Name string `json:"name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for an embeddings model.
 	Config AIGatewayEmbeddingsModelConfig `json:"config"`
 }
@@ -129,6 +120,8 @@ func (e *Embeddings) GetConfigOpenai() *AIGatewayOpenaiEmbeddingsModelConfig {
 	return e.GetConfig().AIGatewayOpenaiEmbeddingsModelConfig
 }
 
+// AIGatewayModelBalancerSemanticConfigOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayModelBalancerSemanticConfigOutput struct {
 	ConnectTimeout *int64 `default:"60000" json:"connect_timeout"`
 	// The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`.
@@ -147,6 +140,9 @@ type AIGatewayModelBalancerSemanticConfigOutput struct {
 	algorithm string `const:"semantic" json:"algorithm"`
 	// Embeddings model configuration for this model.
 	Embeddings Embeddings `json:"embeddings"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for the vector database used by the model.
 	Vectordb AIGatewayModelVectorDBConfigOutput `json:"vectordb"`
 }
@@ -244,6 +240,8 @@ func (a *AIGatewayModelBalancerSemanticConfigOutput) GetVectordbRedis() *AIGatew
 	return a.GetVectordb().AIGatewayModelVectorDBConfigRedisOutput
 }
 
+// AIGatewayModelBalancerSemanticConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayModelBalancerSemanticConfig struct {
 	ConnectTimeout *int64 `default:"60000" json:"connect_timeout"`
 	// The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`.
@@ -262,6 +260,9 @@ type AIGatewayModelBalancerSemanticConfig struct {
 	algorithm string `const:"semantic" json:"algorithm"`
 	// Embeddings model configuration for this model.
 	Embeddings Embeddings `json:"embeddings"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for the vector database used by the model.
 	Vectordb AIGatewayModelVectorDBConfig `json:"vectordb"`
 }

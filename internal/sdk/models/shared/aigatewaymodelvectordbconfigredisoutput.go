@@ -354,7 +354,10 @@ func (s *Sentinel) GetUsername() *string {
 	return s.Username
 }
 
-// AIGatewayModelVectorDBConfigRedisOutput - Config for connecting to a Cloud Provider's Redis instance.
+// AIGatewayModelVectorDBConfigRedisOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for connecting to a Cloud Provider's Redis instance.
 type AIGatewayModelVectorDBConfigRedisOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"redis" json:"type"`
@@ -694,7 +697,10 @@ func (u CloudAuthentication) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type CloudAuthentication: all fields are null")
 }
 
-// AIGatewayModelVectorDBConfigRedis - Config for connecting to a Cloud Provider's Redis instance.
+// AIGatewayModelVectorDBConfigRedis - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for connecting to a Cloud Provider's Redis instance.
 type AIGatewayModelVectorDBConfigRedis struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"redis" json:"type"`

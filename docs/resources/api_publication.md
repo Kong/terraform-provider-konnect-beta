@@ -22,11 +22,7 @@ resource "konnect_api_publication" "my_apipublication" {
   auto_approve_registrations = true
   form_id                    = "deafd39d-fc2f-4b87-9ee2-8e8feb2eae76"
   portal_id                  = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
-  spec_renderer = {
-    try_it_ui          = true
-    try_it_ui_audience = "all"
-  }
-  visibility = "private"
+  visibility                 = "private"
 }
 ```
 
@@ -46,7 +42,6 @@ Setting to null means the API will not require application authentication.
 DCR support for application registration is currently in development.
 - `auto_approve_registrations` (Boolean) Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal's auto_approve_applications value.
 - `form_id` (String) UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
-- `spec_renderer` (Attributes) Customization settings for the API spec renderer in the portal. (see [below for nested schema](#nestedatt--spec_renderer))
 - `visibility` (String) The visibility of the API in the portal.
 Public API publications do not require authentication to view and retrieve information about them.
 Private API publications require authentication to retrieve information about them.
@@ -56,33 +51,10 @@ possible known values include one of ["public", "private"]
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `environment` (Attributes) The environment this record is scoped to. (see [below for nested schema](#nestedatt--environment))
+- `environment` (String) The name of the environment this record is scoped to. Present only for APIs
+configured across multiple environments.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 - `warnings` (List of String) Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
-
-<a id="nestedatt--spec_renderer"></a>
-### Nested Schema for `spec_renderer`
-
-Optional:
-
-- `try_it_ui` (Boolean) Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.
-- `try_it_ui_audience` (String) The audience for the Try It UI feature.
-
-`all` means that the Try It UI will be available to all users, including unauthenticated users.
-
-`authenticated` means that the Try It UI will only be available to authenticated users.
-
-`registered` means that the Try It UI will only be available to users who have registered for the API.
-possible known values include one of ["all", "authenticated", "registered"]
-
-
-<a id="nestedatt--environment"></a>
-### Nested Schema for `environment`
-
-Read-Only:
-
-- `id` (String) The UUID of the environment.
-- `name` (String) The name of the environment.
 
 ## Import
 

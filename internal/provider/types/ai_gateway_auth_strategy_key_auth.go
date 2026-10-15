@@ -3,16 +3,17 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type AIGatewayAuthStrategyKeyAuth struct {
-	Config      *AIGWKeyAuthGeneratedConfig `tfsdk:"config"`
-	CreatedAt   types.String                `tfsdk:"created_at"`
-	DisplayName types.String                `tfsdk:"display_name"`
-	ID          types.String                `tfsdk:"id"`
-	Labels      map[string]types.String     `tfsdk:"labels"`
-	ManagedBy   map[string]types.String     `tfsdk:"managed_by"`
-	Name        types.String                `tfsdk:"name"`
-	UpdatedAt   types.String                `tfsdk:"updated_at"`
+	Config      jsontypes.Normalized    `tfsdk:"config"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	DisplayName types.String            `tfsdk:"display_name"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
+	Name        types.String            `tfsdk:"name"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }

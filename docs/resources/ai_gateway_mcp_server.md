@@ -55,25 +55,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
-      allowed_versions = [
-        "2025-06-18"
-      ]
-      ca_certificates = [
-        "my-ca-certificate"
-      ]
-      cache = {
-        discover = {
-          cache_scope = "private"
-          ttl_ms      = 5
-        }
-        tools_list = {
-          cache_scope = "private"
-          ttl_ms      = 1
-        }
-      }
-      certificates = [
-        "my-certificate"
-      ]
       logging = {
         audits   = false
         payloads = false
@@ -192,59 +173,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
-    token_vault = {
-      directory = "...my_directory..."
-      encryption_secrets = [
-        "..."
-      ]
-      provider = "...my_provider..."
-      redis = {
-        cloud_authentication = {
-          azure = {
-            client_id     = "...my_client_id..."
-            client_secret = "...my_client_secret..."
-            tenant_id     = "...my_tenant_id..."
-          }
-        }
-        cluster = {
-          max_redirections = 5
-          nodes = [
-            {
-              ip   = "127.0.0.1"
-              port = 6379
-            }
-          ]
-        }
-        connect_timeout       = 2000
-        connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
-        keepalive = {
-          backlog   = 847336802
-          pool_size = 256
-        }
-        password     = "...my_password..."
-        port         = 6379
-        read_timeout = 2000
-        send_timeout = 2000
-        sentinel = {
-          master = "...my_master..."
-          nodes = [
-            {
-              host = "127.0.0.1"
-              port = 6379
-            }
-          ]
-          password = "...my_password..."
-          role     = "slave"
-          username = "...my_username..."
-        }
-        server_name = "...my_server_name..."
-        ssl         = true
-        ssl_verify  = true
-        username    = "...my_username..."
-      }
-    }
     tools = [
       {
         access = {
@@ -290,12 +218,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   conversion_only = {
     config = {
-      ca_certificates = [
-        "my-ca-certificate"
-      ]
-      certificates = [
-        "my-certificate"
-      ]
       logging = {
         audits   = false
         payloads = false
@@ -354,63 +276,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
-    token_vault = {
-      directory = "...my_directory..."
-      encryption_secrets = [
-        "..."
-      ]
-      provider = "...my_provider..."
-      redis = {
-        cloud_authentication = {
-          aws = {
-            access_key_id     = "...my_access_key_id..."
-            assume_role_arn   = "...my_assume_role_arn..."
-            cache_name        = "...my_cache_name..."
-            is_serverless     = true
-            region            = "...my_region..."
-            role_session_name = "...my_role_session_name..."
-            secret_access_key = "...my_secret_access_key..."
-          }
-        }
-        cluster = {
-          max_redirections = 5
-          nodes = [
-            {
-              ip   = "127.0.0.1"
-              port = 6379
-            }
-          ]
-        }
-        connect_timeout       = 2000
-        connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
-        keepalive = {
-          backlog   = 43189521
-          pool_size = 256
-        }
-        password     = "...my_password..."
-        port         = 6379
-        read_timeout = 2000
-        send_timeout = 2000
-        sentinel = {
-          master = "...my_master..."
-          nodes = [
-            {
-              host = "127.0.0.1"
-              port = 6379
-            }
-          ]
-          password = "...my_password..."
-          role     = "any"
-          username = "...my_username..."
-        }
-        server_name = "...my_server_name..."
-        ssl         = true
-        ssl_verify  = true
-        username    = "...my_username..."
-      }
-    }
     tools = [
       {
         access = {
@@ -495,19 +360,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
-      allowed_versions = [
-        "2025-11-25"
-      ]
-      cache = {
-        discover = {
-          cache_scope = "private"
-          ttl_ms      = 8
-        }
-        tools_list = {
-          cache_scope = "private"
-          ttl_ms      = 6
-        }
-      }
       logging = {
         audits   = false
         payloads = false
@@ -614,59 +466,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       "kongair-flights",
       "github-mcp",
     ]
-    token_vault = {
-      directory = "...my_directory..."
-      encryption_secrets = [
-        "..."
-      ]
-      provider = "...my_provider..."
-      redis = {
-        cloud_authentication = {
-          azure = {
-            client_id     = "...my_client_id..."
-            client_secret = "...my_client_secret..."
-            tenant_id     = "...my_tenant_id..."
-          }
-        }
-        cluster = {
-          max_redirections = 5
-          nodes = [
-            {
-              ip   = "127.0.0.1"
-              port = 6379
-            }
-          ]
-        }
-        connect_timeout       = 2000
-        connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
-        keepalive = {
-          backlog   = 1724956981
-          pool_size = 256
-        }
-        password     = "...my_password..."
-        port         = 6379
-        read_timeout = 2000
-        send_timeout = 2000
-        sentinel = {
-          master = "...my_master..."
-          nodes = [
-            {
-              host = "127.0.0.1"
-              port = 6379
-            }
-          ]
-          password = "...my_password..."
-          role     = "master"
-          username = "...my_username..."
-        }
-        server_name = "...my_server_name..."
-        ssl         = true
-        ssl_verify  = true
-        username    = "...my_username..."
-      }
-    }
   }
   passthrough_listener = {
     access = {
@@ -707,12 +506,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
-      ca_certificates = [
-        "my-ca-certificate"
-      ]
-      certificates = [
-        "my-certificate"
-      ]
       logging = {
         audits   = false
         payloads = false
@@ -847,63 +640,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
-    token_vault = {
-      directory = "...my_directory..."
-      encryption_secrets = [
-        "..."
-      ]
-      provider = "...my_provider..."
-      redis = {
-        cloud_authentication = {
-          aws = {
-            access_key_id     = "...my_access_key_id..."
-            assume_role_arn   = "...my_assume_role_arn..."
-            cache_name        = "...my_cache_name..."
-            is_serverless     = true
-            region            = "...my_region..."
-            role_session_name = "...my_role_session_name..."
-            secret_access_key = "...my_secret_access_key..."
-          }
-        }
-        cluster = {
-          max_redirections = 5
-          nodes = [
-            {
-              ip   = "127.0.0.1"
-              port = 6379
-            }
-          ]
-        }
-        connect_timeout       = 2000
-        connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
-        keepalive = {
-          backlog   = 1308448734
-          pool_size = 256
-        }
-        password     = "...my_password..."
-        port         = 6379
-        read_timeout = 2000
-        send_timeout = 2000
-        sentinel = {
-          master = "...my_master..."
-          nodes = [
-            {
-              host = "127.0.0.1"
-              port = 6379
-            }
-          ]
-          password = "...my_password..."
-          role     = "slave"
-          username = "...my_username..."
-        }
-        server_name = "...my_server_name..."
-        ssl         = true
-        ssl_verify  = true
-        username    = "...my_username..."
-      }
-    }
     tools = [
       {
         access = {
@@ -922,12 +658,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   upstream_server = {
     config = {
-      ca_certificates = [
-        "my-ca-certificate"
-      ]
-      certificates = [
-        "my-certificate"
-      ]
       logging = {
         audits   = false
         payloads = false
@@ -1024,7 +754,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             scope               = "...my_scope..."
           }
         }
-        upstream_protocol_version = "2025-06-18"
       }
       tools_cache_ttl_seconds = 7
       upstream = {
@@ -1054,63 +783,6 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
-    token_vault = {
-      directory = "...my_directory..."
-      encryption_secrets = [
-        "..."
-      ]
-      provider = "...my_provider..."
-      redis = {
-        cloud_authentication = {
-          aws = {
-            access_key_id     = "...my_access_key_id..."
-            assume_role_arn   = "...my_assume_role_arn..."
-            cache_name        = "...my_cache_name..."
-            is_serverless     = true
-            region            = "...my_region..."
-            role_session_name = "...my_role_session_name..."
-            secret_access_key = "...my_secret_access_key..."
-          }
-        }
-        cluster = {
-          max_redirections = 5
-          nodes = [
-            {
-              ip   = "127.0.0.1"
-              port = 6379
-            }
-          ]
-        }
-        connect_timeout       = 2000
-        connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
-        keepalive = {
-          backlog   = 50430343
-          pool_size = 256
-        }
-        password     = "...my_password..."
-        port         = 6379
-        read_timeout = 2000
-        send_timeout = 2000
-        sentinel = {
-          master = "...my_master..."
-          nodes = [
-            {
-              host = "127.0.0.1"
-              port = 6379
-            }
-          ]
-          password = "...my_password..."
-          role     = "any"
-          username = "...my_username..."
-        }
-        server_name = "...my_server_name..."
-        ssl         = true
-        ssl_verify  = true
-        username    = "...my_username..."
-      }
-    }
     tools = [
       {
         access = {
@@ -1149,11 +821,16 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
 
 ### Optional
 
-- `conversion_listener` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener))
-- `conversion_only` (Attributes) (see [below for nested schema](#nestedatt--conversion_only))
-- `listener` (Attributes) (see [below for nested schema](#nestedatt--listener))
-- `passthrough_listener` (Attributes) (see [below for nested schema](#nestedatt--passthrough_listener))
-- `upstream_server` (Attributes) (see [below for nested schema](#nestedatt--upstream_server))
+- `conversion_listener` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener))
+- `conversion_only` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_only))
+- `listener` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--listener))
+- `passthrough_listener` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--passthrough_listener))
+- `upstream_server` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server))
 
 ### Read-Only
 
@@ -1161,7 +838,10 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
 - `display_name` (String) The display name for the MCP Server.
 - `enabled` (Boolean) Whether the MCP Server is enabled.
 - `id` (String) Contains a unique identifier used for this resource.
-- `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--conversion_listener"></a>
@@ -1169,8 +849,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
 
 Optional:
 
-- `access` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--access))
-- `config` (Attributes) Server-side configuration specific to modes where Kong answers as the MCP server. Not Null (see [below for nested schema](#nestedatt--conversion_listener--config))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--access))
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Routing, logging, and server configuration for the MCP Server.
+Not Null (see [below for nested schema](#nestedatt--conversion_listener--config))
 - `display_name` (String) The display name for the MCP Server. Not Null
 - `enabled` (Boolean) Whether the MCP Server is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1181,16 +866,12 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
-- `policies` (List of String) List of policy references.
-- `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
-credential. Exchanged credentials are cached per node and, when `redis` is configured, shared
-across the cluster. Callers must enroll with the configured Token Vault provider before the
-upstream tools are exposed: until enrollment completes, the MCP Server serves virtual
-`authenticate` and `check_authentication_status` tools that guide the caller through the
-enrollment flow.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--conversion_listener--token_vault))
+A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
+- `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
 describe the backend HTTP operation on the upstream selected by `config.url` — they
 do not need to match the public MCP Route configured in `config.route`.
@@ -1207,9 +888,15 @@ Read-Only:
 
 Optional:
 
-- `consumer` (Attributes) Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
+- `consumer` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer))
-- `oauth_access_token` (Attributes) Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
+- `oauth_access_token` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token))
 
 <a id="nestedatt--conversion_listener--access--consumer"></a>
@@ -1217,13 +904,19 @@ for granting access to an MCP server. (see [below for nested schema](#nestedatt-
 
 Optional:
 
-- `acls` (Attributes) Server-level access control rules for allowing or denying consumer groups. This is the
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-level access control rules for allowing or denying consumer groups. This is the
 top-level gate: a caller's consumer group must pass this check before any MCP protocol
 operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
 `default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
-- `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying consumer groups access to
+- `default_tool_acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Default per-tool access control rules for allowing or denying consumer groups access to
 tools. Evaluated only for callers that already passed the server-level `acls` check above.
 Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
 that tool's own `access.acls`. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--default_tool_acls))
@@ -1272,14 +965,20 @@ Optional:
 - `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
 Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
 Not Null
-- `acls` (Attributes) Server-level access control rules for allowing or denying callers, evaluated against the
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-level access control rules for allowing or denying callers, evaluated against the
 value of the configured `access_token_claim_field`. This is the top-level gate: a caller
 must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
 `tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
 `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
-- `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying callers access to tools,
+- `default_tool_acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Default per-tool access control rules for allowing or denying callers access to tools,
 evaluated against the value of the configured `access_token_claim_field`. Evaluated only
 for callers that already passed the server-level `acls` check above. Applies to every tool
 exposed by this MCP Server unless a specific tool overrides it via that tool's own
@@ -1327,76 +1026,28 @@ Optional:
 
 Optional:
 
-- `allowed_versions` (List of String) The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong
-implements, which is the default. When set, `server/discover` advertises exactly this
-list and a request declaring anything else is rejected. Listing only per-request
-revisions refuses handshake clients.
+- `logging` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-**Requires a minimum runtime version of `2.1`**.
-- `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
-
-The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-generated for this MCP Server, which proxies requests to the upstream MCP server.
-
-If unset, the default trust store is used to verify the upstream's TLS certificate.
-- `cache` (Attributes) Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol
-revision that defines them receive them.
-
-**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--conversion_listener--config--cache))
-- `certificates` (List of String) Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-AI Gateway.
-
-The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-proxies requests to the upstream MCP server. The generated Service presents a single client
-certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-certificate may be configured.
-
-If unset, no client certificate is presented to the upstream.
-- `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--conversion_listener--config--logging))
+Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--conversion_listener--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
-- `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
+- `route` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--conversion_listener--config--route))
-- `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--config--server))
-- `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream))
+- `server` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--config--server))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
-
-<a id="nestedatt--conversion_listener--config--cache"></a>
-### Nested Schema for `conversion_listener.config.cache`
-
-Optional:
-
-- `discover` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--discover))
-- `tools_list` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--tools_list))
-
-<a id="nestedatt--conversion_listener--config--cache--discover"></a>
-### Nested Schema for `conversion_listener.config.cache.discover`
-
-Optional:
-
-- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
-the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
-`access.acls`.
-possible known values include one of ["public", "private"]; Default: "private"
-- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
-
-
-<a id="nestedatt--conversion_listener--config--cache--tools_list"></a>
-### Nested Schema for `conversion_listener.config.cache.tools_list`
-
-Optional:
-
-- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
-the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
-`access.acls`.
-possible known values include one of ["public", "private"]; Default: "private"
-- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
-
-
 
 <a id="nestedatt--conversion_listener--config--logging"></a>
 ### Nested Schema for `conversion_listener.config.logging`
@@ -1443,7 +1094,10 @@ Optional:
 
 - `client` (Attributes) The configuration for client-side session storage. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--client))
 - `managed` (Boolean) If enabled, Kong will maintain managed sessions with the MCP server. Default: true
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis))
+- `redis` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis))
 - `session_ttl` (Number) The time-to-live (TTL) for each session in seconds. Default: 86400
 - `strategy` (String) The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. possible known values include one of ["client", "redis"]
 
@@ -1490,9 +1144,18 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--gcp))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--aws))
+- `azure` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--azure))
+- `gcp` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--gcp))
 
 <a id="nestedatt--conversion_listener--config--server--session--redis--cloud_authentication--aws"></a>
 ### Nested Schema for `conversion_listener.config.server.session.redis.cloud_authentication.aws`
@@ -1595,14 +1258,20 @@ Optional:
 
 Optional:
 
-- `auth` (Attributes) Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream--auth))
 
 <a id="nestedatt--conversion_listener--config--upstream--auth"></a>
 ### Nested Schema for `conversion_listener.config.upstream.auth`
 
 Optional:
 
-- `aws` (Attributes) AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream--auth--aws))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream--auth--aws))
 
 <a id="nestedatt--conversion_listener--config--upstream--auth--aws"></a>
 ### Nested Schema for `conversion_listener.config.upstream.auth.aws`
@@ -1627,173 +1296,49 @@ If not specified, the default AWS STS endpoint will be used.
 
 
 
-<a id="nestedatt--conversion_listener--token_vault"></a>
-### Nested Schema for `conversion_listener.token_vault`
-
-Optional:
-
-- `directory` (String) Directory name segment of the vault token endpoint. Not Null
-- `encryption_secrets` (List of String) Secrets used to encrypt exchanged credentials before caching them in Redis. Required when
-`redis` is configured. The first secret is used for encryption, while all secrets are tried
-for decryption to support key rotation.
-- `provider` (String) Name of the upstream credential provider registered in the Token Vault directory. Not Null
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis))
-
-<a id="nestedatt--conversion_listener--token_vault--redis"></a>
-### Nested Schema for `conversion_listener.token_vault.redis`
-
-Optional:
-
-- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--cloud_authentication))
-- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--cluster))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
-- `host` (String) A string representing a host name, such as example.com.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "127.0.0.1"
-- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--keepalive))
-- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "6379"
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--sentinel))
-- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
-- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--conversion_listener--token_vault--redis--cloud_authentication"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.cloud_authentication`
-
-Optional:
-
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--cloud_authentication--gcp))
-
-<a id="nestedatt--conversion_listener--token_vault--redis--cloud_authentication--aws"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.cloud_authentication.aws`
-
-Optional:
-
-- `access_key_id` (String) AWS Access Key ID to be used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `cache_name` (String) The name of the AWS Elasticache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
-- `region` (String) The region of the AWS ElastiCache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `secret_access_key` (String) AWS Secret Access Key.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--conversion_listener--token_vault--redis--cloud_authentication--azure"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.cloud_authentication.azure`
-
-Optional:
-
-- `client_id` (String) Azure Client ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `client_secret` (String) Azure Client Secret.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `tenant_id` (String) Azure Tenant ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--conversion_listener--token_vault--redis--cloud_authentication--gcp"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.cloud_authentication.gcp`
-
-Optional:
-
-- `service_account_json` (String) GCP Service Account JSON.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-<a id="nestedatt--conversion_listener--token_vault--redis--cluster"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.cluster`
-
-Optional:
-
-- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
-- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--cluster--nodes))
-
-<a id="nestedatt--conversion_listener--token_vault--redis--cluster--nodes"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.cluster.nodes`
-
-Optional:
-
-- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-<a id="nestedatt--conversion_listener--token_vault--redis--keepalive"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.keepalive`
-
-Optional:
-
-- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
-- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--conversion_listener--token_vault--redis--sentinel"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.sentinel`
-
-Optional:
-
-- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--redis--sentinel--nodes))
-- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
-- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--conversion_listener--token_vault--redis--sentinel--nodes"></a>
-### Nested Schema for `conversion_listener.token_vault.redis.sentinel.nodes`
-
-Optional:
-
-- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-
-
 <a id="nestedatt--conversion_listener--tools"></a>
 ### Nested Schema for `conversion_listener.tools`
 
 Optional:
 
-- `access` (Attributes) Access-control rules for a tool. (see [below for nested schema](#nestedatt--conversion_listener--tools--access))
-- `annotations` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--tools--annotations))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access-control rules for a tool. (see [below for nested schema](#nestedatt--conversion_listener--tools--access))
+- `annotations` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--tools--annotations))
 - `description` (String) A description of what the tool does. Not Null
-- `headers` (String) The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required. Parsed as JSON.
+- `headers` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
+Parsed as JSON.
 - `host` (String) The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
 - `method` (String) The HTTP method used when forwarding the request to the upstream API. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null
 - `name` (String) The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null
-- `parameters` (Attributes List) (see [below for nested schema](#nestedatt--conversion_listener--tools--parameters))
+- `parameters` (Attributes List) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_listener--tools--parameters))
 - `path` (String) The path of the exported API. Always treated as relative to the path component of
 `config.url` and simply concatenated onto it — a leading `/` has no special
 "absolute path" meaning. If this tool's `host` or `scheme` overrides the source's
 URL, `path` is instead relative to the root of that overridden host, since there is
 no URL path from a different host to append to. By default, Kong will extract the
 path from API configuration.
-- `query` (String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required. Parsed as JSON.
-- `request_body` (String) The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported. Parsed as JSON.
-- `responses` (String) The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported. Parsed as JSON.
+- `query` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
+Parsed as JSON.
+- `request_body` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported.
+Parsed as JSON.
+- `responses` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported.
+Parsed as JSON.
 - `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]
 
 <a id="nestedatt--conversion_listener--tools--access"></a>
@@ -1801,7 +1346,10 @@ path from API configuration.
 
 Optional:
 
-- `acls` (Attributes) Access control rules for allowing or denying consumer groups access to this tool.
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access control rules for allowing or denying consumer groups access to this tool.
 When configured, these will override the default access control rules defined on the MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--tools--access--acls))
 
 <a id="nestedatt--conversion_listener--tools--access--acls"></a>
@@ -1845,7 +1393,11 @@ Optional:
 
 Optional:
 
-- `config` (Attributes) Routing, logging, and request body size limits for the MCP Server. Not Null (see [below for nested schema](#nestedatt--conversion_only--config))
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Routing, logging, and request body size limits for the MCP Server.
+Not Null (see [below for nested schema](#nestedatt--conversion_only--config))
 - `display_name` (String) The display name for the MCP Server. Not Null
 - `enabled` (Boolean) Whether the MCP Server is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1856,16 +1408,12 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
-- `policies` (List of String) List of policy references.
-- `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
-credential. Exchanged credentials are cached per node and, when `redis` is configured, shared
-across the cluster. Callers must enroll with the configured Token Vault provider before the
-upstream tools are exposed: until enrollment completes, the MCP Server serves virtual
-`authenticate` and `check_authentication_status` tools that guide the caller through the
-enrollment flow.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--conversion_only--token_vault))
+A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
+- `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. Not Null (see [below for nested schema](#nestedatt--conversion_only--tools))
 
 Read-Only:
@@ -1879,29 +1427,21 @@ Read-Only:
 
 Optional:
 
-- `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+- `logging` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-generated for this MCP Server, which proxies requests to the upstream MCP server.
-
-If unset, the default trust store is used to verify the upstream's TLS certificate.
-- `certificates` (List of String) Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-AI Gateway.
-
-The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-proxies requests to the upstream MCP server. The generated Service presents a single client
-certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-certificate may be configured.
-
-If unset, no client certificate is presented to the upstream.
-- `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--conversion_only--config--logging))
+Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--conversion_only--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
-- `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
+- `route` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--conversion_only--config--route))
-- `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_only--config--upstream))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_only--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
@@ -1939,14 +1479,20 @@ Optional:
 
 Optional:
 
-- `auth` (Attributes) Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--conversion_only--config--upstream--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--conversion_only--config--upstream--auth))
 
 <a id="nestedatt--conversion_only--config--upstream--auth"></a>
 ### Nested Schema for `conversion_only.config.upstream.auth`
 
 Optional:
 
-- `aws` (Attributes) AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--conversion_only--config--upstream--auth--aws))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--conversion_only--config--upstream--auth--aws))
 
 <a id="nestedatt--conversion_only--config--upstream--auth--aws"></a>
 ### Nested Schema for `conversion_only.config.upstream.auth.aws`
@@ -1971,173 +1517,49 @@ If not specified, the default AWS STS endpoint will be used.
 
 
 
-<a id="nestedatt--conversion_only--token_vault"></a>
-### Nested Schema for `conversion_only.token_vault`
-
-Optional:
-
-- `directory` (String) Directory name segment of the vault token endpoint. Not Null
-- `encryption_secrets` (List of String) Secrets used to encrypt exchanged credentials before caching them in Redis. Required when
-`redis` is configured. The first secret is used for encryption, while all secrets are tried
-for decryption to support key rotation.
-- `provider` (String) Name of the upstream credential provider registered in the Token Vault directory. Not Null
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis))
-
-<a id="nestedatt--conversion_only--token_vault--redis"></a>
-### Nested Schema for `conversion_only.token_vault.redis`
-
-Optional:
-
-- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--cloud_authentication))
-- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--cluster))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
-- `host` (String) A string representing a host name, such as example.com.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "127.0.0.1"
-- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--keepalive))
-- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "6379"
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--sentinel))
-- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
-- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--conversion_only--token_vault--redis--cloud_authentication"></a>
-### Nested Schema for `conversion_only.token_vault.redis.cloud_authentication`
-
-Optional:
-
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--cloud_authentication--gcp))
-
-<a id="nestedatt--conversion_only--token_vault--redis--cloud_authentication--aws"></a>
-### Nested Schema for `conversion_only.token_vault.redis.cloud_authentication.aws`
-
-Optional:
-
-- `access_key_id` (String) AWS Access Key ID to be used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `cache_name` (String) The name of the AWS Elasticache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
-- `region` (String) The region of the AWS ElastiCache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `secret_access_key` (String) AWS Secret Access Key.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--conversion_only--token_vault--redis--cloud_authentication--azure"></a>
-### Nested Schema for `conversion_only.token_vault.redis.cloud_authentication.azure`
-
-Optional:
-
-- `client_id` (String) Azure Client ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `client_secret` (String) Azure Client Secret.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `tenant_id` (String) Azure Tenant ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--conversion_only--token_vault--redis--cloud_authentication--gcp"></a>
-### Nested Schema for `conversion_only.token_vault.redis.cloud_authentication.gcp`
-
-Optional:
-
-- `service_account_json` (String) GCP Service Account JSON.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-<a id="nestedatt--conversion_only--token_vault--redis--cluster"></a>
-### Nested Schema for `conversion_only.token_vault.redis.cluster`
-
-Optional:
-
-- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
-- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--cluster--nodes))
-
-<a id="nestedatt--conversion_only--token_vault--redis--cluster--nodes"></a>
-### Nested Schema for `conversion_only.token_vault.redis.cluster.nodes`
-
-Optional:
-
-- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-<a id="nestedatt--conversion_only--token_vault--redis--keepalive"></a>
-### Nested Schema for `conversion_only.token_vault.redis.keepalive`
-
-Optional:
-
-- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
-- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--conversion_only--token_vault--redis--sentinel"></a>
-### Nested Schema for `conversion_only.token_vault.redis.sentinel`
-
-Optional:
-
-- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--conversion_only--token_vault--redis--sentinel--nodes))
-- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
-- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--conversion_only--token_vault--redis--sentinel--nodes"></a>
-### Nested Schema for `conversion_only.token_vault.redis.sentinel.nodes`
-
-Optional:
-
-- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-
-
 <a id="nestedatt--conversion_only--tools"></a>
 ### Nested Schema for `conversion_only.tools`
 
 Optional:
 
-- `access` (Attributes) Access-control rules for a tool. (see [below for nested schema](#nestedatt--conversion_only--tools--access))
-- `annotations` (Attributes) (see [below for nested schema](#nestedatt--conversion_only--tools--annotations))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access-control rules for a tool. (see [below for nested schema](#nestedatt--conversion_only--tools--access))
+- `annotations` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_only--tools--annotations))
 - `description` (String) A description of what the tool does. Not Null
-- `headers` (String) The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required. Parsed as JSON.
+- `headers` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
+Parsed as JSON.
 - `host` (String) The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
 - `method` (String) The HTTP method used when forwarding the request to the upstream API. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]; Not Null
 - `name` (String) The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null
-- `parameters` (Attributes List) (see [below for nested schema](#nestedatt--conversion_only--tools--parameters))
+- `parameters` (Attributes List) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conversion_only--tools--parameters))
 - `path` (String) The path of the exported API. Always treated as relative to the path component of
 `config.url` and simply concatenated onto it — a leading `/` has no special
 "absolute path" meaning. If this tool's `host` or `scheme` overrides the source's
 URL, `path` is instead relative to the root of that overridden host, since there is
 no URL path from a different host to append to. By default, Kong will extract the
 path from API configuration.
-- `query` (String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required. Parsed as JSON.
-- `request_body` (String) The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported. Parsed as JSON.
-- `responses` (String) The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported. Parsed as JSON.
+- `query` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
+Parsed as JSON.
+- `request_body` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported.
+Parsed as JSON.
+- `responses` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported.
+Parsed as JSON.
 - `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]
 
 <a id="nestedatt--conversion_only--tools--access"></a>
@@ -2145,7 +1567,10 @@ path from API configuration.
 
 Optional:
 
-- `acls` (Attributes) Access control rules for allowing or denying consumer groups access to this tool.
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access control rules for allowing or denying consumer groups access to this tool.
 When configured, these will override the default access control rules defined on the MCP Server. (see [below for nested schema](#nestedatt--conversion_only--tools--access--acls))
 
 <a id="nestedatt--conversion_only--tools--access--acls"></a>
@@ -2189,8 +1614,13 @@ Optional:
 
 Optional:
 
-- `access` (Attributes) (see [below for nested schema](#nestedatt--listener--access))
-- `config` (Attributes) Server-side configuration specific to modes where Kong answers as the MCP server. Not Null (see [below for nested schema](#nestedatt--listener--config))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--listener--access))
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Routing, logging, and server configuration for the MCP Server.
+Not Null (see [below for nested schema](#nestedatt--listener--config))
 - `display_name` (String) The display name for the MCP Server. Not Null
 - `enabled` (Boolean) Whether the MCP Server is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
@@ -2201,21 +1631,17 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
 - `policies` (List of String) List of policy references.
 - `sources` (List of String) The explicit list of source MCP Servers whose tools this listener exposes.
 Each entry is the immutable `name` of a `conversion-only` (toolset) or
 `upstream-server` (third-party MCP server) MCP Server in the same AI Gateway.
 All of the referenced source's tools are exposed.
 Not Null
-- `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
-credential. Exchanged credentials are cached per node and, when `redis` is configured, shared
-across the cluster. Callers must enroll with the configured Token Vault provider before the
-upstream tools are exposed: until enrollment completes, the MCP Server serves virtual
-`authenticate` and `check_authentication_status` tools that guide the caller through the
-enrollment flow.
-
-**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--listener--token_vault))
 
 Read-Only:
 
@@ -2228,9 +1654,15 @@ Read-Only:
 
 Optional:
 
-- `consumer` (Attributes) Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
+- `consumer` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--listener--access--consumer))
-- `oauth_access_token` (Attributes) Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
+- `oauth_access_token` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token))
 
 <a id="nestedatt--listener--access--consumer"></a>
@@ -2238,13 +1670,19 @@ for granting access to an MCP server. (see [below for nested schema](#nestedatt-
 
 Optional:
 
-- `acls` (Attributes) Server-level access control rules for allowing or denying consumer groups. This is the
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-level access control rules for allowing or denying consumer groups. This is the
 top-level gate: a caller's consumer group must pass this check before any MCP protocol
 operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
 `default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--listener--access--consumer--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
-- `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying consumer groups access to
+- `default_tool_acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Default per-tool access control rules for allowing or denying consumer groups access to
 tools. Evaluated only for callers that already passed the server-level `acls` check above.
 Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
 that tool's own `access.acls`. (see [below for nested schema](#nestedatt--listener--access--consumer--default_tool_acls))
@@ -2293,14 +1731,20 @@ Optional:
 - `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
 Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
 Not Null
-- `acls` (Attributes) Server-level access control rules for allowing or denying callers, evaluated against the
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-level access control rules for allowing or denying callers, evaluated against the
 value of the configured `access_token_claim_field`. This is the top-level gate: a caller
 must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
 `tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
 `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
-- `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying callers access to tools,
+- `default_tool_acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Default per-tool access control rules for allowing or denying callers access to tools,
 evaluated against the value of the configured `access_token_claim_field`. Evaluated only
 for callers that already passed the server-level `acls` check above. Applies to every tool
 exposed by this MCP Server unless a specific tool overrides it via that tool's own
@@ -2348,55 +1792,21 @@ Optional:
 
 Optional:
 
-- `allowed_versions` (List of String) The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong
-implements, which is the default. When set, `server/discover` advertises exactly this
-list and a request declaring anything else is rejected. Listing only per-request
-revisions refuses handshake clients.
+- `logging` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-**Requires a minimum runtime version of `2.1`**.
-- `cache` (Attributes) Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol
-revision that defines them receive them.
-
-**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--listener--config--cache))
-- `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--listener--config--logging))
+Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--listener--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
-- `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
+- `route` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--listener--config--route))
-- `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--listener--config--server))
+- `server` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-<a id="nestedatt--listener--config--cache"></a>
-### Nested Schema for `listener.config.cache`
-
-Optional:
-
-- `discover` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--listener--config--cache--discover))
-- `tools_list` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--listener--config--cache--tools_list))
-
-<a id="nestedatt--listener--config--cache--discover"></a>
-### Nested Schema for `listener.config.cache.discover`
-
-Optional:
-
-- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
-the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
-`access.acls`.
-possible known values include one of ["public", "private"]; Default: "private"
-- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
-
-
-<a id="nestedatt--listener--config--cache--tools_list"></a>
-### Nested Schema for `listener.config.cache.tools_list`
-
-Optional:
-
-- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
-the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
-`access.acls`.
-possible known values include one of ["public", "private"]; Default: "private"
-- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
-
-
+Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--listener--config--server))
 
 <a id="nestedatt--listener--config--logging"></a>
 ### Nested Schema for `listener.config.logging`
@@ -2443,7 +1853,10 @@ Optional:
 
 - `client` (Attributes) The configuration for client-side session storage. (see [below for nested schema](#nestedatt--listener--config--server--session--client))
 - `managed` (Boolean) If enabled, Kong will maintain managed sessions with the MCP server. Default: true
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis))
+- `redis` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis))
 - `session_ttl` (Number) The time-to-live (TTL) for each session in seconds. Default: 86400
 - `strategy` (String) The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. possible known values include one of ["client", "redis"]
 
@@ -2490,9 +1903,18 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--cloud_authentication--gcp))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--cloud_authentication--aws))
+- `azure` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--cloud_authentication--azure))
+- `gcp` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--config--server--session--redis--cloud_authentication--gcp))
 
 <a id="nestedatt--listener--config--server--session--redis--cloud_authentication--aws"></a>
 ### Nested Schema for `listener.config.server.session.redis.cloud_authentication.aws`
@@ -2591,159 +2013,19 @@ Optional:
 
 
 
-<a id="nestedatt--listener--token_vault"></a>
-### Nested Schema for `listener.token_vault`
-
-Optional:
-
-- `directory` (String) Directory name segment of the vault token endpoint. Not Null
-- `encryption_secrets` (List of String) Secrets used to encrypt exchanged credentials before caching them in Redis. Required when
-`redis` is configured. The first secret is used for encryption, while all secrets are tried
-for decryption to support key rotation.
-- `provider` (String) Name of the upstream credential provider registered in the Token Vault directory. Not Null
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--listener--token_vault--redis))
-
-<a id="nestedatt--listener--token_vault--redis"></a>
-### Nested Schema for `listener.token_vault.redis`
-
-Optional:
-
-- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--listener--token_vault--redis--cloud_authentication))
-- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--listener--token_vault--redis--cluster))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
-- `host` (String) A string representing a host name, such as example.com.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "127.0.0.1"
-- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--listener--token_vault--redis--keepalive))
-- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "6379"
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--listener--token_vault--redis--sentinel))
-- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
-- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--listener--token_vault--redis--cloud_authentication"></a>
-### Nested Schema for `listener.token_vault.redis.cloud_authentication`
-
-Optional:
-
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--token_vault--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--token_vault--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--listener--token_vault--redis--cloud_authentication--gcp))
-
-<a id="nestedatt--listener--token_vault--redis--cloud_authentication--aws"></a>
-### Nested Schema for `listener.token_vault.redis.cloud_authentication.aws`
-
-Optional:
-
-- `access_key_id` (String) AWS Access Key ID to be used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `cache_name` (String) The name of the AWS Elasticache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
-- `region` (String) The region of the AWS ElastiCache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `secret_access_key` (String) AWS Secret Access Key.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--listener--token_vault--redis--cloud_authentication--azure"></a>
-### Nested Schema for `listener.token_vault.redis.cloud_authentication.azure`
-
-Optional:
-
-- `client_id` (String) Azure Client ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `client_secret` (String) Azure Client Secret.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `tenant_id` (String) Azure Tenant ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--listener--token_vault--redis--cloud_authentication--gcp"></a>
-### Nested Schema for `listener.token_vault.redis.cloud_authentication.gcp`
-
-Optional:
-
-- `service_account_json` (String) GCP Service Account JSON.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-<a id="nestedatt--listener--token_vault--redis--cluster"></a>
-### Nested Schema for `listener.token_vault.redis.cluster`
-
-Optional:
-
-- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
-- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--listener--token_vault--redis--cluster--nodes))
-
-<a id="nestedatt--listener--token_vault--redis--cluster--nodes"></a>
-### Nested Schema for `listener.token_vault.redis.cluster.nodes`
-
-Optional:
-
-- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-<a id="nestedatt--listener--token_vault--redis--keepalive"></a>
-### Nested Schema for `listener.token_vault.redis.keepalive`
-
-Optional:
-
-- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
-- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--listener--token_vault--redis--sentinel"></a>
-### Nested Schema for `listener.token_vault.redis.sentinel`
-
-Optional:
-
-- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--listener--token_vault--redis--sentinel--nodes))
-- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
-- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--listener--token_vault--redis--sentinel--nodes"></a>
-### Nested Schema for `listener.token_vault.redis.sentinel.nodes`
-
-Optional:
-
-- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-
-
 
 <a id="nestedatt--passthrough_listener"></a>
 ### Nested Schema for `passthrough_listener`
 
 Optional:
 
-- `access` (Attributes) (see [below for nested schema](#nestedatt--passthrough_listener--access))
-- `config` (Attributes) Routing, logging, and server configuration for the MCP Server. Not Null (see [below for nested schema](#nestedatt--passthrough_listener--config))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--passthrough_listener--access))
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Routing, logging, and server configuration for the MCP Server.
+Not Null (see [below for nested schema](#nestedatt--passthrough_listener--config))
 - `display_name` (String) The display name for the MCP Server. Not Null
 - `enabled` (Boolean) Whether the MCP Server is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
@@ -2754,16 +2036,12 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
-- `policies` (List of String) List of policy references.
-- `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
-credential. Exchanged credentials are cached per node and, when `redis` is configured, shared
-across the cluster. Callers must enroll with the configured Token Vault provider before the
-upstream tools are exposed: until enrollment completes, the MCP Server serves virtual
-`authenticate` and `check_authentication_status` tools that guide the caller through the
-enrollment flow.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault))
+A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
+- `policies` (List of String) List of policy references.
 - `tools` (Attributes List) Per-tool access-control overrides for tools advertised by the remote MCP Server. Each
 entry is matched to a remote tool by `name`; only its access-control rules are applied. (see [below for nested schema](#nestedatt--passthrough_listener--tools))
 
@@ -2778,9 +2056,15 @@ Read-Only:
 
 Optional:
 
-- `consumer` (Attributes) Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
+- `consumer` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer))
-- `oauth_access_token` (Attributes) Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
+- `oauth_access_token` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 for granting access to an MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token))
 
 <a id="nestedatt--passthrough_listener--access--consumer"></a>
@@ -2788,13 +2072,19 @@ for granting access to an MCP server. (see [below for nested schema](#nestedatt-
 
 Optional:
 
-- `acls` (Attributes) Server-level access control rules for allowing or denying consumer groups. This is the
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-level access control rules for allowing or denying consumer groups. This is the
 top-level gate: a caller's consumer group must pass this check before any MCP protocol
 operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
 `default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
-- `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying consumer groups access to
+- `default_tool_acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Default per-tool access control rules for allowing or denying consumer groups access to
 tools. Evaluated only for callers that already passed the server-level `acls` check above.
 Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
 that tool's own `access.acls`. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--default_tool_acls))
@@ -2843,14 +2133,20 @@ Optional:
 - `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
 Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
 Not Null
-- `acls` (Attributes) Server-level access control rules for allowing or denying callers, evaluated against the
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-level access control rules for allowing or denying callers, evaluated against the
 value of the configured `access_token_claim_field`. This is the top-level gate: a caller
 must pass this check before any MCP protocol operation (`initialize`, `tools/list`,
 `tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
 `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
-- `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying callers access to tools,
+- `default_tool_acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Default per-tool access control rules for allowing or denying callers access to tools,
 evaluated against the value of the configured `access_token_claim_field`. Evaluated only
 for callers that already passed the server-level `acls` check above. Applies to every tool
 exposed by this MCP Server unless a specific tool overrides it via that tool's own
@@ -2898,31 +2194,26 @@ Optional:
 
 Optional:
 
-- `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+- `logging` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-generated for this MCP Server, which proxies requests to the upstream MCP server.
-
-If unset, the default trust store is used to verify the upstream's TLS certificate.
-- `certificates` (List of String) Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-AI Gateway.
-
-The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-proxies requests to the upstream MCP server. The generated Service presents a single client
-certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-certificate may be configured.
-
-If unset, no client certificate is presented to the upstream.
-- `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--passthrough_listener--config--logging))
+Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--passthrough_listener--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--passthrough_listener--config--proxy))
-- `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
+- `route` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
-- `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
-- `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
+- `server` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
@@ -3013,7 +2304,10 @@ Optional:
 
 - `client` (Attributes) The configuration for client-side session storage. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--client))
 - `managed` (Boolean) If enabled, Kong will maintain managed sessions with the MCP server. Default: true
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis))
+- `redis` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis))
 - `session_ttl` (Number) The time-to-live (TTL) for each session in seconds. Default: 86400
 - `strategy` (String) The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. possible known values include one of ["client", "redis"]
 
@@ -3060,9 +2354,18 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--gcp))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--aws))
+- `azure` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--azure))
+- `gcp` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--gcp))
 
 <a id="nestedatt--passthrough_listener--config--server--session--redis--cloud_authentication--aws"></a>
 ### Nested Schema for `passthrough_listener.config.server.session.redis.cloud_authentication.aws`
@@ -3165,14 +2468,20 @@ Optional:
 
 Optional:
 
-- `auth` (Attributes) Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream--auth))
 
 <a id="nestedatt--passthrough_listener--config--upstream--auth"></a>
 ### Nested Schema for `passthrough_listener.config.upstream.auth`
 
 Optional:
 
-- `aws` (Attributes) AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream--auth--aws))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream--auth--aws))
 
 <a id="nestedatt--passthrough_listener--config--upstream--auth--aws"></a>
 ### Nested Schema for `passthrough_listener.config.upstream.auth.aws`
@@ -3197,157 +2506,16 @@ If not specified, the default AWS STS endpoint will be used.
 
 
 
-<a id="nestedatt--passthrough_listener--token_vault"></a>
-### Nested Schema for `passthrough_listener.token_vault`
-
-Optional:
-
-- `directory` (String) Directory name segment of the vault token endpoint. Not Null
-- `encryption_secrets` (List of String) Secrets used to encrypt exchanged credentials before caching them in Redis. Required when
-`redis` is configured. The first secret is used for encryption, while all secrets are tried
-for decryption to support key rotation.
-- `provider` (String) Name of the upstream credential provider registered in the Token Vault directory. Not Null
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis))
-
-<a id="nestedatt--passthrough_listener--token_vault--redis"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis`
-
-Optional:
-
-- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--cloud_authentication))
-- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--cluster))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
-- `host` (String) A string representing a host name, such as example.com.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "127.0.0.1"
-- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--keepalive))
-- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "6379"
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--sentinel))
-- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
-- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--cloud_authentication"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.cloud_authentication`
-
-Optional:
-
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--cloud_authentication--gcp))
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--cloud_authentication--aws"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.cloud_authentication.aws`
-
-Optional:
-
-- `access_key_id` (String) AWS Access Key ID to be used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `cache_name` (String) The name of the AWS Elasticache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
-- `region` (String) The region of the AWS ElastiCache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `secret_access_key` (String) AWS Secret Access Key.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--cloud_authentication--azure"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.cloud_authentication.azure`
-
-Optional:
-
-- `client_id` (String) Azure Client ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `client_secret` (String) Azure Client Secret.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `tenant_id` (String) Azure Tenant ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--cloud_authentication--gcp"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.cloud_authentication.gcp`
-
-Optional:
-
-- `service_account_json` (String) GCP Service Account JSON.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--cluster"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.cluster`
-
-Optional:
-
-- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
-- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--cluster--nodes))
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--cluster--nodes"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.cluster.nodes`
-
-Optional:
-
-- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--keepalive"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.keepalive`
-
-Optional:
-
-- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
-- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--sentinel"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.sentinel`
-
-Optional:
-
-- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--redis--sentinel--nodes))
-- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
-- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--passthrough_listener--token_vault--redis--sentinel--nodes"></a>
-### Nested Schema for `passthrough_listener.token_vault.redis.sentinel.nodes`
-
-Optional:
-
-- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-
-
 <a id="nestedatt--passthrough_listener--tools"></a>
 ### Nested Schema for `passthrough_listener.tools`
 
 Optional:
 
-- `access` (Attributes) Access-control rules for a tool. Not Null (see [below for nested schema](#nestedatt--passthrough_listener--tools--access))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access-control rules for a tool.
+Not Null (see [below for nested schema](#nestedatt--passthrough_listener--tools--access))
 - `name` (String) Tool identifier used to match remote MCP Server tools for ACL enforcement. Not Null
 
 <a id="nestedatt--passthrough_listener--tools--access"></a>
@@ -3355,7 +2523,10 @@ Optional:
 
 Optional:
 
-- `acls` (Attributes) Access control rules for allowing or denying consumer groups access to this tool.
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access control rules for allowing or denying consumer groups access to this tool.
 When configured, these will override the default access control rules defined on the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--tools--access--acls))
 
 <a id="nestedatt--passthrough_listener--tools--access--acls"></a>
@@ -3375,7 +2546,11 @@ Optional:
 
 Optional:
 
-- `config` (Attributes) Routing, logging, and server configuration for the MCP Server. Not Null (see [below for nested schema](#nestedatt--upstream_server--config))
+- `config` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Routing, logging, and server configuration for the MCP Server.
+Not Null (see [below for nested schema](#nestedatt--upstream_server--config))
 - `display_name` (String) The display name for the MCP Server. Not Null
 - `enabled` (Boolean) Whether the MCP Server is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
@@ -3386,16 +2561,12 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
-- `policies` (List of String) List of policy references.
-- `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
-credential. Exchanged credentials are cached per node and, when `redis` is configured, shared
-across the cluster. Callers must enroll with the configured Token Vault provider before the
-upstream tools are exposed: until enrollment completes, the MCP Server serves virtual
-`authenticate` and `check_authentication_status` tools that guide the caller through the
-enrollment flow.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--upstream_server--token_vault))
+A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
+Not Null
+- `policies` (List of String) List of policy references.
 - `tools` (Attributes List) List of tools exposed by this MCP Server. (see [below for nested schema](#nestedatt--upstream_server--tools))
 
 Read-Only:
@@ -3409,33 +2580,25 @@ Read-Only:
 
 Optional:
 
-- `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+- `logging` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-generated for this MCP Server, which proxies requests to the upstream MCP server.
-
-If unset, the default trust store is used to verify the upstream's TLS certificate.
-- `certificates` (List of String) Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-AI Gateway.
-
-The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-proxies requests to the upstream MCP server. The generated Service presents a single client
-certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-certificate may be configured.
-
-If unset, no client certificate is presented to the upstream.
-- `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--upstream_server--config--logging))
+Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--upstream_server--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
-- `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
+- `route` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--upstream_server--config--route))
 - `server` (Attributes) Server-side configuration specific to `upstream-server` mode. (see [below for nested schema](#nestedatt--upstream_server--config--server))
 - `tools_cache_ttl_seconds` (Number) The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 every client call.
 Not Null
-- `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--upstream_server--config--upstream))
+- `upstream` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--upstream_server--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
@@ -3481,13 +2644,10 @@ Default: false
 - `session` (Attributes) Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers. (see [below for nested schema](#nestedatt--upstream_server--config--server--session))
 - `timeout` (Number) The timeout for calling the tools in milliseconds. Default: 10000
-- `tools_list_auth` (Attributes) Configuration for an Upstream Server's MCP Server Tools' Authentication. (see [below for nested schema](#nestedatt--upstream_server--config--server--tools_list_auth))
-- `upstream_protocol_version` (String) The MCP protocol revision Kong speaks to the upstream MCP server. Leave unset to
-negotiate a handshake revision with an `initialize` exchange, which is the default. Set a
-per-request revision to reach an upstream that answers no handshake and mints no session.
+- `tools_list_auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
 
-**Requires a minimum runtime version of `2.1`**.
-possible known values include one of ["2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26"]
+Configuration for an Upstream Server's MCP Server Tools' Authentication. (see [below for nested schema](#nestedatt--upstream_server--config--server--tools_list_auth))
 
 <a id="nestedatt--upstream_server--config--server--session"></a>
 ### Nested Schema for `upstream_server.config.server.session`
@@ -3496,7 +2656,10 @@ Optional:
 
 - `client` (Attributes) The configuration for client-side session storage. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--client))
 - `managed` (Boolean) If enabled, Kong will maintain managed sessions with the MCP server. Default: true
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis))
+- `redis` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis))
 - `session_ttl` (Number) The time-to-live (TTL) for each session in seconds. Default: 86400
 - `strategy` (String) The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. possible known values include one of ["client", "redis"]
 
@@ -3543,9 +2706,18 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--cloud_authentication--gcp))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--cloud_authentication--aws))
+- `azure` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--cloud_authentication--azure))
+- `gcp` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--config--server--session--redis--cloud_authentication--gcp))
 
 <a id="nestedatt--upstream_server--config--server--session--redis--cloud_authentication--aws"></a>
 ### Nested Schema for `upstream_server.config.server.session.redis.cloud_authentication.aws`
@@ -3647,8 +2819,10 @@ Optional:
 
 Optional:
 
-- `credentials` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--config--server--tools_list_auth--credentials))
-- `jwt` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--config--server--tools_list_auth--jwt))
+- `credentials` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--config--server--tools_list_auth--credentials))
+- `jwt` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--config--server--tools_list_auth--jwt))
 
 <a id="nestedatt--upstream_server--config--server--tools_list_auth--credentials"></a>
 ### Nested Schema for `upstream_server.config.server.tools_list_auth.credentials`
@@ -3695,14 +2869,20 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `auth` (Attributes) Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--upstream_server--config--upstream--auth))
+- `auth` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Authentication to use when proxying to the upstream service. (see [below for nested schema](#nestedatt--upstream_server--config--upstream--auth))
 
 <a id="nestedatt--upstream_server--config--upstream--auth"></a>
 ### Nested Schema for `upstream_server.config.upstream.auth`
 
 Optional:
 
-- `aws` (Attributes) AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--upstream_server--config--upstream--auth--aws))
+- `aws` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+AWS IAM (SigV4) authentication for the upstream service. (see [below for nested schema](#nestedatt--upstream_server--config--upstream--auth--aws))
 
 <a id="nestedatt--upstream_server--config--upstream--auth--aws"></a>
 ### Nested Schema for `upstream_server.config.upstream.auth.aws`
@@ -3727,158 +2907,17 @@ If not specified, the default AWS STS endpoint will be used.
 
 
 
-<a id="nestedatt--upstream_server--token_vault"></a>
-### Nested Schema for `upstream_server.token_vault`
-
-Optional:
-
-- `directory` (String) Directory name segment of the vault token endpoint. Not Null
-- `encryption_secrets` (List of String) Secrets used to encrypt exchanged credentials before caching them in Redis. Required when
-`redis` is configured. The first secret is used for encryption, while all secrets are tried
-for decryption to support key rotation.
-- `provider` (String) Name of the upstream credential provider registered in the Token Vault directory. Not Null
-- `redis` (Attributes) Config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis))
-
-<a id="nestedatt--upstream_server--token_vault--redis"></a>
-### Nested Schema for `upstream_server.token_vault.redis`
-
-Optional:
-
-- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--cloud_authentication))
-- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--cluster))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
-- `host` (String) A string representing a host name, such as example.com.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "127.0.0.1"
-- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--keepalive))
-- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Default: "6379"
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--sentinel))
-- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
-- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--upstream_server--token_vault--redis--cloud_authentication"></a>
-### Nested Schema for `upstream_server.token_vault.redis.cloud_authentication`
-
-Optional:
-
-- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--cloud_authentication--aws))
-- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--cloud_authentication--azure))
-- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--cloud_authentication--gcp))
-
-<a id="nestedatt--upstream_server--token_vault--redis--cloud_authentication--aws"></a>
-### Nested Schema for `upstream_server.token_vault.redis.cloud_authentication.aws`
-
-Optional:
-
-- `access_key_id` (String) AWS Access Key ID to be used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `cache_name` (String) The name of the AWS Elasticache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
-- `region` (String) The region of the AWS ElastiCache cluster.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `secret_access_key` (String) AWS Secret Access Key.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--upstream_server--token_vault--redis--cloud_authentication--azure"></a>
-### Nested Schema for `upstream_server.token_vault.redis.cloud_authentication.azure`
-
-Optional:
-
-- `client_id` (String) Azure Client ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `client_secret` (String) Azure Client Secret.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `tenant_id` (String) Azure Tenant ID.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--upstream_server--token_vault--redis--cloud_authentication--gcp"></a>
-### Nested Schema for `upstream_server.token_vault.redis.cloud_authentication.gcp`
-
-Optional:
-
-- `service_account_json` (String) GCP Service Account JSON.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-
-<a id="nestedatt--upstream_server--token_vault--redis--cluster"></a>
-### Nested Schema for `upstream_server.token_vault.redis.cluster`
-
-Optional:
-
-- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
-- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--cluster--nodes))
-
-<a id="nestedatt--upstream_server--token_vault--redis--cluster--nodes"></a>
-### Nested Schema for `upstream_server.token_vault.redis.cluster.nodes`
-
-Optional:
-
-- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-<a id="nestedatt--upstream_server--token_vault--redis--keepalive"></a>
-### Nested Schema for `upstream_server.token_vault.redis.keepalive`
-
-Optional:
-
-- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
-- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
-
-
-<a id="nestedatt--upstream_server--token_vault--redis--sentinel"></a>
-### Nested Schema for `upstream_server.token_vault.redis.sentinel`
-
-Optional:
-
-- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--upstream_server--token_vault--redis--sentinel--nodes))
-- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
-- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-<a id="nestedatt--upstream_server--token_vault--redis--sentinel--nodes"></a>
-### Nested Schema for `upstream_server.token_vault.redis.sentinel.nodes`
-
-Optional:
-
-- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-
-
-
-
-
 <a id="nestedatt--upstream_server--tools"></a>
 ### Nested Schema for `upstream_server.tools`
 
 Optional:
 
-- `access` (Attributes) Access-control rules for a tool. (see [below for nested schema](#nestedatt--upstream_server--tools--access))
-- `annotations` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--tools--annotations))
+- `access` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access-control rules for a tool. (see [below for nested schema](#nestedatt--upstream_server--tools--access))
+- `annotations` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--upstream_server--tools--annotations))
 - `description` (String) A description of what the tool does.
 - `input_schema` (String) The entire `inputSchema` section for the tool. Overrides the upstream server's `inputSchema`
 for the same tool name, if present.
@@ -3893,7 +2932,10 @@ Parsed as JSON.
 
 Optional:
 
-- `acls` (Attributes) Access control rules for allowing or denying consumer groups access to this tool.
+- `acls` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Access control rules for allowing or denying consumer groups access to this tool.
 When configured, these will override the default access control rules defined on the MCP Server. (see [below for nested schema](#nestedatt--upstream_server--tools--access--acls))
 
 <a id="nestedatt--upstream_server--tools--access--acls"></a>

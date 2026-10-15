@@ -27,8 +27,7 @@ resource "konnect_api_version" "my_apiversion" {
       }
     }
   }
-  spec_format = "json"
-  version     = "1.0.0"
+  version = "1.0.0"
 }
 ```
 
@@ -42,7 +41,6 @@ resource "konnect_api_version" "my_apiversion" {
 
 ### Optional
 
-- `spec_format` (String) The format of the returned `spec.content`. Defaults to `json`. possible known values include one of ["json", "yaml"]; Default: "json"
 - `version` (String) The version of the api.
 
 ### Read-Only

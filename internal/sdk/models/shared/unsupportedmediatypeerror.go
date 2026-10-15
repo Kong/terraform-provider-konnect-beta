@@ -4,61 +4,44 @@ package shared
 
 // UnsupportedMediaTypeError - standard error
 type UnsupportedMediaTypeError struct {
-	// The HTTP status code of the error. Useful when passing the response
-	// body to child properties in a frontend UI. Must be returned as an integer.
-	//
-	Status int64 `json:"status"`
-	// A short, human-readable summary of the problem. It should not
-	// change between occurences of a problem, except for localization.
-	// Should be provided as "Sentence case" for direct use in the UI.
-	//
-	Title string `json:"title"`
-	// The error type.
-	Type *string `json:"type,omitempty"`
-	// Used to return the correlation ID back to the user, in the format
-	// kong:trace:<correlation_id>. This helps us find the relevant logs
-	// when a customer reports an issue.
-	//
-	Instance string `json:"instance"`
-	// A human readable explanation specific to this occurence of the problem.
-	// This field may contain request/entity data to help the user understand
-	// what went wrong. Enclose variable values in square brackets. Should be
-	// provided as "Sentence case" for direct use in the UI.
-	//
-	Detail string `json:"detail"`
+	Status   any `json:"status"`
+	Title    any `json:"title"`
+	Type     any `json:"type,omitempty"`
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
-func (u *UnsupportedMediaTypeError) GetStatus() int64 {
+func (u *UnsupportedMediaTypeError) GetStatus() any {
 	if u == nil {
-		return 0
+		return nil
 	}
 	return u.Status
 }
 
-func (u *UnsupportedMediaTypeError) GetTitle() string {
+func (u *UnsupportedMediaTypeError) GetTitle() any {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.Title
 }
 
-func (u *UnsupportedMediaTypeError) GetType() *string {
+func (u *UnsupportedMediaTypeError) GetType() any {
 	if u == nil {
 		return nil
 	}
 	return u.Type
 }
 
-func (u *UnsupportedMediaTypeError) GetInstance() string {
+func (u *UnsupportedMediaTypeError) GetInstance() any {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.Instance
 }
 
-func (u *UnsupportedMediaTypeError) GetDetail() string {
+func (u *UnsupportedMediaTypeError) GetDetail() any {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.Detail
 }

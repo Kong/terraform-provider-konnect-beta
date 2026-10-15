@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayTargetGeminiConfig - Google Gemini-specific configuration for a model.
+// AIGatewayTargetGeminiConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Google Gemini-specific configuration for a model.
 type AIGatewayTargetGeminiConfig struct {
 	// The number of dimensions for embedding outputs.
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
@@ -20,18 +23,6 @@ type AIGatewayTargetGeminiConfig struct {
 	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
 	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
 	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
-	// Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	InputCostList []AIGatewayModalCostList `json:"input_cost_list,omitempty"`
-	// Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	OutputCostList []AIGatewayModalCostList `json:"output_cost_list,omitempty"`
-	// Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	CacheReadCostList []AIGatewayModalCostList `json:"cache_read_cost_list,omitempty"`
 	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
 	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
 	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
@@ -48,6 +39,9 @@ type AIGatewayTargetGeminiConfig struct {
 	UpstreamURL *string `json:"upstream_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"gemini" json:"type"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for a model hosted on Google Cloud Project.
 	GcpEnvironment *GCPModelConfig `json:"gcp_environment,omitempty"`
 }
@@ -103,27 +97,6 @@ func (a *AIGatewayTargetGeminiConfig) GetCacheWriteCost() *float64 {
 		return nil
 	}
 	return a.CacheWriteCost
-}
-
-func (a *AIGatewayTargetGeminiConfig) GetInputCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.InputCostList
-}
-
-func (a *AIGatewayTargetGeminiConfig) GetOutputCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.OutputCostList
-}
-
-func (a *AIGatewayTargetGeminiConfig) GetCacheReadCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.CacheReadCostList
 }
 
 func (a *AIGatewayTargetGeminiConfig) GetCacheWriteCostList() []AIGatewayCacheWriteCost {

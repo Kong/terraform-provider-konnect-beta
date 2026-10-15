@@ -6,10 +6,9 @@ package shared
 type TokenEndpointAuthMethod string
 
 const (
-	TokenEndpointAuthMethodPrivateKeyJwt     TokenEndpointAuthMethod = "private_key_jwt"
-	TokenEndpointAuthMethodClientSecretBasic TokenEndpointAuthMethod = "client_secret_basic"
-	TokenEndpointAuthMethodClientSecretPost  TokenEndpointAuthMethod = "client_secret_post"
-	TokenEndpointAuthMethodNone              TokenEndpointAuthMethod = "none"
+	TokenEndpointAuthMethodPrivateKeyJwt    TokenEndpointAuthMethod = "private_key_jwt"
+	TokenEndpointAuthMethodClientSecretPost TokenEndpointAuthMethod = "client_secret_post"
+	TokenEndpointAuthMethodNone             TokenEndpointAuthMethod = "none"
 )
 
 func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
@@ -20,7 +19,7 @@ func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
 func (e *TokenEndpointAuthMethod) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "private_key_jwt", "client_secret_basic", "client_secret_post", "none":
+		case "private_key_jwt", "client_secret_post", "none":
 			return true
 		}
 	}

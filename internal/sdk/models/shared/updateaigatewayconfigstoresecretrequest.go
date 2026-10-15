@@ -2,7 +2,12 @@
 
 package shared
 
+// UpdateAIGatewayConfigStoreSecretRequest - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type UpdateAIGatewayConfigStoreSecretRequest struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// The secret value. Once stored, this value cannot be retrieved.
 	Value string `json:"value"`
 }

@@ -17,10 +17,15 @@ type APIImplementationResponseControlPlaneReference struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// UUID of the organization environment this implementation is scoped to.
-	// Must be an environment associated with the API. Required when the API
-	// has multiple associated environments (`400` if omitted).
-	// Returns `404` if the UUID is unknown or not associated with the API.
+	// UUID of the organization environment this control-plane implementation is scoped
+	// to. Environment names are not accepted. Not applicable to gateway-service
+	// implementations.
+	// On create: must be an environment associated with the API. Required when the API
+	// has multiple associated environments (`400` if omitted). Optional for a
+	// single-environment API and accepted only if it matches that environment. Returns
+	// `404` if the UUID is unknown or not associated with the API.
+	// On read: optional; present when the implementation is associated with an
+	// environment.
 	//
 	EnvironmentID *string `json:"environment_id,omitempty"`
 	// A Control plane that implements an API
@@ -81,10 +86,15 @@ type APIImplementationResponseServiceReference struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// UUID of the organization environment this implementation is scoped to.
-	// Must be an environment associated with the API. Required when the API
-	// has multiple associated environments (`400` if omitted).
-	// Returns `404` if the UUID is unknown or not associated with the API.
+	// UUID of the organization environment this control-plane implementation is scoped
+	// to. Environment names are not accepted. Not applicable to gateway-service
+	// implementations.
+	// On create: must be an environment associated with the API. Required when the API
+	// has multiple associated environments (`400` if omitted). Optional for a
+	// single-environment API and accepted only if it matches that environment. Returns
+	// `404` if the UUID is unknown or not associated with the API.
+	// On read: optional; present when the implementation is associated with an
+	// environment.
 	//
 	EnvironmentID *string `json:"environment_id,omitempty"`
 	// A Gateway service that implements an API

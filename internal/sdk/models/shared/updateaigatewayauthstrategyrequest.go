@@ -16,6 +16,8 @@ const (
 	UpdateAIGatewayAuthStrategyRequestTypeOpenidConnect UpdateAIGatewayAuthStrategyRequestType = "openid-connect"
 )
 
+// UpdateAIGatewayAuthStrategyRequest - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type UpdateAIGatewayAuthStrategyRequest struct {
 	AIGatewayAuthStrategyKeyAuth       *AIGatewayAuthStrategyKeyAuth       `queryParam:"inline" union:"member"`
 	AIGatewayAuthStrategyOpenIDConnect *AIGatewayAuthStrategyOpenIDConnect `queryParam:"inline" union:"member"`

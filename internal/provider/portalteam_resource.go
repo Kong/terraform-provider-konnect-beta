@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -82,8 +81,7 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"konnect_managed": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(false),
-				Description: `Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to ` + "`" + `false` + "`" + ` (default) to let identity provider team mappings keep syncing members into this team. Set to ` + "`" + `true` + "`" + ` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team. Default: false`,
+				Description: `Indicates whether the team is managed by Konnect.`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

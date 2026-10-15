@@ -7,9 +7,8 @@ import (
 )
 
 type AIGatewayModelProviderConfigAuthGCP struct {
-	MetadataURL                types.String                       `tfsdk:"metadata_url"`
-	OauthTokenURL              types.String                       `tfsdk:"oauth_token_url"`
-	ServiceAccountJSON         types.String                       `tfsdk:"service_account_json"`
-	UseGcpServiceAccount       types.Bool                         `tfsdk:"use_gcp_service_account"`
-	WorkloadIdentityFederation *AuthGCPWorkloadIdentityFederation `tfsdk:"workload_identity_federation"`
+	MetadataURL          types.String `tfsdk:"metadata_url"`
+	OauthTokenURL        types.String `tfsdk:"oauth_token_url"`
+	ServiceAccountJSON   types.String `tfsdk:"service_account_json"`
+	UseGcpServiceAccount types.Bool   `tfsdk:"use_gcp_service_account"`
 }

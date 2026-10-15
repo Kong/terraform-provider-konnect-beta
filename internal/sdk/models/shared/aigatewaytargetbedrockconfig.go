@@ -6,40 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// EndpointType - The AWS Bedrock inference endpoint that requests to this target are sent to.
-// `runtime` sends requests to the Bedrock Runtime endpoint
-// (`bedrock-runtime.{region}.amazonaws.com`). `mantle` sends requests to the
-// Bedrock Mantle endpoint (`bedrock-mantle.{region}.api.aws`), which accepts
-// OpenAI and Anthropic request formats natively.
+// AIGatewayTargetBedrockConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 //
-// A target with `endpoint_type` set to `mantle` is rejected if its model
-// includes a format with `type` set to `bedrock`, because the Mantle endpoint
-// does not support the Bedrock Converse or InvokeModel APIs.
-//
-// **Requires a minimum runtime version of `2.3`**.
-type EndpointType string
-
-const (
-	EndpointTypeRuntime EndpointType = "runtime"
-	EndpointTypeMantle  EndpointType = "mantle"
-)
-
-func (e EndpointType) ToPointer() *EndpointType {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *EndpointType) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "runtime", "mantle":
-			return true
-		}
-	}
-	return false
-}
-
-// AIGatewayTargetBedrockConfig - AWS Bedrock-specific configuration for a model.
+// AWS Bedrock-specific configuration for a model.
 type AIGatewayTargetBedrockConfig struct {
 	// The number of dimensions for embedding outputs.
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
@@ -53,18 +23,6 @@ type AIGatewayTargetBedrockConfig struct {
 	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
 	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
 	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
-	// Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	InputCostList []AIGatewayModalCostList `json:"input_cost_list,omitempty"`
-	// Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	OutputCostList []AIGatewayModalCostList `json:"output_cost_list,omitempty"`
-	// Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	CacheReadCostList []AIGatewayModalCostList `json:"cache_read_cost_list,omitempty"`
 	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
 	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
 	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
@@ -93,23 +51,6 @@ type AIGatewayTargetBedrockConfig struct {
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
 	// S3 URI for storing video generation outputs.
 	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
-	// Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
-	// Ignored if `upstream_url` is set.
-	//
-	// **Requires a minimum runtime version of `2.3`**.
-	VpcEndpoint *string `json:"vpc_endpoint,omitempty"`
-	// The AWS Bedrock inference endpoint that requests to this target are sent to.
-	// `runtime` sends requests to the Bedrock Runtime endpoint
-	// (`bedrock-runtime.{region}.amazonaws.com`). `mantle` sends requests to the
-	// Bedrock Mantle endpoint (`bedrock-mantle.{region}.api.aws`), which accepts
-	// OpenAI and Anthropic request formats natively.
-	//
-	// A target with `endpoint_type` set to `mantle` is rejected if its model
-	// includes a format with `type` set to `bedrock`, because the Mantle endpoint
-	// does not support the Bedrock Converse or InvokeModel APIs.
-	//
-	// **Requires a minimum runtime version of `2.3`**.
-	EndpointType *EndpointType `default:"runtime" json:"endpoint_type"`
 }
 
 func (a AIGatewayTargetBedrockConfig) MarshalJSON() ([]byte, error) {
@@ -163,27 +104,6 @@ func (a *AIGatewayTargetBedrockConfig) GetCacheWriteCost() *float64 {
 		return nil
 	}
 	return a.CacheWriteCost
-}
-
-func (a *AIGatewayTargetBedrockConfig) GetInputCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.InputCostList
-}
-
-func (a *AIGatewayTargetBedrockConfig) GetOutputCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.OutputCostList
-}
-
-func (a *AIGatewayTargetBedrockConfig) GetCacheReadCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.CacheReadCostList
 }
 
 func (a *AIGatewayTargetBedrockConfig) GetCacheWriteCostList() []AIGatewayCacheWriteCost {
@@ -272,18 +192,4 @@ func (a *AIGatewayTargetBedrockConfig) GetVideoOutputS3URI() *string {
 		return nil
 	}
 	return a.VideoOutputS3URI
-}
-
-func (a *AIGatewayTargetBedrockConfig) GetVpcEndpoint() *string {
-	if a == nil {
-		return nil
-	}
-	return a.VpcEndpoint
-}
-
-func (a *AIGatewayTargetBedrockConfig) GetEndpointType() *EndpointType {
-	if a == nil {
-		return nil
-	}
-	return a.EndpointType
 }

@@ -53,33 +53,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
     }
     name = "azure-ai-se"
   }
-  baseten = {
-    config = {
-      auth = {
-        headers = [
-          {
-            name  = "...my_name..."
-            value = "...my_value..."
-          }
-        ]
-        params = [
-          {
-            location = "query"
-            name     = "...my_name..."
-            value    = "...my_value..."
-          }
-        ]
-      }
-    }
-    display_name = "Azure AI SE"
-    labels = {
-      key = "value"
-    }
-    managed_by = {
-      key = "value"
-    }
-    name = "azure-ai-se"
-  }
   bedrock = {
     config = {
       auth = {
@@ -247,21 +220,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           oauth_token_url         = "...my_oauth_token_url..."
           service_account_json    = "...my_service_account_json..."
           use_gcp_service_account = false
-          workload_identity_federation = {
-            aws_iam = {
-              auth_json = "...my_auth_json..."
-              aws = {
-                access_key_id     = "...my_access_key_id..."
-                assume_role_arn   = "...my_assume_role_arn..."
-                region            = "...my_region..."
-                role_session_name = "...my_role_session_name..."
-                secret_access_key = "...my_secret_access_key..."
-                session_token     = "...my_session_token..."
-                sts_endpoint_url  = "...my_sts_endpoint_url..."
-              }
-              source = "aws_iam"
-            }
-          }
         }
       }
     }
@@ -454,33 +412,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
             }
           ]
         }
-      }
-    }
-    display_name = "Azure AI SE"
-    labels = {
-      key = "value"
-    }
-    managed_by = {
-      key = "value"
-    }
-    name = "azure-ai-se"
-  }
-  typesafe = {
-    config = {
-      auth = {
-        headers = [
-          {
-            name  = "...my_name..."
-            value = "...my_value..."
-          }
-        ]
-        params = [
-          {
-            location = "query"
-            name     = "...my_name..."
-            value    = "...my_value..."
-          }
-        ]
       }
     }
     display_name = "Azure AI SE"

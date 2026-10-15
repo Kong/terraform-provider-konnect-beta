@@ -27,9 +27,7 @@ type CreateEventGatewayResponse struct {
 	// Conflict
 	ConflictError *shared.ConflictError
 	// Internal
-	InternalError *shared.InternalError
-	// Service not available
-	NotAvailableError *shared.NotAvailableError
+	BaseError *shared.BaseError
 }
 
 func (c *CreateEventGatewayResponse) GetContentType() string {
@@ -95,16 +93,9 @@ func (c *CreateEventGatewayResponse) GetConflictError() *shared.ConflictError {
 	return c.ConflictError
 }
 
-func (c *CreateEventGatewayResponse) GetInternalError() *shared.InternalError {
+func (c *CreateEventGatewayResponse) GetBaseError() *shared.BaseError {
 	if c == nil {
 		return nil
 	}
-	return c.InternalError
-}
-
-func (c *CreateEventGatewayResponse) GetNotAvailableError() *shared.NotAvailableError {
-	if c == nil {
-		return nil
-	}
-	return c.NotAvailableError
+	return c.BaseError
 }

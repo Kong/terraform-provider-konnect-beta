@@ -6,16 +6,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayACLS - Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`.
+// AIGatewayACLS - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Access control rules. Configure exactly one of `allow` or `deny`.
 type AIGatewayACLS struct {
 	// List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.
 	Allow []string `json:"allow,omitempty"`
 	// List of Consumer Groups Names, or Authenticated Groups Names that are denied access.
 	Deny []string `json:"deny,omitempty"`
-	// Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.
-	AllowWhen []string `json:"allow_when,omitempty"`
-	// Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.
-	DenyWhen []string `json:"deny_when,omitempty"`
 }
 
 func (a AIGatewayACLS) MarshalJSON() ([]byte, error) {
@@ -41,18 +40,4 @@ func (a *AIGatewayACLS) GetDeny() []string {
 		return nil
 	}
 	return a.Deny
-}
-
-func (a *AIGatewayACLS) GetAllowWhen() []string {
-	if a == nil {
-		return nil
-	}
-	return a.AllowWhen
-}
-
-func (a *AIGatewayACLS) GetDenyWhen() []string {
-	if a == nil {
-		return nil
-	}
-	return a.DenyWhen
 }

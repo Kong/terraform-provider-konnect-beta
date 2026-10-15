@@ -1,5 +1,53 @@
 # Changelog
 
+## 0.22.0
+> Released on 2026/08/31
+
+### BREAKING CHANGES
+* Vertex model and provider support is removed from `konnect_ai_gateway_*` resources
+* `dcr_default_access_token_duration` is now nested under `dcr` field in `konnect_identity_auth_server` resource as `dcr.default_access_token_duration`
+* `environment` field is renamed to `environment_id` in `konnect_api_implementation` resource
+* Tool definitions have been adjusted based on `listener` type in `konnect_ai_gateway_mcp_server` resource
+
+### Features
+* Add support for more AI Gateway 2.0 resources 
+  - `konnect_ai_gateway_auth_strategy` which replaces the deprecated `konnect_ai_gateway_identity_provider` resource
+  - `konnect_ai_gateway_ca_certificate`
+  - `konnect_ai_gateway_certificate`
+  - `konnect_ai_gateway_sni`
+* Add support for `konnect_portal_identity_provider` and `konnect_portal_identity_provider_team_group_mapping` resources, using which you can manage Developer Portal Identity Providers, as well as Identity Provider Group <> Portal Team mapping
+
+## 0.21.0
+> Released on 2026/08/18
+
+### BREAKING CHANGES
+* A new chart type `table` for has been introduced in `konnect_dashboard` resource, and the chart tile definition is nested under `{chart_type}_visualization` key
+* `konnect_portal.mcp_server_enabled` is now removed - use `konnect_portal.ai.features.mcp_server.enabled` instead
+
+### Features
+* Add support for AI Gateway 2.0 using which you can configure AI Gateway, MCP servers, AI Model Providers and AI Models
+  * `konnect_ai_gateway`
+  * `konnect_ai_gateway_agent`
+  * `konnect_ai_gateway_config_store`
+  * `konnect_ai_gateway_config_store_secret`
+  * `konnect_ai_gateway_consumer`
+  * `konnect_ai_gateway_consumer_credential`
+  * `konnect_ai_gateway_consumer_group`
+  * `konnect_ai_gateway_consumer_group_member`
+  * `konnect_ai_gateway_data_plane_certificate`
+  * `konnect_ai_gateway_identity_provider`
+  * `konnect_ai_gateway_mcp_server`
+  * `konnect_ai_gateway_model`
+  * `konnect_ai_gateway_model_provider`
+  * `konnect_ai_gateway_policy`
+  * `konnect_ai_gateway_vault`
+* Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources, using which you can manage developer accounts in a portal, the applications owned by those developers, and the registration of those applications against APIs published to the portal
+* Add support for `konnect_identity_auth_server_client_secret` resource, using which you can create and rotate client secrets for an identity auth server client
+* Add support for `konnect_organization_personal_access_token_settings` resource, using which governance can be set up on PATs for an organizations
+* Add support for new Mesh resources
+  * `konnect_mesh_zone_address`
+  * `konnect_mesh_open_telemetry_backend`
+
 ## 0.20.0
 > Released on 2026/06/26
 

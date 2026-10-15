@@ -16,6 +16,8 @@ const (
 	AIGatewayMCPServerListenerAccessTypeOauthAccessToken AIGatewayMCPServerListenerAccessType = "oauth_access_token"
 )
 
+// AIGatewayMCPServerListenerAccess - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerListenerAccess struct {
 	AIGatewayMCPServerListenerConsumer *AIGatewayMCPServerListenerConsumer `queryParam:"inline" union:"member"`
 	AIGatewayMCPServerListenerOauth    *AIGatewayMCPServerListenerOauth    `queryParam:"inline" union:"member"`

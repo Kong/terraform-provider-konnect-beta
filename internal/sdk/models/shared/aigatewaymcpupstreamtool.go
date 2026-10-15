@@ -11,8 +11,13 @@ import (
 // ACLs for a tool advertised by the upstream MCP server; any field not overridden here
 // falls back to the remote tool's own definition.
 type AIGatewayMCPUpstreamTool struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Access-control rules for a tool.
-	Access      *AIGatewayMCPToolAccess      `json:"access,omitempty"`
+	Access *AIGatewayMCPToolAccess `json:"access,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
 	Annotations *AIGatewayMCPToolAnnotations `json:"annotations,omitempty"`
 	// A description of what the tool does.
 	Description *string `default:"null" json:"description"`

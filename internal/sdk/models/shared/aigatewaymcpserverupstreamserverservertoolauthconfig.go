@@ -16,7 +16,10 @@ const (
 	AIGatewayMCPServerUpstreamServerServerToolAuthConfigTypeCredentials AIGatewayMCPServerUpstreamServerServerToolAuthConfigType = "credentials"
 )
 
-// AIGatewayMCPServerUpstreamServerServerToolAuthConfig - Configuration for an Upstream Server's MCP Server Tools' Authentication.
+// AIGatewayMCPServerUpstreamServerServerToolAuthConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an Upstream Server's MCP Server Tools' Authentication.
 type AIGatewayMCPServerUpstreamServerServerToolAuthConfig struct {
 	AIGatewayMCPServerUpstreamServerToolOauth2ConfigJwt         *AIGatewayMCPServerUpstreamServerToolOauth2ConfigJwt         `queryParam:"inline" union:"member"`
 	AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials *AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials `queryParam:"inline" union:"member"`

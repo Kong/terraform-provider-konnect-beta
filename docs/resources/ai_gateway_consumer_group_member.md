@@ -33,7 +33,8 @@ resource "konnect_ai_gateway_consumer_group_member" "my_aigatewayconsumergroupme
 ### Read-Only
 
 - `consumer` (String) The unique ID of the consumer that was added to the consumer group.
-- `consumer_group` (Attributes) AI Gateway Consumer Group created successfully. (see [below for nested schema](#nestedatt--consumer_group))
+- `consumer_group` (Attributes) **Pre-release Feature**
+This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--consumer_group))
 
 <a id="nestedatt--consumer_group"></a>
 ### Nested Schema for `consumer_group`
@@ -51,6 +52,9 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.
 - `policies` (List of String) List of policy references.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

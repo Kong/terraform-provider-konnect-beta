@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// Logging - Configuration for AI Gateway logging.
+// Logging - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for AI Gateway logging.
 type Logging struct {
 	Payloads *bool `default:"false" json:"payloads"`
 	Audits   *bool `default:"false" json:"audits"`
@@ -37,13 +40,21 @@ func (l *Logging) GetAudits() *bool {
 	return l.Audits
 }
 
-// AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput - Routing, logging, and request body size limits for the MCP Server.
+// AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Routing, logging, and request body size limits for the MCP Server.
 type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	//
 	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for AI Gateway logging.
 	Logging *Logging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -52,29 +63,11 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
-	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-	// AI Gateway.
-	//
-	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-	// proxies requests to the upstream MCP server. The generated Service presents a single client
-	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-	// certificate may be configured.
-	//
-	// If unset, no client certificate is presented to the upstream.
-	//
-	Certificates []string `json:"certificates"`
-	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
-	//
-	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-	// generated for this MCP Server, which proxies requests to the upstream MCP server.
-	//
-	// If unset, the default trust store is used to verify the upstream's TLS certificate.
-	//
-	CaCertificates []string `json:"ca_certificates"`
 }
 
 func (a AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) MarshalJSON() ([]byte, error) {
@@ -123,27 +116,21 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetUps
 	return a.Upstream
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Certificates
-}
-
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetCaCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.CaCertificates
-}
-
-// AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig - Routing, logging, and request body size limits for the MCP Server.
+// AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Routing, logging, and request body size limits for the MCP Server.
 type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	//
 	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for AI Gateway logging.
 	Logging *Logging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -152,29 +139,11 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
-	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-	// AI Gateway.
-	//
-	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-	// proxies requests to the upstream MCP server. The generated Service presents a single client
-	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-	// certificate may be configured.
-	//
-	// If unset, no client certificate is presented to the upstream.
-	//
-	Certificates []string `json:"certificates"`
-	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
-	//
-	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-	// generated for this MCP Server, which proxies requests to the upstream MCP server.
-	//
-	// If unset, the default trust store is used to verify the upstream's TLS certificate.
-	//
-	CaCertificates []string `json:"ca_certificates"`
 }
 
 func (a AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) MarshalJSON() ([]byte, error) {
@@ -221,18 +190,4 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetUpstream(
 		return nil
 	}
 	return a.Upstream
-}
-
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Certificates
-}
-
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetCaCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.CaCertificates
 }

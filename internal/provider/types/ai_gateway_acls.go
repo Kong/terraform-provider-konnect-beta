@@ -7,8 +7,6 @@ import (
 )
 
 type AIGatewayACLS struct {
-	Allow     []types.String `tfsdk:"allow"`
-	AllowWhen []types.String `tfsdk:"allow_when"`
-	Deny      []types.String `tfsdk:"deny"`
-	DenyWhen  []types.String `tfsdk:"deny_when"`
+	Allow []types.String `tfsdk:"allow"`
+	Deny  []types.String `tfsdk:"deny"`
 }

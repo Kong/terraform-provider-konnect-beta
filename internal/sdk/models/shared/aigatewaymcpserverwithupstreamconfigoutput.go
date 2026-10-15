@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPServerWithUpstreamConfigLogging - Configuration for AI Gateway logging.
+// AIGatewayMCPServerWithUpstreamConfigLogging - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for AI Gateway logging.
 type AIGatewayMCPServerWithUpstreamConfigLogging struct {
 	Payloads *bool `default:"false" json:"payloads"`
 	Audits   *bool `default:"false" json:"audits"`
@@ -37,200 +40,39 @@ func (a *AIGatewayMCPServerWithUpstreamConfigLogging) GetAudits() *bool {
 	return a.Audits
 }
 
-// AIGatewayMCPServerWithUpstreamConfigClient - The configuration for client-side session storage.
-type AIGatewayMCPServerWithUpstreamConfigClient struct {
-	// The secrets that are used in session encryption. Required when the strategy is 'client'.
-	// The first secret is used for encryption, while all secrets are used for decryption to support key rotation.
-	//
-	Secrets []string `json:"secrets"`
-}
-
-func (a AIGatewayMCPServerWithUpstreamConfigClient) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigClient) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigClient) GetSecrets() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Secrets
-}
-
-// AIGatewayMCPServerWithUpstreamConfigStrategy - The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database.
-type AIGatewayMCPServerWithUpstreamConfigStrategy string
-
-const (
-	AIGatewayMCPServerWithUpstreamConfigStrategyClient AIGatewayMCPServerWithUpstreamConfigStrategy = "client"
-	AIGatewayMCPServerWithUpstreamConfigStrategyRedis  AIGatewayMCPServerWithUpstreamConfigStrategy = "redis"
-)
-
-func (e AIGatewayMCPServerWithUpstreamConfigStrategy) ToPointer() *AIGatewayMCPServerWithUpstreamConfigStrategy {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AIGatewayMCPServerWithUpstreamConfigStrategy) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "client", "redis":
-			return true
-		}
-	}
-	return false
-}
-
-// AIGatewayMCPServerWithUpstreamConfigSessionOutput - Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
-// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
-type AIGatewayMCPServerWithUpstreamConfigSessionOutput struct {
-	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerWithUpstreamConfigClient `json:"client"`
-	// If enabled, Kong will maintain managed sessions with the MCP server.
-	Managed *bool `default:"true" json:"managed"`
-	// Config for connecting to a Cloud Provider's Redis instance.
-	Redis *AIGatewayRedisCloudConfigurationOutput `json:"redis,omitempty"`
-	// The time-to-live (TTL) for each session in seconds.
-	SessionTTL *int64 `default:"86400" json:"session_ttl"`
-	// The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database.
-	Strategy *AIGatewayMCPServerWithUpstreamConfigStrategy `json:"strategy,omitempty"`
-}
-
-func (a AIGatewayMCPServerWithUpstreamConfigSessionOutput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSessionOutput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSessionOutput) GetClient() *AIGatewayMCPServerWithUpstreamConfigClient {
-	if a == nil {
-		return nil
-	}
-	return a.Client
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSessionOutput) GetManaged() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.Managed
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSessionOutput) GetRedis() *AIGatewayRedisCloudConfigurationOutput {
-	if a == nil {
-		return nil
-	}
-	return a.Redis
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSessionOutput) GetSessionTTL() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.SessionTTL
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSessionOutput) GetStrategy() *AIGatewayMCPServerWithUpstreamConfigStrategy {
-	if a == nil {
-		return nil
-	}
-	return a.Strategy
-}
-
-// AIGatewayMCPServerWithUpstreamConfigServer - Server-side configuration for the MCP Server.
-type AIGatewayMCPServerWithUpstreamConfigServer struct {
-	// Whether to forward the client request headers to the upstream server when calling the tools.
-	ForwardClientHeaders *bool `default:"true" json:"forward_client_headers"`
-	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
-	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
-	//
-	Session *AIGatewayMCPServerWithUpstreamConfigSessionOutput `json:"session"`
-	// The timeout for calling the tools in milliseconds.
-	Timeout *int64 `default:"10000" json:"timeout"`
-}
-
-func (a AIGatewayMCPServerWithUpstreamConfigServer) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigServer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigServer) GetForwardClientHeaders() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.ForwardClientHeaders
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigServer) GetSession() *AIGatewayMCPServerWithUpstreamConfigSessionOutput {
-	if a == nil {
-		return nil
-	}
-	return a.Session
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigServer) GetTimeout() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.Timeout
-}
-
-// AIGatewayMCPServerWithUpstreamConfigOutput - Routing, logging, and server configuration for the MCP Server.
+// AIGatewayMCPServerWithUpstreamConfigOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Routing, logging, and server configuration for the MCP Server.
 type AIGatewayMCPServerWithUpstreamConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	//
 	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerWithUpstreamConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Server-side configuration for the MCP Server.
-	Server *AIGatewayMCPServerWithUpstreamConfigServer `json:"server"`
+	Server *AIGatewayMCPServerServerConfigBaseOutput `json:"server,omitempty"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
-	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-	// AI Gateway.
-	//
-	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-	// proxies requests to the upstream MCP server. The generated Service presents a single client
-	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-	// certificate may be configured.
-	//
-	// If unset, no client certificate is presented to the upstream.
-	//
-	Certificates []string `json:"certificates"`
-	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
-	//
-	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-	// generated for this MCP Server, which proxies requests to the upstream MCP server.
-	//
-	// If unset, the default trust store is used to verify the upstream's TLS certificate.
-	//
-	CaCertificates []string `json:"ca_certificates"`
 	// HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
 	Proxy *AIGatewayProxyConfigOutput `json:"proxy,omitempty"`
 }
@@ -267,7 +109,7 @@ func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetMaxRequestBodySize() *in
 	return a.MaxRequestBodySize
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetServer() *AIGatewayMCPServerWithUpstreamConfigServer {
+func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetServer() *AIGatewayMCPServerServerConfigBaseOutput {
 	if a == nil {
 		return nil
 	}
@@ -288,20 +130,6 @@ func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetUpstream() *AIGatewayUps
 	return a.Upstream
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Certificates
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetCaCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.CaCertificates
-}
-
 func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetProxy() *AIGatewayProxyConfigOutput {
 	if a == nil {
 		return nil
@@ -309,151 +137,39 @@ func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetProxy() *AIGatewayProxyC
 	return a.Proxy
 }
 
-// AIGatewayMCPServerWithUpstreamConfigSession - Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
-// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
-type AIGatewayMCPServerWithUpstreamConfigSession struct {
-	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerWithUpstreamConfigClient `json:"client"`
-	// If enabled, Kong will maintain managed sessions with the MCP server.
-	Managed *bool `default:"true" json:"managed"`
-	// Config for connecting to a Cloud Provider's Redis instance.
-	Redis *AIGatewayRedisCloudConfiguration `json:"redis,omitempty"`
-	// The time-to-live (TTL) for each session in seconds.
-	SessionTTL *int64 `default:"86400" json:"session_ttl"`
-	// The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database.
-	Strategy *AIGatewayMCPServerWithUpstreamConfigStrategy `json:"strategy,omitempty"`
-}
-
-func (a AIGatewayMCPServerWithUpstreamConfigSession) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSession) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSession) GetClient() *AIGatewayMCPServerWithUpstreamConfigClient {
-	if a == nil {
-		return nil
-	}
-	return a.Client
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSession) GetManaged() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.Managed
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSession) GetRedis() *AIGatewayRedisCloudConfiguration {
-	if a == nil {
-		return nil
-	}
-	return a.Redis
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSession) GetSessionTTL() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.SessionTTL
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfigSession) GetStrategy() *AIGatewayMCPServerWithUpstreamConfigStrategy {
-	if a == nil {
-		return nil
-	}
-	return a.Strategy
-}
-
-// Server - Server-side configuration for the MCP Server.
-type Server struct {
-	// Whether to forward the client request headers to the upstream server when calling the tools.
-	ForwardClientHeaders *bool `default:"true" json:"forward_client_headers"`
-	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
-	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
-	//
-	Session *AIGatewayMCPServerWithUpstreamConfigSession `json:"session"`
-	// The timeout for calling the tools in milliseconds.
-	Timeout *int64 `default:"10000" json:"timeout"`
-}
-
-func (s Server) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *Server) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (s *Server) GetForwardClientHeaders() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.ForwardClientHeaders
-}
-
-func (s *Server) GetSession() *AIGatewayMCPServerWithUpstreamConfigSession {
-	if s == nil {
-		return nil
-	}
-	return s.Session
-}
-
-func (s *Server) GetTimeout() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.Timeout
-}
-
-// AIGatewayMCPServerWithUpstreamConfig - Routing, logging, and server configuration for the MCP Server.
+// AIGatewayMCPServerWithUpstreamConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Routing, logging, and server configuration for the MCP Server.
 type AIGatewayMCPServerWithUpstreamConfig struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	//
 	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerWithUpstreamConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Server-side configuration for the MCP Server.
-	Server *Server `json:"server"`
+	Server *AIGatewayMCPServerServerConfigBase `json:"server,omitempty"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
-	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-	// AI Gateway.
-	//
-	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-	// proxies requests to the upstream MCP server. The generated Service presents a single client
-	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-	// certificate may be configured.
-	//
-	// If unset, no client certificate is presented to the upstream.
-	//
-	Certificates []string `json:"certificates"`
-	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
-	//
-	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-	// generated for this MCP Server, which proxies requests to the upstream MCP server.
-	//
-	// If unset, the default trust store is used to verify the upstream's TLS certificate.
-	//
-	CaCertificates []string `json:"ca_certificates"`
 	// HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
 	Proxy *AIGatewayProxyConfig `json:"proxy,omitempty"`
 }
@@ -490,7 +206,7 @@ func (a *AIGatewayMCPServerWithUpstreamConfig) GetMaxRequestBodySize() *int64 {
 	return a.MaxRequestBodySize
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfig) GetServer() *Server {
+func (a *AIGatewayMCPServerWithUpstreamConfig) GetServer() *AIGatewayMCPServerServerConfigBase {
 	if a == nil {
 		return nil
 	}
@@ -509,20 +225,6 @@ func (a *AIGatewayMCPServerWithUpstreamConfig) GetUpstream() *AIGatewayUpstreamC
 		return nil
 	}
 	return a.Upstream
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfig) GetCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Certificates
-}
-
-func (a *AIGatewayMCPServerWithUpstreamConfig) GetCaCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.CaCertificates
 }
 
 func (a *AIGatewayMCPServerWithUpstreamConfig) GetProxy() *AIGatewayProxyConfig {

@@ -32,6 +32,9 @@ func newAIGatewayConsumerGroups(rootSDK *KonnectBeta, sdkConfig config.SDKConfig
 }
 
 // CreateAiGatewayConsumerGroup - Create an AI Gateway Consumer Group
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Creates a new Consumer Group for the AI Gateway.
 func (s *AIGatewayConsumerGroups) CreateAiGatewayConsumerGroup(ctx context.Context, request operations.CreateAiGatewayConsumerGroupRequest, opts ...operations.Option) (*operations.CreateAiGatewayConsumerGroupResponse, error) {
 	o := operations.Options{}
@@ -349,6 +352,9 @@ func (s *AIGatewayConsumerGroups) CreateAiGatewayConsumerGroup(ctx context.Conte
 }
 
 // GetAiGatewayConsumerGroup - Get an AI Gateway Consumer Group
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific AI Gateway Consumer Group.
 func (s *AIGatewayConsumerGroups) GetAiGatewayConsumerGroup(ctx context.Context, request operations.GetAiGatewayConsumerGroupRequest, opts ...operations.Option) (*operations.GetAiGatewayConsumerGroupResponse, error) {
 	o := operations.Options{}
@@ -638,6 +644,9 @@ func (s *AIGatewayConsumerGroups) GetAiGatewayConsumerGroup(ctx context.Context,
 }
 
 // UpdateAiGatewayConsumerGroup - Update an AI Gateway Consumer Group
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of an existing AI Gateway Consumer Group.
 func (s *AIGatewayConsumerGroups) UpdateAiGatewayConsumerGroup(ctx context.Context, request operations.UpdateAiGatewayConsumerGroupRequest, opts ...operations.Option) (*operations.UpdateAiGatewayConsumerGroupResponse, error) {
 	o := operations.Options{}
@@ -955,6 +964,9 @@ func (s *AIGatewayConsumerGroups) UpdateAiGatewayConsumerGroup(ctx context.Conte
 }
 
 // DeleteAiGatewayConsumerGroup - Delete an AI Gateway Consumer Group
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a specific AI Gateway Consumer Group.
 func (s *AIGatewayConsumerGroups) DeleteAiGatewayConsumerGroup(ctx context.Context, request operations.DeleteAiGatewayConsumerGroupRequest, opts ...operations.Option) (*operations.DeleteAiGatewayConsumerGroupResponse, error) {
 	o := operations.Options{}
@@ -1219,6 +1231,9 @@ func (s *AIGatewayConsumerGroups) DeleteAiGatewayConsumerGroup(ctx context.Conte
 }
 
 // AddAiGatewayConsumerToConsumerGroup - Add a Consumer to a Consumer Group
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Add a consumer to an AI Gateway Consumer Group.
 func (s *AIGatewayConsumerGroups) AddAiGatewayConsumerToConsumerGroup(ctx context.Context, request operations.AddAiGatewayConsumerToConsumerGroupRequest, opts ...operations.Option) (*operations.AddAiGatewayConsumerToConsumerGroupResponse, error) {
 	o := operations.Options{}
@@ -1536,6 +1551,9 @@ func (s *AIGatewayConsumerGroups) AddAiGatewayConsumerToConsumerGroup(ctx contex
 }
 
 // RemoveAiGatewayConsumerFromConsumerGroup - Remove a Consumer from a Consumer Group
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Remove a consumer from an AI Gateway Consumer Group.
 func (s *AIGatewayConsumerGroups) RemoveAiGatewayConsumerFromConsumerGroup(ctx context.Context, request operations.RemoveAiGatewayConsumerFromConsumerGroupRequest, opts ...operations.Option) (*operations.RemoveAiGatewayConsumerFromConsumerGroupResponse, error) {
 	o := operations.Options{}

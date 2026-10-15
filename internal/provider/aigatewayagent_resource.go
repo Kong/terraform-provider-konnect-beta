@@ -84,24 +84,17 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								ElementType: types.StringType,
 								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 							},
-							"allow_when": schema.ListAttribute{
-								Optional:    true,
-								ElementType: types.StringType,
-								Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
-							},
 							"deny": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 							},
-							"deny_when": schema.ListAttribute{
-								Optional:    true,
-								ElementType: types.StringType,
-								Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
-							},
 						},
-						Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 					},
 					"auth_strategies": schema.ListAttribute{
 						Computed:    true,
@@ -127,40 +120,14 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 						},
 					},
 				},
-				Description: `Access control configuration for an agent.`,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Access control configuration for an agent.`,
 			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"ca_certificates": schema.ListAttribute{
-						Optional:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `CA certificates used to verify the TLS certificate of the upstream agent endpoint,` + "\n" +
-							`referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI CA Certificate on the` + "\n" +
-							`same AI Gateway.` + "\n" +
-							`` + "\n" +
-							`The CA certificates build the trust store (` + "`" + `ca_certificates` + "`" + `) of the Kong Gateway Service` + "\n" +
-							`generated for this Agent, which proxies requests to ` + "`" + `config.url` + "`" + `.` + "\n" +
-							`` + "\n" +
-							`If unset, the default trust store is used to verify the upstream's TLS certificate.`,
-					},
-					"certificates": schema.ListAttribute{
-						Optional:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Client certificates used for mutual TLS (mTLS) authentication with the upstream agent` + "\n" +
-							`endpoint, referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI Certificate` + "\n" +
-							`on the same AI Gateway.` + "\n" +
-							`` + "\n" +
-							`The certificates are applied to the Kong Gateway Service generated for this Agent, which` + "\n" +
-							`proxies requests to ` + "`" + `config.url` + "`" + `. The generated Service presents a single client` + "\n" +
-							`certificate (` + "`" + `client_certificate` + "`" + `) during the TLS handshake with the upstream, so at most` + "\n" +
-							`one certificate may be configured.` + "\n" +
-							`` + "\n" +
-							`If unset, no client certificate is presented to the upstream.`,
-						Validators: []validator.List{
-							listvalidator.SizeAtMost(1),
-						},
-					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -181,7 +148,10 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Default: false`,
 							},
 						},
-						Description: `Configuration for AI Gateway logging.`,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`Configuration for AI Gateway logging.`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
@@ -275,7 +245,6 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"hosts": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -351,7 +320,10 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Description: `An optional set of strings associated with the route for grouping and filtering.`,
 							},
 						},
-						Description: `Configuration for an AI Gateway route.`,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`Configuration for an AI Gateway route.`,
 					},
 					"upstream": schema.SingleNestedAttribute{
 						Computed: true,
@@ -399,13 +371,22 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 													`If not specified, the default AWS STS endpoint will be used.`,
 											},
 										},
-										Description: `AWS IAM (SigV4) authentication for the upstream service.`,
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`AWS IAM (SigV4) authentication for the upstream service.`,
 									},
 								},
-								Description: `Authentication to use when proxying to the upstream service.`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Authentication to use when proxying to the upstream service.`,
 							},
 						},
-						Description: `Configuration applied when proxying to the upstream service, including authentication.`,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`Configuration applied when proxying to the upstream service, including authentication.`,
 					},
 					"url": schema.StringAttribute{
 						Required: true,
@@ -465,11 +446,14 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
-				Description: `A user-defined unique identifier for this agent, used as a stable human-readable reference. This value is immutable after creation.`,
+				Required: true,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`A user-defined unique identifier for this agent, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 				},
 			},
 			"policies": schema.ListAttribute{

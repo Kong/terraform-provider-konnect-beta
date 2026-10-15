@@ -7,8 +7,14 @@ import (
 	"time"
 )
 
-// AIGatewayCertificate - A certificate holds a PEM-encoded certificate and its matching private key, used to terminate or originate TLS connections.
+// AIGatewayCertificate - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// A certificate holds a PEM-encoded certificate and its matching private key, used to terminate or originate TLS connections.
 type AIGatewayCertificate struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// PEM-encoded public certificate chain.
@@ -33,8 +39,6 @@ type AIGatewayCertificate struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// An immutable read-only flag to identify resource managed by Konnect services.
-	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (a AIGatewayCertificate) MarshalJSON() ([]byte, error) {
@@ -102,11 +106,4 @@ func (a *AIGatewayCertificate) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
-}
-
-func (a *AIGatewayCertificate) GetKonnectManaged() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.KonnectManaged
 }

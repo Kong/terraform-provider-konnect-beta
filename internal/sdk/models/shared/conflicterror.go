@@ -2,93 +2,46 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// ConflictErrorStatus - The HTTP status code of the error. Useful when passing the response
-// body to child properties in a frontend UI. Must be returned as an integer.
-type ConflictErrorStatus int64
-
-const (
-	ConflictErrorStatusFourHundredAndNine ConflictErrorStatus = 409
-)
-
-func (e ConflictErrorStatus) ToPointer() *ConflictErrorStatus {
-	return &e
-}
-func (e *ConflictErrorStatus) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 409:
-		*e = ConflictErrorStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConflictErrorStatus: %v", v)
-	}
-}
-
 // ConflictError - standard error
 type ConflictError struct {
-	// The HTTP status code of the error. Useful when passing the response
-	// body to child properties in a frontend UI. Must be returned as an integer.
-	//
-	Status ConflictErrorStatus `json:"status"`
-	// A short, human-readable summary of the problem. It should not
-	// change between occurences of a problem, except for localization.
-	// Should be provided as "Sentence case" for direct use in the UI.
-	//
-	Title string `json:"title"`
-	// The error type.
-	Type *string `json:"type,omitempty"`
-	// Used to return the correlation ID back to the user, in the format
-	// kong:trace:<correlation_id>. This helps us find the relevant logs
-	// when a customer reports an issue.
-	//
-	Instance string `json:"instance"`
-	// A human readable explanation specific to this occurence of the problem.
-	// This field may contain request/entity data to help the user understand
-	// what went wrong. Enclose variable values in square brackets. Should be
-	// provided as "Sentence case" for direct use in the UI.
-	//
-	Detail string `json:"detail"`
+	Status   any `json:"status"`
+	Title    any `json:"title"`
+	Type     any `json:"type,omitempty"`
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
-func (c *ConflictError) GetStatus() ConflictErrorStatus {
+func (c *ConflictError) GetStatus() any {
 	if c == nil {
-		return ConflictErrorStatus(0)
+		return nil
 	}
 	return c.Status
 }
 
-func (c *ConflictError) GetTitle() string {
+func (c *ConflictError) GetTitle() any {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Title
 }
 
-func (c *ConflictError) GetType() *string {
+func (c *ConflictError) GetType() any {
 	if c == nil {
 		return nil
 	}
 	return c.Type
 }
 
-func (c *ConflictError) GetInstance() string {
+func (c *ConflictError) GetInstance() any {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Instance
 }
 
-func (c *ConflictError) GetDetail() string {
+func (c *ConflictError) GetDetail() any {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Detail
 }

@@ -7,8 +7,6 @@ import (
 )
 
 type CreateAIGatewayAgentRequestConfig struct {
-	CaCertificates     []types.String                      `tfsdk:"ca_certificates"`
-	Certificates       []types.String                      `tfsdk:"certificates"`
 	Logging            *CreateAIGatewayAgentRequestLogging `tfsdk:"logging"`
 	MaxRequestBodySize types.Int64                         `tfsdk:"max_request_body_size"`
 	Proxy              *AIGatewayProxyConfig               `tfsdk:"proxy"`

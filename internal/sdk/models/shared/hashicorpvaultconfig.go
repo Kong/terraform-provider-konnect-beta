@@ -24,7 +24,10 @@ const (
 	HashiCorpVaultConfigTypeAzure      HashiCorpVaultConfigType = "azure"
 )
 
-// HashiCorpVaultConfig - Configuration for an AI Gateway Vault.
+// HashiCorpVaultConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an AI Gateway Vault.
 type HashiCorpVaultConfig struct {
 	HashiCorpVaultTokenConfig      *HashiCorpVaultTokenConfig      `queryParam:"inline" union:"member"`
 	HashiCorpVaultCertConfig       *HashiCorpVaultCertConfig       `queryParam:"inline" union:"member"`

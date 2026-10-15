@@ -49,7 +49,7 @@ type PostWorkloadResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostWorkloadResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostWorkloadResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostWorkloadResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostWorkloadResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

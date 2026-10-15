@@ -91,6 +91,8 @@ func (u AIGatewayModelProviderSagemakerAuth) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type AIGatewayModelProviderSagemakerAuth: all fields are null")
 }
 
+// AIGatewayModelProviderSagemakerConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayModelProviderSagemakerConfig struct {
 	Auth AIGatewayModelProviderSagemakerAuth `json:"auth"`
 }
@@ -121,12 +123,18 @@ func (a *AIGatewayModelProviderSagemakerConfig) GetAuthSagemaker() *AIGatewayMod
 	return a.GetAuth().AIGatewayModelProviderConfigAuthSagemaker
 }
 
-// AIGatewayModelProviderSagemaker - Config for Sagemaker model provider.
+// AIGatewayModelProviderSagemaker - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for Sagemaker model provider.
 type AIGatewayModelProviderSagemaker struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"sagemaker" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -140,8 +148,10 @@ type AIGatewayModelProviderSagemaker struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy map[string]string                     `json:"managed_by,omitempty"`
-	Config    AIGatewayModelProviderSagemakerConfig `json:"config"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	Config AIGatewayModelProviderSagemakerConfig `json:"config"`
 }
 
 func (a AIGatewayModelProviderSagemaker) MarshalJSON() ([]byte, error) {

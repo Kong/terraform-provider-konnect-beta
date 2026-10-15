@@ -32,6 +32,9 @@ func newAIGatewayAuthStrategies(rootSDK *KonnectBeta, sdkConfig config.SDKConfig
 }
 
 // CreateAiGatewayAuthStrategy - Create an AI Gateway Auth Strategy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Registers a new auth strategy for the AI Gateway.
 func (s *AIGatewayAuthStrategies) CreateAiGatewayAuthStrategy(ctx context.Context, request operations.CreateAiGatewayAuthStrategyRequest, opts ...operations.Option) (*operations.CreateAiGatewayAuthStrategyResponse, error) {
 	o := operations.Options{}
@@ -349,6 +352,9 @@ func (s *AIGatewayAuthStrategies) CreateAiGatewayAuthStrategy(ctx context.Contex
 }
 
 // GetAiGatewayAuthStrategy - Get an AI Gateway Auth Strategy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific AI Gateway auth strategy.
 func (s *AIGatewayAuthStrategies) GetAiGatewayAuthStrategy(ctx context.Context, request operations.GetAiGatewayAuthStrategyRequest, opts ...operations.Option) (*operations.GetAiGatewayAuthStrategyResponse, error) {
 	o := operations.Options{}
@@ -638,6 +644,9 @@ func (s *AIGatewayAuthStrategies) GetAiGatewayAuthStrategy(ctx context.Context, 
 }
 
 // UpdateAiGatewayAuthStrategy - Update an AI Gateway Auth Strategy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of an existing AI Gateway auth strategy.
 func (s *AIGatewayAuthStrategies) UpdateAiGatewayAuthStrategy(ctx context.Context, request operations.UpdateAiGatewayAuthStrategyRequest, opts ...operations.Option) (*operations.UpdateAiGatewayAuthStrategyResponse, error) {
 	o := operations.Options{}
@@ -955,6 +964,9 @@ func (s *AIGatewayAuthStrategies) UpdateAiGatewayAuthStrategy(ctx context.Contex
 }
 
 // DeleteAiGatewayAuthStrategy - Delete an AI Gateway Auth Strategy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a specific AI Gateway auth strategy.
 func (s *AIGatewayAuthStrategies) DeleteAiGatewayAuthStrategy(ctx context.Context, request operations.DeleteAiGatewayAuthStrategyRequest, opts ...operations.Option) (*operations.DeleteAiGatewayAuthStrategyResponse, error) {
 	o := operations.Options{}

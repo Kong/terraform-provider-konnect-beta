@@ -32,6 +32,9 @@ func newAIGatewayPolicies(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguratio
 }
 
 // CreateAiGatewayPolicy - Create an AI Gateway Policy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Registers a new policy for the AI Gateway.
 func (s *AIGatewayPolicies) CreateAiGatewayPolicy(ctx context.Context, request operations.CreateAiGatewayPolicyRequest, opts ...operations.Option) (*operations.CreateAiGatewayPolicyResponse, error) {
 	o := operations.Options{}
@@ -370,6 +373,9 @@ func (s *AIGatewayPolicies) CreateAiGatewayPolicy(ctx context.Context, request o
 }
 
 // GetAiGatewayPolicy - Get an AI Gateway Policy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific AI Gateway policy.
 func (s *AIGatewayPolicies) GetAiGatewayPolicy(ctx context.Context, request operations.GetAiGatewayPolicyRequest, opts ...operations.Option) (*operations.GetAiGatewayPolicyResponse, error) {
 	o := operations.Options{}
@@ -659,6 +665,9 @@ func (s *AIGatewayPolicies) GetAiGatewayPolicy(ctx context.Context, request oper
 }
 
 // UpdateAiGatewayPolicy - Update an AI Gateway Policy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of an existing AI Gateway policy.
 func (s *AIGatewayPolicies) UpdateAiGatewayPolicy(ctx context.Context, request operations.UpdateAiGatewayPolicyRequest, opts ...operations.Option) (*operations.UpdateAiGatewayPolicyResponse, error) {
 	o := operations.Options{}
@@ -976,6 +985,9 @@ func (s *AIGatewayPolicies) UpdateAiGatewayPolicy(ctx context.Context, request o
 }
 
 // DeleteAiGatewayPolicy - Delete an AI Gateway Policy
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a specific AI Gateway policy.
 func (s *AIGatewayPolicies) DeleteAiGatewayPolicy(ctx context.Context, request operations.DeleteAiGatewayPolicyRequest, opts ...operations.Option) (*operations.DeleteAiGatewayPolicyResponse, error) {
 	o := operations.Options{}

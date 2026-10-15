@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPServerUpstreamServerConfigLogging - Configuration for AI Gateway logging.
+// AIGatewayMCPServerUpstreamServerConfigLogging - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for AI Gateway logging.
 type AIGatewayMCPServerUpstreamServerConfigLogging struct {
 	Payloads *bool `default:"false" json:"payloads"`
 	Audits   *bool `default:"false" json:"audits"`
@@ -37,13 +40,21 @@ func (a *AIGatewayMCPServerUpstreamServerConfigLogging) GetAudits() *bool {
 	return a.Audits
 }
 
-// AIGatewayMCPServerUpstreamServerConfigOutput - Routing, logging, and server configuration for the MCP Server.
+// AIGatewayMCPServerUpstreamServerConfigOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Routing, logging, and server configuration for the MCP Server.
 type AIGatewayMCPServerUpstreamServerConfigOutput struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	//
 	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerUpstreamServerConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -54,29 +65,11 @@ type AIGatewayMCPServerUpstreamServerConfigOutput struct {
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
-	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-	// AI Gateway.
-	//
-	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-	// proxies requests to the upstream MCP server. The generated Service presents a single client
-	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-	// certificate may be configured.
-	//
-	// If unset, no client certificate is presented to the upstream.
-	//
-	Certificates []string `json:"certificates"`
-	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
-	//
-	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-	// generated for this MCP Server, which proxies requests to the upstream MCP server.
-	//
-	// If unset, the default trust store is used to verify the upstream's TLS certificate.
-	//
-	CaCertificates []string `json:"ca_certificates"`
 	// The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 	// every client call.
 	//
@@ -136,20 +129,6 @@ func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetUpstream() *AIGatewayU
 	return a.Upstream
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Certificates
-}
-
-func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetCaCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.CaCertificates
-}
-
 func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetToolsCacheTTLSeconds() int64 {
 	if a == nil {
 		return 0
@@ -157,13 +136,21 @@ func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetToolsCacheTTLSeconds()
 	return a.ToolsCacheTTLSeconds
 }
 
-// AIGatewayMCPServerUpstreamServerConfig - Routing, logging, and server configuration for the MCP Server.
+// AIGatewayMCPServerUpstreamServerConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Routing, logging, and server configuration for the MCP Server.
 type AIGatewayMCPServerUpstreamServerConfig struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	//
 	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerUpstreamServerConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -174,29 +161,11 @@ type AIGatewayMCPServerUpstreamServerConfig struct {
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL string `json:"url"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
-	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
-	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
-	// AI Gateway.
-	//
-	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
-	// proxies requests to the upstream MCP server. The generated Service presents a single client
-	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
-	// certificate may be configured.
-	//
-	// If unset, no client certificate is presented to the upstream.
-	//
-	Certificates []string `json:"certificates"`
-	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
-	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
-	//
-	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
-	// generated for this MCP Server, which proxies requests to the upstream MCP server.
-	//
-	// If unset, the default trust store is used to verify the upstream's TLS certificate.
-	//
-	CaCertificates []string `json:"ca_certificates"`
 	// The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 	// every client call.
 	//
@@ -254,20 +223,6 @@ func (a *AIGatewayMCPServerUpstreamServerConfig) GetUpstream() *AIGatewayUpstrea
 		return nil
 	}
 	return a.Upstream
-}
-
-func (a *AIGatewayMCPServerUpstreamServerConfig) GetCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Certificates
-}
-
-func (a *AIGatewayMCPServerUpstreamServerConfig) GetCaCertificates() []string {
-	if a == nil {
-		return nil
-	}
-	return a.CaCertificates
 }
 
 func (a *AIGatewayMCPServerUpstreamServerConfig) GetToolsCacheTTLSeconds() int64 {

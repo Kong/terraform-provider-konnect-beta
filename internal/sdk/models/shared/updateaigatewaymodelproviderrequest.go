@@ -14,7 +14,6 @@ type UpdateAIGatewayModelProviderRequestType string
 const (
 	UpdateAIGatewayModelProviderRequestTypeAnthropic   UpdateAIGatewayModelProviderRequestType = "anthropic"
 	UpdateAIGatewayModelProviderRequestTypeAzure       UpdateAIGatewayModelProviderRequestType = "azure"
-	UpdateAIGatewayModelProviderRequestTypeBaseten     UpdateAIGatewayModelProviderRequestType = "baseten"
 	UpdateAIGatewayModelProviderRequestTypeBedrock     UpdateAIGatewayModelProviderRequestType = "bedrock"
 	UpdateAIGatewayModelProviderRequestTypeCerebras    UpdateAIGatewayModelProviderRequestType = "cerebras"
 	UpdateAIGatewayModelProviderRequestTypeCohere      UpdateAIGatewayModelProviderRequestType = "cohere"
@@ -32,13 +31,13 @@ const (
 	UpdateAIGatewayModelProviderRequestTypeVllm        UpdateAIGatewayModelProviderRequestType = "vllm"
 	UpdateAIGatewayModelProviderRequestTypeXai         UpdateAIGatewayModelProviderRequestType = "xai"
 	UpdateAIGatewayModelProviderRequestTypeSagemaker   UpdateAIGatewayModelProviderRequestType = "sagemaker"
-	UpdateAIGatewayModelProviderRequestTypeTypesafe    UpdateAIGatewayModelProviderRequestType = "typesafe"
 )
 
+// UpdateAIGatewayModelProviderRequest - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type UpdateAIGatewayModelProviderRequest struct {
 	AIGatewayModelProviderAnthropic   *AIGatewayModelProviderAnthropic   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAzure       *AIGatewayModelProviderAzure       `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderBaseten     *AIGatewayModelProviderBaseten     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderBedrock     *AIGatewayModelProviderBedrock     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderCerebras    *AIGatewayModelProviderCerebras    `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderCohere      *AIGatewayModelProviderCohere      `queryParam:"inline" union:"member"`
@@ -56,7 +55,6 @@ type UpdateAIGatewayModelProviderRequest struct {
 	AIGatewayModelProviderVllm        *AIGatewayModelProviderVllm        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderXai         *AIGatewayModelProviderXai         `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderSagemaker   *AIGatewayModelProviderSagemaker   `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderTypesafe    *AIGatewayModelProviderTypesafe    `queryParam:"inline" union:"member"`
 
 	Type UpdateAIGatewayModelProviderRequestType
 }
@@ -76,15 +74,6 @@ func CreateUpdateAIGatewayModelProviderRequestAzure(azure AIGatewayModelProvider
 	return UpdateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderAzure: &azure,
 		Type:                        typ,
-	}
-}
-
-func CreateUpdateAIGatewayModelProviderRequestBaseten(baseten AIGatewayModelProviderBaseten) UpdateAIGatewayModelProviderRequest {
-	typ := UpdateAIGatewayModelProviderRequestTypeBaseten
-
-	return UpdateAIGatewayModelProviderRequest{
-		AIGatewayModelProviderBaseten: &baseten,
-		Type:                          typ,
 	}
 }
 
@@ -241,15 +230,6 @@ func CreateUpdateAIGatewayModelProviderRequestSagemaker(sagemaker AIGatewayModel
 	}
 }
 
-func CreateUpdateAIGatewayModelProviderRequestTypesafe(typesafe AIGatewayModelProviderTypesafe) UpdateAIGatewayModelProviderRequest {
-	typ := UpdateAIGatewayModelProviderRequestTypeTypesafe
-
-	return UpdateAIGatewayModelProviderRequest{
-		AIGatewayModelProviderTypesafe: &typesafe,
-		Type:                           typ,
-	}
-}
-
 func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 
 	type discriminator struct {
@@ -279,15 +259,6 @@ func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 
 		u.AIGatewayModelProviderAzure = aiGatewayModelProviderAzure
 		u.Type = UpdateAIGatewayModelProviderRequestTypeAzure
-		return nil
-	case "baseten":
-		aiGatewayModelProviderBaseten := new(AIGatewayModelProviderBaseten)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderBaseten, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == baseten) type AIGatewayModelProviderBaseten within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
-		}
-
-		u.AIGatewayModelProviderBaseten = aiGatewayModelProviderBaseten
-		u.Type = UpdateAIGatewayModelProviderRequestTypeBaseten
 		return nil
 	case "bedrock":
 		aiGatewayModelProviderBedrock := new(AIGatewayModelProviderBedrock)
@@ -442,15 +413,6 @@ func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 		u.AIGatewayModelProviderSagemaker = aiGatewayModelProviderSagemaker
 		u.Type = UpdateAIGatewayModelProviderRequestTypeSagemaker
 		return nil
-	case "typesafe":
-		aiGatewayModelProviderTypesafe := new(AIGatewayModelProviderTypesafe)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderTypesafe, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == typesafe) type AIGatewayModelProviderTypesafe within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
-		}
-
-		u.AIGatewayModelProviderTypesafe = aiGatewayModelProviderTypesafe
-		u.Type = UpdateAIGatewayModelProviderRequestTypeTypesafe
-		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for UpdateAIGatewayModelProviderRequest", string(data))
@@ -463,10 +425,6 @@ func (u UpdateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAzure != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAzure, "", true)
-	}
-
-	if u.AIGatewayModelProviderBaseten != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderBaseten, "", true)
 	}
 
 	if u.AIGatewayModelProviderBedrock != nil {
@@ -535,10 +493,6 @@ func (u UpdateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderSagemaker != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderSagemaker, "", true)
-	}
-
-	if u.AIGatewayModelProviderTypesafe != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderTypesafe, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type UpdateAIGatewayModelProviderRequest: all fields are null")

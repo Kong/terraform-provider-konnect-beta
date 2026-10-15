@@ -33,6 +33,9 @@ func newAIGateways(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hook
 }
 
 // CreateAiGateway - Create an AI Gateway
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Creates a new AI Gateway in the organization.
 func (s *AIGateways) CreateAiGateway(ctx context.Context, request shared.CreateAIGatewayRequest, opts ...operations.Option) (*operations.CreateAiGatewayResponse, error) {
 	o := operations.Options{}
@@ -350,6 +353,9 @@ func (s *AIGateways) CreateAiGateway(ctx context.Context, request shared.CreateA
 }
 
 // GetAiGateway - Get an AI Gateway
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific AI Gateway.
 func (s *AIGateways) GetAiGateway(ctx context.Context, request operations.GetAiGatewayRequest, opts ...operations.Option) (*operations.GetAiGatewayResponse, error) {
 	o := operations.Options{}
@@ -639,6 +645,9 @@ func (s *AIGateways) GetAiGateway(ctx context.Context, request operations.GetAiG
 }
 
 // UpdateAiGateway - Update an AI Gateway
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of an existing AI Gateway.
 func (s *AIGateways) UpdateAiGateway(ctx context.Context, request operations.UpdateAiGatewayRequest, opts ...operations.Option) (*operations.UpdateAiGatewayResponse, error) {
 	o := operations.Options{}
@@ -956,6 +965,9 @@ func (s *AIGateways) UpdateAiGateway(ctx context.Context, request operations.Upd
 }
 
 // DeleteAiGateway - Delete an AI Gateway
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Deletes an existing AI Gateway.
 func (s *AIGateways) DeleteAiGateway(ctx context.Context, request operations.DeleteAiGatewayRequest, opts ...operations.Option) (*operations.DeleteAiGatewayResponse, error) {
 	o := operations.Options{}

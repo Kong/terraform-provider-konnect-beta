@@ -331,7 +331,10 @@ func (a *AIGatewayRedisCloudConfigurationSentinel) GetUsername() *string {
 	return a.Username
 }
 
-// AIGatewayRedisCloudConfigurationOutput - Config for connecting to a Cloud Provider's Redis instance.
+// AIGatewayRedisCloudConfigurationOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for connecting to a Cloud Provider's Redis instance.
 type AIGatewayRedisCloudConfigurationOutput struct {
 	// Auth related config for connecting to a Cloud Provider's Redis instance.
 	CloudAuthentication *AIGatewayRedisCloudConfigurationCloudAuthenticationOutput `json:"cloud_authentication,omitempty"`
@@ -638,7 +641,10 @@ func (u AIGatewayRedisCloudConfigurationCloudAuthentication) MarshalJSON() ([]by
 	return nil, errors.New("could not marshal union type AIGatewayRedisCloudConfigurationCloudAuthentication: all fields are null")
 }
 
-// AIGatewayRedisCloudConfiguration - Config for connecting to a Cloud Provider's Redis instance.
+// AIGatewayRedisCloudConfiguration - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for connecting to a Cloud Provider's Redis instance.
 type AIGatewayRedisCloudConfiguration struct {
 	// Auth related config for connecting to a Cloud Provider's Redis instance.
 	CloudAuthentication *AIGatewayRedisCloudConfigurationCloudAuthentication `json:"cloud_authentication,omitempty"`

@@ -17,10 +17,22 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 	if resp != nil {
 		if resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic != nil {
+			anthropicPriorData := r.Anthropic
 			r.Anthropic = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if anthropicPriorData != nil {
+				configPriorData = anthropicPriorData.Config
+			}
 			r.Anthropic.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData != nil {
+				authPriorData = configPriorData.Auth
+			}
 			r.Anthropic.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice := r.Anthropic.Config.Auth.Headers
+			var headersPriorSlice []tfTypes.Headers
+			if authPriorData != nil {
+				headersPriorSlice = authPriorData.Headers
+			}
 			r.Anthropic.Config.Auth.Headers = []tfTypes.Headers{}
 
 			for headersIdx, headersItem := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Config.Auth.Headers {
@@ -38,7 +50,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 				r.Anthropic.Config.Auth.Headers = append(r.Anthropic.Config.Auth.Headers, headers)
 			}
-			paramsPriorSlice := r.Anthropic.Config.Auth.Params
+			var paramsPriorSlice []tfTypes.Params
+			if authPriorData != nil {
+				paramsPriorSlice = authPriorData.Params
+			}
 			r.Anthropic.Config.Auth.Params = []tfTypes.Params{}
 
 			for paramsIdx, paramsItem := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.Config.Auth.Params {
@@ -87,19 +102,19 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 		if resp.AIGatewayModelProviderAIGatewayModelProviderAzure != nil {
 			azurePriorData := r.Azure
 			r.Azure = &tfTypes.AIGatewayModelProviderAzure{}
-			var configPriorData *tfTypes.AIGatewayModelProviderAzureConfig
+			var configPriorData1 *tfTypes.AIGatewayModelProviderAzureConfig
 			if azurePriorData != nil {
-				configPriorData = azurePriorData.Config
+				configPriorData1 = azurePriorData.Config
 			}
 			r.Azure.Config = &tfTypes.AIGatewayModelProviderAzureConfig{}
-			authPriorData := configPriorData.Auth
+			authPriorData1 := configPriorData1.Auth
 			if r.Azure.Config.Auth == nil {
 				r.Azure.Config.Auth = &tfTypes.AIGatewayModelProviderAzureAuth{}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput != nil {
 				var azurePriorData1 *tfTypes.AIGatewayModelProviderConfigAuthAzure
-				if authPriorData != nil {
-					azurePriorData1 = authPriorData.Azure
+				if authPriorData1 != nil {
+					azurePriorData1 = authPriorData1.Azure
 				}
 				r.Azure.Config.Auth.Azure = &tfTypes.AIGatewayModelProviderConfigAuthAzure{}
 				r.Azure.Config.Auth.Azure.ClientID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthAzureOutput.ClientID)
@@ -110,8 +125,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData1 != nil {
+					basicPriorData = authPriorData1.Basic
+				}
 				r.Azure.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-				headersPriorSlice1 := r.Azure.Config.Auth.Basic.Headers
+				var headersPriorSlice1 []tfTypes.Headers
+				if basicPriorData != nil {
+					headersPriorSlice1 = basicPriorData.Headers
+				}
 				r.Azure.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
 				for headersIdx1, headersItem1 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
@@ -129,7 +151,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 
 					r.Azure.Config.Auth.Basic.Headers = append(r.Azure.Config.Auth.Basic.Headers, headers1)
 				}
-				paramsPriorSlice1 := r.Azure.Config.Auth.Basic.Params
+				var paramsPriorSlice1 []tfTypes.Params
+				if basicPriorData != nil {
+					paramsPriorSlice1 = basicPriorData.Params
+				}
 				r.Azure.Config.Auth.Basic.Params = []tfTypes.Params{}
 
 				for paramsIdx1, paramsItem1 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
@@ -189,90 +214,22 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.Azure.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.UpdatedAt))
 			r.UpdatedAt = r.Azure.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderBaseten != nil {
-			r.Baseten = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Baseten.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Baseten.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice2 := r.Baseten.Config.Auth.Headers
-			r.Baseten.Config.Auth.Headers = []tfTypes.Headers{}
-
-			for headersIdx2, headersItem2 := range resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.Config.Auth.Headers {
-				var headers2 tfTypes.Headers
-
-				var headersPriorItem2 *tfTypes.Headers
-				if headersIdx2 < len(headersPriorSlice2) {
-					headersPriorItem2 = &headersPriorSlice2[headersIdx2]
-				}
-
-				headers2.Name = types.StringValue(headersItem2.Name)
-				if headersPriorItem2 != nil {
-					headers2.Value = headersPriorItem2.Value
-				}
-
-				r.Baseten.Config.Auth.Headers = append(r.Baseten.Config.Auth.Headers, headers2)
-			}
-			paramsPriorSlice2 := r.Baseten.Config.Auth.Params
-			r.Baseten.Config.Auth.Params = []tfTypes.Params{}
-
-			for paramsIdx2, paramsItem2 := range resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.Config.Auth.Params {
-				var params2 tfTypes.Params
-
-				var paramsPriorItem2 *tfTypes.Params
-				if paramsIdx2 < len(paramsPriorSlice2) {
-					paramsPriorItem2 = &paramsPriorSlice2[paramsIdx2]
-				}
-
-				if paramsItem2.Location != nil {
-					params2.Location = types.StringValue(string(*paramsItem2.Location))
-				} else {
-					params2.Location = types.StringNull()
-				}
-				params2.Name = types.StringValue(paramsItem2.Name)
-				if paramsPriorItem2 != nil {
-					params2.Value = paramsPriorItem2.Value
-				}
-
-				r.Baseten.Config.Auth.Params = append(r.Baseten.Config.Auth.Params, params2)
-			}
-			r.Baseten.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.CreatedAt))
-			r.CreatedAt = r.Baseten.CreatedAt
-			r.Baseten.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.DisplayName)
-			r.DisplayName = r.Baseten.DisplayName
-			r.Baseten.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.ID)
-			r.ID = r.Baseten.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.Labels) > 0 {
-				r.Baseten.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.Labels))
-				for key4, value4 := range resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.Labels {
-					r.Baseten.Labels[key4] = types.StringValue(value4)
-				}
-			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.ManagedBy) > 0 {
-				r.Baseten.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.ManagedBy))
-				for key5, value5 := range resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.ManagedBy {
-					r.Baseten.ManagedBy[key5] = types.StringValue(value5)
-				}
-			}
-			r.Baseten.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.Name)
-			r.Name = r.Baseten.Name
-			r.Baseten.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.UpdatedAt))
-			r.UpdatedAt = r.Baseten.UpdatedAt
-		}
 		if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock != nil {
 			bedrockPriorData := r.Bedrock
 			r.Bedrock = &tfTypes.AIGatewayModelProviderBedrock{}
-			var configPriorData1 *tfTypes.AIGatewayModelProviderBedrockConfig
+			var configPriorData2 *tfTypes.AIGatewayModelProviderBedrockConfig
 			if bedrockPriorData != nil {
-				configPriorData1 = bedrockPriorData.Config
+				configPriorData2 = bedrockPriorData.Config
 			}
 			r.Bedrock.Config = &tfTypes.AIGatewayModelProviderBedrockConfig{}
-			authPriorData1 := configPriorData1.Auth
+			authPriorData2 := configPriorData2.Auth
 			if r.Bedrock.Config.Auth == nil {
 				r.Bedrock.Config.Auth = &tfTypes.AIGatewayModelProviderBedrockAuth{}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput != nil {
 				var awsPriorData *tfTypes.AIGatewayModelProviderConfigAuthAWS
-				if authPriorData1 != nil {
-					awsPriorData = authPriorData1.Aws
+				if authPriorData2 != nil {
+					awsPriorData = authPriorData2.Aws
 				}
 				r.Bedrock.Config.Auth.Aws = &tfTypes.AIGatewayModelProviderConfigAuthAWS{}
 				r.Bedrock.Config.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthAWSOutput.AccessKeyID)
@@ -286,47 +243,57 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData1 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData2 != nil {
+					basicPriorData1 = authPriorData2.Basic
+				}
 				r.Bedrock.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-				headersPriorSlice3 := r.Bedrock.Config.Auth.Basic.Headers
+				var headersPriorSlice2 []tfTypes.Headers
+				if basicPriorData1 != nil {
+					headersPriorSlice2 = basicPriorData1.Headers
+				}
 				r.Bedrock.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
-				for headersIdx3, headersItem3 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
-					var headers3 tfTypes.Headers
+				for headersIdx2, headersItem2 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+					var headers2 tfTypes.Headers
 
-					var headersPriorItem3 *tfTypes.Headers
-					if headersIdx3 < len(headersPriorSlice3) {
-						headersPriorItem3 = &headersPriorSlice3[headersIdx3]
+					var headersPriorItem2 *tfTypes.Headers
+					if headersIdx2 < len(headersPriorSlice2) {
+						headersPriorItem2 = &headersPriorSlice2[headersIdx2]
 					}
 
-					headers3.Name = types.StringValue(headersItem3.Name)
-					if headersPriorItem3 != nil {
-						headers3.Value = headersPriorItem3.Value
+					headers2.Name = types.StringValue(headersItem2.Name)
+					if headersPriorItem2 != nil {
+						headers2.Value = headersPriorItem2.Value
 					}
 
-					r.Bedrock.Config.Auth.Basic.Headers = append(r.Bedrock.Config.Auth.Basic.Headers, headers3)
+					r.Bedrock.Config.Auth.Basic.Headers = append(r.Bedrock.Config.Auth.Basic.Headers, headers2)
 				}
-				paramsPriorSlice3 := r.Bedrock.Config.Auth.Basic.Params
+				var paramsPriorSlice2 []tfTypes.Params
+				if basicPriorData1 != nil {
+					paramsPriorSlice2 = basicPriorData1.Params
+				}
 				r.Bedrock.Config.Auth.Basic.Params = []tfTypes.Params{}
 
-				for paramsIdx3, paramsItem3 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
-					var params3 tfTypes.Params
+				for paramsIdx2, paramsItem2 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+					var params2 tfTypes.Params
 
-					var paramsPriorItem3 *tfTypes.Params
-					if paramsIdx3 < len(paramsPriorSlice3) {
-						paramsPriorItem3 = &paramsPriorSlice3[paramsIdx3]
+					var paramsPriorItem2 *tfTypes.Params
+					if paramsIdx2 < len(paramsPriorSlice2) {
+						paramsPriorItem2 = &paramsPriorSlice2[paramsIdx2]
 					}
 
-					if paramsItem3.Location != nil {
-						params3.Location = types.StringValue(string(*paramsItem3.Location))
+					if paramsItem2.Location != nil {
+						params2.Location = types.StringValue(string(*paramsItem2.Location))
 					} else {
-						params3.Location = types.StringNull()
+						params2.Location = types.StringNull()
 					}
-					params3.Name = types.StringValue(paramsItem3.Name)
-					if paramsPriorItem3 != nil {
-						params3.Value = paramsPriorItem3.Value
+					params2.Name = types.StringValue(paramsItem2.Name)
+					if paramsPriorItem2 != nil {
+						params2.Value = paramsPriorItem2.Value
 					}
 
-					r.Bedrock.Config.Auth.Basic.Params = append(r.Bedrock.Config.Auth.Basic.Params, params3)
+					r.Bedrock.Config.Auth.Basic.Params = append(r.Bedrock.Config.Auth.Basic.Params, params2)
 				}
 			}
 			r.Bedrock.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.CreatedAt))
@@ -337,14 +304,14 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.ID = r.Bedrock.ID
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Labels) > 0 {
 				r.Bedrock.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Labels))
-				for key6, value6 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Labels {
-					r.Bedrock.Labels[key6] = types.StringValue(value6)
+				for key4, value4 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Labels {
+					r.Bedrock.Labels[key4] = types.StringValue(value4)
 				}
 			}
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ManagedBy) > 0 {
 				r.Bedrock.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ManagedBy))
-				for key7, value7 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ManagedBy {
-					r.Bedrock.ManagedBy[key7] = types.StringValue(value7)
+				for key5, value5 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.ManagedBy {
+					r.Bedrock.ManagedBy[key5] = types.StringValue(value5)
 				}
 			}
 			r.Bedrock.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.Name)
@@ -353,13 +320,108 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Bedrock.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderAIGatewayModelProviderCerebras != nil {
+			cerebrasPriorData := r.Cerebras
 			r.Cerebras = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData3 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if cerebrasPriorData != nil {
+				configPriorData3 = cerebrasPriorData.Config
+			}
 			r.Cerebras.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData3 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData3 != nil {
+				authPriorData3 = configPriorData3.Auth
+			}
 			r.Cerebras.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice4 := r.Cerebras.Config.Auth.Headers
+			var headersPriorSlice3 []tfTypes.Headers
+			if authPriorData3 != nil {
+				headersPriorSlice3 = authPriorData3.Headers
+			}
 			r.Cerebras.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx4, headersItem4 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Config.Auth.Headers {
+			for headersIdx3, headersItem3 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Config.Auth.Headers {
+				var headers3 tfTypes.Headers
+
+				var headersPriorItem3 *tfTypes.Headers
+				if headersIdx3 < len(headersPriorSlice3) {
+					headersPriorItem3 = &headersPriorSlice3[headersIdx3]
+				}
+
+				headers3.Name = types.StringValue(headersItem3.Name)
+				if headersPriorItem3 != nil {
+					headers3.Value = headersPriorItem3.Value
+				}
+
+				r.Cerebras.Config.Auth.Headers = append(r.Cerebras.Config.Auth.Headers, headers3)
+			}
+			var paramsPriorSlice3 []tfTypes.Params
+			if authPriorData3 != nil {
+				paramsPriorSlice3 = authPriorData3.Params
+			}
+			r.Cerebras.Config.Auth.Params = []tfTypes.Params{}
+
+			for paramsIdx3, paramsItem3 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Config.Auth.Params {
+				var params3 tfTypes.Params
+
+				var paramsPriorItem3 *tfTypes.Params
+				if paramsIdx3 < len(paramsPriorSlice3) {
+					paramsPriorItem3 = &paramsPriorSlice3[paramsIdx3]
+				}
+
+				if paramsItem3.Location != nil {
+					params3.Location = types.StringValue(string(*paramsItem3.Location))
+				} else {
+					params3.Location = types.StringNull()
+				}
+				params3.Name = types.StringValue(paramsItem3.Name)
+				if paramsPriorItem3 != nil {
+					params3.Value = paramsPriorItem3.Value
+				}
+
+				r.Cerebras.Config.Auth.Params = append(r.Cerebras.Config.Auth.Params, params3)
+			}
+			r.Cerebras.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.CreatedAt))
+			r.CreatedAt = r.Cerebras.CreatedAt
+			r.Cerebras.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.DisplayName)
+			r.DisplayName = r.Cerebras.DisplayName
+			r.Cerebras.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ID)
+			r.ID = r.Cerebras.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels) > 0 {
+				r.Cerebras.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels))
+				for key6, value6 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels {
+					r.Cerebras.Labels[key6] = types.StringValue(value6)
+				}
+			}
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy) > 0 {
+				r.Cerebras.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy))
+				for key7, value7 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy {
+					r.Cerebras.ManagedBy[key7] = types.StringValue(value7)
+				}
+			}
+			r.Cerebras.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Name)
+			r.Name = r.Cerebras.Name
+			r.Cerebras.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.UpdatedAt))
+			r.UpdatedAt = r.Cerebras.UpdatedAt
+		}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderCohere != nil {
+			coherePriorData := r.Cohere
+			r.Cohere = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData4 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if coherePriorData != nil {
+				configPriorData4 = coherePriorData.Config
+			}
+			r.Cohere.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData4 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData4 != nil {
+				authPriorData4 = configPriorData4.Auth
+			}
+			r.Cohere.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice4 []tfTypes.Headers
+			if authPriorData4 != nil {
+				headersPriorSlice4 = authPriorData4.Headers
+			}
+			r.Cohere.Config.Auth.Headers = []tfTypes.Headers{}
+
+			for headersIdx4, headersItem4 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Config.Auth.Headers {
 				var headers4 tfTypes.Headers
 
 				var headersPriorItem4 *tfTypes.Headers
@@ -372,12 +434,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers4.Value = headersPriorItem4.Value
 				}
 
-				r.Cerebras.Config.Auth.Headers = append(r.Cerebras.Config.Auth.Headers, headers4)
+				r.Cohere.Config.Auth.Headers = append(r.Cohere.Config.Auth.Headers, headers4)
 			}
-			paramsPriorSlice4 := r.Cerebras.Config.Auth.Params
-			r.Cerebras.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice4 []tfTypes.Params
+			if authPriorData4 != nil {
+				paramsPriorSlice4 = authPriorData4.Params
+			}
+			r.Cohere.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx4, paramsItem4 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Config.Auth.Params {
+			for paramsIdx4, paramsItem4 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Config.Auth.Params {
 				var params4 tfTypes.Params
 
 				var paramsPriorItem4 *tfTypes.Params
@@ -395,39 +460,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params4.Value = paramsPriorItem4.Value
 				}
 
-				r.Cerebras.Config.Auth.Params = append(r.Cerebras.Config.Auth.Params, params4)
+				r.Cohere.Config.Auth.Params = append(r.Cohere.Config.Auth.Params, params4)
 			}
-			r.Cerebras.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.CreatedAt))
-			r.CreatedAt = r.Cerebras.CreatedAt
-			r.Cerebras.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.DisplayName)
-			r.DisplayName = r.Cerebras.DisplayName
-			r.Cerebras.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ID)
-			r.ID = r.Cerebras.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels) > 0 {
-				r.Cerebras.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels))
-				for key8, value8 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Labels {
-					r.Cerebras.Labels[key8] = types.StringValue(value8)
+			r.Cohere.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.CreatedAt))
+			r.CreatedAt = r.Cohere.CreatedAt
+			r.Cohere.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.DisplayName)
+			r.DisplayName = r.Cohere.DisplayName
+			r.Cohere.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ID)
+			r.ID = r.Cohere.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels) > 0 {
+				r.Cohere.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels))
+				for key8, value8 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels {
+					r.Cohere.Labels[key8] = types.StringValue(value8)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy) > 0 {
-				r.Cerebras.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy))
-				for key9, value9 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.ManagedBy {
-					r.Cerebras.ManagedBy[key9] = types.StringValue(value9)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy) > 0 {
+				r.Cohere.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy))
+				for key9, value9 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy {
+					r.Cohere.ManagedBy[key9] = types.StringValue(value9)
 				}
 			}
-			r.Cerebras.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.Name)
-			r.Name = r.Cerebras.Name
-			r.Cerebras.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.UpdatedAt))
-			r.UpdatedAt = r.Cerebras.UpdatedAt
+			r.Cohere.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Name)
+			r.Name = r.Cohere.Name
+			r.Cohere.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.UpdatedAt))
+			r.UpdatedAt = r.Cohere.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderCohere != nil {
-			r.Cohere = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Cohere.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Cohere.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice5 := r.Cohere.Config.Auth.Headers
-			r.Cohere.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderDashscope != nil {
+			dashscopePriorData := r.Dashscope
+			r.Dashscope = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData5 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if dashscopePriorData != nil {
+				configPriorData5 = dashscopePriorData.Config
+			}
+			r.Dashscope.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData5 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData5 != nil {
+				authPriorData5 = configPriorData5.Auth
+			}
+			r.Dashscope.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice5 []tfTypes.Headers
+			if authPriorData5 != nil {
+				headersPriorSlice5 = authPriorData5.Headers
+			}
+			r.Dashscope.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx5, headersItem5 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Config.Auth.Headers {
+			for headersIdx5, headersItem5 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Config.Auth.Headers {
 				var headers5 tfTypes.Headers
 
 				var headersPriorItem5 *tfTypes.Headers
@@ -440,12 +517,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers5.Value = headersPriorItem5.Value
 				}
 
-				r.Cohere.Config.Auth.Headers = append(r.Cohere.Config.Auth.Headers, headers5)
+				r.Dashscope.Config.Auth.Headers = append(r.Dashscope.Config.Auth.Headers, headers5)
 			}
-			paramsPriorSlice5 := r.Cohere.Config.Auth.Params
-			r.Cohere.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice5 []tfTypes.Params
+			if authPriorData5 != nil {
+				paramsPriorSlice5 = authPriorData5.Params
+			}
+			r.Dashscope.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx5, paramsItem5 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Config.Auth.Params {
+			for paramsIdx5, paramsItem5 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Config.Auth.Params {
 				var params5 tfTypes.Params
 
 				var paramsPriorItem5 *tfTypes.Params
@@ -463,39 +543,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params5.Value = paramsPriorItem5.Value
 				}
 
-				r.Cohere.Config.Auth.Params = append(r.Cohere.Config.Auth.Params, params5)
+				r.Dashscope.Config.Auth.Params = append(r.Dashscope.Config.Auth.Params, params5)
 			}
-			r.Cohere.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.CreatedAt))
-			r.CreatedAt = r.Cohere.CreatedAt
-			r.Cohere.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.DisplayName)
-			r.DisplayName = r.Cohere.DisplayName
-			r.Cohere.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ID)
-			r.ID = r.Cohere.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels) > 0 {
-				r.Cohere.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels))
-				for key10, value10 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Labels {
-					r.Cohere.Labels[key10] = types.StringValue(value10)
+			r.Dashscope.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.CreatedAt))
+			r.CreatedAt = r.Dashscope.CreatedAt
+			r.Dashscope.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.DisplayName)
+			r.DisplayName = r.Dashscope.DisplayName
+			r.Dashscope.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ID)
+			r.ID = r.Dashscope.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels) > 0 {
+				r.Dashscope.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels))
+				for key10, value10 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels {
+					r.Dashscope.Labels[key10] = types.StringValue(value10)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy) > 0 {
-				r.Cohere.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy))
-				for key11, value11 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.ManagedBy {
-					r.Cohere.ManagedBy[key11] = types.StringValue(value11)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy) > 0 {
+				r.Dashscope.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy))
+				for key11, value11 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy {
+					r.Dashscope.ManagedBy[key11] = types.StringValue(value11)
 				}
 			}
-			r.Cohere.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.Name)
-			r.Name = r.Cohere.Name
-			r.Cohere.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.UpdatedAt))
-			r.UpdatedAt = r.Cohere.UpdatedAt
+			r.Dashscope.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Name)
+			r.Name = r.Dashscope.Name
+			r.Dashscope.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.UpdatedAt))
+			r.UpdatedAt = r.Dashscope.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderDashscope != nil {
-			r.Dashscope = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Dashscope.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Dashscope.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice6 := r.Dashscope.Config.Auth.Headers
-			r.Dashscope.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks != nil {
+			databricksPriorData := r.Databricks
+			r.Databricks = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData6 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if databricksPriorData != nil {
+				configPriorData6 = databricksPriorData.Config
+			}
+			r.Databricks.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData6 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData6 != nil {
+				authPriorData6 = configPriorData6.Auth
+			}
+			r.Databricks.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice6 []tfTypes.Headers
+			if authPriorData6 != nil {
+				headersPriorSlice6 = authPriorData6.Headers
+			}
+			r.Databricks.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx6, headersItem6 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Config.Auth.Headers {
+			for headersIdx6, headersItem6 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Config.Auth.Headers {
 				var headers6 tfTypes.Headers
 
 				var headersPriorItem6 *tfTypes.Headers
@@ -508,12 +600,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers6.Value = headersPriorItem6.Value
 				}
 
-				r.Dashscope.Config.Auth.Headers = append(r.Dashscope.Config.Auth.Headers, headers6)
+				r.Databricks.Config.Auth.Headers = append(r.Databricks.Config.Auth.Headers, headers6)
 			}
-			paramsPriorSlice6 := r.Dashscope.Config.Auth.Params
-			r.Dashscope.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice6 []tfTypes.Params
+			if authPriorData6 != nil {
+				paramsPriorSlice6 = authPriorData6.Params
+			}
+			r.Databricks.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx6, paramsItem6 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Config.Auth.Params {
+			for paramsIdx6, paramsItem6 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Config.Auth.Params {
 				var params6 tfTypes.Params
 
 				var paramsPriorItem6 *tfTypes.Params
@@ -531,39 +626,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params6.Value = paramsPriorItem6.Value
 				}
 
-				r.Dashscope.Config.Auth.Params = append(r.Dashscope.Config.Auth.Params, params6)
+				r.Databricks.Config.Auth.Params = append(r.Databricks.Config.Auth.Params, params6)
 			}
-			r.Dashscope.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.CreatedAt))
-			r.CreatedAt = r.Dashscope.CreatedAt
-			r.Dashscope.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.DisplayName)
-			r.DisplayName = r.Dashscope.DisplayName
-			r.Dashscope.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ID)
-			r.ID = r.Dashscope.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels) > 0 {
-				r.Dashscope.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels))
-				for key12, value12 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Labels {
-					r.Dashscope.Labels[key12] = types.StringValue(value12)
+			r.Databricks.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.CreatedAt))
+			r.CreatedAt = r.Databricks.CreatedAt
+			r.Databricks.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.DisplayName)
+			r.DisplayName = r.Databricks.DisplayName
+			r.Databricks.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ID)
+			r.ID = r.Databricks.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels) > 0 {
+				r.Databricks.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels))
+				for key12, value12 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels {
+					r.Databricks.Labels[key12] = types.StringValue(value12)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy) > 0 {
-				r.Dashscope.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy))
-				for key13, value13 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.ManagedBy {
-					r.Dashscope.ManagedBy[key13] = types.StringValue(value13)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy) > 0 {
+				r.Databricks.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy))
+				for key13, value13 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy {
+					r.Databricks.ManagedBy[key13] = types.StringValue(value13)
 				}
 			}
-			r.Dashscope.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.Name)
-			r.Name = r.Dashscope.Name
-			r.Dashscope.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.UpdatedAt))
-			r.UpdatedAt = r.Dashscope.UpdatedAt
+			r.Databricks.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Name)
+			r.Name = r.Databricks.Name
+			r.Databricks.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.UpdatedAt))
+			r.UpdatedAt = r.Databricks.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks != nil {
-			r.Databricks = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Databricks.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Databricks.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice7 := r.Databricks.Config.Auth.Headers
-			r.Databricks.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek != nil {
+			deepseekPriorData := r.Deepseek
+			r.Deepseek = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData7 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if deepseekPriorData != nil {
+				configPriorData7 = deepseekPriorData.Config
+			}
+			r.Deepseek.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData7 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData7 != nil {
+				authPriorData7 = configPriorData7.Auth
+			}
+			r.Deepseek.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice7 []tfTypes.Headers
+			if authPriorData7 != nil {
+				headersPriorSlice7 = authPriorData7.Headers
+			}
+			r.Deepseek.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx7, headersItem7 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Config.Auth.Headers {
+			for headersIdx7, headersItem7 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Config.Auth.Headers {
 				var headers7 tfTypes.Headers
 
 				var headersPriorItem7 *tfTypes.Headers
@@ -576,12 +683,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers7.Value = headersPriorItem7.Value
 				}
 
-				r.Databricks.Config.Auth.Headers = append(r.Databricks.Config.Auth.Headers, headers7)
+				r.Deepseek.Config.Auth.Headers = append(r.Deepseek.Config.Auth.Headers, headers7)
 			}
-			paramsPriorSlice7 := r.Databricks.Config.Auth.Params
-			r.Databricks.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice7 []tfTypes.Params
+			if authPriorData7 != nil {
+				paramsPriorSlice7 = authPriorData7.Params
+			}
+			r.Deepseek.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx7, paramsItem7 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Config.Auth.Params {
+			for paramsIdx7, paramsItem7 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Config.Auth.Params {
 				var params7 tfTypes.Params
 
 				var paramsPriorItem7 *tfTypes.Params
@@ -599,75 +709,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params7.Value = paramsPriorItem7.Value
 				}
 
-				r.Databricks.Config.Auth.Params = append(r.Databricks.Config.Auth.Params, params7)
-			}
-			r.Databricks.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.CreatedAt))
-			r.CreatedAt = r.Databricks.CreatedAt
-			r.Databricks.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.DisplayName)
-			r.DisplayName = r.Databricks.DisplayName
-			r.Databricks.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ID)
-			r.ID = r.Databricks.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels) > 0 {
-				r.Databricks.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels))
-				for key14, value14 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Labels {
-					r.Databricks.Labels[key14] = types.StringValue(value14)
-				}
-			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy) > 0 {
-				r.Databricks.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy))
-				for key15, value15 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.ManagedBy {
-					r.Databricks.ManagedBy[key15] = types.StringValue(value15)
-				}
-			}
-			r.Databricks.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.Name)
-			r.Name = r.Databricks.Name
-			r.Databricks.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.UpdatedAt))
-			r.UpdatedAt = r.Databricks.UpdatedAt
-		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek != nil {
-			r.Deepseek = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Deepseek.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Deepseek.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice8 := r.Deepseek.Config.Auth.Headers
-			r.Deepseek.Config.Auth.Headers = []tfTypes.Headers{}
-
-			for headersIdx8, headersItem8 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Config.Auth.Headers {
-				var headers8 tfTypes.Headers
-
-				var headersPriorItem8 *tfTypes.Headers
-				if headersIdx8 < len(headersPriorSlice8) {
-					headersPriorItem8 = &headersPriorSlice8[headersIdx8]
-				}
-
-				headers8.Name = types.StringValue(headersItem8.Name)
-				if headersPriorItem8 != nil {
-					headers8.Value = headersPriorItem8.Value
-				}
-
-				r.Deepseek.Config.Auth.Headers = append(r.Deepseek.Config.Auth.Headers, headers8)
-			}
-			paramsPriorSlice8 := r.Deepseek.Config.Auth.Params
-			r.Deepseek.Config.Auth.Params = []tfTypes.Params{}
-
-			for paramsIdx8, paramsItem8 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Config.Auth.Params {
-				var params8 tfTypes.Params
-
-				var paramsPriorItem8 *tfTypes.Params
-				if paramsIdx8 < len(paramsPriorSlice8) {
-					paramsPriorItem8 = &paramsPriorSlice8[paramsIdx8]
-				}
-
-				if paramsItem8.Location != nil {
-					params8.Location = types.StringValue(string(*paramsItem8.Location))
-				} else {
-					params8.Location = types.StringNull()
-				}
-				params8.Name = types.StringValue(paramsItem8.Name)
-				if paramsPriorItem8 != nil {
-					params8.Value = paramsPriorItem8.Value
-				}
-
-				r.Deepseek.Config.Auth.Params = append(r.Deepseek.Config.Auth.Params, params8)
+				r.Deepseek.Config.Auth.Params = append(r.Deepseek.Config.Auth.Params, params7)
 			}
 			r.Deepseek.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.CreatedAt))
 			r.CreatedAt = r.Deepseek.CreatedAt
@@ -677,14 +719,14 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.ID = r.Deepseek.ID
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Labels) > 0 {
 				r.Deepseek.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Labels))
-				for key16, value16 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Labels {
-					r.Deepseek.Labels[key16] = types.StringValue(value16)
+				for key14, value14 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Labels {
+					r.Deepseek.Labels[key14] = types.StringValue(value14)
 				}
 			}
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ManagedBy) > 0 {
 				r.Deepseek.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ManagedBy))
-				for key17, value17 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ManagedBy {
-					r.Deepseek.ManagedBy[key17] = types.StringValue(value17)
+				for key15, value15 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.ManagedBy {
+					r.Deepseek.ManagedBy[key15] = types.StringValue(value15)
 				}
 			}
 			r.Deepseek.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.Name)
@@ -695,101 +737,78 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 		if resp.AIGatewayModelProviderAIGatewayModelProviderGemini != nil {
 			geminiPriorData := r.Gemini
 			r.Gemini = &tfTypes.AIGatewayModelProviderGemini{}
-			var configPriorData2 *tfTypes.AIGatewayModelProviderGeminiConfig
+			var configPriorData8 *tfTypes.AIGatewayModelProviderGeminiConfig
 			if geminiPriorData != nil {
-				configPriorData2 = geminiPriorData.Config
+				configPriorData8 = geminiPriorData.Config
 			}
 			r.Gemini.Config = &tfTypes.AIGatewayModelProviderGeminiConfig{}
-			authPriorData2 := configPriorData2.Auth
+			authPriorData8 := configPriorData8.Auth
 			if r.Gemini.Config.Auth == nil {
 				r.Gemini.Config.Auth = &tfTypes.AIGatewayModelProviderGeminiAuth{}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData2 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData8 != nil {
+					basicPriorData2 = authPriorData8.Basic
+				}
 				r.Gemini.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-				headersPriorSlice9 := r.Gemini.Config.Auth.Basic.Headers
+				var headersPriorSlice8 []tfTypes.Headers
+				if basicPriorData2 != nil {
+					headersPriorSlice8 = basicPriorData2.Headers
+				}
 				r.Gemini.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
-				for headersIdx9, headersItem9 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
-					var headers9 tfTypes.Headers
+				for headersIdx8, headersItem8 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+					var headers8 tfTypes.Headers
 
-					var headersPriorItem9 *tfTypes.Headers
-					if headersIdx9 < len(headersPriorSlice9) {
-						headersPriorItem9 = &headersPriorSlice9[headersIdx9]
+					var headersPriorItem8 *tfTypes.Headers
+					if headersIdx8 < len(headersPriorSlice8) {
+						headersPriorItem8 = &headersPriorSlice8[headersIdx8]
 					}
 
-					headers9.Name = types.StringValue(headersItem9.Name)
-					if headersPriorItem9 != nil {
-						headers9.Value = headersPriorItem9.Value
+					headers8.Name = types.StringValue(headersItem8.Name)
+					if headersPriorItem8 != nil {
+						headers8.Value = headersPriorItem8.Value
 					}
 
-					r.Gemini.Config.Auth.Basic.Headers = append(r.Gemini.Config.Auth.Basic.Headers, headers9)
+					r.Gemini.Config.Auth.Basic.Headers = append(r.Gemini.Config.Auth.Basic.Headers, headers8)
 				}
-				paramsPriorSlice9 := r.Gemini.Config.Auth.Basic.Params
+				var paramsPriorSlice8 []tfTypes.Params
+				if basicPriorData2 != nil {
+					paramsPriorSlice8 = basicPriorData2.Params
+				}
 				r.Gemini.Config.Auth.Basic.Params = []tfTypes.Params{}
 
-				for paramsIdx9, paramsItem9 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
-					var params9 tfTypes.Params
+				for paramsIdx8, paramsItem8 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+					var params8 tfTypes.Params
 
-					var paramsPriorItem9 *tfTypes.Params
-					if paramsIdx9 < len(paramsPriorSlice9) {
-						paramsPriorItem9 = &paramsPriorSlice9[paramsIdx9]
+					var paramsPriorItem8 *tfTypes.Params
+					if paramsIdx8 < len(paramsPriorSlice8) {
+						paramsPriorItem8 = &paramsPriorSlice8[paramsIdx8]
 					}
 
-					if paramsItem9.Location != nil {
-						params9.Location = types.StringValue(string(*paramsItem9.Location))
+					if paramsItem8.Location != nil {
+						params8.Location = types.StringValue(string(*paramsItem8.Location))
 					} else {
-						params9.Location = types.StringNull()
+						params8.Location = types.StringNull()
 					}
-					params9.Name = types.StringValue(paramsItem9.Name)
-					if paramsPriorItem9 != nil {
-						params9.Value = paramsPriorItem9.Value
+					params8.Name = types.StringValue(paramsItem8.Name)
+					if paramsPriorItem8 != nil {
+						params8.Value = paramsPriorItem8.Value
 					}
 
-					r.Gemini.Config.Auth.Basic.Params = append(r.Gemini.Config.Auth.Basic.Params, params9)
+					r.Gemini.Config.Auth.Basic.Params = append(r.Gemini.Config.Auth.Basic.Params, params8)
 				}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput != nil {
 				var gcpPriorData *tfTypes.AIGatewayModelProviderConfigAuthGCP
-				if authPriorData2 != nil {
-					gcpPriorData = authPriorData2.Gcp
+				if authPriorData8 != nil {
+					gcpPriorData = authPriorData8.Gcp
 				}
 				r.Gemini.Config.Auth.Gcp = &tfTypes.AIGatewayModelProviderConfigAuthGCP{}
 				r.Gemini.Config.Auth.Gcp.MetadataURL = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.MetadataURL)
 				r.Gemini.Config.Auth.Gcp.OauthTokenURL = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.OauthTokenURL)
 				r.Gemini.Config.Auth.Gcp.UseGcpServiceAccount = types.BoolPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.UseGcpServiceAccount)
-				if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation != nil {
-					workloadIdentityFederationPriorData := gcpPriorData.WorkloadIdentityFederation
-					r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation = &tfTypes.AuthGCPWorkloadIdentityFederation{}
-					if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput != nil {
-						var awsIamPriorData *tfTypes.AuthGCPWorkloadIdentityFederationAwsIam
-						if workloadIdentityFederationPriorData != nil {
-							awsIamPriorData = workloadIdentityFederationPriorData.AwsIam
-						}
-						r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam = &tfTypes.AuthGCPWorkloadIdentityFederationAwsIam{}
-						if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput.Aws == nil {
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws = nil
-						} else {
-							var awsPriorData1 *tfTypes.AIGatewayUpstreamAuthAWS
-							if awsIamPriorData != nil {
-								awsPriorData1 = awsIamPriorData.Aws
-							}
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput.Aws.AccessKeyID)
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput.Aws.AssumeRoleArn)
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.Region = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput.Aws.Region)
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput.Aws.RoleSessionName)
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput.Aws.StsEndpointURL)
-							if awsPriorData1 != nil {
-								r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SecretAccessKey = awsPriorData1.SecretAccessKey
-								r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SessionToken = awsPriorData1.SessionToken
-							}
-						}
-						r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Source = types.StringValue(string(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Config.Auth.AIGatewayModelProviderConfigAuthGCPOutput.WorkloadIdentityFederation.AuthGCPWorkloadIdentityFederationAwsIamOutput.Source))
-						if awsIamPriorData != nil {
-							r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.AuthJSON = awsIamPriorData.AuthJSON
-						}
-					}
-				}
 				if gcpPriorData != nil {
 					r.Gemini.Config.Auth.Gcp.ServiceAccountJSON = gcpPriorData.ServiceAccountJSON
 				}
@@ -802,14 +821,14 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.ID = r.Gemini.ID
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Labels) > 0 {
 				r.Gemini.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Labels))
-				for key18, value18 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Labels {
-					r.Gemini.Labels[key18] = types.StringValue(value18)
+				for key16, value16 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Labels {
+					r.Gemini.Labels[key16] = types.StringValue(value16)
 				}
 			}
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ManagedBy) > 0 {
 				r.Gemini.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ManagedBy))
-				for key19, value19 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ManagedBy {
-					r.Gemini.ManagedBy[key19] = types.StringValue(value19)
+				for key17, value17 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.ManagedBy {
+					r.Gemini.ManagedBy[key17] = types.StringValue(value17)
 				}
 			}
 			r.Gemini.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.Name)
@@ -818,13 +837,108 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.UpdatedAt = r.Gemini.UpdatedAt
 		}
 		if resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface != nil {
+			huggingfacePriorData := r.Huggingface
 			r.Huggingface = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData9 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if huggingfacePriorData != nil {
+				configPriorData9 = huggingfacePriorData.Config
+			}
 			r.Huggingface.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData9 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData9 != nil {
+				authPriorData9 = configPriorData9.Auth
+			}
 			r.Huggingface.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice10 := r.Huggingface.Config.Auth.Headers
+			var headersPriorSlice9 []tfTypes.Headers
+			if authPriorData9 != nil {
+				headersPriorSlice9 = authPriorData9.Headers
+			}
 			r.Huggingface.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx10, headersItem10 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Config.Auth.Headers {
+			for headersIdx9, headersItem9 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Config.Auth.Headers {
+				var headers9 tfTypes.Headers
+
+				var headersPriorItem9 *tfTypes.Headers
+				if headersIdx9 < len(headersPriorSlice9) {
+					headersPriorItem9 = &headersPriorSlice9[headersIdx9]
+				}
+
+				headers9.Name = types.StringValue(headersItem9.Name)
+				if headersPriorItem9 != nil {
+					headers9.Value = headersPriorItem9.Value
+				}
+
+				r.Huggingface.Config.Auth.Headers = append(r.Huggingface.Config.Auth.Headers, headers9)
+			}
+			var paramsPriorSlice9 []tfTypes.Params
+			if authPriorData9 != nil {
+				paramsPriorSlice9 = authPriorData9.Params
+			}
+			r.Huggingface.Config.Auth.Params = []tfTypes.Params{}
+
+			for paramsIdx9, paramsItem9 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Config.Auth.Params {
+				var params9 tfTypes.Params
+
+				var paramsPriorItem9 *tfTypes.Params
+				if paramsIdx9 < len(paramsPriorSlice9) {
+					paramsPriorItem9 = &paramsPriorSlice9[paramsIdx9]
+				}
+
+				if paramsItem9.Location != nil {
+					params9.Location = types.StringValue(string(*paramsItem9.Location))
+				} else {
+					params9.Location = types.StringNull()
+				}
+				params9.Name = types.StringValue(paramsItem9.Name)
+				if paramsPriorItem9 != nil {
+					params9.Value = paramsPriorItem9.Value
+				}
+
+				r.Huggingface.Config.Auth.Params = append(r.Huggingface.Config.Auth.Params, params9)
+			}
+			r.Huggingface.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.CreatedAt))
+			r.CreatedAt = r.Huggingface.CreatedAt
+			r.Huggingface.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.DisplayName)
+			r.DisplayName = r.Huggingface.DisplayName
+			r.Huggingface.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ID)
+			r.ID = r.Huggingface.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels) > 0 {
+				r.Huggingface.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels))
+				for key18, value18 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels {
+					r.Huggingface.Labels[key18] = types.StringValue(value18)
+				}
+			}
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy) > 0 {
+				r.Huggingface.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy))
+				for key19, value19 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy {
+					r.Huggingface.ManagedBy[key19] = types.StringValue(value19)
+				}
+			}
+			r.Huggingface.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Name)
+			r.Name = r.Huggingface.Name
+			r.Huggingface.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.UpdatedAt))
+			r.UpdatedAt = r.Huggingface.UpdatedAt
+		}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderKimi != nil {
+			kimiPriorData := r.Kimi
+			r.Kimi = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData10 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if kimiPriorData != nil {
+				configPriorData10 = kimiPriorData.Config
+			}
+			r.Kimi.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData10 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData10 != nil {
+				authPriorData10 = configPriorData10.Auth
+			}
+			r.Kimi.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice10 []tfTypes.Headers
+			if authPriorData10 != nil {
+				headersPriorSlice10 = authPriorData10.Headers
+			}
+			r.Kimi.Config.Auth.Headers = []tfTypes.Headers{}
+
+			for headersIdx10, headersItem10 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Config.Auth.Headers {
 				var headers10 tfTypes.Headers
 
 				var headersPriorItem10 *tfTypes.Headers
@@ -837,12 +951,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers10.Value = headersPriorItem10.Value
 				}
 
-				r.Huggingface.Config.Auth.Headers = append(r.Huggingface.Config.Auth.Headers, headers10)
+				r.Kimi.Config.Auth.Headers = append(r.Kimi.Config.Auth.Headers, headers10)
 			}
-			paramsPriorSlice10 := r.Huggingface.Config.Auth.Params
-			r.Huggingface.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice10 []tfTypes.Params
+			if authPriorData10 != nil {
+				paramsPriorSlice10 = authPriorData10.Params
+			}
+			r.Kimi.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx10, paramsItem10 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Config.Auth.Params {
+			for paramsIdx10, paramsItem10 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Config.Auth.Params {
 				var params10 tfTypes.Params
 
 				var paramsPriorItem10 *tfTypes.Params
@@ -860,39 +977,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params10.Value = paramsPriorItem10.Value
 				}
 
-				r.Huggingface.Config.Auth.Params = append(r.Huggingface.Config.Auth.Params, params10)
+				r.Kimi.Config.Auth.Params = append(r.Kimi.Config.Auth.Params, params10)
 			}
-			r.Huggingface.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.CreatedAt))
-			r.CreatedAt = r.Huggingface.CreatedAt
-			r.Huggingface.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.DisplayName)
-			r.DisplayName = r.Huggingface.DisplayName
-			r.Huggingface.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ID)
-			r.ID = r.Huggingface.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels) > 0 {
-				r.Huggingface.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels))
-				for key20, value20 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Labels {
-					r.Huggingface.Labels[key20] = types.StringValue(value20)
+			r.Kimi.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.CreatedAt))
+			r.CreatedAt = r.Kimi.CreatedAt
+			r.Kimi.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.DisplayName)
+			r.DisplayName = r.Kimi.DisplayName
+			r.Kimi.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ID)
+			r.ID = r.Kimi.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels) > 0 {
+				r.Kimi.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels))
+				for key20, value20 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels {
+					r.Kimi.Labels[key20] = types.StringValue(value20)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy) > 0 {
-				r.Huggingface.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy))
-				for key21, value21 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.ManagedBy {
-					r.Huggingface.ManagedBy[key21] = types.StringValue(value21)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy) > 0 {
+				r.Kimi.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy))
+				for key21, value21 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy {
+					r.Kimi.ManagedBy[key21] = types.StringValue(value21)
 				}
 			}
-			r.Huggingface.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.Name)
-			r.Name = r.Huggingface.Name
-			r.Huggingface.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.UpdatedAt))
-			r.UpdatedAt = r.Huggingface.UpdatedAt
+			r.Kimi.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Name)
+			r.Name = r.Kimi.Name
+			r.Kimi.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.UpdatedAt))
+			r.UpdatedAt = r.Kimi.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderKimi != nil {
-			r.Kimi = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Kimi.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Kimi.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice11 := r.Kimi.Config.Auth.Headers
-			r.Kimi.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderLlama2 != nil {
+			llama2PriorData := r.Llama2
+			r.Llama2 = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData11 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if llama2PriorData != nil {
+				configPriorData11 = llama2PriorData.Config
+			}
+			r.Llama2.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData11 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData11 != nil {
+				authPriorData11 = configPriorData11.Auth
+			}
+			r.Llama2.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice11 []tfTypes.Headers
+			if authPriorData11 != nil {
+				headersPriorSlice11 = authPriorData11.Headers
+			}
+			r.Llama2.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx11, headersItem11 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Config.Auth.Headers {
+			for headersIdx11, headersItem11 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Config.Auth.Headers {
 				var headers11 tfTypes.Headers
 
 				var headersPriorItem11 *tfTypes.Headers
@@ -905,12 +1034,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers11.Value = headersPriorItem11.Value
 				}
 
-				r.Kimi.Config.Auth.Headers = append(r.Kimi.Config.Auth.Headers, headers11)
+				r.Llama2.Config.Auth.Headers = append(r.Llama2.Config.Auth.Headers, headers11)
 			}
-			paramsPriorSlice11 := r.Kimi.Config.Auth.Params
-			r.Kimi.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice11 []tfTypes.Params
+			if authPriorData11 != nil {
+				paramsPriorSlice11 = authPriorData11.Params
+			}
+			r.Llama2.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx11, paramsItem11 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Config.Auth.Params {
+			for paramsIdx11, paramsItem11 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Config.Auth.Params {
 				var params11 tfTypes.Params
 
 				var paramsPriorItem11 *tfTypes.Params
@@ -928,39 +1060,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params11.Value = paramsPriorItem11.Value
 				}
 
-				r.Kimi.Config.Auth.Params = append(r.Kimi.Config.Auth.Params, params11)
+				r.Llama2.Config.Auth.Params = append(r.Llama2.Config.Auth.Params, params11)
 			}
-			r.Kimi.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.CreatedAt))
-			r.CreatedAt = r.Kimi.CreatedAt
-			r.Kimi.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.DisplayName)
-			r.DisplayName = r.Kimi.DisplayName
-			r.Kimi.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ID)
-			r.ID = r.Kimi.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels) > 0 {
-				r.Kimi.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels))
-				for key22, value22 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Labels {
-					r.Kimi.Labels[key22] = types.StringValue(value22)
+			r.Llama2.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.CreatedAt))
+			r.CreatedAt = r.Llama2.CreatedAt
+			r.Llama2.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.DisplayName)
+			r.DisplayName = r.Llama2.DisplayName
+			r.Llama2.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ID)
+			r.ID = r.Llama2.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels) > 0 {
+				r.Llama2.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels))
+				for key22, value22 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels {
+					r.Llama2.Labels[key22] = types.StringValue(value22)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy) > 0 {
-				r.Kimi.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy))
-				for key23, value23 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.ManagedBy {
-					r.Kimi.ManagedBy[key23] = types.StringValue(value23)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy) > 0 {
+				r.Llama2.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy))
+				for key23, value23 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy {
+					r.Llama2.ManagedBy[key23] = types.StringValue(value23)
 				}
 			}
-			r.Kimi.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.Name)
-			r.Name = r.Kimi.Name
-			r.Kimi.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.UpdatedAt))
-			r.UpdatedAt = r.Kimi.UpdatedAt
+			r.Llama2.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Name)
+			r.Name = r.Llama2.Name
+			r.Llama2.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.UpdatedAt))
+			r.UpdatedAt = r.Llama2.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderLlama2 != nil {
-			r.Llama2 = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Llama2.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Llama2.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice12 := r.Llama2.Config.Auth.Headers
-			r.Llama2.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderMistral != nil {
+			mistralPriorData := r.Mistral
+			r.Mistral = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData12 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if mistralPriorData != nil {
+				configPriorData12 = mistralPriorData.Config
+			}
+			r.Mistral.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData12 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData12 != nil {
+				authPriorData12 = configPriorData12.Auth
+			}
+			r.Mistral.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice12 []tfTypes.Headers
+			if authPriorData12 != nil {
+				headersPriorSlice12 = authPriorData12.Headers
+			}
+			r.Mistral.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx12, headersItem12 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Config.Auth.Headers {
+			for headersIdx12, headersItem12 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Config.Auth.Headers {
 				var headers12 tfTypes.Headers
 
 				var headersPriorItem12 *tfTypes.Headers
@@ -973,12 +1117,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers12.Value = headersPriorItem12.Value
 				}
 
-				r.Llama2.Config.Auth.Headers = append(r.Llama2.Config.Auth.Headers, headers12)
+				r.Mistral.Config.Auth.Headers = append(r.Mistral.Config.Auth.Headers, headers12)
 			}
-			paramsPriorSlice12 := r.Llama2.Config.Auth.Params
-			r.Llama2.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice12 []tfTypes.Params
+			if authPriorData12 != nil {
+				paramsPriorSlice12 = authPriorData12.Params
+			}
+			r.Mistral.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx12, paramsItem12 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Config.Auth.Params {
+			for paramsIdx12, paramsItem12 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Config.Auth.Params {
 				var params12 tfTypes.Params
 
 				var paramsPriorItem12 *tfTypes.Params
@@ -996,39 +1143,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params12.Value = paramsPriorItem12.Value
 				}
 
-				r.Llama2.Config.Auth.Params = append(r.Llama2.Config.Auth.Params, params12)
+				r.Mistral.Config.Auth.Params = append(r.Mistral.Config.Auth.Params, params12)
 			}
-			r.Llama2.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.CreatedAt))
-			r.CreatedAt = r.Llama2.CreatedAt
-			r.Llama2.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.DisplayName)
-			r.DisplayName = r.Llama2.DisplayName
-			r.Llama2.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ID)
-			r.ID = r.Llama2.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels) > 0 {
-				r.Llama2.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels))
-				for key24, value24 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Labels {
-					r.Llama2.Labels[key24] = types.StringValue(value24)
+			r.Mistral.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.CreatedAt))
+			r.CreatedAt = r.Mistral.CreatedAt
+			r.Mistral.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.DisplayName)
+			r.DisplayName = r.Mistral.DisplayName
+			r.Mistral.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ID)
+			r.ID = r.Mistral.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels) > 0 {
+				r.Mistral.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels))
+				for key24, value24 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels {
+					r.Mistral.Labels[key24] = types.StringValue(value24)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy) > 0 {
-				r.Llama2.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy))
-				for key25, value25 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.ManagedBy {
-					r.Llama2.ManagedBy[key25] = types.StringValue(value25)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy) > 0 {
+				r.Mistral.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy))
+				for key25, value25 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy {
+					r.Mistral.ManagedBy[key25] = types.StringValue(value25)
 				}
 			}
-			r.Llama2.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.Name)
-			r.Name = r.Llama2.Name
-			r.Llama2.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.UpdatedAt))
-			r.UpdatedAt = r.Llama2.UpdatedAt
+			r.Mistral.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Name)
+			r.Name = r.Mistral.Name
+			r.Mistral.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.UpdatedAt))
+			r.UpdatedAt = r.Mistral.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderMistral != nil {
-			r.Mistral = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Mistral.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Mistral.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice13 := r.Mistral.Config.Auth.Headers
-			r.Mistral.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderOllama != nil {
+			ollamaPriorData := r.Ollama
+			r.Ollama = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData13 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if ollamaPriorData != nil {
+				configPriorData13 = ollamaPriorData.Config
+			}
+			r.Ollama.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData13 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData13 != nil {
+				authPriorData13 = configPriorData13.Auth
+			}
+			r.Ollama.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice13 []tfTypes.Headers
+			if authPriorData13 != nil {
+				headersPriorSlice13 = authPriorData13.Headers
+			}
+			r.Ollama.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx13, headersItem13 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Config.Auth.Headers {
+			for headersIdx13, headersItem13 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Config.Auth.Headers {
 				var headers13 tfTypes.Headers
 
 				var headersPriorItem13 *tfTypes.Headers
@@ -1041,12 +1200,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers13.Value = headersPriorItem13.Value
 				}
 
-				r.Mistral.Config.Auth.Headers = append(r.Mistral.Config.Auth.Headers, headers13)
+				r.Ollama.Config.Auth.Headers = append(r.Ollama.Config.Auth.Headers, headers13)
 			}
-			paramsPriorSlice13 := r.Mistral.Config.Auth.Params
-			r.Mistral.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice13 []tfTypes.Params
+			if authPriorData13 != nil {
+				paramsPriorSlice13 = authPriorData13.Params
+			}
+			r.Ollama.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx13, paramsItem13 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Config.Auth.Params {
+			for paramsIdx13, paramsItem13 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Config.Auth.Params {
 				var params13 tfTypes.Params
 
 				var paramsPriorItem13 *tfTypes.Params
@@ -1064,39 +1226,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params13.Value = paramsPriorItem13.Value
 				}
 
-				r.Mistral.Config.Auth.Params = append(r.Mistral.Config.Auth.Params, params13)
+				r.Ollama.Config.Auth.Params = append(r.Ollama.Config.Auth.Params, params13)
 			}
-			r.Mistral.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.CreatedAt))
-			r.CreatedAt = r.Mistral.CreatedAt
-			r.Mistral.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.DisplayName)
-			r.DisplayName = r.Mistral.DisplayName
-			r.Mistral.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ID)
-			r.ID = r.Mistral.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels) > 0 {
-				r.Mistral.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels))
-				for key26, value26 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Labels {
-					r.Mistral.Labels[key26] = types.StringValue(value26)
+			r.Ollama.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.CreatedAt))
+			r.CreatedAt = r.Ollama.CreatedAt
+			r.Ollama.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.DisplayName)
+			r.DisplayName = r.Ollama.DisplayName
+			r.Ollama.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ID)
+			r.ID = r.Ollama.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels) > 0 {
+				r.Ollama.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels))
+				for key26, value26 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels {
+					r.Ollama.Labels[key26] = types.StringValue(value26)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy) > 0 {
-				r.Mistral.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy))
-				for key27, value27 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.ManagedBy {
-					r.Mistral.ManagedBy[key27] = types.StringValue(value27)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy) > 0 {
+				r.Ollama.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy))
+				for key27, value27 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy {
+					r.Ollama.ManagedBy[key27] = types.StringValue(value27)
 				}
 			}
-			r.Mistral.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.Name)
-			r.Name = r.Mistral.Name
-			r.Mistral.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.UpdatedAt))
-			r.UpdatedAt = r.Mistral.UpdatedAt
+			r.Ollama.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Name)
+			r.Name = r.Ollama.Name
+			r.Ollama.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.UpdatedAt))
+			r.UpdatedAt = r.Ollama.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderOllama != nil {
-			r.Ollama = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Ollama.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Ollama.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice14 := r.Ollama.Config.Auth.Headers
-			r.Ollama.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderOpenai != nil {
+			openaiPriorData := r.Openai
+			r.Openai = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData14 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if openaiPriorData != nil {
+				configPriorData14 = openaiPriorData.Config
+			}
+			r.Openai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData14 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData14 != nil {
+				authPriorData14 = configPriorData14.Auth
+			}
+			r.Openai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice14 []tfTypes.Headers
+			if authPriorData14 != nil {
+				headersPriorSlice14 = authPriorData14.Headers
+			}
+			r.Openai.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx14, headersItem14 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Config.Auth.Headers {
+			for headersIdx14, headersItem14 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Config.Auth.Headers {
 				var headers14 tfTypes.Headers
 
 				var headersPriorItem14 *tfTypes.Headers
@@ -1109,12 +1283,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers14.Value = headersPriorItem14.Value
 				}
 
-				r.Ollama.Config.Auth.Headers = append(r.Ollama.Config.Auth.Headers, headers14)
+				r.Openai.Config.Auth.Headers = append(r.Openai.Config.Auth.Headers, headers14)
 			}
-			paramsPriorSlice14 := r.Ollama.Config.Auth.Params
-			r.Ollama.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice14 []tfTypes.Params
+			if authPriorData14 != nil {
+				paramsPriorSlice14 = authPriorData14.Params
+			}
+			r.Openai.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx14, paramsItem14 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Config.Auth.Params {
+			for paramsIdx14, paramsItem14 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Config.Auth.Params {
 				var params14 tfTypes.Params
 
 				var paramsPriorItem14 *tfTypes.Params
@@ -1132,75 +1309,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params14.Value = paramsPriorItem14.Value
 				}
 
-				r.Ollama.Config.Auth.Params = append(r.Ollama.Config.Auth.Params, params14)
-			}
-			r.Ollama.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.CreatedAt))
-			r.CreatedAt = r.Ollama.CreatedAt
-			r.Ollama.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.DisplayName)
-			r.DisplayName = r.Ollama.DisplayName
-			r.Ollama.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ID)
-			r.ID = r.Ollama.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels) > 0 {
-				r.Ollama.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels))
-				for key28, value28 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Labels {
-					r.Ollama.Labels[key28] = types.StringValue(value28)
-				}
-			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy) > 0 {
-				r.Ollama.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy))
-				for key29, value29 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.ManagedBy {
-					r.Ollama.ManagedBy[key29] = types.StringValue(value29)
-				}
-			}
-			r.Ollama.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.Name)
-			r.Name = r.Ollama.Name
-			r.Ollama.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.UpdatedAt))
-			r.UpdatedAt = r.Ollama.UpdatedAt
-		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderOpenai != nil {
-			r.Openai = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Openai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Openai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice15 := r.Openai.Config.Auth.Headers
-			r.Openai.Config.Auth.Headers = []tfTypes.Headers{}
-
-			for headersIdx15, headersItem15 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Config.Auth.Headers {
-				var headers15 tfTypes.Headers
-
-				var headersPriorItem15 *tfTypes.Headers
-				if headersIdx15 < len(headersPriorSlice15) {
-					headersPriorItem15 = &headersPriorSlice15[headersIdx15]
-				}
-
-				headers15.Name = types.StringValue(headersItem15.Name)
-				if headersPriorItem15 != nil {
-					headers15.Value = headersPriorItem15.Value
-				}
-
-				r.Openai.Config.Auth.Headers = append(r.Openai.Config.Auth.Headers, headers15)
-			}
-			paramsPriorSlice15 := r.Openai.Config.Auth.Params
-			r.Openai.Config.Auth.Params = []tfTypes.Params{}
-
-			for paramsIdx15, paramsItem15 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Config.Auth.Params {
-				var params15 tfTypes.Params
-
-				var paramsPriorItem15 *tfTypes.Params
-				if paramsIdx15 < len(paramsPriorSlice15) {
-					paramsPriorItem15 = &paramsPriorSlice15[paramsIdx15]
-				}
-
-				if paramsItem15.Location != nil {
-					params15.Location = types.StringValue(string(*paramsItem15.Location))
-				} else {
-					params15.Location = types.StringNull()
-				}
-				params15.Name = types.StringValue(paramsItem15.Name)
-				if paramsPriorItem15 != nil {
-					params15.Value = paramsPriorItem15.Value
-				}
-
-				r.Openai.Config.Auth.Params = append(r.Openai.Config.Auth.Params, params15)
+				r.Openai.Config.Auth.Params = append(r.Openai.Config.Auth.Params, params14)
 			}
 			r.Openai.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.CreatedAt))
 			r.CreatedAt = r.Openai.CreatedAt
@@ -1210,14 +1319,14 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.ID = r.Openai.ID
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Labels) > 0 {
 				r.Openai.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Labels))
-				for key30, value30 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Labels {
-					r.Openai.Labels[key30] = types.StringValue(value30)
+				for key28, value28 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Labels {
+					r.Openai.Labels[key28] = types.StringValue(value28)
 				}
 			}
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ManagedBy) > 0 {
 				r.Openai.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ManagedBy))
-				for key31, value31 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ManagedBy {
-					r.Openai.ManagedBy[key31] = types.StringValue(value31)
+				for key29, value29 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.ManagedBy {
+					r.Openai.ManagedBy[key29] = types.StringValue(value29)
 				}
 			}
 			r.Openai.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.Name)
@@ -1228,80 +1337,80 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 		if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker != nil {
 			sagemakerPriorData := r.Sagemaker
 			r.Sagemaker = &tfTypes.AIGatewayModelProviderSagemaker{}
-			var configPriorData3 *tfTypes.AIGatewayModelProviderSagemakerConfig
+			var configPriorData15 *tfTypes.AIGatewayModelProviderSagemakerConfig
 			if sagemakerPriorData != nil {
-				configPriorData3 = sagemakerPriorData.Config
+				configPriorData15 = sagemakerPriorData.Config
 			}
 			r.Sagemaker.Config = &tfTypes.AIGatewayModelProviderSagemakerConfig{}
-			authPriorData3 := configPriorData3.Auth
+			authPriorData15 := configPriorData15.Auth
 			if r.Sagemaker.Config.Auth == nil {
 				r.Sagemaker.Config.Auth = &tfTypes.AIGatewayModelProviderSagemakerAuth{}
 			}
 			if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput != nil {
+				var basicPriorData3 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+				if authPriorData15 != nil {
+					basicPriorData3 = authPriorData15.Basic
+				}
 				r.Sagemaker.Config.Auth.Basic = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-				headersPriorSlice16 := r.Sagemaker.Config.Auth.Basic.Headers
+				var headersPriorSlice15 []tfTypes.Headers
+				if basicPriorData3 != nil {
+					headersPriorSlice15 = basicPriorData3.Headers
+				}
 				r.Sagemaker.Config.Auth.Basic.Headers = []tfTypes.Headers{}
 
-				for headersIdx16, headersItem16 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
-					var headers16 tfTypes.Headers
+				for headersIdx15, headersItem15 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Headers {
+					var headers15 tfTypes.Headers
 
-					var headersPriorItem16 *tfTypes.Headers
-					if headersIdx16 < len(headersPriorSlice16) {
-						headersPriorItem16 = &headersPriorSlice16[headersIdx16]
+					var headersPriorItem15 *tfTypes.Headers
+					if headersIdx15 < len(headersPriorSlice15) {
+						headersPriorItem15 = &headersPriorSlice15[headersIdx15]
 					}
 
-					headers16.Name = types.StringValue(headersItem16.Name)
-					if headersPriorItem16 != nil {
-						headers16.Value = headersPriorItem16.Value
+					headers15.Name = types.StringValue(headersItem15.Name)
+					if headersPriorItem15 != nil {
+						headers15.Value = headersPriorItem15.Value
 					}
 
-					r.Sagemaker.Config.Auth.Basic.Headers = append(r.Sagemaker.Config.Auth.Basic.Headers, headers16)
+					r.Sagemaker.Config.Auth.Basic.Headers = append(r.Sagemaker.Config.Auth.Basic.Headers, headers15)
 				}
-				paramsPriorSlice16 := r.Sagemaker.Config.Auth.Basic.Params
+				var paramsPriorSlice15 []tfTypes.Params
+				if basicPriorData3 != nil {
+					paramsPriorSlice15 = basicPriorData3.Params
+				}
 				r.Sagemaker.Config.Auth.Basic.Params = []tfTypes.Params{}
 
-				for paramsIdx16, paramsItem16 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
-					var params16 tfTypes.Params
+				for paramsIdx15, paramsItem15 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthBasicOutput.Params {
+					var params15 tfTypes.Params
 
-					var paramsPriorItem16 *tfTypes.Params
-					if paramsIdx16 < len(paramsPriorSlice16) {
-						paramsPriorItem16 = &paramsPriorSlice16[paramsIdx16]
+					var paramsPriorItem15 *tfTypes.Params
+					if paramsIdx15 < len(paramsPriorSlice15) {
+						paramsPriorItem15 = &paramsPriorSlice15[paramsIdx15]
 					}
 
-					if paramsItem16.Location != nil {
-						params16.Location = types.StringValue(string(*paramsItem16.Location))
+					if paramsItem15.Location != nil {
+						params15.Location = types.StringValue(string(*paramsItem15.Location))
 					} else {
-						params16.Location = types.StringNull()
+						params15.Location = types.StringNull()
 					}
-					params16.Name = types.StringValue(paramsItem16.Name)
-					if paramsPriorItem16 != nil {
-						params16.Value = paramsPriorItem16.Value
+					params15.Name = types.StringValue(paramsItem15.Name)
+					if paramsPriorItem15 != nil {
+						params15.Value = paramsPriorItem15.Value
 					}
 
-					r.Sagemaker.Config.Auth.Basic.Params = append(r.Sagemaker.Config.Auth.Basic.Params, params16)
+					r.Sagemaker.Config.Auth.Basic.Params = append(r.Sagemaker.Config.Auth.Basic.Params, params15)
 				}
 			}
-			if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemakerOutput != nil {
-				var sagemakerPriorData1 *tfTypes.AIGatewayModelProviderConfigAuthSagemaker
-				if authPriorData3 != nil {
-					sagemakerPriorData1 = authPriorData3.Sagemaker
-				}
+			if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker != nil {
 				r.Sagemaker.Config.Auth.Sagemaker = &tfTypes.AIGatewayModelProviderConfigAuthSagemaker{}
-				if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemakerOutput.Aws == nil {
+				if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws == nil {
 					r.Sagemaker.Config.Auth.Sagemaker.Aws = nil
 				} else {
-					var awsPriorData2 *tfTypes.AIGatewayModelProviderConfigAuthSagemakerAws
-					if sagemakerPriorData1 != nil {
-						awsPriorData2 = sagemakerPriorData1.Aws
-					}
 					r.Sagemaker.Config.Auth.Sagemaker.Aws = &tfTypes.AIGatewayModelProviderConfigAuthSagemakerAws{}
-					r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemakerOutput.Aws.AccessKeyID)
-					if awsPriorData2 != nil {
-						r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey = awsPriorData2.SecretAccessKey
-						r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken = awsPriorData2.SessionToken
-					}
+					r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws.AccessKeyID)
+					r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws.SecretAccessKey)
+					r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Aws.SessionToken)
 				}
-				r.Sagemaker.Config.Auth.Sagemaker.Type = types.StringValue(string(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemakerOutput.Type))
+				r.Sagemaker.Config.Auth.Sagemaker.Type = types.StringValue(string(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Config.Auth.AIGatewayModelProviderConfigAuthSagemaker.Type))
 			}
 			r.Sagemaker.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.CreatedAt))
 			r.CreatedAt = r.Sagemaker.CreatedAt
@@ -1311,14 +1420,14 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.ID = r.Sagemaker.ID
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Labels) > 0 {
 				r.Sagemaker.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Labels))
-				for key32, value32 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Labels {
-					r.Sagemaker.Labels[key32] = types.StringValue(value32)
+				for key30, value30 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Labels {
+					r.Sagemaker.Labels[key30] = types.StringValue(value30)
 				}
 			}
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ManagedBy) > 0 {
 				r.Sagemaker.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ManagedBy))
-				for key33, value33 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ManagedBy {
-					r.Sagemaker.ManagedBy[key33] = types.StringValue(value33)
+				for key31, value31 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.ManagedBy {
+					r.Sagemaker.ManagedBy[key31] = types.StringValue(value31)
 				}
 			}
 			r.Sagemaker.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.Name)
@@ -1326,14 +1435,109 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.Sagemaker.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.UpdatedAt))
 			r.UpdatedAt = r.Sagemaker.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe != nil {
-			r.Typesafe = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Typesafe.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Typesafe.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice17 := r.Typesafe.Config.Auth.Headers
-			r.Typesafe.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderVercel != nil {
+			vercelPriorData := r.Vercel
+			r.Vercel = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData16 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if vercelPriorData != nil {
+				configPriorData16 = vercelPriorData.Config
+			}
+			r.Vercel.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData16 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData16 != nil {
+				authPriorData16 = configPriorData16.Auth
+			}
+			r.Vercel.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice16 []tfTypes.Headers
+			if authPriorData16 != nil {
+				headersPriorSlice16 = authPriorData16.Headers
+			}
+			r.Vercel.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx17, headersItem17 := range resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.Config.Auth.Headers {
+			for headersIdx16, headersItem16 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Config.Auth.Headers {
+				var headers16 tfTypes.Headers
+
+				var headersPriorItem16 *tfTypes.Headers
+				if headersIdx16 < len(headersPriorSlice16) {
+					headersPriorItem16 = &headersPriorSlice16[headersIdx16]
+				}
+
+				headers16.Name = types.StringValue(headersItem16.Name)
+				if headersPriorItem16 != nil {
+					headers16.Value = headersPriorItem16.Value
+				}
+
+				r.Vercel.Config.Auth.Headers = append(r.Vercel.Config.Auth.Headers, headers16)
+			}
+			var paramsPriorSlice16 []tfTypes.Params
+			if authPriorData16 != nil {
+				paramsPriorSlice16 = authPriorData16.Params
+			}
+			r.Vercel.Config.Auth.Params = []tfTypes.Params{}
+
+			for paramsIdx16, paramsItem16 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Config.Auth.Params {
+				var params16 tfTypes.Params
+
+				var paramsPriorItem16 *tfTypes.Params
+				if paramsIdx16 < len(paramsPriorSlice16) {
+					paramsPriorItem16 = &paramsPriorSlice16[paramsIdx16]
+				}
+
+				if paramsItem16.Location != nil {
+					params16.Location = types.StringValue(string(*paramsItem16.Location))
+				} else {
+					params16.Location = types.StringNull()
+				}
+				params16.Name = types.StringValue(paramsItem16.Name)
+				if paramsPriorItem16 != nil {
+					params16.Value = paramsPriorItem16.Value
+				}
+
+				r.Vercel.Config.Auth.Params = append(r.Vercel.Config.Auth.Params, params16)
+			}
+			r.Vercel.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.CreatedAt))
+			r.CreatedAt = r.Vercel.CreatedAt
+			r.Vercel.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.DisplayName)
+			r.DisplayName = r.Vercel.DisplayName
+			r.Vercel.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ID)
+			r.ID = r.Vercel.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels) > 0 {
+				r.Vercel.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels))
+				for key32, value32 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels {
+					r.Vercel.Labels[key32] = types.StringValue(value32)
+				}
+			}
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy) > 0 {
+				r.Vercel.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy))
+				for key33, value33 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy {
+					r.Vercel.ManagedBy[key33] = types.StringValue(value33)
+				}
+			}
+			r.Vercel.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Name)
+			r.Name = r.Vercel.Name
+			r.Vercel.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.UpdatedAt))
+			r.UpdatedAt = r.Vercel.UpdatedAt
+		}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderVllm != nil {
+			vllmPriorData := r.Vllm
+			r.Vllm = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData17 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if vllmPriorData != nil {
+				configPriorData17 = vllmPriorData.Config
+			}
+			r.Vllm.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData17 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData17 != nil {
+				authPriorData17 = configPriorData17.Auth
+			}
+			r.Vllm.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice17 []tfTypes.Headers
+			if authPriorData17 != nil {
+				headersPriorSlice17 = authPriorData17.Headers
+			}
+			r.Vllm.Config.Auth.Headers = []tfTypes.Headers{}
+
+			for headersIdx17, headersItem17 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Config.Auth.Headers {
 				var headers17 tfTypes.Headers
 
 				var headersPriorItem17 *tfTypes.Headers
@@ -1346,12 +1550,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers17.Value = headersPriorItem17.Value
 				}
 
-				r.Typesafe.Config.Auth.Headers = append(r.Typesafe.Config.Auth.Headers, headers17)
+				r.Vllm.Config.Auth.Headers = append(r.Vllm.Config.Auth.Headers, headers17)
 			}
-			paramsPriorSlice17 := r.Typesafe.Config.Auth.Params
-			r.Typesafe.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice17 []tfTypes.Params
+			if authPriorData17 != nil {
+				paramsPriorSlice17 = authPriorData17.Params
+			}
+			r.Vllm.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx17, paramsItem17 := range resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.Config.Auth.Params {
+			for paramsIdx17, paramsItem17 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Config.Auth.Params {
 				var params17 tfTypes.Params
 
 				var paramsPriorItem17 *tfTypes.Params
@@ -1369,39 +1576,51 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params17.Value = paramsPriorItem17.Value
 				}
 
-				r.Typesafe.Config.Auth.Params = append(r.Typesafe.Config.Auth.Params, params17)
+				r.Vllm.Config.Auth.Params = append(r.Vllm.Config.Auth.Params, params17)
 			}
-			r.Typesafe.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.CreatedAt))
-			r.CreatedAt = r.Typesafe.CreatedAt
-			r.Typesafe.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.DisplayName)
-			r.DisplayName = r.Typesafe.DisplayName
-			r.Typesafe.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.ID)
-			r.ID = r.Typesafe.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.Labels) > 0 {
-				r.Typesafe.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.Labels))
-				for key34, value34 := range resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.Labels {
-					r.Typesafe.Labels[key34] = types.StringValue(value34)
+			r.Vllm.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.CreatedAt))
+			r.CreatedAt = r.Vllm.CreatedAt
+			r.Vllm.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.DisplayName)
+			r.DisplayName = r.Vllm.DisplayName
+			r.Vllm.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ID)
+			r.ID = r.Vllm.ID
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels) > 0 {
+				r.Vllm.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels))
+				for key34, value34 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels {
+					r.Vllm.Labels[key34] = types.StringValue(value34)
 				}
 			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.ManagedBy) > 0 {
-				r.Typesafe.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.ManagedBy))
-				for key35, value35 := range resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.ManagedBy {
-					r.Typesafe.ManagedBy[key35] = types.StringValue(value35)
+			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy) > 0 {
+				r.Vllm.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy))
+				for key35, value35 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy {
+					r.Vllm.ManagedBy[key35] = types.StringValue(value35)
 				}
 			}
-			r.Typesafe.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.Name)
-			r.Name = r.Typesafe.Name
-			r.Typesafe.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.UpdatedAt))
-			r.UpdatedAt = r.Typesafe.UpdatedAt
+			r.Vllm.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Name)
+			r.Name = r.Vllm.Name
+			r.Vllm.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.UpdatedAt))
+			r.UpdatedAt = r.Vllm.UpdatedAt
 		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderVercel != nil {
-			r.Vercel = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Vercel.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Vercel.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice18 := r.Vercel.Config.Auth.Headers
-			r.Vercel.Config.Auth.Headers = []tfTypes.Headers{}
+		if resp.AIGatewayModelProviderAIGatewayModelProviderXai != nil {
+			xaiPriorData := r.Xai
+			r.Xai = &tfTypes.AIGatewayModelProviderAnthropic{}
+			var configPriorData18 *tfTypes.AIGatewayModelProviderAnthropicConfig
+			if xaiPriorData != nil {
+				configPriorData18 = xaiPriorData.Config
+			}
+			r.Xai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
+			var authPriorData18 *tfTypes.AIGatewayModelProviderConfigAuthBasic
+			if configPriorData18 != nil {
+				authPriorData18 = configPriorData18.Auth
+			}
+			r.Xai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
+			var headersPriorSlice18 []tfTypes.Headers
+			if authPriorData18 != nil {
+				headersPriorSlice18 = authPriorData18.Headers
+			}
+			r.Xai.Config.Auth.Headers = []tfTypes.Headers{}
 
-			for headersIdx18, headersItem18 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Config.Auth.Headers {
+			for headersIdx18, headersItem18 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Config.Auth.Headers {
 				var headers18 tfTypes.Headers
 
 				var headersPriorItem18 *tfTypes.Headers
@@ -1414,12 +1633,15 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					headers18.Value = headersPriorItem18.Value
 				}
 
-				r.Vercel.Config.Auth.Headers = append(r.Vercel.Config.Auth.Headers, headers18)
+				r.Xai.Config.Auth.Headers = append(r.Xai.Config.Auth.Headers, headers18)
 			}
-			paramsPriorSlice18 := r.Vercel.Config.Auth.Params
-			r.Vercel.Config.Auth.Params = []tfTypes.Params{}
+			var paramsPriorSlice18 []tfTypes.Params
+			if authPriorData18 != nil {
+				paramsPriorSlice18 = authPriorData18.Params
+			}
+			r.Xai.Config.Auth.Params = []tfTypes.Params{}
 
-			for paramsIdx18, paramsItem18 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Config.Auth.Params {
+			for paramsIdx18, paramsItem18 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Config.Auth.Params {
 				var params18 tfTypes.Params
 
 				var paramsPriorItem18 *tfTypes.Params
@@ -1437,143 +1659,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					params18.Value = paramsPriorItem18.Value
 				}
 
-				r.Vercel.Config.Auth.Params = append(r.Vercel.Config.Auth.Params, params18)
-			}
-			r.Vercel.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.CreatedAt))
-			r.CreatedAt = r.Vercel.CreatedAt
-			r.Vercel.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.DisplayName)
-			r.DisplayName = r.Vercel.DisplayName
-			r.Vercel.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ID)
-			r.ID = r.Vercel.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels) > 0 {
-				r.Vercel.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels))
-				for key36, value36 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Labels {
-					r.Vercel.Labels[key36] = types.StringValue(value36)
-				}
-			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy) > 0 {
-				r.Vercel.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy))
-				for key37, value37 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.ManagedBy {
-					r.Vercel.ManagedBy[key37] = types.StringValue(value37)
-				}
-			}
-			r.Vercel.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.Name)
-			r.Name = r.Vercel.Name
-			r.Vercel.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.UpdatedAt))
-			r.UpdatedAt = r.Vercel.UpdatedAt
-		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderVllm != nil {
-			r.Vllm = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Vllm.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Vllm.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice19 := r.Vllm.Config.Auth.Headers
-			r.Vllm.Config.Auth.Headers = []tfTypes.Headers{}
-
-			for headersIdx19, headersItem19 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Config.Auth.Headers {
-				var headers19 tfTypes.Headers
-
-				var headersPriorItem19 *tfTypes.Headers
-				if headersIdx19 < len(headersPriorSlice19) {
-					headersPriorItem19 = &headersPriorSlice19[headersIdx19]
-				}
-
-				headers19.Name = types.StringValue(headersItem19.Name)
-				if headersPriorItem19 != nil {
-					headers19.Value = headersPriorItem19.Value
-				}
-
-				r.Vllm.Config.Auth.Headers = append(r.Vllm.Config.Auth.Headers, headers19)
-			}
-			paramsPriorSlice19 := r.Vllm.Config.Auth.Params
-			r.Vllm.Config.Auth.Params = []tfTypes.Params{}
-
-			for paramsIdx19, paramsItem19 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Config.Auth.Params {
-				var params19 tfTypes.Params
-
-				var paramsPriorItem19 *tfTypes.Params
-				if paramsIdx19 < len(paramsPriorSlice19) {
-					paramsPriorItem19 = &paramsPriorSlice19[paramsIdx19]
-				}
-
-				if paramsItem19.Location != nil {
-					params19.Location = types.StringValue(string(*paramsItem19.Location))
-				} else {
-					params19.Location = types.StringNull()
-				}
-				params19.Name = types.StringValue(paramsItem19.Name)
-				if paramsPriorItem19 != nil {
-					params19.Value = paramsPriorItem19.Value
-				}
-
-				r.Vllm.Config.Auth.Params = append(r.Vllm.Config.Auth.Params, params19)
-			}
-			r.Vllm.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.CreatedAt))
-			r.CreatedAt = r.Vllm.CreatedAt
-			r.Vllm.DisplayName = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.DisplayName)
-			r.DisplayName = r.Vllm.DisplayName
-			r.Vllm.ID = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ID)
-			r.ID = r.Vllm.ID
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels) > 0 {
-				r.Vllm.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels))
-				for key38, value38 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Labels {
-					r.Vllm.Labels[key38] = types.StringValue(value38)
-				}
-			}
-			if len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy) > 0 {
-				r.Vllm.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy))
-				for key39, value39 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.ManagedBy {
-					r.Vllm.ManagedBy[key39] = types.StringValue(value39)
-				}
-			}
-			r.Vllm.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.Name)
-			r.Name = r.Vllm.Name
-			r.Vllm.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.UpdatedAt))
-			r.UpdatedAt = r.Vllm.UpdatedAt
-		}
-		if resp.AIGatewayModelProviderAIGatewayModelProviderXai != nil {
-			r.Xai = &tfTypes.AIGatewayModelProviderAnthropic{}
-			r.Xai.Config = &tfTypes.AIGatewayModelProviderAnthropicConfig{}
-			r.Xai.Config.Auth = &tfTypes.AIGatewayModelProviderConfigAuthBasic{}
-			headersPriorSlice20 := r.Xai.Config.Auth.Headers
-			r.Xai.Config.Auth.Headers = []tfTypes.Headers{}
-
-			for headersIdx20, headersItem20 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Config.Auth.Headers {
-				var headers20 tfTypes.Headers
-
-				var headersPriorItem20 *tfTypes.Headers
-				if headersIdx20 < len(headersPriorSlice20) {
-					headersPriorItem20 = &headersPriorSlice20[headersIdx20]
-				}
-
-				headers20.Name = types.StringValue(headersItem20.Name)
-				if headersPriorItem20 != nil {
-					headers20.Value = headersPriorItem20.Value
-				}
-
-				r.Xai.Config.Auth.Headers = append(r.Xai.Config.Auth.Headers, headers20)
-			}
-			paramsPriorSlice20 := r.Xai.Config.Auth.Params
-			r.Xai.Config.Auth.Params = []tfTypes.Params{}
-
-			for paramsIdx20, paramsItem20 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Config.Auth.Params {
-				var params20 tfTypes.Params
-
-				var paramsPriorItem20 *tfTypes.Params
-				if paramsIdx20 < len(paramsPriorSlice20) {
-					paramsPriorItem20 = &paramsPriorSlice20[paramsIdx20]
-				}
-
-				if paramsItem20.Location != nil {
-					params20.Location = types.StringValue(string(*paramsItem20.Location))
-				} else {
-					params20.Location = types.StringNull()
-				}
-				params20.Name = types.StringValue(paramsItem20.Name)
-				if paramsPriorItem20 != nil {
-					params20.Value = paramsPriorItem20.Value
-				}
-
-				r.Xai.Config.Auth.Params = append(r.Xai.Config.Auth.Params, params20)
+				r.Xai.Config.Auth.Params = append(r.Xai.Config.Auth.Params, params18)
 			}
 			r.Xai.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelProviderAIGatewayModelProviderXai.CreatedAt))
 			r.CreatedAt = r.Xai.CreatedAt
@@ -1583,14 +1669,14 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 			r.ID = r.Xai.ID
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.Labels) > 0 {
 				r.Xai.Labels = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.Labels))
-				for key40, value40 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Labels {
-					r.Xai.Labels[key40] = types.StringValue(value40)
+				for key36, value36 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.Labels {
+					r.Xai.Labels[key36] = types.StringValue(value36)
 				}
 			}
 			if len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.ManagedBy) > 0 {
 				r.Xai.ManagedBy = make(map[string]types.String, len(resp.AIGatewayModelProviderAIGatewayModelProviderXai.ManagedBy))
-				for key41, value41 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.ManagedBy {
-					r.Xai.ManagedBy[key41] = types.StringValue(value41)
+				for key37, value37 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.ManagedBy {
+					r.Xai.ManagedBy[key37] = types.StringValue(value37)
 				}
 			}
 			r.Xai.Name = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.Name)
@@ -1927,158 +2013,77 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			AIGatewayModelProviderAzure: aiGatewayModelProviderAzure,
 		}
 	}
-	var aiGatewayModelProviderBaseten *shared.AIGatewayModelProviderBaseten
-	if r.Baseten != nil {
+	var aiGatewayModelProviderBedrock *shared.AIGatewayModelProviderBedrock
+	if r.Bedrock != nil {
 		var displayName2 string
-		displayName2 = r.Baseten.DisplayName.ValueString()
+		displayName2 = r.Bedrock.DisplayName.ValueString()
 
 		var name6 string
-		name6 = r.Baseten.Name.ValueString()
+		name6 = r.Bedrock.Name.ValueString()
 
 		labels2 := make(map[string]string)
-		for labelsKey2 := range r.Baseten.Labels {
+		for labelsKey2 := range r.Bedrock.Labels {
 			var labelsInst2 string
-			labelsInst2 = r.Baseten.Labels[labelsKey2].ValueString()
+			labelsInst2 = r.Bedrock.Labels[labelsKey2].ValueString()
 
 			labels2[labelsKey2] = labelsInst2
 		}
 		managedBy2 := make(map[string]string)
-		for managedByKey2 := range r.Baseten.ManagedBy {
+		for managedByKey2 := range r.Bedrock.ManagedBy {
 			var managedByInst2 string
-			managedByInst2 = r.Baseten.ManagedBy[managedByKey2].ValueString()
+			managedByInst2 = r.Bedrock.ManagedBy[managedByKey2].ValueString()
 
 			managedBy2[managedByKey2] = managedByInst2
 		}
-		headers2 := make([]shared.Headers, 0, len(r.Baseten.Config.Auth.Headers))
-		for headersIndex2 := range r.Baseten.Config.Auth.Headers {
-			var name7 string
-			name7 = r.Baseten.Config.Auth.Headers[headersIndex2].Name.ValueString()
-
-			value4 := new(string)
-			if !r.Baseten.Config.Auth.Headers[headersIndex2].Value.IsUnknown() && !r.Baseten.Config.Auth.Headers[headersIndex2].Value.IsNull() {
-				*value4 = r.Baseten.Config.Auth.Headers[headersIndex2].Value.ValueString()
-			} else {
-				value4 = nil
-			}
-			headers2 = append(headers2, shared.Headers{
-				Name:  name7,
-				Value: value4,
-			})
-		}
-		params2 := make([]shared.Params, 0, len(r.Baseten.Config.Auth.Params))
-		for paramsIndex2 := range r.Baseten.Config.Auth.Params {
-			var name8 string
-			name8 = r.Baseten.Config.Auth.Params[paramsIndex2].Name.ValueString()
-
-			value5 := new(string)
-			if !r.Baseten.Config.Auth.Params[paramsIndex2].Value.IsUnknown() && !r.Baseten.Config.Auth.Params[paramsIndex2].Value.IsNull() {
-				*value5 = r.Baseten.Config.Auth.Params[paramsIndex2].Value.ValueString()
-			} else {
-				value5 = nil
-			}
-			location2 := new(shared.Location)
-			if !r.Baseten.Config.Auth.Params[paramsIndex2].Location.IsUnknown() && !r.Baseten.Config.Auth.Params[paramsIndex2].Location.IsNull() {
-				*location2 = shared.Location(r.Baseten.Config.Auth.Params[paramsIndex2].Location.ValueString())
-			} else {
-				location2 = nil
-			}
-			params2 = append(params2, shared.Params{
-				Name:     name8,
-				Value:    value5,
-				Location: location2,
-			})
-		}
-		auth2 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers2,
-			Params:  params2,
-		}
-		config2 := shared.AIGatewayModelProviderBasetenConfig{
-			Auth: auth2,
-		}
-		aiGatewayModelProviderBaseten = &shared.AIGatewayModelProviderBaseten{
-			DisplayName: displayName2,
-			Name:        name6,
-			Labels:      labels2,
-			ManagedBy:   managedBy2,
-			Config:      config2,
-		}
-	}
-	if aiGatewayModelProviderBaseten != nil {
-		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderBaseten: aiGatewayModelProviderBaseten,
-		}
-	}
-	var aiGatewayModelProviderBedrock *shared.AIGatewayModelProviderBedrock
-	if r.Bedrock != nil {
-		var displayName3 string
-		displayName3 = r.Bedrock.DisplayName.ValueString()
-
-		var name9 string
-		name9 = r.Bedrock.Name.ValueString()
-
-		labels3 := make(map[string]string)
-		for labelsKey3 := range r.Bedrock.Labels {
-			var labelsInst3 string
-			labelsInst3 = r.Bedrock.Labels[labelsKey3].ValueString()
-
-			labels3[labelsKey3] = labelsInst3
-		}
-		managedBy3 := make(map[string]string)
-		for managedByKey3 := range r.Bedrock.ManagedBy {
-			var managedByInst3 string
-			managedByInst3 = r.Bedrock.ManagedBy[managedByKey3].ValueString()
-
-			managedBy3[managedByKey3] = managedByInst3
-		}
-		var auth3 shared.AIGatewayModelProviderBedrockAuth
+		var auth2 shared.AIGatewayModelProviderBedrockAuth
 		var aiGatewayModelProviderConfigAuthBasic1 *shared.AIGatewayModelProviderConfigAuthBasic
 		if r.Bedrock.Config.Auth.Basic != nil {
-			headers3 := make([]shared.Headers, 0, len(r.Bedrock.Config.Auth.Basic.Headers))
-			for headersIndex3 := range r.Bedrock.Config.Auth.Basic.Headers {
-				var name10 string
-				name10 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Name.ValueString()
+			headers2 := make([]shared.Headers, 0, len(r.Bedrock.Config.Auth.Basic.Headers))
+			for headersIndex2 := range r.Bedrock.Config.Auth.Basic.Headers {
+				var name7 string
+				name7 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Name.ValueString()
 
-				value6 := new(string)
-				if !r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Value.IsNull() {
-					*value6 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Value.ValueString()
+				value4 := new(string)
+				if !r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Value.IsNull() {
+					*value4 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Value.ValueString()
 				} else {
-					value6 = nil
+					value4 = nil
 				}
-				headers3 = append(headers3, shared.Headers{
-					Name:  name10,
-					Value: value6,
+				headers2 = append(headers2, shared.Headers{
+					Name:  name7,
+					Value: value4,
 				})
 			}
-			params3 := make([]shared.Params, 0, len(r.Bedrock.Config.Auth.Basic.Params))
-			for paramsIndex3 := range r.Bedrock.Config.Auth.Basic.Params {
-				var name11 string
-				name11 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Name.ValueString()
+			params2 := make([]shared.Params, 0, len(r.Bedrock.Config.Auth.Basic.Params))
+			for paramsIndex2 := range r.Bedrock.Config.Auth.Basic.Params {
+				var name8 string
+				name8 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Name.ValueString()
 
-				value7 := new(string)
-				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Value.IsNull() {
-					*value7 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Value.ValueString()
+				value5 := new(string)
+				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Value.IsNull() {
+					*value5 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Value.ValueString()
 				} else {
-					value7 = nil
+					value5 = nil
 				}
-				location3 := new(shared.Location)
-				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Location.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Location.IsNull() {
-					*location3 = shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Location.ValueString())
+				location2 := new(shared.Location)
+				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsNull() {
+					*location2 = shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.ValueString())
 				} else {
-					location3 = nil
+					location2 = nil
 				}
-				params3 = append(params3, shared.Params{
-					Name:     name11,
-					Value:    value7,
-					Location: location3,
+				params2 = append(params2, shared.Params{
+					Name:     name8,
+					Value:    value5,
+					Location: location2,
 				})
 			}
 			aiGatewayModelProviderConfigAuthBasic1 = &shared.AIGatewayModelProviderConfigAuthBasic{
-				Headers: headers3,
-				Params:  params3,
+				Headers: headers2,
+				Params:  params2,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthBasic1 != nil {
-			auth3 = shared.AIGatewayModelProviderBedrockAuth{
+			auth2 = shared.AIGatewayModelProviderBedrockAuth{
 				AIGatewayModelProviderConfigAuthBasic: aiGatewayModelProviderConfigAuthBasic1,
 			}
 		}
@@ -2137,19 +2142,19 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			}
 		}
 		if aiGatewayModelProviderConfigAuthAWS != nil {
-			auth3 = shared.AIGatewayModelProviderBedrockAuth{
+			auth2 = shared.AIGatewayModelProviderBedrockAuth{
 				AIGatewayModelProviderConfigAuthAWS: aiGatewayModelProviderConfigAuthAWS,
 			}
 		}
-		config3 := shared.AIGatewayModelProviderBedrockConfig{
-			Auth: auth3,
+		config2 := shared.AIGatewayModelProviderBedrockConfig{
+			Auth: auth2,
 		}
 		aiGatewayModelProviderBedrock = &shared.AIGatewayModelProviderBedrock{
-			DisplayName: displayName3,
-			Name:        name9,
-			Labels:      labels3,
-			ManagedBy:   managedBy3,
-			Config:      config3,
+			DisplayName: displayName2,
+			Name:        name6,
+			Labels:      labels2,
+			ManagedBy:   managedBy2,
+			Config:      config2,
 		}
 	}
 	if aiGatewayModelProviderBedrock != nil {
@@ -2159,34 +2164,115 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderCerebras *shared.AIGatewayModelProviderCerebras
 	if r.Cerebras != nil {
+		var displayName3 string
+		displayName3 = r.Cerebras.DisplayName.ValueString()
+
+		var name9 string
+		name9 = r.Cerebras.Name.ValueString()
+
+		labels3 := make(map[string]string)
+		for labelsKey3 := range r.Cerebras.Labels {
+			var labelsInst3 string
+			labelsInst3 = r.Cerebras.Labels[labelsKey3].ValueString()
+
+			labels3[labelsKey3] = labelsInst3
+		}
+		managedBy3 := make(map[string]string)
+		for managedByKey3 := range r.Cerebras.ManagedBy {
+			var managedByInst3 string
+			managedByInst3 = r.Cerebras.ManagedBy[managedByKey3].ValueString()
+
+			managedBy3[managedByKey3] = managedByInst3
+		}
+		headers3 := make([]shared.Headers, 0, len(r.Cerebras.Config.Auth.Headers))
+		for headersIndex3 := range r.Cerebras.Config.Auth.Headers {
+			var name10 string
+			name10 = r.Cerebras.Config.Auth.Headers[headersIndex3].Name.ValueString()
+
+			value6 := new(string)
+			if !r.Cerebras.Config.Auth.Headers[headersIndex3].Value.IsUnknown() && !r.Cerebras.Config.Auth.Headers[headersIndex3].Value.IsNull() {
+				*value6 = r.Cerebras.Config.Auth.Headers[headersIndex3].Value.ValueString()
+			} else {
+				value6 = nil
+			}
+			headers3 = append(headers3, shared.Headers{
+				Name:  name10,
+				Value: value6,
+			})
+		}
+		params3 := make([]shared.Params, 0, len(r.Cerebras.Config.Auth.Params))
+		for paramsIndex3 := range r.Cerebras.Config.Auth.Params {
+			var name11 string
+			name11 = r.Cerebras.Config.Auth.Params[paramsIndex3].Name.ValueString()
+
+			value7 := new(string)
+			if !r.Cerebras.Config.Auth.Params[paramsIndex3].Value.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex3].Value.IsNull() {
+				*value7 = r.Cerebras.Config.Auth.Params[paramsIndex3].Value.ValueString()
+			} else {
+				value7 = nil
+			}
+			location3 := new(shared.Location)
+			if !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsNull() {
+				*location3 = shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex3].Location.ValueString())
+			} else {
+				location3 = nil
+			}
+			params3 = append(params3, shared.Params{
+				Name:     name11,
+				Value:    value7,
+				Location: location3,
+			})
+		}
+		auth3 := shared.AIGatewayModelProviderConfigAuthBasic{
+			Headers: headers3,
+			Params:  params3,
+		}
+		config3 := shared.AIGatewayModelProviderCerebrasConfig{
+			Auth: auth3,
+		}
+		aiGatewayModelProviderCerebras = &shared.AIGatewayModelProviderCerebras{
+			DisplayName: displayName3,
+			Name:        name9,
+			Labels:      labels3,
+			ManagedBy:   managedBy3,
+			Config:      config3,
+		}
+	}
+	if aiGatewayModelProviderCerebras != nil {
+		out = shared.CreateAIGatewayModelProviderRequest{
+			AIGatewayModelProviderCerebras: aiGatewayModelProviderCerebras,
+		}
+	}
+	var aiGatewayModelProviderCohere *shared.AIGatewayModelProviderCohere
+	if r.Cohere != nil {
 		var displayName4 string
-		displayName4 = r.Cerebras.DisplayName.ValueString()
+		displayName4 = r.Cohere.DisplayName.ValueString()
 
 		var name12 string
-		name12 = r.Cerebras.Name.ValueString()
+		name12 = r.Cohere.Name.ValueString()
 
 		labels4 := make(map[string]string)
-		for labelsKey4 := range r.Cerebras.Labels {
+		for labelsKey4 := range r.Cohere.Labels {
 			var labelsInst4 string
-			labelsInst4 = r.Cerebras.Labels[labelsKey4].ValueString()
+			labelsInst4 = r.Cohere.Labels[labelsKey4].ValueString()
 
 			labels4[labelsKey4] = labelsInst4
 		}
 		managedBy4 := make(map[string]string)
-		for managedByKey4 := range r.Cerebras.ManagedBy {
+		for managedByKey4 := range r.Cohere.ManagedBy {
 			var managedByInst4 string
-			managedByInst4 = r.Cerebras.ManagedBy[managedByKey4].ValueString()
+			managedByInst4 = r.Cohere.ManagedBy[managedByKey4].ValueString()
 
 			managedBy4[managedByKey4] = managedByInst4
 		}
-		headers4 := make([]shared.Headers, 0, len(r.Cerebras.Config.Auth.Headers))
-		for headersIndex4 := range r.Cerebras.Config.Auth.Headers {
+		headers4 := make([]shared.Headers, 0, len(r.Cohere.Config.Auth.Headers))
+		for headersIndex4 := range r.Cohere.Config.Auth.Headers {
 			var name13 string
-			name13 = r.Cerebras.Config.Auth.Headers[headersIndex4].Name.ValueString()
+			name13 = r.Cohere.Config.Auth.Headers[headersIndex4].Name.ValueString()
 
 			value8 := new(string)
-			if !r.Cerebras.Config.Auth.Headers[headersIndex4].Value.IsUnknown() && !r.Cerebras.Config.Auth.Headers[headersIndex4].Value.IsNull() {
-				*value8 = r.Cerebras.Config.Auth.Headers[headersIndex4].Value.ValueString()
+			if !r.Cohere.Config.Auth.Headers[headersIndex4].Value.IsUnknown() && !r.Cohere.Config.Auth.Headers[headersIndex4].Value.IsNull() {
+				*value8 = r.Cohere.Config.Auth.Headers[headersIndex4].Value.ValueString()
 			} else {
 				value8 = nil
 			}
@@ -2195,20 +2281,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value8,
 			})
 		}
-		params4 := make([]shared.Params, 0, len(r.Cerebras.Config.Auth.Params))
-		for paramsIndex4 := range r.Cerebras.Config.Auth.Params {
+		params4 := make([]shared.Params, 0, len(r.Cohere.Config.Auth.Params))
+		for paramsIndex4 := range r.Cohere.Config.Auth.Params {
 			var name14 string
-			name14 = r.Cerebras.Config.Auth.Params[paramsIndex4].Name.ValueString()
+			name14 = r.Cohere.Config.Auth.Params[paramsIndex4].Name.ValueString()
 
 			value9 := new(string)
-			if !r.Cerebras.Config.Auth.Params[paramsIndex4].Value.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex4].Value.IsNull() {
-				*value9 = r.Cerebras.Config.Auth.Params[paramsIndex4].Value.ValueString()
+			if !r.Cohere.Config.Auth.Params[paramsIndex4].Value.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex4].Value.IsNull() {
+				*value9 = r.Cohere.Config.Auth.Params[paramsIndex4].Value.ValueString()
 			} else {
 				value9 = nil
 			}
 			location4 := new(shared.Location)
-			if !r.Cerebras.Config.Auth.Params[paramsIndex4].Location.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex4].Location.IsNull() {
-				*location4 = shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex4].Location.ValueString())
+			if !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsNull() {
+				*location4 = shared.Location(r.Cohere.Config.Auth.Params[paramsIndex4].Location.ValueString())
 			} else {
 				location4 = nil
 			}
@@ -2222,10 +2308,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers4,
 			Params:  params4,
 		}
-		config4 := shared.AIGatewayModelProviderCerebrasConfig{
+		config4 := shared.AIGatewayModelProviderCohereConfig{
 			Auth: auth4,
 		}
-		aiGatewayModelProviderCerebras = &shared.AIGatewayModelProviderCerebras{
+		aiGatewayModelProviderCohere = &shared.AIGatewayModelProviderCohere{
 			DisplayName: displayName4,
 			Name:        name12,
 			Labels:      labels4,
@@ -2233,41 +2319,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config4,
 		}
 	}
-	if aiGatewayModelProviderCerebras != nil {
+	if aiGatewayModelProviderCohere != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderCerebras: aiGatewayModelProviderCerebras,
+			AIGatewayModelProviderCohere: aiGatewayModelProviderCohere,
 		}
 	}
-	var aiGatewayModelProviderCohere *shared.AIGatewayModelProviderCohere
-	if r.Cohere != nil {
+	var aiGatewayModelProviderDashscope *shared.AIGatewayModelProviderDashscope
+	if r.Dashscope != nil {
 		var displayName5 string
-		displayName5 = r.Cohere.DisplayName.ValueString()
+		displayName5 = r.Dashscope.DisplayName.ValueString()
 
 		var name15 string
-		name15 = r.Cohere.Name.ValueString()
+		name15 = r.Dashscope.Name.ValueString()
 
 		labels5 := make(map[string]string)
-		for labelsKey5 := range r.Cohere.Labels {
+		for labelsKey5 := range r.Dashscope.Labels {
 			var labelsInst5 string
-			labelsInst5 = r.Cohere.Labels[labelsKey5].ValueString()
+			labelsInst5 = r.Dashscope.Labels[labelsKey5].ValueString()
 
 			labels5[labelsKey5] = labelsInst5
 		}
 		managedBy5 := make(map[string]string)
-		for managedByKey5 := range r.Cohere.ManagedBy {
+		for managedByKey5 := range r.Dashscope.ManagedBy {
 			var managedByInst5 string
-			managedByInst5 = r.Cohere.ManagedBy[managedByKey5].ValueString()
+			managedByInst5 = r.Dashscope.ManagedBy[managedByKey5].ValueString()
 
 			managedBy5[managedByKey5] = managedByInst5
 		}
-		headers5 := make([]shared.Headers, 0, len(r.Cohere.Config.Auth.Headers))
-		for headersIndex5 := range r.Cohere.Config.Auth.Headers {
+		headers5 := make([]shared.Headers, 0, len(r.Dashscope.Config.Auth.Headers))
+		for headersIndex5 := range r.Dashscope.Config.Auth.Headers {
 			var name16 string
-			name16 = r.Cohere.Config.Auth.Headers[headersIndex5].Name.ValueString()
+			name16 = r.Dashscope.Config.Auth.Headers[headersIndex5].Name.ValueString()
 
 			value10 := new(string)
-			if !r.Cohere.Config.Auth.Headers[headersIndex5].Value.IsUnknown() && !r.Cohere.Config.Auth.Headers[headersIndex5].Value.IsNull() {
-				*value10 = r.Cohere.Config.Auth.Headers[headersIndex5].Value.ValueString()
+			if !r.Dashscope.Config.Auth.Headers[headersIndex5].Value.IsUnknown() && !r.Dashscope.Config.Auth.Headers[headersIndex5].Value.IsNull() {
+				*value10 = r.Dashscope.Config.Auth.Headers[headersIndex5].Value.ValueString()
 			} else {
 				value10 = nil
 			}
@@ -2276,20 +2362,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value10,
 			})
 		}
-		params5 := make([]shared.Params, 0, len(r.Cohere.Config.Auth.Params))
-		for paramsIndex5 := range r.Cohere.Config.Auth.Params {
+		params5 := make([]shared.Params, 0, len(r.Dashscope.Config.Auth.Params))
+		for paramsIndex5 := range r.Dashscope.Config.Auth.Params {
 			var name17 string
-			name17 = r.Cohere.Config.Auth.Params[paramsIndex5].Name.ValueString()
+			name17 = r.Dashscope.Config.Auth.Params[paramsIndex5].Name.ValueString()
 
 			value11 := new(string)
-			if !r.Cohere.Config.Auth.Params[paramsIndex5].Value.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex5].Value.IsNull() {
-				*value11 = r.Cohere.Config.Auth.Params[paramsIndex5].Value.ValueString()
+			if !r.Dashscope.Config.Auth.Params[paramsIndex5].Value.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex5].Value.IsNull() {
+				*value11 = r.Dashscope.Config.Auth.Params[paramsIndex5].Value.ValueString()
 			} else {
 				value11 = nil
 			}
 			location5 := new(shared.Location)
-			if !r.Cohere.Config.Auth.Params[paramsIndex5].Location.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex5].Location.IsNull() {
-				*location5 = shared.Location(r.Cohere.Config.Auth.Params[paramsIndex5].Location.ValueString())
+			if !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsNull() {
+				*location5 = shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex5].Location.ValueString())
 			} else {
 				location5 = nil
 			}
@@ -2303,10 +2389,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers5,
 			Params:  params5,
 		}
-		config5 := shared.AIGatewayModelProviderCohereConfig{
+		config5 := shared.AIGatewayModelProviderDashscopeConfig{
 			Auth: auth5,
 		}
-		aiGatewayModelProviderCohere = &shared.AIGatewayModelProviderCohere{
+		aiGatewayModelProviderDashscope = &shared.AIGatewayModelProviderDashscope{
 			DisplayName: displayName5,
 			Name:        name15,
 			Labels:      labels5,
@@ -2314,41 +2400,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config5,
 		}
 	}
-	if aiGatewayModelProviderCohere != nil {
+	if aiGatewayModelProviderDashscope != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderCohere: aiGatewayModelProviderCohere,
+			AIGatewayModelProviderDashscope: aiGatewayModelProviderDashscope,
 		}
 	}
-	var aiGatewayModelProviderDashscope *shared.AIGatewayModelProviderDashscope
-	if r.Dashscope != nil {
+	var aiGatewayModelProviderDatabricks *shared.AIGatewayModelProviderDatabricks
+	if r.Databricks != nil {
 		var displayName6 string
-		displayName6 = r.Dashscope.DisplayName.ValueString()
+		displayName6 = r.Databricks.DisplayName.ValueString()
 
 		var name18 string
-		name18 = r.Dashscope.Name.ValueString()
+		name18 = r.Databricks.Name.ValueString()
 
 		labels6 := make(map[string]string)
-		for labelsKey6 := range r.Dashscope.Labels {
+		for labelsKey6 := range r.Databricks.Labels {
 			var labelsInst6 string
-			labelsInst6 = r.Dashscope.Labels[labelsKey6].ValueString()
+			labelsInst6 = r.Databricks.Labels[labelsKey6].ValueString()
 
 			labels6[labelsKey6] = labelsInst6
 		}
 		managedBy6 := make(map[string]string)
-		for managedByKey6 := range r.Dashscope.ManagedBy {
+		for managedByKey6 := range r.Databricks.ManagedBy {
 			var managedByInst6 string
-			managedByInst6 = r.Dashscope.ManagedBy[managedByKey6].ValueString()
+			managedByInst6 = r.Databricks.ManagedBy[managedByKey6].ValueString()
 
 			managedBy6[managedByKey6] = managedByInst6
 		}
-		headers6 := make([]shared.Headers, 0, len(r.Dashscope.Config.Auth.Headers))
-		for headersIndex6 := range r.Dashscope.Config.Auth.Headers {
+		headers6 := make([]shared.Headers, 0, len(r.Databricks.Config.Auth.Headers))
+		for headersIndex6 := range r.Databricks.Config.Auth.Headers {
 			var name19 string
-			name19 = r.Dashscope.Config.Auth.Headers[headersIndex6].Name.ValueString()
+			name19 = r.Databricks.Config.Auth.Headers[headersIndex6].Name.ValueString()
 
 			value12 := new(string)
-			if !r.Dashscope.Config.Auth.Headers[headersIndex6].Value.IsUnknown() && !r.Dashscope.Config.Auth.Headers[headersIndex6].Value.IsNull() {
-				*value12 = r.Dashscope.Config.Auth.Headers[headersIndex6].Value.ValueString()
+			if !r.Databricks.Config.Auth.Headers[headersIndex6].Value.IsUnknown() && !r.Databricks.Config.Auth.Headers[headersIndex6].Value.IsNull() {
+				*value12 = r.Databricks.Config.Auth.Headers[headersIndex6].Value.ValueString()
 			} else {
 				value12 = nil
 			}
@@ -2357,20 +2443,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value12,
 			})
 		}
-		params6 := make([]shared.Params, 0, len(r.Dashscope.Config.Auth.Params))
-		for paramsIndex6 := range r.Dashscope.Config.Auth.Params {
+		params6 := make([]shared.Params, 0, len(r.Databricks.Config.Auth.Params))
+		for paramsIndex6 := range r.Databricks.Config.Auth.Params {
 			var name20 string
-			name20 = r.Dashscope.Config.Auth.Params[paramsIndex6].Name.ValueString()
+			name20 = r.Databricks.Config.Auth.Params[paramsIndex6].Name.ValueString()
 
 			value13 := new(string)
-			if !r.Dashscope.Config.Auth.Params[paramsIndex6].Value.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex6].Value.IsNull() {
-				*value13 = r.Dashscope.Config.Auth.Params[paramsIndex6].Value.ValueString()
+			if !r.Databricks.Config.Auth.Params[paramsIndex6].Value.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex6].Value.IsNull() {
+				*value13 = r.Databricks.Config.Auth.Params[paramsIndex6].Value.ValueString()
 			} else {
 				value13 = nil
 			}
 			location6 := new(shared.Location)
-			if !r.Dashscope.Config.Auth.Params[paramsIndex6].Location.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex6].Location.IsNull() {
-				*location6 = shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex6].Location.ValueString())
+			if !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsNull() {
+				*location6 = shared.Location(r.Databricks.Config.Auth.Params[paramsIndex6].Location.ValueString())
 			} else {
 				location6 = nil
 			}
@@ -2384,10 +2470,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers6,
 			Params:  params6,
 		}
-		config6 := shared.AIGatewayModelProviderDashscopeConfig{
+		config6 := shared.AIGatewayModelProviderDatabricksConfig{
 			Auth: auth6,
 		}
-		aiGatewayModelProviderDashscope = &shared.AIGatewayModelProviderDashscope{
+		aiGatewayModelProviderDatabricks = &shared.AIGatewayModelProviderDatabricks{
 			DisplayName: displayName6,
 			Name:        name18,
 			Labels:      labels6,
@@ -2395,41 +2481,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config6,
 		}
 	}
-	if aiGatewayModelProviderDashscope != nil {
+	if aiGatewayModelProviderDatabricks != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderDashscope: aiGatewayModelProviderDashscope,
+			AIGatewayModelProviderDatabricks: aiGatewayModelProviderDatabricks,
 		}
 	}
-	var aiGatewayModelProviderDatabricks *shared.AIGatewayModelProviderDatabricks
-	if r.Databricks != nil {
+	var aiGatewayModelProviderDeepseek *shared.AIGatewayModelProviderDeepseek
+	if r.Deepseek != nil {
 		var displayName7 string
-		displayName7 = r.Databricks.DisplayName.ValueString()
+		displayName7 = r.Deepseek.DisplayName.ValueString()
 
 		var name21 string
-		name21 = r.Databricks.Name.ValueString()
+		name21 = r.Deepseek.Name.ValueString()
 
 		labels7 := make(map[string]string)
-		for labelsKey7 := range r.Databricks.Labels {
+		for labelsKey7 := range r.Deepseek.Labels {
 			var labelsInst7 string
-			labelsInst7 = r.Databricks.Labels[labelsKey7].ValueString()
+			labelsInst7 = r.Deepseek.Labels[labelsKey7].ValueString()
 
 			labels7[labelsKey7] = labelsInst7
 		}
 		managedBy7 := make(map[string]string)
-		for managedByKey7 := range r.Databricks.ManagedBy {
+		for managedByKey7 := range r.Deepseek.ManagedBy {
 			var managedByInst7 string
-			managedByInst7 = r.Databricks.ManagedBy[managedByKey7].ValueString()
+			managedByInst7 = r.Deepseek.ManagedBy[managedByKey7].ValueString()
 
 			managedBy7[managedByKey7] = managedByInst7
 		}
-		headers7 := make([]shared.Headers, 0, len(r.Databricks.Config.Auth.Headers))
-		for headersIndex7 := range r.Databricks.Config.Auth.Headers {
+		headers7 := make([]shared.Headers, 0, len(r.Deepseek.Config.Auth.Headers))
+		for headersIndex7 := range r.Deepseek.Config.Auth.Headers {
 			var name22 string
-			name22 = r.Databricks.Config.Auth.Headers[headersIndex7].Name.ValueString()
+			name22 = r.Deepseek.Config.Auth.Headers[headersIndex7].Name.ValueString()
 
 			value14 := new(string)
-			if !r.Databricks.Config.Auth.Headers[headersIndex7].Value.IsUnknown() && !r.Databricks.Config.Auth.Headers[headersIndex7].Value.IsNull() {
-				*value14 = r.Databricks.Config.Auth.Headers[headersIndex7].Value.ValueString()
+			if !r.Deepseek.Config.Auth.Headers[headersIndex7].Value.IsUnknown() && !r.Deepseek.Config.Auth.Headers[headersIndex7].Value.IsNull() {
+				*value14 = r.Deepseek.Config.Auth.Headers[headersIndex7].Value.ValueString()
 			} else {
 				value14 = nil
 			}
@@ -2438,20 +2524,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value14,
 			})
 		}
-		params7 := make([]shared.Params, 0, len(r.Databricks.Config.Auth.Params))
-		for paramsIndex7 := range r.Databricks.Config.Auth.Params {
+		params7 := make([]shared.Params, 0, len(r.Deepseek.Config.Auth.Params))
+		for paramsIndex7 := range r.Deepseek.Config.Auth.Params {
 			var name23 string
-			name23 = r.Databricks.Config.Auth.Params[paramsIndex7].Name.ValueString()
+			name23 = r.Deepseek.Config.Auth.Params[paramsIndex7].Name.ValueString()
 
 			value15 := new(string)
-			if !r.Databricks.Config.Auth.Params[paramsIndex7].Value.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex7].Value.IsNull() {
-				*value15 = r.Databricks.Config.Auth.Params[paramsIndex7].Value.ValueString()
+			if !r.Deepseek.Config.Auth.Params[paramsIndex7].Value.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex7].Value.IsNull() {
+				*value15 = r.Deepseek.Config.Auth.Params[paramsIndex7].Value.ValueString()
 			} else {
 				value15 = nil
 			}
 			location7 := new(shared.Location)
-			if !r.Databricks.Config.Auth.Params[paramsIndex7].Location.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex7].Location.IsNull() {
-				*location7 = shared.Location(r.Databricks.Config.Auth.Params[paramsIndex7].Location.ValueString())
+			if !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsNull() {
+				*location7 = shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex7].Location.ValueString())
 			} else {
 				location7 = nil
 			}
@@ -2465,96 +2551,15 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers7,
 			Params:  params7,
 		}
-		config7 := shared.AIGatewayModelProviderDatabricksConfig{
+		config7 := shared.AIGatewayModelProviderDeepseekConfig{
 			Auth: auth7,
 		}
-		aiGatewayModelProviderDatabricks = &shared.AIGatewayModelProviderDatabricks{
+		aiGatewayModelProviderDeepseek = &shared.AIGatewayModelProviderDeepseek{
 			DisplayName: displayName7,
 			Name:        name21,
 			Labels:      labels7,
 			ManagedBy:   managedBy7,
 			Config:      config7,
-		}
-	}
-	if aiGatewayModelProviderDatabricks != nil {
-		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderDatabricks: aiGatewayModelProviderDatabricks,
-		}
-	}
-	var aiGatewayModelProviderDeepseek *shared.AIGatewayModelProviderDeepseek
-	if r.Deepseek != nil {
-		var displayName8 string
-		displayName8 = r.Deepseek.DisplayName.ValueString()
-
-		var name24 string
-		name24 = r.Deepseek.Name.ValueString()
-
-		labels8 := make(map[string]string)
-		for labelsKey8 := range r.Deepseek.Labels {
-			var labelsInst8 string
-			labelsInst8 = r.Deepseek.Labels[labelsKey8].ValueString()
-
-			labels8[labelsKey8] = labelsInst8
-		}
-		managedBy8 := make(map[string]string)
-		for managedByKey8 := range r.Deepseek.ManagedBy {
-			var managedByInst8 string
-			managedByInst8 = r.Deepseek.ManagedBy[managedByKey8].ValueString()
-
-			managedBy8[managedByKey8] = managedByInst8
-		}
-		headers8 := make([]shared.Headers, 0, len(r.Deepseek.Config.Auth.Headers))
-		for headersIndex8 := range r.Deepseek.Config.Auth.Headers {
-			var name25 string
-			name25 = r.Deepseek.Config.Auth.Headers[headersIndex8].Name.ValueString()
-
-			value16 := new(string)
-			if !r.Deepseek.Config.Auth.Headers[headersIndex8].Value.IsUnknown() && !r.Deepseek.Config.Auth.Headers[headersIndex8].Value.IsNull() {
-				*value16 = r.Deepseek.Config.Auth.Headers[headersIndex8].Value.ValueString()
-			} else {
-				value16 = nil
-			}
-			headers8 = append(headers8, shared.Headers{
-				Name:  name25,
-				Value: value16,
-			})
-		}
-		params8 := make([]shared.Params, 0, len(r.Deepseek.Config.Auth.Params))
-		for paramsIndex8 := range r.Deepseek.Config.Auth.Params {
-			var name26 string
-			name26 = r.Deepseek.Config.Auth.Params[paramsIndex8].Name.ValueString()
-
-			value17 := new(string)
-			if !r.Deepseek.Config.Auth.Params[paramsIndex8].Value.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex8].Value.IsNull() {
-				*value17 = r.Deepseek.Config.Auth.Params[paramsIndex8].Value.ValueString()
-			} else {
-				value17 = nil
-			}
-			location8 := new(shared.Location)
-			if !r.Deepseek.Config.Auth.Params[paramsIndex8].Location.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex8].Location.IsNull() {
-				*location8 = shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex8].Location.ValueString())
-			} else {
-				location8 = nil
-			}
-			params8 = append(params8, shared.Params{
-				Name:     name26,
-				Value:    value17,
-				Location: location8,
-			})
-		}
-		auth8 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers8,
-			Params:  params8,
-		}
-		config8 := shared.AIGatewayModelProviderDeepseekConfig{
-			Auth: auth8,
-		}
-		aiGatewayModelProviderDeepseek = &shared.AIGatewayModelProviderDeepseek{
-			DisplayName: displayName8,
-			Name:        name24,
-			Labels:      labels8,
-			ManagedBy:   managedBy8,
-			Config:      config8,
 		}
 	}
 	if aiGatewayModelProviderDeepseek != nil {
@@ -2564,75 +2569,75 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderGemini *shared.AIGatewayModelProviderGemini
 	if r.Gemini != nil {
-		var displayName9 string
-		displayName9 = r.Gemini.DisplayName.ValueString()
+		var displayName8 string
+		displayName8 = r.Gemini.DisplayName.ValueString()
 
-		var name27 string
-		name27 = r.Gemini.Name.ValueString()
+		var name24 string
+		name24 = r.Gemini.Name.ValueString()
 
-		labels9 := make(map[string]string)
-		for labelsKey9 := range r.Gemini.Labels {
-			var labelsInst9 string
-			labelsInst9 = r.Gemini.Labels[labelsKey9].ValueString()
+		labels8 := make(map[string]string)
+		for labelsKey8 := range r.Gemini.Labels {
+			var labelsInst8 string
+			labelsInst8 = r.Gemini.Labels[labelsKey8].ValueString()
 
-			labels9[labelsKey9] = labelsInst9
+			labels8[labelsKey8] = labelsInst8
 		}
-		managedBy9 := make(map[string]string)
-		for managedByKey9 := range r.Gemini.ManagedBy {
-			var managedByInst9 string
-			managedByInst9 = r.Gemini.ManagedBy[managedByKey9].ValueString()
+		managedBy8 := make(map[string]string)
+		for managedByKey8 := range r.Gemini.ManagedBy {
+			var managedByInst8 string
+			managedByInst8 = r.Gemini.ManagedBy[managedByKey8].ValueString()
 
-			managedBy9[managedByKey9] = managedByInst9
+			managedBy8[managedByKey8] = managedByInst8
 		}
-		var auth9 shared.AIGatewayModelProviderGeminiAuth
+		var auth8 shared.AIGatewayModelProviderGeminiAuth
 		var aiGatewayModelProviderConfigAuthBasic2 *shared.AIGatewayModelProviderConfigAuthBasic
 		if r.Gemini.Config.Auth.Basic != nil {
-			headers9 := make([]shared.Headers, 0, len(r.Gemini.Config.Auth.Basic.Headers))
-			for headersIndex9 := range r.Gemini.Config.Auth.Basic.Headers {
-				var name28 string
-				name28 = r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Name.ValueString()
+			headers8 := make([]shared.Headers, 0, len(r.Gemini.Config.Auth.Basic.Headers))
+			for headersIndex8 := range r.Gemini.Config.Auth.Basic.Headers {
+				var name25 string
+				name25 = r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Name.ValueString()
 
-				value18 := new(string)
-				if !r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Value.IsNull() {
-					*value18 = r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Value.ValueString()
+				value16 := new(string)
+				if !r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Value.IsNull() {
+					*value16 = r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Value.ValueString()
 				} else {
-					value18 = nil
+					value16 = nil
 				}
-				headers9 = append(headers9, shared.Headers{
-					Name:  name28,
-					Value: value18,
+				headers8 = append(headers8, shared.Headers{
+					Name:  name25,
+					Value: value16,
 				})
 			}
-			params9 := make([]shared.Params, 0, len(r.Gemini.Config.Auth.Basic.Params))
-			for paramsIndex9 := range r.Gemini.Config.Auth.Basic.Params {
-				var name29 string
-				name29 = r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Name.ValueString()
+			params8 := make([]shared.Params, 0, len(r.Gemini.Config.Auth.Basic.Params))
+			for paramsIndex8 := range r.Gemini.Config.Auth.Basic.Params {
+				var name26 string
+				name26 = r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Name.ValueString()
 
-				value19 := new(string)
-				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Value.IsNull() {
-					*value19 = r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Value.ValueString()
+				value17 := new(string)
+				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Value.IsNull() {
+					*value17 = r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Value.ValueString()
 				} else {
-					value19 = nil
+					value17 = nil
 				}
-				location9 := new(shared.Location)
-				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Location.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Location.IsNull() {
-					*location9 = shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Location.ValueString())
+				location8 := new(shared.Location)
+				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsNull() {
+					*location8 = shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.ValueString())
 				} else {
-					location9 = nil
+					location8 = nil
 				}
-				params9 = append(params9, shared.Params{
-					Name:     name29,
-					Value:    value19,
-					Location: location9,
+				params8 = append(params8, shared.Params{
+					Name:     name26,
+					Value:    value17,
+					Location: location8,
 				})
 			}
 			aiGatewayModelProviderConfigAuthBasic2 = &shared.AIGatewayModelProviderConfigAuthBasic{
-				Headers: headers9,
-				Params:  params9,
+				Headers: headers8,
+				Params:  params8,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthBasic2 != nil {
-			auth9 = shared.AIGatewayModelProviderGeminiAuth{
+			auth8 = shared.AIGatewayModelProviderGeminiAuth{
 				AIGatewayModelProviderConfigAuthBasic: aiGatewayModelProviderConfigAuthBasic2,
 			}
 		}
@@ -2662,105 +2667,27 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				useGcpServiceAccount = nil
 			}
-			var workloadIdentityFederation *shared.AuthGCPWorkloadIdentityFederation
-			if r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation != nil {
-				var authGCPWorkloadIdentityFederationAwsIam *shared.AuthGCPWorkloadIdentityFederationAwsIam
-				if r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam != nil {
-					source := shared.Source(r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Source.ValueString())
-					authJSON := new(string)
-					if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.AuthJSON.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.AuthJSON.IsNull() {
-						*authJSON = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.AuthJSON.ValueString()
-					} else {
-						authJSON = nil
-					}
-					var aws *shared.AIGatewayUpstreamAuthAWS
-					if r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws != nil {
-						accessKeyId1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AccessKeyID.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AccessKeyID.IsNull() {
-							*accessKeyId1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AccessKeyID.ValueString()
-						} else {
-							accessKeyId1 = nil
-						}
-						secretAccessKey1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SecretAccessKey.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SecretAccessKey.IsNull() {
-							*secretAccessKey1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SecretAccessKey.ValueString()
-						} else {
-							secretAccessKey1 = nil
-						}
-						sessionToken1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SessionToken.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SessionToken.IsNull() {
-							*sessionToken1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SessionToken.ValueString()
-						} else {
-							sessionToken1 = nil
-						}
-						region := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.Region.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.Region.IsNull() {
-							*region = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.Region.ValueString()
-						} else {
-							region = nil
-						}
-						assumeRoleArn1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AssumeRoleArn.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AssumeRoleArn.IsNull() {
-							*assumeRoleArn1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AssumeRoleArn.ValueString()
-						} else {
-							assumeRoleArn1 = nil
-						}
-						roleSessionName1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.RoleSessionName.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.RoleSessionName.IsNull() {
-							*roleSessionName1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.RoleSessionName.ValueString()
-						} else {
-							roleSessionName1 = nil
-						}
-						stsEndpointUrl1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.StsEndpointURL.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.StsEndpointURL.IsNull() {
-							*stsEndpointUrl1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.StsEndpointURL.ValueString()
-						} else {
-							stsEndpointUrl1 = nil
-						}
-						aws = &shared.AIGatewayUpstreamAuthAWS{
-							AccessKeyID:     accessKeyId1,
-							SecretAccessKey: secretAccessKey1,
-							SessionToken:    sessionToken1,
-							Region:          region,
-							AssumeRoleArn:   assumeRoleArn1,
-							RoleSessionName: roleSessionName1,
-							StsEndpointURL:  stsEndpointUrl1,
-						}
-					}
-					authGCPWorkloadIdentityFederationAwsIam = &shared.AuthGCPWorkloadIdentityFederationAwsIam{
-						Source:   source,
-						AuthJSON: authJSON,
-						Aws:      aws,
-					}
-				}
-				if authGCPWorkloadIdentityFederationAwsIam != nil {
-					workloadIdentityFederation = &shared.AuthGCPWorkloadIdentityFederation{
-						AuthGCPWorkloadIdentityFederationAwsIam: authGCPWorkloadIdentityFederationAwsIam,
-					}
-				}
-			}
 			aiGatewayModelProviderConfigAuthGCP = &shared.AIGatewayModelProviderConfigAuthGCP{
-				ServiceAccountJSON:         serviceAccountJSON,
-				MetadataURL:                metadataURL,
-				OauthTokenURL:              oauthTokenURL,
-				UseGcpServiceAccount:       useGcpServiceAccount,
-				WorkloadIdentityFederation: workloadIdentityFederation,
+				ServiceAccountJSON:   serviceAccountJSON,
+				MetadataURL:          metadataURL,
+				OauthTokenURL:        oauthTokenURL,
+				UseGcpServiceAccount: useGcpServiceAccount,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthGCP != nil {
-			auth9 = shared.AIGatewayModelProviderGeminiAuth{
+			auth8 = shared.AIGatewayModelProviderGeminiAuth{
 				AIGatewayModelProviderConfigAuthGCP: aiGatewayModelProviderConfigAuthGCP,
 			}
 		}
-		config9 := shared.AIGatewayModelProviderGeminiConfig{
-			Auth: auth9,
+		config8 := shared.AIGatewayModelProviderGeminiConfig{
+			Auth: auth8,
 		}
 		aiGatewayModelProviderGemini = &shared.AIGatewayModelProviderGemini{
-			DisplayName: displayName9,
-			Name:        name27,
-			Labels:      labels9,
-			ManagedBy:   managedBy9,
-			Config:      config9,
+			DisplayName: displayName8,
+			Name:        name24,
+			Labels:      labels8,
+			ManagedBy:   managedBy8,
+			Config:      config8,
 		}
 	}
 	if aiGatewayModelProviderGemini != nil {
@@ -2770,34 +2697,115 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderHuggingface *shared.AIGatewayModelProviderHuggingface
 	if r.Huggingface != nil {
+		var displayName9 string
+		displayName9 = r.Huggingface.DisplayName.ValueString()
+
+		var name27 string
+		name27 = r.Huggingface.Name.ValueString()
+
+		labels9 := make(map[string]string)
+		for labelsKey9 := range r.Huggingface.Labels {
+			var labelsInst9 string
+			labelsInst9 = r.Huggingface.Labels[labelsKey9].ValueString()
+
+			labels9[labelsKey9] = labelsInst9
+		}
+		managedBy9 := make(map[string]string)
+		for managedByKey9 := range r.Huggingface.ManagedBy {
+			var managedByInst9 string
+			managedByInst9 = r.Huggingface.ManagedBy[managedByKey9].ValueString()
+
+			managedBy9[managedByKey9] = managedByInst9
+		}
+		headers9 := make([]shared.Headers, 0, len(r.Huggingface.Config.Auth.Headers))
+		for headersIndex9 := range r.Huggingface.Config.Auth.Headers {
+			var name28 string
+			name28 = r.Huggingface.Config.Auth.Headers[headersIndex9].Name.ValueString()
+
+			value18 := new(string)
+			if !r.Huggingface.Config.Auth.Headers[headersIndex9].Value.IsUnknown() && !r.Huggingface.Config.Auth.Headers[headersIndex9].Value.IsNull() {
+				*value18 = r.Huggingface.Config.Auth.Headers[headersIndex9].Value.ValueString()
+			} else {
+				value18 = nil
+			}
+			headers9 = append(headers9, shared.Headers{
+				Name:  name28,
+				Value: value18,
+			})
+		}
+		params9 := make([]shared.Params, 0, len(r.Huggingface.Config.Auth.Params))
+		for paramsIndex9 := range r.Huggingface.Config.Auth.Params {
+			var name29 string
+			name29 = r.Huggingface.Config.Auth.Params[paramsIndex9].Name.ValueString()
+
+			value19 := new(string)
+			if !r.Huggingface.Config.Auth.Params[paramsIndex9].Value.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex9].Value.IsNull() {
+				*value19 = r.Huggingface.Config.Auth.Params[paramsIndex9].Value.ValueString()
+			} else {
+				value19 = nil
+			}
+			location9 := new(shared.Location)
+			if !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsNull() {
+				*location9 = shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex9].Location.ValueString())
+			} else {
+				location9 = nil
+			}
+			params9 = append(params9, shared.Params{
+				Name:     name29,
+				Value:    value19,
+				Location: location9,
+			})
+		}
+		auth9 := shared.AIGatewayModelProviderConfigAuthBasic{
+			Headers: headers9,
+			Params:  params9,
+		}
+		config9 := shared.AIGatewayModelProviderHuggingfaceConfig{
+			Auth: auth9,
+		}
+		aiGatewayModelProviderHuggingface = &shared.AIGatewayModelProviderHuggingface{
+			DisplayName: displayName9,
+			Name:        name27,
+			Labels:      labels9,
+			ManagedBy:   managedBy9,
+			Config:      config9,
+		}
+	}
+	if aiGatewayModelProviderHuggingface != nil {
+		out = shared.CreateAIGatewayModelProviderRequest{
+			AIGatewayModelProviderHuggingface: aiGatewayModelProviderHuggingface,
+		}
+	}
+	var aiGatewayModelProviderKimi *shared.AIGatewayModelProviderKimi
+	if r.Kimi != nil {
 		var displayName10 string
-		displayName10 = r.Huggingface.DisplayName.ValueString()
+		displayName10 = r.Kimi.DisplayName.ValueString()
 
 		var name30 string
-		name30 = r.Huggingface.Name.ValueString()
+		name30 = r.Kimi.Name.ValueString()
 
 		labels10 := make(map[string]string)
-		for labelsKey10 := range r.Huggingface.Labels {
+		for labelsKey10 := range r.Kimi.Labels {
 			var labelsInst10 string
-			labelsInst10 = r.Huggingface.Labels[labelsKey10].ValueString()
+			labelsInst10 = r.Kimi.Labels[labelsKey10].ValueString()
 
 			labels10[labelsKey10] = labelsInst10
 		}
 		managedBy10 := make(map[string]string)
-		for managedByKey10 := range r.Huggingface.ManagedBy {
+		for managedByKey10 := range r.Kimi.ManagedBy {
 			var managedByInst10 string
-			managedByInst10 = r.Huggingface.ManagedBy[managedByKey10].ValueString()
+			managedByInst10 = r.Kimi.ManagedBy[managedByKey10].ValueString()
 
 			managedBy10[managedByKey10] = managedByInst10
 		}
-		headers10 := make([]shared.Headers, 0, len(r.Huggingface.Config.Auth.Headers))
-		for headersIndex10 := range r.Huggingface.Config.Auth.Headers {
+		headers10 := make([]shared.Headers, 0, len(r.Kimi.Config.Auth.Headers))
+		for headersIndex10 := range r.Kimi.Config.Auth.Headers {
 			var name31 string
-			name31 = r.Huggingface.Config.Auth.Headers[headersIndex10].Name.ValueString()
+			name31 = r.Kimi.Config.Auth.Headers[headersIndex10].Name.ValueString()
 
 			value20 := new(string)
-			if !r.Huggingface.Config.Auth.Headers[headersIndex10].Value.IsUnknown() && !r.Huggingface.Config.Auth.Headers[headersIndex10].Value.IsNull() {
-				*value20 = r.Huggingface.Config.Auth.Headers[headersIndex10].Value.ValueString()
+			if !r.Kimi.Config.Auth.Headers[headersIndex10].Value.IsUnknown() && !r.Kimi.Config.Auth.Headers[headersIndex10].Value.IsNull() {
+				*value20 = r.Kimi.Config.Auth.Headers[headersIndex10].Value.ValueString()
 			} else {
 				value20 = nil
 			}
@@ -2806,20 +2814,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value20,
 			})
 		}
-		params10 := make([]shared.Params, 0, len(r.Huggingface.Config.Auth.Params))
-		for paramsIndex10 := range r.Huggingface.Config.Auth.Params {
+		params10 := make([]shared.Params, 0, len(r.Kimi.Config.Auth.Params))
+		for paramsIndex10 := range r.Kimi.Config.Auth.Params {
 			var name32 string
-			name32 = r.Huggingface.Config.Auth.Params[paramsIndex10].Name.ValueString()
+			name32 = r.Kimi.Config.Auth.Params[paramsIndex10].Name.ValueString()
 
 			value21 := new(string)
-			if !r.Huggingface.Config.Auth.Params[paramsIndex10].Value.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex10].Value.IsNull() {
-				*value21 = r.Huggingface.Config.Auth.Params[paramsIndex10].Value.ValueString()
+			if !r.Kimi.Config.Auth.Params[paramsIndex10].Value.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex10].Value.IsNull() {
+				*value21 = r.Kimi.Config.Auth.Params[paramsIndex10].Value.ValueString()
 			} else {
 				value21 = nil
 			}
 			location10 := new(shared.Location)
-			if !r.Huggingface.Config.Auth.Params[paramsIndex10].Location.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex10].Location.IsNull() {
-				*location10 = shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex10].Location.ValueString())
+			if !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsNull() {
+				*location10 = shared.Location(r.Kimi.Config.Auth.Params[paramsIndex10].Location.ValueString())
 			} else {
 				location10 = nil
 			}
@@ -2833,10 +2841,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers10,
 			Params:  params10,
 		}
-		config10 := shared.AIGatewayModelProviderHuggingfaceConfig{
+		config10 := shared.AIGatewayModelProviderKimiConfig{
 			Auth: auth10,
 		}
-		aiGatewayModelProviderHuggingface = &shared.AIGatewayModelProviderHuggingface{
+		aiGatewayModelProviderKimi = &shared.AIGatewayModelProviderKimi{
 			DisplayName: displayName10,
 			Name:        name30,
 			Labels:      labels10,
@@ -2844,41 +2852,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config10,
 		}
 	}
-	if aiGatewayModelProviderHuggingface != nil {
+	if aiGatewayModelProviderKimi != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderHuggingface: aiGatewayModelProviderHuggingface,
+			AIGatewayModelProviderKimi: aiGatewayModelProviderKimi,
 		}
 	}
-	var aiGatewayModelProviderKimi *shared.AIGatewayModelProviderKimi
-	if r.Kimi != nil {
+	var aiGatewayModelProviderLlama2 *shared.AIGatewayModelProviderLlama2
+	if r.Llama2 != nil {
 		var displayName11 string
-		displayName11 = r.Kimi.DisplayName.ValueString()
+		displayName11 = r.Llama2.DisplayName.ValueString()
 
 		var name33 string
-		name33 = r.Kimi.Name.ValueString()
+		name33 = r.Llama2.Name.ValueString()
 
 		labels11 := make(map[string]string)
-		for labelsKey11 := range r.Kimi.Labels {
+		for labelsKey11 := range r.Llama2.Labels {
 			var labelsInst11 string
-			labelsInst11 = r.Kimi.Labels[labelsKey11].ValueString()
+			labelsInst11 = r.Llama2.Labels[labelsKey11].ValueString()
 
 			labels11[labelsKey11] = labelsInst11
 		}
 		managedBy11 := make(map[string]string)
-		for managedByKey11 := range r.Kimi.ManagedBy {
+		for managedByKey11 := range r.Llama2.ManagedBy {
 			var managedByInst11 string
-			managedByInst11 = r.Kimi.ManagedBy[managedByKey11].ValueString()
+			managedByInst11 = r.Llama2.ManagedBy[managedByKey11].ValueString()
 
 			managedBy11[managedByKey11] = managedByInst11
 		}
-		headers11 := make([]shared.Headers, 0, len(r.Kimi.Config.Auth.Headers))
-		for headersIndex11 := range r.Kimi.Config.Auth.Headers {
+		headers11 := make([]shared.Headers, 0, len(r.Llama2.Config.Auth.Headers))
+		for headersIndex11 := range r.Llama2.Config.Auth.Headers {
 			var name34 string
-			name34 = r.Kimi.Config.Auth.Headers[headersIndex11].Name.ValueString()
+			name34 = r.Llama2.Config.Auth.Headers[headersIndex11].Name.ValueString()
 
 			value22 := new(string)
-			if !r.Kimi.Config.Auth.Headers[headersIndex11].Value.IsUnknown() && !r.Kimi.Config.Auth.Headers[headersIndex11].Value.IsNull() {
-				*value22 = r.Kimi.Config.Auth.Headers[headersIndex11].Value.ValueString()
+			if !r.Llama2.Config.Auth.Headers[headersIndex11].Value.IsUnknown() && !r.Llama2.Config.Auth.Headers[headersIndex11].Value.IsNull() {
+				*value22 = r.Llama2.Config.Auth.Headers[headersIndex11].Value.ValueString()
 			} else {
 				value22 = nil
 			}
@@ -2887,20 +2895,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value22,
 			})
 		}
-		params11 := make([]shared.Params, 0, len(r.Kimi.Config.Auth.Params))
-		for paramsIndex11 := range r.Kimi.Config.Auth.Params {
+		params11 := make([]shared.Params, 0, len(r.Llama2.Config.Auth.Params))
+		for paramsIndex11 := range r.Llama2.Config.Auth.Params {
 			var name35 string
-			name35 = r.Kimi.Config.Auth.Params[paramsIndex11].Name.ValueString()
+			name35 = r.Llama2.Config.Auth.Params[paramsIndex11].Name.ValueString()
 
 			value23 := new(string)
-			if !r.Kimi.Config.Auth.Params[paramsIndex11].Value.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex11].Value.IsNull() {
-				*value23 = r.Kimi.Config.Auth.Params[paramsIndex11].Value.ValueString()
+			if !r.Llama2.Config.Auth.Params[paramsIndex11].Value.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex11].Value.IsNull() {
+				*value23 = r.Llama2.Config.Auth.Params[paramsIndex11].Value.ValueString()
 			} else {
 				value23 = nil
 			}
 			location11 := new(shared.Location)
-			if !r.Kimi.Config.Auth.Params[paramsIndex11].Location.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex11].Location.IsNull() {
-				*location11 = shared.Location(r.Kimi.Config.Auth.Params[paramsIndex11].Location.ValueString())
+			if !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsNull() {
+				*location11 = shared.Location(r.Llama2.Config.Auth.Params[paramsIndex11].Location.ValueString())
 			} else {
 				location11 = nil
 			}
@@ -2914,10 +2922,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers11,
 			Params:  params11,
 		}
-		config11 := shared.AIGatewayModelProviderKimiConfig{
+		config11 := shared.AIGatewayModelProviderLlama2Config{
 			Auth: auth11,
 		}
-		aiGatewayModelProviderKimi = &shared.AIGatewayModelProviderKimi{
+		aiGatewayModelProviderLlama2 = &shared.AIGatewayModelProviderLlama2{
 			DisplayName: displayName11,
 			Name:        name33,
 			Labels:      labels11,
@@ -2925,41 +2933,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config11,
 		}
 	}
-	if aiGatewayModelProviderKimi != nil {
+	if aiGatewayModelProviderLlama2 != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderKimi: aiGatewayModelProviderKimi,
+			AIGatewayModelProviderLlama2: aiGatewayModelProviderLlama2,
 		}
 	}
-	var aiGatewayModelProviderLlama2 *shared.AIGatewayModelProviderLlama2
-	if r.Llama2 != nil {
+	var aiGatewayModelProviderMistral *shared.AIGatewayModelProviderMistral
+	if r.Mistral != nil {
 		var displayName12 string
-		displayName12 = r.Llama2.DisplayName.ValueString()
+		displayName12 = r.Mistral.DisplayName.ValueString()
 
 		var name36 string
-		name36 = r.Llama2.Name.ValueString()
+		name36 = r.Mistral.Name.ValueString()
 
 		labels12 := make(map[string]string)
-		for labelsKey12 := range r.Llama2.Labels {
+		for labelsKey12 := range r.Mistral.Labels {
 			var labelsInst12 string
-			labelsInst12 = r.Llama2.Labels[labelsKey12].ValueString()
+			labelsInst12 = r.Mistral.Labels[labelsKey12].ValueString()
 
 			labels12[labelsKey12] = labelsInst12
 		}
 		managedBy12 := make(map[string]string)
-		for managedByKey12 := range r.Llama2.ManagedBy {
+		for managedByKey12 := range r.Mistral.ManagedBy {
 			var managedByInst12 string
-			managedByInst12 = r.Llama2.ManagedBy[managedByKey12].ValueString()
+			managedByInst12 = r.Mistral.ManagedBy[managedByKey12].ValueString()
 
 			managedBy12[managedByKey12] = managedByInst12
 		}
-		headers12 := make([]shared.Headers, 0, len(r.Llama2.Config.Auth.Headers))
-		for headersIndex12 := range r.Llama2.Config.Auth.Headers {
+		headers12 := make([]shared.Headers, 0, len(r.Mistral.Config.Auth.Headers))
+		for headersIndex12 := range r.Mistral.Config.Auth.Headers {
 			var name37 string
-			name37 = r.Llama2.Config.Auth.Headers[headersIndex12].Name.ValueString()
+			name37 = r.Mistral.Config.Auth.Headers[headersIndex12].Name.ValueString()
 
 			value24 := new(string)
-			if !r.Llama2.Config.Auth.Headers[headersIndex12].Value.IsUnknown() && !r.Llama2.Config.Auth.Headers[headersIndex12].Value.IsNull() {
-				*value24 = r.Llama2.Config.Auth.Headers[headersIndex12].Value.ValueString()
+			if !r.Mistral.Config.Auth.Headers[headersIndex12].Value.IsUnknown() && !r.Mistral.Config.Auth.Headers[headersIndex12].Value.IsNull() {
+				*value24 = r.Mistral.Config.Auth.Headers[headersIndex12].Value.ValueString()
 			} else {
 				value24 = nil
 			}
@@ -2968,20 +2976,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value24,
 			})
 		}
-		params12 := make([]shared.Params, 0, len(r.Llama2.Config.Auth.Params))
-		for paramsIndex12 := range r.Llama2.Config.Auth.Params {
+		params12 := make([]shared.Params, 0, len(r.Mistral.Config.Auth.Params))
+		for paramsIndex12 := range r.Mistral.Config.Auth.Params {
 			var name38 string
-			name38 = r.Llama2.Config.Auth.Params[paramsIndex12].Name.ValueString()
+			name38 = r.Mistral.Config.Auth.Params[paramsIndex12].Name.ValueString()
 
 			value25 := new(string)
-			if !r.Llama2.Config.Auth.Params[paramsIndex12].Value.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex12].Value.IsNull() {
-				*value25 = r.Llama2.Config.Auth.Params[paramsIndex12].Value.ValueString()
+			if !r.Mistral.Config.Auth.Params[paramsIndex12].Value.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex12].Value.IsNull() {
+				*value25 = r.Mistral.Config.Auth.Params[paramsIndex12].Value.ValueString()
 			} else {
 				value25 = nil
 			}
 			location12 := new(shared.Location)
-			if !r.Llama2.Config.Auth.Params[paramsIndex12].Location.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex12].Location.IsNull() {
-				*location12 = shared.Location(r.Llama2.Config.Auth.Params[paramsIndex12].Location.ValueString())
+			if !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsNull() {
+				*location12 = shared.Location(r.Mistral.Config.Auth.Params[paramsIndex12].Location.ValueString())
 			} else {
 				location12 = nil
 			}
@@ -2995,10 +3003,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers12,
 			Params:  params12,
 		}
-		config12 := shared.AIGatewayModelProviderLlama2Config{
+		config12 := shared.AIGatewayModelProviderMistralConfig{
 			Auth: auth12,
 		}
-		aiGatewayModelProviderLlama2 = &shared.AIGatewayModelProviderLlama2{
+		aiGatewayModelProviderMistral = &shared.AIGatewayModelProviderMistral{
 			DisplayName: displayName12,
 			Name:        name36,
 			Labels:      labels12,
@@ -3006,41 +3014,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config12,
 		}
 	}
-	if aiGatewayModelProviderLlama2 != nil {
+	if aiGatewayModelProviderMistral != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderLlama2: aiGatewayModelProviderLlama2,
+			AIGatewayModelProviderMistral: aiGatewayModelProviderMistral,
 		}
 	}
-	var aiGatewayModelProviderMistral *shared.AIGatewayModelProviderMistral
-	if r.Mistral != nil {
+	var aiGatewayModelProviderOllama *shared.AIGatewayModelProviderOllama
+	if r.Ollama != nil {
 		var displayName13 string
-		displayName13 = r.Mistral.DisplayName.ValueString()
+		displayName13 = r.Ollama.DisplayName.ValueString()
 
 		var name39 string
-		name39 = r.Mistral.Name.ValueString()
+		name39 = r.Ollama.Name.ValueString()
 
 		labels13 := make(map[string]string)
-		for labelsKey13 := range r.Mistral.Labels {
+		for labelsKey13 := range r.Ollama.Labels {
 			var labelsInst13 string
-			labelsInst13 = r.Mistral.Labels[labelsKey13].ValueString()
+			labelsInst13 = r.Ollama.Labels[labelsKey13].ValueString()
 
 			labels13[labelsKey13] = labelsInst13
 		}
 		managedBy13 := make(map[string]string)
-		for managedByKey13 := range r.Mistral.ManagedBy {
+		for managedByKey13 := range r.Ollama.ManagedBy {
 			var managedByInst13 string
-			managedByInst13 = r.Mistral.ManagedBy[managedByKey13].ValueString()
+			managedByInst13 = r.Ollama.ManagedBy[managedByKey13].ValueString()
 
 			managedBy13[managedByKey13] = managedByInst13
 		}
-		headers13 := make([]shared.Headers, 0, len(r.Mistral.Config.Auth.Headers))
-		for headersIndex13 := range r.Mistral.Config.Auth.Headers {
+		headers13 := make([]shared.Headers, 0, len(r.Ollama.Config.Auth.Headers))
+		for headersIndex13 := range r.Ollama.Config.Auth.Headers {
 			var name40 string
-			name40 = r.Mistral.Config.Auth.Headers[headersIndex13].Name.ValueString()
+			name40 = r.Ollama.Config.Auth.Headers[headersIndex13].Name.ValueString()
 
 			value26 := new(string)
-			if !r.Mistral.Config.Auth.Headers[headersIndex13].Value.IsUnknown() && !r.Mistral.Config.Auth.Headers[headersIndex13].Value.IsNull() {
-				*value26 = r.Mistral.Config.Auth.Headers[headersIndex13].Value.ValueString()
+			if !r.Ollama.Config.Auth.Headers[headersIndex13].Value.IsUnknown() && !r.Ollama.Config.Auth.Headers[headersIndex13].Value.IsNull() {
+				*value26 = r.Ollama.Config.Auth.Headers[headersIndex13].Value.ValueString()
 			} else {
 				value26 = nil
 			}
@@ -3049,20 +3057,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value26,
 			})
 		}
-		params13 := make([]shared.Params, 0, len(r.Mistral.Config.Auth.Params))
-		for paramsIndex13 := range r.Mistral.Config.Auth.Params {
+		params13 := make([]shared.Params, 0, len(r.Ollama.Config.Auth.Params))
+		for paramsIndex13 := range r.Ollama.Config.Auth.Params {
 			var name41 string
-			name41 = r.Mistral.Config.Auth.Params[paramsIndex13].Name.ValueString()
+			name41 = r.Ollama.Config.Auth.Params[paramsIndex13].Name.ValueString()
 
 			value27 := new(string)
-			if !r.Mistral.Config.Auth.Params[paramsIndex13].Value.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex13].Value.IsNull() {
-				*value27 = r.Mistral.Config.Auth.Params[paramsIndex13].Value.ValueString()
+			if !r.Ollama.Config.Auth.Params[paramsIndex13].Value.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex13].Value.IsNull() {
+				*value27 = r.Ollama.Config.Auth.Params[paramsIndex13].Value.ValueString()
 			} else {
 				value27 = nil
 			}
 			location13 := new(shared.Location)
-			if !r.Mistral.Config.Auth.Params[paramsIndex13].Location.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex13].Location.IsNull() {
-				*location13 = shared.Location(r.Mistral.Config.Auth.Params[paramsIndex13].Location.ValueString())
+			if !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsNull() {
+				*location13 = shared.Location(r.Ollama.Config.Auth.Params[paramsIndex13].Location.ValueString())
 			} else {
 				location13 = nil
 			}
@@ -3076,10 +3084,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers13,
 			Params:  params13,
 		}
-		config13 := shared.AIGatewayModelProviderMistralConfig{
+		config13 := shared.AIGatewayModelProviderOllamaConfig{
 			Auth: auth13,
 		}
-		aiGatewayModelProviderMistral = &shared.AIGatewayModelProviderMistral{
+		aiGatewayModelProviderOllama = &shared.AIGatewayModelProviderOllama{
 			DisplayName: displayName13,
 			Name:        name39,
 			Labels:      labels13,
@@ -3087,41 +3095,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config13,
 		}
 	}
-	if aiGatewayModelProviderMistral != nil {
+	if aiGatewayModelProviderOllama != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderMistral: aiGatewayModelProviderMistral,
+			AIGatewayModelProviderOllama: aiGatewayModelProviderOllama,
 		}
 	}
-	var aiGatewayModelProviderOllama *shared.AIGatewayModelProviderOllama
-	if r.Ollama != nil {
+	var aiGatewayModelProviderOpenai *shared.AIGatewayModelProviderOpenai
+	if r.Openai != nil {
 		var displayName14 string
-		displayName14 = r.Ollama.DisplayName.ValueString()
+		displayName14 = r.Openai.DisplayName.ValueString()
 
 		var name42 string
-		name42 = r.Ollama.Name.ValueString()
+		name42 = r.Openai.Name.ValueString()
 
 		labels14 := make(map[string]string)
-		for labelsKey14 := range r.Ollama.Labels {
+		for labelsKey14 := range r.Openai.Labels {
 			var labelsInst14 string
-			labelsInst14 = r.Ollama.Labels[labelsKey14].ValueString()
+			labelsInst14 = r.Openai.Labels[labelsKey14].ValueString()
 
 			labels14[labelsKey14] = labelsInst14
 		}
 		managedBy14 := make(map[string]string)
-		for managedByKey14 := range r.Ollama.ManagedBy {
+		for managedByKey14 := range r.Openai.ManagedBy {
 			var managedByInst14 string
-			managedByInst14 = r.Ollama.ManagedBy[managedByKey14].ValueString()
+			managedByInst14 = r.Openai.ManagedBy[managedByKey14].ValueString()
 
 			managedBy14[managedByKey14] = managedByInst14
 		}
-		headers14 := make([]shared.Headers, 0, len(r.Ollama.Config.Auth.Headers))
-		for headersIndex14 := range r.Ollama.Config.Auth.Headers {
+		headers14 := make([]shared.Headers, 0, len(r.Openai.Config.Auth.Headers))
+		for headersIndex14 := range r.Openai.Config.Auth.Headers {
 			var name43 string
-			name43 = r.Ollama.Config.Auth.Headers[headersIndex14].Name.ValueString()
+			name43 = r.Openai.Config.Auth.Headers[headersIndex14].Name.ValueString()
 
 			value28 := new(string)
-			if !r.Ollama.Config.Auth.Headers[headersIndex14].Value.IsUnknown() && !r.Ollama.Config.Auth.Headers[headersIndex14].Value.IsNull() {
-				*value28 = r.Ollama.Config.Auth.Headers[headersIndex14].Value.ValueString()
+			if !r.Openai.Config.Auth.Headers[headersIndex14].Value.IsUnknown() && !r.Openai.Config.Auth.Headers[headersIndex14].Value.IsNull() {
+				*value28 = r.Openai.Config.Auth.Headers[headersIndex14].Value.ValueString()
 			} else {
 				value28 = nil
 			}
@@ -3130,20 +3138,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value28,
 			})
 		}
-		params14 := make([]shared.Params, 0, len(r.Ollama.Config.Auth.Params))
-		for paramsIndex14 := range r.Ollama.Config.Auth.Params {
+		params14 := make([]shared.Params, 0, len(r.Openai.Config.Auth.Params))
+		for paramsIndex14 := range r.Openai.Config.Auth.Params {
 			var name44 string
-			name44 = r.Ollama.Config.Auth.Params[paramsIndex14].Name.ValueString()
+			name44 = r.Openai.Config.Auth.Params[paramsIndex14].Name.ValueString()
 
 			value29 := new(string)
-			if !r.Ollama.Config.Auth.Params[paramsIndex14].Value.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex14].Value.IsNull() {
-				*value29 = r.Ollama.Config.Auth.Params[paramsIndex14].Value.ValueString()
+			if !r.Openai.Config.Auth.Params[paramsIndex14].Value.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex14].Value.IsNull() {
+				*value29 = r.Openai.Config.Auth.Params[paramsIndex14].Value.ValueString()
 			} else {
 				value29 = nil
 			}
 			location14 := new(shared.Location)
-			if !r.Ollama.Config.Auth.Params[paramsIndex14].Location.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex14].Location.IsNull() {
-				*location14 = shared.Location(r.Ollama.Config.Auth.Params[paramsIndex14].Location.ValueString())
+			if !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsNull() {
+				*location14 = shared.Location(r.Openai.Config.Auth.Params[paramsIndex14].Location.ValueString())
 			} else {
 				location14 = nil
 			}
@@ -3157,10 +3165,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers14,
 			Params:  params14,
 		}
-		config14 := shared.AIGatewayModelProviderOllamaConfig{
+		config14 := shared.AIGatewayModelProviderOpenaiConfig{
 			Auth: auth14,
 		}
-		aiGatewayModelProviderOllama = &shared.AIGatewayModelProviderOllama{
+		aiGatewayModelProviderOpenai = &shared.AIGatewayModelProviderOpenai{
 			DisplayName: displayName14,
 			Name:        name42,
 			Labels:      labels14,
@@ -3168,41 +3176,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config14,
 		}
 	}
-	if aiGatewayModelProviderOllama != nil {
+	if aiGatewayModelProviderOpenai != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderOllama: aiGatewayModelProviderOllama,
+			AIGatewayModelProviderOpenai: aiGatewayModelProviderOpenai,
 		}
 	}
-	var aiGatewayModelProviderOpenai *shared.AIGatewayModelProviderOpenai
-	if r.Openai != nil {
+	var aiGatewayModelProviderVercel *shared.AIGatewayModelProviderVercel
+	if r.Vercel != nil {
 		var displayName15 string
-		displayName15 = r.Openai.DisplayName.ValueString()
+		displayName15 = r.Vercel.DisplayName.ValueString()
 
 		var name45 string
-		name45 = r.Openai.Name.ValueString()
+		name45 = r.Vercel.Name.ValueString()
 
 		labels15 := make(map[string]string)
-		for labelsKey15 := range r.Openai.Labels {
+		for labelsKey15 := range r.Vercel.Labels {
 			var labelsInst15 string
-			labelsInst15 = r.Openai.Labels[labelsKey15].ValueString()
+			labelsInst15 = r.Vercel.Labels[labelsKey15].ValueString()
 
 			labels15[labelsKey15] = labelsInst15
 		}
 		managedBy15 := make(map[string]string)
-		for managedByKey15 := range r.Openai.ManagedBy {
+		for managedByKey15 := range r.Vercel.ManagedBy {
 			var managedByInst15 string
-			managedByInst15 = r.Openai.ManagedBy[managedByKey15].ValueString()
+			managedByInst15 = r.Vercel.ManagedBy[managedByKey15].ValueString()
 
 			managedBy15[managedByKey15] = managedByInst15
 		}
-		headers15 := make([]shared.Headers, 0, len(r.Openai.Config.Auth.Headers))
-		for headersIndex15 := range r.Openai.Config.Auth.Headers {
+		headers15 := make([]shared.Headers, 0, len(r.Vercel.Config.Auth.Headers))
+		for headersIndex15 := range r.Vercel.Config.Auth.Headers {
 			var name46 string
-			name46 = r.Openai.Config.Auth.Headers[headersIndex15].Name.ValueString()
+			name46 = r.Vercel.Config.Auth.Headers[headersIndex15].Name.ValueString()
 
 			value30 := new(string)
-			if !r.Openai.Config.Auth.Headers[headersIndex15].Value.IsUnknown() && !r.Openai.Config.Auth.Headers[headersIndex15].Value.IsNull() {
-				*value30 = r.Openai.Config.Auth.Headers[headersIndex15].Value.ValueString()
+			if !r.Vercel.Config.Auth.Headers[headersIndex15].Value.IsUnknown() && !r.Vercel.Config.Auth.Headers[headersIndex15].Value.IsNull() {
+				*value30 = r.Vercel.Config.Auth.Headers[headersIndex15].Value.ValueString()
 			} else {
 				value30 = nil
 			}
@@ -3211,20 +3219,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value30,
 			})
 		}
-		params15 := make([]shared.Params, 0, len(r.Openai.Config.Auth.Params))
-		for paramsIndex15 := range r.Openai.Config.Auth.Params {
+		params15 := make([]shared.Params, 0, len(r.Vercel.Config.Auth.Params))
+		for paramsIndex15 := range r.Vercel.Config.Auth.Params {
 			var name47 string
-			name47 = r.Openai.Config.Auth.Params[paramsIndex15].Name.ValueString()
+			name47 = r.Vercel.Config.Auth.Params[paramsIndex15].Name.ValueString()
 
 			value31 := new(string)
-			if !r.Openai.Config.Auth.Params[paramsIndex15].Value.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex15].Value.IsNull() {
-				*value31 = r.Openai.Config.Auth.Params[paramsIndex15].Value.ValueString()
+			if !r.Vercel.Config.Auth.Params[paramsIndex15].Value.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex15].Value.IsNull() {
+				*value31 = r.Vercel.Config.Auth.Params[paramsIndex15].Value.ValueString()
 			} else {
 				value31 = nil
 			}
 			location15 := new(shared.Location)
-			if !r.Openai.Config.Auth.Params[paramsIndex15].Location.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex15].Location.IsNull() {
-				*location15 = shared.Location(r.Openai.Config.Auth.Params[paramsIndex15].Location.ValueString())
+			if !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsNull() {
+				*location15 = shared.Location(r.Vercel.Config.Auth.Params[paramsIndex15].Location.ValueString())
 			} else {
 				location15 = nil
 			}
@@ -3238,10 +3246,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers15,
 			Params:  params15,
 		}
-		config15 := shared.AIGatewayModelProviderOpenaiConfig{
+		config15 := shared.AIGatewayModelProviderVercelConfig{
 			Auth: auth15,
 		}
-		aiGatewayModelProviderOpenai = &shared.AIGatewayModelProviderOpenai{
+		aiGatewayModelProviderVercel = &shared.AIGatewayModelProviderVercel{
 			DisplayName: displayName15,
 			Name:        name45,
 			Labels:      labels15,
@@ -3249,41 +3257,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config15,
 		}
 	}
-	if aiGatewayModelProviderOpenai != nil {
+	if aiGatewayModelProviderVercel != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderOpenai: aiGatewayModelProviderOpenai,
+			AIGatewayModelProviderVercel: aiGatewayModelProviderVercel,
 		}
 	}
-	var aiGatewayModelProviderVercel *shared.AIGatewayModelProviderVercel
-	if r.Vercel != nil {
+	var aiGatewayModelProviderVllm *shared.AIGatewayModelProviderVllm
+	if r.Vllm != nil {
 		var displayName16 string
-		displayName16 = r.Vercel.DisplayName.ValueString()
+		displayName16 = r.Vllm.DisplayName.ValueString()
 
 		var name48 string
-		name48 = r.Vercel.Name.ValueString()
+		name48 = r.Vllm.Name.ValueString()
 
 		labels16 := make(map[string]string)
-		for labelsKey16 := range r.Vercel.Labels {
+		for labelsKey16 := range r.Vllm.Labels {
 			var labelsInst16 string
-			labelsInst16 = r.Vercel.Labels[labelsKey16].ValueString()
+			labelsInst16 = r.Vllm.Labels[labelsKey16].ValueString()
 
 			labels16[labelsKey16] = labelsInst16
 		}
 		managedBy16 := make(map[string]string)
-		for managedByKey16 := range r.Vercel.ManagedBy {
+		for managedByKey16 := range r.Vllm.ManagedBy {
 			var managedByInst16 string
-			managedByInst16 = r.Vercel.ManagedBy[managedByKey16].ValueString()
+			managedByInst16 = r.Vllm.ManagedBy[managedByKey16].ValueString()
 
 			managedBy16[managedByKey16] = managedByInst16
 		}
-		headers16 := make([]shared.Headers, 0, len(r.Vercel.Config.Auth.Headers))
-		for headersIndex16 := range r.Vercel.Config.Auth.Headers {
+		headers16 := make([]shared.Headers, 0, len(r.Vllm.Config.Auth.Headers))
+		for headersIndex16 := range r.Vllm.Config.Auth.Headers {
 			var name49 string
-			name49 = r.Vercel.Config.Auth.Headers[headersIndex16].Name.ValueString()
+			name49 = r.Vllm.Config.Auth.Headers[headersIndex16].Name.ValueString()
 
 			value32 := new(string)
-			if !r.Vercel.Config.Auth.Headers[headersIndex16].Value.IsUnknown() && !r.Vercel.Config.Auth.Headers[headersIndex16].Value.IsNull() {
-				*value32 = r.Vercel.Config.Auth.Headers[headersIndex16].Value.ValueString()
+			if !r.Vllm.Config.Auth.Headers[headersIndex16].Value.IsUnknown() && !r.Vllm.Config.Auth.Headers[headersIndex16].Value.IsNull() {
+				*value32 = r.Vllm.Config.Auth.Headers[headersIndex16].Value.ValueString()
 			} else {
 				value32 = nil
 			}
@@ -3292,20 +3300,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value32,
 			})
 		}
-		params16 := make([]shared.Params, 0, len(r.Vercel.Config.Auth.Params))
-		for paramsIndex16 := range r.Vercel.Config.Auth.Params {
+		params16 := make([]shared.Params, 0, len(r.Vllm.Config.Auth.Params))
+		for paramsIndex16 := range r.Vllm.Config.Auth.Params {
 			var name50 string
-			name50 = r.Vercel.Config.Auth.Params[paramsIndex16].Name.ValueString()
+			name50 = r.Vllm.Config.Auth.Params[paramsIndex16].Name.ValueString()
 
 			value33 := new(string)
-			if !r.Vercel.Config.Auth.Params[paramsIndex16].Value.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex16].Value.IsNull() {
-				*value33 = r.Vercel.Config.Auth.Params[paramsIndex16].Value.ValueString()
+			if !r.Vllm.Config.Auth.Params[paramsIndex16].Value.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex16].Value.IsNull() {
+				*value33 = r.Vllm.Config.Auth.Params[paramsIndex16].Value.ValueString()
 			} else {
 				value33 = nil
 			}
 			location16 := new(shared.Location)
-			if !r.Vercel.Config.Auth.Params[paramsIndex16].Location.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex16].Location.IsNull() {
-				*location16 = shared.Location(r.Vercel.Config.Auth.Params[paramsIndex16].Location.ValueString())
+			if !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsNull() {
+				*location16 = shared.Location(r.Vllm.Config.Auth.Params[paramsIndex16].Location.ValueString())
 			} else {
 				location16 = nil
 			}
@@ -3319,10 +3327,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers16,
 			Params:  params16,
 		}
-		config16 := shared.AIGatewayModelProviderVercelConfig{
+		config16 := shared.AIGatewayModelProviderVllmConfig{
 			Auth: auth16,
 		}
-		aiGatewayModelProviderVercel = &shared.AIGatewayModelProviderVercel{
+		aiGatewayModelProviderVllm = &shared.AIGatewayModelProviderVllm{
 			DisplayName: displayName16,
 			Name:        name48,
 			Labels:      labels16,
@@ -3330,41 +3338,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Config:      config16,
 		}
 	}
-	if aiGatewayModelProviderVercel != nil {
+	if aiGatewayModelProviderVllm != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderVercel: aiGatewayModelProviderVercel,
+			AIGatewayModelProviderVllm: aiGatewayModelProviderVllm,
 		}
 	}
-	var aiGatewayModelProviderVllm *shared.AIGatewayModelProviderVllm
-	if r.Vllm != nil {
+	var aiGatewayModelProviderXai *shared.AIGatewayModelProviderXai
+	if r.Xai != nil {
 		var displayName17 string
-		displayName17 = r.Vllm.DisplayName.ValueString()
+		displayName17 = r.Xai.DisplayName.ValueString()
 
 		var name51 string
-		name51 = r.Vllm.Name.ValueString()
+		name51 = r.Xai.Name.ValueString()
 
 		labels17 := make(map[string]string)
-		for labelsKey17 := range r.Vllm.Labels {
+		for labelsKey17 := range r.Xai.Labels {
 			var labelsInst17 string
-			labelsInst17 = r.Vllm.Labels[labelsKey17].ValueString()
+			labelsInst17 = r.Xai.Labels[labelsKey17].ValueString()
 
 			labels17[labelsKey17] = labelsInst17
 		}
 		managedBy17 := make(map[string]string)
-		for managedByKey17 := range r.Vllm.ManagedBy {
+		for managedByKey17 := range r.Xai.ManagedBy {
 			var managedByInst17 string
-			managedByInst17 = r.Vllm.ManagedBy[managedByKey17].ValueString()
+			managedByInst17 = r.Xai.ManagedBy[managedByKey17].ValueString()
 
 			managedBy17[managedByKey17] = managedByInst17
 		}
-		headers17 := make([]shared.Headers, 0, len(r.Vllm.Config.Auth.Headers))
-		for headersIndex17 := range r.Vllm.Config.Auth.Headers {
+		headers17 := make([]shared.Headers, 0, len(r.Xai.Config.Auth.Headers))
+		for headersIndex17 := range r.Xai.Config.Auth.Headers {
 			var name52 string
-			name52 = r.Vllm.Config.Auth.Headers[headersIndex17].Name.ValueString()
+			name52 = r.Xai.Config.Auth.Headers[headersIndex17].Name.ValueString()
 
 			value34 := new(string)
-			if !r.Vllm.Config.Auth.Headers[headersIndex17].Value.IsUnknown() && !r.Vllm.Config.Auth.Headers[headersIndex17].Value.IsNull() {
-				*value34 = r.Vllm.Config.Auth.Headers[headersIndex17].Value.ValueString()
+			if !r.Xai.Config.Auth.Headers[headersIndex17].Value.IsUnknown() && !r.Xai.Config.Auth.Headers[headersIndex17].Value.IsNull() {
+				*value34 = r.Xai.Config.Auth.Headers[headersIndex17].Value.ValueString()
 			} else {
 				value34 = nil
 			}
@@ -3373,20 +3381,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				Value: value34,
 			})
 		}
-		params17 := make([]shared.Params, 0, len(r.Vllm.Config.Auth.Params))
-		for paramsIndex17 := range r.Vllm.Config.Auth.Params {
+		params17 := make([]shared.Params, 0, len(r.Xai.Config.Auth.Params))
+		for paramsIndex17 := range r.Xai.Config.Auth.Params {
 			var name53 string
-			name53 = r.Vllm.Config.Auth.Params[paramsIndex17].Name.ValueString()
+			name53 = r.Xai.Config.Auth.Params[paramsIndex17].Name.ValueString()
 
 			value35 := new(string)
-			if !r.Vllm.Config.Auth.Params[paramsIndex17].Value.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex17].Value.IsNull() {
-				*value35 = r.Vllm.Config.Auth.Params[paramsIndex17].Value.ValueString()
+			if !r.Xai.Config.Auth.Params[paramsIndex17].Value.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex17].Value.IsNull() {
+				*value35 = r.Xai.Config.Auth.Params[paramsIndex17].Value.ValueString()
 			} else {
 				value35 = nil
 			}
 			location17 := new(shared.Location)
-			if !r.Vllm.Config.Auth.Params[paramsIndex17].Location.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex17].Location.IsNull() {
-				*location17 = shared.Location(r.Vllm.Config.Auth.Params[paramsIndex17].Location.ValueString())
+			if !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsNull() {
+				*location17 = shared.Location(r.Xai.Config.Auth.Params[paramsIndex17].Location.ValueString())
 			} else {
 				location17 = nil
 			}
@@ -3400,96 +3408,15 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			Headers: headers17,
 			Params:  params17,
 		}
-		config17 := shared.AIGatewayModelProviderVllmConfig{
+		config17 := shared.AIGatewayModelProviderXaiConfig{
 			Auth: auth17,
 		}
-		aiGatewayModelProviderVllm = &shared.AIGatewayModelProviderVllm{
+		aiGatewayModelProviderXai = &shared.AIGatewayModelProviderXai{
 			DisplayName: displayName17,
 			Name:        name51,
 			Labels:      labels17,
 			ManagedBy:   managedBy17,
 			Config:      config17,
-		}
-	}
-	if aiGatewayModelProviderVllm != nil {
-		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderVllm: aiGatewayModelProviderVllm,
-		}
-	}
-	var aiGatewayModelProviderXai *shared.AIGatewayModelProviderXai
-	if r.Xai != nil {
-		var displayName18 string
-		displayName18 = r.Xai.DisplayName.ValueString()
-
-		var name54 string
-		name54 = r.Xai.Name.ValueString()
-
-		labels18 := make(map[string]string)
-		for labelsKey18 := range r.Xai.Labels {
-			var labelsInst18 string
-			labelsInst18 = r.Xai.Labels[labelsKey18].ValueString()
-
-			labels18[labelsKey18] = labelsInst18
-		}
-		managedBy18 := make(map[string]string)
-		for managedByKey18 := range r.Xai.ManagedBy {
-			var managedByInst18 string
-			managedByInst18 = r.Xai.ManagedBy[managedByKey18].ValueString()
-
-			managedBy18[managedByKey18] = managedByInst18
-		}
-		headers18 := make([]shared.Headers, 0, len(r.Xai.Config.Auth.Headers))
-		for headersIndex18 := range r.Xai.Config.Auth.Headers {
-			var name55 string
-			name55 = r.Xai.Config.Auth.Headers[headersIndex18].Name.ValueString()
-
-			value36 := new(string)
-			if !r.Xai.Config.Auth.Headers[headersIndex18].Value.IsUnknown() && !r.Xai.Config.Auth.Headers[headersIndex18].Value.IsNull() {
-				*value36 = r.Xai.Config.Auth.Headers[headersIndex18].Value.ValueString()
-			} else {
-				value36 = nil
-			}
-			headers18 = append(headers18, shared.Headers{
-				Name:  name55,
-				Value: value36,
-			})
-		}
-		params18 := make([]shared.Params, 0, len(r.Xai.Config.Auth.Params))
-		for paramsIndex18 := range r.Xai.Config.Auth.Params {
-			var name56 string
-			name56 = r.Xai.Config.Auth.Params[paramsIndex18].Name.ValueString()
-
-			value37 := new(string)
-			if !r.Xai.Config.Auth.Params[paramsIndex18].Value.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex18].Value.IsNull() {
-				*value37 = r.Xai.Config.Auth.Params[paramsIndex18].Value.ValueString()
-			} else {
-				value37 = nil
-			}
-			location18 := new(shared.Location)
-			if !r.Xai.Config.Auth.Params[paramsIndex18].Location.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex18].Location.IsNull() {
-				*location18 = shared.Location(r.Xai.Config.Auth.Params[paramsIndex18].Location.ValueString())
-			} else {
-				location18 = nil
-			}
-			params18 = append(params18, shared.Params{
-				Name:     name56,
-				Value:    value37,
-				Location: location18,
-			})
-		}
-		auth18 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers18,
-			Params:  params18,
-		}
-		config18 := shared.AIGatewayModelProviderXaiConfig{
-			Auth: auth18,
-		}
-		aiGatewayModelProviderXai = &shared.AIGatewayModelProviderXai{
-			DisplayName: displayName18,
-			Name:        name54,
-			Labels:      labels18,
-			ManagedBy:   managedBy18,
-			Config:      config18,
 		}
 	}
 	if aiGatewayModelProviderXai != nil {
@@ -3499,212 +3426,131 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderSagemaker *shared.AIGatewayModelProviderSagemaker
 	if r.Sagemaker != nil {
-		var displayName19 string
-		displayName19 = r.Sagemaker.DisplayName.ValueString()
+		var displayName18 string
+		displayName18 = r.Sagemaker.DisplayName.ValueString()
 
-		var name57 string
-		name57 = r.Sagemaker.Name.ValueString()
+		var name54 string
+		name54 = r.Sagemaker.Name.ValueString()
 
-		labels19 := make(map[string]string)
-		for labelsKey19 := range r.Sagemaker.Labels {
-			var labelsInst19 string
-			labelsInst19 = r.Sagemaker.Labels[labelsKey19].ValueString()
+		labels18 := make(map[string]string)
+		for labelsKey18 := range r.Sagemaker.Labels {
+			var labelsInst18 string
+			labelsInst18 = r.Sagemaker.Labels[labelsKey18].ValueString()
 
-			labels19[labelsKey19] = labelsInst19
+			labels18[labelsKey18] = labelsInst18
 		}
-		managedBy19 := make(map[string]string)
-		for managedByKey19 := range r.Sagemaker.ManagedBy {
-			var managedByInst19 string
-			managedByInst19 = r.Sagemaker.ManagedBy[managedByKey19].ValueString()
+		managedBy18 := make(map[string]string)
+		for managedByKey18 := range r.Sagemaker.ManagedBy {
+			var managedByInst18 string
+			managedByInst18 = r.Sagemaker.ManagedBy[managedByKey18].ValueString()
 
-			managedBy19[managedByKey19] = managedByInst19
+			managedBy18[managedByKey18] = managedByInst18
 		}
-		var auth19 shared.AIGatewayModelProviderSagemakerAuth
+		var auth18 shared.AIGatewayModelProviderSagemakerAuth
 		var aiGatewayModelProviderConfigAuthBasic3 *shared.AIGatewayModelProviderConfigAuthBasic
 		if r.Sagemaker.Config.Auth.Basic != nil {
-			headers19 := make([]shared.Headers, 0, len(r.Sagemaker.Config.Auth.Basic.Headers))
-			for headersIndex19 := range r.Sagemaker.Config.Auth.Basic.Headers {
-				var name58 string
-				name58 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Name.ValueString()
+			headers18 := make([]shared.Headers, 0, len(r.Sagemaker.Config.Auth.Basic.Headers))
+			for headersIndex18 := range r.Sagemaker.Config.Auth.Basic.Headers {
+				var name55 string
+				name55 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Name.ValueString()
 
-				value38 := new(string)
-				if !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Value.IsNull() {
-					*value38 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Value.ValueString()
+				value36 := new(string)
+				if !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Value.IsNull() {
+					*value36 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Value.ValueString()
 				} else {
-					value38 = nil
+					value36 = nil
 				}
-				headers19 = append(headers19, shared.Headers{
-					Name:  name58,
-					Value: value38,
+				headers18 = append(headers18, shared.Headers{
+					Name:  name55,
+					Value: value36,
 				})
 			}
-			params19 := make([]shared.Params, 0, len(r.Sagemaker.Config.Auth.Basic.Params))
-			for paramsIndex19 := range r.Sagemaker.Config.Auth.Basic.Params {
-				var name59 string
-				name59 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Name.ValueString()
+			params18 := make([]shared.Params, 0, len(r.Sagemaker.Config.Auth.Basic.Params))
+			for paramsIndex18 := range r.Sagemaker.Config.Auth.Basic.Params {
+				var name56 string
+				name56 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Name.ValueString()
 
-				value39 := new(string)
-				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Value.IsNull() {
-					*value39 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Value.ValueString()
+				value37 := new(string)
+				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Value.IsNull() {
+					*value37 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Value.ValueString()
 				} else {
-					value39 = nil
+					value37 = nil
 				}
-				location19 := new(shared.Location)
-				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Location.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Location.IsNull() {
-					*location19 = shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Location.ValueString())
+				location18 := new(shared.Location)
+				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsNull() {
+					*location18 = shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.ValueString())
 				} else {
-					location19 = nil
+					location18 = nil
 				}
-				params19 = append(params19, shared.Params{
-					Name:     name59,
-					Value:    value39,
-					Location: location19,
+				params18 = append(params18, shared.Params{
+					Name:     name56,
+					Value:    value37,
+					Location: location18,
 				})
 			}
 			aiGatewayModelProviderConfigAuthBasic3 = &shared.AIGatewayModelProviderConfigAuthBasic{
-				Headers: headers19,
-				Params:  params19,
+				Headers: headers18,
+				Params:  params18,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthBasic3 != nil {
-			auth19 = shared.AIGatewayModelProviderSagemakerAuth{
+			auth18 = shared.AIGatewayModelProviderSagemakerAuth{
 				AIGatewayModelProviderConfigAuthBasic: aiGatewayModelProviderConfigAuthBasic3,
 			}
 		}
 		var aiGatewayModelProviderConfigAuthSagemaker *shared.AIGatewayModelProviderConfigAuthSagemaker
 		if r.Sagemaker.Config.Auth.Sagemaker != nil {
 			typeVar := shared.AIGatewayModelProviderConfigAuthSagemakerType(r.Sagemaker.Config.Auth.Sagemaker.Type.ValueString())
-			var aws1 *shared.AIGatewayModelProviderConfigAuthSagemakerAws
+			var aws *shared.AIGatewayModelProviderConfigAuthSagemakerAws
 			if r.Sagemaker.Config.Auth.Sagemaker.Aws != nil {
-				accessKeyId2 := new(string)
+				accessKeyId1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.IsNull() {
-					*accessKeyId2 = r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.ValueString()
+					*accessKeyId1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.ValueString()
 				} else {
-					accessKeyId2 = nil
+					accessKeyId1 = nil
 				}
-				secretAccessKey2 := new(string)
+				secretAccessKey1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.IsNull() {
-					*secretAccessKey2 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.ValueString()
+					*secretAccessKey1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.ValueString()
 				} else {
-					secretAccessKey2 = nil
+					secretAccessKey1 = nil
 				}
-				sessionToken2 := new(string)
+				sessionToken1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsNull() {
-					*sessionToken2 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
+					*sessionToken1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
 				} else {
-					sessionToken2 = nil
+					sessionToken1 = nil
 				}
-				aws1 = &shared.AIGatewayModelProviderConfigAuthSagemakerAws{
-					AccessKeyID:     accessKeyId2,
-					SecretAccessKey: secretAccessKey2,
-					SessionToken:    sessionToken2,
+				aws = &shared.AIGatewayModelProviderConfigAuthSagemakerAws{
+					AccessKeyID:     accessKeyId1,
+					SecretAccessKey: secretAccessKey1,
+					SessionToken:    sessionToken1,
 				}
 			}
 			aiGatewayModelProviderConfigAuthSagemaker = &shared.AIGatewayModelProviderConfigAuthSagemaker{
 				Type: typeVar,
-				Aws:  aws1,
+				Aws:  aws,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthSagemaker != nil {
-			auth19 = shared.AIGatewayModelProviderSagemakerAuth{
+			auth18 = shared.AIGatewayModelProviderSagemakerAuth{
 				AIGatewayModelProviderConfigAuthSagemaker: aiGatewayModelProviderConfigAuthSagemaker,
 			}
 		}
-		config19 := shared.AIGatewayModelProviderSagemakerConfig{
-			Auth: auth19,
+		config18 := shared.AIGatewayModelProviderSagemakerConfig{
+			Auth: auth18,
 		}
 		aiGatewayModelProviderSagemaker = &shared.AIGatewayModelProviderSagemaker{
-			DisplayName: displayName19,
-			Name:        name57,
-			Labels:      labels19,
-			ManagedBy:   managedBy19,
-			Config:      config19,
+			DisplayName: displayName18,
+			Name:        name54,
+			Labels:      labels18,
+			ManagedBy:   managedBy18,
+			Config:      config18,
 		}
 	}
 	if aiGatewayModelProviderSagemaker != nil {
 		out = shared.CreateAIGatewayModelProviderRequest{
 			AIGatewayModelProviderSagemaker: aiGatewayModelProviderSagemaker,
-		}
-	}
-	var aiGatewayModelProviderTypesafe *shared.AIGatewayModelProviderTypesafe
-	if r.Typesafe != nil {
-		var displayName20 string
-		displayName20 = r.Typesafe.DisplayName.ValueString()
-
-		var name60 string
-		name60 = r.Typesafe.Name.ValueString()
-
-		labels20 := make(map[string]string)
-		for labelsKey20 := range r.Typesafe.Labels {
-			var labelsInst20 string
-			labelsInst20 = r.Typesafe.Labels[labelsKey20].ValueString()
-
-			labels20[labelsKey20] = labelsInst20
-		}
-		managedBy20 := make(map[string]string)
-		for managedByKey20 := range r.Typesafe.ManagedBy {
-			var managedByInst20 string
-			managedByInst20 = r.Typesafe.ManagedBy[managedByKey20].ValueString()
-
-			managedBy20[managedByKey20] = managedByInst20
-		}
-		headers20 := make([]shared.Headers, 0, len(r.Typesafe.Config.Auth.Headers))
-		for headersIndex20 := range r.Typesafe.Config.Auth.Headers {
-			var name61 string
-			name61 = r.Typesafe.Config.Auth.Headers[headersIndex20].Name.ValueString()
-
-			value40 := new(string)
-			if !r.Typesafe.Config.Auth.Headers[headersIndex20].Value.IsUnknown() && !r.Typesafe.Config.Auth.Headers[headersIndex20].Value.IsNull() {
-				*value40 = r.Typesafe.Config.Auth.Headers[headersIndex20].Value.ValueString()
-			} else {
-				value40 = nil
-			}
-			headers20 = append(headers20, shared.Headers{
-				Name:  name61,
-				Value: value40,
-			})
-		}
-		params20 := make([]shared.Params, 0, len(r.Typesafe.Config.Auth.Params))
-		for paramsIndex20 := range r.Typesafe.Config.Auth.Params {
-			var name62 string
-			name62 = r.Typesafe.Config.Auth.Params[paramsIndex20].Name.ValueString()
-
-			value41 := new(string)
-			if !r.Typesafe.Config.Auth.Params[paramsIndex20].Value.IsUnknown() && !r.Typesafe.Config.Auth.Params[paramsIndex20].Value.IsNull() {
-				*value41 = r.Typesafe.Config.Auth.Params[paramsIndex20].Value.ValueString()
-			} else {
-				value41 = nil
-			}
-			location20 := new(shared.Location)
-			if !r.Typesafe.Config.Auth.Params[paramsIndex20].Location.IsUnknown() && !r.Typesafe.Config.Auth.Params[paramsIndex20].Location.IsNull() {
-				*location20 = shared.Location(r.Typesafe.Config.Auth.Params[paramsIndex20].Location.ValueString())
-			} else {
-				location20 = nil
-			}
-			params20 = append(params20, shared.Params{
-				Name:     name62,
-				Value:    value41,
-				Location: location20,
-			})
-		}
-		auth20 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers20,
-			Params:  params20,
-		}
-		config20 := shared.AIGatewayModelProviderTypesafeConfig{
-			Auth: auth20,
-		}
-		aiGatewayModelProviderTypesafe = &shared.AIGatewayModelProviderTypesafe{
-			DisplayName: displayName20,
-			Name:        name60,
-			Labels:      labels20,
-			ManagedBy:   managedBy20,
-			Config:      config20,
-		}
-	}
-	if aiGatewayModelProviderTypesafe != nil {
-		out = shared.CreateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderTypesafe: aiGatewayModelProviderTypesafe,
 		}
 	}
 
@@ -3955,158 +3801,77 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			AIGatewayModelProviderAzure: aiGatewayModelProviderAzure,
 		}
 	}
-	var aiGatewayModelProviderBaseten *shared.AIGatewayModelProviderBaseten
-	if r.Baseten != nil {
+	var aiGatewayModelProviderBedrock *shared.AIGatewayModelProviderBedrock
+	if r.Bedrock != nil {
 		var displayName2 string
-		displayName2 = r.Baseten.DisplayName.ValueString()
+		displayName2 = r.Bedrock.DisplayName.ValueString()
 
 		var name6 string
-		name6 = r.Baseten.Name.ValueString()
+		name6 = r.Bedrock.Name.ValueString()
 
 		labels2 := make(map[string]string)
-		for labelsKey2 := range r.Baseten.Labels {
+		for labelsKey2 := range r.Bedrock.Labels {
 			var labelsInst2 string
-			labelsInst2 = r.Baseten.Labels[labelsKey2].ValueString()
+			labelsInst2 = r.Bedrock.Labels[labelsKey2].ValueString()
 
 			labels2[labelsKey2] = labelsInst2
 		}
 		managedBy2 := make(map[string]string)
-		for managedByKey2 := range r.Baseten.ManagedBy {
+		for managedByKey2 := range r.Bedrock.ManagedBy {
 			var managedByInst2 string
-			managedByInst2 = r.Baseten.ManagedBy[managedByKey2].ValueString()
+			managedByInst2 = r.Bedrock.ManagedBy[managedByKey2].ValueString()
 
 			managedBy2[managedByKey2] = managedByInst2
 		}
-		headers2 := make([]shared.Headers, 0, len(r.Baseten.Config.Auth.Headers))
-		for headersIndex2 := range r.Baseten.Config.Auth.Headers {
-			var name7 string
-			name7 = r.Baseten.Config.Auth.Headers[headersIndex2].Name.ValueString()
-
-			value4 := new(string)
-			if !r.Baseten.Config.Auth.Headers[headersIndex2].Value.IsUnknown() && !r.Baseten.Config.Auth.Headers[headersIndex2].Value.IsNull() {
-				*value4 = r.Baseten.Config.Auth.Headers[headersIndex2].Value.ValueString()
-			} else {
-				value4 = nil
-			}
-			headers2 = append(headers2, shared.Headers{
-				Name:  name7,
-				Value: value4,
-			})
-		}
-		params2 := make([]shared.Params, 0, len(r.Baseten.Config.Auth.Params))
-		for paramsIndex2 := range r.Baseten.Config.Auth.Params {
-			var name8 string
-			name8 = r.Baseten.Config.Auth.Params[paramsIndex2].Name.ValueString()
-
-			value5 := new(string)
-			if !r.Baseten.Config.Auth.Params[paramsIndex2].Value.IsUnknown() && !r.Baseten.Config.Auth.Params[paramsIndex2].Value.IsNull() {
-				*value5 = r.Baseten.Config.Auth.Params[paramsIndex2].Value.ValueString()
-			} else {
-				value5 = nil
-			}
-			location2 := new(shared.Location)
-			if !r.Baseten.Config.Auth.Params[paramsIndex2].Location.IsUnknown() && !r.Baseten.Config.Auth.Params[paramsIndex2].Location.IsNull() {
-				*location2 = shared.Location(r.Baseten.Config.Auth.Params[paramsIndex2].Location.ValueString())
-			} else {
-				location2 = nil
-			}
-			params2 = append(params2, shared.Params{
-				Name:     name8,
-				Value:    value5,
-				Location: location2,
-			})
-		}
-		auth2 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers2,
-			Params:  params2,
-		}
-		config2 := shared.AIGatewayModelProviderBasetenConfig{
-			Auth: auth2,
-		}
-		aiGatewayModelProviderBaseten = &shared.AIGatewayModelProviderBaseten{
-			DisplayName: displayName2,
-			Name:        name6,
-			Labels:      labels2,
-			ManagedBy:   managedBy2,
-			Config:      config2,
-		}
-	}
-	if aiGatewayModelProviderBaseten != nil {
-		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderBaseten: aiGatewayModelProviderBaseten,
-		}
-	}
-	var aiGatewayModelProviderBedrock *shared.AIGatewayModelProviderBedrock
-	if r.Bedrock != nil {
-		var displayName3 string
-		displayName3 = r.Bedrock.DisplayName.ValueString()
-
-		var name9 string
-		name9 = r.Bedrock.Name.ValueString()
-
-		labels3 := make(map[string]string)
-		for labelsKey3 := range r.Bedrock.Labels {
-			var labelsInst3 string
-			labelsInst3 = r.Bedrock.Labels[labelsKey3].ValueString()
-
-			labels3[labelsKey3] = labelsInst3
-		}
-		managedBy3 := make(map[string]string)
-		for managedByKey3 := range r.Bedrock.ManagedBy {
-			var managedByInst3 string
-			managedByInst3 = r.Bedrock.ManagedBy[managedByKey3].ValueString()
-
-			managedBy3[managedByKey3] = managedByInst3
-		}
-		var auth3 shared.AIGatewayModelProviderBedrockAuth
+		var auth2 shared.AIGatewayModelProviderBedrockAuth
 		var aiGatewayModelProviderConfigAuthBasic1 *shared.AIGatewayModelProviderConfigAuthBasic
 		if r.Bedrock.Config.Auth.Basic != nil {
-			headers3 := make([]shared.Headers, 0, len(r.Bedrock.Config.Auth.Basic.Headers))
-			for headersIndex3 := range r.Bedrock.Config.Auth.Basic.Headers {
-				var name10 string
-				name10 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Name.ValueString()
+			headers2 := make([]shared.Headers, 0, len(r.Bedrock.Config.Auth.Basic.Headers))
+			for headersIndex2 := range r.Bedrock.Config.Auth.Basic.Headers {
+				var name7 string
+				name7 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Name.ValueString()
 
-				value6 := new(string)
-				if !r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Value.IsNull() {
-					*value6 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex3].Value.ValueString()
+				value4 := new(string)
+				if !r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Value.IsNull() {
+					*value4 = r.Bedrock.Config.Auth.Basic.Headers[headersIndex2].Value.ValueString()
 				} else {
-					value6 = nil
+					value4 = nil
 				}
-				headers3 = append(headers3, shared.Headers{
-					Name:  name10,
-					Value: value6,
+				headers2 = append(headers2, shared.Headers{
+					Name:  name7,
+					Value: value4,
 				})
 			}
-			params3 := make([]shared.Params, 0, len(r.Bedrock.Config.Auth.Basic.Params))
-			for paramsIndex3 := range r.Bedrock.Config.Auth.Basic.Params {
-				var name11 string
-				name11 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Name.ValueString()
+			params2 := make([]shared.Params, 0, len(r.Bedrock.Config.Auth.Basic.Params))
+			for paramsIndex2 := range r.Bedrock.Config.Auth.Basic.Params {
+				var name8 string
+				name8 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Name.ValueString()
 
-				value7 := new(string)
-				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Value.IsNull() {
-					*value7 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Value.ValueString()
+				value5 := new(string)
+				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Value.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Value.IsNull() {
+					*value5 = r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Value.ValueString()
 				} else {
-					value7 = nil
+					value5 = nil
 				}
-				location3 := new(shared.Location)
-				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Location.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Location.IsNull() {
-					*location3 = shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex3].Location.ValueString())
+				location2 := new(shared.Location)
+				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsNull() {
+					*location2 = shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.ValueString())
 				} else {
-					location3 = nil
+					location2 = nil
 				}
-				params3 = append(params3, shared.Params{
-					Name:     name11,
-					Value:    value7,
-					Location: location3,
+				params2 = append(params2, shared.Params{
+					Name:     name8,
+					Value:    value5,
+					Location: location2,
 				})
 			}
 			aiGatewayModelProviderConfigAuthBasic1 = &shared.AIGatewayModelProviderConfigAuthBasic{
-				Headers: headers3,
-				Params:  params3,
+				Headers: headers2,
+				Params:  params2,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthBasic1 != nil {
-			auth3 = shared.AIGatewayModelProviderBedrockAuth{
+			auth2 = shared.AIGatewayModelProviderBedrockAuth{
 				AIGatewayModelProviderConfigAuthBasic: aiGatewayModelProviderConfigAuthBasic1,
 			}
 		}
@@ -4165,19 +3930,19 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			}
 		}
 		if aiGatewayModelProviderConfigAuthAWS != nil {
-			auth3 = shared.AIGatewayModelProviderBedrockAuth{
+			auth2 = shared.AIGatewayModelProviderBedrockAuth{
 				AIGatewayModelProviderConfigAuthAWS: aiGatewayModelProviderConfigAuthAWS,
 			}
 		}
-		config3 := shared.AIGatewayModelProviderBedrockConfig{
-			Auth: auth3,
+		config2 := shared.AIGatewayModelProviderBedrockConfig{
+			Auth: auth2,
 		}
 		aiGatewayModelProviderBedrock = &shared.AIGatewayModelProviderBedrock{
-			DisplayName: displayName3,
-			Name:        name9,
-			Labels:      labels3,
-			ManagedBy:   managedBy3,
-			Config:      config3,
+			DisplayName: displayName2,
+			Name:        name6,
+			Labels:      labels2,
+			ManagedBy:   managedBy2,
+			Config:      config2,
 		}
 	}
 	if aiGatewayModelProviderBedrock != nil {
@@ -4187,34 +3952,115 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderCerebras *shared.AIGatewayModelProviderCerebras
 	if r.Cerebras != nil {
+		var displayName3 string
+		displayName3 = r.Cerebras.DisplayName.ValueString()
+
+		var name9 string
+		name9 = r.Cerebras.Name.ValueString()
+
+		labels3 := make(map[string]string)
+		for labelsKey3 := range r.Cerebras.Labels {
+			var labelsInst3 string
+			labelsInst3 = r.Cerebras.Labels[labelsKey3].ValueString()
+
+			labels3[labelsKey3] = labelsInst3
+		}
+		managedBy3 := make(map[string]string)
+		for managedByKey3 := range r.Cerebras.ManagedBy {
+			var managedByInst3 string
+			managedByInst3 = r.Cerebras.ManagedBy[managedByKey3].ValueString()
+
+			managedBy3[managedByKey3] = managedByInst3
+		}
+		headers3 := make([]shared.Headers, 0, len(r.Cerebras.Config.Auth.Headers))
+		for headersIndex3 := range r.Cerebras.Config.Auth.Headers {
+			var name10 string
+			name10 = r.Cerebras.Config.Auth.Headers[headersIndex3].Name.ValueString()
+
+			value6 := new(string)
+			if !r.Cerebras.Config.Auth.Headers[headersIndex3].Value.IsUnknown() && !r.Cerebras.Config.Auth.Headers[headersIndex3].Value.IsNull() {
+				*value6 = r.Cerebras.Config.Auth.Headers[headersIndex3].Value.ValueString()
+			} else {
+				value6 = nil
+			}
+			headers3 = append(headers3, shared.Headers{
+				Name:  name10,
+				Value: value6,
+			})
+		}
+		params3 := make([]shared.Params, 0, len(r.Cerebras.Config.Auth.Params))
+		for paramsIndex3 := range r.Cerebras.Config.Auth.Params {
+			var name11 string
+			name11 = r.Cerebras.Config.Auth.Params[paramsIndex3].Name.ValueString()
+
+			value7 := new(string)
+			if !r.Cerebras.Config.Auth.Params[paramsIndex3].Value.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex3].Value.IsNull() {
+				*value7 = r.Cerebras.Config.Auth.Params[paramsIndex3].Value.ValueString()
+			} else {
+				value7 = nil
+			}
+			location3 := new(shared.Location)
+			if !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsNull() {
+				*location3 = shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex3].Location.ValueString())
+			} else {
+				location3 = nil
+			}
+			params3 = append(params3, shared.Params{
+				Name:     name11,
+				Value:    value7,
+				Location: location3,
+			})
+		}
+		auth3 := shared.AIGatewayModelProviderConfigAuthBasic{
+			Headers: headers3,
+			Params:  params3,
+		}
+		config3 := shared.AIGatewayModelProviderCerebrasConfig{
+			Auth: auth3,
+		}
+		aiGatewayModelProviderCerebras = &shared.AIGatewayModelProviderCerebras{
+			DisplayName: displayName3,
+			Name:        name9,
+			Labels:      labels3,
+			ManagedBy:   managedBy3,
+			Config:      config3,
+		}
+	}
+	if aiGatewayModelProviderCerebras != nil {
+		out = shared.UpdateAIGatewayModelProviderRequest{
+			AIGatewayModelProviderCerebras: aiGatewayModelProviderCerebras,
+		}
+	}
+	var aiGatewayModelProviderCohere *shared.AIGatewayModelProviderCohere
+	if r.Cohere != nil {
 		var displayName4 string
-		displayName4 = r.Cerebras.DisplayName.ValueString()
+		displayName4 = r.Cohere.DisplayName.ValueString()
 
 		var name12 string
-		name12 = r.Cerebras.Name.ValueString()
+		name12 = r.Cohere.Name.ValueString()
 
 		labels4 := make(map[string]string)
-		for labelsKey4 := range r.Cerebras.Labels {
+		for labelsKey4 := range r.Cohere.Labels {
 			var labelsInst4 string
-			labelsInst4 = r.Cerebras.Labels[labelsKey4].ValueString()
+			labelsInst4 = r.Cohere.Labels[labelsKey4].ValueString()
 
 			labels4[labelsKey4] = labelsInst4
 		}
 		managedBy4 := make(map[string]string)
-		for managedByKey4 := range r.Cerebras.ManagedBy {
+		for managedByKey4 := range r.Cohere.ManagedBy {
 			var managedByInst4 string
-			managedByInst4 = r.Cerebras.ManagedBy[managedByKey4].ValueString()
+			managedByInst4 = r.Cohere.ManagedBy[managedByKey4].ValueString()
 
 			managedBy4[managedByKey4] = managedByInst4
 		}
-		headers4 := make([]shared.Headers, 0, len(r.Cerebras.Config.Auth.Headers))
-		for headersIndex4 := range r.Cerebras.Config.Auth.Headers {
+		headers4 := make([]shared.Headers, 0, len(r.Cohere.Config.Auth.Headers))
+		for headersIndex4 := range r.Cohere.Config.Auth.Headers {
 			var name13 string
-			name13 = r.Cerebras.Config.Auth.Headers[headersIndex4].Name.ValueString()
+			name13 = r.Cohere.Config.Auth.Headers[headersIndex4].Name.ValueString()
 
 			value8 := new(string)
-			if !r.Cerebras.Config.Auth.Headers[headersIndex4].Value.IsUnknown() && !r.Cerebras.Config.Auth.Headers[headersIndex4].Value.IsNull() {
-				*value8 = r.Cerebras.Config.Auth.Headers[headersIndex4].Value.ValueString()
+			if !r.Cohere.Config.Auth.Headers[headersIndex4].Value.IsUnknown() && !r.Cohere.Config.Auth.Headers[headersIndex4].Value.IsNull() {
+				*value8 = r.Cohere.Config.Auth.Headers[headersIndex4].Value.ValueString()
 			} else {
 				value8 = nil
 			}
@@ -4223,20 +4069,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value8,
 			})
 		}
-		params4 := make([]shared.Params, 0, len(r.Cerebras.Config.Auth.Params))
-		for paramsIndex4 := range r.Cerebras.Config.Auth.Params {
+		params4 := make([]shared.Params, 0, len(r.Cohere.Config.Auth.Params))
+		for paramsIndex4 := range r.Cohere.Config.Auth.Params {
 			var name14 string
-			name14 = r.Cerebras.Config.Auth.Params[paramsIndex4].Name.ValueString()
+			name14 = r.Cohere.Config.Auth.Params[paramsIndex4].Name.ValueString()
 
 			value9 := new(string)
-			if !r.Cerebras.Config.Auth.Params[paramsIndex4].Value.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex4].Value.IsNull() {
-				*value9 = r.Cerebras.Config.Auth.Params[paramsIndex4].Value.ValueString()
+			if !r.Cohere.Config.Auth.Params[paramsIndex4].Value.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex4].Value.IsNull() {
+				*value9 = r.Cohere.Config.Auth.Params[paramsIndex4].Value.ValueString()
 			} else {
 				value9 = nil
 			}
 			location4 := new(shared.Location)
-			if !r.Cerebras.Config.Auth.Params[paramsIndex4].Location.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex4].Location.IsNull() {
-				*location4 = shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex4].Location.ValueString())
+			if !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsNull() {
+				*location4 = shared.Location(r.Cohere.Config.Auth.Params[paramsIndex4].Location.ValueString())
 			} else {
 				location4 = nil
 			}
@@ -4250,10 +4096,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers4,
 			Params:  params4,
 		}
-		config4 := shared.AIGatewayModelProviderCerebrasConfig{
+		config4 := shared.AIGatewayModelProviderCohereConfig{
 			Auth: auth4,
 		}
-		aiGatewayModelProviderCerebras = &shared.AIGatewayModelProviderCerebras{
+		aiGatewayModelProviderCohere = &shared.AIGatewayModelProviderCohere{
 			DisplayName: displayName4,
 			Name:        name12,
 			Labels:      labels4,
@@ -4261,41 +4107,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config4,
 		}
 	}
-	if aiGatewayModelProviderCerebras != nil {
+	if aiGatewayModelProviderCohere != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderCerebras: aiGatewayModelProviderCerebras,
+			AIGatewayModelProviderCohere: aiGatewayModelProviderCohere,
 		}
 	}
-	var aiGatewayModelProviderCohere *shared.AIGatewayModelProviderCohere
-	if r.Cohere != nil {
+	var aiGatewayModelProviderDashscope *shared.AIGatewayModelProviderDashscope
+	if r.Dashscope != nil {
 		var displayName5 string
-		displayName5 = r.Cohere.DisplayName.ValueString()
+		displayName5 = r.Dashscope.DisplayName.ValueString()
 
 		var name15 string
-		name15 = r.Cohere.Name.ValueString()
+		name15 = r.Dashscope.Name.ValueString()
 
 		labels5 := make(map[string]string)
-		for labelsKey5 := range r.Cohere.Labels {
+		for labelsKey5 := range r.Dashscope.Labels {
 			var labelsInst5 string
-			labelsInst5 = r.Cohere.Labels[labelsKey5].ValueString()
+			labelsInst5 = r.Dashscope.Labels[labelsKey5].ValueString()
 
 			labels5[labelsKey5] = labelsInst5
 		}
 		managedBy5 := make(map[string]string)
-		for managedByKey5 := range r.Cohere.ManagedBy {
+		for managedByKey5 := range r.Dashscope.ManagedBy {
 			var managedByInst5 string
-			managedByInst5 = r.Cohere.ManagedBy[managedByKey5].ValueString()
+			managedByInst5 = r.Dashscope.ManagedBy[managedByKey5].ValueString()
 
 			managedBy5[managedByKey5] = managedByInst5
 		}
-		headers5 := make([]shared.Headers, 0, len(r.Cohere.Config.Auth.Headers))
-		for headersIndex5 := range r.Cohere.Config.Auth.Headers {
+		headers5 := make([]shared.Headers, 0, len(r.Dashscope.Config.Auth.Headers))
+		for headersIndex5 := range r.Dashscope.Config.Auth.Headers {
 			var name16 string
-			name16 = r.Cohere.Config.Auth.Headers[headersIndex5].Name.ValueString()
+			name16 = r.Dashscope.Config.Auth.Headers[headersIndex5].Name.ValueString()
 
 			value10 := new(string)
-			if !r.Cohere.Config.Auth.Headers[headersIndex5].Value.IsUnknown() && !r.Cohere.Config.Auth.Headers[headersIndex5].Value.IsNull() {
-				*value10 = r.Cohere.Config.Auth.Headers[headersIndex5].Value.ValueString()
+			if !r.Dashscope.Config.Auth.Headers[headersIndex5].Value.IsUnknown() && !r.Dashscope.Config.Auth.Headers[headersIndex5].Value.IsNull() {
+				*value10 = r.Dashscope.Config.Auth.Headers[headersIndex5].Value.ValueString()
 			} else {
 				value10 = nil
 			}
@@ -4304,20 +4150,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value10,
 			})
 		}
-		params5 := make([]shared.Params, 0, len(r.Cohere.Config.Auth.Params))
-		for paramsIndex5 := range r.Cohere.Config.Auth.Params {
+		params5 := make([]shared.Params, 0, len(r.Dashscope.Config.Auth.Params))
+		for paramsIndex5 := range r.Dashscope.Config.Auth.Params {
 			var name17 string
-			name17 = r.Cohere.Config.Auth.Params[paramsIndex5].Name.ValueString()
+			name17 = r.Dashscope.Config.Auth.Params[paramsIndex5].Name.ValueString()
 
 			value11 := new(string)
-			if !r.Cohere.Config.Auth.Params[paramsIndex5].Value.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex5].Value.IsNull() {
-				*value11 = r.Cohere.Config.Auth.Params[paramsIndex5].Value.ValueString()
+			if !r.Dashscope.Config.Auth.Params[paramsIndex5].Value.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex5].Value.IsNull() {
+				*value11 = r.Dashscope.Config.Auth.Params[paramsIndex5].Value.ValueString()
 			} else {
 				value11 = nil
 			}
 			location5 := new(shared.Location)
-			if !r.Cohere.Config.Auth.Params[paramsIndex5].Location.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex5].Location.IsNull() {
-				*location5 = shared.Location(r.Cohere.Config.Auth.Params[paramsIndex5].Location.ValueString())
+			if !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsNull() {
+				*location5 = shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex5].Location.ValueString())
 			} else {
 				location5 = nil
 			}
@@ -4331,10 +4177,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers5,
 			Params:  params5,
 		}
-		config5 := shared.AIGatewayModelProviderCohereConfig{
+		config5 := shared.AIGatewayModelProviderDashscopeConfig{
 			Auth: auth5,
 		}
-		aiGatewayModelProviderCohere = &shared.AIGatewayModelProviderCohere{
+		aiGatewayModelProviderDashscope = &shared.AIGatewayModelProviderDashscope{
 			DisplayName: displayName5,
 			Name:        name15,
 			Labels:      labels5,
@@ -4342,41 +4188,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config5,
 		}
 	}
-	if aiGatewayModelProviderCohere != nil {
+	if aiGatewayModelProviderDashscope != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderCohere: aiGatewayModelProviderCohere,
+			AIGatewayModelProviderDashscope: aiGatewayModelProviderDashscope,
 		}
 	}
-	var aiGatewayModelProviderDashscope *shared.AIGatewayModelProviderDashscope
-	if r.Dashscope != nil {
+	var aiGatewayModelProviderDatabricks *shared.AIGatewayModelProviderDatabricks
+	if r.Databricks != nil {
 		var displayName6 string
-		displayName6 = r.Dashscope.DisplayName.ValueString()
+		displayName6 = r.Databricks.DisplayName.ValueString()
 
 		var name18 string
-		name18 = r.Dashscope.Name.ValueString()
+		name18 = r.Databricks.Name.ValueString()
 
 		labels6 := make(map[string]string)
-		for labelsKey6 := range r.Dashscope.Labels {
+		for labelsKey6 := range r.Databricks.Labels {
 			var labelsInst6 string
-			labelsInst6 = r.Dashscope.Labels[labelsKey6].ValueString()
+			labelsInst6 = r.Databricks.Labels[labelsKey6].ValueString()
 
 			labels6[labelsKey6] = labelsInst6
 		}
 		managedBy6 := make(map[string]string)
-		for managedByKey6 := range r.Dashscope.ManagedBy {
+		for managedByKey6 := range r.Databricks.ManagedBy {
 			var managedByInst6 string
-			managedByInst6 = r.Dashscope.ManagedBy[managedByKey6].ValueString()
+			managedByInst6 = r.Databricks.ManagedBy[managedByKey6].ValueString()
 
 			managedBy6[managedByKey6] = managedByInst6
 		}
-		headers6 := make([]shared.Headers, 0, len(r.Dashscope.Config.Auth.Headers))
-		for headersIndex6 := range r.Dashscope.Config.Auth.Headers {
+		headers6 := make([]shared.Headers, 0, len(r.Databricks.Config.Auth.Headers))
+		for headersIndex6 := range r.Databricks.Config.Auth.Headers {
 			var name19 string
-			name19 = r.Dashscope.Config.Auth.Headers[headersIndex6].Name.ValueString()
+			name19 = r.Databricks.Config.Auth.Headers[headersIndex6].Name.ValueString()
 
 			value12 := new(string)
-			if !r.Dashscope.Config.Auth.Headers[headersIndex6].Value.IsUnknown() && !r.Dashscope.Config.Auth.Headers[headersIndex6].Value.IsNull() {
-				*value12 = r.Dashscope.Config.Auth.Headers[headersIndex6].Value.ValueString()
+			if !r.Databricks.Config.Auth.Headers[headersIndex6].Value.IsUnknown() && !r.Databricks.Config.Auth.Headers[headersIndex6].Value.IsNull() {
+				*value12 = r.Databricks.Config.Auth.Headers[headersIndex6].Value.ValueString()
 			} else {
 				value12 = nil
 			}
@@ -4385,20 +4231,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value12,
 			})
 		}
-		params6 := make([]shared.Params, 0, len(r.Dashscope.Config.Auth.Params))
-		for paramsIndex6 := range r.Dashscope.Config.Auth.Params {
+		params6 := make([]shared.Params, 0, len(r.Databricks.Config.Auth.Params))
+		for paramsIndex6 := range r.Databricks.Config.Auth.Params {
 			var name20 string
-			name20 = r.Dashscope.Config.Auth.Params[paramsIndex6].Name.ValueString()
+			name20 = r.Databricks.Config.Auth.Params[paramsIndex6].Name.ValueString()
 
 			value13 := new(string)
-			if !r.Dashscope.Config.Auth.Params[paramsIndex6].Value.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex6].Value.IsNull() {
-				*value13 = r.Dashscope.Config.Auth.Params[paramsIndex6].Value.ValueString()
+			if !r.Databricks.Config.Auth.Params[paramsIndex6].Value.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex6].Value.IsNull() {
+				*value13 = r.Databricks.Config.Auth.Params[paramsIndex6].Value.ValueString()
 			} else {
 				value13 = nil
 			}
 			location6 := new(shared.Location)
-			if !r.Dashscope.Config.Auth.Params[paramsIndex6].Location.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex6].Location.IsNull() {
-				*location6 = shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex6].Location.ValueString())
+			if !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsNull() {
+				*location6 = shared.Location(r.Databricks.Config.Auth.Params[paramsIndex6].Location.ValueString())
 			} else {
 				location6 = nil
 			}
@@ -4412,10 +4258,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers6,
 			Params:  params6,
 		}
-		config6 := shared.AIGatewayModelProviderDashscopeConfig{
+		config6 := shared.AIGatewayModelProviderDatabricksConfig{
 			Auth: auth6,
 		}
-		aiGatewayModelProviderDashscope = &shared.AIGatewayModelProviderDashscope{
+		aiGatewayModelProviderDatabricks = &shared.AIGatewayModelProviderDatabricks{
 			DisplayName: displayName6,
 			Name:        name18,
 			Labels:      labels6,
@@ -4423,41 +4269,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config6,
 		}
 	}
-	if aiGatewayModelProviderDashscope != nil {
+	if aiGatewayModelProviderDatabricks != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderDashscope: aiGatewayModelProviderDashscope,
+			AIGatewayModelProviderDatabricks: aiGatewayModelProviderDatabricks,
 		}
 	}
-	var aiGatewayModelProviderDatabricks *shared.AIGatewayModelProviderDatabricks
-	if r.Databricks != nil {
+	var aiGatewayModelProviderDeepseek *shared.AIGatewayModelProviderDeepseek
+	if r.Deepseek != nil {
 		var displayName7 string
-		displayName7 = r.Databricks.DisplayName.ValueString()
+		displayName7 = r.Deepseek.DisplayName.ValueString()
 
 		var name21 string
-		name21 = r.Databricks.Name.ValueString()
+		name21 = r.Deepseek.Name.ValueString()
 
 		labels7 := make(map[string]string)
-		for labelsKey7 := range r.Databricks.Labels {
+		for labelsKey7 := range r.Deepseek.Labels {
 			var labelsInst7 string
-			labelsInst7 = r.Databricks.Labels[labelsKey7].ValueString()
+			labelsInst7 = r.Deepseek.Labels[labelsKey7].ValueString()
 
 			labels7[labelsKey7] = labelsInst7
 		}
 		managedBy7 := make(map[string]string)
-		for managedByKey7 := range r.Databricks.ManagedBy {
+		for managedByKey7 := range r.Deepseek.ManagedBy {
 			var managedByInst7 string
-			managedByInst7 = r.Databricks.ManagedBy[managedByKey7].ValueString()
+			managedByInst7 = r.Deepseek.ManagedBy[managedByKey7].ValueString()
 
 			managedBy7[managedByKey7] = managedByInst7
 		}
-		headers7 := make([]shared.Headers, 0, len(r.Databricks.Config.Auth.Headers))
-		for headersIndex7 := range r.Databricks.Config.Auth.Headers {
+		headers7 := make([]shared.Headers, 0, len(r.Deepseek.Config.Auth.Headers))
+		for headersIndex7 := range r.Deepseek.Config.Auth.Headers {
 			var name22 string
-			name22 = r.Databricks.Config.Auth.Headers[headersIndex7].Name.ValueString()
+			name22 = r.Deepseek.Config.Auth.Headers[headersIndex7].Name.ValueString()
 
 			value14 := new(string)
-			if !r.Databricks.Config.Auth.Headers[headersIndex7].Value.IsUnknown() && !r.Databricks.Config.Auth.Headers[headersIndex7].Value.IsNull() {
-				*value14 = r.Databricks.Config.Auth.Headers[headersIndex7].Value.ValueString()
+			if !r.Deepseek.Config.Auth.Headers[headersIndex7].Value.IsUnknown() && !r.Deepseek.Config.Auth.Headers[headersIndex7].Value.IsNull() {
+				*value14 = r.Deepseek.Config.Auth.Headers[headersIndex7].Value.ValueString()
 			} else {
 				value14 = nil
 			}
@@ -4466,20 +4312,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value14,
 			})
 		}
-		params7 := make([]shared.Params, 0, len(r.Databricks.Config.Auth.Params))
-		for paramsIndex7 := range r.Databricks.Config.Auth.Params {
+		params7 := make([]shared.Params, 0, len(r.Deepseek.Config.Auth.Params))
+		for paramsIndex7 := range r.Deepseek.Config.Auth.Params {
 			var name23 string
-			name23 = r.Databricks.Config.Auth.Params[paramsIndex7].Name.ValueString()
+			name23 = r.Deepseek.Config.Auth.Params[paramsIndex7].Name.ValueString()
 
 			value15 := new(string)
-			if !r.Databricks.Config.Auth.Params[paramsIndex7].Value.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex7].Value.IsNull() {
-				*value15 = r.Databricks.Config.Auth.Params[paramsIndex7].Value.ValueString()
+			if !r.Deepseek.Config.Auth.Params[paramsIndex7].Value.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex7].Value.IsNull() {
+				*value15 = r.Deepseek.Config.Auth.Params[paramsIndex7].Value.ValueString()
 			} else {
 				value15 = nil
 			}
 			location7 := new(shared.Location)
-			if !r.Databricks.Config.Auth.Params[paramsIndex7].Location.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex7].Location.IsNull() {
-				*location7 = shared.Location(r.Databricks.Config.Auth.Params[paramsIndex7].Location.ValueString())
+			if !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsNull() {
+				*location7 = shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex7].Location.ValueString())
 			} else {
 				location7 = nil
 			}
@@ -4493,96 +4339,15 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers7,
 			Params:  params7,
 		}
-		config7 := shared.AIGatewayModelProviderDatabricksConfig{
+		config7 := shared.AIGatewayModelProviderDeepseekConfig{
 			Auth: auth7,
 		}
-		aiGatewayModelProviderDatabricks = &shared.AIGatewayModelProviderDatabricks{
+		aiGatewayModelProviderDeepseek = &shared.AIGatewayModelProviderDeepseek{
 			DisplayName: displayName7,
 			Name:        name21,
 			Labels:      labels7,
 			ManagedBy:   managedBy7,
 			Config:      config7,
-		}
-	}
-	if aiGatewayModelProviderDatabricks != nil {
-		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderDatabricks: aiGatewayModelProviderDatabricks,
-		}
-	}
-	var aiGatewayModelProviderDeepseek *shared.AIGatewayModelProviderDeepseek
-	if r.Deepseek != nil {
-		var displayName8 string
-		displayName8 = r.Deepseek.DisplayName.ValueString()
-
-		var name24 string
-		name24 = r.Deepseek.Name.ValueString()
-
-		labels8 := make(map[string]string)
-		for labelsKey8 := range r.Deepseek.Labels {
-			var labelsInst8 string
-			labelsInst8 = r.Deepseek.Labels[labelsKey8].ValueString()
-
-			labels8[labelsKey8] = labelsInst8
-		}
-		managedBy8 := make(map[string]string)
-		for managedByKey8 := range r.Deepseek.ManagedBy {
-			var managedByInst8 string
-			managedByInst8 = r.Deepseek.ManagedBy[managedByKey8].ValueString()
-
-			managedBy8[managedByKey8] = managedByInst8
-		}
-		headers8 := make([]shared.Headers, 0, len(r.Deepseek.Config.Auth.Headers))
-		for headersIndex8 := range r.Deepseek.Config.Auth.Headers {
-			var name25 string
-			name25 = r.Deepseek.Config.Auth.Headers[headersIndex8].Name.ValueString()
-
-			value16 := new(string)
-			if !r.Deepseek.Config.Auth.Headers[headersIndex8].Value.IsUnknown() && !r.Deepseek.Config.Auth.Headers[headersIndex8].Value.IsNull() {
-				*value16 = r.Deepseek.Config.Auth.Headers[headersIndex8].Value.ValueString()
-			} else {
-				value16 = nil
-			}
-			headers8 = append(headers8, shared.Headers{
-				Name:  name25,
-				Value: value16,
-			})
-		}
-		params8 := make([]shared.Params, 0, len(r.Deepseek.Config.Auth.Params))
-		for paramsIndex8 := range r.Deepseek.Config.Auth.Params {
-			var name26 string
-			name26 = r.Deepseek.Config.Auth.Params[paramsIndex8].Name.ValueString()
-
-			value17 := new(string)
-			if !r.Deepseek.Config.Auth.Params[paramsIndex8].Value.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex8].Value.IsNull() {
-				*value17 = r.Deepseek.Config.Auth.Params[paramsIndex8].Value.ValueString()
-			} else {
-				value17 = nil
-			}
-			location8 := new(shared.Location)
-			if !r.Deepseek.Config.Auth.Params[paramsIndex8].Location.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex8].Location.IsNull() {
-				*location8 = shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex8].Location.ValueString())
-			} else {
-				location8 = nil
-			}
-			params8 = append(params8, shared.Params{
-				Name:     name26,
-				Value:    value17,
-				Location: location8,
-			})
-		}
-		auth8 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers8,
-			Params:  params8,
-		}
-		config8 := shared.AIGatewayModelProviderDeepseekConfig{
-			Auth: auth8,
-		}
-		aiGatewayModelProviderDeepseek = &shared.AIGatewayModelProviderDeepseek{
-			DisplayName: displayName8,
-			Name:        name24,
-			Labels:      labels8,
-			ManagedBy:   managedBy8,
-			Config:      config8,
 		}
 	}
 	if aiGatewayModelProviderDeepseek != nil {
@@ -4592,75 +4357,75 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderGemini *shared.AIGatewayModelProviderGemini
 	if r.Gemini != nil {
-		var displayName9 string
-		displayName9 = r.Gemini.DisplayName.ValueString()
+		var displayName8 string
+		displayName8 = r.Gemini.DisplayName.ValueString()
 
-		var name27 string
-		name27 = r.Gemini.Name.ValueString()
+		var name24 string
+		name24 = r.Gemini.Name.ValueString()
 
-		labels9 := make(map[string]string)
-		for labelsKey9 := range r.Gemini.Labels {
-			var labelsInst9 string
-			labelsInst9 = r.Gemini.Labels[labelsKey9].ValueString()
+		labels8 := make(map[string]string)
+		for labelsKey8 := range r.Gemini.Labels {
+			var labelsInst8 string
+			labelsInst8 = r.Gemini.Labels[labelsKey8].ValueString()
 
-			labels9[labelsKey9] = labelsInst9
+			labels8[labelsKey8] = labelsInst8
 		}
-		managedBy9 := make(map[string]string)
-		for managedByKey9 := range r.Gemini.ManagedBy {
-			var managedByInst9 string
-			managedByInst9 = r.Gemini.ManagedBy[managedByKey9].ValueString()
+		managedBy8 := make(map[string]string)
+		for managedByKey8 := range r.Gemini.ManagedBy {
+			var managedByInst8 string
+			managedByInst8 = r.Gemini.ManagedBy[managedByKey8].ValueString()
 
-			managedBy9[managedByKey9] = managedByInst9
+			managedBy8[managedByKey8] = managedByInst8
 		}
-		var auth9 shared.AIGatewayModelProviderGeminiAuth
+		var auth8 shared.AIGatewayModelProviderGeminiAuth
 		var aiGatewayModelProviderConfigAuthBasic2 *shared.AIGatewayModelProviderConfigAuthBasic
 		if r.Gemini.Config.Auth.Basic != nil {
-			headers9 := make([]shared.Headers, 0, len(r.Gemini.Config.Auth.Basic.Headers))
-			for headersIndex9 := range r.Gemini.Config.Auth.Basic.Headers {
-				var name28 string
-				name28 = r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Name.ValueString()
+			headers8 := make([]shared.Headers, 0, len(r.Gemini.Config.Auth.Basic.Headers))
+			for headersIndex8 := range r.Gemini.Config.Auth.Basic.Headers {
+				var name25 string
+				name25 = r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Name.ValueString()
 
-				value18 := new(string)
-				if !r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Value.IsNull() {
-					*value18 = r.Gemini.Config.Auth.Basic.Headers[headersIndex9].Value.ValueString()
+				value16 := new(string)
+				if !r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Value.IsNull() {
+					*value16 = r.Gemini.Config.Auth.Basic.Headers[headersIndex8].Value.ValueString()
 				} else {
-					value18 = nil
+					value16 = nil
 				}
-				headers9 = append(headers9, shared.Headers{
-					Name:  name28,
-					Value: value18,
+				headers8 = append(headers8, shared.Headers{
+					Name:  name25,
+					Value: value16,
 				})
 			}
-			params9 := make([]shared.Params, 0, len(r.Gemini.Config.Auth.Basic.Params))
-			for paramsIndex9 := range r.Gemini.Config.Auth.Basic.Params {
-				var name29 string
-				name29 = r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Name.ValueString()
+			params8 := make([]shared.Params, 0, len(r.Gemini.Config.Auth.Basic.Params))
+			for paramsIndex8 := range r.Gemini.Config.Auth.Basic.Params {
+				var name26 string
+				name26 = r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Name.ValueString()
 
-				value19 := new(string)
-				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Value.IsNull() {
-					*value19 = r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Value.ValueString()
+				value17 := new(string)
+				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Value.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Value.IsNull() {
+					*value17 = r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Value.ValueString()
 				} else {
-					value19 = nil
+					value17 = nil
 				}
-				location9 := new(shared.Location)
-				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Location.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Location.IsNull() {
-					*location9 = shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex9].Location.ValueString())
+				location8 := new(shared.Location)
+				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsNull() {
+					*location8 = shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.ValueString())
 				} else {
-					location9 = nil
+					location8 = nil
 				}
-				params9 = append(params9, shared.Params{
-					Name:     name29,
-					Value:    value19,
-					Location: location9,
+				params8 = append(params8, shared.Params{
+					Name:     name26,
+					Value:    value17,
+					Location: location8,
 				})
 			}
 			aiGatewayModelProviderConfigAuthBasic2 = &shared.AIGatewayModelProviderConfigAuthBasic{
-				Headers: headers9,
-				Params:  params9,
+				Headers: headers8,
+				Params:  params8,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthBasic2 != nil {
-			auth9 = shared.AIGatewayModelProviderGeminiAuth{
+			auth8 = shared.AIGatewayModelProviderGeminiAuth{
 				AIGatewayModelProviderConfigAuthBasic: aiGatewayModelProviderConfigAuthBasic2,
 			}
 		}
@@ -4690,105 +4455,27 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				useGcpServiceAccount = nil
 			}
-			var workloadIdentityFederation *shared.AuthGCPWorkloadIdentityFederation
-			if r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation != nil {
-				var authGCPWorkloadIdentityFederationAwsIam *shared.AuthGCPWorkloadIdentityFederationAwsIam
-				if r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam != nil {
-					source := shared.Source(r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Source.ValueString())
-					authJSON := new(string)
-					if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.AuthJSON.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.AuthJSON.IsNull() {
-						*authJSON = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.AuthJSON.ValueString()
-					} else {
-						authJSON = nil
-					}
-					var aws *shared.AIGatewayUpstreamAuthAWS
-					if r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws != nil {
-						accessKeyId1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AccessKeyID.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AccessKeyID.IsNull() {
-							*accessKeyId1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AccessKeyID.ValueString()
-						} else {
-							accessKeyId1 = nil
-						}
-						secretAccessKey1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SecretAccessKey.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SecretAccessKey.IsNull() {
-							*secretAccessKey1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SecretAccessKey.ValueString()
-						} else {
-							secretAccessKey1 = nil
-						}
-						sessionToken1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SessionToken.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SessionToken.IsNull() {
-							*sessionToken1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.SessionToken.ValueString()
-						} else {
-							sessionToken1 = nil
-						}
-						region := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.Region.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.Region.IsNull() {
-							*region = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.Region.ValueString()
-						} else {
-							region = nil
-						}
-						assumeRoleArn1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AssumeRoleArn.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AssumeRoleArn.IsNull() {
-							*assumeRoleArn1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.AssumeRoleArn.ValueString()
-						} else {
-							assumeRoleArn1 = nil
-						}
-						roleSessionName1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.RoleSessionName.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.RoleSessionName.IsNull() {
-							*roleSessionName1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.RoleSessionName.ValueString()
-						} else {
-							roleSessionName1 = nil
-						}
-						stsEndpointUrl1 := new(string)
-						if !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.StsEndpointURL.IsUnknown() && !r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.StsEndpointURL.IsNull() {
-							*stsEndpointUrl1 = r.Gemini.Config.Auth.Gcp.WorkloadIdentityFederation.AwsIam.Aws.StsEndpointURL.ValueString()
-						} else {
-							stsEndpointUrl1 = nil
-						}
-						aws = &shared.AIGatewayUpstreamAuthAWS{
-							AccessKeyID:     accessKeyId1,
-							SecretAccessKey: secretAccessKey1,
-							SessionToken:    sessionToken1,
-							Region:          region,
-							AssumeRoleArn:   assumeRoleArn1,
-							RoleSessionName: roleSessionName1,
-							StsEndpointURL:  stsEndpointUrl1,
-						}
-					}
-					authGCPWorkloadIdentityFederationAwsIam = &shared.AuthGCPWorkloadIdentityFederationAwsIam{
-						Source:   source,
-						AuthJSON: authJSON,
-						Aws:      aws,
-					}
-				}
-				if authGCPWorkloadIdentityFederationAwsIam != nil {
-					workloadIdentityFederation = &shared.AuthGCPWorkloadIdentityFederation{
-						AuthGCPWorkloadIdentityFederationAwsIam: authGCPWorkloadIdentityFederationAwsIam,
-					}
-				}
-			}
 			aiGatewayModelProviderConfigAuthGCP = &shared.AIGatewayModelProviderConfigAuthGCP{
-				ServiceAccountJSON:         serviceAccountJSON,
-				MetadataURL:                metadataURL,
-				OauthTokenURL:              oauthTokenURL,
-				UseGcpServiceAccount:       useGcpServiceAccount,
-				WorkloadIdentityFederation: workloadIdentityFederation,
+				ServiceAccountJSON:   serviceAccountJSON,
+				MetadataURL:          metadataURL,
+				OauthTokenURL:        oauthTokenURL,
+				UseGcpServiceAccount: useGcpServiceAccount,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthGCP != nil {
-			auth9 = shared.AIGatewayModelProviderGeminiAuth{
+			auth8 = shared.AIGatewayModelProviderGeminiAuth{
 				AIGatewayModelProviderConfigAuthGCP: aiGatewayModelProviderConfigAuthGCP,
 			}
 		}
-		config9 := shared.AIGatewayModelProviderGeminiConfig{
-			Auth: auth9,
+		config8 := shared.AIGatewayModelProviderGeminiConfig{
+			Auth: auth8,
 		}
 		aiGatewayModelProviderGemini = &shared.AIGatewayModelProviderGemini{
-			DisplayName: displayName9,
-			Name:        name27,
-			Labels:      labels9,
-			ManagedBy:   managedBy9,
-			Config:      config9,
+			DisplayName: displayName8,
+			Name:        name24,
+			Labels:      labels8,
+			ManagedBy:   managedBy8,
+			Config:      config8,
 		}
 	}
 	if aiGatewayModelProviderGemini != nil {
@@ -4798,34 +4485,115 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderHuggingface *shared.AIGatewayModelProviderHuggingface
 	if r.Huggingface != nil {
+		var displayName9 string
+		displayName9 = r.Huggingface.DisplayName.ValueString()
+
+		var name27 string
+		name27 = r.Huggingface.Name.ValueString()
+
+		labels9 := make(map[string]string)
+		for labelsKey9 := range r.Huggingface.Labels {
+			var labelsInst9 string
+			labelsInst9 = r.Huggingface.Labels[labelsKey9].ValueString()
+
+			labels9[labelsKey9] = labelsInst9
+		}
+		managedBy9 := make(map[string]string)
+		for managedByKey9 := range r.Huggingface.ManagedBy {
+			var managedByInst9 string
+			managedByInst9 = r.Huggingface.ManagedBy[managedByKey9].ValueString()
+
+			managedBy9[managedByKey9] = managedByInst9
+		}
+		headers9 := make([]shared.Headers, 0, len(r.Huggingface.Config.Auth.Headers))
+		for headersIndex9 := range r.Huggingface.Config.Auth.Headers {
+			var name28 string
+			name28 = r.Huggingface.Config.Auth.Headers[headersIndex9].Name.ValueString()
+
+			value18 := new(string)
+			if !r.Huggingface.Config.Auth.Headers[headersIndex9].Value.IsUnknown() && !r.Huggingface.Config.Auth.Headers[headersIndex9].Value.IsNull() {
+				*value18 = r.Huggingface.Config.Auth.Headers[headersIndex9].Value.ValueString()
+			} else {
+				value18 = nil
+			}
+			headers9 = append(headers9, shared.Headers{
+				Name:  name28,
+				Value: value18,
+			})
+		}
+		params9 := make([]shared.Params, 0, len(r.Huggingface.Config.Auth.Params))
+		for paramsIndex9 := range r.Huggingface.Config.Auth.Params {
+			var name29 string
+			name29 = r.Huggingface.Config.Auth.Params[paramsIndex9].Name.ValueString()
+
+			value19 := new(string)
+			if !r.Huggingface.Config.Auth.Params[paramsIndex9].Value.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex9].Value.IsNull() {
+				*value19 = r.Huggingface.Config.Auth.Params[paramsIndex9].Value.ValueString()
+			} else {
+				value19 = nil
+			}
+			location9 := new(shared.Location)
+			if !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsNull() {
+				*location9 = shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex9].Location.ValueString())
+			} else {
+				location9 = nil
+			}
+			params9 = append(params9, shared.Params{
+				Name:     name29,
+				Value:    value19,
+				Location: location9,
+			})
+		}
+		auth9 := shared.AIGatewayModelProviderConfigAuthBasic{
+			Headers: headers9,
+			Params:  params9,
+		}
+		config9 := shared.AIGatewayModelProviderHuggingfaceConfig{
+			Auth: auth9,
+		}
+		aiGatewayModelProviderHuggingface = &shared.AIGatewayModelProviderHuggingface{
+			DisplayName: displayName9,
+			Name:        name27,
+			Labels:      labels9,
+			ManagedBy:   managedBy9,
+			Config:      config9,
+		}
+	}
+	if aiGatewayModelProviderHuggingface != nil {
+		out = shared.UpdateAIGatewayModelProviderRequest{
+			AIGatewayModelProviderHuggingface: aiGatewayModelProviderHuggingface,
+		}
+	}
+	var aiGatewayModelProviderKimi *shared.AIGatewayModelProviderKimi
+	if r.Kimi != nil {
 		var displayName10 string
-		displayName10 = r.Huggingface.DisplayName.ValueString()
+		displayName10 = r.Kimi.DisplayName.ValueString()
 
 		var name30 string
-		name30 = r.Huggingface.Name.ValueString()
+		name30 = r.Kimi.Name.ValueString()
 
 		labels10 := make(map[string]string)
-		for labelsKey10 := range r.Huggingface.Labels {
+		for labelsKey10 := range r.Kimi.Labels {
 			var labelsInst10 string
-			labelsInst10 = r.Huggingface.Labels[labelsKey10].ValueString()
+			labelsInst10 = r.Kimi.Labels[labelsKey10].ValueString()
 
 			labels10[labelsKey10] = labelsInst10
 		}
 		managedBy10 := make(map[string]string)
-		for managedByKey10 := range r.Huggingface.ManagedBy {
+		for managedByKey10 := range r.Kimi.ManagedBy {
 			var managedByInst10 string
-			managedByInst10 = r.Huggingface.ManagedBy[managedByKey10].ValueString()
+			managedByInst10 = r.Kimi.ManagedBy[managedByKey10].ValueString()
 
 			managedBy10[managedByKey10] = managedByInst10
 		}
-		headers10 := make([]shared.Headers, 0, len(r.Huggingface.Config.Auth.Headers))
-		for headersIndex10 := range r.Huggingface.Config.Auth.Headers {
+		headers10 := make([]shared.Headers, 0, len(r.Kimi.Config.Auth.Headers))
+		for headersIndex10 := range r.Kimi.Config.Auth.Headers {
 			var name31 string
-			name31 = r.Huggingface.Config.Auth.Headers[headersIndex10].Name.ValueString()
+			name31 = r.Kimi.Config.Auth.Headers[headersIndex10].Name.ValueString()
 
 			value20 := new(string)
-			if !r.Huggingface.Config.Auth.Headers[headersIndex10].Value.IsUnknown() && !r.Huggingface.Config.Auth.Headers[headersIndex10].Value.IsNull() {
-				*value20 = r.Huggingface.Config.Auth.Headers[headersIndex10].Value.ValueString()
+			if !r.Kimi.Config.Auth.Headers[headersIndex10].Value.IsUnknown() && !r.Kimi.Config.Auth.Headers[headersIndex10].Value.IsNull() {
+				*value20 = r.Kimi.Config.Auth.Headers[headersIndex10].Value.ValueString()
 			} else {
 				value20 = nil
 			}
@@ -4834,20 +4602,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value20,
 			})
 		}
-		params10 := make([]shared.Params, 0, len(r.Huggingface.Config.Auth.Params))
-		for paramsIndex10 := range r.Huggingface.Config.Auth.Params {
+		params10 := make([]shared.Params, 0, len(r.Kimi.Config.Auth.Params))
+		for paramsIndex10 := range r.Kimi.Config.Auth.Params {
 			var name32 string
-			name32 = r.Huggingface.Config.Auth.Params[paramsIndex10].Name.ValueString()
+			name32 = r.Kimi.Config.Auth.Params[paramsIndex10].Name.ValueString()
 
 			value21 := new(string)
-			if !r.Huggingface.Config.Auth.Params[paramsIndex10].Value.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex10].Value.IsNull() {
-				*value21 = r.Huggingface.Config.Auth.Params[paramsIndex10].Value.ValueString()
+			if !r.Kimi.Config.Auth.Params[paramsIndex10].Value.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex10].Value.IsNull() {
+				*value21 = r.Kimi.Config.Auth.Params[paramsIndex10].Value.ValueString()
 			} else {
 				value21 = nil
 			}
 			location10 := new(shared.Location)
-			if !r.Huggingface.Config.Auth.Params[paramsIndex10].Location.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex10].Location.IsNull() {
-				*location10 = shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex10].Location.ValueString())
+			if !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsNull() {
+				*location10 = shared.Location(r.Kimi.Config.Auth.Params[paramsIndex10].Location.ValueString())
 			} else {
 				location10 = nil
 			}
@@ -4861,10 +4629,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers10,
 			Params:  params10,
 		}
-		config10 := shared.AIGatewayModelProviderHuggingfaceConfig{
+		config10 := shared.AIGatewayModelProviderKimiConfig{
 			Auth: auth10,
 		}
-		aiGatewayModelProviderHuggingface = &shared.AIGatewayModelProviderHuggingface{
+		aiGatewayModelProviderKimi = &shared.AIGatewayModelProviderKimi{
 			DisplayName: displayName10,
 			Name:        name30,
 			Labels:      labels10,
@@ -4872,41 +4640,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config10,
 		}
 	}
-	if aiGatewayModelProviderHuggingface != nil {
+	if aiGatewayModelProviderKimi != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderHuggingface: aiGatewayModelProviderHuggingface,
+			AIGatewayModelProviderKimi: aiGatewayModelProviderKimi,
 		}
 	}
-	var aiGatewayModelProviderKimi *shared.AIGatewayModelProviderKimi
-	if r.Kimi != nil {
+	var aiGatewayModelProviderLlama2 *shared.AIGatewayModelProviderLlama2
+	if r.Llama2 != nil {
 		var displayName11 string
-		displayName11 = r.Kimi.DisplayName.ValueString()
+		displayName11 = r.Llama2.DisplayName.ValueString()
 
 		var name33 string
-		name33 = r.Kimi.Name.ValueString()
+		name33 = r.Llama2.Name.ValueString()
 
 		labels11 := make(map[string]string)
-		for labelsKey11 := range r.Kimi.Labels {
+		for labelsKey11 := range r.Llama2.Labels {
 			var labelsInst11 string
-			labelsInst11 = r.Kimi.Labels[labelsKey11].ValueString()
+			labelsInst11 = r.Llama2.Labels[labelsKey11].ValueString()
 
 			labels11[labelsKey11] = labelsInst11
 		}
 		managedBy11 := make(map[string]string)
-		for managedByKey11 := range r.Kimi.ManagedBy {
+		for managedByKey11 := range r.Llama2.ManagedBy {
 			var managedByInst11 string
-			managedByInst11 = r.Kimi.ManagedBy[managedByKey11].ValueString()
+			managedByInst11 = r.Llama2.ManagedBy[managedByKey11].ValueString()
 
 			managedBy11[managedByKey11] = managedByInst11
 		}
-		headers11 := make([]shared.Headers, 0, len(r.Kimi.Config.Auth.Headers))
-		for headersIndex11 := range r.Kimi.Config.Auth.Headers {
+		headers11 := make([]shared.Headers, 0, len(r.Llama2.Config.Auth.Headers))
+		for headersIndex11 := range r.Llama2.Config.Auth.Headers {
 			var name34 string
-			name34 = r.Kimi.Config.Auth.Headers[headersIndex11].Name.ValueString()
+			name34 = r.Llama2.Config.Auth.Headers[headersIndex11].Name.ValueString()
 
 			value22 := new(string)
-			if !r.Kimi.Config.Auth.Headers[headersIndex11].Value.IsUnknown() && !r.Kimi.Config.Auth.Headers[headersIndex11].Value.IsNull() {
-				*value22 = r.Kimi.Config.Auth.Headers[headersIndex11].Value.ValueString()
+			if !r.Llama2.Config.Auth.Headers[headersIndex11].Value.IsUnknown() && !r.Llama2.Config.Auth.Headers[headersIndex11].Value.IsNull() {
+				*value22 = r.Llama2.Config.Auth.Headers[headersIndex11].Value.ValueString()
 			} else {
 				value22 = nil
 			}
@@ -4915,20 +4683,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value22,
 			})
 		}
-		params11 := make([]shared.Params, 0, len(r.Kimi.Config.Auth.Params))
-		for paramsIndex11 := range r.Kimi.Config.Auth.Params {
+		params11 := make([]shared.Params, 0, len(r.Llama2.Config.Auth.Params))
+		for paramsIndex11 := range r.Llama2.Config.Auth.Params {
 			var name35 string
-			name35 = r.Kimi.Config.Auth.Params[paramsIndex11].Name.ValueString()
+			name35 = r.Llama2.Config.Auth.Params[paramsIndex11].Name.ValueString()
 
 			value23 := new(string)
-			if !r.Kimi.Config.Auth.Params[paramsIndex11].Value.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex11].Value.IsNull() {
-				*value23 = r.Kimi.Config.Auth.Params[paramsIndex11].Value.ValueString()
+			if !r.Llama2.Config.Auth.Params[paramsIndex11].Value.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex11].Value.IsNull() {
+				*value23 = r.Llama2.Config.Auth.Params[paramsIndex11].Value.ValueString()
 			} else {
 				value23 = nil
 			}
 			location11 := new(shared.Location)
-			if !r.Kimi.Config.Auth.Params[paramsIndex11].Location.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex11].Location.IsNull() {
-				*location11 = shared.Location(r.Kimi.Config.Auth.Params[paramsIndex11].Location.ValueString())
+			if !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsNull() {
+				*location11 = shared.Location(r.Llama2.Config.Auth.Params[paramsIndex11].Location.ValueString())
 			} else {
 				location11 = nil
 			}
@@ -4942,10 +4710,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers11,
 			Params:  params11,
 		}
-		config11 := shared.AIGatewayModelProviderKimiConfig{
+		config11 := shared.AIGatewayModelProviderLlama2Config{
 			Auth: auth11,
 		}
-		aiGatewayModelProviderKimi = &shared.AIGatewayModelProviderKimi{
+		aiGatewayModelProviderLlama2 = &shared.AIGatewayModelProviderLlama2{
 			DisplayName: displayName11,
 			Name:        name33,
 			Labels:      labels11,
@@ -4953,41 +4721,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config11,
 		}
 	}
-	if aiGatewayModelProviderKimi != nil {
+	if aiGatewayModelProviderLlama2 != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderKimi: aiGatewayModelProviderKimi,
+			AIGatewayModelProviderLlama2: aiGatewayModelProviderLlama2,
 		}
 	}
-	var aiGatewayModelProviderLlama2 *shared.AIGatewayModelProviderLlama2
-	if r.Llama2 != nil {
+	var aiGatewayModelProviderMistral *shared.AIGatewayModelProviderMistral
+	if r.Mistral != nil {
 		var displayName12 string
-		displayName12 = r.Llama2.DisplayName.ValueString()
+		displayName12 = r.Mistral.DisplayName.ValueString()
 
 		var name36 string
-		name36 = r.Llama2.Name.ValueString()
+		name36 = r.Mistral.Name.ValueString()
 
 		labels12 := make(map[string]string)
-		for labelsKey12 := range r.Llama2.Labels {
+		for labelsKey12 := range r.Mistral.Labels {
 			var labelsInst12 string
-			labelsInst12 = r.Llama2.Labels[labelsKey12].ValueString()
+			labelsInst12 = r.Mistral.Labels[labelsKey12].ValueString()
 
 			labels12[labelsKey12] = labelsInst12
 		}
 		managedBy12 := make(map[string]string)
-		for managedByKey12 := range r.Llama2.ManagedBy {
+		for managedByKey12 := range r.Mistral.ManagedBy {
 			var managedByInst12 string
-			managedByInst12 = r.Llama2.ManagedBy[managedByKey12].ValueString()
+			managedByInst12 = r.Mistral.ManagedBy[managedByKey12].ValueString()
 
 			managedBy12[managedByKey12] = managedByInst12
 		}
-		headers12 := make([]shared.Headers, 0, len(r.Llama2.Config.Auth.Headers))
-		for headersIndex12 := range r.Llama2.Config.Auth.Headers {
+		headers12 := make([]shared.Headers, 0, len(r.Mistral.Config.Auth.Headers))
+		for headersIndex12 := range r.Mistral.Config.Auth.Headers {
 			var name37 string
-			name37 = r.Llama2.Config.Auth.Headers[headersIndex12].Name.ValueString()
+			name37 = r.Mistral.Config.Auth.Headers[headersIndex12].Name.ValueString()
 
 			value24 := new(string)
-			if !r.Llama2.Config.Auth.Headers[headersIndex12].Value.IsUnknown() && !r.Llama2.Config.Auth.Headers[headersIndex12].Value.IsNull() {
-				*value24 = r.Llama2.Config.Auth.Headers[headersIndex12].Value.ValueString()
+			if !r.Mistral.Config.Auth.Headers[headersIndex12].Value.IsUnknown() && !r.Mistral.Config.Auth.Headers[headersIndex12].Value.IsNull() {
+				*value24 = r.Mistral.Config.Auth.Headers[headersIndex12].Value.ValueString()
 			} else {
 				value24 = nil
 			}
@@ -4996,20 +4764,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value24,
 			})
 		}
-		params12 := make([]shared.Params, 0, len(r.Llama2.Config.Auth.Params))
-		for paramsIndex12 := range r.Llama2.Config.Auth.Params {
+		params12 := make([]shared.Params, 0, len(r.Mistral.Config.Auth.Params))
+		for paramsIndex12 := range r.Mistral.Config.Auth.Params {
 			var name38 string
-			name38 = r.Llama2.Config.Auth.Params[paramsIndex12].Name.ValueString()
+			name38 = r.Mistral.Config.Auth.Params[paramsIndex12].Name.ValueString()
 
 			value25 := new(string)
-			if !r.Llama2.Config.Auth.Params[paramsIndex12].Value.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex12].Value.IsNull() {
-				*value25 = r.Llama2.Config.Auth.Params[paramsIndex12].Value.ValueString()
+			if !r.Mistral.Config.Auth.Params[paramsIndex12].Value.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex12].Value.IsNull() {
+				*value25 = r.Mistral.Config.Auth.Params[paramsIndex12].Value.ValueString()
 			} else {
 				value25 = nil
 			}
 			location12 := new(shared.Location)
-			if !r.Llama2.Config.Auth.Params[paramsIndex12].Location.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex12].Location.IsNull() {
-				*location12 = shared.Location(r.Llama2.Config.Auth.Params[paramsIndex12].Location.ValueString())
+			if !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsNull() {
+				*location12 = shared.Location(r.Mistral.Config.Auth.Params[paramsIndex12].Location.ValueString())
 			} else {
 				location12 = nil
 			}
@@ -5023,10 +4791,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers12,
 			Params:  params12,
 		}
-		config12 := shared.AIGatewayModelProviderLlama2Config{
+		config12 := shared.AIGatewayModelProviderMistralConfig{
 			Auth: auth12,
 		}
-		aiGatewayModelProviderLlama2 = &shared.AIGatewayModelProviderLlama2{
+		aiGatewayModelProviderMistral = &shared.AIGatewayModelProviderMistral{
 			DisplayName: displayName12,
 			Name:        name36,
 			Labels:      labels12,
@@ -5034,41 +4802,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config12,
 		}
 	}
-	if aiGatewayModelProviderLlama2 != nil {
+	if aiGatewayModelProviderMistral != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderLlama2: aiGatewayModelProviderLlama2,
+			AIGatewayModelProviderMistral: aiGatewayModelProviderMistral,
 		}
 	}
-	var aiGatewayModelProviderMistral *shared.AIGatewayModelProviderMistral
-	if r.Mistral != nil {
+	var aiGatewayModelProviderOllama *shared.AIGatewayModelProviderOllama
+	if r.Ollama != nil {
 		var displayName13 string
-		displayName13 = r.Mistral.DisplayName.ValueString()
+		displayName13 = r.Ollama.DisplayName.ValueString()
 
 		var name39 string
-		name39 = r.Mistral.Name.ValueString()
+		name39 = r.Ollama.Name.ValueString()
 
 		labels13 := make(map[string]string)
-		for labelsKey13 := range r.Mistral.Labels {
+		for labelsKey13 := range r.Ollama.Labels {
 			var labelsInst13 string
-			labelsInst13 = r.Mistral.Labels[labelsKey13].ValueString()
+			labelsInst13 = r.Ollama.Labels[labelsKey13].ValueString()
 
 			labels13[labelsKey13] = labelsInst13
 		}
 		managedBy13 := make(map[string]string)
-		for managedByKey13 := range r.Mistral.ManagedBy {
+		for managedByKey13 := range r.Ollama.ManagedBy {
 			var managedByInst13 string
-			managedByInst13 = r.Mistral.ManagedBy[managedByKey13].ValueString()
+			managedByInst13 = r.Ollama.ManagedBy[managedByKey13].ValueString()
 
 			managedBy13[managedByKey13] = managedByInst13
 		}
-		headers13 := make([]shared.Headers, 0, len(r.Mistral.Config.Auth.Headers))
-		for headersIndex13 := range r.Mistral.Config.Auth.Headers {
+		headers13 := make([]shared.Headers, 0, len(r.Ollama.Config.Auth.Headers))
+		for headersIndex13 := range r.Ollama.Config.Auth.Headers {
 			var name40 string
-			name40 = r.Mistral.Config.Auth.Headers[headersIndex13].Name.ValueString()
+			name40 = r.Ollama.Config.Auth.Headers[headersIndex13].Name.ValueString()
 
 			value26 := new(string)
-			if !r.Mistral.Config.Auth.Headers[headersIndex13].Value.IsUnknown() && !r.Mistral.Config.Auth.Headers[headersIndex13].Value.IsNull() {
-				*value26 = r.Mistral.Config.Auth.Headers[headersIndex13].Value.ValueString()
+			if !r.Ollama.Config.Auth.Headers[headersIndex13].Value.IsUnknown() && !r.Ollama.Config.Auth.Headers[headersIndex13].Value.IsNull() {
+				*value26 = r.Ollama.Config.Auth.Headers[headersIndex13].Value.ValueString()
 			} else {
 				value26 = nil
 			}
@@ -5077,20 +4845,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value26,
 			})
 		}
-		params13 := make([]shared.Params, 0, len(r.Mistral.Config.Auth.Params))
-		for paramsIndex13 := range r.Mistral.Config.Auth.Params {
+		params13 := make([]shared.Params, 0, len(r.Ollama.Config.Auth.Params))
+		for paramsIndex13 := range r.Ollama.Config.Auth.Params {
 			var name41 string
-			name41 = r.Mistral.Config.Auth.Params[paramsIndex13].Name.ValueString()
+			name41 = r.Ollama.Config.Auth.Params[paramsIndex13].Name.ValueString()
 
 			value27 := new(string)
-			if !r.Mistral.Config.Auth.Params[paramsIndex13].Value.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex13].Value.IsNull() {
-				*value27 = r.Mistral.Config.Auth.Params[paramsIndex13].Value.ValueString()
+			if !r.Ollama.Config.Auth.Params[paramsIndex13].Value.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex13].Value.IsNull() {
+				*value27 = r.Ollama.Config.Auth.Params[paramsIndex13].Value.ValueString()
 			} else {
 				value27 = nil
 			}
 			location13 := new(shared.Location)
-			if !r.Mistral.Config.Auth.Params[paramsIndex13].Location.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex13].Location.IsNull() {
-				*location13 = shared.Location(r.Mistral.Config.Auth.Params[paramsIndex13].Location.ValueString())
+			if !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsNull() {
+				*location13 = shared.Location(r.Ollama.Config.Auth.Params[paramsIndex13].Location.ValueString())
 			} else {
 				location13 = nil
 			}
@@ -5104,10 +4872,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers13,
 			Params:  params13,
 		}
-		config13 := shared.AIGatewayModelProviderMistralConfig{
+		config13 := shared.AIGatewayModelProviderOllamaConfig{
 			Auth: auth13,
 		}
-		aiGatewayModelProviderMistral = &shared.AIGatewayModelProviderMistral{
+		aiGatewayModelProviderOllama = &shared.AIGatewayModelProviderOllama{
 			DisplayName: displayName13,
 			Name:        name39,
 			Labels:      labels13,
@@ -5115,41 +4883,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config13,
 		}
 	}
-	if aiGatewayModelProviderMistral != nil {
+	if aiGatewayModelProviderOllama != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderMistral: aiGatewayModelProviderMistral,
+			AIGatewayModelProviderOllama: aiGatewayModelProviderOllama,
 		}
 	}
-	var aiGatewayModelProviderOllama *shared.AIGatewayModelProviderOllama
-	if r.Ollama != nil {
+	var aiGatewayModelProviderOpenai *shared.AIGatewayModelProviderOpenai
+	if r.Openai != nil {
 		var displayName14 string
-		displayName14 = r.Ollama.DisplayName.ValueString()
+		displayName14 = r.Openai.DisplayName.ValueString()
 
 		var name42 string
-		name42 = r.Ollama.Name.ValueString()
+		name42 = r.Openai.Name.ValueString()
 
 		labels14 := make(map[string]string)
-		for labelsKey14 := range r.Ollama.Labels {
+		for labelsKey14 := range r.Openai.Labels {
 			var labelsInst14 string
-			labelsInst14 = r.Ollama.Labels[labelsKey14].ValueString()
+			labelsInst14 = r.Openai.Labels[labelsKey14].ValueString()
 
 			labels14[labelsKey14] = labelsInst14
 		}
 		managedBy14 := make(map[string]string)
-		for managedByKey14 := range r.Ollama.ManagedBy {
+		for managedByKey14 := range r.Openai.ManagedBy {
 			var managedByInst14 string
-			managedByInst14 = r.Ollama.ManagedBy[managedByKey14].ValueString()
+			managedByInst14 = r.Openai.ManagedBy[managedByKey14].ValueString()
 
 			managedBy14[managedByKey14] = managedByInst14
 		}
-		headers14 := make([]shared.Headers, 0, len(r.Ollama.Config.Auth.Headers))
-		for headersIndex14 := range r.Ollama.Config.Auth.Headers {
+		headers14 := make([]shared.Headers, 0, len(r.Openai.Config.Auth.Headers))
+		for headersIndex14 := range r.Openai.Config.Auth.Headers {
 			var name43 string
-			name43 = r.Ollama.Config.Auth.Headers[headersIndex14].Name.ValueString()
+			name43 = r.Openai.Config.Auth.Headers[headersIndex14].Name.ValueString()
 
 			value28 := new(string)
-			if !r.Ollama.Config.Auth.Headers[headersIndex14].Value.IsUnknown() && !r.Ollama.Config.Auth.Headers[headersIndex14].Value.IsNull() {
-				*value28 = r.Ollama.Config.Auth.Headers[headersIndex14].Value.ValueString()
+			if !r.Openai.Config.Auth.Headers[headersIndex14].Value.IsUnknown() && !r.Openai.Config.Auth.Headers[headersIndex14].Value.IsNull() {
+				*value28 = r.Openai.Config.Auth.Headers[headersIndex14].Value.ValueString()
 			} else {
 				value28 = nil
 			}
@@ -5158,20 +4926,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value28,
 			})
 		}
-		params14 := make([]shared.Params, 0, len(r.Ollama.Config.Auth.Params))
-		for paramsIndex14 := range r.Ollama.Config.Auth.Params {
+		params14 := make([]shared.Params, 0, len(r.Openai.Config.Auth.Params))
+		for paramsIndex14 := range r.Openai.Config.Auth.Params {
 			var name44 string
-			name44 = r.Ollama.Config.Auth.Params[paramsIndex14].Name.ValueString()
+			name44 = r.Openai.Config.Auth.Params[paramsIndex14].Name.ValueString()
 
 			value29 := new(string)
-			if !r.Ollama.Config.Auth.Params[paramsIndex14].Value.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex14].Value.IsNull() {
-				*value29 = r.Ollama.Config.Auth.Params[paramsIndex14].Value.ValueString()
+			if !r.Openai.Config.Auth.Params[paramsIndex14].Value.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex14].Value.IsNull() {
+				*value29 = r.Openai.Config.Auth.Params[paramsIndex14].Value.ValueString()
 			} else {
 				value29 = nil
 			}
 			location14 := new(shared.Location)
-			if !r.Ollama.Config.Auth.Params[paramsIndex14].Location.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex14].Location.IsNull() {
-				*location14 = shared.Location(r.Ollama.Config.Auth.Params[paramsIndex14].Location.ValueString())
+			if !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsNull() {
+				*location14 = shared.Location(r.Openai.Config.Auth.Params[paramsIndex14].Location.ValueString())
 			} else {
 				location14 = nil
 			}
@@ -5185,10 +4953,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers14,
 			Params:  params14,
 		}
-		config14 := shared.AIGatewayModelProviderOllamaConfig{
+		config14 := shared.AIGatewayModelProviderOpenaiConfig{
 			Auth: auth14,
 		}
-		aiGatewayModelProviderOllama = &shared.AIGatewayModelProviderOllama{
+		aiGatewayModelProviderOpenai = &shared.AIGatewayModelProviderOpenai{
 			DisplayName: displayName14,
 			Name:        name42,
 			Labels:      labels14,
@@ -5196,41 +4964,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config14,
 		}
 	}
-	if aiGatewayModelProviderOllama != nil {
+	if aiGatewayModelProviderOpenai != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderOllama: aiGatewayModelProviderOllama,
+			AIGatewayModelProviderOpenai: aiGatewayModelProviderOpenai,
 		}
 	}
-	var aiGatewayModelProviderOpenai *shared.AIGatewayModelProviderOpenai
-	if r.Openai != nil {
+	var aiGatewayModelProviderVercel *shared.AIGatewayModelProviderVercel
+	if r.Vercel != nil {
 		var displayName15 string
-		displayName15 = r.Openai.DisplayName.ValueString()
+		displayName15 = r.Vercel.DisplayName.ValueString()
 
 		var name45 string
-		name45 = r.Openai.Name.ValueString()
+		name45 = r.Vercel.Name.ValueString()
 
 		labels15 := make(map[string]string)
-		for labelsKey15 := range r.Openai.Labels {
+		for labelsKey15 := range r.Vercel.Labels {
 			var labelsInst15 string
-			labelsInst15 = r.Openai.Labels[labelsKey15].ValueString()
+			labelsInst15 = r.Vercel.Labels[labelsKey15].ValueString()
 
 			labels15[labelsKey15] = labelsInst15
 		}
 		managedBy15 := make(map[string]string)
-		for managedByKey15 := range r.Openai.ManagedBy {
+		for managedByKey15 := range r.Vercel.ManagedBy {
 			var managedByInst15 string
-			managedByInst15 = r.Openai.ManagedBy[managedByKey15].ValueString()
+			managedByInst15 = r.Vercel.ManagedBy[managedByKey15].ValueString()
 
 			managedBy15[managedByKey15] = managedByInst15
 		}
-		headers15 := make([]shared.Headers, 0, len(r.Openai.Config.Auth.Headers))
-		for headersIndex15 := range r.Openai.Config.Auth.Headers {
+		headers15 := make([]shared.Headers, 0, len(r.Vercel.Config.Auth.Headers))
+		for headersIndex15 := range r.Vercel.Config.Auth.Headers {
 			var name46 string
-			name46 = r.Openai.Config.Auth.Headers[headersIndex15].Name.ValueString()
+			name46 = r.Vercel.Config.Auth.Headers[headersIndex15].Name.ValueString()
 
 			value30 := new(string)
-			if !r.Openai.Config.Auth.Headers[headersIndex15].Value.IsUnknown() && !r.Openai.Config.Auth.Headers[headersIndex15].Value.IsNull() {
-				*value30 = r.Openai.Config.Auth.Headers[headersIndex15].Value.ValueString()
+			if !r.Vercel.Config.Auth.Headers[headersIndex15].Value.IsUnknown() && !r.Vercel.Config.Auth.Headers[headersIndex15].Value.IsNull() {
+				*value30 = r.Vercel.Config.Auth.Headers[headersIndex15].Value.ValueString()
 			} else {
 				value30 = nil
 			}
@@ -5239,20 +5007,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value30,
 			})
 		}
-		params15 := make([]shared.Params, 0, len(r.Openai.Config.Auth.Params))
-		for paramsIndex15 := range r.Openai.Config.Auth.Params {
+		params15 := make([]shared.Params, 0, len(r.Vercel.Config.Auth.Params))
+		for paramsIndex15 := range r.Vercel.Config.Auth.Params {
 			var name47 string
-			name47 = r.Openai.Config.Auth.Params[paramsIndex15].Name.ValueString()
+			name47 = r.Vercel.Config.Auth.Params[paramsIndex15].Name.ValueString()
 
 			value31 := new(string)
-			if !r.Openai.Config.Auth.Params[paramsIndex15].Value.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex15].Value.IsNull() {
-				*value31 = r.Openai.Config.Auth.Params[paramsIndex15].Value.ValueString()
+			if !r.Vercel.Config.Auth.Params[paramsIndex15].Value.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex15].Value.IsNull() {
+				*value31 = r.Vercel.Config.Auth.Params[paramsIndex15].Value.ValueString()
 			} else {
 				value31 = nil
 			}
 			location15 := new(shared.Location)
-			if !r.Openai.Config.Auth.Params[paramsIndex15].Location.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex15].Location.IsNull() {
-				*location15 = shared.Location(r.Openai.Config.Auth.Params[paramsIndex15].Location.ValueString())
+			if !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsNull() {
+				*location15 = shared.Location(r.Vercel.Config.Auth.Params[paramsIndex15].Location.ValueString())
 			} else {
 				location15 = nil
 			}
@@ -5266,10 +5034,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers15,
 			Params:  params15,
 		}
-		config15 := shared.AIGatewayModelProviderOpenaiConfig{
+		config15 := shared.AIGatewayModelProviderVercelConfig{
 			Auth: auth15,
 		}
-		aiGatewayModelProviderOpenai = &shared.AIGatewayModelProviderOpenai{
+		aiGatewayModelProviderVercel = &shared.AIGatewayModelProviderVercel{
 			DisplayName: displayName15,
 			Name:        name45,
 			Labels:      labels15,
@@ -5277,41 +5045,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config15,
 		}
 	}
-	if aiGatewayModelProviderOpenai != nil {
+	if aiGatewayModelProviderVercel != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderOpenai: aiGatewayModelProviderOpenai,
+			AIGatewayModelProviderVercel: aiGatewayModelProviderVercel,
 		}
 	}
-	var aiGatewayModelProviderVercel *shared.AIGatewayModelProviderVercel
-	if r.Vercel != nil {
+	var aiGatewayModelProviderVllm *shared.AIGatewayModelProviderVllm
+	if r.Vllm != nil {
 		var displayName16 string
-		displayName16 = r.Vercel.DisplayName.ValueString()
+		displayName16 = r.Vllm.DisplayName.ValueString()
 
 		var name48 string
-		name48 = r.Vercel.Name.ValueString()
+		name48 = r.Vllm.Name.ValueString()
 
 		labels16 := make(map[string]string)
-		for labelsKey16 := range r.Vercel.Labels {
+		for labelsKey16 := range r.Vllm.Labels {
 			var labelsInst16 string
-			labelsInst16 = r.Vercel.Labels[labelsKey16].ValueString()
+			labelsInst16 = r.Vllm.Labels[labelsKey16].ValueString()
 
 			labels16[labelsKey16] = labelsInst16
 		}
 		managedBy16 := make(map[string]string)
-		for managedByKey16 := range r.Vercel.ManagedBy {
+		for managedByKey16 := range r.Vllm.ManagedBy {
 			var managedByInst16 string
-			managedByInst16 = r.Vercel.ManagedBy[managedByKey16].ValueString()
+			managedByInst16 = r.Vllm.ManagedBy[managedByKey16].ValueString()
 
 			managedBy16[managedByKey16] = managedByInst16
 		}
-		headers16 := make([]shared.Headers, 0, len(r.Vercel.Config.Auth.Headers))
-		for headersIndex16 := range r.Vercel.Config.Auth.Headers {
+		headers16 := make([]shared.Headers, 0, len(r.Vllm.Config.Auth.Headers))
+		for headersIndex16 := range r.Vllm.Config.Auth.Headers {
 			var name49 string
-			name49 = r.Vercel.Config.Auth.Headers[headersIndex16].Name.ValueString()
+			name49 = r.Vllm.Config.Auth.Headers[headersIndex16].Name.ValueString()
 
 			value32 := new(string)
-			if !r.Vercel.Config.Auth.Headers[headersIndex16].Value.IsUnknown() && !r.Vercel.Config.Auth.Headers[headersIndex16].Value.IsNull() {
-				*value32 = r.Vercel.Config.Auth.Headers[headersIndex16].Value.ValueString()
+			if !r.Vllm.Config.Auth.Headers[headersIndex16].Value.IsUnknown() && !r.Vllm.Config.Auth.Headers[headersIndex16].Value.IsNull() {
+				*value32 = r.Vllm.Config.Auth.Headers[headersIndex16].Value.ValueString()
 			} else {
 				value32 = nil
 			}
@@ -5320,20 +5088,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value32,
 			})
 		}
-		params16 := make([]shared.Params, 0, len(r.Vercel.Config.Auth.Params))
-		for paramsIndex16 := range r.Vercel.Config.Auth.Params {
+		params16 := make([]shared.Params, 0, len(r.Vllm.Config.Auth.Params))
+		for paramsIndex16 := range r.Vllm.Config.Auth.Params {
 			var name50 string
-			name50 = r.Vercel.Config.Auth.Params[paramsIndex16].Name.ValueString()
+			name50 = r.Vllm.Config.Auth.Params[paramsIndex16].Name.ValueString()
 
 			value33 := new(string)
-			if !r.Vercel.Config.Auth.Params[paramsIndex16].Value.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex16].Value.IsNull() {
-				*value33 = r.Vercel.Config.Auth.Params[paramsIndex16].Value.ValueString()
+			if !r.Vllm.Config.Auth.Params[paramsIndex16].Value.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex16].Value.IsNull() {
+				*value33 = r.Vllm.Config.Auth.Params[paramsIndex16].Value.ValueString()
 			} else {
 				value33 = nil
 			}
 			location16 := new(shared.Location)
-			if !r.Vercel.Config.Auth.Params[paramsIndex16].Location.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex16].Location.IsNull() {
-				*location16 = shared.Location(r.Vercel.Config.Auth.Params[paramsIndex16].Location.ValueString())
+			if !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsNull() {
+				*location16 = shared.Location(r.Vllm.Config.Auth.Params[paramsIndex16].Location.ValueString())
 			} else {
 				location16 = nil
 			}
@@ -5347,10 +5115,10 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers16,
 			Params:  params16,
 		}
-		config16 := shared.AIGatewayModelProviderVercelConfig{
+		config16 := shared.AIGatewayModelProviderVllmConfig{
 			Auth: auth16,
 		}
-		aiGatewayModelProviderVercel = &shared.AIGatewayModelProviderVercel{
+		aiGatewayModelProviderVllm = &shared.AIGatewayModelProviderVllm{
 			DisplayName: displayName16,
 			Name:        name48,
 			Labels:      labels16,
@@ -5358,41 +5126,41 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Config:      config16,
 		}
 	}
-	if aiGatewayModelProviderVercel != nil {
+	if aiGatewayModelProviderVllm != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderVercel: aiGatewayModelProviderVercel,
+			AIGatewayModelProviderVllm: aiGatewayModelProviderVllm,
 		}
 	}
-	var aiGatewayModelProviderVllm *shared.AIGatewayModelProviderVllm
-	if r.Vllm != nil {
+	var aiGatewayModelProviderXai *shared.AIGatewayModelProviderXai
+	if r.Xai != nil {
 		var displayName17 string
-		displayName17 = r.Vllm.DisplayName.ValueString()
+		displayName17 = r.Xai.DisplayName.ValueString()
 
 		var name51 string
-		name51 = r.Vllm.Name.ValueString()
+		name51 = r.Xai.Name.ValueString()
 
 		labels17 := make(map[string]string)
-		for labelsKey17 := range r.Vllm.Labels {
+		for labelsKey17 := range r.Xai.Labels {
 			var labelsInst17 string
-			labelsInst17 = r.Vllm.Labels[labelsKey17].ValueString()
+			labelsInst17 = r.Xai.Labels[labelsKey17].ValueString()
 
 			labels17[labelsKey17] = labelsInst17
 		}
 		managedBy17 := make(map[string]string)
-		for managedByKey17 := range r.Vllm.ManagedBy {
+		for managedByKey17 := range r.Xai.ManagedBy {
 			var managedByInst17 string
-			managedByInst17 = r.Vllm.ManagedBy[managedByKey17].ValueString()
+			managedByInst17 = r.Xai.ManagedBy[managedByKey17].ValueString()
 
 			managedBy17[managedByKey17] = managedByInst17
 		}
-		headers17 := make([]shared.Headers, 0, len(r.Vllm.Config.Auth.Headers))
-		for headersIndex17 := range r.Vllm.Config.Auth.Headers {
+		headers17 := make([]shared.Headers, 0, len(r.Xai.Config.Auth.Headers))
+		for headersIndex17 := range r.Xai.Config.Auth.Headers {
 			var name52 string
-			name52 = r.Vllm.Config.Auth.Headers[headersIndex17].Name.ValueString()
+			name52 = r.Xai.Config.Auth.Headers[headersIndex17].Name.ValueString()
 
 			value34 := new(string)
-			if !r.Vllm.Config.Auth.Headers[headersIndex17].Value.IsUnknown() && !r.Vllm.Config.Auth.Headers[headersIndex17].Value.IsNull() {
-				*value34 = r.Vllm.Config.Auth.Headers[headersIndex17].Value.ValueString()
+			if !r.Xai.Config.Auth.Headers[headersIndex17].Value.IsUnknown() && !r.Xai.Config.Auth.Headers[headersIndex17].Value.IsNull() {
+				*value34 = r.Xai.Config.Auth.Headers[headersIndex17].Value.ValueString()
 			} else {
 				value34 = nil
 			}
@@ -5401,20 +5169,20 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				Value: value34,
 			})
 		}
-		params17 := make([]shared.Params, 0, len(r.Vllm.Config.Auth.Params))
-		for paramsIndex17 := range r.Vllm.Config.Auth.Params {
+		params17 := make([]shared.Params, 0, len(r.Xai.Config.Auth.Params))
+		for paramsIndex17 := range r.Xai.Config.Auth.Params {
 			var name53 string
-			name53 = r.Vllm.Config.Auth.Params[paramsIndex17].Name.ValueString()
+			name53 = r.Xai.Config.Auth.Params[paramsIndex17].Name.ValueString()
 
 			value35 := new(string)
-			if !r.Vllm.Config.Auth.Params[paramsIndex17].Value.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex17].Value.IsNull() {
-				*value35 = r.Vllm.Config.Auth.Params[paramsIndex17].Value.ValueString()
+			if !r.Xai.Config.Auth.Params[paramsIndex17].Value.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex17].Value.IsNull() {
+				*value35 = r.Xai.Config.Auth.Params[paramsIndex17].Value.ValueString()
 			} else {
 				value35 = nil
 			}
 			location17 := new(shared.Location)
-			if !r.Vllm.Config.Auth.Params[paramsIndex17].Location.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex17].Location.IsNull() {
-				*location17 = shared.Location(r.Vllm.Config.Auth.Params[paramsIndex17].Location.ValueString())
+			if !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsNull() {
+				*location17 = shared.Location(r.Xai.Config.Auth.Params[paramsIndex17].Location.ValueString())
 			} else {
 				location17 = nil
 			}
@@ -5428,96 +5196,15 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			Headers: headers17,
 			Params:  params17,
 		}
-		config17 := shared.AIGatewayModelProviderVllmConfig{
+		config17 := shared.AIGatewayModelProviderXaiConfig{
 			Auth: auth17,
 		}
-		aiGatewayModelProviderVllm = &shared.AIGatewayModelProviderVllm{
+		aiGatewayModelProviderXai = &shared.AIGatewayModelProviderXai{
 			DisplayName: displayName17,
 			Name:        name51,
 			Labels:      labels17,
 			ManagedBy:   managedBy17,
 			Config:      config17,
-		}
-	}
-	if aiGatewayModelProviderVllm != nil {
-		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderVllm: aiGatewayModelProviderVllm,
-		}
-	}
-	var aiGatewayModelProviderXai *shared.AIGatewayModelProviderXai
-	if r.Xai != nil {
-		var displayName18 string
-		displayName18 = r.Xai.DisplayName.ValueString()
-
-		var name54 string
-		name54 = r.Xai.Name.ValueString()
-
-		labels18 := make(map[string]string)
-		for labelsKey18 := range r.Xai.Labels {
-			var labelsInst18 string
-			labelsInst18 = r.Xai.Labels[labelsKey18].ValueString()
-
-			labels18[labelsKey18] = labelsInst18
-		}
-		managedBy18 := make(map[string]string)
-		for managedByKey18 := range r.Xai.ManagedBy {
-			var managedByInst18 string
-			managedByInst18 = r.Xai.ManagedBy[managedByKey18].ValueString()
-
-			managedBy18[managedByKey18] = managedByInst18
-		}
-		headers18 := make([]shared.Headers, 0, len(r.Xai.Config.Auth.Headers))
-		for headersIndex18 := range r.Xai.Config.Auth.Headers {
-			var name55 string
-			name55 = r.Xai.Config.Auth.Headers[headersIndex18].Name.ValueString()
-
-			value36 := new(string)
-			if !r.Xai.Config.Auth.Headers[headersIndex18].Value.IsUnknown() && !r.Xai.Config.Auth.Headers[headersIndex18].Value.IsNull() {
-				*value36 = r.Xai.Config.Auth.Headers[headersIndex18].Value.ValueString()
-			} else {
-				value36 = nil
-			}
-			headers18 = append(headers18, shared.Headers{
-				Name:  name55,
-				Value: value36,
-			})
-		}
-		params18 := make([]shared.Params, 0, len(r.Xai.Config.Auth.Params))
-		for paramsIndex18 := range r.Xai.Config.Auth.Params {
-			var name56 string
-			name56 = r.Xai.Config.Auth.Params[paramsIndex18].Name.ValueString()
-
-			value37 := new(string)
-			if !r.Xai.Config.Auth.Params[paramsIndex18].Value.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex18].Value.IsNull() {
-				*value37 = r.Xai.Config.Auth.Params[paramsIndex18].Value.ValueString()
-			} else {
-				value37 = nil
-			}
-			location18 := new(shared.Location)
-			if !r.Xai.Config.Auth.Params[paramsIndex18].Location.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex18].Location.IsNull() {
-				*location18 = shared.Location(r.Xai.Config.Auth.Params[paramsIndex18].Location.ValueString())
-			} else {
-				location18 = nil
-			}
-			params18 = append(params18, shared.Params{
-				Name:     name56,
-				Value:    value37,
-				Location: location18,
-			})
-		}
-		auth18 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers18,
-			Params:  params18,
-		}
-		config18 := shared.AIGatewayModelProviderXaiConfig{
-			Auth: auth18,
-		}
-		aiGatewayModelProviderXai = &shared.AIGatewayModelProviderXai{
-			DisplayName: displayName18,
-			Name:        name54,
-			Labels:      labels18,
-			ManagedBy:   managedBy18,
-			Config:      config18,
 		}
 	}
 	if aiGatewayModelProviderXai != nil {
@@ -5527,212 +5214,131 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 	}
 	var aiGatewayModelProviderSagemaker *shared.AIGatewayModelProviderSagemaker
 	if r.Sagemaker != nil {
-		var displayName19 string
-		displayName19 = r.Sagemaker.DisplayName.ValueString()
+		var displayName18 string
+		displayName18 = r.Sagemaker.DisplayName.ValueString()
 
-		var name57 string
-		name57 = r.Sagemaker.Name.ValueString()
+		var name54 string
+		name54 = r.Sagemaker.Name.ValueString()
 
-		labels19 := make(map[string]string)
-		for labelsKey19 := range r.Sagemaker.Labels {
-			var labelsInst19 string
-			labelsInst19 = r.Sagemaker.Labels[labelsKey19].ValueString()
+		labels18 := make(map[string]string)
+		for labelsKey18 := range r.Sagemaker.Labels {
+			var labelsInst18 string
+			labelsInst18 = r.Sagemaker.Labels[labelsKey18].ValueString()
 
-			labels19[labelsKey19] = labelsInst19
+			labels18[labelsKey18] = labelsInst18
 		}
-		managedBy19 := make(map[string]string)
-		for managedByKey19 := range r.Sagemaker.ManagedBy {
-			var managedByInst19 string
-			managedByInst19 = r.Sagemaker.ManagedBy[managedByKey19].ValueString()
+		managedBy18 := make(map[string]string)
+		for managedByKey18 := range r.Sagemaker.ManagedBy {
+			var managedByInst18 string
+			managedByInst18 = r.Sagemaker.ManagedBy[managedByKey18].ValueString()
 
-			managedBy19[managedByKey19] = managedByInst19
+			managedBy18[managedByKey18] = managedByInst18
 		}
-		var auth19 shared.AIGatewayModelProviderSagemakerAuth
+		var auth18 shared.AIGatewayModelProviderSagemakerAuth
 		var aiGatewayModelProviderConfigAuthBasic3 *shared.AIGatewayModelProviderConfigAuthBasic
 		if r.Sagemaker.Config.Auth.Basic != nil {
-			headers19 := make([]shared.Headers, 0, len(r.Sagemaker.Config.Auth.Basic.Headers))
-			for headersIndex19 := range r.Sagemaker.Config.Auth.Basic.Headers {
-				var name58 string
-				name58 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Name.ValueString()
+			headers18 := make([]shared.Headers, 0, len(r.Sagemaker.Config.Auth.Basic.Headers))
+			for headersIndex18 := range r.Sagemaker.Config.Auth.Basic.Headers {
+				var name55 string
+				name55 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Name.ValueString()
 
-				value38 := new(string)
-				if !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Value.IsNull() {
-					*value38 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex19].Value.ValueString()
+				value36 := new(string)
+				if !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Value.IsNull() {
+					*value36 = r.Sagemaker.Config.Auth.Basic.Headers[headersIndex18].Value.ValueString()
 				} else {
-					value38 = nil
+					value36 = nil
 				}
-				headers19 = append(headers19, shared.Headers{
-					Name:  name58,
-					Value: value38,
+				headers18 = append(headers18, shared.Headers{
+					Name:  name55,
+					Value: value36,
 				})
 			}
-			params19 := make([]shared.Params, 0, len(r.Sagemaker.Config.Auth.Basic.Params))
-			for paramsIndex19 := range r.Sagemaker.Config.Auth.Basic.Params {
-				var name59 string
-				name59 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Name.ValueString()
+			params18 := make([]shared.Params, 0, len(r.Sagemaker.Config.Auth.Basic.Params))
+			for paramsIndex18 := range r.Sagemaker.Config.Auth.Basic.Params {
+				var name56 string
+				name56 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Name.ValueString()
 
-				value39 := new(string)
-				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Value.IsNull() {
-					*value39 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Value.ValueString()
+				value37 := new(string)
+				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Value.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Value.IsNull() {
+					*value37 = r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Value.ValueString()
 				} else {
-					value39 = nil
+					value37 = nil
 				}
-				location19 := new(shared.Location)
-				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Location.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Location.IsNull() {
-					*location19 = shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex19].Location.ValueString())
+				location18 := new(shared.Location)
+				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsNull() {
+					*location18 = shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.ValueString())
 				} else {
-					location19 = nil
+					location18 = nil
 				}
-				params19 = append(params19, shared.Params{
-					Name:     name59,
-					Value:    value39,
-					Location: location19,
+				params18 = append(params18, shared.Params{
+					Name:     name56,
+					Value:    value37,
+					Location: location18,
 				})
 			}
 			aiGatewayModelProviderConfigAuthBasic3 = &shared.AIGatewayModelProviderConfigAuthBasic{
-				Headers: headers19,
-				Params:  params19,
+				Headers: headers18,
+				Params:  params18,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthBasic3 != nil {
-			auth19 = shared.AIGatewayModelProviderSagemakerAuth{
+			auth18 = shared.AIGatewayModelProviderSagemakerAuth{
 				AIGatewayModelProviderConfigAuthBasic: aiGatewayModelProviderConfigAuthBasic3,
 			}
 		}
 		var aiGatewayModelProviderConfigAuthSagemaker *shared.AIGatewayModelProviderConfigAuthSagemaker
 		if r.Sagemaker.Config.Auth.Sagemaker != nil {
 			typeVar := shared.AIGatewayModelProviderConfigAuthSagemakerType(r.Sagemaker.Config.Auth.Sagemaker.Type.ValueString())
-			var aws1 *shared.AIGatewayModelProviderConfigAuthSagemakerAws
+			var aws *shared.AIGatewayModelProviderConfigAuthSagemakerAws
 			if r.Sagemaker.Config.Auth.Sagemaker.Aws != nil {
-				accessKeyId2 := new(string)
+				accessKeyId1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.IsNull() {
-					*accessKeyId2 = r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.ValueString()
+					*accessKeyId1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.AccessKeyID.ValueString()
 				} else {
-					accessKeyId2 = nil
+					accessKeyId1 = nil
 				}
-				secretAccessKey2 := new(string)
+				secretAccessKey1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.IsNull() {
-					*secretAccessKey2 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.ValueString()
+					*secretAccessKey1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SecretAccessKey.ValueString()
 				} else {
-					secretAccessKey2 = nil
+					secretAccessKey1 = nil
 				}
-				sessionToken2 := new(string)
+				sessionToken1 := new(string)
 				if !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsUnknown() && !r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.IsNull() {
-					*sessionToken2 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
+					*sessionToken1 = r.Sagemaker.Config.Auth.Sagemaker.Aws.SessionToken.ValueString()
 				} else {
-					sessionToken2 = nil
+					sessionToken1 = nil
 				}
-				aws1 = &shared.AIGatewayModelProviderConfigAuthSagemakerAws{
-					AccessKeyID:     accessKeyId2,
-					SecretAccessKey: secretAccessKey2,
-					SessionToken:    sessionToken2,
+				aws = &shared.AIGatewayModelProviderConfigAuthSagemakerAws{
+					AccessKeyID:     accessKeyId1,
+					SecretAccessKey: secretAccessKey1,
+					SessionToken:    sessionToken1,
 				}
 			}
 			aiGatewayModelProviderConfigAuthSagemaker = &shared.AIGatewayModelProviderConfigAuthSagemaker{
 				Type: typeVar,
-				Aws:  aws1,
+				Aws:  aws,
 			}
 		}
 		if aiGatewayModelProviderConfigAuthSagemaker != nil {
-			auth19 = shared.AIGatewayModelProviderSagemakerAuth{
+			auth18 = shared.AIGatewayModelProviderSagemakerAuth{
 				AIGatewayModelProviderConfigAuthSagemaker: aiGatewayModelProviderConfigAuthSagemaker,
 			}
 		}
-		config19 := shared.AIGatewayModelProviderSagemakerConfig{
-			Auth: auth19,
+		config18 := shared.AIGatewayModelProviderSagemakerConfig{
+			Auth: auth18,
 		}
 		aiGatewayModelProviderSagemaker = &shared.AIGatewayModelProviderSagemaker{
-			DisplayName: displayName19,
-			Name:        name57,
-			Labels:      labels19,
-			ManagedBy:   managedBy19,
-			Config:      config19,
+			DisplayName: displayName18,
+			Name:        name54,
+			Labels:      labels18,
+			ManagedBy:   managedBy18,
+			Config:      config18,
 		}
 	}
 	if aiGatewayModelProviderSagemaker != nil {
 		out = shared.UpdateAIGatewayModelProviderRequest{
 			AIGatewayModelProviderSagemaker: aiGatewayModelProviderSagemaker,
-		}
-	}
-	var aiGatewayModelProviderTypesafe *shared.AIGatewayModelProviderTypesafe
-	if r.Typesafe != nil {
-		var displayName20 string
-		displayName20 = r.Typesafe.DisplayName.ValueString()
-
-		var name60 string
-		name60 = r.Typesafe.Name.ValueString()
-
-		labels20 := make(map[string]string)
-		for labelsKey20 := range r.Typesafe.Labels {
-			var labelsInst20 string
-			labelsInst20 = r.Typesafe.Labels[labelsKey20].ValueString()
-
-			labels20[labelsKey20] = labelsInst20
-		}
-		managedBy20 := make(map[string]string)
-		for managedByKey20 := range r.Typesafe.ManagedBy {
-			var managedByInst20 string
-			managedByInst20 = r.Typesafe.ManagedBy[managedByKey20].ValueString()
-
-			managedBy20[managedByKey20] = managedByInst20
-		}
-		headers20 := make([]shared.Headers, 0, len(r.Typesafe.Config.Auth.Headers))
-		for headersIndex20 := range r.Typesafe.Config.Auth.Headers {
-			var name61 string
-			name61 = r.Typesafe.Config.Auth.Headers[headersIndex20].Name.ValueString()
-
-			value40 := new(string)
-			if !r.Typesafe.Config.Auth.Headers[headersIndex20].Value.IsUnknown() && !r.Typesafe.Config.Auth.Headers[headersIndex20].Value.IsNull() {
-				*value40 = r.Typesafe.Config.Auth.Headers[headersIndex20].Value.ValueString()
-			} else {
-				value40 = nil
-			}
-			headers20 = append(headers20, shared.Headers{
-				Name:  name61,
-				Value: value40,
-			})
-		}
-		params20 := make([]shared.Params, 0, len(r.Typesafe.Config.Auth.Params))
-		for paramsIndex20 := range r.Typesafe.Config.Auth.Params {
-			var name62 string
-			name62 = r.Typesafe.Config.Auth.Params[paramsIndex20].Name.ValueString()
-
-			value41 := new(string)
-			if !r.Typesafe.Config.Auth.Params[paramsIndex20].Value.IsUnknown() && !r.Typesafe.Config.Auth.Params[paramsIndex20].Value.IsNull() {
-				*value41 = r.Typesafe.Config.Auth.Params[paramsIndex20].Value.ValueString()
-			} else {
-				value41 = nil
-			}
-			location20 := new(shared.Location)
-			if !r.Typesafe.Config.Auth.Params[paramsIndex20].Location.IsUnknown() && !r.Typesafe.Config.Auth.Params[paramsIndex20].Location.IsNull() {
-				*location20 = shared.Location(r.Typesafe.Config.Auth.Params[paramsIndex20].Location.ValueString())
-			} else {
-				location20 = nil
-			}
-			params20 = append(params20, shared.Params{
-				Name:     name62,
-				Value:    value41,
-				Location: location20,
-			})
-		}
-		auth20 := shared.AIGatewayModelProviderConfigAuthBasic{
-			Headers: headers20,
-			Params:  params20,
-		}
-		config20 := shared.AIGatewayModelProviderTypesafeConfig{
-			Auth: auth20,
-		}
-		aiGatewayModelProviderTypesafe = &shared.AIGatewayModelProviderTypesafe{
-			DisplayName: displayName20,
-			Name:        name60,
-			Labels:      labels20,
-			ManagedBy:   managedBy20,
-			Config:      config20,
-		}
-	}
-	if aiGatewayModelProviderTypesafe != nil {
-		out = shared.UpdateAIGatewayModelProviderRequest{
-			AIGatewayModelProviderTypesafe: aiGatewayModelProviderTypesafe,
 		}
 	}
 

@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayUpstreamAuthAWSOutput - AWS IAM (SigV4) authentication for the upstream service.
+// AIGatewayUpstreamAuthAWSOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// AWS IAM (SigV4) authentication for the upstream service.
 type AIGatewayUpstreamAuthAWSOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"aws" json:"type"`

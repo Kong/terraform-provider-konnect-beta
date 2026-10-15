@@ -19,6 +19,8 @@ const (
 	UpdateAIGatewayMCPServerRequestTypeUpstreamServer      UpdateAIGatewayMCPServerRequestType = "upstream-server"
 )
 
+// UpdateAIGatewayMCPServerRequest - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type UpdateAIGatewayMCPServerRequest struct {
 	AIGatewayMCPServerConversionOnly      *AIGatewayMCPServerConversionOnly      `queryParam:"inline" union:"member"`
 	AIGatewayMCPServerConversionListener  *AIGatewayMCPServerConversionListener  `queryParam:"inline" union:"member"`

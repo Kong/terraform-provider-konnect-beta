@@ -6,6 +6,8 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
+// AIGatewayMCPToolAnnotations - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayMCPToolAnnotations struct {
 	// If true, the tool may perform destructive updates
 	DestructiveHint *bool `json:"destructive_hint,omitempty"`

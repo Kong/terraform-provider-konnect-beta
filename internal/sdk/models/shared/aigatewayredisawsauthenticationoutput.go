@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayRedisAWSAuthenticationOutput - AWS specific configs for connecting to a Cloud Provider's redis instance.
+// AIGatewayRedisAWSAuthenticationOutput - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// AWS specific configs for connecting to a Cloud Provider's redis instance.
 type AIGatewayRedisAWSAuthenticationOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"aws" json:"type"`

@@ -41,8 +41,6 @@ type DeleteAiGatewayCaCertificateResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
-	// Conflict
-	ConflictError *shared.ConflictError
 	// Too Many Requests
 	TooManyRequestsError *shared.TooManyRequestsError
 }
@@ -87,13 +85,6 @@ func (d *DeleteAiGatewayCaCertificateResponse) GetNotFoundError() *shared.NotFou
 		return nil
 	}
 	return d.NotFoundError
-}
-
-func (d *DeleteAiGatewayCaCertificateResponse) GetConflictError() *shared.ConflictError {
-	if d == nil {
-		return nil
-	}
-	return d.ConflictError
 }
 
 func (d *DeleteAiGatewayCaCertificateResponse) GetTooManyRequestsError() *shared.TooManyRequestsError {

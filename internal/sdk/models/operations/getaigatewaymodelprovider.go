@@ -89,13 +89,6 @@ func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderAzure() *sh
 	return nil
 }
 
-func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderBaseten() *shared.AIGatewayModelProviderAIGatewayModelProviderBaseten {
-	if v := g.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderAIGatewayModelProviderBaseten
-	}
-	return nil
-}
-
 func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderBedrock() *shared.AIGatewayModelProviderAIGatewayModelProviderBedrock {
 	if v := g.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderBedrock
@@ -211,13 +204,6 @@ func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *shar
 func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker() *shared.AIGatewayModelProviderAIGatewayModelProviderSagemaker {
 	if v := g.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderSagemaker
-	}
-	return nil
-}
-
-func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderTypesafe() *shared.AIGatewayModelProviderAIGatewayModelProviderTypesafe {
-	if v := g.GetAIGatewayModelProvider(); v != nil {
-		return v.AIGatewayModelProviderAIGatewayModelProviderTypesafe
 	}
 	return nil
 }

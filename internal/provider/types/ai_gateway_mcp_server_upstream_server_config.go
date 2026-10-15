@@ -7,13 +7,11 @@ import (
 )
 
 type AIGatewayMCPServerUpstreamServerConfig struct {
-	CaCertificates       []types.String                                `tfsdk:"ca_certificates"`
-	Certificates         []types.String                                `tfsdk:"certificates"`
-	Logging              *AIGatewayMCPServerConversionListenerLogging  `tfsdk:"logging"`
-	MaxRequestBodySize   types.Int64                                   `tfsdk:"max_request_body_size"`
-	Route                *AIGatewayRouteConfig                         `tfsdk:"route"`
-	Server               *AIGatewayMCPServerUpstreamServerServerConfig `tfsdk:"server"`
-	ToolsCacheTTLSeconds types.Int64                                   `tfsdk:"tools_cache_ttl_seconds"`
-	Upstream             *AIGatewayUpstreamConfig                      `tfsdk:"upstream"`
-	URL                  types.String                                  `tfsdk:"url"`
+	Logging              *AIGatewayMCPServerWithUpstreamNoProxyConfigLogging `tfsdk:"logging"`
+	MaxRequestBodySize   types.Int64                                         `tfsdk:"max_request_body_size"`
+	Route                *AIGatewayRouteConfig                               `tfsdk:"route"`
+	Server               *AIGatewayMCPServerUpstreamServerServerConfig       `tfsdk:"server"`
+	ToolsCacheTTLSeconds types.Int64                                         `tfsdk:"tools_cache_ttl_seconds"`
+	Upstream             *AIGatewayUpstreamConfig                            `tfsdk:"upstream"`
+	URL                  types.String                                        `tfsdk:"url"`
 }

@@ -16,7 +16,10 @@ const (
 	CreateAIGatewayModelRequestTypeModel CreateAIGatewayModelRequestType = "model"
 )
 
-// CreateAIGatewayModelRequest - Configuration for an AI Gateway model.
+// CreateAIGatewayModelRequest - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an AI Gateway model.
 type CreateAIGatewayModelRequest struct {
 	AIGatewayModelAPI   *AIGatewayModelAPI   `queryParam:"inline" union:"member"`
 	AIGatewayModelModel *AIGatewayModelModel `queryParam:"inline" union:"member"`

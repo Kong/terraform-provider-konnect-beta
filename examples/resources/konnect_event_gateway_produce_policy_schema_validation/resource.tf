@@ -2,25 +2,15 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
   provider = konnect-beta
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
-    inline_schema = {
-      failure_mode = "reject"
-      key = {
-        json = {
-          schema = "...my_schema..."
-        }
-      }
+    json = {
+      failure_mode          = "passthrough"
       key_validation_action = "mark"
       schema_registry = {
-        id = "588c80ab-6c75-4adb-8bab-6d8b7e5f5ae2"
+        id = "74577697-03b2-4d40-bfe2-929c891c4254"
       }
-      validate_key   = true
-      validate_value = true
-      value = {
-        avro = {
-          schema = "...my_schema..."
-        }
-      }
-      value_validation_action = "mark"
+      validate_key            = true
+      validate_value          = false
+      value_validation_action = "reject"
     }
   }
   description = ""

@@ -7,10 +7,14 @@ import (
 	"time"
 )
 
-// AIGatewayAuthStrategyKeyAuthResponse - Configuration for an auth strategy.
+// AIGatewayAuthStrategyKeyAuthResponse - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayAuthStrategyKeyAuthResponse struct {
 	// The display name for this auth strategy instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -26,8 +30,12 @@ type AIGatewayAuthStrategyKeyAuthResponse struct {
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_  string                      `const:"key-auth" json:"type"`
-	Config *AIGWKeyAuthGeneratedConfig `json:"config,omitempty"`
+	type_ string `const:"key-auth" json:"type"`
+	// Configuration for the key-auth auth strategy.
+	// For advanced use cases, additional config properties can be sent in the request body.
+	// See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
+	//
+	Config any `json:"config,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -79,7 +87,7 @@ func (a *AIGatewayAuthStrategyKeyAuthResponse) GetType() string {
 	return "key-auth"
 }
 
-func (a *AIGatewayAuthStrategyKeyAuthResponse) GetConfig() *AIGWKeyAuthGeneratedConfig {
+func (a *AIGatewayAuthStrategyKeyAuthResponse) GetConfig() any {
 	if a == nil {
 		return nil
 	}

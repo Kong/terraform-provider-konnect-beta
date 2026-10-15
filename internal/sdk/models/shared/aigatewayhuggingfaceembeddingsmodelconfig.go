@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayHuggingfaceEmbeddingsModelConfig - Hugging Face-specific configuration for a model.
+// AIGatewayHuggingfaceEmbeddingsModelConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Hugging Face-specific configuration for a model.
 type AIGatewayHuggingfaceEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
 	UpstreamURL *string `default:"null" json:"upstream_url"`

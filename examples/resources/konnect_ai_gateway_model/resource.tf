@@ -6,13 +6,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow = [
           "..."
         ]
-        allow_when = [
-          "..."
-        ]
         deny = [
-          "..."
-        ]
-        deny_when = [
           "..."
         ]
       }
@@ -32,7 +26,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           connect_timeout = 60000
           fail_timeout    = 10000
           failover_criteria = [
-            "http_408"
+            "http_429"
           ]
           latency_strategy = "tpot"
           max_fails        = 0
@@ -98,11 +92,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
       }
     }
-    datastores = [
-      {
-        name = "shared-redis"
-      }
-    ]
     display_name = "My GPT 5 model"
     enabled      = true
     formats = [
@@ -124,55 +113,36 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          databricks = {
-            cache_read_cost = 9.25
-            cache_read_cost_list = [
-              {
-                cost  = 7.56
-                modal = "text"
-              }
-            ]
-            cache_write_cost = 8.79
+          xai = {
+            cache_read_cost  = 4.42
+            cache_write_cost = 3.9
             cache_write_cost_list = [
               {
-                cost = 8.23
+                cost = 7.32
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 6.86
-                output_factor = 3.98
+                input_factor  = 1.42
+                output_factor = 1.31
               }
             ]
-            embeddings_dimensions = 2017878719
-            input_cost            = 3.88
-            input_cost_list = [
-              {
-                cost  = 9.74
-                modal = "video"
-              }
-            ]
-            max_tokens  = 184807158
-            output_cost = 3.66
-            output_cost_list = [
-              {
-                cost  = 5.89
-                modal = "audio"
-              }
-            ]
+            embeddings_dimensions = 1556463673
+            input_cost            = 3.7
+            max_tokens            = 1227329724
+            output_cost           = 6.56
             service_tier_factor = [
               {
-                factor = 4.06
+                factor = 8.57
                 tier   = "...my_tier..."
               }
             ]
-            temperature           = 4.92
-            top_k                 = 299
-            top_p                 = 0.68
-            upstream_url          = "https://determined-skyscraper.name"
-            workspace_instance_id = "...my_workspace_instance_id..."
+            temperature  = 3.27
+            top_k        = 483136424
+            top_p        = 2.83
+            upstream_url = "https://baggy-trash.biz/"
           }
         }
         name                 = "gpt-5-model"
@@ -189,13 +159,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow = [
           "..."
         ]
-        allow_when = [
-          "..."
-        ]
         deny = [
-          "..."
-        ]
-        deny_when = [
           "..."
         ]
       }
@@ -207,7 +171,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       ]
     }
     capabilities = [
-      "audio/transcription"
+      "audio/speech"
     ]
     config = {
       balancer = {
@@ -225,7 +189,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           }
           fail_timeout = 10000
           failover_criteria = [
-            "http_429"
+            "http_502"
           ]
           max_fails    = 0
           read_timeout = 60000
@@ -314,11 +278,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
       }
     }
-    datastores = [
-      {
-        name = "shared-redis"
-      }
-    ]
     display_name = "My GPT 5 model"
     enabled      = true
     formats = [
@@ -340,54 +299,37 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          xai = {
-            cache_read_cost = 2.26
-            cache_read_cost_list = [
-              {
-                cost  = 1.04
-                modal = "image"
-              }
-            ]
-            cache_write_cost = 0.32
+          databricks = {
+            cache_read_cost  = 8.45
+            cache_write_cost = 3.62
             cache_write_cost_list = [
               {
-                cost = 3.9
+                cost = 3.12
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 2.92
-                output_factor = 4.58
+                input_factor  = 4.94
+                output_factor = 9.43
               }
             ]
-            embeddings_dimensions = 748376912
-            input_cost            = 3.63
-            input_cost_list = [
-              {
-                cost  = 6.31
-                modal = "audio"
-              }
-            ]
-            max_tokens  = 1493087753
-            output_cost = 1.58
-            output_cost_list = [
-              {
-                cost  = 3.36
-                modal = "audio"
-              }
-            ]
+            embeddings_dimensions = 1316728274
+            input_cost            = 9.06
+            max_tokens            = 1585442569
+            output_cost           = 7.78
             service_tier_factor = [
               {
-                factor = 2.95
+                factor = 6.01
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 0.46
-            top_k        = 328
-            top_p        = 0.12
-            upstream_url = "https://carefree-hundred.org"
+            temperature           = 3.33
+            top_k                 = 896181225
+            top_p                 = 7.55
+            upstream_url          = "https://distant-antelope.com"
+            workspace_instance_id = "...my_workspace_instance_id..."
           }
         }
         name                 = "gpt-5-model"

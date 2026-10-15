@@ -23,7 +23,6 @@ const (
 	AIGatewayModelModelAIGatewayModelCapabilitiesAudioTranslation   AIGatewayModelModelAIGatewayModelCapabilities = "audio/translation"
 	AIGatewayModelModelAIGatewayModelCapabilitiesVideo              AIGatewayModelModelAIGatewayModelCapabilities = "video"
 	AIGatewayModelModelAIGatewayModelCapabilitiesRerank             AIGatewayModelModelAIGatewayModelCapabilities = "rerank"
-	AIGatewayModelModelAIGatewayModelCapabilitiesDecisions          AIGatewayModelModelAIGatewayModelCapabilities = "decisions"
 )
 
 func (e AIGatewayModelModelAIGatewayModelCapabilities) ToPointer() *AIGatewayModelModelAIGatewayModelCapabilities {
@@ -34,7 +33,7 @@ func (e AIGatewayModelModelAIGatewayModelCapabilities) ToPointer() *AIGatewayMod
 func (e *AIGatewayModelModelAIGatewayModelCapabilities) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "generate", "agentic", "realtime", "embeddings", "image", "audio/speech", "audio/transcription", "audio/translation", "video", "rerank", "decisions":
+		case "generate", "agentic", "realtime", "embeddings", "image", "audio/speech", "audio/transcription", "audio/translation", "video", "rerank":
 			return true
 		}
 	}
@@ -45,10 +44,16 @@ func (e *AIGatewayModelModelAIGatewayModelCapabilities) IsExact() bool {
 type AIGatewayModelAIGatewayModelModel struct {
 	// The display name for this model instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Whether the model is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Access control configuration for a model.
 	Access *AIGatewayModelAccess `json:"access,omitempty"`
 	// List of request/response formats supported by this model.
@@ -69,8 +74,6 @@ type AIGatewayModelAIGatewayModelModel struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// Names of the Datastores this model references.
-	Datastores []AIGatewayDatastoreRef `json:"datastores"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"model" json:"type"`
 	// Routing, logging, and load balancing configuration for the model.
@@ -159,13 +162,6 @@ func (a *AIGatewayModelAIGatewayModelModel) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
-func (a *AIGatewayModelAIGatewayModelModel) GetDatastores() []AIGatewayDatastoreRef {
-	if a == nil {
-		return nil
-	}
-	return a.Datastores
-}
-
 func (a *AIGatewayModelAIGatewayModelModel) GetType() string {
 	return "model"
 }
@@ -210,7 +206,6 @@ type AIGatewayModelAPICapabilities string
 const (
 	AIGatewayModelAPICapabilitiesBatches AIGatewayModelAPICapabilities = "batches"
 	AIGatewayModelAPICapabilitiesFiles   AIGatewayModelAPICapabilities = "files"
-	AIGatewayModelAPICapabilitiesSkills  AIGatewayModelAPICapabilities = "skills"
 )
 
 func (e AIGatewayModelAPICapabilities) ToPointer() *AIGatewayModelAPICapabilities {
@@ -221,21 +216,27 @@ func (e AIGatewayModelAPICapabilities) ToPointer() *AIGatewayModelAPICapabilitie
 func (e *AIGatewayModelAPICapabilities) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "batches", "files", "skills":
+		case "batches", "files":
 			return true
 		}
 	}
 	return false
 }
 
-// AIGatewayModelAIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs.
+// AIGatewayModelAIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs.
 type AIGatewayModelAIGatewayModelAPI struct {
 	// The display name for this model instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Whether the model is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Access control configuration for a model.
 	Access *AIGatewayModelAccess `json:"access,omitempty"`
 	// List of request/response formats supported by this model.
@@ -256,8 +257,6 @@ type AIGatewayModelAIGatewayModelAPI struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// Names of the Datastores this model references.
-	Datastores []AIGatewayDatastoreRef `json:"datastores"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"api" json:"type"`
 	// Routing, logging, and load balancing configuration for the model.
@@ -346,13 +345,6 @@ func (a *AIGatewayModelAIGatewayModelAPI) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
-func (a *AIGatewayModelAIGatewayModelAPI) GetDatastores() []AIGatewayDatastoreRef {
-	if a == nil {
-		return nil
-	}
-	return a.Datastores
-}
-
 func (a *AIGatewayModelAIGatewayModelAPI) GetType() string {
 	return "api"
 }
@@ -399,7 +391,10 @@ const (
 	AIGatewayModelTypeModel AIGatewayModelType = "model"
 )
 
-// AIGatewayModel - Configuration for an AI Gateway model.
+// AIGatewayModel - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an AI Gateway model.
 type AIGatewayModel struct {
 	AIGatewayModelAIGatewayModelAPI   *AIGatewayModelAIGatewayModelAPI   `queryParam:"inline" union:"member"`
 	AIGatewayModelAIGatewayModelModel *AIGatewayModelAIGatewayModelModel `queryParam:"inline" union:"member"`

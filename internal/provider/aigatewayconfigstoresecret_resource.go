@@ -73,7 +73,11 @@ func (r *AIGatewayConfigStoreSecretResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The unique key identifying the secret within the Config Store. Requires replacement if changed.`,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`The unique key identifying the secret within the Config Store.` + "\n" +
+					`Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 512),
 				},
@@ -91,9 +95,12 @@ func (r *AIGatewayConfigStoreSecretResource) Schema(ctx context.Context, req res
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseConfigValue(),
 				},
-				Description: `The secret value. Once stored, this value cannot be retrieved.`,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`The secret value. Once stored, this value cannot be retrieved.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(8192),
+					stringvalidator.UTF8LengthAtMost(5120),
 				},
 			},
 		},

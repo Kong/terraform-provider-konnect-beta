@@ -7,8 +7,14 @@ import (
 	"time"
 )
 
-// AIGatewayCACertificate - A CA certificate represents a trusted CA. These objects are used to verify the validity of a client or server certificate.
+// AIGatewayCACertificate - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// A CA certificate represents a trusted CA. These objects are used to verify the validity of a client or server certificate.
 type AIGatewayCACertificate struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// PEM-encoded public certificate of the CA.
@@ -33,8 +39,6 @@ type AIGatewayCACertificate struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// An immutable read-only flag to identify resource managed by Konnect services.
-	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (a AIGatewayCACertificate) MarshalJSON() ([]byte, error) {
@@ -102,11 +106,4 @@ func (a *AIGatewayCACertificate) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
-}
-
-func (a *AIGatewayCACertificate) GetKonnectManaged() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.KonnectManaged
 }

@@ -19,7 +19,6 @@ func (r *AIGatewayCertificateResourceModel) RefreshFromSharedAIGatewayCertificat
 		r.CertAlt = types.StringPointerValue(resp.CertAlt)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
-		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {

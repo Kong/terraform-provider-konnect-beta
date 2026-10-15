@@ -49,7 +49,7 @@ type PostMeshTLSResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshTLSResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshTLSResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshTLSResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshTLSResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

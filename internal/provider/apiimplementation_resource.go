@@ -112,10 +112,15 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 						},
-						MarkdownDescription: `UUID of the organization environment this implementation is scoped to.` + "\n" +
-							`Must be an environment associated with the API. Required when the API` + "\n" +
-							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted).` + "\n" +
-							`Returns ` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
+						MarkdownDescription: `UUID of the organization environment this control-plane implementation is scoped` + "\n" +
+							`to. Environment names are not accepted. Not applicable to gateway-service` + "\n" +
+							`implementations.` + "\n" +
+							`On create: must be an environment associated with the API. Required when the API` + "\n" +
+							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted). Optional for a` + "\n" +
+							`single-environment API and accepted only if it matches that environment. Returns` + "\n" +
+							`` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
+							`On read: optional; present when the implementation is associated with an` + "\n" +
+							`environment.` + "\n" +
 							`Requires replacement if changed.`,
 					},
 					"id": schema.StringAttribute{
@@ -152,10 +157,15 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("service_reference"), FieldPath: path.Root("service_reference").AtName("environment_id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("control_plane_reference"), FieldPath: path.Root("control_plane_reference").AtName("environment_id")}}),
 				},
-				MarkdownDescription: `UUID of the organization environment this implementation is scoped to.` + "\n" +
-					`Must be an environment associated with the API. Required when the API` + "\n" +
-					`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted).` + "\n" +
-					`Returns ` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.`,
+				MarkdownDescription: `UUID of the organization environment this control-plane implementation is scoped` + "\n" +
+					`to. Environment names are not accepted. Not applicable to gateway-service` + "\n" +
+					`implementations.` + "\n" +
+					`On create: must be an environment associated with the API. Required when the API` + "\n" +
+					`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted). Optional for a` + "\n" +
+					`single-environment API and accepted only if it matches that environment. Returns` + "\n" +
+					`` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
+					`On read: optional; present when the implementation is associated with an` + "\n" +
+					`environment.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -183,10 +193,15 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 						},
-						MarkdownDescription: `UUID of the organization environment this implementation is scoped to.` + "\n" +
-							`Must be an environment associated with the API. Required when the API` + "\n" +
-							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted).` + "\n" +
-							`Returns ` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
+						MarkdownDescription: `UUID of the organization environment this control-plane implementation is scoped` + "\n" +
+							`to. Environment names are not accepted. Not applicable to gateway-service` + "\n" +
+							`implementations.` + "\n" +
+							`On create: must be an environment associated with the API. Required when the API` + "\n" +
+							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted). Optional for a` + "\n" +
+							`single-environment API and accepted only if it matches that environment. Returns` + "\n" +
+							`` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
+							`On read: optional; present when the implementation is associated with an` + "\n" +
+							`environment.` + "\n" +
 							`Requires replacement if changed.`,
 					},
 					"id": schema.StringAttribute{

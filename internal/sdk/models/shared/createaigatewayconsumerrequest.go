@@ -25,10 +25,16 @@ func (e *CreateAIGatewayConsumerRequestType) IsExact() bool {
 	return false
 }
 
-// CreateAIGatewayConsumerRequest - Configuration for an AI Gateway Consumer.
+// CreateAIGatewayConsumerRequest - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an AI Gateway Consumer.
 type CreateAIGatewayConsumerRequest struct {
 	// The display name for this consumer instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this consumer, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// The type of the consumer.

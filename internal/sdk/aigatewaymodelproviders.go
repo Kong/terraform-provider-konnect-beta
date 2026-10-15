@@ -32,6 +32,9 @@ func newAIGatewayModelProviders(rootSDK *KonnectBeta, sdkConfig config.SDKConfig
 }
 
 // CreateAiGatewayModelProvider - Create an AI Gateway Model Provider
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Registers a new model provider for the AI Gateway.
 func (s *AIGatewayModelProviders) CreateAiGatewayModelProvider(ctx context.Context, request operations.CreateAiGatewayModelProviderRequest, opts ...operations.Option) (*operations.CreateAiGatewayModelProviderResponse, error) {
 	o := operations.Options{}
@@ -349,6 +352,9 @@ func (s *AIGatewayModelProviders) CreateAiGatewayModelProvider(ctx context.Conte
 }
 
 // GetAiGatewayModelProvider - Get an AI Gateway Model Provider
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific AI Gateway model provider.
 func (s *AIGatewayModelProviders) GetAiGatewayModelProvider(ctx context.Context, request operations.GetAiGatewayModelProviderRequest, opts ...operations.Option) (*operations.GetAiGatewayModelProviderResponse, error) {
 	o := operations.Options{}
@@ -638,6 +644,9 @@ func (s *AIGatewayModelProviders) GetAiGatewayModelProvider(ctx context.Context,
 }
 
 // UpdateAiGatewayModelProvider - Update an AI Gateway Model Provider
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of an existing AI Gateway model provider.
 func (s *AIGatewayModelProviders) UpdateAiGatewayModelProvider(ctx context.Context, request operations.UpdateAiGatewayModelProviderRequest, opts ...operations.Option) (*operations.UpdateAiGatewayModelProviderResponse, error) {
 	o := operations.Options{}
@@ -955,6 +964,9 @@ func (s *AIGatewayModelProviders) UpdateAiGatewayModelProvider(ctx context.Conte
 }
 
 // DeleteAiGatewayModelProvider - Delete an AI Gateway Model Provider
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a specific AI Gateway model provider.
 func (s *AIGatewayModelProviders) DeleteAiGatewayModelProvider(ctx context.Context, request operations.DeleteAiGatewayModelProviderRequest, opts ...operations.Option) (*operations.DeleteAiGatewayModelProviderResponse, error) {
 	o := operations.Options{}

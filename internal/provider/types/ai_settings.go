@@ -7,6 +7,6 @@ import (
 )
 
 type AISettings struct {
-	Enabled  types.Bool          `tfsdk:"enabled"`
-	Features *AISettingsFeatures `tfsdk:"features"`
+	Enabled  types.Bool `tfsdk:"enabled"`
+	Features *Features  `tfsdk:"features"`
 }

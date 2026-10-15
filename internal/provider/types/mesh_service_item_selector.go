@@ -3,6 +3,6 @@
 package types
 
 type MeshServiceItemSelector struct {
-	DataplaneLabels *MeshExternalService   `tfsdk:"dataplane_labels"`
-	DataplaneRef    *AIGatewayDatastoreRef `tfsdk:"dataplane_ref"`
+	DataplaneLabels *MeshExternalService `tfsdk:"dataplane_labels"`
+	DataplaneRef    *DataplaneRef        `tfsdk:"dataplane_ref"`
 }

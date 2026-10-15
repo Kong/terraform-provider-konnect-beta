@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -20,7 +19,6 @@ import (
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/int64planmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/mapplanmodifier"
 	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -43,17 +41,14 @@ type AIGatewayDataPlaneCertificateResource struct {
 
 // AIGatewayDataPlaneCertificateResourceModel describes the resource data model.
 type AIGatewayDataPlaneCertificateResourceModel struct {
-	Cert           types.String                                         `tfsdk:"cert"`
-	CreatedAt      types.String                                         `tfsdk:"created_at"`
-	Description    types.String                                         `tfsdk:"description"`
-	GatewayID      types.String                                         `tfsdk:"gateway_id"`
-	ID             types.String                                         `tfsdk:"id"`
-	KonnectManaged types.Bool                                           `tfsdk:"konnect_managed"`
-	Labels         map[string]types.String                              `tfsdk:"labels"`
-	ManagedBy      map[string]types.String                              `tfsdk:"managed_by"`
-	Metadata       *tfTypes.AIGatewayDataPlaneClientCertificateMetadata `tfsdk:"metadata"`
-	Title          types.String                                         `tfsdk:"title"`
-	UpdatedAt      types.String                                         `tfsdk:"updated_at"`
+	Cert        types.String                                         `tfsdk:"cert"`
+	CreatedAt   types.String                                         `tfsdk:"created_at"`
+	Description types.String                                         `tfsdk:"description"`
+	GatewayID   types.String                                         `tfsdk:"gateway_id"`
+	ID          types.String                                         `tfsdk:"id"`
+	Metadata    *tfTypes.AIGatewayDataPlaneClientCertificateMetadata `tfsdk:"metadata"`
+	Title       types.String                                         `tfsdk:"title"`
+	UpdatedAt   types.String                                         `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayDataPlaneCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -104,41 +99,6 @@ func (r *AIGatewayDataPlaneCertificateResource) Schema(ctx context.Context, req 
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
-			},
-			"konnect_managed": schema.BoolAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Bool{
-					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-				},
-				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
-			},
-			"labels": schema.MapAttribute{
-				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.Map{
-					mapplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
-				},
-				ElementType: types.StringType,
-				MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
-					`` + "\n" +
-					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
-					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					`Requires replacement if changed.`,
-			},
-			"managed_by": schema.MapAttribute{
-				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.Map{
-					mapplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
-				},
-				ElementType: types.StringType,
-				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
-					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.` + "\n" +
-					`Requires replacement if changed.`,
 			},
 			"metadata": schema.SingleNestedAttribute{
 				Computed: true,

@@ -6,6 +6,8 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
+// Aws - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type Aws struct {
 	// Overrides the AWS_REGION environment variable for SageMaker requests.
 	Region *string `default:"null" json:"region"`
@@ -97,7 +99,10 @@ func (t *Target) GetContainerHostname() *string {
 	return t.ContainerHostname
 }
 
-// AIGatewayTargetSagemakerConfig - AWS SageMaker-specific configuration for a model.
+// AIGatewayTargetSagemakerConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// AWS SageMaker-specific configuration for a model.
 type AIGatewayTargetSagemakerConfig struct {
 	// The number of dimensions for embedding outputs.
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
@@ -111,18 +116,6 @@ type AIGatewayTargetSagemakerConfig struct {
 	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
 	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
 	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
-	// Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	InputCostList []AIGatewayModalCostList `json:"input_cost_list,omitempty"`
-	// Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	OutputCostList []AIGatewayModalCostList `json:"output_cost_list,omitempty"`
-	// Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
-	//
-	// **Requires a minimum runtime version of `2.1`**.
-	CacheReadCostList []AIGatewayModalCostList `json:"cache_read_cost_list,omitempty"`
 	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
 	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
 	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
@@ -138,7 +131,9 @@ type AIGatewayTargetSagemakerConfig struct {
 	// The upstream URL for the model endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_  string  `const:"sagemaker" json:"type"`
+	type_ string `const:"sagemaker" json:"type"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
 	Aws    *Aws    `json:"aws"`
 	Target *Target `json:"target"`
 }
@@ -194,27 +189,6 @@ func (a *AIGatewayTargetSagemakerConfig) GetCacheWriteCost() *float64 {
 		return nil
 	}
 	return a.CacheWriteCost
-}
-
-func (a *AIGatewayTargetSagemakerConfig) GetInputCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.InputCostList
-}
-
-func (a *AIGatewayTargetSagemakerConfig) GetOutputCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.OutputCostList
-}
-
-func (a *AIGatewayTargetSagemakerConfig) GetCacheReadCostList() []AIGatewayModalCostList {
-	if a == nil {
-		return nil
-	}
-	return a.CacheReadCostList
 }
 
 func (a *AIGatewayTargetSagemakerConfig) GetCacheWriteCostList() []AIGatewayCacheWriteCost {

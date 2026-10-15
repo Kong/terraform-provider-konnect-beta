@@ -14,8 +14,6 @@ const (
 	InvalidParametersTypeInvalidParameterStandard      InvalidParametersType = "InvalidParameterStandard"
 	InvalidParametersTypeInvalidParameterMinimumLength InvalidParametersType = "InvalidParameterMinimumLength"
 	InvalidParametersTypeInvalidParameterMaximumLength InvalidParametersType = "InvalidParameterMaximumLength"
-	InvalidParametersTypeInvalidParameterMinimumTime   InvalidParametersType = "InvalidParameterMinimumTime"
-	InvalidParametersTypeInvalidParameterMaximumTime   InvalidParametersType = "InvalidParameterMaximumTime"
 	InvalidParametersTypeInvalidParameterChoiceItem    InvalidParametersType = "InvalidParameterChoiceItem"
 	InvalidParametersTypeInvalidParameterDependentItem InvalidParametersType = "InvalidParameterDependentItem"
 )
@@ -24,8 +22,6 @@ type InvalidParameters struct {
 	InvalidParameterStandard      *InvalidParameterStandard      `queryParam:"inline" union:"member"`
 	InvalidParameterMinimumLength *InvalidParameterMinimumLength `queryParam:"inline" union:"member"`
 	InvalidParameterMaximumLength *InvalidParameterMaximumLength `queryParam:"inline" union:"member"`
-	InvalidParameterMinimumTime   *InvalidParameterMinimumTime   `queryParam:"inline" union:"member"`
-	InvalidParameterMaximumTime   *InvalidParameterMaximumTime   `queryParam:"inline" union:"member"`
 	InvalidParameterChoiceItem    *InvalidParameterChoiceItem    `queryParam:"inline" union:"member"`
 	InvalidParameterDependentItem *InvalidParameterDependentItem `queryParam:"inline" union:"member"`
 
@@ -56,24 +52,6 @@ func CreateInvalidParametersInvalidParameterMaximumLength(invalidParameterMaximu
 	return InvalidParameters{
 		InvalidParameterMaximumLength: &invalidParameterMaximumLength,
 		Type:                          typ,
-	}
-}
-
-func CreateInvalidParametersInvalidParameterMinimumTime(invalidParameterMinimumTime InvalidParameterMinimumTime) InvalidParameters {
-	typ := InvalidParametersTypeInvalidParameterMinimumTime
-
-	return InvalidParameters{
-		InvalidParameterMinimumTime: &invalidParameterMinimumTime,
-		Type:                        typ,
-	}
-}
-
-func CreateInvalidParametersInvalidParameterMaximumTime(invalidParameterMaximumTime InvalidParameterMaximumTime) InvalidParameters {
-	typ := InvalidParametersTypeInvalidParameterMaximumTime
-
-	return InvalidParameters{
-		InvalidParameterMaximumTime: &invalidParameterMaximumTime,
-		Type:                        typ,
 	}
 }
 
@@ -124,22 +102,6 @@ func (u *InvalidParameters) UnmarshalJSON(data []byte) error {
 		})
 	}
 
-	var invalidParameterMinimumTime InvalidParameterMinimumTime = InvalidParameterMinimumTime{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterMinimumTime, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  InvalidParametersTypeInvalidParameterMinimumTime,
-			Value: &invalidParameterMinimumTime,
-		})
-	}
-
-	var invalidParameterMaximumTime InvalidParameterMaximumTime = InvalidParameterMaximumTime{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterMaximumTime, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  InvalidParametersTypeInvalidParameterMaximumTime,
-			Value: &invalidParameterMaximumTime,
-		})
-	}
-
 	var invalidParameterChoiceItem InvalidParameterChoiceItem = InvalidParameterChoiceItem{}
 	if err := utils.UnmarshalJSON(data, &invalidParameterChoiceItem, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
@@ -178,12 +140,6 @@ func (u *InvalidParameters) UnmarshalJSON(data []byte) error {
 	case InvalidParametersTypeInvalidParameterMaximumLength:
 		u.InvalidParameterMaximumLength = best.Value.(*InvalidParameterMaximumLength)
 		return nil
-	case InvalidParametersTypeInvalidParameterMinimumTime:
-		u.InvalidParameterMinimumTime = best.Value.(*InvalidParameterMinimumTime)
-		return nil
-	case InvalidParametersTypeInvalidParameterMaximumTime:
-		u.InvalidParameterMaximumTime = best.Value.(*InvalidParameterMaximumTime)
-		return nil
 	case InvalidParametersTypeInvalidParameterChoiceItem:
 		u.InvalidParameterChoiceItem = best.Value.(*InvalidParameterChoiceItem)
 		return nil
@@ -206,14 +162,6 @@ func (u InvalidParameters) MarshalJSON() ([]byte, error) {
 
 	if u.InvalidParameterMaximumLength != nil {
 		return utils.MarshalJSON(u.InvalidParameterMaximumLength, "", true)
-	}
-
-	if u.InvalidParameterMinimumTime != nil {
-		return utils.MarshalJSON(u.InvalidParameterMinimumTime, "", true)
-	}
-
-	if u.InvalidParameterMaximumTime != nil {
-		return utils.MarshalJSON(u.InvalidParameterMaximumTime, "", true)
 	}
 
 	if u.InvalidParameterChoiceItem != nil {

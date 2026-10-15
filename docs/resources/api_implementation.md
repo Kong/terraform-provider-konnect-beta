@@ -47,10 +47,15 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `environment_id` (String) UUID of the organization environment this implementation is scoped to.
-Must be an environment associated with the API. Required when the API
-has multiple associated environments (`400` if omitted).
-Returns `404` if the UUID is unknown or not associated with the API.
+- `environment_id` (String) UUID of the organization environment this control-plane implementation is scoped
+to. Environment names are not accepted. Not applicable to gateway-service
+implementations.
+On create: must be an environment associated with the API. Required when the API
+has multiple associated environments (`400` if omitted). Optional for a
+single-environment API and accepted only if it matches that environment. Returns
+`404` if the UUID is unknown or not associated with the API.
+On read: optional; present when the implementation is associated with an
+environment.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -60,10 +65,15 @@ Returns `404` if the UUID is unknown or not associated with the API.
 Optional:
 
 - `control_plane` (Attributes) A Control plane that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--control_plane_reference--control_plane))
-- `environment_id` (String) UUID of the organization environment this implementation is scoped to.
-Must be an environment associated with the API. Required when the API
-has multiple associated environments (`400` if omitted).
-Returns `404` if the UUID is unknown or not associated with the API.
+- `environment_id` (String) UUID of the organization environment this control-plane implementation is scoped
+to. Environment names are not accepted. Not applicable to gateway-service
+implementations.
+On create: must be an environment associated with the API. Required when the API
+has multiple associated environments (`400` if omitted). Optional for a
+single-environment API and accepted only if it matches that environment. Returns
+`404` if the UUID is unknown or not associated with the API.
+On read: optional; present when the implementation is associated with an
+environment.
 Requires replacement if changed.
 
 Read-Only:
@@ -90,10 +100,15 @@ Read-Only:
 
 Optional:
 
-- `environment_id` (String) UUID of the organization environment this implementation is scoped to.
-Must be an environment associated with the API. Required when the API
-has multiple associated environments (`400` if omitted).
-Returns `404` if the UUID is unknown or not associated with the API.
+- `environment_id` (String) UUID of the organization environment this control-plane implementation is scoped
+to. Environment names are not accepted. Not applicable to gateway-service
+implementations.
+On create: must be an environment associated with the API. Required when the API
+has multiple associated environments (`400` if omitted). Optional for a
+single-environment API and accepted only if it matches that environment. Returns
+`404` if the UUID is unknown or not associated with the API.
+On read: optional; present when the implementation is associated with an
+environment.
 Requires replacement if changed.
 - `service` (Attributes) A Gateway service that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--service_reference--service))
 

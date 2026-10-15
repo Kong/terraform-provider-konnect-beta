@@ -49,7 +49,7 @@ type PostMeshAccessLogResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshAccessLogResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshAccessLogResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshAccessLogResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshAccessLogResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

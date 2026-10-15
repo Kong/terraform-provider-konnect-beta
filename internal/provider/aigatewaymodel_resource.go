@@ -94,24 +94,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 									},
-									"allow_when": schema.ListAttribute{
-										Optional:    true,
-										ElementType: types.StringType,
-										Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
-									},
 									"deny": schema.ListAttribute{
 										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
-									"deny_when": schema.ListAttribute{
-										Optional:    true,
-										ElementType: types.StringType,
-										Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
-									},
 								},
-								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 							},
 							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
@@ -131,7 +124,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 							},
 						},
-						Description: `Access control configuration for a model.`,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`Access control configuration for a model.`,
 					},
 					"capabilities": schema.ListAttribute{
 						Computed:    true,
@@ -233,6 +229,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("least_connections"),
@@ -321,6 +319,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -415,6 +415,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -509,6 +511,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -597,6 +601,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -685,6 +691,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -753,7 +761,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																MarkdownDescription: `Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry` + "\n" +
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry` + "\n" +
 																	`embeddings are not supported.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
@@ -796,15 +807,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Optional:    true,
 																		Description: `S3 URI for storing video generation outputs.`,
 																	},
-																	"vpc_endpoint": schema.StringAttribute{
-																		Optional: true,
-																		MarkdownDescription: `Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.` + "\n" +
-																			`Ignored if ` + "`" + `upstream_url` + "`" + ` is set.` + "\n" +
-																			`` + "\n" +
-																			`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
-																	},
 																},
-																Description: `AWS Bedrock-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`AWS Bedrock-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -848,14 +855,20 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				},
 																			},
 																		},
-																		Description: `Configuration for a model hosted on Google Cloud Project.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`Configuration for a model hosted on Google Cloud Project.`,
 																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																Description: `Google Gemini-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Google Gemini-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -887,7 +900,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `Whether to wait for the model to load if it is not ready. Default: false`,
 																	},
 																},
-																Description: `Hugging Face-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Hugging Face-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -916,6 +932,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -935,7 +953,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																Description: `Ollama-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Ollama-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -955,7 +976,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																Description: `Openai-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Openai-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -968,7 +992,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 														},
-														Description: `Configuration for an embeddings model. Not Null`,
+														MarkdownDescription: `**Pre-release Feature**` + "\n" +
+															`This feature is currently in beta and is subject to change.` + "\n" +
+															`` + "\n" +
+															`Configuration for an embeddings model.` + "\n" +
+															`Not Null`,
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
 														},
@@ -1164,6 +1192,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`Default: "postgres"`,
 															},
 														},
+														MarkdownDescription: `**Pre-release Feature**` + "\n" +
+															`This feature is currently in beta and is subject to change.`,
 														Validators: []validator.Object{
 															objectvalidator.ConflictsWith(path.Expressions{
 																path.MatchRelative().AtParent().AtName("redis"),
@@ -1217,7 +1247,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
 																		},
-																		Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`AWS specific configs for connecting to a Cloud Provider's redis instance.`,
 																		Validators: []validator.Object{
 																			objectvalidator.ConflictsWith(path.Expressions{
 																				path.MatchRelative().AtParent().AtName("azure"),
@@ -1244,7 +1277,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
 																		},
-																		Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`Azure specific configs for connecting to a Cloud Provider's redis instance.`,
 																		Validators: []validator.Object{
 																			objectvalidator.ConflictsWith(path.Expressions{
 																				path.MatchRelative().AtParent().AtName("aws"),
@@ -1261,7 +1297,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
 																		},
-																		Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`GCP specific configs for connecting to a Cloud Provider's redis instance.`,
 																		Validators: []validator.Object{
 																			objectvalidator.ConflictsWith(path.Expressions{
 																				path.MatchRelative().AtParent().AtName("aws"),
@@ -1530,7 +1569,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 															},
 														},
-														Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+														MarkdownDescription: `**Pre-release Feature**` + "\n" +
+															`This feature is currently in beta and is subject to change.` + "\n" +
+															`` + "\n" +
+															`Config for connecting to a Cloud Provider's Redis instance.`,
 														Validators: []validator.Object{
 															objectvalidator.ConflictsWith(path.Expressions{
 																path.MatchRelative().AtParent().AtName("pgvector"),
@@ -1538,7 +1580,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														},
 													},
 												},
-												Description: `Configuration for the vector database used by the model. Not Null`,
+												MarkdownDescription: `**Pre-release Feature**` + "\n" +
+													`This feature is currently in beta and is subject to change.` + "\n" +
+													`` + "\n" +
+													`Configuration for the vector database used by the model.` + "\n" +
+													`Not Null`,
 												Validators: []validator.Object{
 													speakeasy_objectvalidators.NotNull(),
 												},
@@ -1553,6 +1599,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -1565,7 +1613,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								Description: `Configuration for a model's load balancer when multiple target models are configured.`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration for a model's load balancer when multiple target models are configured.`,
 							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
@@ -1578,7 +1629,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `Default: false`,
 									},
 								},
-								Description: `Configuration for AI Gateway logging.`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
@@ -1678,7 +1732,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 									"hosts": schema.ListAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -1727,10 +1780,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Optional model aliases. When omitted, the model name is used.` + "\n" +
+												MarkdownDescription: `An optional model alias. When omitted, the model name is used.` + "\n" +
 													`When no selector location is configured, the format default selector is used.`,
 												Validators: []validator.List{
 													listvalidator.SizeAtLeast(1),
+													listvalidator.SizeAtMost(1),
 												},
 											},
 										},
@@ -1794,7 +1848,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
 									},
 								},
-								Description: `Configuration for an AI Gateway route. Not Null`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration for an AI Gateway route.` + "\n" +
+									`Not Null`,
 								Validators: []validator.Object{
 									speakeasy_objectvalidators.NotNull(),
 								},
@@ -1811,26 +1869,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"datastores": schema.ListNestedAttribute{
-						Optional: true,
-						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
-							},
-							Attributes: map[string]schema.Attribute{
-								"name": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `An immutable user-defined identifier for this resource.`,
-									Validators: []validator.String{
-										stringvalidator.UTF8LengthBetween(2, 255),
-										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
-									},
-								},
-							},
-						},
-						Description: `Names of the Datastores this model references.`,
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -1858,7 +1896,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								"type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]`,
+									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 								},
 							},
 						},
@@ -1895,13 +1933,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 					},
 					"name": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
+							`Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -1934,46 +1976,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -2054,39 +2060,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2098,39 +2071,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -2165,23 +2105,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -2194,11 +2128,13 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The Anthropic API version to use. Default: "2023-06-01"`,
 												},
 											},
-											Description: `Anthropic-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Anthropic-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -2213,7 +2149,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -2232,46 +2167,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -2367,39 +2266,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -2411,39 +2277,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -2478,326 +2311,30 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Azure-specific configuration for a model.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("baseten"),
-													path.MatchRelative().AtParent().AtName("bedrock"),
-													path.MatchRelative().AtParent().AtName("cerebras"),
-													path.MatchRelative().AtParent().AtName("cohere"),
-													path.MatchRelative().AtParent().AtName("dashscope"),
-													path.MatchRelative().AtParent().AtName("databricks"),
-													path.MatchRelative().AtParent().AtName("deepseek"),
-													path.MatchRelative().AtParent().AtName("gemini"),
-													path.MatchRelative().AtParent().AtName("huggingface"),
-													path.MatchRelative().AtParent().AtName("kimi"),
-													path.MatchRelative().AtParent().AtName("llama2"),
-													path.MatchRelative().AtParent().AtName("mistral"),
-													path.MatchRelative().AtParent().AtName("ollama"),
-													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
-													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vllm"),
-													path.MatchRelative().AtParent().AtName("xai"),
-												}...),
-											},
-										},
-										"baseten": schema.SingleNestedAttribute{
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"cache_read_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
-												},
-												"cache_write_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_write_cost_list": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"ttl": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
-																},
-															},
-														},
-													},
-													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
-												},
-												"context_window_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"above": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
-																},
-															},
-															"input_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"output_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-														},
-													},
-													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
-												},
-												"embeddings_dimensions": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The number of dimensions for embedding outputs.`,
-													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
-													},
-												},
-												"input_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
-												},
-												"max_tokens": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The maximum number of tokens to generate in the response.`,
-													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
-													},
-												},
-												"output_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
-												},
-												"service_tier_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"tier": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.UTF8LengthAtLeast(1),
-																},
-															},
-														},
-													},
-													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
-												},
-												"temperature": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
-												},
-												"top_k": schema.Int64Attribute{
-													Optional:    true,
-													Description: `Limits the number of highest-probability tokens considered during generation.`,
-													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
-													},
-												},
-												"top_p": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
-												},
-												"upstream_url": schema.StringAttribute{
-													Optional:    true,
-													Description: `The upstream URL for the model endpoint.`,
-												},
-											},
-											MarkdownDescription: `Baseten-specific configuration for a model. Requests are sent to Baseten Model APIs at` + "\n" +
-												`` + "`" + `https://inference.baseten.co/v1` + "`" + ` by default, and the target ` + "`" + `name` + "`" + ` is the Baseten model` + "\n" +
-												`slug (for example, ` + "`" + `deepseek-ai/DeepSeek-V4-Pro-0813` + "`" + `). To route to a dedicated Baseten` + "\n" +
-												`deployment, set ` + "`" + `upstream_url` + "`" + ` to the deployment's full OpenAI-compatible endpoint (for` + "\n" +
-												`example, ` + "`" + `https://model-{model_id}.api.baseten.co/environments/{environment}/sync/v1/chat/completions` + "`" + `) or use passthrough format.` + "\n" +
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
 												`` + "\n" +
-												`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												`Azure-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("azure"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -2812,7 +2349,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -2829,46 +2365,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -2952,59 +2452,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Default:     booldefault.StaticBool(false),
 													Description: `Whether to normalize embedding vectors in the response. Default: false`,
 												},
-												"endpoint_type": schema.StringAttribute{
-													Computed: true,
-													Optional: true,
-													Default:  stringdefault.StaticString(`runtime`),
-													MarkdownDescription: `The AWS Bedrock inference endpoint that requests to this target are sent to.` + "\n" +
-														`` + "`" + `runtime` + "`" + ` sends requests to the Bedrock Runtime endpoint` + "\n" +
-														`(` + "`" + `bedrock-runtime.{region}.amazonaws.com` + "`" + `). ` + "`" + `mantle` + "`" + ` sends requests to the` + "\n" +
-														`Bedrock Mantle endpoint (` + "`" + `bedrock-mantle.{region}.api.aws` + "`" + `), which accepts` + "\n" +
-														`OpenAI and Anthropic request formats natively.` + "\n" +
-														`` + "\n" +
-														`A target with ` + "`" + `endpoint_type` + "`" + ` set to ` + "`" + `mantle` + "`" + ` is rejected if its model` + "\n" +
-														`includes a format with ` + "`" + `type` + "`" + ` set to ` + "`" + `bedrock` + "`" + `, because the Mantle endpoint` + "\n" +
-														`does not support the Bedrock Converse or InvokeModel APIs.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
-														`possible known values include one of ["runtime", "mantle"]; Default: "runtime"`,
-												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3016,39 +2466,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"performance_config_latency": schema.StringAttribute{
 													Optional:    true,
@@ -3092,23 +2509,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -3118,20 +2529,15 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `S3 URI for storing video generation outputs.`,
 												},
-												"vpc_endpoint": schema.StringAttribute{
-													Optional: true,
-													MarkdownDescription: `Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.` + "\n" +
-														`Ignored if ` + "`" + `upstream_url` + "`" + ` is set.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
-												},
 											},
-											Description: `AWS Bedrock-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`AWS Bedrock-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
@@ -3145,7 +2551,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -3158,46 +2563,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -3278,39 +2647,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3322,39 +2658,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3389,35 +2692,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Cerebras-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Cerebras-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
@@ -3431,7 +2730,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -3452,46 +2750,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -3578,39 +2840,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -3622,39 +2851,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3689,23 +2885,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -3718,12 +2908,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Whether to wait for the model to be ready before sending the request. Default: false`,
 												},
 											},
-											Description: `Cohere-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Cohere-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
@@ -3737,7 +2929,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -3750,46 +2941,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -3870,39 +3025,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed:    true,
@@ -3920,39 +3042,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3987,35 +3076,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Alibaba DashScope-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Alibaba DashScope-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -4029,7 +3114,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -4042,46 +3126,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -4162,39 +3210,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -4206,39 +3221,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4273,23 +3255,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -4304,12 +3280,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Databricks-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Databricks-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -4323,7 +3301,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -4336,46 +3313,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -4456,39 +3397,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -4500,39 +3408,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4567,35 +3442,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Deepseek-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Deepseek-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -4609,7 +3480,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -4622,46 +3492,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -4768,44 +3602,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															},
 														},
 													},
-													Description: `Configuration for a model hosted on Google Cloud Project.`,
+													MarkdownDescription: `**Pre-release Feature**` + "\n" +
+														`This feature is currently in beta and is subject to change.` + "\n" +
+														`` + "\n" +
+														`Configuration for a model hosted on Google Cloud Project.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -4817,39 +3621,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4884,35 +3655,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Google Gemini-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Google Gemini-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -4926,7 +3693,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -4939,46 +3705,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5059,39 +3789,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -5103,39 +3800,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -5170,23 +3834,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -5205,12 +3863,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Whether to wait for the model to load if it is not ready. Default: false`,
 												},
 											},
-											Description: `Hugging Face-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Hugging Face-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -5224,7 +3884,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -5237,46 +3896,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5357,39 +3980,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed: true,
@@ -5409,39 +3999,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -5476,35 +4033,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Kimi (Moonshot AI)-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Kimi (Moonshot AI)-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -5518,7 +4071,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -5531,46 +4083,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5659,39 +4175,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -5703,39 +4186,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -5770,23 +4220,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -5796,12 +4240,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Llama2-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Llama2-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -5815,7 +4261,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -5828,46 +4273,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5956,39 +4365,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6000,39 +4376,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -6067,35 +4410,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Mistral-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Mistral-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -6109,7 +4448,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -6122,46 +4460,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -6242,39 +4544,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6286,39 +4555,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -6353,35 +4589,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Ollama-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Ollama-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -6395,7 +4627,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -6408,46 +4639,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -6528,39 +4723,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6572,39 +4734,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -6639,35 +4768,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Openai-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Openai-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -6681,7 +4806,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -6718,50 +4842,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `Overrides the STS endpoint when assuming a role.`,
 														},
 													},
+													MarkdownDescription: `**Pre-release Feature**` + "\n" +
+														`This feature is currently in beta and is subject to change.`,
 												},
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -6842,39 +4932,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -6886,39 +4943,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -6976,85 +5000,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `AWS SageMaker-specific configuration for a model.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
-													path.MatchRelative().AtParent().AtName("bedrock"),
-													path.MatchRelative().AtParent().AtName("cerebras"),
-													path.MatchRelative().AtParent().AtName("cohere"),
-													path.MatchRelative().AtParent().AtName("dashscope"),
-													path.MatchRelative().AtParent().AtName("databricks"),
-													path.MatchRelative().AtParent().AtName("deepseek"),
-													path.MatchRelative().AtParent().AtName("gemini"),
-													path.MatchRelative().AtParent().AtName("huggingface"),
-													path.MatchRelative().AtParent().AtName("kimi"),
-													path.MatchRelative().AtParent().AtName("llama2"),
-													path.MatchRelative().AtParent().AtName("mistral"),
-													path.MatchRelative().AtParent().AtName("ollama"),
-													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
-													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vllm"),
-													path.MatchRelative().AtParent().AtName("xai"),
-												}...),
-											},
-										},
-										"typesafe": schema.SingleNestedAttribute{
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"input_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"upstream_url": schema.StringAttribute{
-													Optional:    true,
-													Description: `The upstream URL for the model endpoint.`,
-												},
-											},
-											MarkdownDescription: `Typesafe-specific configuration for a model.` + "\n" +
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
 												`` + "\n" +
-												`**Requires a minimum runtime version of ` + "`" + `2.2` + "`" + `**.`,
+												`AWS SageMaker-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -7068,7 +5038,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -7081,46 +5050,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -7201,39 +5134,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -7245,39 +5145,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -7312,35 +5179,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Vercel AI Gateway-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Vercel AI Gateway-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -7355,7 +5218,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -7367,46 +5229,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -7487,39 +5313,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -7531,39 +5324,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -7598,23 +5358,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -7624,12 +5378,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Vllm-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Vllm-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -7644,7 +5400,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -7656,46 +5411,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -7776,39 +5495,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -7820,39 +5506,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -7887,35 +5540,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Xai-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Xai-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -7930,14 +5579,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 												}...),
 											},
 										},
 									},
-									Description: `Configuration for a target model. Not Null`,
+									MarkdownDescription: `**Pre-release Feature**` + "\n" +
+										`This feature is currently in beta and is subject to change.` + "\n" +
+										`` + "\n" +
+										`Configuration for a target model.` + "\n" +
+										`Not Null`,
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
 									},
@@ -7988,7 +5640,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs.`,
+				Description: `Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("model"),
@@ -8044,24 +5696,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 									},
-									"allow_when": schema.ListAttribute{
-										Optional:    true,
-										ElementType: types.StringType,
-										Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
-									},
 									"deny": schema.ListAttribute{
 										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
-									"deny_when": schema.ListAttribute{
-										Optional:    true,
-										ElementType: types.StringType,
-										Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
-									},
 								},
-								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
 							},
 							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
@@ -8081,7 +5726,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									`Deprecated: use ` + "`" + `auth_strategies` + "`" + ` instead. The two are mutually exclusive.`,
 							},
 						},
-						Description: `Access control configuration for a model.`,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`Access control configuration for a model.`,
 					},
 					"capabilities": schema.ListAttribute{
 						Computed:    true,
@@ -8090,6 +5738,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						Description: `List of AI capabilities enabled for this model. Not Null`,
 						Validators: []validator.List{
 							speakeasy_listvalidators.NotNull(),
+							listvalidator.SizeAtLeast(1),
 						},
 					},
 					"config": schema.SingleNestedAttribute{
@@ -8183,6 +5832,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("least_connections"),
@@ -8271,6 +5922,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -8365,6 +6018,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -8459,6 +6114,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -8547,6 +6204,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -8635,6 +6294,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -8703,7 +6364,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																MarkdownDescription: `Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry` + "\n" +
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry` + "\n" +
 																	`embeddings are not supported.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
@@ -8746,15 +6410,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Optional:    true,
 																		Description: `S3 URI for storing video generation outputs.`,
 																	},
-																	"vpc_endpoint": schema.StringAttribute{
-																		Optional: true,
-																		MarkdownDescription: `Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.` + "\n" +
-																			`Ignored if ` + "`" + `upstream_url` + "`" + ` is set.` + "\n" +
-																			`` + "\n" +
-																			`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
-																	},
 																},
-																Description: `AWS Bedrock-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`AWS Bedrock-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -8798,14 +6458,20 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				},
 																			},
 																		},
-																		Description: `Configuration for a model hosted on Google Cloud Project.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`Configuration for a model hosted on Google Cloud Project.`,
 																	},
 																	"upstream_url": schema.StringAttribute{
 																		Optional:    true,
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																Description: `Google Gemini-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Google Gemini-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -8837,7 +6503,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `Whether to wait for the model to load if it is not ready. Default: false`,
 																	},
 																},
-																Description: `Hugging Face-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Hugging Face-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -8866,6 +6535,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -8885,7 +6556,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																Description: `Ollama-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Ollama-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -8905,7 +6579,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The URL of the embeddings model.`,
 																	},
 																},
-																Description: `Openai-specific configuration for a model.`,
+																MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																	`This feature is currently in beta and is subject to change.` + "\n" +
+																	`` + "\n" +
+																	`Openai-specific configuration for a model.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -8918,7 +6595,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 														},
-														Description: `Configuration for an embeddings model. Not Null`,
+														MarkdownDescription: `**Pre-release Feature**` + "\n" +
+															`This feature is currently in beta and is subject to change.` + "\n" +
+															`` + "\n" +
+															`Configuration for an embeddings model.` + "\n" +
+															`Not Null`,
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
 														},
@@ -9114,6 +6795,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`Default: "postgres"`,
 															},
 														},
+														MarkdownDescription: `**Pre-release Feature**` + "\n" +
+															`This feature is currently in beta and is subject to change.`,
 														Validators: []validator.Object{
 															objectvalidator.ConflictsWith(path.Expressions{
 																path.MatchRelative().AtParent().AtName("redis"),
@@ -9167,7 +6850,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
 																		},
-																		Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`AWS specific configs for connecting to a Cloud Provider's redis instance.`,
 																		Validators: []validator.Object{
 																			objectvalidator.ConflictsWith(path.Expressions{
 																				path.MatchRelative().AtParent().AtName("azure"),
@@ -9194,7 +6880,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
 																		},
-																		Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`Azure specific configs for connecting to a Cloud Provider's redis instance.`,
 																		Validators: []validator.Object{
 																			objectvalidator.ConflictsWith(path.Expressions{
 																				path.MatchRelative().AtParent().AtName("aws"),
@@ -9211,7 +6900,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																			},
 																		},
-																		Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																		MarkdownDescription: `**Pre-release Feature**` + "\n" +
+																			`This feature is currently in beta and is subject to change.` + "\n" +
+																			`` + "\n" +
+																			`GCP specific configs for connecting to a Cloud Provider's redis instance.`,
 																		Validators: []validator.Object{
 																			objectvalidator.ConflictsWith(path.Expressions{
 																				path.MatchRelative().AtParent().AtName("aws"),
@@ -9480,7 +7172,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 															},
 														},
-														Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+														MarkdownDescription: `**Pre-release Feature**` + "\n" +
+															`This feature is currently in beta and is subject to change.` + "\n" +
+															`` + "\n" +
+															`Config for connecting to a Cloud Provider's Redis instance.`,
 														Validators: []validator.Object{
 															objectvalidator.ConflictsWith(path.Expressions{
 																path.MatchRelative().AtParent().AtName("pgvector"),
@@ -9488,7 +7183,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														},
 													},
 												},
-												Description: `Configuration for the vector database used by the model. Not Null`,
+												MarkdownDescription: `**Pre-release Feature**` + "\n" +
+													`This feature is currently in beta and is subject to change.` + "\n" +
+													`` + "\n" +
+													`Configuration for the vector database used by the model.` + "\n" +
+													`Not Null`,
 												Validators: []validator.Object{
 													speakeasy_objectvalidators.NotNull(),
 												},
@@ -9503,6 +7202,8 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												},
 											},
 										},
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
@@ -9515,7 +7216,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								Description: `Configuration for a model's load balancer when multiple target models are configured.`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration for a model's load balancer when multiple target models are configured.`,
 							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
@@ -9528,7 +7232,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `Default: false`,
 									},
 								},
-								Description: `Configuration for AI Gateway logging.`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
@@ -9544,12 +7251,18 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"name_header": schema.BoolAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     booldefault.StaticBool(true),
-										Description: `Display the model name selected in the X-Kong-LLM-Model response header. Default: true`,
+										Computed: true,
+										Optional: true,
+										Default:  booldefault.StaticBool(true),
+										MarkdownDescription: `**Pre-release Feature**` + "\n" +
+											`This feature is currently in beta and is subject to change.` + "\n" +
+											`` + "\n" +
+											`Display the model name selected in the X-Kong-LLM-Model response header` + "\n" +
+											`Default: true`,
 									},
 								},
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.`,
 							},
 							"proxy": schema.SingleNestedAttribute{
 								Optional: true,
@@ -9640,7 +7353,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 									"hosts": schema.ListAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -9689,10 +7401,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Optional model aliases. When omitted, the model name is used.` + "\n" +
+												MarkdownDescription: `An optional model alias. When omitted, the model name is used.` + "\n" +
 													`When no selector location is configured, the format default selector is used.`,
 												Validators: []validator.List{
 													listvalidator.SizeAtLeast(1),
+													listvalidator.SizeAtMost(1),
 												},
 											},
 										},
@@ -9756,7 +7469,11 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
 									},
 								},
-								Description: `Configuration for an AI Gateway route. Not Null`,
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Configuration for an AI Gateway route.` + "\n" +
+									`Not Null`,
 								Validators: []validator.Object{
 									speakeasy_objectvalidators.NotNull(),
 								},
@@ -9773,26 +7490,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"datastores": schema.ListNestedAttribute{
-						Optional: true,
-						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
-							},
-							Attributes: map[string]schema.Attribute{
-								"name": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `An immutable user-defined identifier for this resource.`,
-									Validators: []validator.String{
-										stringvalidator.UTF8LengthBetween(2, 255),
-										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
-									},
-								},
-							},
-						},
-						Description: `Names of the Datastores this model references.`,
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -9820,7 +7517,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								"type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]`,
+									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 								},
 							},
 						},
@@ -9857,13 +7554,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 					},
 					"name": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
+							`Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -9896,46 +7597,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -10016,39 +7681,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -10060,39 +7692,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -10127,23 +7726,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -10156,11 +7749,13 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The Anthropic API version to use. Default: "2023-06-01"`,
 												},
 											},
-											Description: `Anthropic-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Anthropic-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -10175,7 +7770,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -10194,46 +7788,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -10329,39 +7887,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -10373,39 +7898,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -10440,326 +7932,30 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Azure-specific configuration for a model.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("baseten"),
-													path.MatchRelative().AtParent().AtName("bedrock"),
-													path.MatchRelative().AtParent().AtName("cerebras"),
-													path.MatchRelative().AtParent().AtName("cohere"),
-													path.MatchRelative().AtParent().AtName("dashscope"),
-													path.MatchRelative().AtParent().AtName("databricks"),
-													path.MatchRelative().AtParent().AtName("deepseek"),
-													path.MatchRelative().AtParent().AtName("gemini"),
-													path.MatchRelative().AtParent().AtName("huggingface"),
-													path.MatchRelative().AtParent().AtName("kimi"),
-													path.MatchRelative().AtParent().AtName("llama2"),
-													path.MatchRelative().AtParent().AtName("mistral"),
-													path.MatchRelative().AtParent().AtName("ollama"),
-													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
-													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vllm"),
-													path.MatchRelative().AtParent().AtName("xai"),
-												}...),
-											},
-										},
-										"baseten": schema.SingleNestedAttribute{
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"cache_read_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
-												},
-												"cache_write_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_write_cost_list": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"ttl": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
-																},
-															},
-														},
-													},
-													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
-												},
-												"context_window_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"above": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
-																},
-															},
-															"input_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"output_factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-														},
-													},
-													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
-												},
-												"embeddings_dimensions": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The number of dimensions for embedding outputs.`,
-													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
-													},
-												},
-												"input_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
-												},
-												"max_tokens": schema.Int64Attribute{
-													Optional:    true,
-													Description: `The maximum number of tokens to generate in the response.`,
-													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
-													},
-												},
-												"output_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
-												},
-												"service_tier_factor": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"factor": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"tier": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.UTF8LengthAtLeast(1),
-																},
-															},
-														},
-													},
-													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
-												},
-												"temperature": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
-												},
-												"top_k": schema.Int64Attribute{
-													Optional:    true,
-													Description: `Limits the number of highest-probability tokens considered during generation.`,
-													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
-													},
-												},
-												"top_p": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
-												},
-												"upstream_url": schema.StringAttribute{
-													Optional:    true,
-													Description: `The upstream URL for the model endpoint.`,
-												},
-											},
-											MarkdownDescription: `Baseten-specific configuration for a model. Requests are sent to Baseten Model APIs at` + "\n" +
-												`` + "`" + `https://inference.baseten.co/v1` + "`" + ` by default, and the target ` + "`" + `name` + "`" + ` is the Baseten model` + "\n" +
-												`slug (for example, ` + "`" + `deepseek-ai/DeepSeek-V4-Pro-0813` + "`" + `). To route to a dedicated Baseten` + "\n" +
-												`deployment, set ` + "`" + `upstream_url` + "`" + ` to the deployment's full OpenAI-compatible endpoint (for` + "\n" +
-												`example, ` + "`" + `https://model-{model_id}.api.baseten.co/environments/{environment}/sync/v1/chat/completions` + "`" + `) or use passthrough format.` + "\n" +
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
 												`` + "\n" +
-												`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												`Azure-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("azure"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -10774,7 +7970,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -10791,46 +7986,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -10914,59 +8073,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Default:     booldefault.StaticBool(false),
 													Description: `Whether to normalize embedding vectors in the response. Default: false`,
 												},
-												"endpoint_type": schema.StringAttribute{
-													Computed: true,
-													Optional: true,
-													Default:  stringdefault.StaticString(`runtime`),
-													MarkdownDescription: `The AWS Bedrock inference endpoint that requests to this target are sent to.` + "\n" +
-														`` + "`" + `runtime` + "`" + ` sends requests to the Bedrock Runtime endpoint` + "\n" +
-														`(` + "`" + `bedrock-runtime.{region}.amazonaws.com` + "`" + `). ` + "`" + `mantle` + "`" + ` sends requests to the` + "\n" +
-														`Bedrock Mantle endpoint (` + "`" + `bedrock-mantle.{region}.api.aws` + "`" + `), which accepts` + "\n" +
-														`OpenAI and Anthropic request formats natively.` + "\n" +
-														`` + "\n" +
-														`A target with ` + "`" + `endpoint_type` + "`" + ` set to ` + "`" + `mantle` + "`" + ` is rejected if its model` + "\n" +
-														`includes a format with ` + "`" + `type` + "`" + ` set to ` + "`" + `bedrock` + "`" + `, because the Mantle endpoint` + "\n" +
-														`does not support the Bedrock Converse or InvokeModel APIs.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
-														`possible known values include one of ["runtime", "mantle"]; Default: "runtime"`,
-												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -10978,39 +8087,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"performance_config_latency": schema.StringAttribute{
 													Optional:    true,
@@ -11054,23 +8130,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -11080,20 +8150,15 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `S3 URI for storing video generation outputs.`,
 												},
-												"vpc_endpoint": schema.StringAttribute{
-													Optional: true,
-													MarkdownDescription: `Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.` + "\n" +
-														`Ignored if ` + "`" + `upstream_url` + "`" + ` is set.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
-												},
 											},
-											Description: `AWS Bedrock-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`AWS Bedrock-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
@@ -11107,7 +8172,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -11120,46 +8184,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -11240,39 +8268,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -11284,39 +8279,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -11351,35 +8313,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Cerebras-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Cerebras-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
@@ -11393,7 +8351,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -11414,46 +8371,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -11540,39 +8461,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -11584,39 +8472,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -11651,23 +8506,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -11680,12 +8529,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Whether to wait for the model to be ready before sending the request. Default: false`,
 												},
 											},
-											Description: `Cohere-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Cohere-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
@@ -11699,7 +8550,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -11712,46 +8562,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -11832,39 +8646,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed:    true,
@@ -11882,39 +8663,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -11949,35 +8697,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Alibaba DashScope-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Alibaba DashScope-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -11991,7 +8735,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -12004,46 +8747,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -12124,39 +8831,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -12168,39 +8842,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -12235,23 +8876,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -12266,12 +8901,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Databricks-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Databricks-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -12285,7 +8922,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -12298,46 +8934,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -12418,39 +9018,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -12462,39 +9029,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -12529,35 +9063,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Deepseek-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Deepseek-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -12571,7 +9101,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -12584,46 +9113,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -12730,44 +9223,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															},
 														},
 													},
-													Description: `Configuration for a model hosted on Google Cloud Project.`,
+													MarkdownDescription: `**Pre-release Feature**` + "\n" +
+														`This feature is currently in beta and is subject to change.` + "\n" +
+														`` + "\n" +
+														`Configuration for a model hosted on Google Cloud Project.`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -12779,39 +9242,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -12846,35 +9276,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Google Gemini-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Google Gemini-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -12888,7 +9314,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -12901,46 +9326,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -13021,39 +9410,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -13065,39 +9421,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -13132,23 +9455,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -13167,12 +9484,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Whether to wait for the model to load if it is not ready. Default: false`,
 												},
 											},
-											Description: `Hugging Face-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Hugging Face-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -13186,7 +9505,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -13199,46 +9517,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -13319,39 +9601,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"international": schema.BoolAttribute{
 													Computed: true,
@@ -13371,39 +9620,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -13438,35 +9654,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Kimi (Moonshot AI)-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Kimi (Moonshot AI)-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -13480,7 +9692,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -13493,46 +9704,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -13621,39 +9796,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -13665,39 +9807,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -13732,23 +9841,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -13758,12 +9861,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Llama2-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Llama2-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -13777,7 +9882,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -13790,46 +9894,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -13918,39 +9986,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -13962,39 +9997,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -14029,35 +10031,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Mistral-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Mistral-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -14071,7 +10069,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -14084,46 +10081,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -14204,39 +10165,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -14248,39 +10176,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -14315,35 +10210,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Ollama-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Ollama-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -14357,7 +10248,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -14370,46 +10260,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -14490,39 +10344,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -14534,39 +10355,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -14601,35 +10389,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Openai-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Openai-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -14643,7 +10427,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -14680,50 +10463,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `Overrides the STS endpoint when assuming a role.`,
 														},
 													},
+													MarkdownDescription: `**Pre-release Feature**` + "\n" +
+														`This feature is currently in beta and is subject to change.`,
 												},
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -14804,39 +10553,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -14848,39 +10564,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -14938,85 +10621,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `AWS SageMaker-specific configuration for a model.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("anthropic"),
-													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
-													path.MatchRelative().AtParent().AtName("bedrock"),
-													path.MatchRelative().AtParent().AtName("cerebras"),
-													path.MatchRelative().AtParent().AtName("cohere"),
-													path.MatchRelative().AtParent().AtName("dashscope"),
-													path.MatchRelative().AtParent().AtName("databricks"),
-													path.MatchRelative().AtParent().AtName("deepseek"),
-													path.MatchRelative().AtParent().AtName("gemini"),
-													path.MatchRelative().AtParent().AtName("huggingface"),
-													path.MatchRelative().AtParent().AtName("kimi"),
-													path.MatchRelative().AtParent().AtName("llama2"),
-													path.MatchRelative().AtParent().AtName("mistral"),
-													path.MatchRelative().AtParent().AtName("ollama"),
-													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
-													path.MatchRelative().AtParent().AtName("vercel"),
-													path.MatchRelative().AtParent().AtName("vllm"),
-													path.MatchRelative().AtParent().AtName("xai"),
-												}...),
-											},
-										},
-										"typesafe": schema.SingleNestedAttribute{
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"input_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost": schema.Float64Attribute{
-													Optional:    true,
-													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"upstream_url": schema.StringAttribute{
-													Optional:    true,
-													Description: `The upstream URL for the model endpoint.`,
-												},
-											},
-											MarkdownDescription: `Typesafe-specific configuration for a model.` + "\n" +
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
 												`` + "\n" +
-												`**Requires a minimum runtime version of ` + "`" + `2.2` + "`" + `**.`,
+												`AWS SageMaker-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -15030,7 +10659,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
-													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -15043,46 +10671,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -15163,39 +10755,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -15207,39 +10766,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -15274,35 +10800,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Vercel AI Gateway-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Vercel AI Gateway-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -15317,7 +10839,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -15329,46 +10850,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -15449,39 +10934,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -15493,39 +10945,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -15560,23 +10979,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -15586,12 +10999,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Vllm-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Vllm-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -15606,7 +11021,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("xai"),
 												}...),
@@ -15618,46 +11032,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"cache_read_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -15738,39 +11116,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"input_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -15782,39 +11127,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
-													Validators: []validator.Float64{
-														float64validator.AtLeast(0),
-													},
-												},
-												"output_cost_list": schema.ListNestedAttribute{
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"cost": schema.Float64Attribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `Cost per 1M tokens for this modal type. Not Null`,
-																Validators: []validator.Float64{
-																	speakeasy_float64validators.NotNull(),
-																	float64validator.AtLeast(0),
-																},
-															},
-															"modal": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
-																Validators: []validator.String{
-																	speakeasy_stringvalidators.NotNull(),
-																},
-															},
-														},
-													},
-													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
-														`` + "\n" +
-														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -15849,35 +11161,31 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 5),
-													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 500),
+														int64validator.Between(0, 2147483646),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
-													Validators: []validator.Float64{
-														float64validator.Between(0, 1),
-													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
 												},
 											},
-											Description: `Xai-specific configuration for a model.`,
+											MarkdownDescription: `**Pre-release Feature**` + "\n" +
+												`This feature is currently in beta and is subject to change.` + "\n" +
+												`` + "\n" +
+												`Xai-specific configuration for a model.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
 													path.MatchRelative().AtParent().AtName("azure"),
-													path.MatchRelative().AtParent().AtName("baseten"),
 													path.MatchRelative().AtParent().AtName("bedrock"),
 													path.MatchRelative().AtParent().AtName("cerebras"),
 													path.MatchRelative().AtParent().AtName("cohere"),
@@ -15892,14 +11200,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
-													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 												}...),
 											},
 										},
 									},
-									Description: `Configuration for a target model. Not Null`,
+									MarkdownDescription: `**Pre-release Feature**` + "\n" +
+										`This feature is currently in beta and is subject to change.` + "\n" +
+										`` + "\n" +
+										`Configuration for a target model.` + "\n" +
+										`Not Null`,
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
 									},
@@ -15962,7 +11273,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("api"), FieldPath: path.Root("api").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("model"), FieldPath: path.Root("model").AtName("name")}}),
 				},
-				Description: `A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.`,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

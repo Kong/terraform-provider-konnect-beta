@@ -49,7 +49,7 @@ type PostMeshProxyPatchResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshProxyPatchResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshProxyPatchResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshProxyPatchResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshProxyPatchResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

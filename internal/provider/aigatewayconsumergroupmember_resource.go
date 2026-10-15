@@ -89,8 +89,11 @@ func (r *AIGatewayConsumerGroupMemberResource) Schema(ctx context.Context, req r
 							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 					},
 					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.`,
+						Computed: true,
+						MarkdownDescription: `**Pre-release Feature**` + "\n" +
+							`This feature is currently in beta and is subject to change.` + "\n" +
+							`` + "\n" +
+							`A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.`,
 					},
 					"policies": schema.ListAttribute{
 						Computed:    true,
@@ -105,7 +108,8 @@ func (r *AIGatewayConsumerGroupMemberResource) Schema(ctx context.Context, req r
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `AI Gateway Consumer Group created successfully.`,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.`,
 			},
 			"consumer_group_id": schema.StringAttribute{
 				Required: true,

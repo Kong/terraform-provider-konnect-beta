@@ -118,12 +118,18 @@ func (a *AIGatewayModelProviderGeminiConfig) GetAuthGcp() *AIGatewayModelProvide
 	return a.GetAuth().AIGatewayModelProviderConfigAuthGCP
 }
 
-// AIGatewayModelProviderGemini - Config for GCP model provider.
+// AIGatewayModelProviderGemini - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Config for GCP model provider.
 type AIGatewayModelProviderGemini struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"gemini" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.

@@ -6,7 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// GCPModelConfig - Configuration for a model hosted on Google Cloud Project.
+// GCPModelConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for a model hosted on Google Cloud Project.
 type GCPModelConfig struct {
 	// The custom API endpoint for the Gemini model.
 	APIEndpoint string `json:"api_endpoint"`

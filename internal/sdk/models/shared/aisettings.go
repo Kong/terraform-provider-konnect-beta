@@ -2,38 +2,56 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
+// McpServer - AI Features config
+type McpServer struct {
+	// Whether the MCP Server is enabled or not
+	Enabled bool `json:"enabled"`
+	// Whether write operations are enabled or not for the Portal MCP Server enabled
+	WriteOperationsEnabled bool `json:"write_operations_enabled"`
+}
+
+func (m *McpServer) GetEnabled() bool {
+	if m == nil {
+		return false
+	}
+	return m.Enabled
+}
+
+func (m *McpServer) GetWriteOperationsEnabled() bool {
+	if m == nil {
+		return false
+	}
+	return m.WriteOperationsEnabled
+}
+
+type Features struct {
+	// AI Features config
+	McpServer McpServer `json:"mcp_server"`
+}
+
+func (f *Features) GetMcpServer() McpServer {
+	if f == nil {
+		return McpServer{}
+	}
+	return f.McpServer
+}
 
 type AISettings struct {
 	// Is AI enabled?
-	Enabled *bool `default:"false" json:"enabled"`
-	// AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false.
-	Features AISettingsFeatures `json:"features"`
+	Enabled  bool     `json:"enabled"`
+	Features Features `json:"features"`
 }
 
-func (a AISettings) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AISettings) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AISettings) GetEnabled() *bool {
+func (a *AISettings) GetEnabled() bool {
 	if a == nil {
-		return nil
+		return false
 	}
 	return a.Enabled
 }
 
-func (a *AISettings) GetFeatures() AISettingsFeatures {
+func (a *AISettings) GetFeatures() Features {
 	if a == nil {
-		return AISettingsFeatures{}
+		return Features{}
 	}
 	return a.Features
 }

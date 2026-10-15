@@ -8,8 +8,10 @@ import (
 
 // AIGatewayModelProviderHuggingfaceConfig - Configuration for the model provider.
 type AIGatewayModelProviderHuggingfaceConfig struct {
-	// Basic auth config for an upstream model provider.
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
 	//
+	// Basic auth config for an upstream model provider.
 	Auth AIGatewayModelProviderConfigAuthBasic `json:"auth"`
 }
 
@@ -31,12 +33,16 @@ func (a *AIGatewayModelProviderHuggingfaceConfig) GetAuth() AIGatewayModelProvid
 	return a.Auth
 }
 
-// AIGatewayModelProviderHuggingface - Configuration for an upstream model provider.
+// AIGatewayModelProviderHuggingface - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
 type AIGatewayModelProviderHuggingface struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"huggingface" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.

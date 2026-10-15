@@ -18,10 +18,7 @@ type APIPublication struct {
 	// If omitted, this defaults to the target portal's configured default API visibility.
 	//
 	Visibility *APIPublicationVisibility `json:"visibility,omitempty"`
-	// Customization settings for the API spec renderer in the portal.
-	SpecRenderer *APIPublicationSpecRenderer `json:"spec_renderer,omitempty"`
 	// UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
-	//
 	FormID *string `json:"form_id,omitempty"`
 }
 
@@ -44,13 +41,6 @@ func (a *APIPublication) GetVisibility() *APIPublicationVisibility {
 		return nil
 	}
 	return a.Visibility
-}
-
-func (a *APIPublication) GetSpecRenderer() *APIPublicationSpecRenderer {
-	if a == nil {
-		return nil
-	}
-	return a.SpecRenderer
 }
 
 func (a *APIPublication) GetFormID() *string {

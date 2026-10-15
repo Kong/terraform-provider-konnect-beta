@@ -15,7 +15,7 @@ type Error struct {
 	// Details about the error.
 	Detail string `json:"detail"`
 	// An array of objects that contains information related to the error response.
-	InvalidParameters [][]InvalidParameters `json:"invalid_parameters,omitempty"`
+	InvalidParameters [][]MeshV3InvalidParameters `json:"invalid_parameters,omitempty"`
 }
 
 func (e *Error) GetStatus() int64 {
@@ -53,7 +53,7 @@ func (e *Error) GetDetail() string {
 	return e.Detail
 }
 
-func (e *Error) GetInvalidParameters() [][]InvalidParameters {
+func (e *Error) GetInvalidParameters() [][]MeshV3InvalidParameters {
 	if e == nil {
 		return nil
 	}

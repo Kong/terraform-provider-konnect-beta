@@ -6,10 +6,16 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayAuthStrategyKeyAuth - Configuration for an auth strategy.
+// AIGatewayAuthStrategyKeyAuth - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an auth strategy.
 type AIGatewayAuthStrategyKeyAuth struct {
 	// The display name for this auth strategy instance.
 	DisplayName string `json:"display_name"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -25,8 +31,12 @@ type AIGatewayAuthStrategyKeyAuth struct {
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_  string                      `const:"key-auth" json:"type"`
-	Config *AIGWKeyAuthGeneratedConfig `json:"config,omitempty"`
+	type_ string `const:"key-auth" json:"type"`
+	// Configuration for the key-auth auth strategy.
+	// For advanced use cases, additional config properties can be sent in the request body.
+	// See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
+	//
+	Config any `json:"config,omitempty"`
 }
 
 func (a AIGatewayAuthStrategyKeyAuth) MarshalJSON() ([]byte, error) {
@@ -72,7 +82,7 @@ func (a *AIGatewayAuthStrategyKeyAuth) GetType() string {
 	return "key-auth"
 }
 
-func (a *AIGatewayAuthStrategyKeyAuth) GetConfig() *AIGWKeyAuthGeneratedConfig {
+func (a *AIGatewayAuthStrategyKeyAuth) GetConfig() any {
 	if a == nil {
 		return nil
 	}

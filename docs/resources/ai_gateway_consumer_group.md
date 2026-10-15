@@ -37,7 +37,10 @@ resource "konnect_ai_gateway_consumer_group" "my_aigatewayconsumergroup" {
 
 - `display_name` (String) The display name for this consumer group instance.
 - `gateway_id` (String) The unique ID of the AI Gateway.
-- `name` (String) A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.
 
 ### Optional
 

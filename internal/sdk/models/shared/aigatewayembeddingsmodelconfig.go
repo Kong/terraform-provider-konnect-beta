@@ -21,7 +21,10 @@ const (
 	AIGatewayEmbeddingsModelConfigTypeOpenai      AIGatewayEmbeddingsModelConfigType = "openai"
 )
 
-// AIGatewayEmbeddingsModelConfig - Configuration for an embeddings model.
+// AIGatewayEmbeddingsModelConfig - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Configuration for an embeddings model.
 type AIGatewayEmbeddingsModelConfig struct {
 	AIGatewayAzureEmbeddingsModelConfig       *AIGatewayAzureEmbeddingsModelConfig       `queryParam:"inline" union:"member"`
 	AIGatewayBedrockEmbeddingsModelConfig     *AIGatewayBedrockEmbeddingsModelConfig     `queryParam:"inline" union:"member"`

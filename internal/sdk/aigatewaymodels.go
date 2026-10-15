@@ -32,6 +32,9 @@ func newAIGatewayModels(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration,
 }
 
 // CreateAiGatewayModel - Create an AI Gateway Model
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Registers a new model with routing, capabilities, and target backends.
 func (s *AIGatewayModels) CreateAiGatewayModel(ctx context.Context, request operations.CreateAiGatewayModelRequest, opts ...operations.Option) (*operations.CreateAiGatewayModelResponse, error) {
 	o := operations.Options{}
@@ -370,6 +373,9 @@ func (s *AIGatewayModels) CreateAiGatewayModel(ctx context.Context, request oper
 }
 
 // GetAiGatewayModel - Get an AI Gateway Model
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the details of a specific AI Gateway model.
 func (s *AIGatewayModels) GetAiGatewayModel(ctx context.Context, request operations.GetAiGatewayModelRequest, opts ...operations.Option) (*operations.GetAiGatewayModelResponse, error) {
 	o := operations.Options{}
@@ -659,6 +665,9 @@ func (s *AIGatewayModels) GetAiGatewayModel(ctx context.Context, request operati
 }
 
 // UpdateAiGatewayModel - Update an AI Gateway Model
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of an existing AI Gateway model.
 func (s *AIGatewayModels) UpdateAiGatewayModel(ctx context.Context, request operations.UpdateAiGatewayModelRequest, opts ...operations.Option) (*operations.UpdateAiGatewayModelResponse, error) {
 	o := operations.Options{}
@@ -976,6 +985,9 @@ func (s *AIGatewayModels) UpdateAiGatewayModel(ctx context.Context, request oper
 }
 
 // DeleteAiGatewayModel - Delete an AI Gateway Model
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a specific AI Gateway model.
 func (s *AIGatewayModels) DeleteAiGatewayModel(ctx context.Context, request operations.DeleteAiGatewayModelRequest, opts ...operations.Option) (*operations.DeleteAiGatewayModelResponse, error) {
 	o := operations.Options{}

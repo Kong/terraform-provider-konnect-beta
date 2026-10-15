@@ -49,7 +49,7 @@ type PostMeshRateLimitResponse struct {
 	// Invalid resource
 	Error *shared.Error
 	// Parent mesh not found
-	NotFoundError *shared.NotFoundError
+	MeshV3NotFoundError *shared.MeshV3NotFoundError
 }
 
 func (p *PostMeshRateLimitResponse) GetContentType() string {
@@ -87,9 +87,9 @@ func (p *PostMeshRateLimitResponse) GetError() *shared.Error {
 	return p.Error
 }
 
-func (p *PostMeshRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
+func (p *PostMeshRateLimitResponse) GetMeshV3NotFoundError() *shared.MeshV3NotFoundError {
 	if p == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return p.MeshV3NotFoundError
 }

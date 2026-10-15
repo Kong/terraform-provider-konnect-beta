@@ -6,8 +6,14 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPPassthroughTool - A tool exposed by an MCP Server in `passthrough-listener` mode.
+// AIGatewayMCPPassthroughTool - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// A tool exposed by an MCP Server in `passthrough-listener` mode.
 type AIGatewayMCPPassthroughTool struct {
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Access-control rules for a tool.
 	Access AIGatewayMCPToolAccess `json:"access"`
 	// Tool identifier used to match remote MCP Server tools for ACL enforcement.

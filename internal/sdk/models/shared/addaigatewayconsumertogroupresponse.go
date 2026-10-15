@@ -9,7 +9,9 @@ import (
 // AddAIGatewayConsumerToGroupResponse - Consumer added to consumer group successfully.
 type AddAIGatewayConsumerToGroupResponse struct {
 	// The unique ID of the consumer that was added to the consumer group.
-	Consumer      string                 `json:"consumer"`
+	Consumer string `json:"consumer"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
 	ConsumerGroup AIGatewayConsumerGroup `json:"consumer_group"`
 }
 
