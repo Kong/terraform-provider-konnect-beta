@@ -44,6 +44,10 @@ type ReplaceDirectoryBody struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Set to enabled to enable the Token Vault for this directory.
+	// Defaults to disabled when omitted.
+	//
+	VaultEnabled *bool `json:"vault_enabled,omitempty"`
 }
 
 func (r ReplaceDirectoryBody) MarshalJSON() ([]byte, error) {
@@ -111,4 +115,11 @@ func (r *ReplaceDirectoryBody) GetManagedBy() map[string]string {
 		return nil
 	}
 	return r.ManagedBy
+}
+
+func (r *ReplaceDirectoryBody) GetVaultEnabled() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.VaultEnabled
 }

@@ -19,6 +19,8 @@ resource "konnect_portal_application" "my_portalapplication" {
   client_id        = "...my_client_id..."
   dcr_client_id    = "...my_dcr_client_id..."
   description      = "...my_description..."
+  environment_id   = "2747d1e5-8246-4f65-a939-b392f1ee17f8"
+  group_id         = "2747d1e5-8246-4f65-a939-b392f1ee17f8"
   labels = {
     key = "value"
   }
@@ -60,6 +62,13 @@ Note: For AzureAD auth strategies, the client ID must resolve to an accessible M
 application using the configured DCR provider credentials. Otherwise, application creation fails.
 Requires replacement if changed.
 - `description` (String) A description of the application. Requires replacement if changed.
+- `environment_id` (String) UUID of the organization environment to bind this application to. When
+omitted, the organization default environment is used.
+Requires replacement if changed.
+- `group_id` (String) UUID of an existing application group to join. When omitted, a new 1:1
+application group is created for this application. Membership is immutable
+after creation.
+Requires replacement if changed.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Labels are intended to store **INTERNAL** metadata.

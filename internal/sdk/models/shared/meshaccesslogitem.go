@@ -74,75 +74,75 @@ func (e *MeshAccessLogItemSpecRulesDefaultBackendsType) IsExact() bool {
 	return false
 }
 
-// Format of access logs. Placeholders available on
+// MeshAccessLogItemSpecRulesFormat - Format of access logs. Placeholders available on
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
-type Format struct {
+type MeshAccessLogItemSpecRulesFormat struct {
 	JSON            []JSON                                        `json:"json,omitempty"`
 	OmitEmptyValues *bool                                         `default:"false" json:"omitEmptyValues"`
 	Plain           *string                                       `json:"plain,omitempty"`
 	Type            MeshAccessLogItemSpecRulesDefaultBackendsType `json:"type"`
 }
 
-func (f Format) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(f, "", false)
+func (m MeshAccessLogItemSpecRulesFormat) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
 }
 
-func (f *Format) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+func (m *MeshAccessLogItemSpecRulesFormat) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *Format) GetJSON() []JSON {
-	if f == nil {
+func (m *MeshAccessLogItemSpecRulesFormat) GetJSON() []JSON {
+	if m == nil {
 		return nil
 	}
-	return f.JSON
+	return m.JSON
 }
 
-func (f *Format) GetOmitEmptyValues() *bool {
-	if f == nil {
+func (m *MeshAccessLogItemSpecRulesFormat) GetOmitEmptyValues() *bool {
+	if m == nil {
 		return nil
 	}
-	return f.OmitEmptyValues
+	return m.OmitEmptyValues
 }
 
-func (f *Format) GetPlain() *string {
-	if f == nil {
+func (m *MeshAccessLogItemSpecRulesFormat) GetPlain() *string {
+	if m == nil {
 		return nil
 	}
-	return f.Plain
+	return m.Plain
 }
 
-func (f *Format) GetType() MeshAccessLogItemSpecRulesDefaultBackendsType {
-	if f == nil {
+func (m *MeshAccessLogItemSpecRulesFormat) GetType() MeshAccessLogItemSpecRulesDefaultBackendsType {
+	if m == nil {
 		return MeshAccessLogItemSpecRulesDefaultBackendsType("")
 	}
-	return f.Type
+	return m.Type
 }
 
-// File - FileBackend defines configuration for file based access logs
-type File struct {
+// MeshAccessLogItemSpecFile - FileBackend defines configuration for file based access logs
+type MeshAccessLogItemSpecFile struct {
 	// Format of access logs. Placeholders available on
 	// https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
-	Format *Format `json:"format,omitempty"`
+	Format *MeshAccessLogItemSpecRulesFormat `json:"format,omitempty"`
 	// Path to a file that logs will be written to
 	Path string `json:"path"`
 }
 
-func (f *File) GetFormat() *Format {
-	if f == nil {
+func (m *MeshAccessLogItemSpecFile) GetFormat() *MeshAccessLogItemSpecRulesFormat {
+	if m == nil {
 		return nil
 	}
-	return f.Format
+	return m.Format
 }
 
-func (f *File) GetPath() string {
-	if f == nil {
+func (m *MeshAccessLogItemSpecFile) GetPath() string {
+	if m == nil {
 		return ""
 	}
-	return f.Path
+	return m.Path
 }
 
 type Attributes struct {
@@ -388,7 +388,7 @@ func (e *MeshAccessLogItemType) IsExact() bool {
 
 type MeshAccessLogItemSpecBackends struct {
 	// FileBackend defines configuration for file based access logs
-	File *File `json:"file,omitempty"`
+	File *MeshAccessLogItemSpecFile `json:"file,omitempty"`
 	// Defines an OpenTelemetry logging backend.
 	OpenTelemetry *MeshAccessLogItemSpecOpenTelemetry `json:"openTelemetry,omitempty"`
 	// TCPBackend defines a TCP logging backend.
@@ -396,7 +396,7 @@ type MeshAccessLogItemSpecBackends struct {
 	Type MeshAccessLogItemType     `json:"type"`
 }
 
-func (m *MeshAccessLogItemSpecBackends) GetFile() *File {
+func (m *MeshAccessLogItemSpecBackends) GetFile() *MeshAccessLogItemSpecFile {
 	if m == nil {
 		return nil
 	}
@@ -575,14 +575,8 @@ func (m *MeshAccessLogItemRules) GetMatches() []Matches {
 type Kind string
 
 const (
-	KindMesh                 Kind = "Mesh"
-	KindMeshSubset           Kind = "MeshSubset"
-	KindMeshService          Kind = "MeshService"
-	KindMeshExternalService  Kind = "MeshExternalService"
-	KindMeshMultiZoneService Kind = "MeshMultiZoneService"
-	KindMeshServiceSubset    Kind = "MeshServiceSubset"
-	KindMeshHTTPRoute        Kind = "MeshHTTPRoute"
-	KindDataplane            Kind = "Dataplane"
+	KindMesh      Kind = "Mesh"
+	KindDataplane Kind = "Dataplane"
 )
 
 func (e Kind) ToPointer() *Kind {
@@ -593,7 +587,7 @@ func (e Kind) ToPointer() *Kind {
 func (e *Kind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+		case "Mesh", "Dataplane":
 			return true
 		}
 	}
@@ -606,23 +600,13 @@ func (e *Kind) IsExact() bool {
 type TargetRef struct {
 	// Kind of the referenced resource
 	Kind Kind `json:"kind"`
-	// Labels are used to select group of MeshServices that match labels. Either Labels or
-	// Name and Namespace can be used.
+	// Labels are used to select referenced real resources and to carry legacy
+	// service identity when a common TargetRef must still target old
+	// service-tag based paths.
 	Labels map[string]string `json:"labels,omitempty"`
-	// Mesh is reserved for future use to identify cross mesh resources.
-	Mesh *string `json:"mesh,omitempty"`
-	// Name of the referenced resource. Can only be used with kinds: `MeshService`
-	// and `MeshServiceSubset`
-	Name *string `json:"name,omitempty"`
-	// Namespace specifies the namespace of target resource. If empty only resources in policy namespace
-	// will be targeted.
-	Namespace *string `json:"namespace,omitempty"`
 	// SectionName is used to target specific section of resource.
 	// For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 	SectionName *string `json:"sectionName,omitempty"`
-	// Tags used to select a subset of proxies by tags. Can only be used with kinds
-	// `MeshSubset` and `MeshServiceSubset`
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (t *TargetRef) GetKind() Kind {
@@ -639,39 +623,11 @@ func (t *TargetRef) GetLabels() map[string]string {
 	return t.Labels
 }
 
-func (t *TargetRef) GetMesh() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Mesh
-}
-
-func (t *TargetRef) GetName() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Name
-}
-
-func (t *TargetRef) GetNamespace() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Namespace
-}
-
 func (t *TargetRef) GetSectionName() *string {
 	if t == nil {
 		return nil
 	}
 	return t.SectionName
-}
-
-func (t *TargetRef) GetTags() map[string]string {
-	if t == nil {
-		return nil
-	}
-	return t.Tags
 }
 
 type MeshAccessLogItemSpecJSON struct {
@@ -1083,13 +1039,10 @@ type MeshAccessLogItemKind string
 
 const (
 	MeshAccessLogItemKindMesh                 MeshAccessLogItemKind = "Mesh"
-	MeshAccessLogItemKindMeshSubset           MeshAccessLogItemKind = "MeshSubset"
 	MeshAccessLogItemKindMeshService          MeshAccessLogItemKind = "MeshService"
 	MeshAccessLogItemKindMeshExternalService  MeshAccessLogItemKind = "MeshExternalService"
 	MeshAccessLogItemKindMeshMultiZoneService MeshAccessLogItemKind = "MeshMultiZoneService"
-	MeshAccessLogItemKindMeshServiceSubset    MeshAccessLogItemKind = "MeshServiceSubset"
 	MeshAccessLogItemKindMeshHTTPRoute        MeshAccessLogItemKind = "MeshHTTPRoute"
-	MeshAccessLogItemKindDataplane            MeshAccessLogItemKind = "Dataplane"
 )
 
 func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
@@ -1100,7 +1053,7 @@ func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
 func (e *MeshAccessLogItemKind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+		case "Mesh", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshHTTPRoute":
 			return true
 		}
 	}
@@ -1112,23 +1065,13 @@ func (e *MeshAccessLogItemKind) IsExact() bool {
 type MeshAccessLogItemTargetRef struct {
 	// Kind of the referenced resource
 	Kind MeshAccessLogItemKind `json:"kind"`
-	// Labels are used to select group of MeshServices that match labels. Either Labels or
-	// Name and Namespace can be used.
+	// Labels are used to select referenced real resources and to carry legacy
+	// service identity when a common TargetRef must still target old
+	// service-tag based paths.
 	Labels map[string]string `json:"labels,omitempty"`
-	// Mesh is reserved for future use to identify cross mesh resources.
-	Mesh *string `json:"mesh,omitempty"`
-	// Name of the referenced resource. Can only be used with kinds: `MeshService`
-	// and `MeshServiceSubset`
-	Name *string `json:"name,omitempty"`
-	// Namespace specifies the namespace of target resource. If empty only resources in policy namespace
-	// will be targeted.
-	Namespace *string `json:"namespace,omitempty"`
 	// SectionName is used to target specific section of resource.
 	// For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 	SectionName *string `json:"sectionName,omitempty"`
-	// Tags used to select a subset of proxies by tags. Can only be used with kinds
-	// `MeshSubset` and `MeshServiceSubset`
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (m *MeshAccessLogItemTargetRef) GetKind() MeshAccessLogItemKind {
@@ -1145,39 +1088,11 @@ func (m *MeshAccessLogItemTargetRef) GetLabels() map[string]string {
 	return m.Labels
 }
 
-func (m *MeshAccessLogItemTargetRef) GetMesh() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Mesh
-}
-
-func (m *MeshAccessLogItemTargetRef) GetName() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Name
-}
-
-func (m *MeshAccessLogItemTargetRef) GetNamespace() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Namespace
-}
-
 func (m *MeshAccessLogItemTargetRef) GetSectionName() *string {
 	if m == nil {
 		return nil
 	}
 	return m.SectionName
-}
-
-func (m *MeshAccessLogItemTargetRef) GetTags() map[string]string {
-	if m == nil {
-		return nil
-	}
-	return m.Tags
 }
 
 type To struct {

@@ -52,7 +52,7 @@ func (r *MeshProxyPatchResourceModel) RefreshFromSharedMeshProxyPatchItem(ctx co
 			if appendModificationsItem.Cluster == nil {
 				appendModifications.Cluster = nil
 			} else {
-				appendModifications.Cluster = &tfTypes.Cluster{}
+				appendModifications.Cluster = &tfTypes.MeshProxyPatchItemCluster{}
 				appendModifications.Cluster.JSONPatches = []tfTypes.JSONPatches{}
 
 				for _, jsonPatchesItem := range appendModificationsItem.Cluster.JSONPatches {
@@ -235,16 +235,7 @@ func (r *MeshProxyPatchResourceModel) RefreshFromSharedMeshProxyPatchItem(ctx co
 					r.Spec.TargetRef.Labels[key3] = types.StringValue(value3)
 				}
 			}
-			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
-			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
-			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
-			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
-				for key4, value4 := range resp.Spec.TargetRef.Tags {
-					r.Spec.TargetRef.Tags[key4] = types.StringValue(value4)
-				}
-			}
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}
@@ -289,6 +280,31 @@ func (r *MeshProxyPatchResourceModel) ToOperationsGetMeshProxyPatchRequest(ctx c
 		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshProxyPatchResourceModel) ToOperationsPostMeshProxyPatchRequest(ctx context.Context) (*operations.PostMeshProxyPatchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	meshProxyPatchItem, meshProxyPatchItemDiags := r.ToSharedMeshProxyPatchItemInput(ctx)
+	diags.Append(meshProxyPatchItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostMeshProxyPatchRequest{
+		CpID:               cpID,
+		Mesh:               mesh,
+		MeshProxyPatchItem: *meshProxyPatchItem,
 	}
 
 	return &out, diags
@@ -342,7 +358,7 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput(ctx contex
 	}
 	appendModifications := make([]shared.AppendModifications, 0, len(r.Spec.Default.AppendModifications))
 	for appendModificationsIndex := range r.Spec.Default.AppendModifications {
-		var cluster *shared.Cluster
+		var cluster *shared.MeshProxyPatchItemCluster
 		if r.Spec.Default.AppendModifications[appendModificationsIndex].Cluster != nil {
 			jsonPatches := make([]shared.JSONPatches, 0, len(r.Spec.Default.AppendModifications[appendModificationsIndex].Cluster.JSONPatches))
 			for jsonPatchesIndex := range r.Spec.Default.AppendModifications[appendModificationsIndex].Cluster.JSONPatches {
@@ -393,7 +409,7 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput(ctx contex
 			} else {
 				value1 = nil
 			}
-			cluster = &shared.Cluster{
+			cluster = &shared.MeshProxyPatchItemCluster{
 				JSONPatches: jsonPatches,
 				Match:       match,
 				Operation:   operation,
@@ -695,45 +711,16 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput(ctx contex
 
 			labels1[labelsKey] = labelsInst
 		}
-		mesh1 := new(string)
-		if !r.Spec.TargetRef.Mesh.IsUnknown() && !r.Spec.TargetRef.Mesh.IsNull() {
-			*mesh1 = r.Spec.TargetRef.Mesh.ValueString()
-		} else {
-			mesh1 = nil
-		}
-		name6 := new(string)
-		if !r.Spec.TargetRef.Name.IsUnknown() && !r.Spec.TargetRef.Name.IsNull() {
-			*name6 = r.Spec.TargetRef.Name.ValueString()
-		} else {
-			name6 = nil
-		}
-		namespace := new(string)
-		if !r.Spec.TargetRef.Namespace.IsUnknown() && !r.Spec.TargetRef.Namespace.IsNull() {
-			*namespace = r.Spec.TargetRef.Namespace.ValueString()
-		} else {
-			namespace = nil
-		}
 		sectionName := new(string)
 		if !r.Spec.TargetRef.SectionName.IsUnknown() && !r.Spec.TargetRef.SectionName.IsNull() {
 			*sectionName = r.Spec.TargetRef.SectionName.ValueString()
 		} else {
 			sectionName = nil
 		}
-		tags1 := make(map[string]string)
-		for tagsKey1 := range r.Spec.TargetRef.Tags {
-			var tagsInst1 string
-			tagsInst1 = r.Spec.TargetRef.Tags[tagsKey1].ValueString()
-
-			tags1[tagsKey1] = tagsInst1
-		}
 		targetRef = &shared.MeshProxyPatchItemTargetRef{
 			Kind:        kind,
 			Labels:      labels1,
-			Mesh:        mesh1,
-			Name:        name6,
-			Namespace:   namespace,
 			SectionName: sectionName,
-			Tags:        tags1,
 		}
 	}
 	spec := shared.MeshProxyPatchItemSpec{

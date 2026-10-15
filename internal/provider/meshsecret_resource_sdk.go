@@ -87,6 +87,31 @@ func (r *MeshSecretResourceModel) ToOperationsGetSecretRequest(ctx context.Conte
 	return &out, diags
 }
 
+func (r *MeshSecretResourceModel) ToOperationsPostSecretRequest(ctx context.Context) (*operations.PostSecretRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	secretItem, secretItemDiags := r.ToSharedSecretItemInput(ctx)
+	diags.Append(secretItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostSecretRequest{
+		CpID:       cpID,
+		Mesh:       mesh,
+		SecretItem: *secretItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshSecretResourceModel) ToOperationsPutSecretRequest(ctx context.Context) (*operations.PutSecretRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

@@ -30,6 +30,7 @@ func (e *PortalCustomizationMode) IsExact() bool {
 }
 
 type Colors struct {
+	// The primary accent color used in the portal's theme. Must be a valid hex color value.
 	Primary *string `json:"primary,omitempty"`
 }
 
@@ -40,10 +41,23 @@ func (c *Colors) GetPrimary() *string {
 	return c.Primary
 }
 
+// Theme - The theme settings for this portal.
 type Theme struct {
-	Name   *string                  `json:"name,omitempty"`
+	// The theme name to apply to this portal. Supported names are 'ocean', 'mesa', and 'grove'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme.
+	Name   *string                  `default:"ocean" json:"name"`
 	Mode   *PortalCustomizationMode `json:"mode,omitempty"`
 	Colors *Colors                  `json:"colors,omitempty"`
+}
+
+func (t Theme) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Theme) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *Theme) GetName() *string {
@@ -124,7 +138,38 @@ func (m *Menu) GetFooterBottom() []PortalMenuItem {
 	return m.FooterBottom
 }
 
-type SpecRenderer struct {
+// PortalCustomizationTryItUIAudience - The audience for the Try It UI feature.
+//
+// `all` means that the Try It UI will be available to all users, including unauthenticated users.
+//
+// `authenticated` means that the Try It UI will only be available to authenticated users.
+//
+// `registered` means that the Try It UI will only be available to users who have registered for the API.
+type PortalCustomizationTryItUIAudience string
+
+const (
+	PortalCustomizationTryItUIAudienceAll           PortalCustomizationTryItUIAudience = "all"
+	PortalCustomizationTryItUIAudienceAuthenticated PortalCustomizationTryItUIAudience = "authenticated"
+	PortalCustomizationTryItUIAudienceRegistered    PortalCustomizationTryItUIAudience = "registered"
+)
+
+func (e PortalCustomizationTryItUIAudience) ToPointer() *PortalCustomizationTryItUIAudience {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PortalCustomizationTryItUIAudience) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "all", "authenticated", "registered":
+			return true
+		}
+	}
+	return false
+}
+
+// PortalCustomizationSpecRenderer - The spec renderer settings of this portal
+type PortalCustomizationSpecRenderer struct {
 	// Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
 	TryItUI *bool `default:"true" json:"try_it_ui"`
 	// Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
@@ -138,67 +183,75 @@ type SpecRenderer struct {
 	// Manage visibility of deprecated endpoints and models.
 	HideDeprecated *bool `default:"false" json:"hide_deprecated"`
 	// Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
-	AllowCustomServerUrls *bool `default:"true" json:"allow_custom_server_urls"`
+	AllowCustomServerUrls *bool                               `default:"true" json:"allow_custom_server_urls"`
+	TryItUIAudience       *PortalCustomizationTryItUIAudience `default:"all" json:"try_it_ui_audience"`
 }
 
-func (s SpecRenderer) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+func (p PortalCustomizationSpecRenderer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
 }
 
-func (s *SpecRenderer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+func (p *PortalCustomizationSpecRenderer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SpecRenderer) GetTryItUI() *bool {
-	if s == nil {
+func (p *PortalCustomizationSpecRenderer) GetTryItUI() *bool {
+	if p == nil {
 		return nil
 	}
-	return s.TryItUI
+	return p.TryItUI
 }
 
-func (s *SpecRenderer) GetTryItInsomnia() *bool {
-	if s == nil {
+func (p *PortalCustomizationSpecRenderer) GetTryItInsomnia() *bool {
+	if p == nil {
 		return nil
 	}
-	return s.TryItInsomnia
+	return p.TryItInsomnia
 }
 
-func (s *SpecRenderer) GetInfiniteScroll() *bool {
-	if s == nil {
+func (p *PortalCustomizationSpecRenderer) GetInfiniteScroll() *bool {
+	if p == nil {
 		return nil
 	}
-	return s.InfiniteScroll
+	return p.InfiniteScroll
 }
 
-func (s *SpecRenderer) GetShowSchemas() *bool {
-	if s == nil {
+func (p *PortalCustomizationSpecRenderer) GetShowSchemas() *bool {
+	if p == nil {
 		return nil
 	}
-	return s.ShowSchemas
+	return p.ShowSchemas
 }
 
-func (s *SpecRenderer) GetHideInternal() *bool {
-	if s == nil {
+func (p *PortalCustomizationSpecRenderer) GetHideInternal() *bool {
+	if p == nil {
 		return nil
 	}
-	return s.HideInternal
+	return p.HideInternal
 }
 
-func (s *SpecRenderer) GetHideDeprecated() *bool {
-	if s == nil {
+func (p *PortalCustomizationSpecRenderer) GetHideDeprecated() *bool {
+	if p == nil {
 		return nil
 	}
-	return s.HideDeprecated
+	return p.HideDeprecated
 }
 
-func (s *SpecRenderer) GetAllowCustomServerUrls() *bool {
-	if s == nil {
+func (p *PortalCustomizationSpecRenderer) GetAllowCustomServerUrls() *bool {
+	if p == nil {
 		return nil
 	}
-	return s.AllowCustomServerUrls
+	return p.AllowCustomServerUrls
+}
+
+func (p *PortalCustomizationSpecRenderer) GetTryItUIAudience() *PortalCustomizationTryItUIAudience {
+	if p == nil {
+		return nil
+	}
+	return p.TryItUIAudience
 }
 
 type Footer struct {
@@ -237,14 +290,19 @@ func (p *PortalLayout) GetFooter() *Footer {
 
 // PortalCustomization - The custom settings of this portal
 type PortalCustomization struct {
-	Theme        *Theme        `json:"theme,omitempty"`
-	Layout       *string       `json:"layout,omitempty"`
-	CSS          *string       `default:"null" json:"css"`
-	Js           *Js           `json:"js,omitempty"`
-	Menu         *Menu         `json:"menu,omitempty"`
-	SpecRenderer *SpecRenderer `json:"spec_renderer,omitempty"`
-	Robots       *string       `default:"null" json:"robots"`
-	PortalLayout *PortalLayout `json:"portal_layout"`
+	// The theme settings for this portal.
+	Theme *Theme `json:"theme,omitempty"`
+	// This property is deprecated and is not used by the portal.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	Layout *string `json:"layout,omitempty"`
+	CSS    *string `default:"null" json:"css"`
+	Js     *Js     `json:"js,omitempty"`
+	Menu   *Menu   `json:"menu,omitempty"`
+	// The spec renderer settings of this portal
+	SpecRenderer *PortalCustomizationSpecRenderer `json:"spec_renderer,omitempty"`
+	Robots       *string                          `default:"null" json:"robots"`
+	PortalLayout *PortalLayout                    `json:"portal_layout,omitempty"`
 }
 
 func (p PortalCustomization) MarshalJSON() ([]byte, error) {
@@ -293,7 +351,7 @@ func (p *PortalCustomization) GetMenu() *Menu {
 	return p.Menu
 }
 
-func (p *PortalCustomization) GetSpecRenderer() *SpecRenderer {
+func (p *PortalCustomization) GetSpecRenderer() *PortalCustomizationSpecRenderer {
 	if p == nil {
 		return nil
 	}

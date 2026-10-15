@@ -69,13 +69,14 @@ resource "konnect_portal_customization" "my_portalcustomization" {
     show_schemas             = true
     try_it_insomnia          = true
     try_it_ui                = true
+    try_it_ui_audience       = "all"
   }
   theme = {
     colors = {
       primary = "#000000"
     }
     mode = "system"
-    name = "...my_name..."
+    name = "ocean"
   }
 }
 ```
@@ -91,12 +92,12 @@ resource "konnect_portal_customization" "my_portalcustomization" {
 
 - `css` (String)
 - `js` (Attributes) (see [below for nested schema](#nestedatt--js))
-- `layout` (String)
+- `layout` (String, Deprecated) This property is deprecated and is not used by the portal.
 - `menu` (Attributes) (see [below for nested schema](#nestedatt--menu))
 - `portal_layout` (Attributes) (see [below for nested schema](#nestedatt--portal_layout))
 - `robots` (String)
-- `spec_renderer` (Attributes) (see [below for nested schema](#nestedatt--spec_renderer))
-- `theme` (Attributes) (see [below for nested schema](#nestedatt--theme))
+- `spec_renderer` (Attributes) The spec renderer settings of this portal (see [below for nested schema](#nestedatt--spec_renderer))
+- `theme` (Attributes) The theme settings for this portal. (see [below for nested schema](#nestedatt--theme))
 
 <a id="nestedatt--js"></a>
 ### Nested Schema for `js`
@@ -187,6 +188,14 @@ Optional:
 - `show_schemas` (Boolean) Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints. Default: true
 - `try_it_insomnia` (Boolean) Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported. Default: true
 - `try_it_ui` (Boolean) Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true
+- `try_it_ui_audience` (String) The audience for the Try It UI feature.
+
+`all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+`authenticated` means that the Try It UI will only be available to authenticated users.
+
+`registered` means that the Try It UI will only be available to users who have registered for the API.
+possible known values include one of ["all", "authenticated", "registered"]; Default: "all"
 
 
 <a id="nestedatt--theme"></a>
@@ -196,14 +205,14 @@ Optional:
 
 - `colors` (Attributes) (see [below for nested schema](#nestedatt--theme--colors))
 - `mode` (String) possible known values include one of ["light", "dark", "system"]
-- `name` (String)
+- `name` (String) The theme name to apply to this portal. Supported names are 'ocean', 'mesa', and 'grove'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"
 
 <a id="nestedatt--theme--colors"></a>
 ### Nested Schema for `theme.colors`
 
 Optional:
 
-- `primary` (String)
+- `primary` (String) The primary accent color used in the portal's theme. Must be a valid hex color value.
 
 ## Import
 

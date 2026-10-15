@@ -133,6 +133,27 @@ func (r *MeshHostnameGeneratorResourceModel) ToOperationsGetHostnameGeneratorReq
 	return &out, diags
 }
 
+func (r *MeshHostnameGeneratorResourceModel) ToOperationsPostHostnameGeneratorRequest(ctx context.Context) (*operations.PostHostnameGeneratorRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	hostnameGeneratorItem, hostnameGeneratorItemDiags := r.ToSharedHostnameGeneratorItemInput(ctx)
+	diags.Append(hostnameGeneratorItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostHostnameGeneratorRequest{
+		CpID:                  cpID,
+		HostnameGeneratorItem: *hostnameGeneratorItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshHostnameGeneratorResourceModel) ToOperationsPutHostnameGeneratorRequest(ctx context.Context) (*operations.PutHostnameGeneratorRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

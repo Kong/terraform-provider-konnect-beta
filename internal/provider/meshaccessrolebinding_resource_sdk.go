@@ -101,6 +101,27 @@ func (r *MeshAccessRoleBindingResourceModel) ToOperationsGetAccessRoleBindingReq
 	return &out, diags
 }
 
+func (r *MeshAccessRoleBindingResourceModel) ToOperationsPostAccessRoleBindingRequest(ctx context.Context) (*operations.PostAccessRoleBindingRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	accessRoleBindingItem, accessRoleBindingItemDiags := r.ToSharedAccessRoleBindingItemInput(ctx)
+	diags.Append(accessRoleBindingItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostAccessRoleBindingRequest{
+		CpID:                  cpID,
+		AccessRoleBindingItem: *accessRoleBindingItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshAccessRoleBindingResourceModel) ToOperationsPutAccessRoleBindingRequest(ctx context.Context) (*operations.PutAccessRoleBindingRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

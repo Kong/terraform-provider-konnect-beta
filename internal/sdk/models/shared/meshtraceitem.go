@@ -157,21 +157,21 @@ func (e *MeshTraceItemSpecType) IsExact() bool {
 	return false
 }
 
-// APIVersion - Version of the API.
+// MeshTraceItemAPIVersion - Version of the API.
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-type APIVersion string
+type MeshTraceItemAPIVersion string
 
 const (
-	APIVersionHTTPJSON  APIVersion = "httpJson"
-	APIVersionHTTPProto APIVersion = "httpProto"
+	MeshTraceItemAPIVersionHTTPJSON  MeshTraceItemAPIVersion = "httpJson"
+	MeshTraceItemAPIVersionHTTPProto MeshTraceItemAPIVersion = "httpProto"
 )
 
-func (e APIVersion) ToPointer() *APIVersion {
+func (e MeshTraceItemAPIVersion) ToPointer() *MeshTraceItemAPIVersion {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *APIVersion) IsExact() bool {
+func (e *MeshTraceItemAPIVersion) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "httpJson", "httpProto":
@@ -185,7 +185,7 @@ func (e *APIVersion) IsExact() bool {
 type Zipkin struct {
 	// Version of the API.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-	APIVersion *APIVersion `default:"httpJson" json:"apiVersion"`
+	APIVersion *MeshTraceItemAPIVersion `default:"httpJson" json:"apiVersion"`
 	// Determines whether client and server spans will share the same span
 	// context.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63
@@ -207,7 +207,7 @@ func (z *Zipkin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (z *Zipkin) GetAPIVersion() *APIVersion {
+func (z *Zipkin) GetAPIVersion() *MeshTraceItemAPIVersion {
 	if z == nil {
 		return nil
 	}
@@ -711,14 +711,8 @@ func (m *MeshTraceItemDefault) GetTags() []Tags {
 type MeshTraceItemKind string
 
 const (
-	MeshTraceItemKindMesh                 MeshTraceItemKind = "Mesh"
-	MeshTraceItemKindMeshSubset           MeshTraceItemKind = "MeshSubset"
-	MeshTraceItemKindMeshService          MeshTraceItemKind = "MeshService"
-	MeshTraceItemKindMeshExternalService  MeshTraceItemKind = "MeshExternalService"
-	MeshTraceItemKindMeshMultiZoneService MeshTraceItemKind = "MeshMultiZoneService"
-	MeshTraceItemKindMeshServiceSubset    MeshTraceItemKind = "MeshServiceSubset"
-	MeshTraceItemKindMeshHTTPRoute        MeshTraceItemKind = "MeshHTTPRoute"
-	MeshTraceItemKindDataplane            MeshTraceItemKind = "Dataplane"
+	MeshTraceItemKindMesh      MeshTraceItemKind = "Mesh"
+	MeshTraceItemKindDataplane MeshTraceItemKind = "Dataplane"
 )
 
 func (e MeshTraceItemKind) ToPointer() *MeshTraceItemKind {
@@ -729,7 +723,7 @@ func (e MeshTraceItemKind) ToPointer() *MeshTraceItemKind {
 func (e *MeshTraceItemKind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+		case "Mesh", "Dataplane":
 			return true
 		}
 	}
@@ -742,23 +736,13 @@ func (e *MeshTraceItemKind) IsExact() bool {
 type MeshTraceItemTargetRef struct {
 	// Kind of the referenced resource
 	Kind MeshTraceItemKind `json:"kind"`
-	// Labels are used to select group of MeshServices that match labels. Either Labels or
-	// Name and Namespace can be used.
+	// Labels are used to select referenced real resources and to carry legacy
+	// service identity when a common TargetRef must still target old
+	// service-tag based paths.
 	Labels map[string]string `json:"labels,omitempty"`
-	// Mesh is reserved for future use to identify cross mesh resources.
-	Mesh *string `json:"mesh,omitempty"`
-	// Name of the referenced resource. Can only be used with kinds: `MeshService`
-	// and `MeshServiceSubset`
-	Name *string `json:"name,omitempty"`
-	// Namespace specifies the namespace of target resource. If empty only resources in policy namespace
-	// will be targeted.
-	Namespace *string `json:"namespace,omitempty"`
 	// SectionName is used to target specific section of resource.
 	// For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 	SectionName *string `json:"sectionName,omitempty"`
-	// Tags used to select a subset of proxies by tags. Can only be used with kinds
-	// `MeshSubset` and `MeshServiceSubset`
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (m *MeshTraceItemTargetRef) GetKind() MeshTraceItemKind {
@@ -775,39 +759,11 @@ func (m *MeshTraceItemTargetRef) GetLabels() map[string]string {
 	return m.Labels
 }
 
-func (m *MeshTraceItemTargetRef) GetMesh() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Mesh
-}
-
-func (m *MeshTraceItemTargetRef) GetName() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Name
-}
-
-func (m *MeshTraceItemTargetRef) GetNamespace() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Namespace
-}
-
 func (m *MeshTraceItemTargetRef) GetSectionName() *string {
 	if m == nil {
 		return nil
 	}
 	return m.SectionName
-}
-
-func (m *MeshTraceItemTargetRef) GetTags() map[string]string {
-	if m == nil {
-		return nil
-	}
-	return m.Tags
 }
 
 // MeshTraceItemSpec - Spec is the specification of the Kuma MeshTrace resource.

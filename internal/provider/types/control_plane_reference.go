@@ -7,9 +7,9 @@ import (
 )
 
 type ControlPlaneReference struct {
-	ControlPlane *APIImplementationControlPlane `tfsdk:"control_plane"`
-	CreatedAt    types.String                   `tfsdk:"created_at"`
-	Environment  types.String                   `tfsdk:"environment"`
-	ID           types.String                   `tfsdk:"id"`
-	UpdatedAt    types.String                   `tfsdk:"updated_at"`
+	ControlPlane  *APIImplementationControlPlane `tfsdk:"control_plane"`
+	CreatedAt     types.String                   `tfsdk:"created_at"`
+	EnvironmentID types.String                   `tfsdk:"environment_id"`
+	ID            types.String                   `tfsdk:"id"`
+	UpdatedAt     types.String                   `tfsdk:"updated_at"`
 }

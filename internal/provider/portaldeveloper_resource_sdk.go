@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -16,14 +15,6 @@ func (r *PortalDeveloperResourceModel) RefreshFromSharedPortalDeveloper(ctx cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.AdditionalData) > 0 {
-			r.AdditionalData = make(map[string]tfTypes.FormResponseInput, len(resp.AdditionalData))
-			for formResponseInputKey := range resp.AdditionalData {
-				var formResponseInputResult tfTypes.FormResponseInput
-
-				r.AdditionalData[formResponseInputKey] = formResponseInputResult
-			}
-		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Email = types.StringValue(resp.Email)
 		r.FullName = types.StringValue(resp.FullName)
@@ -136,62 +127,11 @@ func (r *PortalDeveloperResourceModel) ToSharedCreateDeveloperRequest(ctx contex
 	} else {
 		sendInvitationEmail = nil
 	}
-	additionalData := make(map[string]shared.FormResponseInput)
-	for additionalDataKey := range r.AdditionalData {
-		var additionalDataInst shared.FormResponseInput
-		str := new(string)
-		if !r.AdditionalData[additionalDataKey].Str.IsUnknown() && !r.AdditionalData[additionalDataKey].Str.IsNull() {
-			*str = r.AdditionalData[additionalDataKey].Str.ValueString()
-		} else {
-			str = nil
-		}
-		if str != nil {
-			additionalDataInst = shared.FormResponseInput{
-				Str: str,
-			}
-		}
-		number := new(float64)
-		if !r.AdditionalData[additionalDataKey].Number.IsUnknown() && !r.AdditionalData[additionalDataKey].Number.IsNull() {
-			*number = r.AdditionalData[additionalDataKey].Number.ValueFloat64()
-		} else {
-			number = nil
-		}
-		if number != nil {
-			additionalDataInst = shared.FormResponseInput{
-				Number: number,
-			}
-		}
-		boolean := new(bool)
-		if !r.AdditionalData[additionalDataKey].Boolean.IsUnknown() && !r.AdditionalData[additionalDataKey].Boolean.IsNull() {
-			*boolean = r.AdditionalData[additionalDataKey].Boolean.ValueBool()
-		} else {
-			boolean = nil
-		}
-		if boolean != nil {
-			additionalDataInst = shared.FormResponseInput{
-				Boolean: boolean,
-			}
-		}
-		var arrayOfStr []string
-		if r.AdditionalData[additionalDataKey].ArrayOfStr != nil {
-			arrayOfStr = make([]string, 0, len(r.AdditionalData[additionalDataKey].ArrayOfStr))
-			for arrayOfStrIndex := range r.AdditionalData[additionalDataKey].ArrayOfStr {
-				arrayOfStr = append(arrayOfStr, r.AdditionalData[additionalDataKey].ArrayOfStr[arrayOfStrIndex].ValueString())
-			}
-		}
-		if arrayOfStr != nil {
-			additionalDataInst = shared.FormResponseInput{
-				ArrayOfStr: arrayOfStr,
-			}
-		}
-		additionalData[additionalDataKey] = additionalDataInst
-	}
 	out := shared.CreateDeveloperRequest{
 		Email:               email,
 		FullName:            fullName,
 		Status:              status,
 		SendInvitationEmail: sendInvitationEmail,
-		AdditionalData:      additionalData,
 	}
 
 	return &out, diags

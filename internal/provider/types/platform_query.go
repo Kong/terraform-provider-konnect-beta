@@ -7,11 +7,11 @@ import (
 )
 
 type PlatformQuery struct {
-	Datasource  types.String     `tfsdk:"datasource"`
-	Dimensions  []types.String   `tfsdk:"dimensions"`
-	Filters     []PlatformFilter `tfsdk:"filters"`
-	Granularity types.String     `tfsdk:"granularity"`
-	Limit       types.Float64    `tfsdk:"limit"`
-	Metrics     []types.String   `tfsdk:"metrics"`
-	TimeRange   *TimeRange       `tfsdk:"time_range"`
+	Datasource  types.String         `tfsdk:"datasource"`
+	Dimensions  []types.String       `tfsdk:"dimensions"`
+	Filters     []MultiselectFilters `tfsdk:"filters"`
+	Granularity types.String         `tfsdk:"granularity"`
+	Limit       types.Float64        `tfsdk:"limit"`
+	Metrics     []types.String       `tfsdk:"metrics"`
+	TimeRange   *TimeRange           `tfsdk:"time_range"`
 }

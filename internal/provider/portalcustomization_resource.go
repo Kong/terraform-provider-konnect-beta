@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -41,15 +42,15 @@ type PortalCustomizationResource struct {
 
 // PortalCustomizationResourceModel describes the resource data model.
 type PortalCustomizationResourceModel struct {
-	CSS          types.String          `tfsdk:"css"`
-	Js           *tfTypes.Js           `tfsdk:"js"`
-	Layout       types.String          `tfsdk:"layout"`
-	Menu         *tfTypes.Menu         `tfsdk:"menu"`
-	PortalID     types.String          `tfsdk:"portal_id"`
-	PortalLayout *tfTypes.PortalLayout `tfsdk:"portal_layout"`
-	Robots       types.String          `tfsdk:"robots"`
-	SpecRenderer *tfTypes.SpecRenderer `tfsdk:"spec_renderer"`
-	Theme        *tfTypes.Theme        `tfsdk:"theme"`
+	CSS          types.String                             `tfsdk:"css"`
+	Js           *tfTypes.Js                              `tfsdk:"js"`
+	Layout       types.String                             `tfsdk:"layout"`
+	Menu         *tfTypes.Menu                            `tfsdk:"menu"`
+	PortalID     types.String                             `tfsdk:"portal_id"`
+	PortalLayout *tfTypes.PortalLayout                    `tfsdk:"portal_layout"`
+	Robots       types.String                             `tfsdk:"robots"`
+	SpecRenderer *tfTypes.PortalCustomizationSpecRenderer `tfsdk:"spec_renderer"`
+	Theme        *tfTypes.Theme                           `tfsdk:"theme"`
 }
 
 func (r *PortalCustomizationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -79,7 +80,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"layout": schema.StringAttribute{
-				Optional: true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `This property is deprecated and is not used by the portal.`,
 			},
 			"menu": schema.SingleNestedAttribute{
 				Optional: true,
@@ -244,15 +247,7 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Description: `The Portal identifier`,
 			},
 			"portal_layout": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"footer": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`snippet_name`: types.StringType,
-						},
-					},
-				})),
 				Attributes: map[string]schema.Attribute{
 					"footer": schema.SingleNestedAttribute{
 						Computed: true,
@@ -320,7 +315,21 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Default:     booldefault.StaticBool(true),
 						Description: `Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true`,
 					},
+					"try_it_ui_audience": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						Default:  stringdefault.StaticString(`all`),
+						MarkdownDescription: `The audience for the Try It UI feature.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `all` + "`" + ` means that the Try It UI will be available to all users, including unauthenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `authenticated` + "`" + ` means that the Try It UI will only be available to authenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `registered` + "`" + ` means that the Try It UI will only be available to users who have registered for the API.` + "\n" +
+							`possible known values include one of ["all", "authenticated", "registered"]; Default: "all"`,
+					},
 				},
+				Description: `The spec renderer settings of this portal`,
 			},
 			"theme": schema.SingleNestedAttribute{
 				Optional: true,
@@ -329,8 +338,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"primary": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Description: `The primary accent color used in the portal's theme. Must be a valid hex color value.`,
 								Validators: []validator.String{
 									stringvalidator.RegexMatches(regexp.MustCompile(`^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$`), "must match pattern "+regexp.MustCompile(`^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$`).String()),
 								},
@@ -343,10 +353,13 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Description: `possible known values include one of ["light", "dark", "system"]`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`ocean`),
+						Description: `The theme name to apply to this portal. Supported names are 'ocean', 'mesa', and 'grove'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"`,
 					},
 				},
+				Description: `The theme settings for this portal.`,
 			},
 		},
 	}

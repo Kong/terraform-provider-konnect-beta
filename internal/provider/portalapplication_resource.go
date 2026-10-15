@@ -51,7 +51,9 @@ type PortalApplicationResourceModel struct {
 	DcrClientID       types.String                     `tfsdk:"dcr_client_id"`
 	DcrProvider       *tfTypes.SchemaRegistryReference `tfsdk:"dcr_provider"`
 	Description       types.String                     `tfsdk:"description"`
+	EnvironmentID     types.String                     `tfsdk:"environment_id"`
 	GrantedScopes     []types.String                   `tfsdk:"granted_scopes"`
+	GroupID           types.String                     `tfsdk:"group_id"`
 	ID                types.String                     `tfsdk:"id"`
 	Labels            map[string]types.String          `tfsdk:"labels"`
 	Name              types.String                     `tfsdk:"name"`
@@ -218,6 +220,15 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
+			"environment_id": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				MarkdownDescription: `UUID of the organization environment to bind this application to. When` + "\n" +
+					`omitted, the organization default environment is used.` + "\n" +
+					`Requires replacement if changed.`,
+			},
 			"granted_scopes": schema.ListAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
@@ -225,6 +236,16 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				ElementType: types.StringType,
 				Description: `List of granted scopes for the application. Null if application type does not support returning granted scopes.`,
+			},
+			"group_id": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				MarkdownDescription: `UUID of an existing application group to join. When omitted, a new 1:1` + "\n" +
+					`application group is created for this application. Membership is immutable` + "\n" +
+					`after creation.` + "\n" +
+					`Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

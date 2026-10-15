@@ -7,30 +7,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/boolvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/mapplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -49,15 +38,14 @@ type PortalDeveloperResource struct {
 
 // PortalDeveloperResourceModel describes the resource data model.
 type PortalDeveloperResourceModel struct {
-	AdditionalData      map[string]tfTypes.FormResponseInput `tfsdk:"additional_data"`
-	CreatedAt           types.String                         `tfsdk:"created_at"`
-	Email               types.String                         `tfsdk:"email"`
-	FullName            types.String                         `tfsdk:"full_name"`
-	ID                  types.String                         `tfsdk:"id"`
-	PortalID            types.String                         `tfsdk:"portal_id"`
-	SendInvitationEmail types.Bool                           `tfsdk:"send_invitation_email"`
-	Status              types.String                         `tfsdk:"status"`
-	UpdatedAt           types.String                         `tfsdk:"updated_at"`
+	CreatedAt           types.String `tfsdk:"created_at"`
+	Email               types.String `tfsdk:"email"`
+	FullName            types.String `tfsdk:"full_name"`
+	ID                  types.String `tfsdk:"id"`
+	PortalID            types.String `tfsdk:"portal_id"`
+	SendInvitationEmail types.Bool   `tfsdk:"send_invitation_email"`
+	Status              types.String `tfsdk:"status"`
+	UpdatedAt           types.String `tfsdk:"updated_at"`
 }
 
 func (r *PortalDeveloperResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,126 +56,6 @@ func (r *PortalDeveloperResource) Schema(ctx context.Context, req resource.Schem
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "PortalDeveloper Resource",
 		Attributes: map[string]schema.Attribute{
-			"additional_data": schema.MapNestedAttribute{
-				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.Map{
-					mapplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
-				},
-				NestedObject: schema.NestedAttributeObject{
-					Validators: []validator.Object{
-						speakeasy_objectvalidators.NotNull(),
-					},
-					PlanModifiers: []planmodifier.Object{
-						objectplanmodifier.RequiresReplaceIfConfigured(),
-						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-					},
-					Attributes: map[string]schema.Attribute{
-						"array_of_str": schema.ListAttribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.List{
-								listplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							ElementType: types.StringType,
-							Description: `Requires replacement if changed.`,
-							Validators: []validator.List{
-								listvalidator.ConflictsWith(path.Expressions{
-									path.MatchRelative().AtParent().AtName("str"),
-									path.MatchRelative().AtParent().AtName("number"),
-									path.MatchRelative().AtParent().AtName("boolean"),
-								}...),
-							},
-						},
-						"boolean": schema.BoolAttribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.Bool{
-								boolplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							Description: `Requires replacement if changed.`,
-							Validators: []validator.Bool{
-								boolvalidator.ConflictsWith(path.Expressions{
-									path.MatchRelative().AtParent().AtName("str"),
-									path.MatchRelative().AtParent().AtName("number"),
-									path.MatchRelative().AtParent().AtName("array_of"),
-								}...),
-							},
-						},
-						"label": schema.StringAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.String{
-								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
-							Description: `Field label snapshotted at submission time.`,
-						},
-						"name": schema.StringAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.String{
-								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
-							Description: `Field slug, matches the parent object key.`,
-						},
-						"number": schema.Float64Attribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.Float64{
-								float64planmodifier.RequiresReplaceIfConfigured(),
-							},
-							Description: `Requires replacement if changed.`,
-							Validators: []validator.Float64{
-								float64validator.ConflictsWith(path.Expressions{
-									path.MatchRelative().AtParent().AtName("str"),
-									path.MatchRelative().AtParent().AtName("boolean"),
-									path.MatchRelative().AtParent().AtName("array_of"),
-								}...),
-							},
-						},
-						"str": schema.StringAttribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							Description: `Requires replacement if changed.`,
-							Validators: []validator.String{
-								stringvalidator.ConflictsWith(path.Expressions{
-									path.MatchRelative().AtParent().AtName("number"),
-									path.MatchRelative().AtParent().AtName("boolean"),
-									path.MatchRelative().AtParent().AtName("array_of"),
-								}...),
-							},
-						},
-						"type": schema.StringAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.String{
-								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
-							Description: `Field input type at submission time.`,
-						},
-						"value": schema.SingleNestedAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.Object{
-								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-							},
-							Attributes: map[string]schema.Attribute{
-								"array_of_str": schema.ListAttribute{
-									Computed:    true,
-									ElementType: types.StringType,
-								},
-								"boolean": schema.BoolAttribute{
-									Computed: true,
-								},
-								"number": schema.Float64Attribute{
-									Computed: true,
-								},
-								"str": schema.StringAttribute{
-									Computed: true,
-								},
-							},
-							Description: `Submitted value. Type matches the field ` + "`" + `type` + "`" + `: ` + "`" + `text` + "`" + `/` + "`" + `email` + "`" + `/` + "`" + `textarea` + "`" + ` return strings; ` + "`" + `number` + "`" + ` returns a number; ` + "`" + `checkbox` + "`" + ` returns a boolean; ` + "`" + `select` + "`" + ` returns a string for single-select or an array of strings for multi-select.`,
-						},
-					},
-				},
-				Description: `Optional developer-supplied answers to the portal's ` + "`" + `developer_registration` + "`" + ` form, supplied as a flat map keyed by field ` + "`" + `name` + "`" + ` (the field's non-built-in slug). Values match each field's input type. Built-in fields (` + "`" + `full_name` + "`" + `, ` + "`" + `email` + "`" + `) come in via the top-level body properties — not here. Silently ignored when no developer registration form is active on the portal. Requires replacement if changed.`,
-			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{

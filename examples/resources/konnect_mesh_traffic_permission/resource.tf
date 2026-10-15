@@ -7,34 +7,15 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
   mesh = "...my_mesh..."
   name = "...my_name..."
   spec = {
-    from = [
-      {
-        default = {
-          action = "Deny"
-        }
-        target_ref = {
-          kind = "MeshService"
-          labels = {
-            key = "value"
-          }
-          mesh      = "...my_mesh..."
-          name      = "...my_name..."
-          namespace = "...my_namespace..."
-          proxy_types = [
-            "Gateway"
-          ]
-          section_name = "...my_section_name..."
-          tags = {
-            key = "value"
-          }
-        }
-      }
-    ]
     rules = [
       {
         default = {
           allow = [
             {
+              sni = {
+                type  = "Exact"
+                value = "...my_value..."
+              }
               spiffe_id = {
                 type  = "Exact"
                 value = "...my_value..."
@@ -43,6 +24,10 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
           ]
           allow_with_shadow_deny = [
             {
+              sni = {
+                type  = "Exact"
+                value = "...my_value..."
+              }
               spiffe_id = {
                 type  = "Prefix"
                 value = "...my_value..."
@@ -51,6 +36,10 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
           ]
           deny = [
             {
+              sni = {
+                type  = "Exact"
+                value = "...my_value..."
+              }
               spiffe_id = {
                 type  = "Prefix"
                 value = "...my_value..."
@@ -61,20 +50,11 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
       }
     ]
     target_ref = {
-      kind = "MeshHTTPRoute"
+      kind = "Dataplane"
       labels = {
         key = "value"
       }
-      mesh      = "...my_mesh..."
-      name      = "...my_name..."
-      namespace = "...my_namespace..."
-      proxy_types = [
-        "Sidecar"
-      ]
       section_name = "...my_section_name..."
-      tags = {
-        key = "value"
-      }
     }
   }
   type = "MeshTrafficPermission"

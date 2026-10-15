@@ -15,9 +15,6 @@ resource "konnect_mesh_trust" "my_meshtrust" {
         type = "Pem"
       }
     ]
-    origin = {
-      kri = "...my_kri..."
-    }
     trust_domain = "...my_trust_domain..."
   }
   type = "MeshTrust"

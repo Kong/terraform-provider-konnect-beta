@@ -35,8 +35,6 @@ resource "konnect_mesh" "default" {
 
   name     = "default"
   type     = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
 }
 `
 )
@@ -74,7 +72,7 @@ func TestMesh(t *testing.T) {
 		})
 	})
 
-	t.Run("create a mesh and modify fields on it", func(t *testing.T) {
+	t.Run("create a mesh and modify labels on it", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
@@ -90,7 +88,7 @@ func TestMesh(t *testing.T) {
 
 		builder.Upsert(cp)
 
-		resource.ParallelTest(t, hclbuilder.CreateMeshWithMtlsAndModifyFields(providerFactory, builder, mesh))
+		resource.ParallelTest(t, hclbuilder.CreateMeshAndModifyLabels(providerFactory, builder, mesh))
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
@@ -126,89 +124,6 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 		resource.ParallelTest(t, hclbuilder.CreatePolicyWithRulesAndModifyFields(providerFactory, builder, mesh, mtp))
 	})
 
-	t.Run("create mesh with oneOf", func(t *testing.T) {
-		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
-		builder.ProviderProperty = hclbuilder.KonnectBeta
-
-		cp, err := hclbuilder.FromString(testControlPlaneHCL)
-		require.NoError(t, err)
-
-		mesh, err := hclbuilder.FromString(`
-resource "konnect_mesh" "m1" {
-  provider = konnect-beta
-
-  name = "m1"
-  type = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
-  mtls = {
-    backends = [
-      {
-        name = "mesh-a-acmpca"
-        type = "acmpca"
-        dp_cert = {
-          rotation = {
-            expiration = "24h"
-          }
-        }
-        conf = {
-          acm_certificate_authority_config = {
-            arn = "arn:hello:world"
-            ca_cert = {
-              data_source_file = {
-                file = "my-file"
-              }
-            }
-            auth = {
-              aws_credentials = {
-                access_key = {
-                  data_source_inline_string = {
-                    inline_string = "TestTestTest"
-                  }
-                }
-                access_key_secret = {
-                  data_source_inline_string = {
-                    inline_string = "TestTestTest"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    ]
-    enabledBackend = "mesh-a-acmpca"
-  }
-}
-`)
-		require.NoError(t, err)
-
-		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
-		mesh.DependsOn(cp)
-
-		resource.ParallelTest(t, resource.TestCase{
-			ProtoV6ProviderFactories: providerFactory,
-			Steps: []resource.TestStep{
-				{
-					Config: builder.Upsert(cp).Upsert(mesh).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_mesh.m1", plancheck.ResourceActionCreate),
-						},
-					},
-				},
-				{
-					Config: builder.Upsert(cp).Upsert(mesh).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-			},
-		})
-	})
-
 	t.Run("create resource with status", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
@@ -219,7 +134,10 @@ resource "konnect_mesh" "m1" {
 		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
 		require.NoError(t, err)
 
-		mes, err := hclbuilder.FromString(`
+		certificate, privateKey, err := acctest.RandTLSCert("terraform-mesh-test")
+		require.NoError(t, err)
+
+		mes, err := hclbuilder.FromString(fmt.Sprintf(`
 resource "konnect_mesh_external_service" "mes_1" {
   provider = konnect-beta
 
@@ -243,13 +161,22 @@ resource "konnect_mesh_external_service" "mes_1" {
       enabled             = true
       verification = {
         ca_cert = {
-          inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END CERTIFICATE-----"
+          type = "InsecureInline"
+          insecure_inline = {
+            value = %q
+          }
         }
         client_cert = {
-          inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8B...\n-----END CERTIFICATE-----"
+          type = "InsecureInline"
+          insecure_inline = {
+            value = %q
+          }
         }
         client_key = {
-          inline_string = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAt...\n-----END RSA PRIVATE KEY-----"
+          type = "InsecureInline"
+          insecure_inline = {
+            value = %q
+          }
         }
         mode        = "SkipAll"
         server_name = "my.server.name"
@@ -267,7 +194,7 @@ resource "konnect_mesh_external_service" "mes_1" {
     }
   }
 }
-`)
+`, certificate, certificate, privateKey))
 		require.NoError(t, err)
 
 		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
@@ -475,8 +402,6 @@ resource "konnect_mesh" "default" {
 
   name = "%s"
   type = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
 }
 `, meshName))
 		require.NoError(t, err)
@@ -527,8 +452,6 @@ resource "konnect_mesh" "default" {
 
   name = "%s"
   type = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
 }
 `, meshName))
 		require.NoError(t, err)
@@ -566,7 +489,7 @@ resource "konnect_mesh_secret" "scert" {
 
 		builder.Upsert(cp).Upsert(mesh)
 
-		resource.ParallelTest(t, hclbuilder.ShouldBeAbleToStoreSecrets(providerFactory, builder, mesh, scert, skey))
+		resource.ParallelTest(t, hclbuilder.ShouldBeAbleToStoreAndUpdateSecrets(providerFactory, builder, mesh, scert, skey))
 	})
 }
 

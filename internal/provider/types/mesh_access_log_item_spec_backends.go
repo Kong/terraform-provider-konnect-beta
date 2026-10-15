@@ -7,7 +7,7 @@ import (
 )
 
 type MeshAccessLogItemSpecBackends struct {
-	File          *File                               `tfsdk:"file"`
+	File          *MeshAccessLogItemSpecFile          `tfsdk:"file"`
 	OpenTelemetry *MeshAccessLogItemSpecOpenTelemetry `tfsdk:"open_telemetry"`
 	TCP           *MeshAccessLogItemSpecTCP           `tfsdk:"tcp"`
 	Type          types.String                        `tfsdk:"type"`

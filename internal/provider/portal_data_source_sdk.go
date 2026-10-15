@@ -39,10 +39,23 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx c
 		r.Ai = nil
 	} else {
 		r.Ai = &tfTypes.AISettings{}
-		r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
-		r.Ai.Features = &tfTypes.Features{}
-		r.Ai.Features.McpServer = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
-		r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
+		r.Ai.Enabled = types.BoolPointerValue(resp.Ai.Enabled)
+		r.Ai.Features = &tfTypes.AISettingsFeatures{}
+		if resp.Ai.Features.AiSearch == nil {
+			r.Ai.Features.AiSearch = nil
+		} else {
+			r.Ai.Features.AiSearch = &tfTypes.Autogenerate{}
+			r.Ai.Features.AiSearch.Enabled = types.BoolPointerValue(resp.Ai.Features.AiSearch.Enabled)
+		}
+		r.Ai.Features.McpServer = &tfTypes.McpServer{}
+		r.Ai.Features.McpServer.Enabled = types.BoolPointerValue(resp.Ai.Features.McpServer.Enabled)
+		r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolPointerValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
+		if resp.Ai.Features.PortalAgent == nil {
+			r.Ai.Features.PortalAgent = nil
+		} else {
+			r.Ai.Features.PortalAgent = &tfTypes.Autogenerate{}
+			r.Ai.Features.PortalAgent.Enabled = types.BoolPointerValue(resp.Ai.Features.PortalAgent.Enabled)
+		}
 	}
 	r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 	r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
@@ -62,7 +75,6 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx c
 			r.Labels[key] = types.StringPointerValue(value)
 		}
 	}
-	r.McpServerEnabled = types.BoolPointerValue(resp.McpServerEnabled)
 	r.Name = types.StringValue(resp.Name)
 	r.NotificationsDeveloperPiiVisibilityEnabled = types.BoolPointerValue(resp.NotificationsDeveloperPiiVisibilityEnabled)
 	r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)

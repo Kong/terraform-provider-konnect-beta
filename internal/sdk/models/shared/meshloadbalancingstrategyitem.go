@@ -38,14 +38,8 @@ func (e *MeshLoadBalancingStrategyItemType) UnmarshalJSON(data []byte) error {
 type MeshLoadBalancingStrategyItemKind string
 
 const (
-	MeshLoadBalancingStrategyItemKindMesh                 MeshLoadBalancingStrategyItemKind = "Mesh"
-	MeshLoadBalancingStrategyItemKindMeshSubset           MeshLoadBalancingStrategyItemKind = "MeshSubset"
-	MeshLoadBalancingStrategyItemKindMeshService          MeshLoadBalancingStrategyItemKind = "MeshService"
-	MeshLoadBalancingStrategyItemKindMeshExternalService  MeshLoadBalancingStrategyItemKind = "MeshExternalService"
-	MeshLoadBalancingStrategyItemKindMeshMultiZoneService MeshLoadBalancingStrategyItemKind = "MeshMultiZoneService"
-	MeshLoadBalancingStrategyItemKindMeshServiceSubset    MeshLoadBalancingStrategyItemKind = "MeshServiceSubset"
-	MeshLoadBalancingStrategyItemKindMeshHTTPRoute        MeshLoadBalancingStrategyItemKind = "MeshHTTPRoute"
-	MeshLoadBalancingStrategyItemKindDataplane            MeshLoadBalancingStrategyItemKind = "Dataplane"
+	MeshLoadBalancingStrategyItemKindMesh      MeshLoadBalancingStrategyItemKind = "Mesh"
+	MeshLoadBalancingStrategyItemKindDataplane MeshLoadBalancingStrategyItemKind = "Dataplane"
 )
 
 func (e MeshLoadBalancingStrategyItemKind) ToPointer() *MeshLoadBalancingStrategyItemKind {
@@ -56,7 +50,7 @@ func (e MeshLoadBalancingStrategyItemKind) ToPointer() *MeshLoadBalancingStrateg
 func (e *MeshLoadBalancingStrategyItemKind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+		case "Mesh", "Dataplane":
 			return true
 		}
 	}
@@ -69,23 +63,13 @@ func (e *MeshLoadBalancingStrategyItemKind) IsExact() bool {
 type MeshLoadBalancingStrategyItemTargetRef struct {
 	// Kind of the referenced resource
 	Kind MeshLoadBalancingStrategyItemKind `json:"kind"`
-	// Labels are used to select group of MeshServices that match labels. Either Labels or
-	// Name and Namespace can be used.
+	// Labels are used to select referenced real resources and to carry legacy
+	// service identity when a common TargetRef must still target old
+	// service-tag based paths.
 	Labels map[string]string `json:"labels,omitempty"`
-	// Mesh is reserved for future use to identify cross mesh resources.
-	Mesh *string `json:"mesh,omitempty"`
-	// Name of the referenced resource. Can only be used with kinds: `MeshService`
-	// and `MeshServiceSubset`
-	Name *string `json:"name,omitempty"`
-	// Namespace specifies the namespace of target resource. If empty only resources in policy namespace
-	// will be targeted.
-	Namespace *string `json:"namespace,omitempty"`
 	// SectionName is used to target specific section of resource.
 	// For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 	SectionName *string `json:"sectionName,omitempty"`
-	// Tags used to select a subset of proxies by tags. Can only be used with kinds
-	// `MeshSubset` and `MeshServiceSubset`
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (m *MeshLoadBalancingStrategyItemTargetRef) GetKind() MeshLoadBalancingStrategyItemKind {
@@ -102,39 +86,11 @@ func (m *MeshLoadBalancingStrategyItemTargetRef) GetLabels() map[string]string {
 	return m.Labels
 }
 
-func (m *MeshLoadBalancingStrategyItemTargetRef) GetMesh() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Mesh
-}
-
-func (m *MeshLoadBalancingStrategyItemTargetRef) GetName() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Name
-}
-
-func (m *MeshLoadBalancingStrategyItemTargetRef) GetNamespace() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Namespace
-}
-
 func (m *MeshLoadBalancingStrategyItemTargetRef) GetSectionName() *string {
 	if m == nil {
 		return nil
 	}
 	return m.SectionName
-}
-
-func (m *MeshLoadBalancingStrategyItemTargetRef) GetTags() map[string]string {
-	if m == nil {
-		return nil
-	}
-	return m.Tags
 }
 
 type Connection struct {
@@ -225,7 +181,6 @@ const (
 	MeshLoadBalancingStrategyItemSpecTypeHeader         MeshLoadBalancingStrategyItemSpecType = "Header"
 	MeshLoadBalancingStrategyItemSpecTypeCookie         MeshLoadBalancingStrategyItemSpecType = "Cookie"
 	MeshLoadBalancingStrategyItemSpecTypeConnection     MeshLoadBalancingStrategyItemSpecType = "Connection"
-	MeshLoadBalancingStrategyItemSpecTypeSourceIP       MeshLoadBalancingStrategyItemSpecType = "SourceIP"
 	MeshLoadBalancingStrategyItemSpecTypeQueryParameter MeshLoadBalancingStrategyItemSpecType = "QueryParameter"
 	MeshLoadBalancingStrategyItemSpecTypeFilterState    MeshLoadBalancingStrategyItemSpecType = "FilterState"
 )
@@ -238,7 +193,7 @@ func (e MeshLoadBalancingStrategyItemSpecType) ToPointer() *MeshLoadBalancingStr
 func (e *MeshLoadBalancingStrategyItemSpecType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "Header", "Cookie", "Connection", "SourceIP", "QueryParameter", "FilterState":
+		case "Header", "Cookie", "Connection", "QueryParameter", "FilterState":
 			return true
 		}
 	}
@@ -800,7 +755,7 @@ func (f *FailoverThreshold) GetPercentage() MeshLoadBalancingStrategyItemPercent
 }
 
 // CrossZone defines locality aware load balancing priorities when dataplane proxies inside local zone
-// are unavailable
+// are unavailable. Supported only for to[].targetRef.kind MeshMultiZoneService.
 type CrossZone struct {
 	// Failover defines list of load balancing rules in order of priority
 	Failover []Failover `json:"failover,omitempty"`
@@ -868,7 +823,7 @@ func (l *LocalZone) GetAffinityTags() []AffinityTags {
 // LocalityAwareness contains configuration for locality aware load balancing.
 type LocalityAwareness struct {
 	// CrossZone defines locality aware load balancing priorities when dataplane proxies inside local zone
-	// are unavailable
+	// are unavailable. Supported only for to[].targetRef.kind MeshMultiZoneService.
 	CrossZone *CrossZone `json:"crossZone,omitempty"`
 	// Disabled allows to disable locality-aware load balancing.
 	// When disabled requests are distributed across all endpoints regardless of locality.
@@ -938,13 +893,10 @@ type MeshLoadBalancingStrategyItemSpecKind string
 
 const (
 	MeshLoadBalancingStrategyItemSpecKindMesh                 MeshLoadBalancingStrategyItemSpecKind = "Mesh"
-	MeshLoadBalancingStrategyItemSpecKindMeshSubset           MeshLoadBalancingStrategyItemSpecKind = "MeshSubset"
 	MeshLoadBalancingStrategyItemSpecKindMeshService          MeshLoadBalancingStrategyItemSpecKind = "MeshService"
 	MeshLoadBalancingStrategyItemSpecKindMeshExternalService  MeshLoadBalancingStrategyItemSpecKind = "MeshExternalService"
 	MeshLoadBalancingStrategyItemSpecKindMeshMultiZoneService MeshLoadBalancingStrategyItemSpecKind = "MeshMultiZoneService"
-	MeshLoadBalancingStrategyItemSpecKindMeshServiceSubset    MeshLoadBalancingStrategyItemSpecKind = "MeshServiceSubset"
 	MeshLoadBalancingStrategyItemSpecKindMeshHTTPRoute        MeshLoadBalancingStrategyItemSpecKind = "MeshHTTPRoute"
-	MeshLoadBalancingStrategyItemSpecKindDataplane            MeshLoadBalancingStrategyItemSpecKind = "Dataplane"
 )
 
 func (e MeshLoadBalancingStrategyItemSpecKind) ToPointer() *MeshLoadBalancingStrategyItemSpecKind {
@@ -955,7 +907,7 @@ func (e MeshLoadBalancingStrategyItemSpecKind) ToPointer() *MeshLoadBalancingStr
 func (e *MeshLoadBalancingStrategyItemSpecKind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "Mesh", "MeshSubset", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+		case "Mesh", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshHTTPRoute":
 			return true
 		}
 	}
@@ -967,23 +919,13 @@ func (e *MeshLoadBalancingStrategyItemSpecKind) IsExact() bool {
 type MeshLoadBalancingStrategyItemSpecTargetRef struct {
 	// Kind of the referenced resource
 	Kind MeshLoadBalancingStrategyItemSpecKind `json:"kind"`
-	// Labels are used to select group of MeshServices that match labels. Either Labels or
-	// Name and Namespace can be used.
+	// Labels are used to select referenced real resources and to carry legacy
+	// service identity when a common TargetRef must still target old
+	// service-tag based paths.
 	Labels map[string]string `json:"labels,omitempty"`
-	// Mesh is reserved for future use to identify cross mesh resources.
-	Mesh *string `json:"mesh,omitempty"`
-	// Name of the referenced resource. Can only be used with kinds: `MeshService`
-	// and `MeshServiceSubset`
-	Name *string `json:"name,omitempty"`
-	// Namespace specifies the namespace of target resource. If empty only resources in policy namespace
-	// will be targeted.
-	Namespace *string `json:"namespace,omitempty"`
 	// SectionName is used to target specific section of resource.
 	// For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 	SectionName *string `json:"sectionName,omitempty"`
-	// Tags used to select a subset of proxies by tags. Can only be used with kinds
-	// `MeshSubset` and `MeshServiceSubset`
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (m *MeshLoadBalancingStrategyItemSpecTargetRef) GetKind() MeshLoadBalancingStrategyItemSpecKind {
@@ -1000,39 +942,11 @@ func (m *MeshLoadBalancingStrategyItemSpecTargetRef) GetLabels() map[string]stri
 	return m.Labels
 }
 
-func (m *MeshLoadBalancingStrategyItemSpecTargetRef) GetMesh() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Mesh
-}
-
-func (m *MeshLoadBalancingStrategyItemSpecTargetRef) GetName() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Name
-}
-
-func (m *MeshLoadBalancingStrategyItemSpecTargetRef) GetNamespace() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Namespace
-}
-
 func (m *MeshLoadBalancingStrategyItemSpecTargetRef) GetSectionName() *string {
 	if m == nil {
 		return nil
 	}
 	return m.SectionName
-}
-
-func (m *MeshLoadBalancingStrategyItemSpecTargetRef) GetTags() map[string]string {
-	if m == nil {
-		return nil
-	}
-	return m.Tags
 }
 
 type MeshLoadBalancingStrategyItemTo struct {

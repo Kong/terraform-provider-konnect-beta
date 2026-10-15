@@ -8,20 +8,11 @@ resource "konnect_mesh_health_check" "my_meshhealthcheck" {
   name = "...my_name..."
   spec = {
     target_ref = {
-      kind = "MeshHTTPRoute"
+      kind = "Dataplane"
       labels = {
         key = "value"
       }
-      mesh      = "...my_mesh..."
-      name      = "...my_name..."
-      namespace = "...my_namespace..."
-      proxy_types = [
-        "Sidecar"
-      ]
       section_name = "...my_section_name..."
-      tags = {
-        key = "value"
-      }
     }
     to = [
       {
@@ -33,9 +24,6 @@ resource "konnect_mesh_health_check" "my_meshhealthcheck" {
             authority    = "...my_authority..."
             disabled     = true
             service_name = "...my_service_name..."
-          }
-          healthy_panic_threshold = {
-            str = "...my_str..."
           }
           healthy_threshold = 1
           http = {
@@ -76,20 +64,11 @@ resource "konnect_mesh_health_check" "my_meshhealthcheck" {
           unhealthy_threshold = 5
         }
         target_ref = {
-          kind = "MeshServiceSubset"
+          kind = "MeshMultiZoneService"
           labels = {
             key = "value"
           }
-          mesh      = "...my_mesh..."
-          name      = "...my_name..."
-          namespace = "...my_namespace..."
-          proxy_types = [
-            "Sidecar"
-          ]
           section_name = "...my_section_name..."
-          tags = {
-            key = "value"
-          }
         }
       }
     ]

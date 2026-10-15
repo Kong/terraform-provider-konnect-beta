@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -25,14 +26,27 @@ func (r *APIPublicationResourceModel) RefreshFromSharedAPIPublicationResponse(ct
 		}
 		r.AutoApproveRegistrations = types.BoolPointerValue(resp.AutoApproveRegistrations)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Environment = types.StringPointerValue(resp.Environment)
-		r.FormID = types.StringPointerValue(resp.FormID)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		if resp.Visibility != nil {
-			r.Visibility = types.StringValue(string(*resp.Visibility))
+		if resp.Environment == nil {
+			r.Environment = nil
 		} else {
-			r.Visibility = types.StringNull()
+			r.Environment = &tfTypes.APIEnvironmentRef{}
+			r.Environment.ID = types.StringValue(resp.Environment.ID)
+			r.Environment.Name = types.StringValue(resp.Environment.Name)
 		}
+		r.FormID = types.StringPointerValue(resp.FormID)
+		if resp.SpecRenderer == nil {
+			r.SpecRenderer = nil
+		} else {
+			r.SpecRenderer = &tfTypes.APIPublicationSpecRenderer{}
+			r.SpecRenderer.TryItUI = types.BoolPointerValue(resp.SpecRenderer.TryItUI)
+			if resp.SpecRenderer.TryItUIAudience != nil {
+				r.SpecRenderer.TryItUIAudience = types.StringValue(string(*resp.SpecRenderer.TryItUIAudience))
+			} else {
+				r.SpecRenderer.TryItUIAudience = types.StringNull()
+			}
+		}
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Visibility = types.StringValue(string(resp.Visibility))
 		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
@@ -123,6 +137,25 @@ func (r *APIPublicationResourceModel) ToSharedAPIPublication(ctx context.Context
 	} else {
 		visibility = nil
 	}
+	var specRenderer *shared.APIPublicationSpecRenderer
+	if r.SpecRenderer != nil {
+		tryItUI := new(bool)
+		if !r.SpecRenderer.TryItUI.IsUnknown() && !r.SpecRenderer.TryItUI.IsNull() {
+			*tryItUI = r.SpecRenderer.TryItUI.ValueBool()
+		} else {
+			tryItUI = nil
+		}
+		tryItUIAudience := new(shared.TryItUIAudience)
+		if !r.SpecRenderer.TryItUIAudience.IsUnknown() && !r.SpecRenderer.TryItUIAudience.IsNull() {
+			*tryItUIAudience = shared.TryItUIAudience(r.SpecRenderer.TryItUIAudience.ValueString())
+		} else {
+			tryItUIAudience = nil
+		}
+		specRenderer = &shared.APIPublicationSpecRenderer{
+			TryItUI:         tryItUI,
+			TryItUIAudience: tryItUIAudience,
+		}
+	}
 	formID := new(string)
 	if !r.FormID.IsUnknown() && !r.FormID.IsNull() {
 		*formID = r.FormID.ValueString()
@@ -133,6 +166,7 @@ func (r *APIPublicationResourceModel) ToSharedAPIPublication(ctx context.Context
 		AutoApproveRegistrations: autoApproveRegistrations,
 		AuthStrategyIds:          authStrategyIds,
 		Visibility:               visibility,
+		SpecRenderer:             specRenderer,
 		FormID:                   formID,
 	}
 

@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -45,12 +46,13 @@ type APIVersionResource struct {
 
 // APIVersionResourceModel describes the resource data model.
 type APIVersionResourceModel struct {
-	APIID     types.String                         `tfsdk:"api_id"`
-	CreatedAt types.String                         `tfsdk:"created_at"`
-	ID        types.String                         `tfsdk:"id"`
-	Spec      *tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
-	UpdatedAt types.String                         `tfsdk:"updated_at"`
-	Version   types.String                         `tfsdk:"version"`
+	APIID      types.String                         `tfsdk:"api_id"`
+	CreatedAt  types.String                         `tfsdk:"created_at"`
+	ID         types.String                         `tfsdk:"id"`
+	Spec       *tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
+	SpecFormat types.String                         `queryParam:"style=form,explode=true,name=spec_format" tfsdk:"spec_format"`
+	UpdatedAt  types.String                         `tfsdk:"updated_at"`
+	Version    types.String                         `tfsdk:"version"`
 }
 
 func (r *APIVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -267,6 +269,12 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Description: `The errors that occurred while parsing the API version spec.`,
 					},
 				},
+			},
+			"spec_format": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`json`),
+				Description: `The format of the returned ` + "`" + `spec.content` + "`" + `. Defaults to ` + "`" + `json` + "`" + `. possible known values include one of ["json", "yaml"]; Default: "json"`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

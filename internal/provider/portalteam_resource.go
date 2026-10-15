@@ -67,9 +67,10 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"description": schema.StringAttribute{
-				Optional: true,
+				Optional:    true,
+				Description: `The description of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 				},
 			},
 			"id": schema.StringAttribute{
@@ -82,12 +83,13 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
-				Description: `Indicates whether the team is managed by Konnect. Default: false`,
+				Description: `Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to ` + "`" + `false` + "`" + ` (default) to let identity provider team mappings keep syncing members into this team. Set to ` + "`" + `true` + "`" + ` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team. Default: false`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The name of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w \W]+$`), "must match pattern "+regexp.MustCompile(`^[\w \W]+$`).String()),
 				},
 			},

@@ -44,20 +44,21 @@ type APIResource struct {
 
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
-	APISpecIds         []types.String          `tfsdk:"api_spec_ids"`
-	Attributes         jsontypes.Normalized    `tfsdk:"attributes"`
-	CreatedAt          types.String            `tfsdk:"created_at"`
-	Description        types.String            `tfsdk:"description"`
-	ID                 types.String            `tfsdk:"id"`
-	ImplementationMode types.String            `tfsdk:"implementation_mode"`
-	Labels             map[string]types.String `tfsdk:"labels"`
-	Name               types.String            `tfsdk:"name"`
-	Portals            []tfTypes.Portals       `tfsdk:"portals"`
-	Slug               types.String            `tfsdk:"slug"`
-	Spec               *tfTypes.APISpecPayload `tfsdk:"spec"`
-	SpecContent        types.String            `tfsdk:"spec_content"`
-	UpdatedAt          types.String            `tfsdk:"updated_at"`
-	Version            types.String            `tfsdk:"version"`
+	APISpecIds         []types.String                  `tfsdk:"api_spec_ids"`
+	Attributes         jsontypes.Normalized            `tfsdk:"attributes"`
+	CreatedAt          types.String                    `tfsdk:"created_at"`
+	Description        types.String                    `tfsdk:"description"`
+	Environments       []tfTypes.APIEnvironmentSummary `tfsdk:"environments"`
+	ID                 types.String                    `tfsdk:"id"`
+	ImplementationMode types.String                    `tfsdk:"implementation_mode"`
+	Labels             map[string]types.String         `tfsdk:"labels"`
+	Name               types.String                    `tfsdk:"name"`
+	Portals            []tfTypes.Portals               `tfsdk:"portals"`
+	Slug               types.String                    `tfsdk:"slug"`
+	Spec               *tfTypes.APISpecPayload         `tfsdk:"spec"`
+	SpecContent        types.String                    `tfsdk:"spec_content"`
+	UpdatedAt          types.String                    `tfsdk:"updated_at"`
+	Version            types.String                    `tfsdk:"version"`
 }
 
 func (r *APIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,6 +94,43 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"description": schema.StringAttribute{
 				Optional:    true,
 				Description: `A description of your API. Will be visible on your live Portal.`,
+			},
+			"environments": schema.ListNestedAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
+				NestedObject: schema.NestedAttributeObject{
+					PlanModifiers: []planmodifier.Object{
+						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+					},
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The UUID of the environment.`,
+						},
+						"name": schema.StringAttribute{
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The name of the environment.`,
+						},
+						"version": schema.StringAttribute{
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The API's current version string in this environment.`,
+						},
+					},
+				},
+				MarkdownDescription: `The API's associated environments. Versions can differ per environment. A single-environment API has one element; a` + "\n" +
+					`multi-environment API has one element per association. Clients can infer mode` + "\n" +
+					`from the array length.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
