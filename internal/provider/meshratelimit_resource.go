@@ -946,7 +946,7 @@ func (r *MeshRateLimitResource) Create(ctx context.Context, req resource.CreateR
 	}
 	res, err := r.client.MeshRateLimit.PutMeshRateLimit(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -986,7 +986,7 @@ func (r *MeshRateLimitResource) Create(ctx context.Context, req resource.CreateR
 	}
 	res1, err := r.client.MeshRateLimit.GetMeshRateLimit(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -1046,7 +1046,7 @@ func (r *MeshRateLimitResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	res, err := r.client.MeshRateLimit.GetMeshRateLimit(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1100,7 +1100,7 @@ func (r *MeshRateLimitResource) Update(ctx context.Context, req resource.UpdateR
 	}
 	res, err := r.client.MeshRateLimit.PutMeshRateLimit(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1140,7 +1140,7 @@ func (r *MeshRateLimitResource) Update(ctx context.Context, req resource.UpdateR
 	}
 	res1, err := r.client.MeshRateLimit.GetMeshRateLimit(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -1200,7 +1200,7 @@ func (r *MeshRateLimitResource) Delete(ctx context.Context, req resource.DeleteR
 	}
 	res, err := r.client.MeshRateLimit.DeleteMeshRateLimit(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

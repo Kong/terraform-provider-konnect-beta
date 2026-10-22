@@ -128,7 +128,14 @@ func CreateTargetPortStr(str string) TargetPort {
 	}
 }
 
-func (u *TargetPort) UnmarshalJSON(data []byte) error {
+func (u *TargetPort) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = TargetPort{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

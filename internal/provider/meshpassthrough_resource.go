@@ -289,7 +289,7 @@ func (r *MeshPassthroughResource) Create(ctx context.Context, req resource.Creat
 	}
 	res, err := r.client.MeshPassthrough.PutMeshPassthrough(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -329,7 +329,7 @@ func (r *MeshPassthroughResource) Create(ctx context.Context, req resource.Creat
 	}
 	res1, err := r.client.MeshPassthrough.GetMeshPassthrough(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -389,7 +389,7 @@ func (r *MeshPassthroughResource) Read(ctx context.Context, req resource.ReadReq
 	}
 	res, err := r.client.MeshPassthrough.GetMeshPassthrough(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -443,7 +443,7 @@ func (r *MeshPassthroughResource) Update(ctx context.Context, req resource.Updat
 	}
 	res, err := r.client.MeshPassthrough.PutMeshPassthrough(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -483,7 +483,7 @@ func (r *MeshPassthroughResource) Update(ctx context.Context, req resource.Updat
 	}
 	res1, err := r.client.MeshPassthrough.GetMeshPassthrough(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -543,7 +543,7 @@ func (r *MeshPassthroughResource) Delete(ctx context.Context, req resource.Delet
 	}
 	res, err := r.client.MeshPassthrough.DeleteMeshPassthrough(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

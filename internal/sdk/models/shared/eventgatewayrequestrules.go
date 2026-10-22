@@ -163,7 +163,14 @@ func CreateEventGatewayRequestRulesTxnOffsetCommit(txnOffsetCommit EventGatewayT
 	}
 }
 
-func (u *EventGatewayRequestRules) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayRequestRules) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayRequestRules{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

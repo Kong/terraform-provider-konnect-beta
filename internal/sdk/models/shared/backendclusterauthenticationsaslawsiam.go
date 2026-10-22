@@ -41,7 +41,14 @@ func CreateSaslAwsIamAssumeRole(assumeRole BackendClusterAuthenticationSaslAwsIa
 	}
 }
 
-func (u *SaslAwsIam) UnmarshalJSON(data []byte) error {
+func (u *SaslAwsIam) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = SaslAwsIam{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

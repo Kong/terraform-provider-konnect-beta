@@ -425,7 +425,7 @@ func (r *MeshTCPRouteResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res, err := r.client.MeshTCPRoute.PutMeshTCPRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -465,7 +465,7 @@ func (r *MeshTCPRouteResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res1, err := r.client.MeshTCPRoute.GetMeshTCPRoute(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -525,7 +525,7 @@ func (r *MeshTCPRouteResource) Read(ctx context.Context, req resource.ReadReques
 	}
 	res, err := r.client.MeshTCPRoute.GetMeshTCPRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -579,7 +579,7 @@ func (r *MeshTCPRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res, err := r.client.MeshTCPRoute.PutMeshTCPRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -619,7 +619,7 @@ func (r *MeshTCPRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res1, err := r.client.MeshTCPRoute.GetMeshTCPRoute(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -679,7 +679,7 @@ func (r *MeshTCPRouteResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 	res, err := r.client.MeshTCPRoute.DeleteMeshTCPRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

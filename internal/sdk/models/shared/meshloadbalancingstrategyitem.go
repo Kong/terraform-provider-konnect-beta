@@ -378,7 +378,14 @@ func CreateActiveRequestBiasStr(str string) ActiveRequestBias {
 	}
 }
 
-func (u *ActiveRequestBias) UnmarshalJSON(data []byte) error {
+func (u *ActiveRequestBias) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = ActiveRequestBias{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1125,7 +1132,14 @@ func CreateMeshLoadBalancingStrategyItemPercentageStr(str string) MeshLoadBalanc
 	}
 }
 
-func (u *MeshLoadBalancingStrategyItemPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshLoadBalancingStrategyItemPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshLoadBalancingStrategyItemPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

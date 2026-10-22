@@ -43,7 +43,14 @@ func CreateEventGatewayParsedRecordTranscodeSchemaSourceInline(inline EventGatew
 	}
 }
 
-func (u *EventGatewayParsedRecordTranscodeSchemaSource) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayParsedRecordTranscodeSchemaSource) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayParsedRecordTranscodeSchemaSource{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

@@ -53,7 +53,14 @@ func CreateEventGatewayMaskStrategyReplace(replace EventGatewayMaskStrategyRepla
 	}
 }
 
-func (u *EventGatewayMaskStrategy) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayMaskStrategy) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayMaskStrategy{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

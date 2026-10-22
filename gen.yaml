@@ -15,6 +15,7 @@ generation:
     sharedErrorComponentsApr2025: false
     sharedNestedComponentsJan2026: false
     nameOverrideFeb2026: false
+    openSingleValueEnumsOct2026: false
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
@@ -66,6 +67,8 @@ terraform:
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
   excludeEmptyObjectSchemas: false
+  fixFlags:
+    encodePathParams: false
   forwardCompatibleEnumsByDefault: false
   imports:
     option: openapi
@@ -82,4 +85,5 @@ terraform:
   providerTypeNameOverride: ""
   respectRequiredFields: false
   respectTitlesForPrimitiveUnionMembers: false
+  serverVariableProviderAttributes: {}
   unionStrategy: populated-fields

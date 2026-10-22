@@ -231,7 +231,14 @@ func CreateEventGatewayVaultKonnect(konnect EventGatewayVaultEventGatewayKonnect
 	}
 }
 
-func (u *EventGatewayVault) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayVault) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayVault{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

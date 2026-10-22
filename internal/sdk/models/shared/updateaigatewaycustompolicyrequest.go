@@ -42,7 +42,14 @@ func CreateUpdateAIGatewayCustomPolicyRequestStreaming(streaming UpdateAIGateway
 	}
 }
 
-func (u *UpdateAIGatewayCustomPolicyRequest) UnmarshalJSON(data []byte) error {
+func (u *UpdateAIGatewayCustomPolicyRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateAIGatewayCustomPolicyRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

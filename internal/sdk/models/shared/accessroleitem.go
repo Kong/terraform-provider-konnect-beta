@@ -41,7 +41,14 @@ func CreateAccessRoleItemAccessInteger(integer int64) AccessRoleItemAccess {
 	}
 }
 
-func (u *AccessRoleItemAccess) UnmarshalJSON(data []byte) error {
+func (u *AccessRoleItemAccess) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AccessRoleItemAccess{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
