@@ -17,6 +17,7 @@ resource "konnect_portal_identity_provider" "my_portalidentityprovider" {
   provider = konnect-beta
   config = {
     oidc_identity_provider_config = {
+      back_channel_logout_enabled = false
       claim_mappings = {
         email  = "email"
         groups = "groups"
@@ -26,7 +27,9 @@ resource "konnect_portal_identity_provider" "my_portalidentityprovider" {
       client_secret = "YOUR_CLIENT_SECRET"
       issuer_url    = "https://konghq.okta.com/oauth2/default"
       scopes = [
-        "..."
+        "openid",
+        "email",
+        "profile",
       ]
     }
   }
@@ -62,14 +65,19 @@ Default: false
 
 Optional:
 
-- `oidc_identity_provider_config` (Attributes) The identity provider that contains configuration data for the OIDC authentication integration. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config))
-- `saml_identity_provider_config` (Attributes) The identity provider that contains configuration data for the SAML authentication integration. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
+- `oidc_identity_provider_config` (Attributes) The properties of an OIDC identity provider to update. Only the provided properties are updated. When
+provided, `scopes` must include `openid`. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config))
+- `saml_identity_provider_config` (Attributes) The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
+`idp_metadata_xml` must be provided. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
 
 <a id="nestedatt--config--oidc_identity_provider_config"></a>
 ### Nested Schema for `config.oidc_identity_provider_config`
 
 Optional:
 
+- `back_channel_logout_enabled` (Boolean) Indicates whether back-channel logout is enabled. When enabled, the identity provider can notify
+the portal to end a user's session when they log out of the identity provider.
+Default: false
 - `claim_mappings` (Attributes) Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for 
 authentication. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config--claim_mappings))
 - `client_id` (String) The client ID assigned to your application by the identity provider. Not Null

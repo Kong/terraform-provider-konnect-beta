@@ -31,20 +31,20 @@ func (a *AIGatewayModelProviderConfigAuthBasicHeaders) GetName() string {
 	return a.Name
 }
 
-// Location - Specify whether the param name and value options go in a query string, or the POST form/JSON body.
-type Location string
+// AIGatewayModelProviderConfigAuthBasicLocation - Specify whether the param name and value options go in a query string, or the POST form/JSON body.
+type AIGatewayModelProviderConfigAuthBasicLocation string
 
 const (
-	LocationBody  Location = "body"
-	LocationQuery Location = "query"
+	AIGatewayModelProviderConfigAuthBasicLocationBody  AIGatewayModelProviderConfigAuthBasicLocation = "body"
+	AIGatewayModelProviderConfigAuthBasicLocationQuery AIGatewayModelProviderConfigAuthBasicLocation = "query"
 )
 
-func (e Location) ToPointer() *Location {
+func (e AIGatewayModelProviderConfigAuthBasicLocation) ToPointer() *AIGatewayModelProviderConfigAuthBasicLocation {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Location) IsExact() bool {
+func (e *AIGatewayModelProviderConfigAuthBasicLocation) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "query":
@@ -59,7 +59,7 @@ type AIGatewayModelProviderConfigAuthBasicParams struct {
 	//
 	Name string `json:"name"`
 	// Specify whether the param name and value options go in a query string, or the POST form/JSON body.
-	Location *Location `json:"location,omitempty"`
+	Location AIGatewayModelProviderConfigAuthBasicLocation `json:"location"`
 }
 
 func (a AIGatewayModelProviderConfigAuthBasicParams) MarshalJSON() ([]byte, error) {
@@ -80,17 +80,14 @@ func (a *AIGatewayModelProviderConfigAuthBasicParams) GetName() string {
 	return a.Name
 }
 
-func (a *AIGatewayModelProviderConfigAuthBasicParams) GetLocation() *Location {
+func (a *AIGatewayModelProviderConfigAuthBasicParams) GetLocation() AIGatewayModelProviderConfigAuthBasicLocation {
 	if a == nil {
-		return nil
+		return AIGatewayModelProviderConfigAuthBasicLocation("")
 	}
 	return a.Location
 }
 
-// AIGatewayModelProviderConfigAuthBasicOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Basic auth config for an upstream model provider.
+// AIGatewayModelProviderConfigAuthBasicOutput - Basic auth config for an upstream model provider.
 type AIGatewayModelProviderConfigAuthBasicOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_   string                                         `const:"basic" json:"type"`
@@ -171,7 +168,7 @@ type Params struct {
 	//
 	Value *string `json:"value,omitempty"`
 	// Specify whether the param name and value options go in a query string, or the POST form/JSON body.
-	Location *Location `json:"location,omitempty"`
+	Location AIGatewayModelProviderConfigAuthBasicLocation `json:"location"`
 }
 
 func (p Params) MarshalJSON() ([]byte, error) {
@@ -199,17 +196,14 @@ func (p *Params) GetValue() *string {
 	return p.Value
 }
 
-func (p *Params) GetLocation() *Location {
+func (p *Params) GetLocation() AIGatewayModelProviderConfigAuthBasicLocation {
 	if p == nil {
-		return nil
+		return AIGatewayModelProviderConfigAuthBasicLocation("")
 	}
 	return p.Location
 }
 
-// AIGatewayModelProviderConfigAuthBasic - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Basic auth config for an upstream model provider.
+// AIGatewayModelProviderConfigAuthBasic - Basic auth config for an upstream model provider.
 type AIGatewayModelProviderConfigAuthBasic struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_   string    `const:"basic" json:"type"`

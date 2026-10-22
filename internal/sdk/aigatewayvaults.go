@@ -32,9 +32,6 @@ func newAIGatewayVaults(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration,
 }
 
 // CreateAiGatewayVault - Create an AI Gateway Vault
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Registers a new vault for the AI Gateway.
 func (s *AIGatewayVaults) CreateAiGatewayVault(ctx context.Context, request operations.CreateAiGatewayVaultRequest, opts ...operations.Option) (*operations.CreateAiGatewayVaultResponse, error) {
 	o := operations.Options{}
@@ -373,9 +370,6 @@ func (s *AIGatewayVaults) CreateAiGatewayVault(ctx context.Context, request oper
 }
 
 // GetAiGatewayVault - Get an AI Gateway Vault
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns the details of a specific AI Gateway vault.
 func (s *AIGatewayVaults) GetAiGatewayVault(ctx context.Context, request operations.GetAiGatewayVaultRequest, opts ...operations.Option) (*operations.GetAiGatewayVaultResponse, error) {
 	o := operations.Options{}
@@ -665,9 +659,6 @@ func (s *AIGatewayVaults) GetAiGatewayVault(ctx context.Context, request operati
 }
 
 // UpdateAiGatewayVault - Update an AI Gateway Vault
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates the configuration of an existing AI Gateway vault.
 func (s *AIGatewayVaults) UpdateAiGatewayVault(ctx context.Context, request operations.UpdateAiGatewayVaultRequest, opts ...operations.Option) (*operations.UpdateAiGatewayVaultResponse, error) {
 	o := operations.Options{}
@@ -985,9 +976,6 @@ func (s *AIGatewayVaults) UpdateAiGatewayVault(ctx context.Context, request oper
 }
 
 // DeleteAiGatewayVault - Delete an AI Gateway Vault
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Removes a specific AI Gateway vault.
 func (s *AIGatewayVaults) DeleteAiGatewayVault(ctx context.Context, request operations.DeleteAiGatewayVaultRequest, opts ...operations.Option) (*operations.DeleteAiGatewayVaultResponse, error) {
 	o := operations.Options{}

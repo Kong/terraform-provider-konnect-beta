@@ -30,11 +30,20 @@ func (e *DeploymentType) IsExact() bool {
 	return false
 }
 
-// CreateAIGatewayRequest - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type CreateAIGatewayRequest struct {
 	// How this AI Gateway's control plane is deployed. Set at creation time and cannot be changed afterward.
 	DeploymentType *DeploymentType `default:"hybrid" json:"deployment_type"`
+	// The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
+	//
+	// Data planes older than this version still connect for topology visibility.
+	//
+	// When not specified, the latest generally available runtime version is used.
+	//
+	// When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
+	//
+	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
+	// Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases.
+	RuntimeAutoUpgrade *bool `default:"true" json:"runtime_auto_upgrade"`
 	// The display name for this AI Gateway.
 	DisplayName string `json:"display_name"`
 	// The name for this AI Gateway. This value is immutable after creation.
@@ -68,6 +77,20 @@ func (c *CreateAIGatewayRequest) GetDeploymentType() *DeploymentType {
 		return nil
 	}
 	return c.DeploymentType
+}
+
+func (c *CreateAIGatewayRequest) GetMinRuntimeVersion() *string {
+	if c == nil {
+		return nil
+	}
+	return c.MinRuntimeVersion
+}
+
+func (c *CreateAIGatewayRequest) GetRuntimeAutoUpgrade() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.RuntimeAutoUpgrade
 }
 
 func (c *CreateAIGatewayRequest) GetDisplayName() string {

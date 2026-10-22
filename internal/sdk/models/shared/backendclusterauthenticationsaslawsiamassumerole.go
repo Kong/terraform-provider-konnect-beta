@@ -6,8 +6,12 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AssumeRole - Configuration for assuming an IAM role. Required when `type` is `assume_role`.
-type AssumeRole struct {
+// BackendClusterAuthenticationSaslAwsIamAssumeRole - Configures whether to authenticate using credentials obtained by first assuming a role, using the AWS default credentials provider chain
+//
+// **Requires a minimum runtime version of `1.3`**.
+type BackendClusterAuthenticationSaslAwsIamAssumeRole struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"assume_role" json:"type"`
 	// The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)
 	// of the IAM role to assume, formatted as `arn:aws:iam::<account-id>:role/<role-name>`.
 	//
@@ -16,41 +20,6 @@ type AssumeRole struct {
 	// role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>`.
 	//
 	SessionName *string `default:"null" json:"session_name"`
-}
-
-func (a AssumeRole) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AssumeRole) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AssumeRole) GetArn() string {
-	if a == nil {
-		return ""
-	}
-	return a.Arn
-}
-
-func (a *AssumeRole) GetSessionName() *string {
-	if a == nil {
-		return nil
-	}
-	return a.SessionName
-}
-
-// BackendClusterAuthenticationSaslAwsIamAssumeRole - Configures whether to authenticate using credentials obtained by first assuming a role, using the AWS default credentials provider chain
-//
-// **Requires a minimum runtime version of `1.3`**.
-type BackendClusterAuthenticationSaslAwsIamAssumeRole struct {
-	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_ string `const:"assume_role" json:"type"`
-	// Configuration for assuming an IAM role. Required when `type` is `assume_role`.
-	AssumeRole AssumeRole `json:"assume_role"`
 }
 
 func (b BackendClusterAuthenticationSaslAwsIamAssumeRole) MarshalJSON() ([]byte, error) {
@@ -68,9 +37,16 @@ func (b *BackendClusterAuthenticationSaslAwsIamAssumeRole) GetType() string {
 	return "assume_role"
 }
 
-func (b *BackendClusterAuthenticationSaslAwsIamAssumeRole) GetAssumeRole() AssumeRole {
+func (b *BackendClusterAuthenticationSaslAwsIamAssumeRole) GetArn() string {
 	if b == nil {
-		return AssumeRole{}
+		return ""
 	}
-	return b.AssumeRole
+	return b.Arn
+}
+
+func (b *BackendClusterAuthenticationSaslAwsIamAssumeRole) GetSessionName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.SessionName
 }

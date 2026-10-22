@@ -6,10 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPACLs - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Access control rules for MCP resources. Configure `allow`, `deny`, or both.
+// AIGatewayMCPACLs - Access control rules for MCP resources. Configure `allow`, `deny`, or both.
 type AIGatewayMCPACLs struct {
 	// List of consumer groups that are permitted access.
 	Allow []string `json:"allow,omitempty"`

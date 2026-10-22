@@ -2,13 +2,23 @@
 
 package shared
 
-// CreateAIGatewayConfigStoreRequest - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type CreateAIGatewayConfigStoreRequest struct {
 	// The display name of the Config Store.
 	DisplayName *string `json:"display_name,omitempty"`
 	// The name of the Config Store. This value is immutable after creation.
 	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (c *CreateAIGatewayConfigStoreRequest) GetDisplayName() *string {
@@ -23,4 +33,18 @@ func (c *CreateAIGatewayConfigStoreRequest) GetName() string {
 		return ""
 	}
 	return c.Name
+}
+
+func (c *CreateAIGatewayConfigStoreRequest) GetLabels() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.Labels
+}
+
+func (c *CreateAIGatewayConfigStoreRequest) GetManagedBy() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.ManagedBy
 }

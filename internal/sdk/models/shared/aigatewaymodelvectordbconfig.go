@@ -16,10 +16,7 @@ const (
 	AIGatewayModelVectorDBConfigTypeRedis    AIGatewayModelVectorDBConfigType = "redis"
 )
 
-// AIGatewayModelVectorDBConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for the vector database used by the model.
+// AIGatewayModelVectorDBConfig - Configuration for the vector database used by the model.
 type AIGatewayModelVectorDBConfig struct {
 	AIGatewayModelVectorDBConfigPgVector *AIGatewayModelVectorDBConfigPgVector `queryParam:"inline" union:"member"`
 	AIGatewayModelVectorDBConfigRedis    *AIGatewayModelVectorDBConfigRedis    `queryParam:"inline" union:"member"`

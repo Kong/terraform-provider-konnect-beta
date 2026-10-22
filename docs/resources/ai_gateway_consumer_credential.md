@@ -39,11 +39,7 @@ resource "konnect_ai_gateway_consumer_credential" "my_aigatewayconsumercredentia
 - `consumer_id` (String) The unique ID of the AI Gateway consumer. Requires replacement if changed.
 - `display_name` (String) The display name for this credential instance. Requires replacement if changed.
 - `gateway_id` (String) The unique ID of the AI Gateway. Requires replacement if changed.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation.
-Requires replacement if changed.
+- `name` (String) A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation. Requires replacement if changed.
 - `type` (String) must be "api-key"; Requires replacement if changed.
 
 ### Optional

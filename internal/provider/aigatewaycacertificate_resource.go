@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"regexp"
@@ -36,15 +37,16 @@ type AIGatewayCACertificateResource struct {
 
 // AIGatewayCACertificateResourceModel describes the resource data model.
 type AIGatewayCACertificateResourceModel struct {
-	Cert       types.String            `tfsdk:"cert"`
-	CertDigest types.String            `tfsdk:"cert_digest"`
-	CreatedAt  types.String            `tfsdk:"created_at"`
-	GatewayID  types.String            `tfsdk:"gateway_id"`
-	ID         types.String            `tfsdk:"id"`
-	Labels     map[string]types.String `tfsdk:"labels"`
-	ManagedBy  map[string]types.String `tfsdk:"managed_by"`
-	Name       types.String            `tfsdk:"name"`
-	UpdatedAt  types.String            `tfsdk:"updated_at"`
+	Cert           types.String            `tfsdk:"cert"`
+	CertDigest     types.String            `tfsdk:"cert_digest"`
+	CreatedAt      types.String            `tfsdk:"created_at"`
+	GatewayID      types.String            `tfsdk:"gateway_id"`
+	ID             types.String            `tfsdk:"id"`
+	KonnectManaged types.Bool              `tfsdk:"konnect_managed"`
+	Labels         map[string]types.String `tfsdk:"labels"`
+	ManagedBy      map[string]types.String `tfsdk:"managed_by"`
+	Name           types.String            `tfsdk:"name"`
+	UpdatedAt      types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayCACertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,7 +62,10 @@ func (r *AIGatewayCACertificateResource) Schema(ctx context.Context, req resourc
 				Description: `PEM-encoded public certificate of the CA.`,
 			},
 			"cert_digest": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.`,
 			},
 			"created_at": schema.StringAttribute{
@@ -81,6 +86,13 @@ func (r *AIGatewayCACertificateResource) Schema(ctx context.Context, req resourc
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
+			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -100,14 +112,11 @@ func (r *AIGatewayCACertificateResource) Schema(ctx context.Context, req resourc
 					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.`,
+				Required:    true,
+				Description: `A user-defined unique identifier for this CA certificate, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 				},
 			},
 			"updated_at": schema.StringAttribute{

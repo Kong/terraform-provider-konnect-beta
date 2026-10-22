@@ -16,11 +16,17 @@ Portal Resource
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
   ai = {
-    enabled = true
+    enabled = false
     features = {
+      ai_search = {
+        enabled = false
+      }
       mcp_server = {
         enabled                  = false
         write_operations_enabled = false
+      }
+      portal_agent = {
+        enabled = false
       }
     }
   }
@@ -89,23 +95,41 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Optional:
 
-- `enabled` (Boolean) Is AI enabled?. Not Null
-- `features` (Attributes) Not Null (see [below for nested schema](#nestedatt--ai--features))
+- `enabled` (Boolean) Is AI enabled?. Default: false
+- `features` (Attributes) AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false. Not Null (see [below for nested schema](#nestedatt--ai--features))
 
 <a id="nestedatt--ai--features"></a>
 ### Nested Schema for `ai.features`
 
 Optional:
 
+- `ai_search` (Attributes) AI Search config (see [below for nested schema](#nestedatt--ai--features--ai_search))
 - `mcp_server` (Attributes) AI Features config. Not Null (see [below for nested schema](#nestedatt--ai--features--mcp_server))
+- `portal_agent` (Attributes) Portal Agent config (see [below for nested schema](#nestedatt--ai--features--portal_agent))
+
+<a id="nestedatt--ai--features--ai_search"></a>
+### Nested Schema for `ai.features.ai_search`
+
+Optional:
+
+- `enabled` (Boolean) Whether AI Search is enabled or not. Default: false
+
 
 <a id="nestedatt--ai--features--mcp_server"></a>
 ### Nested Schema for `ai.features.mcp_server`
 
 Optional:
 
-- `enabled` (Boolean) Whether the MCP Server is enabled or not. Not Null
-- `write_operations_enabled` (Boolean) Whether write operations are enabled or not for the Portal MCP Server enabled. Not Null
+- `enabled` (Boolean) Whether the MCP Server is enabled or not. Default: false
+- `write_operations_enabled` (Boolean) Whether write operations are enabled or not for the Portal MCP Server enabled. Default: false
+
+
+<a id="nestedatt--ai--features--portal_agent"></a>
+### Nested Schema for `ai.features.portal_agent`
+
+Optional:
+
+- `enabled` (Boolean) Whether the Portal Agent is enabled or not. Default: false
 
 ## Import
 

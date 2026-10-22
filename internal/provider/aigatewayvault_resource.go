@@ -145,9 +145,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -196,10 +194,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -217,8 +212,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("azure"),
@@ -325,9 +318,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -376,10 +367,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -397,8 +385,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -488,9 +474,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -539,10 +523,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -560,8 +541,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -606,9 +585,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The prefix for the environment variable that the value will be stored in.`,
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -657,10 +634,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -678,8 +652,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -755,9 +727,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -806,10 +776,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -827,8 +794,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -966,8 +931,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("aws_ec2"),
@@ -1094,8 +1057,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1249,8 +1210,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1369,8 +1328,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1491,8 +1448,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1611,8 +1566,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1742,8 +1695,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1883,8 +1834,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -2005,8 +1954,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -2115,8 +2062,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -2132,11 +2077,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Configuration for an AI Gateway Vault.` + "\n" +
-							`Not Null`,
+						Description: `Configuration for an AI Gateway Vault. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -2185,10 +2126,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -2206,8 +2144,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -2291,10 +2227,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -2312,8 +2245,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -2330,10 +2261,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws"), FieldPath: path.Root("aws").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp"), FieldPath: path.Root("gcp").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conjur"), FieldPath: path.Root("conjur").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("hcv"), FieldPath: path.Root("hcv").AtName("name")}}),
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+				MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 					`This value is immutable after creation.` + "\n" +
 					`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.`,
 			},

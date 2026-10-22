@@ -612,7 +612,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 				}
 				var backendRef *shared.MeshAccessLogItemSpecFromBackendRef
 				if r.Spec.From[fromIndex].Default.Backends[backendsIndex].OpenTelemetry.BackendRef != nil {
-					kind := shared.MeshAccessLogItemSpecFromKind(r.Spec.From[fromIndex].Default.Backends[backendsIndex].OpenTelemetry.BackendRef.Kind.ValueString())
+					kind := shared.MeshAccessLogItemSpecFromDefaultKind(r.Spec.From[fromIndex].Default.Backends[backendsIndex].OpenTelemetry.BackendRef.Kind.ValueString())
 					labels1 := make(map[string]string)
 					for labelsKey := range r.Spec.From[fromIndex].Default.Backends[backendsIndex].OpenTelemetry.BackendRef.Labels {
 						var labelsInst string
@@ -698,7 +698,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 		defaultVar := shared.MeshAccessLogItemSpecFromDefault{
 			Backends: backends,
 		}
-		kind1 := shared.MeshAccessLogItemKind(r.Spec.From[fromIndex].TargetRef.Kind.ValueString())
+		kind1 := shared.MeshAccessLogItemSpecFromKind(r.Spec.From[fromIndex].TargetRef.Kind.ValueString())
 		labels2 := make(map[string]string)
 		for labelsKey1 := range r.Spec.From[fromIndex].TargetRef.Labels {
 			var labelsInst1 string
@@ -944,7 +944,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 	}
 	var targetRef1 *shared.TargetRef
 	if r.Spec.TargetRef != nil {
-		kind3 := shared.Kind(r.Spec.TargetRef.Kind.ValueString())
+		kind3 := shared.MeshAccessLogItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels4 := make(map[string]string)
 		for labelsKey3 := range r.Spec.TargetRef.Labels {
 			var labelsInst3 string

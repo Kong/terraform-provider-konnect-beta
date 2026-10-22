@@ -82,7 +82,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Required:
 
 - `endpoint` (String) The endpoint of the Confluent schema registry.
-- `schema_type` (String) The format of the message. possible known values include one of ["avro", "json"]
+- `schema_type` (String) The format of the message. possible known values include one of ["avro", "json", "any"]
 
 Optional:
 

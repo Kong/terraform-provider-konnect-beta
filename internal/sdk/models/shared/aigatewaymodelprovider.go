@@ -10,6 +10,163 @@ import (
 	"time"
 )
 
+// AIGatewayModelProviderTypesafeConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderTypesafeConfigOutput struct {
+	// Basic auth config for an upstream model provider.
+	//
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderTypesafeConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderTypesafeConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderTypesafeConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderTypesafe - Configuration for an upstream model provider.
+type AIGatewayModelProviderAIGatewayModelProviderTypesafe struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"typesafe" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderTypesafeConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderTypesafe) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetType() string {
+	return "typesafe"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetConfig() AIGatewayModelProviderTypesafeConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderTypesafeConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
 type AIGatewayModelProviderSagemakerAuthOutputType string
 
 const (
@@ -18,8 +175,8 @@ const (
 )
 
 type AIGatewayModelProviderSagemakerAuthOutput struct {
-	AIGatewayModelProviderConfigAuthBasicOutput *AIGatewayModelProviderConfigAuthBasicOutput `queryParam:"inline" union:"member"`
-	AIGatewayModelProviderConfigAuthSagemaker   *AIGatewayModelProviderConfigAuthSagemaker   `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderConfigAuthBasicOutput     *AIGatewayModelProviderConfigAuthBasicOutput     `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderConfigAuthSagemakerOutput *AIGatewayModelProviderConfigAuthSagemakerOutput `queryParam:"inline" union:"member"`
 
 	Type AIGatewayModelProviderSagemakerAuthOutputType
 }
@@ -33,14 +190,14 @@ func CreateAIGatewayModelProviderSagemakerAuthOutputBasic(basic AIGatewayModelPr
 	}
 }
 
-func CreateAIGatewayModelProviderSagemakerAuthOutputSagemaker(sagemaker AIGatewayModelProviderConfigAuthSagemaker) AIGatewayModelProviderSagemakerAuthOutput {
+func CreateAIGatewayModelProviderSagemakerAuthOutputSagemaker(sagemaker AIGatewayModelProviderConfigAuthSagemakerOutput) AIGatewayModelProviderSagemakerAuthOutput {
 	typ := AIGatewayModelProviderSagemakerAuthOutputTypeSagemaker
 
 	typStr := AIGatewayModelProviderConfigAuthSagemakerType(typ)
 	sagemaker.Type = typStr
 
 	return AIGatewayModelProviderSagemakerAuthOutput{
-		AIGatewayModelProviderConfigAuthSagemaker: &sagemaker,
+		AIGatewayModelProviderConfigAuthSagemakerOutput: &sagemaker,
 		Type: typ,
 	}
 }
@@ -67,12 +224,12 @@ func (u *AIGatewayModelProviderSagemakerAuthOutput) UnmarshalJSON(data []byte) e
 		u.Type = AIGatewayModelProviderSagemakerAuthOutputTypeBasic
 		return nil
 	case "sagemaker":
-		aiGatewayModelProviderConfigAuthSagemaker := new(AIGatewayModelProviderConfigAuthSagemaker)
-		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthSagemaker, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sagemaker) type AIGatewayModelProviderConfigAuthSagemaker within AIGatewayModelProviderSagemakerAuthOutput: %w", string(data), err)
+		aiGatewayModelProviderConfigAuthSagemakerOutput := new(AIGatewayModelProviderConfigAuthSagemakerOutput)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderConfigAuthSagemakerOutput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sagemaker) type AIGatewayModelProviderConfigAuthSagemakerOutput within AIGatewayModelProviderSagemakerAuthOutput: %w", string(data), err)
 		}
 
-		u.AIGatewayModelProviderConfigAuthSagemaker = aiGatewayModelProviderConfigAuthSagemaker
+		u.AIGatewayModelProviderConfigAuthSagemakerOutput = aiGatewayModelProviderConfigAuthSagemakerOutput
 		u.Type = AIGatewayModelProviderSagemakerAuthOutputTypeSagemaker
 		return nil
 	}
@@ -85,15 +242,13 @@ func (u AIGatewayModelProviderSagemakerAuthOutput) MarshalJSON() ([]byte, error)
 		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthBasicOutput, "", true)
 	}
 
-	if u.AIGatewayModelProviderConfigAuthSagemaker != nil {
-		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthSagemaker, "", true)
+	if u.AIGatewayModelProviderConfigAuthSagemakerOutput != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderConfigAuthSagemakerOutput, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AIGatewayModelProviderSagemakerAuthOutput: all fields are null")
 }
 
-// AIGatewayModelProviderSagemakerConfigOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayModelProviderSagemakerConfigOutput struct {
 	Auth AIGatewayModelProviderSagemakerAuthOutput `json:"auth"`
 }
@@ -120,22 +275,16 @@ func (a *AIGatewayModelProviderSagemakerConfigOutput) GetAuthBasic() *AIGatewayM
 	return a.GetAuth().AIGatewayModelProviderConfigAuthBasicOutput
 }
 
-func (a *AIGatewayModelProviderSagemakerConfigOutput) GetAuthSagemaker() *AIGatewayModelProviderConfigAuthSagemaker {
-	return a.GetAuth().AIGatewayModelProviderConfigAuthSagemaker
+func (a *AIGatewayModelProviderSagemakerConfigOutput) GetAuthSagemaker() *AIGatewayModelProviderConfigAuthSagemakerOutput {
+	return a.GetAuth().AIGatewayModelProviderConfigAuthSagemakerOutput
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderSagemaker - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Config for Sagemaker model provider.
+// AIGatewayModelProviderAIGatewayModelProviderSagemaker - Config for Sagemaker model provider.
 type AIGatewayModelProviderAIGatewayModelProviderSagemaker struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"sagemaker" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -150,9 +299,24 @@ type AIGatewayModelProviderAIGatewayModelProviderSagemaker struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	Config AIGatewayModelProviderSagemakerConfigOutput `json:"config"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput                  `json:"token_vault,omitempty"`
+	Config     AIGatewayModelProviderSagemakerConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -204,6 +368,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetManagedBy() m
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetConfig() AIGatewayModelProviderSagemakerConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderSagemakerConfigOutput{}
@@ -234,10 +412,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderSagemaker) GetUpdatedAt() t
 
 // AIGatewayModelProviderXaiConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderXaiConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -259,16 +435,12 @@ func (a *AIGatewayModelProviderXaiConfigOutput) GetAuth() AIGatewayModelProvider
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderXai - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderXai - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderXai struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"xai" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -283,6 +455,23 @@ type AIGatewayModelProviderAIGatewayModelProviderXai struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderXaiConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -336,6 +525,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetManagedBy() map[str
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetConfig() AIGatewayModelProviderXaiConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderXaiConfigOutput{}
@@ -366,10 +569,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderXai) GetUpdatedAt() time.Ti
 
 // AIGatewayModelProviderVllmConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderVllmConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -391,16 +592,12 @@ func (a *AIGatewayModelProviderVllmConfigOutput) GetAuth() AIGatewayModelProvide
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderVllm - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderVllm - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderVllm struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"vllm" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -415,6 +612,23 @@ type AIGatewayModelProviderAIGatewayModelProviderVllm struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderVllmConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -468,6 +682,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetManagedBy() map[st
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetConfig() AIGatewayModelProviderVllmConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderVllmConfigOutput{}
@@ -498,10 +726,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderVllm) GetUpdatedAt() time.T
 
 // AIGatewayModelProviderVercelConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderVercelConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -523,16 +749,12 @@ func (a *AIGatewayModelProviderVercelConfigOutput) GetAuth() AIGatewayModelProvi
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderVercel - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderVercel - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderVercel struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"vercel" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -547,6 +769,23 @@ type AIGatewayModelProviderAIGatewayModelProviderVercel struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderVercelConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -600,6 +839,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetManagedBy() map[
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetConfig() AIGatewayModelProviderVercelConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderVercelConfigOutput{}
@@ -630,10 +883,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderVercel) GetUpdatedAt() time
 
 // AIGatewayModelProviderOpenaiConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderOpenaiConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -655,16 +906,12 @@ func (a *AIGatewayModelProviderOpenaiConfigOutput) GetAuth() AIGatewayModelProvi
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderOpenai - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderOpenai - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderOpenai struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"openai" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -679,6 +926,23 @@ type AIGatewayModelProviderAIGatewayModelProviderOpenai struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderOpenaiConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -732,6 +996,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetManagedBy() map[
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetConfig() AIGatewayModelProviderOpenaiConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderOpenaiConfigOutput{}
@@ -762,10 +1040,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderOpenai) GetUpdatedAt() time
 
 // AIGatewayModelProviderOllamaConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderOllamaConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -787,16 +1063,12 @@ func (a *AIGatewayModelProviderOllamaConfigOutput) GetAuth() AIGatewayModelProvi
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderOllama - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderOllama - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderOllama struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"ollama" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -811,6 +1083,23 @@ type AIGatewayModelProviderAIGatewayModelProviderOllama struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderOllamaConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -864,6 +1153,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetManagedBy() map[
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetConfig() AIGatewayModelProviderOllamaConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderOllamaConfigOutput{}
@@ -894,10 +1197,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderOllama) GetUpdatedAt() time
 
 // AIGatewayModelProviderMistralConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderMistralConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -919,16 +1220,12 @@ func (a *AIGatewayModelProviderMistralConfigOutput) GetAuth() AIGatewayModelProv
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderMistral - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderMistral - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderMistral struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"mistral" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -943,6 +1240,23 @@ type AIGatewayModelProviderAIGatewayModelProviderMistral struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderMistralConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -996,6 +1310,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetManagedBy() map
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetConfig() AIGatewayModelProviderMistralConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderMistralConfigOutput{}
@@ -1026,10 +1354,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetUpdatedAt() tim
 
 // AIGatewayModelProviderLlama2ConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderLlama2ConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -1054,16 +1380,12 @@ func (a *AIGatewayModelProviderLlama2ConfigOutput) GetAuth() AIGatewayModelProvi
 // #region class-body-aigatewaymodelproviderllama2configoutput
 // #endregion class-body-aigatewaymodelproviderllama2configoutput
 
-// AIGatewayModelProviderAIGatewayModelProviderLlama2 - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderLlama2 - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderLlama2 struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"llama2" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1078,6 +1400,23 @@ type AIGatewayModelProviderAIGatewayModelProviderLlama2 struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderLlama2ConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -1131,6 +1470,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetManagedBy() map[
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetConfig() AIGatewayModelProviderLlama2ConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderLlama2ConfigOutput{}
@@ -1164,10 +1517,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderLlama2) GetUpdatedAt() time
 
 // AIGatewayModelProviderKimiConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderKimiConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -1189,16 +1540,12 @@ func (a *AIGatewayModelProviderKimiConfigOutput) GetAuth() AIGatewayModelProvide
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderKimi - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderKimi - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderKimi struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"kimi" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1213,6 +1560,23 @@ type AIGatewayModelProviderAIGatewayModelProviderKimi struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderKimiConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -1266,6 +1630,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetManagedBy() map[st
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetConfig() AIGatewayModelProviderKimiConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderKimiConfigOutput{}
@@ -1296,10 +1674,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderKimi) GetUpdatedAt() time.T
 
 // AIGatewayModelProviderHuggingfaceConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderHuggingfaceConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -1321,16 +1697,12 @@ func (a *AIGatewayModelProviderHuggingfaceConfigOutput) GetAuth() AIGatewayModel
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderHuggingface - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderHuggingface - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderHuggingface struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"huggingface" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1345,6 +1717,23 @@ type AIGatewayModelProviderAIGatewayModelProviderHuggingface struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderHuggingfaceConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -1396,6 +1785,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetManagedBy()
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
 }
 
 func (a *AIGatewayModelProviderAIGatewayModelProviderHuggingface) GetConfig() AIGatewayModelProviderHuggingfaceConfigOutput {
@@ -1535,18 +1938,12 @@ func (a *AIGatewayModelProviderGeminiConfigOutput) GetAuthGcp() *AIGatewayModelP
 	return a.GetAuth().AIGatewayModelProviderConfigAuthGCPOutput
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderGemini - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Config for GCP model provider.
+// AIGatewayModelProviderAIGatewayModelProviderGemini - Config for GCP model provider.
 type AIGatewayModelProviderAIGatewayModelProviderGemini struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"gemini" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1560,8 +1957,25 @@ type AIGatewayModelProviderAIGatewayModelProviderGemini struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy map[string]string                        `json:"managed_by,omitempty"`
-	Config    AIGatewayModelProviderGeminiConfigOutput `json:"config"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput               `json:"token_vault,omitempty"`
+	Config     AIGatewayModelProviderGeminiConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -1613,6 +2027,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetManagedBy() map[
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetConfig() AIGatewayModelProviderGeminiConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderGeminiConfigOutput{}
@@ -1643,10 +2071,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetUpdatedAt() time
 
 // AIGatewayModelProviderDeepseekConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderDeepseekConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -1668,16 +2094,12 @@ func (a *AIGatewayModelProviderDeepseekConfigOutput) GetAuth() AIGatewayModelPro
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderDeepseek - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderDeepseek - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderDeepseek struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"deepseek" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1692,6 +2114,23 @@ type AIGatewayModelProviderAIGatewayModelProviderDeepseek struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderDeepseekConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -1745,6 +2184,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetManagedBy() ma
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetConfig() AIGatewayModelProviderDeepseekConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderDeepseekConfigOutput{}
@@ -1775,10 +2228,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderDeepseek) GetUpdatedAt() ti
 
 // AIGatewayModelProviderDatabricksConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderDatabricksConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -1800,16 +2251,12 @@ func (a *AIGatewayModelProviderDatabricksConfigOutput) GetAuth() AIGatewayModelP
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderDatabricks - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderDatabricks - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderDatabricks struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"databricks" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1824,6 +2271,23 @@ type AIGatewayModelProviderAIGatewayModelProviderDatabricks struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderDatabricksConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -1877,6 +2341,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetManagedBy() 
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetConfig() AIGatewayModelProviderDatabricksConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderDatabricksConfigOutput{}
@@ -1907,10 +2385,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderDatabricks) GetUpdatedAt() 
 
 // AIGatewayModelProviderDashscopeConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderDashscopeConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -1932,16 +2408,12 @@ func (a *AIGatewayModelProviderDashscopeConfigOutput) GetAuth() AIGatewayModelPr
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderDashscope - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderDashscope - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderDashscope struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"dashscope" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1956,6 +2428,23 @@ type AIGatewayModelProviderAIGatewayModelProviderDashscope struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderDashscopeConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -2009,6 +2498,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetManagedBy() m
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetConfig() AIGatewayModelProviderDashscopeConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderDashscopeConfigOutput{}
@@ -2039,10 +2542,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderDashscope) GetUpdatedAt() t
 
 // AIGatewayModelProviderCohereConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderCohereConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -2064,16 +2565,12 @@ func (a *AIGatewayModelProviderCohereConfigOutput) GetAuth() AIGatewayModelProvi
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderCohere - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderCohere - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderCohere struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"cohere" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -2088,6 +2585,23 @@ type AIGatewayModelProviderAIGatewayModelProviderCohere struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderCohereConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -2141,6 +2655,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetManagedBy() map[
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetConfig() AIGatewayModelProviderCohereConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderCohereConfigOutput{}
@@ -2171,10 +2699,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderCohere) GetUpdatedAt() time
 
 // AIGatewayModelProviderCerebrasConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderCerebrasConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -2196,16 +2722,12 @@ func (a *AIGatewayModelProviderCerebrasConfigOutput) GetAuth() AIGatewayModelPro
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderCerebras - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderCerebras - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderCerebras struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"cerebras" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -2220,6 +2742,23 @@ type AIGatewayModelProviderAIGatewayModelProviderCerebras struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderCerebrasConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -2271,6 +2810,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetManagedBy() ma
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
 }
 
 func (a *AIGatewayModelProviderAIGatewayModelProviderCerebras) GetConfig() AIGatewayModelProviderCerebrasConfigOutput {
@@ -2410,18 +2963,12 @@ func (a *AIGatewayModelProviderBedrockConfigOutput) GetAuthAws() *AIGatewayModel
 	return a.GetAuth().AIGatewayModelProviderConfigAuthAWSOutput
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderBedrock - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Config for AWS model provider.
+// AIGatewayModelProviderAIGatewayModelProviderBedrock - Config for AWS model provider.
 type AIGatewayModelProviderAIGatewayModelProviderBedrock struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"bedrock" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -2435,8 +2982,25 @@ type AIGatewayModelProviderAIGatewayModelProviderBedrock struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy map[string]string                         `json:"managed_by,omitempty"`
-	Config    AIGatewayModelProviderBedrockConfigOutput `json:"config"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput                `json:"token_vault,omitempty"`
+	Config     AIGatewayModelProviderBedrockConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -2488,6 +3052,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetManagedBy() map
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetConfig() AIGatewayModelProviderBedrockConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderBedrockConfigOutput{}
@@ -2510,6 +3088,163 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetCreatedAt() tim
 }
 
 func (a *AIGatewayModelProviderAIGatewayModelProviderBedrock) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderBasetenConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderBasetenConfigOutput struct {
+	// Basic auth config for an upstream model provider.
+	//
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderBasetenConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderBasetenConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderBasetenConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderBaseten - Configuration for an upstream model provider.
+type AIGatewayModelProviderAIGatewayModelProviderBaseten struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"baseten" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderBasetenConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderBaseten) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetType() string {
+	return "baseten"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetConfig() AIGatewayModelProviderBasetenConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderBasetenConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderBaseten) GetUpdatedAt() time.Time {
 	if a == nil {
 		return time.Time{}
 	}
@@ -2715,18 +3450,12 @@ func (a *AIGatewayModelProviderAzureConfigOutput) GetFoundry() *AIGatewayModelPr
 	return a.Foundry
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderAzure - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Config for Azure model provider.
+// AIGatewayModelProviderAIGatewayModelProviderAzure - Config for Azure model provider.
 type AIGatewayModelProviderAIGatewayModelProviderAzure struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"azure" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -2740,8 +3469,25 @@ type AIGatewayModelProviderAIGatewayModelProviderAzure struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy map[string]string                       `json:"managed_by,omitempty"`
-	Config    AIGatewayModelProviderAzureConfigOutput `json:"config"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput              `json:"token_vault,omitempty"`
+	Config     AIGatewayModelProviderAzureConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -2793,6 +3539,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetManagedBy() map[s
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetConfig() AIGatewayModelProviderAzureConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderAzureConfigOutput{}
@@ -2823,10 +3583,8 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderAzure) GetUpdatedAt() time.
 
 // AIGatewayModelProviderAnthropicConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderAnthropicConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
 }
 
@@ -2848,16 +3606,12 @@ func (a *AIGatewayModelProviderAnthropicConfigOutput) GetAuth() AIGatewayModelPr
 	return a.Auth
 }
 
-// AIGatewayModelProviderAIGatewayModelProviderAnthropic - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderAIGatewayModelProviderAnthropic - Configuration for an upstream model provider.
 type AIGatewayModelProviderAIGatewayModelProviderAnthropic struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"anthropic" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -2872,6 +3626,23 @@ type AIGatewayModelProviderAIGatewayModelProviderAnthropic struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderAnthropicConfigOutput `json:"config"`
 	// Contains a unique identifier used for this resource.
@@ -2925,6 +3696,20 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetManagedBy() m
 	return a.ManagedBy
 }
 
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayModelProviderAIGatewayModelProviderAnthropic) GetConfig() AIGatewayModelProviderAnthropicConfigOutput {
 	if a == nil {
 		return AIGatewayModelProviderAnthropicConfigOutput{}
@@ -2958,6 +3743,7 @@ type AIGatewayModelProviderType string
 const (
 	AIGatewayModelProviderTypeAnthropic   AIGatewayModelProviderType = "anthropic"
 	AIGatewayModelProviderTypeAzure       AIGatewayModelProviderType = "azure"
+	AIGatewayModelProviderTypeBaseten     AIGatewayModelProviderType = "baseten"
 	AIGatewayModelProviderTypeBedrock     AIGatewayModelProviderType = "bedrock"
 	AIGatewayModelProviderTypeCerebras    AIGatewayModelProviderType = "cerebras"
 	AIGatewayModelProviderTypeCohere      AIGatewayModelProviderType = "cohere"
@@ -2975,13 +3761,14 @@ const (
 	AIGatewayModelProviderTypeVllm        AIGatewayModelProviderType = "vllm"
 	AIGatewayModelProviderTypeXai         AIGatewayModelProviderType = "xai"
 	AIGatewayModelProviderTypeSagemaker   AIGatewayModelProviderType = "sagemaker"
+	AIGatewayModelProviderTypeTypesafe    AIGatewayModelProviderType = "typesafe"
 )
 
-// AIGatewayModelProvider - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProvider - Model provider created successfully.
 type AIGatewayModelProvider struct {
 	AIGatewayModelProviderAIGatewayModelProviderAnthropic   *AIGatewayModelProviderAIGatewayModelProviderAnthropic   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderAzure       *AIGatewayModelProviderAIGatewayModelProviderAzure       `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderBaseten     *AIGatewayModelProviderAIGatewayModelProviderBaseten     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderBedrock     *AIGatewayModelProviderAIGatewayModelProviderBedrock     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderCerebras    *AIGatewayModelProviderAIGatewayModelProviderCerebras    `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderCohere      *AIGatewayModelProviderAIGatewayModelProviderCohere      `queryParam:"inline" union:"member"`
@@ -2999,6 +3786,7 @@ type AIGatewayModelProvider struct {
 	AIGatewayModelProviderAIGatewayModelProviderVllm        *AIGatewayModelProviderAIGatewayModelProviderVllm        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderXai         *AIGatewayModelProviderAIGatewayModelProviderXai         `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderSagemaker   *AIGatewayModelProviderAIGatewayModelProviderSagemaker   `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderTypesafe    *AIGatewayModelProviderAIGatewayModelProviderTypesafe    `queryParam:"inline" union:"member"`
 
 	Type AIGatewayModelProviderType
 }
@@ -3017,6 +3805,15 @@ func CreateAIGatewayModelProviderAzure(azure AIGatewayModelProviderAIGatewayMode
 
 	return AIGatewayModelProvider{
 		AIGatewayModelProviderAIGatewayModelProviderAzure: &azure,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderBaseten(baseten AIGatewayModelProviderAIGatewayModelProviderBaseten) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeBaseten
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderBaseten: &baseten,
 		Type: typ,
 	}
 }
@@ -3174,6 +3971,15 @@ func CreateAIGatewayModelProviderSagemaker(sagemaker AIGatewayModelProviderAIGat
 	}
 }
 
+func CreateAIGatewayModelProviderTypesafe(typesafe AIGatewayModelProviderAIGatewayModelProviderTypesafe) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeTypesafe
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderTypesafe: &typesafe,
+		Type: typ,
+	}
+}
+
 func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) error {
 
 	type discriminator struct {
@@ -3203,6 +4009,15 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) error {
 
 		u.AIGatewayModelProviderAIGatewayModelProviderAzure = aiGatewayModelProviderAIGatewayModelProviderAzure
 		u.Type = AIGatewayModelProviderTypeAzure
+		return nil
+	case "baseten":
+		aiGatewayModelProviderAIGatewayModelProviderBaseten := new(AIGatewayModelProviderAIGatewayModelProviderBaseten)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderBaseten, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == baseten) type AIGatewayModelProviderAIGatewayModelProviderBaseten within AIGatewayModelProvider: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderAIGatewayModelProviderBaseten = aiGatewayModelProviderAIGatewayModelProviderBaseten
+		u.Type = AIGatewayModelProviderTypeBaseten
 		return nil
 	case "bedrock":
 		aiGatewayModelProviderAIGatewayModelProviderBedrock := new(AIGatewayModelProviderAIGatewayModelProviderBedrock)
@@ -3357,6 +4172,15 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) error {
 		u.AIGatewayModelProviderAIGatewayModelProviderSagemaker = aiGatewayModelProviderAIGatewayModelProviderSagemaker
 		u.Type = AIGatewayModelProviderTypeSagemaker
 		return nil
+	case "typesafe":
+		aiGatewayModelProviderAIGatewayModelProviderTypesafe := new(AIGatewayModelProviderAIGatewayModelProviderTypesafe)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderTypesafe, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == typesafe) type AIGatewayModelProviderAIGatewayModelProviderTypesafe within AIGatewayModelProvider: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderAIGatewayModelProviderTypesafe = aiGatewayModelProviderAIGatewayModelProviderTypesafe
+		u.Type = AIGatewayModelProviderTypeTypesafe
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelProvider", string(data))
@@ -3369,6 +4193,10 @@ func (u AIGatewayModelProvider) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderAzure != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderAzure, "", true)
+	}
+
+	if u.AIGatewayModelProviderAIGatewayModelProviderBaseten != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderBaseten, "", true)
 	}
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderBedrock != nil {
@@ -3437,6 +4265,10 @@ func (u AIGatewayModelProvider) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderSagemaker != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderSagemaker, "", true)
+	}
+
+	if u.AIGatewayModelProviderAIGatewayModelProviderTypesafe != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderTypesafe, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AIGatewayModelProvider: all fields are null")

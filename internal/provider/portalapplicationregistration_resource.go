@@ -37,16 +37,16 @@ type PortalApplicationRegistrationResource struct {
 
 // PortalApplicationRegistrationResourceModel describes the resource data model.
 type PortalApplicationRegistrationResourceModel struct {
-	API           *tfTypes.API         `tfsdk:"api"`
-	APIID         types.String         `tfsdk:"api_id"`
-	Application   *tfTypes.Application `tfsdk:"application"`
-	ApplicationID types.String         `tfsdk:"application_id"`
-	Consumer      *tfTypes.Consumer    `tfsdk:"consumer"`
-	CreatedAt     types.String         `tfsdk:"created_at"`
-	ID            types.String         `tfsdk:"id"`
-	PortalID      types.String         `tfsdk:"portal_id"`
-	Status        types.String         `tfsdk:"status"`
-	UpdatedAt     types.String         `tfsdk:"updated_at"`
+	API           *tfTypes.API               `tfsdk:"api"`
+	APIID         types.String               `tfsdk:"api_id"`
+	Application   *tfTypes.APIEnvironmentRef `tfsdk:"application"`
+	ApplicationID types.String               `tfsdk:"application_id"`
+	Consumer      *tfTypes.Consumer          `tfsdk:"consumer"`
+	CreatedAt     types.String               `tfsdk:"created_at"`
+	ID            types.String               `tfsdk:"id"`
+	PortalID      types.String               `tfsdk:"portal_id"`
+	Status        types.String               `tfsdk:"status"`
+	UpdatedAt     types.String               `tfsdk:"updated_at"`
 }
 
 func (r *PortalApplicationRegistrationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

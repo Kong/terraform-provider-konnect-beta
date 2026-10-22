@@ -6,16 +6,11 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPToolAccess - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Access-control rules for a tool.
+// AIGatewayMCPToolAccess - Access-control rules for a tool.
 type AIGatewayMCPToolAccess struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Access control rules for allowing or denying consumer groups access to this tool.
 	// When configured, these will override the default access control rules defined on the MCP Server.
+	//
 	Acls *AIGatewayMCPACLs `json:"acls,omitempty"`
 }
 

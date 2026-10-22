@@ -40,6 +40,25 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
+      allowed_versions = [
+        "2025-06-18"
+      ]
+      ca_certificates = [
+        "my-ca-certificate"
+      ]
+      cache = {
+        discover = {
+          cache_scope = "private"
+          ttl_ms      = 5
+        }
+        tools_list = {
+          cache_scope = "private"
+          ttl_ms      = 1
+        }
+      }
+      certificates = [
+        "my-certificate"
+      ]
       logging = {
         audits   = false
         payloads = false
@@ -146,6 +165,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       url = "https://mcp.internal.kongair.com"
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "Kong Air Flights"
     enabled      = true
     labels = {
@@ -158,6 +182,84 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
+    rate_limiting = {
+      limits = [
+        {
+          limit       = 100
+          method      = "tools/call"
+          tool        = "search_flights"
+          window_size = 60
+        }
+      ]
+    }
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            aws = {
+              access_key_id     = "...my_access_key_id..."
+              assume_role_arn   = "...my_assume_role_arn..."
+              cache_name        = "...my_cache_name..."
+              is_serverless     = true
+              region            = "...my_region..."
+              role_session_name = "...my_role_session_name..."
+              secret_access_key = "...my_secret_access_key..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 2020486820
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "master"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "header"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "query"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "access_token"
+    }
     tools = [
       {
         access = {
@@ -203,6 +305,12 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   conversion_only = {
     config = {
+      ca_certificates = [
+        "my-ca-certificate"
+      ]
+      certificates = [
+        "my-certificate"
+      ]
       logging = {
         audits   = false
         payloads = false
@@ -249,6 +357,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       url = "https://mcp.internal.kongair.com"
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "Kong Air Flights"
     enabled      = true
     labels = {
@@ -261,6 +374,68 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            gcp = {
+              service_account_json = "...my_service_account_json..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 1023472511
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "slave"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "query"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "body"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "access_token"
+    }
     tools = [
       {
         access = {
@@ -345,6 +520,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
+      allowed_versions = [
+        "2025-11-25"
+      ]
+      cache = {
+        discover = {
+          cache_scope = "private"
+          ttl_ms      = 8
+        }
+        tools_list = {
+          cache_scope = "private"
+          ttl_ms      = 6
+        }
+      }
       logging = {
         audits   = false
         payloads = false
@@ -435,6 +623,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         timeout = 10000
       }
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "Kong Air Flights"
     enabled      = true
     labels = {
@@ -451,6 +644,74 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       "kongair-flights",
       "github-mcp",
     ]
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            aws = {
+              access_key_id     = "...my_access_key_id..."
+              assume_role_arn   = "...my_assume_role_arn..."
+              cache_name        = "...my_cache_name..."
+              is_serverless     = true
+              region            = "...my_region..."
+              role_session_name = "...my_role_session_name..."
+              secret_access_key = "...my_secret_access_key..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 1304566812
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "master"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "header"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "query"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "api_key"
+    }
   }
   passthrough_listener = {
     access = {
@@ -491,6 +752,12 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
+      ca_certificates = [
+        "my-ca-certificate"
+      ]
+      certificates = [
+        "my-certificate"
+      ]
       logging = {
         audits   = false
         payloads = false
@@ -613,6 +880,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       url = "https://mcp.internal.kongair.com"
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "Kong Air Flights"
     enabled      = true
     labels = {
@@ -625,6 +897,78 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
+    rate_limiting = {
+      limits = [
+        {
+          limit       = 100
+          method      = "tools/call"
+          tool        = "search_flights"
+          window_size = 60
+        }
+      ]
+    }
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            gcp = {
+              service_account_json = "...my_service_account_json..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 1262712627
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "any"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "query"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "header"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "api_key"
+    }
     tools = [
       {
         access = {
@@ -643,6 +987,12 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   upstream_server = {
     config = {
+      ca_certificates = [
+        "my-ca-certificate"
+      ]
+      certificates = [
+        "my-certificate"
+      ]
       logging = {
         audits   = false
         payloads = false
@@ -739,6 +1089,7 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             scope               = "...my_scope..."
           }
         }
+        upstream_protocol_version = "2025-06-18"
       }
       tools_cache_ttl_seconds = 7
       upstream = {
@@ -756,6 +1107,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
       url = "https://mcp.internal.kongair.com"
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "Kong Air Flights"
     enabled      = true
     labels = {
@@ -768,6 +1124,68 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            gcp = {
+              service_account_json = "...my_service_account_json..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 1008848731
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "any"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "body"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "header"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "api_key"
+    }
     tools = [
       {
         access = {

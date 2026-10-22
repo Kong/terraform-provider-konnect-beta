@@ -7,14 +7,10 @@ import (
 	"time"
 )
 
-// AIGatewayPolicy - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayPolicy - Policy created successfully.
 type AIGatewayPolicy struct {
 	// The display name for this policy instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// The type of the Policy. This is equivalent to the Kong 3 plugin name.
@@ -30,6 +26,10 @@ type AIGatewayPolicy struct {
 	// Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
 	//
 	Config any `json:"config"`
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	Condition *string `json:"condition,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -42,6 +42,8 @@ type AIGatewayPolicy struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Names of the Datastores this policy references.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -103,6 +105,13 @@ func (a *AIGatewayPolicy) GetConfig() any {
 	return a.Config
 }
 
+func (a *AIGatewayPolicy) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
+}
+
 func (a *AIGatewayPolicy) GetLabels() map[string]string {
 	if a == nil {
 		return nil
@@ -115,6 +124,13 @@ func (a *AIGatewayPolicy) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayPolicy) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
 }
 
 func (a *AIGatewayPolicy) GetID() string {

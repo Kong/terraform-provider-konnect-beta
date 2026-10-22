@@ -287,7 +287,7 @@ possible known values include one of ["tenSecondly", "thirtySecondly", "minutely
 
 Optional:
 
-- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_gateway", "ai_gateway_agent", "ai_gateway_consumer", "ai_gateway_consumer_group", "ai_gateway_data_plane_node", "ai_gateway_mcp_server", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "consumer_group", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "oidc_credential", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
@@ -361,7 +361,7 @@ possible known values include one of ["tenSecondly", "thirtySecondly", "minutely
 
 Optional:
 
-- `field` (String) possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["ai_gateway", "ai_gateway_consumer", "ai_gateway_consumer_group", "ai_gateway_data_plane_node", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "consumer_group", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "oidc_credential", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
@@ -435,7 +435,7 @@ possible known values include one of ["tenSecondly", "thirtySecondly", "minutely
 
 Optional:
 
-- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "principal", "realm", "route", "status_code", "status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["ai_gateway", "ai_gateway_agent", "ai_gateway_consumer", "ai_gateway_consumer_group", "ai_gateway_data_plane_node", "ai_gateway_mcp_server", "ai_gateway_model", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "oidc_credential", "principal", "realm", "route", "status_code", "status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
@@ -780,7 +780,10 @@ Optional:
 
 Optional:
 
-- `time_range` (String) possible known values include one of ["24h", "7d", "30d", "90d", "180d", "365d", "current_week", "current_month", "current_quarter", "previous_week", "previous_month", "previous_quarter"]; Default: "30d"
+- `time_range` (String) Platform usage data is not available at sub-day granularity. A sub-day duration
+(`15m`, `1h`, `6h`, `12h`) is accepted but silently coerced up to `24h` rather
+than rejected.
+possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "90d", "180d", "365d", "current_week", "current_month", "current_quarter", "previous_week", "previous_month", "previous_quarter"]; Default: "30d"
 - `type` (String) Not Null; must be "relative"
 - `tz` (String) Default: "Etc/UTC"
 
@@ -873,7 +876,7 @@ Optional:
 
 Optional:
 
-- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_group", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "managed_cache", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "network", "portal", "principal", "provider", "provider_region", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `field` (String) possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_gateway", "ai_gateway_agent", "ai_gateway_consumer", "ai_gateway_consumer_group", "ai_gateway_data_plane_node", "ai_gateway_mcp_server", "ai_gateway_model", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "cache_status", "consumer", "consumer_group", "control_plane", "control_plane_group", "country_code", "data_plane_group", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "managed_cache", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "network", "oidc_credential", "portal", "principal", "provider", "provider_region", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
 - `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 

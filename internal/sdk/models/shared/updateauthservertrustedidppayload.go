@@ -10,6 +10,8 @@ import (
 type UpdateAuthServerTrustedIdpPayload struct {
 	// The issuer URL of the trusted IdP. Unique per auth server.
 	IssuerURL string `json:"issuer_url"`
+	// A human-friendly display name for the trusted IdP, distinct from its unique `issuer_url`.
+	DisplayName *string `default:"null" json:"display_name"`
 	// JWKS URI of the trusted IdP. Overrides OIDC discovery when set.
 	JwksURI *string `json:"jwks_uri,omitempty"`
 	// The Kong Identity directory used for principal lookup and provisioning.
@@ -36,6 +38,13 @@ func (u *UpdateAuthServerTrustedIdpPayload) GetIssuerURL() string {
 		return ""
 	}
 	return u.IssuerURL
+}
+
+func (u *UpdateAuthServerTrustedIdpPayload) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
 }
 
 func (u *UpdateAuthServerTrustedIdpPayload) GetJwksURI() *string {

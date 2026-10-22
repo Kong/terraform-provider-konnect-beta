@@ -6,10 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayModelProviderConfigAuthAzure - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for Azure model provider.
+// AIGatewayModelProviderConfigAuthAzure - Configuration for Azure model provider.
 type AIGatewayModelProviderConfigAuthAzure struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"azure" json:"type"`

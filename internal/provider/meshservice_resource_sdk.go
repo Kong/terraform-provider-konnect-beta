@@ -99,7 +99,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 			if resp.Spec.Selector.DataplaneRef == nil {
 				r.Spec.Selector.DataplaneRef = nil
 			} else {
-				r.Spec.Selector.DataplaneRef = &tfTypes.DataplaneRef{}
+				r.Spec.Selector.DataplaneRef = &tfTypes.EventGatewayParsedRecordTranscodeSchemaRefDestinationRecordHeader{}
 				r.Spec.Selector.DataplaneRef.Name = types.StringPointerValue(resp.Spec.Selector.DataplaneRef.Name)
 			}
 			if len(resp.Spec.Selector.DataplaneTags) > 0 {

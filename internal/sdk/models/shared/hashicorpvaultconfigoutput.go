@@ -24,10 +24,7 @@ const (
 	HashiCorpVaultConfigOutputTypeAzure      HashiCorpVaultConfigOutputType = "azure"
 )
 
-// HashiCorpVaultConfigOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for an AI Gateway Vault.
+// HashiCorpVaultConfigOutput - Configuration for an AI Gateway Vault.
 type HashiCorpVaultConfigOutput struct {
 	HashiCorpVaultTokenConfigOutput  *HashiCorpVaultTokenConfigOutput  `queryParam:"inline" union:"member"`
 	HashiCorpVaultCertConfigOutput   *HashiCorpVaultCertConfigOutput   `queryParam:"inline" union:"member"`

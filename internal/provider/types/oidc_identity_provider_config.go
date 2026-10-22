@@ -7,9 +7,10 @@ import (
 )
 
 type OIDCIdentityProviderConfig struct {
-	ClaimMappings *PortalAuthenticationSettingsUpdateRequestPortalClaimMappings `tfsdk:"claim_mappings"`
-	ClientID      types.String                                                  `tfsdk:"client_id"`
-	ClientSecret  types.String                                                  `tfsdk:"client_secret"`
-	IssuerURL     types.String                                                  `tfsdk:"issuer_url"`
-	Scopes        []types.String                                                `tfsdk:"scopes"`
+	BackChannelLogoutEnabled types.Bool                                                    `tfsdk:"back_channel_logout_enabled"`
+	ClaimMappings            *PortalAuthenticationSettingsUpdateRequestPortalClaimMappings `tfsdk:"claim_mappings"`
+	ClientID                 types.String                                                  `tfsdk:"client_id"`
+	ClientSecret             types.String                                                  `tfsdk:"client_secret"`
+	IssuerURL                types.String                                                  `tfsdk:"issuer_url"`
+	Scopes                   []types.String                                                `tfsdk:"scopes"`
 }

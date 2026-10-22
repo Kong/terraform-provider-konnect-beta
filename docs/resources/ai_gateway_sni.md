@@ -34,10 +34,7 @@ resource "konnect_ai_gateway_sni" "my_aigatewaysni" {
 
 ### Required
 
-- `certificate` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.
+- `certificate` (String) A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.
 - `display_name` (String) The display name for this SNI.
 - `gateway_id` (String) The unique ID of the AI Gateway.
 - `hostname` (String) A hostname used for TLS Server Name Indication (SNI) matching. Supports an optional wildcard segment at either end of the hostname (for example `*.example.com` or `example.*`).
@@ -58,6 +55,7 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
+- `konnect_managed` (Boolean) An immutable read-only flag to identify resource managed by Konnect services.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import

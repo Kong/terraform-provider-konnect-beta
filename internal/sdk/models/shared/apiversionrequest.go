@@ -3,133 +3,12 @@
 package shared
 
 import (
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type APIVersionRequestProviderType string
-
-const (
-	APIVersionRequestProviderTypeURLProvider                      APIVersionRequestProviderType = "UrlProvider"
-	APIVersionRequestProviderTypeIntegrationProvider              APIVersionRequestProviderType = "IntegrationProvider"
-	APIVersionRequestProviderTypeResourceBoundIntegrationProvider APIVersionRequestProviderType = "ResourceBoundIntegrationProvider"
-)
-
-// APIVersionRequestProvider - Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
-type APIVersionRequestProvider struct {
-	URLProvider                      *URLProvider                      `queryParam:"inline" union:"member"`
-	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" union:"member"`
-	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" union:"member"`
-
-	Type APIVersionRequestProviderType
-}
-
-func CreateAPIVersionRequestProviderURLProvider(urlProvider URLProvider) APIVersionRequestProvider {
-	typ := APIVersionRequestProviderTypeURLProvider
-
-	return APIVersionRequestProvider{
-		URLProvider: &urlProvider,
-		Type:        typ,
-	}
-}
-
-func CreateAPIVersionRequestProviderIntegrationProvider(integrationProvider IntegrationProvider) APIVersionRequestProvider {
-	typ := APIVersionRequestProviderTypeIntegrationProvider
-
-	return APIVersionRequestProvider{
-		IntegrationProvider: &integrationProvider,
-		Type:                typ,
-	}
-}
-
-func CreateAPIVersionRequestProviderResourceBoundIntegrationProvider(resourceBoundIntegrationProvider ResourceBoundIntegrationProvider) APIVersionRequestProvider {
-	typ := APIVersionRequestProviderTypeResourceBoundIntegrationProvider
-
-	return APIVersionRequestProvider{
-		ResourceBoundIntegrationProvider: &resourceBoundIntegrationProvider,
-		Type:                             typ,
-	}
-}
-
-func (u *APIVersionRequestProvider) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var urlProvider URLProvider = URLProvider{}
-	if err := utils.UnmarshalJSON(data, &urlProvider, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIVersionRequestProviderTypeURLProvider,
-			Value: &urlProvider,
-		})
-	}
-
-	var integrationProvider IntegrationProvider = IntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &integrationProvider, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIVersionRequestProviderTypeIntegrationProvider,
-			Value: &integrationProvider,
-		})
-	}
-
-	var resourceBoundIntegrationProvider ResourceBoundIntegrationProvider = ResourceBoundIntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationProvider, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIVersionRequestProviderTypeResourceBoundIntegrationProvider,
-			Value: &resourceBoundIntegrationProvider,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIVersionRequestProvider", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIVersionRequestProvider", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(APIVersionRequestProviderType)
-	switch best.Type {
-	case APIVersionRequestProviderTypeURLProvider:
-		u.URLProvider = best.Value.(*URLProvider)
-		return nil
-	case APIVersionRequestProviderTypeIntegrationProvider:
-		u.IntegrationProvider = best.Value.(*IntegrationProvider)
-		return nil
-	case APIVersionRequestProviderTypeResourceBoundIntegrationProvider:
-		u.ResourceBoundIntegrationProvider = best.Value.(*ResourceBoundIntegrationProvider)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIVersionRequestProvider", string(data))
-}
-
-func (u APIVersionRequestProvider) MarshalJSON() ([]byte, error) {
-	if u.URLProvider != nil {
-		return utils.MarshalJSON(u.URLProvider, "", true)
-	}
-
-	if u.IntegrationProvider != nil {
-		return utils.MarshalJSON(u.IntegrationProvider, "", true)
-	}
-
-	if u.ResourceBoundIntegrationProvider != nil {
-		return utils.MarshalJSON(u.ResourceBoundIntegrationProvider, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type APIVersionRequestProvider: all fields are null")
-}
 
 type APIVersionRequestSpec struct {
 	// The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
 	Content *string `default:"null" json:"content"`
-	// Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
-	//
-	Provider *APIVersionRequestProvider `json:"provider,omitempty"`
 }
 
 func (a APIVersionRequestSpec) MarshalJSON() ([]byte, error) {
@@ -148,13 +27,6 @@ func (a *APIVersionRequestSpec) GetContent() *string {
 		return nil
 	}
 	return a.Content
-}
-
-func (a *APIVersionRequestSpec) GetProvider() *APIVersionRequestProvider {
-	if a == nil {
-		return nil
-	}
-	return a.Provider
 }
 
 type APIVersionRequest struct {

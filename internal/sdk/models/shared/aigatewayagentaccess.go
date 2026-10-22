@@ -2,15 +2,9 @@
 
 package shared
 
-// AIGatewayAgentAccess - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Access control configuration for an agent.
+// AIGatewayAgentAccess - Access control configuration for an agent.
 type AIGatewayAgentAccess struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
-	// Access control rules. Configure exactly one of `allow` or `deny`.
+	// Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`.
 	Acls *AIGatewayACLS `json:"acls,omitempty"`
 	// List of identity providers for granting access to the agent.
 	// At most 1 identity provider of each identity provider type can be referenced.

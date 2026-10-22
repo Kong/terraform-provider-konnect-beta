@@ -67,15 +67,15 @@ func (m *MeshIdentityItemFile) GetPath() string {
 	return m.Path
 }
 
-type InsecureInline struct {
+type MeshIdentityItemInsecureInline struct {
 	Value string `json:"value"`
 }
 
-func (i *InsecureInline) GetValue() string {
-	if i == nil {
+func (m *MeshIdentityItemInsecureInline) GetValue() string {
+	if m == nil {
 		return ""
 	}
-	return i.Value
+	return m.Value
 }
 
 type MeshIdentityItemKind string
@@ -101,23 +101,23 @@ func (e *MeshIdentityItemKind) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type SecretRef struct {
+type MeshIdentityItemSecretRef struct {
 	Kind MeshIdentityItemKind `json:"kind"`
 	Name string               `json:"name"`
 }
 
-func (s *SecretRef) GetKind() MeshIdentityItemKind {
-	if s == nil {
+func (m *MeshIdentityItemSecretRef) GetKind() MeshIdentityItemKind {
+	if m == nil {
 		return MeshIdentityItemKind("")
 	}
-	return s.Kind
+	return m.Kind
 }
 
-func (s *SecretRef) GetName() string {
-	if s == nil {
+func (m *MeshIdentityItemSecretRef) GetName() string {
+	if m == nil {
 		return ""
 	}
-	return s.Name
+	return m.Name
 }
 
 type MeshIdentityItemSpecProviderBundledType string
@@ -148,8 +148,8 @@ func (e *MeshIdentityItemSpecProviderBundledType) IsExact() bool {
 type Certificate struct {
 	EnvVar         *EnvVar                                 `json:"envVar,omitempty"`
 	File           *MeshIdentityItemFile                   `json:"file,omitempty"`
-	InsecureInline *InsecureInline                         `json:"insecureInline,omitempty"`
-	SecretRef      *SecretRef                              `json:"secretRef,omitempty"`
+	InsecureInline *MeshIdentityItemInsecureInline         `json:"insecureInline,omitempty"`
+	SecretRef      *MeshIdentityItemSecretRef              `json:"secretRef,omitempty"`
 	Type           MeshIdentityItemSpecProviderBundledType `json:"type"`
 }
 
@@ -167,14 +167,14 @@ func (c *Certificate) GetFile() *MeshIdentityItemFile {
 	return c.File
 }
 
-func (c *Certificate) GetInsecureInline() *InsecureInline {
+func (c *Certificate) GetInsecureInline() *MeshIdentityItemInsecureInline {
 	if c == nil {
 		return nil
 	}
 	return c.InsecureInline
 }
 
-func (c *Certificate) GetSecretRef() *SecretRef {
+func (c *Certificate) GetSecretRef() *MeshIdentityItemSecretRef {
 	if c == nil {
 		return nil
 	}
@@ -210,11 +210,11 @@ func (m *MeshIdentityItemSpecFile) GetPath() string {
 	return m.Path
 }
 
-type MeshIdentityItemInsecureInline struct {
+type MeshIdentityItemSpecInsecureInline struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshIdentityItemInsecureInline) GetValue() string {
+func (m *MeshIdentityItemSpecInsecureInline) GetValue() string {
 	if m == nil {
 		return ""
 	}
@@ -244,19 +244,19 @@ func (e *MeshIdentityItemSpecKind) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type MeshIdentityItemSecretRef struct {
+type MeshIdentityItemSpecSecretRef struct {
 	Kind MeshIdentityItemSpecKind `json:"kind"`
 	Name string                   `json:"name"`
 }
 
-func (m *MeshIdentityItemSecretRef) GetKind() MeshIdentityItemSpecKind {
+func (m *MeshIdentityItemSpecSecretRef) GetKind() MeshIdentityItemSpecKind {
 	if m == nil {
 		return MeshIdentityItemSpecKind("")
 	}
 	return m.Kind
 }
 
-func (m *MeshIdentityItemSecretRef) GetName() string {
+func (m *MeshIdentityItemSpecSecretRef) GetName() string {
 	if m == nil {
 		return ""
 	}
@@ -289,11 +289,11 @@ func (e *MeshIdentityItemSpecProviderType) IsExact() bool {
 
 // PrivateKey allows the user to specify a custom private key.
 type PrivateKey struct {
-	EnvVar         *MeshIdentityItemEnvVar          `json:"envVar,omitempty"`
-	File           *MeshIdentityItemSpecFile        `json:"file,omitempty"`
-	InsecureInline *MeshIdentityItemInsecureInline  `json:"insecureInline,omitempty"`
-	SecretRef      *MeshIdentityItemSecretRef       `json:"secretRef,omitempty"`
-	Type           MeshIdentityItemSpecProviderType `json:"type"`
+	EnvVar         *MeshIdentityItemEnvVar             `json:"envVar,omitempty"`
+	File           *MeshIdentityItemSpecFile           `json:"file,omitempty"`
+	InsecureInline *MeshIdentityItemSpecInsecureInline `json:"insecureInline,omitempty"`
+	SecretRef      *MeshIdentityItemSpecSecretRef      `json:"secretRef,omitempty"`
+	Type           MeshIdentityItemSpecProviderType    `json:"type"`
 }
 
 func (p *PrivateKey) GetEnvVar() *MeshIdentityItemEnvVar {
@@ -310,14 +310,14 @@ func (p *PrivateKey) GetFile() *MeshIdentityItemSpecFile {
 	return p.File
 }
 
-func (p *PrivateKey) GetInsecureInline() *MeshIdentityItemInsecureInline {
+func (p *PrivateKey) GetInsecureInline() *MeshIdentityItemSpecInsecureInline {
 	if p == nil {
 		return nil
 	}
 	return p.InsecureInline
 }
 
-func (p *PrivateKey) GetSecretRef() *MeshIdentityItemSecretRef {
+func (p *PrivateKey) GetSecretRef() *MeshIdentityItemSpecSecretRef {
 	if p == nil {
 		return nil
 	}
@@ -513,7 +513,7 @@ func (e *MeshIdentityItemSpecType) IsExact() bool {
 	return false
 }
 
-type MeshIdentityItemProvider struct {
+type Provider struct {
 	// Bundled provides information about certificates that are generated by the control plane,
 	// either autogenerated or provided by the user.
 	Bundled *Bundled `json:"bundled,omitempty"`
@@ -525,32 +525,32 @@ type MeshIdentityItemProvider struct {
 	Type MeshIdentityItemSpecType `json:"type"`
 }
 
-func (m *MeshIdentityItemProvider) GetBundled() *Bundled {
-	if m == nil {
+func (p *Provider) GetBundled() *Bundled {
+	if p == nil {
 		return nil
 	}
-	return m.Bundled
+	return p.Bundled
 }
 
-func (m *MeshIdentityItemProvider) GetExtension() *MeshIdentityItemExtension {
-	if m == nil {
+func (p *Provider) GetExtension() *MeshIdentityItemExtension {
+	if p == nil {
 		return nil
 	}
-	return m.Extension
+	return p.Extension
 }
 
-func (m *MeshIdentityItemProvider) GetSpire() *Spire {
-	if m == nil {
+func (p *Provider) GetSpire() *Spire {
+	if p == nil {
 		return nil
 	}
-	return m.Spire
+	return p.Spire
 }
 
-func (m *MeshIdentityItemProvider) GetType() MeshIdentityItemSpecType {
-	if m == nil {
+func (p *Provider) GetType() MeshIdentityItemSpecType {
+	if p == nil {
 		return MeshIdentityItemSpecType("")
 	}
-	return m.Type
+	return p.Type
 }
 
 type Dataplane struct {
@@ -596,12 +596,12 @@ func (s *SpiffeID) GetTrustDomain() *string {
 
 // MeshIdentityItemSpec - Spec is the specification of the Kuma MeshIdentity resource.
 type MeshIdentityItemSpec struct {
-	Provider *MeshIdentityItemProvider `json:"provider,omitempty"`
+	Provider *Provider                 `json:"provider,omitempty"`
 	Selector *MeshIdentityItemSelector `json:"selector,omitempty"`
 	SpiffeID *SpiffeID                 `json:"spiffeID,omitempty"`
 }
 
-func (m *MeshIdentityItemSpec) GetProvider() *MeshIdentityItemProvider {
+func (m *MeshIdentityItemSpec) GetProvider() *Provider {
 	if m == nil {
 		return nil
 	}

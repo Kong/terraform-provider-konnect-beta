@@ -6,8 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AwsSecretsManagerVaultConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AwsSecretsManagerVaultConfig struct {
 	// Decode all secrets in this vault as base64. Useful for binary data.
 	// If some of the secrets in the vault are not base64-encoded, an error will occur when using them.
@@ -121,15 +119,11 @@ func (a *AwsSecretsManagerVaultConfig) GetStsEndpointURL() *string {
 	return a.StsEndpointURL
 }
 
-// AwsSecretsManagerVault - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AwsSecretsManagerVault struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 	// This value is immutable after creation.
 	// The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
+	//
 	Name string `json:"name"`
 	// The description of the Vault.
 	Description *string `default:"" json:"description"`
@@ -146,9 +140,7 @@ type AwsSecretsManagerVault struct {
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_ string `const:"aws" json:"type"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
+	type_  string                       `const:"aws" json:"type"`
 	Config AwsSecretsManagerVaultConfig `json:"config"`
 }
 

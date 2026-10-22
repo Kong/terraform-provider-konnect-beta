@@ -199,6 +199,18 @@ func (r *PortalApplicationResourceModel) ToSharedCreateApplicationRequest(ctx co
 	} else {
 		authStrategyID = nil
 	}
+	environmentID := new(string)
+	if !r.EnvironmentID.IsUnknown() && !r.EnvironmentID.IsNull() {
+		*environmentID = r.EnvironmentID.ValueString()
+	} else {
+		environmentID = nil
+	}
+	groupID := new(string)
+	if !r.GroupID.IsUnknown() && !r.GroupID.IsNull() {
+		*groupID = r.GroupID.ValueString()
+	} else {
+		groupID = nil
+	}
 	typeVar := shared.ApplicationOwnerType(r.Owner.Type.ValueString())
 	var id string
 	id = r.Owner.ID.ValueString()
@@ -214,6 +226,8 @@ func (r *PortalApplicationResourceModel) ToSharedCreateApplicationRequest(ctx co
 		DcrClientID:    dcrClientID,
 		ClientID:       clientID,
 		AuthStrategyID: authStrategyID,
+		EnvironmentID:  environmentID,
+		GroupID:        groupID,
 		Owner:          owner,
 	}
 

@@ -11,6 +11,7 @@ type Capabilities string
 const (
 	CapabilitiesBatches Capabilities = "batches"
 	CapabilitiesFiles   Capabilities = "files"
+	CapabilitiesSkills  Capabilities = "skills"
 )
 
 func (e Capabilities) ToPointer() *Capabilities {
@@ -21,27 +22,21 @@ func (e Capabilities) ToPointer() *Capabilities {
 func (e *Capabilities) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "batches", "files":
+		case "batches", "files", "skills":
 			return true
 		}
 	}
 	return false
 }
 
-// AIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs.
+// AIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs.
 type AIGatewayModelAPI struct {
 	// The display name for this model instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Whether the model is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Access control configuration for a model.
 	Access *AIGatewayModelAccess `json:"access,omitempty"`
 	// List of request/response formats supported by this model.
@@ -62,6 +57,8 @@ type AIGatewayModelAPI struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Names of the Datastores this model references.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"api" json:"type"`
 	// Routing, logging, and load balancing configuration for the model.
@@ -142,6 +139,13 @@ func (a *AIGatewayModelAPI) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayModelAPI) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
 }
 
 func (a *AIGatewayModelAPI) GetType() string {
