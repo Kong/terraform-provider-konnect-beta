@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.23.0
+> Released on 2026/10/??
+
+### BREAKING CHANGES
+* `konnect_ai_gateway_identity_provider` resource is removed - use `konnect_ai_gateway_auth_strategy` instead
+* `config` in `key_auth` and `openid_connect` of `konnect_ai_gateway_auth_strategy` resource is now a structured object instead of a JSON string, and the top-level read-only `config` attribute is removed
+* `spec` field is removed from `konnect_api` resource - use `spec_content` instead
+* `environments` in `konnect_api` resource is now a list instead of a map keyed by environment name, with each element exposing `id`, `name` and `version`
+* `spec.provider` is removed from `konnect_api_version` resource
+* `environment` in `konnect_api_publication` resource is now an object with `id` and `name` instead of a string
+* `assume_role` in `sasl_aws_iam` authentication of `konnect_event_gateway_backend_cluster` resource is flattened - `assume_role.assume_role.arn` is now `assume_role.arn`, and likewise for `session_name`
+
+### Features
+* Add support for new Event Gateway Policies
+  * `konnect_event_gateway_cluster_policy_request_rule_validator`
+  * `konnect_event_gateway_consume_policy_mask_fields`
+  * `konnect_event_gateway_consume_policy_transcode`
+  * `konnect_event_gateway_produce_policy_mask_fields`
+  * `konnect_event_gateway_produce_policy_transcode`
+* Add support for `konnect_ai_gateway_custom_policy` resource, using which you can manage custom policies in an AI Gateway
+* Add support for `konnect_portal_team_developer` resource, using which you can add a developer to a portal team
+
 ## 0.22.0
 > Released on 2026/08/31
 
