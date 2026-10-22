@@ -403,7 +403,7 @@ func (r *MeshOPAResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 	res, err := r.client.MeshOPA.PutMeshOPA(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -443,7 +443,7 @@ func (r *MeshOPAResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 	res1, err := r.client.MeshOPA.GetMeshOPA(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -503,7 +503,7 @@ func (r *MeshOPAResource) Read(ctx context.Context, req resource.ReadRequest, re
 	}
 	res, err := r.client.MeshOPA.GetMeshOPA(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -557,7 +557,7 @@ func (r *MeshOPAResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 	res, err := r.client.MeshOPA.PutMeshOPA(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -597,7 +597,7 @@ func (r *MeshOPAResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 	res1, err := r.client.MeshOPA.GetMeshOPA(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -657,7 +657,7 @@ func (r *MeshOPAResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 	res, err := r.client.MeshOPA.DeleteMeshOPA(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

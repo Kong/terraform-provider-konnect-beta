@@ -266,7 +266,7 @@ func (r *MeshTrustResource) Create(ctx context.Context, req resource.CreateReque
 	}
 	res, err := r.client.MeshTrust.PutMeshTrust(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -306,7 +306,7 @@ func (r *MeshTrustResource) Create(ctx context.Context, req resource.CreateReque
 	}
 	res1, err := r.client.MeshTrust.GetMeshTrust(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -366,7 +366,7 @@ func (r *MeshTrustResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 	res, err := r.client.MeshTrust.GetMeshTrust(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -420,7 +420,7 @@ func (r *MeshTrustResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 	res, err := r.client.MeshTrust.PutMeshTrust(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -460,7 +460,7 @@ func (r *MeshTrustResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 	res1, err := r.client.MeshTrust.GetMeshTrust(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -520,7 +520,7 @@ func (r *MeshTrustResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 	res, err := r.client.MeshTrust.DeleteMeshTrust(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

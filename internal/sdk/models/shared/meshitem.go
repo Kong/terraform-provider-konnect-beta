@@ -160,7 +160,14 @@ func CreateMeshItemLoggingConfTCPLoggingBackendConfig(tcpLoggingBackendConfig TC
 	}
 }
 
-func (u *MeshItemLoggingConf) UnmarshalJSON(data []byte) error {
+func (u *MeshItemLoggingConf) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshItemLoggingConf{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -313,7 +320,14 @@ func CreateMeshItemModeInteger(integer int64) MeshItemMode {
 	}
 }
 
-func (u *MeshItemMode) UnmarshalJSON(data []byte) error {
+func (u *MeshItemMode) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshItemMode{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -513,7 +527,14 @@ func CreateConfModeInteger(integer int64) ConfMode {
 	}
 }
 
-func (u *ConfMode) UnmarshalJSON(data []byte) error {
+func (u *ConfMode) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = ConfMode{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -701,7 +722,14 @@ func CreateMeshItemConfPrometheusMetricsBackendConfig(prometheusMetricsBackendCo
 	}
 }
 
-func (u *MeshItemConf) UnmarshalJSON(data []byte) error {
+func (u *MeshItemConf) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshItemConf{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -947,7 +975,14 @@ func CreateCertManagerCertificateAuthorityConfigConfCaCertCertManagerCertificate
 	}
 }
 
-func (u *CertManagerCertificateAuthorityConfigConfCaCert) UnmarshalJSON(data []byte) error {
+func (u *CertManagerCertificateAuthorityConfigConfCaCert) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CertManagerCertificateAuthorityConfigConfCaCert{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1265,7 +1300,14 @@ func CreateAccessKeyAccessKeyDataSourceSecret(accessKeyDataSourceSecret AccessKe
 	}
 }
 
-func (u *AccessKey) UnmarshalJSON(data []byte) error {
+func (u *AccessKey) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AccessKey{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1499,7 +1541,14 @@ func CreateAccessKeySecretAccessKeySecretDataSourceSecret(accessKeySecretDataSou
 	}
 }
 
-func (u *AccessKeySecret) UnmarshalJSON(data []byte) error {
+func (u *AccessKeySecret) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AccessKeySecret{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1785,7 +1834,14 @@ func CreateConfCaCertCaCertDataSourceSecret(caCertDataSourceSecret CaCertDataSou
 	}
 }
 
-func (u *ConfCaCert) UnmarshalJSON(data []byte) error {
+func (u *ConfCaCert) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = ConfCaCert{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -2065,7 +2121,14 @@ func CreateTokenTokenDataSourceSecret(tokenDataSourceSecret TokenDataSourceSecre
 	}
 }
 
-func (u *Token) UnmarshalJSON(data []byte) error {
+func (u *Token) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Token{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -2321,7 +2384,14 @@ func CreateAuthClientCertClientCertDataSourceSecret(clientCertDataSourceSecret C
 	}
 }
 
-func (u *AuthClientCert) UnmarshalJSON(data []byte) error {
+func (u *AuthClientCert) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AuthClientCert{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -2555,7 +2625,14 @@ func CreateAuthClientKeyClientKeyDataSourceSecret(clientKeyDataSourceSecret Clie
 	}
 }
 
-func (u *AuthClientKey) UnmarshalJSON(data []byte) error {
+func (u *AuthClientKey) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AuthClientKey{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -2726,7 +2803,14 @@ func CreateAuthTypeInteger(integer int64) AuthType {
 	}
 }
 
-func (u *AuthType) UnmarshalJSON(data []byte) error {
+func (u *AuthType) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AuthType{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -2886,7 +2970,14 @@ func CreateVaultCertificateAuthorityConfigAuthVaultCertificateAuthorityConfigFro
 	}
 }
 
-func (u *VaultCertificateAuthorityConfigAuth) UnmarshalJSON(data []byte) error {
+func (u *VaultCertificateAuthorityConfigAuth) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = VaultCertificateAuthorityConfigAuth{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -3105,7 +3196,14 @@ func CreateVaultCertificateAuthorityConfigCaCertVaultCertificateAuthorityConfigF
 	}
 }
 
-func (u *VaultCertificateAuthorityConfigCaCert) UnmarshalJSON(data []byte) error {
+func (u *VaultCertificateAuthorityConfigCaCert) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = VaultCertificateAuthorityConfigCaCert{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -3351,7 +3449,14 @@ func CreateVaultCertificateAuthorityConfigVaultCertificateAuthorityConfigFromCp(
 	}
 }
 
-func (u *VaultCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
+func (u *VaultCertificateAuthorityConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = VaultCertificateAuthorityConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -3592,7 +3697,14 @@ func CreateCertCertDataSourceSecret(certDataSourceSecret CertDataSourceSecret) C
 	}
 }
 
-func (u *Cert) UnmarshalJSON(data []byte) error {
+func (u *Cert) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Cert{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -3826,7 +3938,14 @@ func CreateKeyKeyDataSourceSecret(keyDataSourceSecret KeyDataSourceSecret) Key {
 	}
 }
 
-func (u *Key) UnmarshalJSON(data []byte) error {
+func (u *Key) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Key{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -4008,7 +4127,14 @@ func CreateMeshItemMtlsConfCertManagerCertificateAuthorityConfig(certManagerCert
 	}
 }
 
-func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
+func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshItemMtlsConf{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -4199,7 +4325,14 @@ func CreateMeshItemMtlsModeInteger(integer int64) MeshItemMtlsMode {
 	}
 }
 
-func (u *MeshItemMtlsMode) UnmarshalJSON(data []byte) error {
+func (u *MeshItemMtlsMode) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshItemMtlsMode{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -4570,7 +4703,14 @@ func CreateMeshItemTracingConfZipkinTracingBackendConfig(zipkinTracingBackendCon
 	}
 }
 
-func (u *MeshItemTracingConf) UnmarshalJSON(data []byte) error {
+func (u *MeshItemTracingConf) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshItemTracingConf{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

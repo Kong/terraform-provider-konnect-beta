@@ -306,7 +306,7 @@ func (r *MeshOpenTelemetryBackendResource) Create(ctx context.Context, req resou
 	}
 	res, err := r.client.MeshOpenTelemetryBackend.PutMeshOpenTelemetryBackend(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -346,7 +346,7 @@ func (r *MeshOpenTelemetryBackendResource) Create(ctx context.Context, req resou
 	}
 	res1, err := r.client.MeshOpenTelemetryBackend.GetMeshOpenTelemetryBackend(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -406,7 +406,7 @@ func (r *MeshOpenTelemetryBackendResource) Read(ctx context.Context, req resourc
 	}
 	res, err := r.client.MeshOpenTelemetryBackend.GetMeshOpenTelemetryBackend(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -460,7 +460,7 @@ func (r *MeshOpenTelemetryBackendResource) Update(ctx context.Context, req resou
 	}
 	res, err := r.client.MeshOpenTelemetryBackend.PutMeshOpenTelemetryBackend(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -500,7 +500,7 @@ func (r *MeshOpenTelemetryBackendResource) Update(ctx context.Context, req resou
 	}
 	res1, err := r.client.MeshOpenTelemetryBackend.GetMeshOpenTelemetryBackend(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -560,7 +560,7 @@ func (r *MeshOpenTelemetryBackendResource) Delete(ctx context.Context, req resou
 	}
 	res, err := r.client.MeshOpenTelemetryBackend.DeleteMeshOpenTelemetryBackend(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -180,7 +180,7 @@ func (r *MeshZoneEgressResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.ZoneEgress.PutZoneEgress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -220,7 +220,7 @@ func (r *MeshZoneEgressResource) Create(ctx context.Context, req resource.Create
 	}
 	res1, err := r.client.ZoneEgress.GetZoneEgress(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -280,7 +280,7 @@ func (r *MeshZoneEgressResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.ZoneEgress.GetZoneEgress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -334,7 +334,7 @@ func (r *MeshZoneEgressResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.ZoneEgress.PutZoneEgress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -374,7 +374,7 @@ func (r *MeshZoneEgressResource) Update(ctx context.Context, req resource.Update
 	}
 	res1, err := r.client.ZoneEgress.GetZoneEgress(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -434,7 +434,7 @@ func (r *MeshZoneEgressResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.ZoneEgress.DeleteZoneEgress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

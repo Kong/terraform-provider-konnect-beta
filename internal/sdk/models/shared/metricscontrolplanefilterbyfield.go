@@ -163,7 +163,14 @@ func CreateMetricsControlPlaneFilterByFieldEmptyFilters(emptyFilters EmptyFilter
 	}
 }
 
-func (u *MetricsControlPlaneFilterByField) UnmarshalJSON(data []byte) error {
+func (u *MetricsControlPlaneFilterByField) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MetricsControlPlaneFilterByField{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

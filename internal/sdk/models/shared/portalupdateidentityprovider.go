@@ -40,7 +40,14 @@ func CreateConfigSAMLIdentityProviderConfig1(samlIdentityProviderConfig1 SAMLIde
 	}
 }
 
-func (u *Config) UnmarshalJSON(data []byte) error {
+func (u *Config) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Config{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

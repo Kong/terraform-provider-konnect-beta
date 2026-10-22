@@ -514,7 +514,7 @@ func (r *MeshTrafficPermissionResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.MeshTrafficPermission.PutMeshTrafficPermission(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -554,7 +554,7 @@ func (r *MeshTrafficPermissionResource) Create(ctx context.Context, req resource
 	}
 	res1, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -614,7 +614,7 @@ func (r *MeshTrafficPermissionResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -668,7 +668,7 @@ func (r *MeshTrafficPermissionResource) Update(ctx context.Context, req resource
 	}
 	res, err := r.client.MeshTrafficPermission.PutMeshTrafficPermission(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -708,7 +708,7 @@ func (r *MeshTrafficPermissionResource) Update(ctx context.Context, req resource
 	}
 	res1, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -768,7 +768,7 @@ func (r *MeshTrafficPermissionResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.MeshTrafficPermission.DeleteMeshTrafficPermission(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

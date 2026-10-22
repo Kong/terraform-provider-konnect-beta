@@ -340,7 +340,7 @@ func (r *MeshAccessRoleResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.AccessRole.PutAccessRole(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -380,7 +380,7 @@ func (r *MeshAccessRoleResource) Create(ctx context.Context, req resource.Create
 	}
 	res1, err := r.client.AccessRole.GetAccessRole(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -440,7 +440,7 @@ func (r *MeshAccessRoleResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.AccessRole.GetAccessRole(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -494,7 +494,7 @@ func (r *MeshAccessRoleResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.AccessRole.PutAccessRole(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -534,7 +534,7 @@ func (r *MeshAccessRoleResource) Update(ctx context.Context, req resource.Update
 	}
 	res1, err := r.client.AccessRole.GetAccessRole(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -594,7 +594,7 @@ func (r *MeshAccessRoleResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.AccessRole.DeleteAccessRole(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

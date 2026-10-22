@@ -227,7 +227,7 @@ func (r *IdentityDirectoryResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.KongIdentityDirectories.CreateDirectory(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -294,7 +294,7 @@ func (r *IdentityDirectoryResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.KongIdentityDirectories.GetDirectory(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -348,7 +348,7 @@ func (r *IdentityDirectoryResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.KongIdentityDirectories.ReplaceDirectory(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -408,7 +408,7 @@ func (r *IdentityDirectoryResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.KongIdentityDirectories.DeleteDirectory(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

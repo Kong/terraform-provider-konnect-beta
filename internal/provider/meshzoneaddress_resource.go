@@ -195,7 +195,7 @@ func (r *MeshZoneAddressResource) Create(ctx context.Context, req resource.Creat
 	}
 	res, err := r.client.MeshZoneAddress.PutMeshZoneAddress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -235,7 +235,7 @@ func (r *MeshZoneAddressResource) Create(ctx context.Context, req resource.Creat
 	}
 	res1, err := r.client.MeshZoneAddress.GetMeshZoneAddress(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -295,7 +295,7 @@ func (r *MeshZoneAddressResource) Read(ctx context.Context, req resource.ReadReq
 	}
 	res, err := r.client.MeshZoneAddress.GetMeshZoneAddress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -349,7 +349,7 @@ func (r *MeshZoneAddressResource) Update(ctx context.Context, req resource.Updat
 	}
 	res, err := r.client.MeshZoneAddress.PutMeshZoneAddress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -389,7 +389,7 @@ func (r *MeshZoneAddressResource) Update(ctx context.Context, req resource.Updat
 	}
 	res1, err := r.client.MeshZoneAddress.GetMeshZoneAddress(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -449,7 +449,7 @@ func (r *MeshZoneAddressResource) Delete(ctx context.Context, req resource.Delet
 	}
 	res, err := r.client.MeshZoneAddress.DeleteMeshZoneAddress(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

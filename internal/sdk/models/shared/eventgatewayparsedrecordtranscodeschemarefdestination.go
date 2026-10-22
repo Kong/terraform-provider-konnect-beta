@@ -55,7 +55,14 @@ func CreateEventGatewayParsedRecordTranscodeSchemaRefDestinationNone(none EventG
 	}
 }
 
-func (u *EventGatewayParsedRecordTranscodeSchemaRefDestination) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayParsedRecordTranscodeSchemaRefDestination) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayParsedRecordTranscodeSchemaRefDestination{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
