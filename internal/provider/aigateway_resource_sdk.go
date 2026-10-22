@@ -29,12 +29,14 @@ func (r *AIGatewayResourceModel) RefreshFromSharedAIGateway(ctx context.Context,
 		r.Endpoints.Configuration = types.StringValue(resp.Endpoints.Configuration)
 		r.Endpoints.Telemetry = types.StringValue(resp.Endpoints.Telemetry)
 		r.ID = types.StringValue(resp.ID)
+		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
 		}
+		r.MinRuntimeVersion = types.StringPointerValue(resp.MinRuntimeVersion)
 		r.Name = types.StringValue(resp.Name)
 		r.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
 
@@ -47,6 +49,7 @@ func (r *AIGatewayResourceModel) RefreshFromSharedAIGateway(ctx context.Context,
 
 			r.ProxyUrls = append(r.ProxyUrls, proxyUrls)
 		}
+		r.RuntimeAutoUpgrade = types.BoolPointerValue(resp.RuntimeAutoUpgrade)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
@@ -109,6 +112,18 @@ func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Cont
 	} else {
 		deploymentType = nil
 	}
+	minRuntimeVersion := new(string)
+	if !r.MinRuntimeVersion.IsUnknown() && !r.MinRuntimeVersion.IsNull() {
+		*minRuntimeVersion = r.MinRuntimeVersion.ValueString()
+	} else {
+		minRuntimeVersion = nil
+	}
+	runtimeAutoUpgrade := new(bool)
+	if !r.RuntimeAutoUpgrade.IsUnknown() && !r.RuntimeAutoUpgrade.IsNull() {
+		*runtimeAutoUpgrade = r.RuntimeAutoUpgrade.ValueBool()
+	} else {
+		runtimeAutoUpgrade = nil
+	}
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
@@ -146,12 +161,14 @@ func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Cont
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateAIGatewayRequest{
-		DeploymentType: deploymentType,
-		DisplayName:    displayName,
-		Name:           name,
-		Description:    description,
-		ProxyUrls:      proxyUrls,
-		Labels:         labels,
+		DeploymentType:     deploymentType,
+		MinRuntimeVersion:  minRuntimeVersion,
+		RuntimeAutoUpgrade: runtimeAutoUpgrade,
+		DisplayName:        displayName,
+		Name:               name,
+		Description:        description,
+		ProxyUrls:          proxyUrls,
+		Labels:             labels,
 	}
 
 	return &out, diags
@@ -160,6 +177,18 @@ func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Cont
 func (r *AIGatewayResourceModel) ToSharedUpdateAIGatewayRequest(ctx context.Context) (*shared.UpdateAIGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	minRuntimeVersion := new(string)
+	if !r.MinRuntimeVersion.IsUnknown() && !r.MinRuntimeVersion.IsNull() {
+		*minRuntimeVersion = r.MinRuntimeVersion.ValueString()
+	} else {
+		minRuntimeVersion = nil
+	}
+	runtimeAutoUpgrade := new(bool)
+	if !r.RuntimeAutoUpgrade.IsUnknown() && !r.RuntimeAutoUpgrade.IsNull() {
+		*runtimeAutoUpgrade = r.RuntimeAutoUpgrade.ValueBool()
+	} else {
+		runtimeAutoUpgrade = nil
+	}
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
@@ -197,11 +226,13 @@ func (r *AIGatewayResourceModel) ToSharedUpdateAIGatewayRequest(ctx context.Cont
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.UpdateAIGatewayRequest{
-		DisplayName: displayName,
-		Name:        name,
-		Description: description,
-		ProxyUrls:   proxyUrls,
-		Labels:      labels,
+		MinRuntimeVersion:  minRuntimeVersion,
+		RuntimeAutoUpgrade: runtimeAutoUpgrade,
+		DisplayName:        displayName,
+		Name:               name,
+		Description:        description,
+		ProxyUrls:          proxyUrls,
+		Labels:             labels,
 	}
 
 	return &out, diags

@@ -5,7 +5,13 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       allow = [
         "..."
       ]
+      allow_when = [
+        "..."
+      ]
       deny = [
+        "..."
+      ]
+      deny_when = [
         "..."
       ]
     }
@@ -17,6 +23,12 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
     ]
   }
   config = {
+    ca_certificates = [
+      "my-ca-certificate"
+    ]
+    certificates = [
+      "my-certificate"
+    ]
     logging = {
       max_payload_size = 524288
       payloads         = false

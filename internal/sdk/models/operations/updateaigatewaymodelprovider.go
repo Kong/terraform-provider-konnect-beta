@@ -44,6 +44,10 @@ func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderReq
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderAzure
 }
 
+func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestBaseten() *shared.AIGatewayModelProviderBaseten {
+	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderBaseten
+}
+
 func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestBedrock() *shared.AIGatewayModelProviderBedrock {
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderBedrock
 }
@@ -112,6 +116,10 @@ func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderReq
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderSagemaker
 }
 
+func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestTypesafe() *shared.AIGatewayModelProviderTypesafe {
+	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderTypesafe
+}
+
 type UpdateAiGatewayModelProviderResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -171,6 +179,13 @@ func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAnthropi
 func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAzure() *shared.AIGatewayModelProviderAIGatewayModelProviderAzure {
 	if v := u.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderAzure
+	}
+	return nil
+}
+
+func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderBaseten() *shared.AIGatewayModelProviderAIGatewayModelProviderBaseten {
+	if v := u.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderBaseten
 	}
 	return nil
 }
@@ -290,6 +305,13 @@ func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *s
 func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker() *shared.AIGatewayModelProviderAIGatewayModelProviderSagemaker {
 	if v := u.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderSagemaker
+	}
+	return nil
+}
+
+func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderTypesafe() *shared.AIGatewayModelProviderAIGatewayModelProviderTypesafe {
+	if v := u.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderTypesafe
 	}
 	return nil
 }

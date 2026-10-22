@@ -74,6 +74,8 @@ type KonnectBeta struct {
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portal developer teams.
 	PortalTeams *PortalTeams
+	// APIs related to Konnect Developer Portal developer team membership.
+	PortalTeamMembership *PortalTeamMembership
 	// APIs related to Konnect Developer Portal developer team roles.
 	PortalTeamRoles *PortalTeamRoles
 	// APIs related to Konnect Developer Portal developers.
@@ -205,6 +207,8 @@ type KonnectBeta struct {
 	AIGatewayVaults *AIGatewayVaults
 	// Policies that control security, rate-limiting, and guardrail behavior for the AI Gateway.
 	AIGatewayPolicies *AIGatewayPolicies
+	// Custom policies that let you bring your own Lua plugin schema and handler to the AI Gateway.
+	AIGatewayCustomPolicies *AIGatewayCustomPolicies
 	// Models that define routing, capabilities, and backend targets for the AI Gateway.
 	AIGatewayModels *AIGatewayModels
 	// AI Agents registered with the AI Gateway.
@@ -217,8 +221,6 @@ type KonnectBeta struct {
 	AIGatewayMCPServers *AIGatewayMCPServers
 	// Model providers that define the backend AI service connections for the AI Gateway.
 	AIGatewayModelProviders *AIGatewayModelProviders
-	// Deprecated in favor of AI Gateway Auth Strategies. Identity providers for authenticating users and accessing AI Gateway resources.
-	AIGatewayIdentityProviders *AIGatewayIdentityProviders
 	// Auth strategies for authenticating clients accessing AI Gateway resources.
 	AIGatewayAuthStrategies *AIGatewayAuthStrategies
 	// API related to the management of AI Gateway Config Stores.
@@ -331,6 +333,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.ApplicationRegistrations = newApplicationRegistrations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamMembership = newPortalTeamMembership(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -405,13 +408,13 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AIGatewaySNIs = newAIGatewaySNIs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayVaults = newAIGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayPolicies = newAIGatewayPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCustomPolicies = newAIGatewayCustomPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModels = newAIGatewayModels(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAgents = newAIGatewayAgents(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumerGroups = newAIGatewayConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.AIGatewayIdentityProviders = newAIGatewayIdentityProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAuthStrategies = newAIGatewayAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 

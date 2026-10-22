@@ -6,27 +6,29 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayBedrockEmbeddingsModelConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// AWS Bedrock-specific configuration for a model.
+// AIGatewayBedrockEmbeddingsModelConfig - AWS Bedrock-specific configuration for a model.
 type AIGatewayBedrockEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string `default:"null" json:"upstream_url"`
+	UpstreamURL *string `json:"upstream_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"bedrock" json:"type"`
 	// The AWS region for the model.
 	// Setting this option overrides the AWS_REGION environment variable.
 	//
-	Region *string `default:"null" json:"region"`
+	Region *string `json:"region,omitempty"`
 	// S3 bucket prefix for batch inference jobs.
-	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	BatchBucketPrefix *string `json:"batch_bucket_prefix,omitempty"`
 	// Whether to normalize embedding vectors in the response.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Latency performance configuration for the model invocation.
-	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 	// S3 URI for storing video generation outputs.
-	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
+	VideoOutputS3URI *string `json:"video_output_s3_uri,omitempty"`
+	// Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+	// Ignored if `upstream_url` is set.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	VpcEndpoint *string `json:"vpc_endpoint,omitempty"`
 }
 
 func (a AIGatewayBedrockEmbeddingsModelConfig) MarshalJSON() ([]byte, error) {
@@ -84,4 +86,11 @@ func (a *AIGatewayBedrockEmbeddingsModelConfig) GetVideoOutputS3URI() *string {
 		return nil
 	}
 	return a.VideoOutputS3URI
+}
+
+func (a *AIGatewayBedrockEmbeddingsModelConfig) GetVpcEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VpcEndpoint
 }

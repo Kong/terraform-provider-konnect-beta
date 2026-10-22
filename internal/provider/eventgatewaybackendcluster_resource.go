@@ -91,25 +91,19 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 									"assume_role": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"assume_role": schema.SingleNestedAttribute{
+											"arn": schema.StringAttribute{
 												Required: true,
-												Attributes: map[string]schema.Attribute{
-													"arn": schema.StringAttribute{
-														Required: true,
-														MarkdownDescription: `The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)` + "\n" +
-															`of the IAM role to assume, formatted as ` + "`" + `arn:aws:iam::<account-id>:role/<role-name>` + "`" + `.`,
-														Validators: []validator.String{
-															stringvalidator.UTF8LengthBetween(10, 2048),
-															stringvalidator.RegexMatches(regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`), "must match pattern "+regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`).String()),
-														},
-													},
-													"session_name": schema.StringAttribute{
-														Optional: true,
-														MarkdownDescription: `The session name to attach to the assumed role session. The value becomes part of the assumed` + "\n" +
-															`role user ARN, queryable as ` + "`" + `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>` + "`" + `.`,
-													},
+												MarkdownDescription: `The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)` + "\n" +
+													`of the IAM role to assume, formatted as ` + "`" + `arn:aws:iam::<account-id>:role/<role-name>` + "`" + `.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthBetween(10, 2048),
+													stringvalidator.RegexMatches(regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`), "must match pattern "+regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`).String()),
 												},
-												Description: `Configuration for assuming an IAM role. Required when ` + "`" + `type` + "`" + ` is ` + "`" + `assume_role` + "`" + `.`,
+											},
+											"session_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The session name to attach to the assumed role session. The value becomes part of the assumed` + "\n" +
+													`role user ARN, queryable as ` + "`" + `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>` + "`" + `.`,
 											},
 										},
 										MarkdownDescription: `Configures whether to authenticate using credentials obtained by first assuming a role, using the AWS default credentials provider chain` + "\n" +

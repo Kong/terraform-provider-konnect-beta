@@ -12,6 +12,7 @@ type SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType string
 const (
 	SchemaRegistryConfluentConfigSensitiveDataAwareSchemaTypeAvro SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType = "avro"
 	SchemaRegistryConfluentConfigSensitiveDataAwareSchemaTypeJSON SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType = "json"
+	SchemaRegistryConfluentConfigSensitiveDataAwareSchemaTypeAny  SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType = "any"
 )
 
 func (e SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType) ToPointer() *SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType {
@@ -22,7 +23,7 @@ func (e SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType) ToPointer() *
 func (e *SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "avro", "json":
+		case "avro", "json", "any":
 			return true
 		}
 	}

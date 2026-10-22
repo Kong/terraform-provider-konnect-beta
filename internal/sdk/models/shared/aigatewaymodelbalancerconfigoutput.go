@@ -21,10 +21,7 @@ const (
 	AIGatewayModelBalancerConfigOutputTypeSemantic          AIGatewayModelBalancerConfigOutputType = "semantic"
 )
 
-// AIGatewayModelBalancerConfigOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for a model's load balancer when multiple target models are configured.
+// AIGatewayModelBalancerConfigOutput - Configuration for a model's load balancer when multiple target models are configured.
 type AIGatewayModelBalancerConfigOutput struct {
 	AIGatewayModelBalancerConsistentHashingConfig *AIGatewayModelBalancerConsistentHashingConfig `queryParam:"inline" union:"member"`
 	AIGatewayModelBalancerLeastConnectionsConfig  *AIGatewayModelBalancerLeastConnectionsConfig  `queryParam:"inline" union:"member"`

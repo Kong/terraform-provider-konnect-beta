@@ -21,9 +21,6 @@ type AIGatewayTarget struct {
 	AllowAuthOverride *bool `default:"false" json:"allow_auth_override"`
 	// Reference to a model provider instance by name.
 	Provider string `json:"provider"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Configuration for a target model.
 	Config AIGatewayTargetConfig `json:"config"`
 }
@@ -87,6 +84,10 @@ func (a *AIGatewayTarget) GetConfigAnthropic() *AIGatewayTargetAnthropicConfig {
 
 func (a *AIGatewayTarget) GetConfigAzure() *AIGatewayTargetAzureConfig {
 	return a.GetConfig().AIGatewayTargetAzureConfig
+}
+
+func (a *AIGatewayTarget) GetConfigBaseten() *AIGatewayTargetBasetenConfig {
+	return a.GetConfig().AIGatewayTargetBasetenConfig
 }
 
 func (a *AIGatewayTarget) GetConfigBedrock() *AIGatewayTargetBedrockConfig {
@@ -155,4 +156,8 @@ func (a *AIGatewayTarget) GetConfigXai() *AIGatewayTargetXaiConfig {
 
 func (a *AIGatewayTarget) GetConfigSagemaker() *AIGatewayTargetSagemakerConfig {
 	return a.GetConfig().AIGatewayTargetSagemakerConfig
+}
+
+func (a *AIGatewayTarget) GetConfigTypesafe() *AIGatewayTargetTypesafeConfig {
+	return a.GetConfig().AIGatewayTargetTypesafeConfig
 }

@@ -39,10 +39,7 @@ resource "konnect_ai_gateway_consumer" "my_aigatewayconsumer" {
 
 - `display_name` (String) The display name for this consumer instance.
 - `gateway_id` (String) The unique ID of the AI Gateway.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this consumer, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) A user-defined unique identifier for this consumer, used as a stable human-readable reference. This value is immutable after creation.
 - `type` (String) The type of the consumer. possible known values include one of ["api-key", "oauth"]
 
 ### Optional

@@ -21,10 +21,7 @@ const (
 	CreateAIGatewayVaultRequestTypeHcv     CreateAIGatewayVaultRequestType = "hcv"
 )
 
-// CreateAIGatewayVaultRequest - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for an AI Gateway Vault.
+// CreateAIGatewayVaultRequest - Configuration for an AI Gateway Vault.
 type CreateAIGatewayVaultRequest struct {
 	KonnectConfigStoreVault  *KonnectConfigStoreVault  `queryParam:"inline" union:"member"`
 	EnvironmentVariableVault *EnvironmentVariableVault `queryParam:"inline" union:"member"`

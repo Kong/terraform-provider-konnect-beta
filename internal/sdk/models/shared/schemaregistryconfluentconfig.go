@@ -12,6 +12,7 @@ type SchemaType string
 const (
 	SchemaTypeAvro SchemaType = "avro"
 	SchemaTypeJSON SchemaType = "json"
+	SchemaTypeAny  SchemaType = "any"
 )
 
 func (e SchemaType) ToPointer() *SchemaType {
@@ -22,7 +23,7 @@ func (e SchemaType) ToPointer() *SchemaType {
 func (e *SchemaType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "avro", "json":
+		case "avro", "json", "any":
 			return true
 		}
 	}

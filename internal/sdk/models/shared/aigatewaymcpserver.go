@@ -19,8 +19,7 @@ const (
 	AIGatewayMCPServerTypeUpstreamServer      AIGatewayMCPServerType = "upstream-server"
 )
 
-// AIGatewayMCPServer - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayMCPServer - MCP Server created successfully.
 type AIGatewayMCPServer struct {
 	AIGatewayMCPServerConversionOnlyResponse      *AIGatewayMCPServerConversionOnlyResponse      `queryParam:"inline" union:"member"`
 	AIGatewayMCPServerConversionListenerResponse  *AIGatewayMCPServerConversionListenerResponse  `queryParam:"inline" union:"member"`

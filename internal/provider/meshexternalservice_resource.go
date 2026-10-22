@@ -258,15 +258,44 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Attributes: map[string]schema.Attribute{
 											"inline": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is inline bytes.`,
+												Description: `Inline is the legacy, base64-encoded form of ` + "`" + `type: InsecureInline` + "`" + ` with ` + "`" + `insecureInline.value` + "`" + `, not read by 3.0.`,
 											},
 											"inline_string": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is inline string` + "`" + ``,
+												Description: `InlineString is the legacy form of ` + "`" + `type: InsecureInline` + "`" + ` with ` + "`" + `insecureInline.value` + "`" + `, not read by 3.0.`,
+											},
+											"insecure_inline": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"value": schema.StringAttribute{
+														Required: true,
+													},
+												},
+												Description: `InsecureInline is the data source value as plain text, used with ` + "`" + `type: InsecureInline` + "`" + `.`,
 											},
 											"secret": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is a secret with given Secret key.`,
+												Description: `Secret is the legacy form of ` + "`" + `type: Secret` + "`" + ` with ` + "`" + `secretRef` + "`" + `, not read by 3.0.`,
+											},
+											"secret_ref": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"kind": schema.StringAttribute{
+														Required:    true,
+														Description: `must be "Secret"`,
+														Validators: []validator.String{
+															stringvalidator.OneOf("Secret"),
+														},
+													},
+													"name": schema.StringAttribute{
+														Required: true,
+													},
+												},
+												Description: `SecretRef references a Secret, used with ` + "`" + `type: Secret` + "`" + `.`,
+											},
+											"type": schema.StringAttribute{
+												Optional:    true,
+												Description: `Type of the data source, one of ` + "`" + `Secret` + "`" + ` or ` + "`" + `InsecureInline` + "`" + `. possible known values include one of ["File", "Secret", "EnvVar", "InsecureInline"]`,
 											},
 										},
 										Description: `CaCert defines a certificate of CA.`,
@@ -276,15 +305,44 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Attributes: map[string]schema.Attribute{
 											"inline": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is inline bytes.`,
+												Description: `Inline is the legacy, base64-encoded form of ` + "`" + `type: InsecureInline` + "`" + ` with ` + "`" + `insecureInline.value` + "`" + `, not read by 3.0.`,
 											},
 											"inline_string": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is inline string` + "`" + ``,
+												Description: `InlineString is the legacy form of ` + "`" + `type: InsecureInline` + "`" + ` with ` + "`" + `insecureInline.value` + "`" + `, not read by 3.0.`,
+											},
+											"insecure_inline": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"value": schema.StringAttribute{
+														Required: true,
+													},
+												},
+												Description: `InsecureInline is the data source value as plain text, used with ` + "`" + `type: InsecureInline` + "`" + `.`,
 											},
 											"secret": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is a secret with given Secret key.`,
+												Description: `Secret is the legacy form of ` + "`" + `type: Secret` + "`" + ` with ` + "`" + `secretRef` + "`" + `, not read by 3.0.`,
+											},
+											"secret_ref": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"kind": schema.StringAttribute{
+														Required:    true,
+														Description: `must be "Secret"`,
+														Validators: []validator.String{
+															stringvalidator.OneOf("Secret"),
+														},
+													},
+													"name": schema.StringAttribute{
+														Required: true,
+													},
+												},
+												Description: `SecretRef references a Secret, used with ` + "`" + `type: Secret` + "`" + `.`,
+											},
+											"type": schema.StringAttribute{
+												Optional:    true,
+												Description: `Type of the data source, one of ` + "`" + `Secret` + "`" + ` or ` + "`" + `InsecureInline` + "`" + `. possible known values include one of ["File", "Secret", "EnvVar", "InsecureInline"]`,
 											},
 										},
 										Description: `ClientCert defines a certificate of a client.`,
@@ -294,15 +352,44 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Attributes: map[string]schema.Attribute{
 											"inline": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is inline bytes.`,
+												Description: `Inline is the legacy, base64-encoded form of ` + "`" + `type: InsecureInline` + "`" + ` with ` + "`" + `insecureInline.value` + "`" + `, not read by 3.0.`,
 											},
 											"inline_string": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is inline string` + "`" + ``,
+												Description: `InlineString is the legacy form of ` + "`" + `type: InsecureInline` + "`" + ` with ` + "`" + `insecureInline.value` + "`" + `, not read by 3.0.`,
+											},
+											"insecure_inline": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"value": schema.StringAttribute{
+														Required: true,
+													},
+												},
+												Description: `InsecureInline is the data source value as plain text, used with ` + "`" + `type: InsecureInline` + "`" + `.`,
 											},
 											"secret": schema.StringAttribute{
 												Optional:    true,
-												Description: `Data source is a secret with given Secret key.`,
+												Description: `Secret is the legacy form of ` + "`" + `type: Secret` + "`" + ` with ` + "`" + `secretRef` + "`" + `, not read by 3.0.`,
+											},
+											"secret_ref": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"kind": schema.StringAttribute{
+														Required:    true,
+														Description: `must be "Secret"`,
+														Validators: []validator.String{
+															stringvalidator.OneOf("Secret"),
+														},
+													},
+													"name": schema.StringAttribute{
+														Required: true,
+													},
+												},
+												Description: `SecretRef references a Secret, used with ` + "`" + `type: Secret` + "`" + `.`,
+											},
+											"type": schema.StringAttribute{
+												Optional:    true,
+												Description: `Type of the data source, one of ` + "`" + `Secret` + "`" + ` or ` + "`" + `InsecureInline` + "`" + `. possible known values include one of ["File", "Secret", "EnvVar", "InsecureInline"]`,
 											},
 										},
 										Description: `ClientKey defines a client private key.`,

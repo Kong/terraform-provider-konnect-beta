@@ -6,11 +6,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -19,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/boolvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 )
 
@@ -77,15 +78,29 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					"enabled": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Is AI enabled?. Not Null`,
-						Validators: []validator.Bool{
-							speakeasy_boolvalidators.NotNull(),
-						},
+						Default:     booldefault.StaticBool(false),
+						Description: `Is AI enabled?. Default: false`,
 					},
 					"features": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"ai_search": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"enabled": types.BoolType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether AI Search is enabled or not. Default: false`,
+									},
+								},
+								Description: `AI Search config`,
+							},
 							"mcp_server": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -93,18 +108,14 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Whether the MCP Server is enabled or not. Not Null`,
-										Validators: []validator.Bool{
-											speakeasy_boolvalidators.NotNull(),
-										},
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether the MCP Server is enabled or not. Default: false`,
 									},
 									"write_operations_enabled": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Not Null`,
-										Validators: []validator.Bool{
-											speakeasy_boolvalidators.NotNull(),
-										},
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Default: false`,
 									},
 								},
 								Description: `AI Features config. Not Null`,
@@ -112,8 +123,24 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									speakeasy_objectvalidators.NotNull(),
 								},
 							},
+							"portal_agent": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"enabled": types.BoolType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether the Portal Agent is enabled or not. Default: false`,
+									},
+								},
+								Description: `Portal Agent config`,
+							},
 						},
-						Description: `Not Null`,
+						Description: `AI features configuration. When top-level ` + "`" + `enabled` + "`" + ` is false, every feature toggle here is automatically reset to false. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},

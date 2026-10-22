@@ -165,30 +165,20 @@ resource "konnect_ai_gateway_vault" "my_aigatewayvault" {
 
 ### Optional
 
-- `aws` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--aws))
-- `azure` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--azure))
-- `conjur` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--conjur))
-- `env` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--env))
-- `gcp` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--gcp))
-- `hcv` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv))
-- `konnect` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--konnect))
+- `aws` (Attributes) (see [below for nested schema](#nestedatt--aws))
+- `azure` (Attributes) (see [below for nested schema](#nestedatt--azure))
+- `conjur` (Attributes) (see [below for nested schema](#nestedatt--conjur))
+- `env` (Attributes) (see [below for nested schema](#nestedatt--env))
+- `gcp` (Attributes) (see [below for nested schema](#nestedatt--gcp))
+- `hcv` (Attributes) (see [below for nested schema](#nestedatt--hcv))
+- `konnect` (Attributes) (see [below for nested schema](#nestedatt--konnect))
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `description` (String) The description of the Vault.
 - `id` (String) Contains a unique identifier used for this resource.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
@@ -198,9 +188,7 @@ The name is used to load the right Vault configuration and implementation when r
 
 Optional:
 
-- `config` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-Not Null (see [below for nested schema](#nestedatt--aws--config))
+- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--aws--config))
 - `description` (String) The description of the Vault. Default: ""
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -210,10 +198,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 Not Null
@@ -260,9 +245,7 @@ Default: 0
 
 Optional:
 
-- `config` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-Not Null (see [below for nested schema](#nestedatt--azure--config))
+- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--azure--config))
 - `description` (String) The description of the Vault. Default: ""
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -272,10 +255,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 Not Null
@@ -325,9 +305,7 @@ Not Null
 
 Optional:
 
-- `config` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-Not Null (see [below for nested schema](#nestedatt--conjur--config))
+- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--conjur--config))
 - `description` (String) The description of the Vault. Default: ""
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -337,10 +315,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 Not Null
@@ -382,9 +357,7 @@ Default: 0
 
 Optional:
 
-- `config` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-Not Null (see [below for nested schema](#nestedatt--env--config))
+- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--env--config))
 - `description` (String) The description of the Vault. Default: ""
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -394,10 +367,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 Not Null
@@ -425,9 +395,7 @@ We recommend creating a separate vault for base64 secrets.
 
 Optional:
 
-- `config` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-Not Null (see [below for nested schema](#nestedatt--gcp--config))
+- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--gcp--config))
 - `description` (String) The description of the Vault. Default: ""
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -437,10 +405,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 Not Null
@@ -481,11 +446,7 @@ Default: 0
 
 Optional:
 
-- `config` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-Configuration for an AI Gateway Vault.
-Not Null (see [below for nested schema](#nestedatt--hcv--config))
+- `config` (Attributes) Configuration for an AI Gateway Vault. Not Null (see [below for nested schema](#nestedatt--hcv--config))
 - `description` (String) The description of the Vault. Default: ""
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -495,10 +456,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 Not Null
@@ -514,26 +472,16 @@ Read-Only:
 
 Optional:
 
-- `approle` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--approle))
-- `aws_ec2` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--aws_ec2))
-- `aws_iam` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--aws_iam))
-- `azure` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--azure))
-- `cert` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--cert))
-- `gcp_gce` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--gcp_gce))
-- `gcp_iam` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--gcp_iam))
-- `jwt` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--jwt))
-- `kubernetes` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--kubernetes))
-- `token` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--hcv--config--token))
+- `approle` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--approle))
+- `aws_ec2` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--aws_ec2))
+- `aws_iam` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--aws_iam))
+- `azure` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--azure))
+- `cert` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--cert))
+- `gcp_gce` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--gcp_gce))
+- `gcp_iam` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--gcp_iam))
+- `jwt` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--jwt))
+- `kubernetes` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--kubernetes))
+- `token` (Attributes) (see [below for nested schema](#nestedatt--hcv--config--token))
 
 <a id="nestedatt--hcv--config--approle"></a>
 ### Nested Schema for `hcv.config.approle`
@@ -882,10 +830,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
+- `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 Not Null

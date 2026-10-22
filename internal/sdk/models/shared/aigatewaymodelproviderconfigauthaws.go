@@ -6,10 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayModelProviderConfigAuthAWS - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for AWS model provider.
+// AIGatewayModelProviderConfigAuthAWS - Configuration for AWS model provider.
 type AIGatewayModelProviderConfigAuthAWS struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"aws" json:"type"`

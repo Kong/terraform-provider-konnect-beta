@@ -30,9 +30,25 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				for _, v := range resp.Access.Acls.Allow {
 					r.Access.Acls.Allow = append(r.Access.Acls.Allow, types.StringValue(v))
 				}
+				if resp.Access.Acls.AllowWhen != nil {
+					r.Access.Acls.AllowWhen = make([]types.String, 0, len(resp.Access.Acls.AllowWhen))
+					for _, v := range resp.Access.Acls.AllowWhen {
+						r.Access.Acls.AllowWhen = append(r.Access.Acls.AllowWhen, types.StringValue(v))
+					}
+				} else {
+					r.Access.Acls.AllowWhen = nil
+				}
 				r.Access.Acls.Deny = make([]types.String, 0, len(resp.Access.Acls.Deny))
 				for _, v := range resp.Access.Acls.Deny {
 					r.Access.Acls.Deny = append(r.Access.Acls.Deny, types.StringValue(v))
+				}
+				if resp.Access.Acls.DenyWhen != nil {
+					r.Access.Acls.DenyWhen = make([]types.String, 0, len(resp.Access.Acls.DenyWhen))
+					for _, v := range resp.Access.Acls.DenyWhen {
+						r.Access.Acls.DenyWhen = append(r.Access.Acls.DenyWhen, types.StringValue(v))
+					}
+				} else {
+					r.Access.Acls.DenyWhen = nil
 				}
 			}
 			r.Access.AuthStrategies = make([]types.String, 0, len(resp.Access.AuthStrategies))
@@ -46,6 +62,14 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 		}
 		configPriorData := r.Config
 		r.Config = &tfTypes.CreateAIGatewayAgentRequestConfig{}
+		r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
+		for _, v := range resp.Config.CaCertificates {
+			r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
+		}
+		r.Config.Certificates = make([]types.String, 0, len(resp.Config.Certificates))
+		for _, v := range resp.Config.Certificates {
+			r.Config.Certificates = append(r.Config.Certificates, types.StringValue(v))
+		}
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
@@ -304,9 +328,25 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			for denyIndex := range r.Access.Acls.Deny {
 				deny = append(deny, r.Access.Acls.Deny[denyIndex].ValueString())
 			}
+			var allowWhen []string
+			if r.Access.Acls.AllowWhen != nil {
+				allowWhen = make([]string, 0, len(r.Access.Acls.AllowWhen))
+				for allowWhenIndex := range r.Access.Acls.AllowWhen {
+					allowWhen = append(allowWhen, r.Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+				}
+			}
+			var denyWhen []string
+			if r.Access.Acls.DenyWhen != nil {
+				denyWhen = make([]string, 0, len(r.Access.Acls.DenyWhen))
+				for denyWhenIndex := range r.Access.Acls.DenyWhen {
+					denyWhen = append(denyWhen, r.Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+				}
+			}
 			acls = &shared.AIGatewayACLS{
-				Allow: allow,
-				Deny:  deny,
+				Allow:     allow,
+				Deny:      deny,
+				AllowWhen: allowWhen,
+				DenyWhen:  denyWhen,
 			}
 		}
 		identityProviders := make([]string, 0, len(r.Access.IdentityProviders))
@@ -577,6 +617,14 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			MaxPayloadSize: maxPayloadSize,
 		}
 	}
+	certificates := make([]string, 0, len(r.Config.Certificates))
+	for certificatesIndex := range r.Config.Certificates {
+		certificates = append(certificates, r.Config.Certificates[certificatesIndex].ValueString())
+	}
+	caCertificates := make([]string, 0, len(r.Config.CaCertificates))
+	for caCertificatesIndex := range r.Config.CaCertificates {
+		caCertificates = append(caCertificates, r.Config.CaCertificates[caCertificatesIndex].ValueString())
+	}
 	config := shared.CreateAIGatewayAgentRequestConfig{
 		URL:                url,
 		Upstream:           upstream,
@@ -584,6 +632,8 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
+		Certificates:       certificates,
+		CaCertificates:     caCertificates,
 	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
@@ -646,9 +696,25 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			for denyIndex := range r.Access.Acls.Deny {
 				deny = append(deny, r.Access.Acls.Deny[denyIndex].ValueString())
 			}
+			var allowWhen []string
+			if r.Access.Acls.AllowWhen != nil {
+				allowWhen = make([]string, 0, len(r.Access.Acls.AllowWhen))
+				for allowWhenIndex := range r.Access.Acls.AllowWhen {
+					allowWhen = append(allowWhen, r.Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+				}
+			}
+			var denyWhen []string
+			if r.Access.Acls.DenyWhen != nil {
+				denyWhen = make([]string, 0, len(r.Access.Acls.DenyWhen))
+				for denyWhenIndex := range r.Access.Acls.DenyWhen {
+					denyWhen = append(denyWhen, r.Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+				}
+			}
 			acls = &shared.AIGatewayACLS{
-				Allow: allow,
-				Deny:  deny,
+				Allow:     allow,
+				Deny:      deny,
+				AllowWhen: allowWhen,
+				DenyWhen:  denyWhen,
 			}
 		}
 		identityProviders := make([]string, 0, len(r.Access.IdentityProviders))
@@ -919,6 +985,14 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			MaxPayloadSize: maxPayloadSize,
 		}
 	}
+	certificates := make([]string, 0, len(r.Config.Certificates))
+	for certificatesIndex := range r.Config.Certificates {
+		certificates = append(certificates, r.Config.Certificates[certificatesIndex].ValueString())
+	}
+	caCertificates := make([]string, 0, len(r.Config.CaCertificates))
+	for caCertificatesIndex := range r.Config.CaCertificates {
+		caCertificates = append(caCertificates, r.Config.CaCertificates[caCertificatesIndex].ValueString())
+	}
 	config := shared.UpdateAIGatewayAgentRequestConfig{
 		URL:                url,
 		Upstream:           upstream,
@@ -926,6 +1000,8 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
+		Certificates:       certificates,
+		CaCertificates:     caCertificates,
 	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {

@@ -6,8 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayServiceTierFactor - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayServiceTierFactor struct {
 	// Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter.
 	Tier string `json:"tier"`

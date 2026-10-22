@@ -38,10 +38,7 @@ resource "konnect_ai_gateway_certificate" "my_aigatewaycertificate" {
 - `cert` (String) PEM-encoded public certificate chain.
 - `gateway_id` (String) The unique ID of the AI Gateway.
 - `key` (String) PEM-encoded private key matching `cert`.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.
 
 ### Optional
 
@@ -60,6 +57,7 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
+- `konnect_managed` (Boolean) An immutable read-only flag to identify resource managed by Konnect services.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import

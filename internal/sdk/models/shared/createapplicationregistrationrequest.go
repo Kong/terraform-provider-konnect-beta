@@ -8,20 +8,20 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// Status - The status of the application registration. It must be a valid status value for a registration creation.
-type Status string
+// CreateApplicationRegistrationRequestStatus - The status of the application registration. It must be a valid status value for a registration creation.
+type CreateApplicationRegistrationRequestStatus string
 
 const (
-	StatusApproved Status = "approved"
-	StatusPending  Status = "pending"
+	CreateApplicationRegistrationRequestStatusApproved CreateApplicationRegistrationRequestStatus = "approved"
+	CreateApplicationRegistrationRequestStatusPending  CreateApplicationRegistrationRequestStatus = "pending"
 )
 
-func (e Status) ToPointer() *Status {
+func (e CreateApplicationRegistrationRequestStatus) ToPointer() *CreateApplicationRegistrationRequestStatus {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Status) IsExact() bool {
+func (e *CreateApplicationRegistrationRequestStatus) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "approved", "pending":
@@ -177,8 +177,9 @@ type CreateApplicationRegistrationRequest struct {
 	// The ID of the API the application is registering for.
 	APIID string `json:"api_id"`
 	// The status of the application registration. It must be a valid status value for a registration creation.
-	Status *Status `json:"status,omitempty"`
-	// Optional developer answers to the `api_registration` form linked to the API publication, captured at admin-side creation time. Supplied as a flat map keyed by field `name`; values match each field's input type. Silently ignored when no form is linked to the publication.
+	Status *CreateApplicationRegistrationRequestStatus `json:"status,omitempty"`
+	// The developer's answers to the `api_registration` form linked to this API, as a map from each field's `name` to its value. Optional, and ignored if no form is linked to the publication.
+	//
 	AdditionalData map[string]AdditionalData `json:"additional_data,omitempty"`
 }
 
@@ -189,7 +190,7 @@ func (c *CreateApplicationRegistrationRequest) GetAPIID() string {
 	return c.APIID
 }
 
-func (c *CreateApplicationRegistrationRequest) GetStatus() *Status {
+func (c *CreateApplicationRegistrationRequest) GetStatus() *CreateApplicationRegistrationRequestStatus {
 	if c == nil {
 		return nil
 	}

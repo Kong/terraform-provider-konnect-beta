@@ -14,6 +14,7 @@ type AIGatewayTargetConfigType string
 const (
 	AIGatewayTargetConfigTypeAnthropic   AIGatewayTargetConfigType = "anthropic"
 	AIGatewayTargetConfigTypeAzure       AIGatewayTargetConfigType = "azure"
+	AIGatewayTargetConfigTypeBaseten     AIGatewayTargetConfigType = "baseten"
 	AIGatewayTargetConfigTypeBedrock     AIGatewayTargetConfigType = "bedrock"
 	AIGatewayTargetConfigTypeCerebras    AIGatewayTargetConfigType = "cerebras"
 	AIGatewayTargetConfigTypeCohere      AIGatewayTargetConfigType = "cohere"
@@ -31,15 +32,14 @@ const (
 	AIGatewayTargetConfigTypeVllm        AIGatewayTargetConfigType = "vllm"
 	AIGatewayTargetConfigTypeXai         AIGatewayTargetConfigType = "xai"
 	AIGatewayTargetConfigTypeSagemaker   AIGatewayTargetConfigType = "sagemaker"
+	AIGatewayTargetConfigTypeTypesafe    AIGatewayTargetConfigType = "typesafe"
 )
 
-// AIGatewayTargetConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for a target model.
+// AIGatewayTargetConfig - Configuration for a target model.
 type AIGatewayTargetConfig struct {
 	AIGatewayTargetAnthropicConfig   *AIGatewayTargetAnthropicConfig   `queryParam:"inline" union:"member"`
 	AIGatewayTargetAzureConfig       *AIGatewayTargetAzureConfig       `queryParam:"inline" union:"member"`
+	AIGatewayTargetBasetenConfig     *AIGatewayTargetBasetenConfig     `queryParam:"inline" union:"member"`
 	AIGatewayTargetBedrockConfig     *AIGatewayTargetBedrockConfig     `queryParam:"inline" union:"member"`
 	AIGatewayTargetCerebrasConfig    *AIGatewayTargetCerebrasConfig    `queryParam:"inline" union:"member"`
 	AIGatewayTargetCohereConfig      *AIGatewayTargetCohereConfig      `queryParam:"inline" union:"member"`
@@ -57,6 +57,7 @@ type AIGatewayTargetConfig struct {
 	AIGatewayTargetVllmConfig        *AIGatewayTargetVllmConfig        `queryParam:"inline" union:"member"`
 	AIGatewayTargetXaiConfig         *AIGatewayTargetXaiConfig         `queryParam:"inline" union:"member"`
 	AIGatewayTargetSagemakerConfig   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" union:"member"`
+	AIGatewayTargetTypesafeConfig    *AIGatewayTargetTypesafeConfig    `queryParam:"inline" union:"member"`
 
 	Type AIGatewayTargetConfigType
 }
@@ -76,6 +77,15 @@ func CreateAIGatewayTargetConfigAzure(azure AIGatewayTargetAzureConfig) AIGatewa
 	return AIGatewayTargetConfig{
 		AIGatewayTargetAzureConfig: &azure,
 		Type:                       typ,
+	}
+}
+
+func CreateAIGatewayTargetConfigBaseten(baseten AIGatewayTargetBasetenConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeBaseten
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetBasetenConfig: &baseten,
+		Type:                         typ,
 	}
 }
 
@@ -232,6 +242,15 @@ func CreateAIGatewayTargetConfigSagemaker(sagemaker AIGatewayTargetSagemakerConf
 	}
 }
 
+func CreateAIGatewayTargetConfigTypesafe(typesafe AIGatewayTargetTypesafeConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeTypesafe
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetTypesafeConfig: &typesafe,
+		Type:                          typ,
+	}
+}
+
 func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 
 	type discriminator struct {
@@ -261,6 +280,15 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 
 		u.AIGatewayTargetAzureConfig = aiGatewayTargetAzureConfig
 		u.Type = AIGatewayTargetConfigTypeAzure
+		return nil
+	case "baseten":
+		aiGatewayTargetBasetenConfig := new(AIGatewayTargetBasetenConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetBasetenConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == baseten) type AIGatewayTargetBasetenConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetBasetenConfig = aiGatewayTargetBasetenConfig
+		u.Type = AIGatewayTargetConfigTypeBaseten
 		return nil
 	case "bedrock":
 		aiGatewayTargetBedrockConfig := new(AIGatewayTargetBedrockConfig)
@@ -415,6 +443,15 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 		u.AIGatewayTargetSagemakerConfig = aiGatewayTargetSagemakerConfig
 		u.Type = AIGatewayTargetConfigTypeSagemaker
 		return nil
+	case "typesafe":
+		aiGatewayTargetTypesafeConfig := new(AIGatewayTargetTypesafeConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetTypesafeConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == typesafe) type AIGatewayTargetTypesafeConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetTypesafeConfig = aiGatewayTargetTypesafeConfig
+		u.Type = AIGatewayTargetConfigTypeTypesafe
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayTargetConfig", string(data))
@@ -427,6 +464,10 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetAzureConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetAzureConfig, "", true)
+	}
+
+	if u.AIGatewayTargetBasetenConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetBasetenConfig, "", true)
 	}
 
 	if u.AIGatewayTargetBedrockConfig != nil {
@@ -495,6 +536,10 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetSagemakerConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetSagemakerConfig, "", true)
+	}
+
+	if u.AIGatewayTargetTypesafeConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetTypesafeConfig, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AIGatewayTargetConfig: all fields are null")

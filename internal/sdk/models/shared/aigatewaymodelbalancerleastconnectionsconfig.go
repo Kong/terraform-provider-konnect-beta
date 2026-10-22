@@ -10,13 +10,25 @@ type AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria string
 
 const (
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaError         AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "error"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp400       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_400"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp401       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_401"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp402       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_402"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp403       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_403"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp404       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_404"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp405       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_405"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp408       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_408"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp409       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_409"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp413       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_413"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp415       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_415"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp422       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_422"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp429       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_429"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp500       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_500"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp502       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_502"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp503       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_503"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp504       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_504"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp522       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_522"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp529       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_529"
+	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaHttp5xx       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "http_5xx"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaInvalidHeader AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "invalid_header"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaNonIdempotent AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "non_idempotent"
 	AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteriaTimeout       AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria = "timeout"
@@ -30,15 +42,13 @@ func (e AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria) ToPointer(
 func (e *AIGatewayModelBalancerLeastConnectionsConfigFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}
 	return false
 }
 
-// AIGatewayModelBalancerLeastConnectionsConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayModelBalancerLeastConnectionsConfig struct {
 	ConnectTimeout *int64 `default:"60000" json:"connect_timeout"`
 	// The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`.

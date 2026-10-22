@@ -20,7 +20,7 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 			r.Authentication = &tfTypes.BackendClusterAuthenticationScheme{}
 		}
 		if resp.Authentication.BackendClusterAuthenticationAnonymous != nil {
-			r.Authentication.Anonymous = &tfTypes.RawProviderConfig{}
+			r.Authentication.Anonymous = &tfTypes.BackendClusterAuthenticationAnonymous{}
 		}
 		if resp.Authentication.BackendClusterAuthenticationSaslAwsIam != nil {
 			r.Authentication.SaslAwsIam = &tfTypes.BackendClusterAuthenticationSaslAwsIam{}
@@ -29,12 +29,11 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 			}
 			if resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole != nil {
 				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole = &tfTypes.BackendClusterAuthenticationSaslAwsIamAssumeRole{}
-				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole = &tfTypes.AssumeRole{}
-				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.Arn = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole.AssumeRole.Arn)
-				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.SessionName = types.StringPointerValue(resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole.AssumeRole.SessionName)
+				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.Arn = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole.Arn)
+				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName = types.StringPointerValue(resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole.SessionName)
 			}
 			if resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamDefaultProviderChain != nil {
-				r.Authentication.SaslAwsIam.SaslAwsIam.DefaultProviderChain = &tfTypes.RawProviderConfig{}
+				r.Authentication.SaslAwsIam.SaslAwsIam.DefaultProviderChain = &tfTypes.BackendClusterAuthenticationAnonymous{}
 			}
 		}
 		if resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware != nil {
@@ -240,20 +239,17 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedCreateBackendClusterRe
 		var backendClusterAuthenticationSaslAwsIamAssumeRole *shared.BackendClusterAuthenticationSaslAwsIamAssumeRole
 		if r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole != nil {
 			var arn string
-			arn = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.Arn.ValueString()
+			arn = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.Arn.ValueString()
 
 			sessionName := new(string)
-			if !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.SessionName.IsUnknown() && !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.SessionName.IsNull() {
-				*sessionName = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.SessionName.ValueString()
+			if !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsUnknown() && !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsNull() {
+				*sessionName = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.ValueString()
 			} else {
 				sessionName = nil
 			}
-			assumeRole := shared.AssumeRole{
+			backendClusterAuthenticationSaslAwsIamAssumeRole = &shared.BackendClusterAuthenticationSaslAwsIamAssumeRole{
 				Arn:         arn,
 				SessionName: sessionName,
-			}
-			backendClusterAuthenticationSaslAwsIamAssumeRole = &shared.BackendClusterAuthenticationSaslAwsIamAssumeRole{
-				AssumeRole: assumeRole,
 			}
 		}
 		if backendClusterAuthenticationSaslAwsIamAssumeRole != nil {
@@ -430,20 +426,17 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedUpdateBackendClusterRe
 		var backendClusterAuthenticationSaslAwsIamAssumeRole *shared.BackendClusterAuthenticationSaslAwsIamAssumeRole
 		if r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole != nil {
 			var arn string
-			arn = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.Arn.ValueString()
+			arn = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.Arn.ValueString()
 
 			sessionName := new(string)
-			if !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.SessionName.IsUnknown() && !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.SessionName.IsNull() {
-				*sessionName = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.AssumeRole.SessionName.ValueString()
+			if !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsUnknown() && !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsNull() {
+				*sessionName = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.ValueString()
 			} else {
 				sessionName = nil
 			}
-			assumeRole := shared.AssumeRole{
+			backendClusterAuthenticationSaslAwsIamAssumeRole = &shared.BackendClusterAuthenticationSaslAwsIamAssumeRole{
 				Arn:         arn,
 				SessionName: sessionName,
-			}
-			backendClusterAuthenticationSaslAwsIamAssumeRole = &shared.BackendClusterAuthenticationSaslAwsIamAssumeRole{
-				AssumeRole: assumeRole,
 			}
 		}
 		if backendClusterAuthenticationSaslAwsIamAssumeRole != nil {

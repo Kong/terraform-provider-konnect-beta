@@ -104,13 +104,13 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if hashPoliciesItem.Header == nil {
 						hashPolicies.Header = nil
 					} else {
-						hashPolicies.Header = &tfTypes.EventGatewayACLOperation{}
+						hashPolicies.Header = &tfTypes.AIGatewayDatastoreRef{}
 						hashPolicies.Header.Name = types.StringValue(hashPoliciesItem.Header.Name)
 					}
 					if hashPoliciesItem.QueryParameter == nil {
 						hashPolicies.QueryParameter = nil
 					} else {
-						hashPolicies.QueryParameter = &tfTypes.EventGatewayACLOperation{}
+						hashPolicies.QueryParameter = &tfTypes.AIGatewayDatastoreRef{}
 						hashPolicies.QueryParameter.Name = types.StringValue(hashPoliciesItem.QueryParameter.Name)
 					}
 					hashPolicies.Terminal = types.BoolPointerValue(hashPoliciesItem.Terminal)
@@ -169,13 +169,13 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							if hashPoliciesItem1.Header == nil {
 								hashPolicies1.Header = nil
 							} else {
-								hashPolicies1.Header = &tfTypes.EventGatewayACLOperation{}
+								hashPolicies1.Header = &tfTypes.AIGatewayDatastoreRef{}
 								hashPolicies1.Header.Name = types.StringValue(hashPoliciesItem1.Header.Name)
 							}
 							if hashPoliciesItem1.QueryParameter == nil {
 								hashPolicies1.QueryParameter = nil
 							} else {
-								hashPolicies1.QueryParameter = &tfTypes.EventGatewayACLOperation{}
+								hashPolicies1.QueryParameter = &tfTypes.AIGatewayDatastoreRef{}
 								hashPolicies1.QueryParameter.Name = types.StringValue(hashPoliciesItem1.QueryParameter.Name)
 							}
 							hashPolicies1.Terminal = types.BoolPointerValue(hashPoliciesItem1.Terminal)
@@ -188,7 +188,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.Random == nil {
 						to.Default.LoadBalancer.Random = nil
 					} else {
-						to.Default.LoadBalancer.Random = &tfTypes.RawProviderConfig{}
+						to.Default.LoadBalancer.Random = &tfTypes.BackendClusterAuthenticationAnonymous{}
 					}
 					if toItem.Default.LoadBalancer.RingHash == nil {
 						to.Default.LoadBalancer.RingHash = nil
@@ -227,13 +227,13 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							if hashPoliciesItem2.Header == nil {
 								hashPolicies2.Header = nil
 							} else {
-								hashPolicies2.Header = &tfTypes.EventGatewayACLOperation{}
+								hashPolicies2.Header = &tfTypes.AIGatewayDatastoreRef{}
 								hashPolicies2.Header.Name = types.StringValue(hashPoliciesItem2.Header.Name)
 							}
 							if hashPoliciesItem2.QueryParameter == nil {
 								hashPolicies2.QueryParameter = nil
 							} else {
-								hashPolicies2.QueryParameter = &tfTypes.EventGatewayACLOperation{}
+								hashPolicies2.QueryParameter = &tfTypes.AIGatewayDatastoreRef{}
 								hashPolicies2.QueryParameter.Name = types.StringValue(hashPoliciesItem2.QueryParameter.Name)
 							}
 							hashPolicies2.Terminal = types.BoolPointerValue(hashPoliciesItem2.Terminal)
@@ -247,7 +247,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.RoundRobin == nil {
 						to.Default.LoadBalancer.RoundRobin = nil
 					} else {
-						to.Default.LoadBalancer.RoundRobin = &tfTypes.RawProviderConfig{}
+						to.Default.LoadBalancer.RoundRobin = &tfTypes.BackendClusterAuthenticationAnonymous{}
 					}
 					to.Default.LoadBalancer.Type = types.StringValue(string(toItem.Default.LoadBalancer.Type))
 				}

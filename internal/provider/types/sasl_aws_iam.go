@@ -4,5 +4,5 @@ package types
 
 type SaslAwsIam struct {
 	AssumeRole           *BackendClusterAuthenticationSaslAwsIamAssumeRole `queryParam:"inline" tfsdk:"assume_role"`
-	DefaultProviderChain *RawProviderConfig                                `queryParam:"inline" tfsdk:"default_provider_chain"`
+	DefaultProviderChain *BackendClusterAuthenticationAnonymous            `queryParam:"inline" tfsdk:"default_provider_chain"`
 }

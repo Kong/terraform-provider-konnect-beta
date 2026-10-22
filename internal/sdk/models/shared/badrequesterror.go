@@ -2,12 +2,42 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// Status - The HTTP status code of the error. Useful when passing the response
+// body to child properties in a frontend UI. Must be returned as an integer.
+type Status int64
+
+const (
+	StatusFourHundred Status = 400
+)
+
+func (e Status) ToPointer() *Status {
+	return &e
+}
+func (e *Status) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 400:
+		*e = Status(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Status: %v", v)
+	}
+}
+
 // BadRequestError - standard error
 type BadRequestError struct {
 	// The HTTP status code of the error. Useful when passing the response
 	// body to child properties in a frontend UI. Must be returned as an integer.
 	//
-	Status int64 `json:"status"`
+	Status Status `json:"status"`
 	// A short, human-readable summary of the problem. It should not
 	// change between occurences of a problem, except for localization.
 	// Should be provided as "Sentence case" for direct use in the UI.
@@ -30,9 +60,9 @@ type BadRequestError struct {
 	InvalidParameters []InvalidParameters `json:"invalid_parameters"`
 }
 
-func (b *BadRequestError) GetStatus() int64 {
+func (b *BadRequestError) GetStatus() Status {
 	if b == nil {
-		return 0
+		return Status(0)
 	}
 	return b.Status
 }

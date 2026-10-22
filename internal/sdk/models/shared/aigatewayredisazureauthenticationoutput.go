@@ -6,10 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayRedisAzureAuthenticationOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Azure specific configs for connecting to a Cloud Provider's redis instance.
+// AIGatewayRedisAzureAuthenticationOutput - Azure specific configs for connecting to a Cloud Provider's redis instance.
 type AIGatewayRedisAzureAuthenticationOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"azure" json:"type"`

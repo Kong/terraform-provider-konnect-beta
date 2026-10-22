@@ -166,27 +166,27 @@ func (a *Attributes) GetValue() string {
 	return a.Value
 }
 
-// MeshAccessLogItemSpecFromKind - Kind of the backend resource.
-type MeshAccessLogItemSpecFromKind string
+// MeshAccessLogItemSpecFromDefaultKind - Kind of the backend resource.
+type MeshAccessLogItemSpecFromDefaultKind string
 
 const (
-	MeshAccessLogItemSpecFromKindMeshOpenTelemetryBackend MeshAccessLogItemSpecFromKind = "MeshOpenTelemetryBackend"
+	MeshAccessLogItemSpecFromDefaultKindMeshOpenTelemetryBackend MeshAccessLogItemSpecFromDefaultKind = "MeshOpenTelemetryBackend"
 )
 
-func (e MeshAccessLogItemSpecFromKind) ToPointer() *MeshAccessLogItemSpecFromKind {
+func (e MeshAccessLogItemSpecFromDefaultKind) ToPointer() *MeshAccessLogItemSpecFromDefaultKind {
 	return &e
 }
-func (e *MeshAccessLogItemSpecFromKind) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemSpecFromDefaultKind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "MeshOpenTelemetryBackend":
-		*e = MeshAccessLogItemSpecFromKind(v)
+		*e = MeshAccessLogItemSpecFromDefaultKind(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromKind: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromDefaultKind: %v", v)
 	}
 }
 
@@ -194,15 +194,15 @@ func (e *MeshAccessLogItemSpecFromKind) UnmarshalJSON(data []byte) error {
 // defines the collector endpoint. Mutually exclusive with Endpoint.
 type MeshAccessLogItemSpecFromBackendRef struct {
 	// Kind of the backend resource.
-	Kind MeshAccessLogItemSpecFromKind `json:"kind"`
+	Kind MeshAccessLogItemSpecFromDefaultKind `json:"kind"`
 	// Labels to match the referenced resource. When multiple resources match,
 	// the oldest by creation time wins.
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-func (m *MeshAccessLogItemSpecFromBackendRef) GetKind() MeshAccessLogItemSpecFromKind {
+func (m *MeshAccessLogItemSpecFromBackendRef) GetKind() MeshAccessLogItemSpecFromDefaultKind {
 	if m == nil {
-		return MeshAccessLogItemSpecFromKind("")
+		return MeshAccessLogItemSpecFromDefaultKind("")
 	}
 	return m.Kind
 }
@@ -459,27 +459,27 @@ func (m *MeshAccessLogItemSpecFromDefault) GetBackends() []MeshAccessLogItemSpec
 	return m.Backends
 }
 
-// MeshAccessLogItemKind - Kind of the referenced resource
-type MeshAccessLogItemKind string
+// MeshAccessLogItemSpecFromKind - Kind of the referenced resource
+type MeshAccessLogItemSpecFromKind string
 
 const (
-	MeshAccessLogItemKindMesh                 MeshAccessLogItemKind = "Mesh"
-	MeshAccessLogItemKindMeshSubset           MeshAccessLogItemKind = "MeshSubset"
-	MeshAccessLogItemKindMeshGateway          MeshAccessLogItemKind = "MeshGateway"
-	MeshAccessLogItemKindMeshService          MeshAccessLogItemKind = "MeshService"
-	MeshAccessLogItemKindMeshExternalService  MeshAccessLogItemKind = "MeshExternalService"
-	MeshAccessLogItemKindMeshMultiZoneService MeshAccessLogItemKind = "MeshMultiZoneService"
-	MeshAccessLogItemKindMeshServiceSubset    MeshAccessLogItemKind = "MeshServiceSubset"
-	MeshAccessLogItemKindMeshHTTPRoute        MeshAccessLogItemKind = "MeshHTTPRoute"
-	MeshAccessLogItemKindDataplane            MeshAccessLogItemKind = "Dataplane"
+	MeshAccessLogItemSpecFromKindMesh                 MeshAccessLogItemSpecFromKind = "Mesh"
+	MeshAccessLogItemSpecFromKindMeshSubset           MeshAccessLogItemSpecFromKind = "MeshSubset"
+	MeshAccessLogItemSpecFromKindMeshGateway          MeshAccessLogItemSpecFromKind = "MeshGateway"
+	MeshAccessLogItemSpecFromKindMeshService          MeshAccessLogItemSpecFromKind = "MeshService"
+	MeshAccessLogItemSpecFromKindMeshExternalService  MeshAccessLogItemSpecFromKind = "MeshExternalService"
+	MeshAccessLogItemSpecFromKindMeshMultiZoneService MeshAccessLogItemSpecFromKind = "MeshMultiZoneService"
+	MeshAccessLogItemSpecFromKindMeshServiceSubset    MeshAccessLogItemSpecFromKind = "MeshServiceSubset"
+	MeshAccessLogItemSpecFromKindMeshHTTPRoute        MeshAccessLogItemSpecFromKind = "MeshHTTPRoute"
+	MeshAccessLogItemSpecFromKindDataplane            MeshAccessLogItemSpecFromKind = "Dataplane"
 )
 
-func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
+func (e MeshAccessLogItemSpecFromKind) ToPointer() *MeshAccessLogItemSpecFromKind {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *MeshAccessLogItemKind) IsExact() bool {
+func (e *MeshAccessLogItemSpecFromKind) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
@@ -515,7 +515,7 @@ func (e *MeshAccessLogItemProxyTypes) IsExact() bool {
 // clients.
 type MeshAccessLogItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind MeshAccessLogItemKind `json:"kind"`
+	Kind MeshAccessLogItemSpecFromKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -538,9 +538,9 @@ type MeshAccessLogItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshAccessLogItemTargetRef) GetKind() MeshAccessLogItemKind {
+func (m *MeshAccessLogItemTargetRef) GetKind() MeshAccessLogItemSpecFromKind {
 	if m == nil {
-		return MeshAccessLogItemKind("")
+		return MeshAccessLogItemSpecFromKind("")
 	}
 	return m.Kind
 }
@@ -1177,27 +1177,27 @@ func (m *MeshAccessLogItemRules) GetMatches() []Matches {
 	return m.Matches
 }
 
-// Kind of the referenced resource
-type Kind string
+// MeshAccessLogItemKind - Kind of the referenced resource
+type MeshAccessLogItemKind string
 
 const (
-	KindMesh                 Kind = "Mesh"
-	KindMeshSubset           Kind = "MeshSubset"
-	KindMeshGateway          Kind = "MeshGateway"
-	KindMeshService          Kind = "MeshService"
-	KindMeshExternalService  Kind = "MeshExternalService"
-	KindMeshMultiZoneService Kind = "MeshMultiZoneService"
-	KindMeshServiceSubset    Kind = "MeshServiceSubset"
-	KindMeshHTTPRoute        Kind = "MeshHTTPRoute"
-	KindDataplane            Kind = "Dataplane"
+	MeshAccessLogItemKindMesh                 MeshAccessLogItemKind = "Mesh"
+	MeshAccessLogItemKindMeshSubset           MeshAccessLogItemKind = "MeshSubset"
+	MeshAccessLogItemKindMeshGateway          MeshAccessLogItemKind = "MeshGateway"
+	MeshAccessLogItemKindMeshService          MeshAccessLogItemKind = "MeshService"
+	MeshAccessLogItemKindMeshExternalService  MeshAccessLogItemKind = "MeshExternalService"
+	MeshAccessLogItemKindMeshMultiZoneService MeshAccessLogItemKind = "MeshMultiZoneService"
+	MeshAccessLogItemKindMeshServiceSubset    MeshAccessLogItemKind = "MeshServiceSubset"
+	MeshAccessLogItemKindMeshHTTPRoute        MeshAccessLogItemKind = "MeshHTTPRoute"
+	MeshAccessLogItemKindDataplane            MeshAccessLogItemKind = "Dataplane"
 )
 
-func (e Kind) ToPointer() *Kind {
+func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Kind) IsExact() bool {
+func (e *MeshAccessLogItemKind) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
@@ -1234,7 +1234,7 @@ func (e *ProxyTypes) IsExact() bool {
 // defined in-place.
 type TargetRef struct {
 	// Kind of the referenced resource
-	Kind Kind `json:"kind"`
+	Kind MeshAccessLogItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1257,9 +1257,9 @@ type TargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (t *TargetRef) GetKind() Kind {
+func (t *TargetRef) GetKind() MeshAccessLogItemKind {
 	if t == nil {
-		return Kind("")
+		return MeshAccessLogItemKind("")
 	}
 	return t.Kind
 }

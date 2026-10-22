@@ -6,16 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayAuthStrategyOpenIDConnect - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for an auth strategy.
+// AIGatewayAuthStrategyOpenIDConnect - Configuration for an auth strategy.
 type AIGatewayAuthStrategyOpenIDConnect struct {
 	// The display name for this auth strategy instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -30,13 +24,24 @@ type AIGatewayAuthStrategyOpenIDConnect struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_ string `const:"openid-connect" json:"type"`
-	// Configuration for the OpenID Connect auth strategy.
-	// For advanced use cases, additional config properties can be sent in the request body.
-	// See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
 	//
-	Config any `json:"config,omitempty"`
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Serves the self-service enrollment UI through which end users authorize the upstream providers
+	// this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+	//
+	// Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+	// without one is rejected.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultCredentialManager `json:"token_vault,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_  string                            `const:"openid-connect" json:"type"`
+	Config *AIGWOpenIDConnectGeneratedConfig `json:"config,omitempty"`
 }
 
 func (a AIGatewayAuthStrategyOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -78,11 +83,25 @@ func (a *AIGatewayAuthStrategyOpenIDConnect) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetTokenVault() *AIGatewayTokenVaultCredentialManager {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
 func (a *AIGatewayAuthStrategyOpenIDConnect) GetType() string {
 	return "openid-connect"
 }
 
-func (a *AIGatewayAuthStrategyOpenIDConnect) GetConfig() any {
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetConfig() *AIGWOpenIDConnectGeneratedConfig {
 	if a == nil {
 		return nil
 	}

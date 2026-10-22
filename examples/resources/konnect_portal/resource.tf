@@ -1,11 +1,17 @@
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
   ai = {
-    enabled = true
+    enabled = false
     features = {
+      ai_search = {
+        enabled = false
+      }
       mcp_server = {
         enabled                  = false
         write_operations_enabled = false
+      }
+      portal_agent = {
+        enabled = false
       }
     }
   }

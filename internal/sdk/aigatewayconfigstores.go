@@ -32,9 +32,6 @@ func newAIGatewayConfigStores(rootSDK *KonnectBeta, sdkConfig config.SDKConfigur
 }
 
 // CreateAiGatewayConfigStore - Create an AI Gateway Config Store
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a new Config Store for the AI Gateway.
 func (s *AIGatewayConfigStores) CreateAiGatewayConfigStore(ctx context.Context, request operations.CreateAiGatewayConfigStoreRequest, opts ...operations.Option) (*operations.CreateAiGatewayConfigStoreResponse, error) {
 	o := operations.Options{}
@@ -352,9 +349,6 @@ func (s *AIGatewayConfigStores) CreateAiGatewayConfigStore(ctx context.Context, 
 }
 
 // GetAiGatewayConfigStore - Get an AI Gateway Config Store
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns the details of a specific AI Gateway Config Store.
 func (s *AIGatewayConfigStores) GetAiGatewayConfigStore(ctx context.Context, request operations.GetAiGatewayConfigStoreRequest, opts ...operations.Option) (*operations.GetAiGatewayConfigStoreResponse, error) {
 	o := operations.Options{}
@@ -644,9 +638,6 @@ func (s *AIGatewayConfigStores) GetAiGatewayConfigStore(ctx context.Context, req
 }
 
 // UpdateAiGatewayConfigStore - Update an AI Gateway Config Store
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates the configuration of an existing AI Gateway Config Store.
 func (s *AIGatewayConfigStores) UpdateAiGatewayConfigStore(ctx context.Context, request operations.UpdateAiGatewayConfigStoreRequest, opts ...operations.Option) (*operations.UpdateAiGatewayConfigStoreResponse, error) {
 	o := operations.Options{}
@@ -964,9 +955,6 @@ func (s *AIGatewayConfigStores) UpdateAiGatewayConfigStore(ctx context.Context, 
 }
 
 // DeleteAiGatewayConfigStore - Delete an AI Gateway Config Store
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Removes a specific AI Gateway Config Store.
 func (s *AIGatewayConfigStores) DeleteAiGatewayConfigStore(ctx context.Context, request operations.DeleteAiGatewayConfigStoreRequest, opts ...operations.Option) (*operations.DeleteAiGatewayConfigStoreResponse, error) {
 	o := operations.Options{}
@@ -1256,9 +1244,6 @@ func (s *AIGatewayConfigStores) DeleteAiGatewayConfigStore(ctx context.Context, 
 }
 
 // CreateAiGatewayConfigStoreSecret - Create an AI Gateway Config Store Secret
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a secret for an AI Gateway Config Store.
 func (s *AIGatewayConfigStores) CreateAiGatewayConfigStoreSecret(ctx context.Context, request operations.CreateAiGatewayConfigStoreSecretRequest, opts ...operations.Option) (*operations.CreateAiGatewayConfigStoreSecretResponse, error) {
 	o := operations.Options{}
@@ -1597,9 +1582,6 @@ func (s *AIGatewayConfigStores) CreateAiGatewayConfigStoreSecret(ctx context.Con
 }
 
 // GetAiGatewayConfigStoreSecret - Get an AI Gateway Config Store Secret
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns the secret entity for the Config Store. Secret values once stored cannot be retrieved.
 func (s *AIGatewayConfigStores) GetAiGatewayConfigStoreSecret(ctx context.Context, request operations.GetAiGatewayConfigStoreSecretRequest, opts ...operations.Option) (*operations.GetAiGatewayConfigStoreSecretResponse, error) {
 	o := operations.Options{}
@@ -1910,9 +1892,6 @@ func (s *AIGatewayConfigStores) GetAiGatewayConfigStoreSecret(ctx context.Contex
 }
 
 // UpdateAiGatewayConfigStoreSecret - Update an AI Gateway Config Store Secret
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates a secret for an AI Gateway Config Store.
 func (s *AIGatewayConfigStores) UpdateAiGatewayConfigStoreSecret(ctx context.Context, request operations.UpdateAiGatewayConfigStoreSecretRequest, opts ...operations.Option) (*operations.UpdateAiGatewayConfigStoreSecretResponse, error) {
 	o := operations.Options{}
@@ -2230,9 +2209,6 @@ func (s *AIGatewayConfigStores) UpdateAiGatewayConfigStoreSecret(ctx context.Con
 }
 
 // DeleteAiGatewayConfigStoreSecret - Delete an AI Gateway Config Store Secret
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Removes a secret from an AI Gateway Config Store.
 func (s *AIGatewayConfigStores) DeleteAiGatewayConfigStoreSecret(ctx context.Context, request operations.DeleteAiGatewayConfigStoreSecretRequest, opts ...operations.Option) (*operations.DeleteAiGatewayConfigStoreSecretResponse, error) {
 	o := operations.Options{}

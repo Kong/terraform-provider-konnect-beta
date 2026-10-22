@@ -21,7 +21,8 @@ resource "konnect_ai_gateway" "my_aigateway" {
   labels = {
     key = "value"
   }
-  name = "my-ai-gateway"
+  min_runtime_version = "2.0"
+  name                = "my-ai-gateway"
   proxy_urls = [
     {
       host     = "...my_host..."
@@ -29,6 +30,7 @@ resource "konnect_ai_gateway" "my_aigateway" {
       protocol = "...my_protocol..."
     }
   ]
+  runtime_auto_upgrade = true
 }
 ```
 
@@ -49,7 +51,15 @@ resource "konnect_ai_gateway" "my_aigateway" {
 Public labels are intended to store **PUBLIC** metadata. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `min_runtime_version` (String) The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
+
+Data planes older than this version still connect for topology visibility.
+
+When not specified, the latest generally available runtime version is used.
+
+When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
 - `proxy_urls` (Attributes Set) Array of proxy URLs associated with reaching the data-planes connected to a control-plane. (see [below for nested schema](#nestedatt--proxy_urls))
+- `runtime_auto_upgrade` (Boolean) Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases. Default: true
 
 ### Read-Only
 
@@ -60,6 +70,7 @@ an AI Gateway node configuration is up to date.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `endpoints` (Attributes) Object containing AI Gateway access endpoints. (see [below for nested schema](#nestedatt--endpoints))
 - `id` (String) Contains a unique identifier used for this resource.
+- `konnect_managed` (Boolean) An immutable read-only flag to identify resource managed by Konnect services.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--proxy_urls"></a>

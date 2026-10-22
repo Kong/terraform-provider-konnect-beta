@@ -9,12 +9,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -40,17 +42,20 @@ type AIGatewayResource struct {
 
 // AIGatewayResourceModel describes the resource data model.
 type AIGatewayResourceModel struct {
-	ConfigVersion  types.String                `tfsdk:"config_version"`
-	CreatedAt      types.String                `tfsdk:"created_at"`
-	DeploymentType types.String                `tfsdk:"deployment_type"`
-	Description    types.String                `tfsdk:"description"`
-	DisplayName    types.String                `tfsdk:"display_name"`
-	Endpoints      *tfTypes.Endpoints          `tfsdk:"endpoints"`
-	ID             types.String                `tfsdk:"id"`
-	Labels         map[string]types.String     `tfsdk:"labels"`
-	Name           types.String                `tfsdk:"name"`
-	ProxyUrls      []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
-	UpdatedAt      types.String                `tfsdk:"updated_at"`
+	ConfigVersion      types.String                `tfsdk:"config_version"`
+	CreatedAt          types.String                `tfsdk:"created_at"`
+	DeploymentType     types.String                `tfsdk:"deployment_type"`
+	Description        types.String                `tfsdk:"description"`
+	DisplayName        types.String                `tfsdk:"display_name"`
+	Endpoints          *tfTypes.Endpoints          `tfsdk:"endpoints"`
+	ID                 types.String                `tfsdk:"id"`
+	KonnectManaged     types.Bool                  `tfsdk:"konnect_managed"`
+	Labels             map[string]types.String     `tfsdk:"labels"`
+	MinRuntimeVersion  types.String                `tfsdk:"min_runtime_version"`
+	Name               types.String                `tfsdk:"name"`
+	ProxyUrls          []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
+	RuntimeAutoUpgrade types.Bool                  `tfsdk:"runtime_auto_upgrade"`
+	UpdatedAt          types.String                `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -129,6 +134,13 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
+			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -138,6 +150,20 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"min_runtime_version": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.` + "\n" +
+					`` + "\n" +
+					`Data planes older than this version still connect for topology visibility.` + "\n" +
+					`` + "\n" +
+					`When not specified, the latest generally available runtime version is used.` + "\n" +
+					`` + "\n" +
+					`When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.`,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^\d+\.\d+$`), "must match pattern "+regexp.MustCompile(`^\d+\.\d+$`).String()),
+				},
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -182,6 +208,12 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					},
 				},
 				Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
+			},
+			"runtime_auto_upgrade": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases. Default: true`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

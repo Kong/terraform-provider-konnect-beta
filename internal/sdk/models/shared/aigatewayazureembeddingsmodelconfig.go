@@ -31,14 +31,11 @@ func (e *AIGatewayAzureEmbeddingsModelConfigType) UnmarshalJSON(data []byte) err
 	}
 }
 
-// AIGatewayAzureEmbeddingsModelConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry
+// AIGatewayAzureEmbeddingsModelConfig - Azure OpenAI-specific configuration for an embeddings model. Azure AI Foundry
 // embeddings are not supported.
 type AIGatewayAzureEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string                                 `default:"null" json:"upstream_url"`
+	UpstreamURL *string                                 `json:"upstream_url,omitempty"`
 	Type        AIGatewayAzureEmbeddingsModelConfigType `json:"type"`
 	// The Azure OpenAI deployment ID for the embeddings model.
 	DeploymentID string `json:"deployment_id"`

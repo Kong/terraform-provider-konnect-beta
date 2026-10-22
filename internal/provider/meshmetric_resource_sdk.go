@@ -112,10 +112,10 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 					r.Spec.Default.Sidecar.Profiles = nil
 				} else {
 					r.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
-					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.EventGatewayACLOperation{}
+					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.AIGatewayDatastoreRef{}
 
 					for _, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
-						var appendProfiles tfTypes.EventGatewayACLOperation
+						var appendProfiles tfTypes.AIGatewayDatastoreRef
 
 						appendProfiles.Name = types.StringValue(string(appendProfilesItem.Name))
 

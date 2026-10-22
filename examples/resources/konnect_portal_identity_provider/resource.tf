@@ -2,6 +2,7 @@ resource "konnect_portal_identity_provider" "my_portalidentityprovider" {
   provider = konnect-beta
   config = {
     oidc_identity_provider_config = {
+      back_channel_logout_enabled = false
       claim_mappings = {
         email  = "email"
         groups = "groups"
@@ -11,7 +12,9 @@ resource "konnect_portal_identity_provider" "my_portalidentityprovider" {
       client_secret = "YOUR_CLIENT_SECRET"
       issuer_url    = "https://konghq.okta.com/oauth2/default"
       scopes = [
-        "..."
+        "openid",
+        "email",
+        "profile",
       ]
     }
   }

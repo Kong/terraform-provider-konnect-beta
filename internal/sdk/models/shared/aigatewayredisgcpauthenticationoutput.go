@@ -6,10 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayRedisGCPAuthenticationOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// GCP specific configs for connecting to a Cloud Provider's redis instance.
+// AIGatewayRedisGCPAuthenticationOutput - GCP specific configs for connecting to a Cloud Provider's redis instance.
 type AIGatewayRedisGCPAuthenticationOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"gcp" json:"type"`

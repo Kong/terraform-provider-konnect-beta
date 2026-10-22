@@ -2,6 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type BackendClusterAuthenticationSaslAwsIamAssumeRole struct {
-	AssumeRole *AssumeRole `tfsdk:"assume_role"`
+	Arn         types.String `tfsdk:"arn"`
+	SessionName types.String `tfsdk:"session_name"`
 }
