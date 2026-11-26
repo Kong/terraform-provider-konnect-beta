@@ -76,7 +76,14 @@ func CreateAIGatewayModelVectorDBConfigRedisCloudAuthenticationGcp(gcp AIGateway
 	}
 }
 
-func (u *AIGatewayModelVectorDBConfigRedisCloudAuthentication) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelVectorDBConfigRedisCloudAuthentication) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelVectorDBConfigRedisCloudAuthentication{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -634,7 +641,14 @@ func CreateCloudAuthenticationGcp(gcp AIGatewayRedisGCPAuthentication) CloudAuth
 	}
 }
 
-func (u *CloudAuthentication) UnmarshalJSON(data []byte) error {
+func (u *CloudAuthentication) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CloudAuthentication{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

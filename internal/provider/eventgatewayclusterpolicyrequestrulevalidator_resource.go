@@ -1012,7 +1012,7 @@ func (r *EventGatewayClusterPolicyRequestRuleValidatorResource) Create(ctx conte
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.CreateEventGatewayVirtualClusterClusterLevelPolicyRequestRuleValidator(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1072,7 +1072,7 @@ func (r *EventGatewayClusterPolicyRequestRuleValidatorResource) Read(ctx context
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.GetEventGatewayVirtualClusterClusterLevelPolicyRequestRuleValidator(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1126,7 +1126,7 @@ func (r *EventGatewayClusterPolicyRequestRuleValidatorResource) Update(ctx conte
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.UpdateEventGatewayVirtualClusterClusterLevelPolicyRequestRuleValidator(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1186,7 +1186,7 @@ func (r *EventGatewayClusterPolicyRequestRuleValidatorResource) Delete(ctx conte
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.DeleteEventGatewayVirtualClusterClusterLevelPolicyRequestRuleValidator(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

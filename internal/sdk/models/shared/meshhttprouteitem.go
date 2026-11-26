@@ -596,7 +596,14 @@ func CreateMeshHTTPRouteItemPercentageStr(str string) MeshHTTPRouteItemPercentag
 	}
 }
 
-func (u *MeshHTTPRouteItemPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshHTTPRouteItemPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshHTTPRouteItemPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

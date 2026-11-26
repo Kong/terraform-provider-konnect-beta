@@ -42,7 +42,14 @@ func CreateAIGatewayCustomPolicyStreaming(streaming AIGatewayCustomPolicyStreami
 	}
 }
 
-func (u *AIGatewayCustomPolicy) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayCustomPolicy) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayCustomPolicy{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

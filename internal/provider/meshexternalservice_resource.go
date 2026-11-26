@@ -642,7 +642,7 @@ func (r *MeshExternalServiceResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.MeshExternalService.PutMeshExternalService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -682,7 +682,7 @@ func (r *MeshExternalServiceResource) Create(ctx context.Context, req resource.C
 	}
 	res1, err := r.client.MeshExternalService.GetMeshExternalService(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -742,7 +742,7 @@ func (r *MeshExternalServiceResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.MeshExternalService.GetMeshExternalService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -796,7 +796,7 @@ func (r *MeshExternalServiceResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.MeshExternalService.PutMeshExternalService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -836,7 +836,7 @@ func (r *MeshExternalServiceResource) Update(ctx context.Context, req resource.U
 	}
 	res1, err := r.client.MeshExternalService.GetMeshExternalService(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -896,7 +896,7 @@ func (r *MeshExternalServiceResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.MeshExternalService.DeleteMeshExternalService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

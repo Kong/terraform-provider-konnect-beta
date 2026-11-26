@@ -163,7 +163,14 @@ func CreateMetricsDataPlaneGroupFilterByFieldMetricsDataPlaneGroupFilterByFieldE
 	}
 }
 
-func (u *MetricsDataPlaneGroupFilterByField) UnmarshalJSON(data []byte) error {
+func (u *MetricsDataPlaneGroupFilterByField) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MetricsDataPlaneGroupFilterByField{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

@@ -272,7 +272,7 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 	res, err := r.client.API.CreateAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -332,7 +332,7 @@ func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 	}
 	res, err := r.client.API.FetchAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -386,7 +386,7 @@ func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	}
 	res, err := r.client.API.UpdateAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -446,7 +446,7 @@ func (r *APIResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}
 	res, err := r.client.API.DeleteAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

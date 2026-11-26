@@ -227,7 +227,14 @@ func CreateStandardDeviationFactorStr(str string) StandardDeviationFactor {
 	}
 }
 
-func (u *StandardDeviationFactor) UnmarshalJSON(data []byte) error {
+func (u *StandardDeviationFactor) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = StandardDeviationFactor{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -502,7 +509,14 @@ func CreateMeshCircuitBreakerItemSpecFromHealthyPanicThresholdStr(str string) Me
 	}
 }
 
-func (u *MeshCircuitBreakerItemSpecFromHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
+func (u *MeshCircuitBreakerItemSpecFromHealthyPanicThreshold) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshCircuitBreakerItemSpecFromHealthyPanicThreshold{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1022,7 +1036,14 @@ func CreateMeshCircuitBreakerItemStandardDeviationFactorStr(str string) MeshCirc
 	}
 }
 
-func (u *MeshCircuitBreakerItemStandardDeviationFactor) UnmarshalJSON(data []byte) error {
+func (u *MeshCircuitBreakerItemStandardDeviationFactor) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshCircuitBreakerItemStandardDeviationFactor{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1297,7 +1318,14 @@ func CreateMeshCircuitBreakerItemHealthyPanicThresholdStr(str string) MeshCircui
 	}
 }
 
-func (u *MeshCircuitBreakerItemHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
+func (u *MeshCircuitBreakerItemHealthyPanicThreshold) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshCircuitBreakerItemHealthyPanicThreshold{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1806,7 +1834,14 @@ func CreateMeshCircuitBreakerItemSpecStandardDeviationFactorStr(str string) Mesh
 	}
 }
 
-func (u *MeshCircuitBreakerItemSpecStandardDeviationFactor) UnmarshalJSON(data []byte) error {
+func (u *MeshCircuitBreakerItemSpecStandardDeviationFactor) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshCircuitBreakerItemSpecStandardDeviationFactor{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -2081,7 +2116,14 @@ func CreateMeshCircuitBreakerItemSpecHealthyPanicThresholdStr(str string) MeshCi
 	}
 }
 
-func (u *MeshCircuitBreakerItemSpecHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
+func (u *MeshCircuitBreakerItemSpecHealthyPanicThreshold) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshCircuitBreakerItemSpecHealthyPanicThreshold{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

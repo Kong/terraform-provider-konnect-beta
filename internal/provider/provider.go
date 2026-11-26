@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
@@ -131,14 +132,14 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 	if !data.ServiceAccessToken.IsUnknown() {
 		security.ServiceAccessToken = data.ServiceAccessToken.ValueStringPointer()
 	}
+	registerSensitiveValues(security.PersonalAccessToken, security.SystemAccountAccessToken, security.KonnectAccessToken, security.ServiceAccessToken)
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
 		SetHeaders: make(map[string]string),
-		Transport:  http.DefaultTransport,
+		Transport:  cleanhttp.DefaultPooledTransport(),
 	}
 
-	httpClient := http.DefaultClient
-	httpClient.Transport = NewProviderHTTPTransport(providerHTTPTransportOpts)
+	httpClient := &http.Client{Transport: NewProviderHTTPTransport(providerHTTPTransportOpts)}
 
 	opts := []sdk.SDKOption{
 		sdk.WithServerURL(serverUrl),

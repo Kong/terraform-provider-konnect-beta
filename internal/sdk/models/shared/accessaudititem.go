@@ -41,7 +41,14 @@ func CreateAccessInteger(integer int64) Access {
 	}
 }
 
-func (u *Access) UnmarshalJSON(data []byte) error {
+func (u *Access) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Access{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

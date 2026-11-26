@@ -42,7 +42,14 @@ func CreateAnyChartTileDefinitionTableVisualization(tableVisualization TableVisu
 	}
 }
 
-func (u *AnyChartTileDefinition) UnmarshalJSON(data []byte) error {
+func (u *AnyChartTileDefinition) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AnyChartTileDefinition{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

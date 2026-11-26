@@ -44,7 +44,14 @@ func CreateSchemaValidationInlineSchemaConfigAvro(avro SchemaValidationInlineSch
 	}
 }
 
-func (u *SchemaValidationInlineSchemaConfig) UnmarshalJSON(data []byte) error {
+func (u *SchemaValidationInlineSchemaConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = SchemaValidationInlineSchemaConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		SchemaType string `json:"schema_type"`

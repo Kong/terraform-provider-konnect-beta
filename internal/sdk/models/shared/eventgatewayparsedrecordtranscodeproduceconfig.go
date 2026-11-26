@@ -31,7 +31,14 @@ func CreateEventGatewayParsedRecordTranscodeProduceConfigAvro(avro EventGatewayP
 	}
 }
 
-func (u *EventGatewayParsedRecordTranscodeProduceConfig) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayParsedRecordTranscodeProduceConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayParsedRecordTranscodeProduceConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		OutputFormat string `json:"output_format"`
