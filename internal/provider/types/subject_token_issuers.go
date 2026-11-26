@@ -7,6 +7,9 @@ import (
 )
 
 type SubjectTokenIssuers struct {
-	Conditions *AIGWOpenIDConnectGeneratedConfigConditions `tfsdk:"conditions"`
-	Issuer     types.String                                `tfsdk:"issuer"`
+	Conditions      *AIGatewayAuthStrategyOpenIDConnectConditions `tfsdk:"conditions"`
+	DenyOnMismatch  types.Bool                                    `tfsdk:"deny_on_mismatch"`
+	Issuer          types.String                                  `tfsdk:"issuer"`
+	JwksURI         types.String                                  `tfsdk:"jwks_uri"`
+	VerifySignature types.Bool                                    `tfsdk:"verify_signature"`
 }

@@ -20,7 +20,7 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 			r.Authentication = &tfTypes.BackendClusterAuthenticationScheme{}
 		}
 		if resp.Authentication.BackendClusterAuthenticationAnonymous != nil {
-			r.Authentication.Anonymous = &tfTypes.BackendClusterAuthenticationAnonymous{}
+			r.Authentication.Anonymous = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
 		}
 		if resp.Authentication.BackendClusterAuthenticationSaslAwsIam != nil {
 			r.Authentication.SaslAwsIam = &tfTypes.BackendClusterAuthenticationSaslAwsIam{}
@@ -33,7 +33,7 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName = types.StringPointerValue(resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole.SessionName)
 			}
 			if resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamDefaultProviderChain != nil {
-				r.Authentication.SaslAwsIam.SaslAwsIam.DefaultProviderChain = &tfTypes.BackendClusterAuthenticationAnonymous{}
+				r.Authentication.SaslAwsIam.SaslAwsIam.DefaultProviderChain = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
 			}
 		}
 		if resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware != nil {

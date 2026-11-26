@@ -3,6 +3,6 @@
 package types
 
 type MeshControlPlaneFilterParameters struct {
-	Labels *LabelsFieldFilter `queryParam:"name=labels" tfsdk:"labels"`
-	Name   *Name              `queryParam:"name=name" tfsdk:"name"`
+	Labels *LabelsFieldFilter                    `queryParam:"name=labels" tfsdk:"labels"`
+	Name   *MeshControlPlaneFilterParametersName `queryParam:"name=name" tfsdk:"name"`
 }

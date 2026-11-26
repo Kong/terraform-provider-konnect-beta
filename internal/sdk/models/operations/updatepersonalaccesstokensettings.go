@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var UpdatePersonalAccessTokenSettingsServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type UpdatePersonalAccessTokenSettingsRequest struct {
 	// A UUID representing an organization.
 	OrganizationID string `pathParam:"style=simple,explode=false,name=organizationId"`

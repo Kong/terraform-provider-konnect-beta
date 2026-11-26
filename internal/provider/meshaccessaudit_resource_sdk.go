@@ -45,10 +45,10 @@ func (r *MeshAccessAuditResourceModel) RefreshFromSharedAccessAuditItem(ctx cont
 				var rules tfTypes.Rules
 
 				if rulesItem.Access != nil {
-					rules.Access = []tfTypes.MeshItemMode{}
+					rules.Access = []tfTypes.Port{}
 
 					for _, accessItem := range rulesItem.Access {
-						var access tfTypes.MeshItemMode
+						var access tfTypes.Port
 
 						if accessItem.Str != nil {
 							access.Str = types.StringPointerValue(accessItem.Str)

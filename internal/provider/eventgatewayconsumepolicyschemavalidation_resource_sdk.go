@@ -278,15 +278,6 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 	}
 	var eventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig *shared.EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig
 	if r.Config.InlineSchema != nil {
-		var schemaRegistry2 *shared.SchemaRegistryReference
-		if r.Config.InlineSchema.SchemaRegistry != nil {
-			var id2 string
-			id2 = r.Config.InlineSchema.SchemaRegistry.ID.ValueString()
-
-			schemaRegistry2 = &shared.SchemaRegistryReference{
-				ID: id2,
-			}
-		}
 		failureMode2 := new(shared.ConsumeFailureMode)
 		if !r.Config.InlineSchema.FailureMode.IsUnknown() && !r.Config.InlineSchema.FailureMode.IsNull() {
 			*failureMode2 = shared.ConsumeFailureMode(r.Config.InlineSchema.FailureMode.ValueString())
@@ -380,7 +371,6 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 			}
 		}
 		eventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig = &shared.EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig{
-			SchemaRegistry:        schemaRegistry2,
 			FailureMode:           failureMode2,
 			ValidateKey:           validateKey2,
 			ValidateValue:         validateValue2,

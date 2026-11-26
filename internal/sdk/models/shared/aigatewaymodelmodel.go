@@ -9,6 +9,7 @@ import (
 type AIGatewayModelModelCapabilities string
 
 const (
+	AIGatewayModelModelCapabilitiesWildcard           AIGatewayModelModelCapabilities = "*"
 	AIGatewayModelModelCapabilitiesGenerate           AIGatewayModelModelCapabilities = "generate"
 	AIGatewayModelModelCapabilitiesAgentic            AIGatewayModelModelCapabilities = "agentic"
 	AIGatewayModelModelCapabilitiesRealtime           AIGatewayModelModelCapabilities = "realtime"
@@ -30,7 +31,7 @@ func (e AIGatewayModelModelCapabilities) ToPointer() *AIGatewayModelModelCapabil
 func (e *AIGatewayModelModelCapabilities) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "generate", "agentic", "realtime", "embeddings", "image", "audio/speech", "audio/transcription", "audio/translation", "video", "rerank", "decisions":
+		case "*", "generate", "agentic", "realtime", "embeddings", "image", "audio/speech", "audio/transcription", "audio/translation", "video", "rerank", "decisions":
 			return true
 		}
 	}
@@ -48,7 +49,7 @@ type AIGatewayModelModel struct {
 	// Access control configuration for a model.
 	Access *AIGatewayModelAccess `json:"access,omitempty"`
 	// List of request/response formats supported by this model.
-	Formats []AIGatewayModelFormat `json:"formats"`
+	Formats []AIGatewayModelFormat `json:"formats,omitempty"`
 	// One or more backend models that this model entry routes to.
 	Targets []AIGatewayTarget `json:"targets"`
 	// List of policy references.
@@ -62,17 +63,24 @@ type AIGatewayModelModel struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// Names of the Datastores this model references.
-	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// The Datastores this model references, with the feature that uses each one.
+	Datastores []AIGatewayModelDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"model" json:"type"`
 	// Routing, logging, and load balancing configuration for the model.
 	Config AIGatewayModelModelConfig `json:"config"`
-	// List of AI capabilities enabled for this model.
-	Capabilities []AIGatewayModelModelCapabilities `json:"capabilities"`
+	// The capabilities this model supports. Set to a specific capability to
+	// restrict the model to that capability only, or to `*` to allow all
+	// capabilities that the targets support at the gateway's
+	// min_runtime_version. A capability that needs a newer
+	// min_runtime_version is left out of `*`.
+	//
+	Capabilities []AIGatewayModelModelCapabilities `json:"capabilities,omitempty"`
 }
 
 func (a AIGatewayModelModel) MarshalJSON() ([]byte, error) {
@@ -116,7 +124,7 @@ func (a *AIGatewayModelModel) GetAccess() *AIGatewayModelAccess {
 
 func (a *AIGatewayModelModel) GetFormats() []AIGatewayModelFormat {
 	if a == nil {
-		return []AIGatewayModelFormat{}
+		return nil
 	}
 	return a.Formats
 }
@@ -149,7 +157,7 @@ func (a *AIGatewayModelModel) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
-func (a *AIGatewayModelModel) GetDatastores() []AIGatewayDatastoreRef {
+func (a *AIGatewayModelModel) GetDatastores() []AIGatewayModelDatastoreRef {
 	if a == nil {
 		return nil
 	}
@@ -169,7 +177,7 @@ func (a *AIGatewayModelModel) GetConfig() AIGatewayModelModelConfig {
 
 func (a *AIGatewayModelModel) GetCapabilities() []AIGatewayModelModelCapabilities {
 	if a == nil {
-		return []AIGatewayModelModelCapabilities{}
+		return nil
 	}
 	return a.Capabilities
 }

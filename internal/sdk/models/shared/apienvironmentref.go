@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // APIEnvironmentRef - The environment this record is scoped to.
 type APIEnvironmentRef struct {
 	// The UUID of the environment.
 	ID string `json:"id"`
 	// The name of the environment.
 	Name string `json:"name"`
+}
+
+func (a APIEnvironmentRef) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APIEnvironmentRef) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *APIEnvironmentRef) GetID() string {

@@ -58,10 +58,10 @@ func (a *AIGatewayTokenVaultCache) GetRedis() *AIGatewayRedisCloudConfigurationO
 	return a.Redis
 }
 
-// TokenVaultDatastoreConfig - Read-only. The directory and encryption key versions this entity's credentials are stored
+// AIGatewayTokenVaultTokenVaultDatastoreConfig - Read-only. The directory and encryption key versions this entity's credentials are stored
 // with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-// the Datastore. Key material is never returned.
-type TokenVaultDatastoreConfig struct {
+// the Datastore.
+type AIGatewayTokenVaultTokenVaultDatastoreConfig struct {
 	// The name of the directory in which tokens are stored.
 	Directory string `json:"directory"`
 	// The version of the encryption key used to encrypt new tokens.
@@ -70,36 +70,36 @@ type TokenVaultDatastoreConfig struct {
 	Keys []TokenVaultDatastoreKey `json:"keys"`
 }
 
-func (t TokenVaultDatastoreConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
+func (a AIGatewayTokenVaultTokenVaultDatastoreConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (t *TokenVaultDatastoreConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+func (a *AIGatewayTokenVaultTokenVaultDatastoreConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TokenVaultDatastoreConfig) GetDirectory() string {
-	if t == nil {
+func (a *AIGatewayTokenVaultTokenVaultDatastoreConfig) GetDirectory() string {
+	if a == nil {
 		return ""
 	}
-	return t.Directory
+	return a.Directory
 }
 
-func (t *TokenVaultDatastoreConfig) GetCurrentVersion() string {
-	if t == nil {
+func (a *AIGatewayTokenVaultTokenVaultDatastoreConfig) GetCurrentVersion() string {
+	if a == nil {
 		return ""
 	}
-	return t.CurrentVersion
+	return a.CurrentVersion
 }
 
-func (t *TokenVaultDatastoreConfig) GetKeys() []TokenVaultDatastoreKey {
-	if t == nil {
+func (a *AIGatewayTokenVaultTokenVaultDatastoreConfig) GetKeys() []TokenVaultDatastoreKey {
+	if a == nil {
 		return []TokenVaultDatastoreKey{}
 	}
-	return t.Keys
+	return a.Keys
 }
 
 // AIGatewayTokenVaultOutput - Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
@@ -133,12 +133,12 @@ type AIGatewayTokenVaultOutput struct {
 	// only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault
 	// Datastore before being cached.
 	//
-	Cache *AIGatewayTokenVaultCache `json:"cache"`
+	Cache *AIGatewayTokenVaultCache `json:"cache,omitempty"`
 	// Read-only. The directory and encryption key versions this entity's credentials are stored
 	// with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-	// the Datastore. Key material is never returned.
+	// the Datastore.
 	//
-	Storage *TokenVaultDatastoreConfig `json:"storage,omitempty"`
+	Storage *AIGatewayTokenVaultTokenVaultDatastoreConfig `json:"storage,omitempty"`
 }
 
 func (a AIGatewayTokenVaultOutput) MarshalJSON() ([]byte, error) {
@@ -180,7 +180,7 @@ func (a *AIGatewayTokenVaultOutput) GetCache() *AIGatewayTokenVaultCache {
 	return a.Cache
 }
 
-func (a *AIGatewayTokenVaultOutput) GetStorage() *TokenVaultDatastoreConfig {
+func (a *AIGatewayTokenVaultOutput) GetStorage() *AIGatewayTokenVaultTokenVaultDatastoreConfig {
 	if a == nil {
 		return nil
 	}
@@ -244,7 +244,7 @@ type AIGatewayTokenVault struct {
 	// only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault
 	// Datastore before being cached.
 	//
-	Cache *Cache `json:"cache"`
+	Cache *Cache `json:"cache,omitempty"`
 }
 
 func (a AIGatewayTokenVault) MarshalJSON() ([]byte, error) {

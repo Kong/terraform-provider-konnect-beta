@@ -27,6 +27,13 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 			}
 			r.ControlPlaneReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseControlPlaneReference.CreatedAt))
 			r.CreatedAt = r.ControlPlaneReference.CreatedAt
+			if resp.APIImplementationResponseControlPlaneReference.Environment == nil {
+				r.ControlPlaneReference.Environment = nil
+			} else {
+				r.ControlPlaneReference.Environment = &tfTypes.APIEnvironmentRef{}
+				r.ControlPlaneReference.Environment.ID = types.StringValue(resp.APIImplementationResponseControlPlaneReference.Environment.ID)
+				r.ControlPlaneReference.Environment.Name = types.StringValue(resp.APIImplementationResponseControlPlaneReference.Environment.Name)
+			}
 			r.ControlPlaneReference.EnvironmentID = types.StringPointerValue(resp.APIImplementationResponseControlPlaneReference.EnvironmentID)
 			r.EnvironmentID = r.ControlPlaneReference.EnvironmentID
 			r.ControlPlaneReference.ID = types.StringValue(resp.APIImplementationResponseControlPlaneReference.ID)
@@ -38,6 +45,13 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 			r.ServiceReference = &tfTypes.ServiceReference{}
 			r.ServiceReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.CreatedAt))
 			r.CreatedAt = r.ServiceReference.CreatedAt
+			if resp.APIImplementationResponseServiceReference.Environment == nil {
+				r.ServiceReference.Environment = nil
+			} else {
+				r.ServiceReference.Environment = &tfTypes.APIEnvironmentRef{}
+				r.ServiceReference.Environment.ID = types.StringValue(resp.APIImplementationResponseServiceReference.Environment.ID)
+				r.ServiceReference.Environment.Name = types.StringValue(resp.APIImplementationResponseServiceReference.Environment.Name)
+			}
 			r.ServiceReference.EnvironmentID = types.StringPointerValue(resp.APIImplementationResponseServiceReference.EnvironmentID)
 			r.EnvironmentID = r.ServiceReference.EnvironmentID
 			r.ServiceReference.ID = types.StringValue(resp.APIImplementationResponseServiceReference.ID)

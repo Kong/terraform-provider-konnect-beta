@@ -64,7 +64,7 @@ type CreateEventGatewayVirtualClusterConsumePolicyTranscodeResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Created
-	EventGatewayPolicy *shared.EventGatewayPolicy
+	EventGatewayConsumePolicyTranscodeTFOnly *shared.EventGatewayConsumePolicyTranscodeTFOnly
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -94,11 +94,11 @@ func (c *CreateEventGatewayVirtualClusterConsumePolicyTranscodeResponse) GetRawR
 	return c.RawResponse
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyTranscodeResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+func (c *CreateEventGatewayVirtualClusterConsumePolicyTranscodeResponse) GetEventGatewayConsumePolicyTranscodeTFOnly() *shared.EventGatewayConsumePolicyTranscodeTFOnly {
 	if c == nil {
 		return nil
 	}
-	return c.EventGatewayPolicy
+	return c.EventGatewayConsumePolicyTranscodeTFOnly
 }
 
 func (c *CreateEventGatewayVirtualClusterConsumePolicyTranscodeResponse) GetBadRequestError() *shared.BadRequestError {

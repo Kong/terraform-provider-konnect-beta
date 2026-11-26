@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -136,11 +135,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 					"capabilities": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("*")})),
 						ElementType: types.StringType,
-						Description: `List of AI capabilities enabled for this API model. Not Null`,
-						Validators: []validator.List{
-							speakeasy_listvalidators.NotNull(),
-						},
+						MarkdownDescription: `The capabilities this model supports. Set to a specific capability to` + "\n" +
+							`restrict the model to that capability only, or to ` + "`" + `*` + "`" + ` to allow all` + "\n" +
+							`capabilities that the targets support at the gateway's` + "\n" +
+							`min_runtime_version. A capability that needs a newer` + "\n" +
+							`min_runtime_version is left out of ` + "`" + `*` + "`" + `.` + "\n" +
+							`Default: ["*"]`,
 					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -235,6 +237,610 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										},
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("intelligent"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("lowest_usage"),
+												path.MatchRelative().AtParent().AtName("priority"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+												path.MatchRelative().AtParent().AtName("semantic"),
+											}...),
+										},
+									},
+									"intelligent": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"classifier": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"custom": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"auth": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"basic": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"headers": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"name": schema.StringAttribute{
+																							Computed: true,
+																							Optional: true,
+																							MarkdownDescription: `The name of the header used for authentication.` + "\n" +
+																								`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																								`Not Null`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.UTF8LengthAtLeast(1),
+																							},
+																						},
+																						"value": schema.StringAttribute{
+																							Optional: true,
+																							PlanModifiers: []planmodifier.String{
+																								speakeasy_stringplanmodifier.UseConfigValue(),
+																							},
+																							MarkdownDescription: `The value of the header, for example ` + "`" + `Bearer key...` + "`" + `.` + "\n" +
+																								`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																						},
+																					},
+																				},
+																				Description: `The header sent with each request to the classifier service.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtMost(1),
+																				},
+																			},
+																		},
+																		MarkdownDescription: `Sends one header, such as an API key, with each request to the classifier service.` + "\n" +
+																			`` + "\n" +
+																			`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+																	},
+																},
+																MarkdownDescription: `The credentials sent to the classifier service with each request.` + "\n" +
+																	`` + "\n" +
+																	`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+															},
+															"context_window": schema.Int64Attribute{
+																Computed: true,
+																Optional: true,
+																MarkdownDescription: `The number of tokens the classifier model can read, from the model provider's documentation.` + "\n" +
+																	`The request text sent to the classifier is cut to fit.` + "\n" +
+																	`Not Null`,
+																Validators: []validator.Int64{
+																	speakeasy_int64validators.NotNull(),
+																	int64validator.Between(4096, 1048576),
+																},
+															},
+															"format": schema.StringAttribute{
+																Computed: true,
+																Optional: true,
+																Default:  stringdefault.StaticString(`/v1/systemone`),
+																MarkdownDescription: `The endpoint path appended to ` + "`" + `url` + "`" + `: the path of the System One decisions API. Some hosts serve` + "\n" +
+																	`it at another path.` + "\n" +
+																	`Default: "/v1/systemone"`,
+																Validators: []validator.String{
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+															"name": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The name of the classifier model, sent in each request. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+															"timeout": schema.Int64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     int64default.StaticInt64(5000),
+																Description: `The time in milliseconds to wait for the classifier's answer. Default: 5000`,
+																Validators: []validator.Int64{
+																	int64validator.Between(100, 60000),
+																},
+															},
+															"url": schema.StringAttribute{
+																Computed: true,
+																Optional: true,
+																MarkdownDescription: `The classifier service's base URL. The ` + "`" + `format` + "`" + ` path is appended to it. It has no query string,` + "\n" +
+																	`fragment or user info.` + "\n" +
+																	`Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^https?://[^?#@]*$`), "must match pattern "+regexp.MustCompile(`^https?://[^?#@]*$`).String()),
+																},
+															},
+														},
+														MarkdownDescription: `A classifier service configured by hand, by its address, model name and credentials.` + "\n" +
+															`` + "\n" +
+															`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+													},
+												},
+												MarkdownDescription: `The classifier model the intelligent balancer asks what kind of work a conversation is, before it` + "\n" +
+													`selects a target. If the classifier does not answer in time or its answer cannot be used, the` + "\n" +
+													`balancer selects a target for general work.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.` + "\n" +
+													`Not Null`,
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(60000),
+												Description: `Default: 60000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"cost_quality_tradeoff": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     stringdefault.StaticString(`balanced`),
+												Description: `How the balancer weighs cost versus quality when selecting a target. ` + "`" + `cost` + "`" + ` favors the cheapest available target, ` + "`" + `quality` + "`" + ` favors the highest-quality target, and ` + "`" + `balanced` + "`" + ` weighs both. possible known values include one of ["balanced", "cost", "quality"]; Default: "balanced"`,
+											},
+											"fail_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(10000),
+												Description: `The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches ` + "`" + `max_fails` + "`" + `. Default: 10000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"failover_criteria": schema.ListAttribute{
+												Computed: true,
+												Optional: true,
+												Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+													types.StringValue("error"),
+													types.StringValue("timeout"),
+												})),
+												ElementType: types.StringType,
+												Description: `Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]`,
+											},
+											"max_fails": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by ` + "`" + `fail_timeout` + "`" + ` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by ` + "`" + `failover_criteria` + "`" + `. Note the cases of ` + "`" + `error` + "`" + `, ` + "`" + `timeout` + "`" + ` and ` + "`" + `invalid_header` + "`" + ` are always considered unsuccessful attempts, while the cases of ` + "`" + `http_403` + "`" + ` and ` + "`" + `http_404` + "`" + ` are never considered unsuccessful attempts. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 32767),
+												},
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(60000),
+												Description: `Default: 60000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"retries": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(5),
+												Description: `The number of retries to execute upon failure to proxy. Default: 5`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 32767),
+												},
+											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
+											"slots": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(10000),
+												Description: `The number of slots in the load balancer algorithm. Default: 10000`,
+												Validators: []validator.Int64{
+													int64validator.Between(10, 65536),
+												},
+											},
+											"strategy": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`weighted`),
+												MarkdownDescription: `Selects the algorithm the balancer uses to choose a target. ` + "`" + `weighted` + "`" + ` scores each target on cost` + "\n" +
+													`and quality. ` + "`" + `margin` + "`" + ` selects the cheapest target whose expected quality is within a margin of the` + "\n" +
+													`best target's. For internal testing only: during the tech preview only Kong can set it, behind a` + "\n" +
+													`feature flag. At GA, Kong sets the default to the algorithm it recommends, and the field stays` + "\n" +
+													`accepted so saved configurations keep working.` + "\n" +
+													`possible known values include one of ["weighted", "margin"]; Default: "weighted"`,
+											},
+											"version": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     stringdefault.StaticString(`v1`),
+												Description: `The version of the intelligent balancing algorithm. Default: "v1"; must be "v1"`,
+												Validators: []validator.String{
+													stringvalidator.OneOf("v1"),
+												},
+											},
+											"write_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(60000),
+												Description: `Default: 60000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+										},
+										MarkdownDescription: `On the first request of a conversation, asks a classifier model what kind of work it is, then` + "\n" +
+											`selects a target by the cost and quality tradeoff. Later requests in the conversation go to the` + "\n" +
+											`same target through session affinity, which is always on for this algorithm: ` + "`" + `ttl` + "`" + ` and ` + "`" + `storage` + "`" + `` + "\n" +
+											`can be set, and ` + "`" + `session_affinity.enabled: false` + "`" + ` is rejected.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -302,6 +908,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -324,6 +1290,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
 												path.MatchRelative().AtParent().AtName("priority"),
@@ -396,6 +1363,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -418,6 +1745,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
 												path.MatchRelative().AtParent().AtName("priority"),
@@ -484,6 +1812,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -512,6 +2200,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("priority"),
@@ -578,6 +2267,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -600,6 +2649,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -666,6 +2716,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -688,6 +3098,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -737,6 +3148,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The Azure OpenAI deployment ID for the embeddings model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
+																			stringvalidator.UTF8LengthAtLeast(1),
 																		},
 																	},
 																	"type": schema.StringAttribute{
@@ -829,6 +3241,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The custom API endpoint for the Gemini model. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"location_id": schema.StringAttribute{
@@ -837,6 +3250,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"project_id": schema.StringAttribute{
@@ -845,6 +3259,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																		},
@@ -979,6 +3394,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `The name of the embeddings model. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 													"provider": schema.StringAttribute{
@@ -987,6 +3403,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `Reference to a model provider instance by name. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 												},
@@ -1040,6 +3457,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Validators: []validator.Int64{
 													int64validator.Between(0, 32767),
 												},
+											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
 											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
@@ -1100,16 +3877,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"ssl": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"cert":     types.StringType,
-																	"cert_key": types.StringType,
-																	"enabled":  types.BoolType,
-																	"required": types.BoolType,
-																	"verify":   types.BoolType,
-																	"version":  types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"cert": schema.StringAttribute{
 																		Optional:    true,
@@ -1524,6 +4292,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -1549,15 +4318,19 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     int64default.StaticInt64(8388608),
-								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The maximum size, in bytes, of a request body that the gateway reads and sends to the model.` + "\n" +
+									`A request with a larger body fails. Set to 0 for no limit.` + "\n" +
+									`If you do not set a value, the gateway uses the request size limit that the model's providers publish,` + "\n" +
+									`with defaults to 8 MB.` + "\n" +
+									`If the targets use more than one provider, the gateway uses the highest of these limits.`,
 								Validators: []validator.Int64{
-									int64validator.Between(0, 2147483646),
+									int64validator.AtLeast(0),
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -1798,9 +4571,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
 									},
 								},
+								"purpose": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Default:  stringdefault.StaticString(`semantic-balancer`),
+									MarkdownDescription: `The model feature that uses the datastore. ` + "`" + `semantic-balancer` + "`" + ` supplies the connection of the` + "\n" +
+										`model vector store.` + "\n" +
+										`possible known values include one of ["semantic-balancer", "session-affinity"]; Default: "semantic-balancer"`,
+								},
 							},
 						},
-						Description: `Names of the Datastores this model references.`,
+						Description: `The Datastores this model references, with the feature that uses each one.`,
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -1828,15 +4609,13 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								"type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]`,
+									Description: `The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to ` + "`" + `*` + "`" + ` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of ` + "`" + `*` + "`" + `. The ` + "`" + `*` + "`" + ` format never includes passthrough. possible known values include one of ["*", "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]`,
 								},
 							},
 						},
-						Description: `List of request/response formats supported by this model. Not Null`,
+						Description: `List of request/response formats supported by this model.`,
 						Validators: []validator.List{
-							speakeasy_listvalidators.NotNull(),
 							listvalidator.SizeAtLeast(1),
-							listvalidator.SizeAtMost(1),
 						},
 					},
 					"id": schema.StringAttribute{
@@ -1862,7 +4641,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -1968,6 +4749,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -1989,6 +4771,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -2153,6 +4936,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2175,14 +4964,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2266,6 +5058,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -2287,6 +5080,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -2466,6 +5260,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2482,14 +5282,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2567,6 +5370,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -2588,6 +5392,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -2752,6 +5557,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -2774,14 +5585,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -2863,6 +5677,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -2884,6 +5699,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -2923,9 +5739,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Whether to normalize embedding vectors in the response. Default: false`,
 												},
 												"endpoint_type": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
-													Default:  stringdefault.StaticString(`runtime`),
 													MarkdownDescription: `The AWS Bedrock inference endpoint that requests to this target are sent to.` + "\n" +
 														`` + "`" + `runtime` + "`" + ` sends requests to the Bedrock Runtime endpoint` + "\n" +
 														`(` + "`" + `bedrock-runtime.{region}.amazonaws.com` + "`" + `). ` + "`" + `mantle` + "`" + ` sends requests to the` + "\n" +
@@ -2937,7 +5751,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														`does not support the Bedrock Converse or InvokeModel APIs.` + "\n" +
 														`` + "\n" +
 														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
-														`possible known values include one of ["runtime", "mantle"]; Default: "runtime"`,
+														`possible known values include one of ["runtime", "mantle"]`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3080,6 +5894,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3107,14 +5927,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3192,6 +6015,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -3213,6 +6037,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -3377,6 +6202,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3393,14 +6224,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3486,6 +6320,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -3507,6 +6342,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -3677,6 +6513,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3699,14 +6541,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -3784,6 +6629,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -3805,6 +6651,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -3975,6 +6822,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -3991,14 +6844,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -4076,6 +6932,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4097,6 +6954,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -4261,6 +7119,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -4271,6 +7135,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The Databricks workspace instance ID. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -4285,14 +7150,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -4370,6 +7238,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4391,6 +7260,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -4555,6 +7425,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -4571,14 +7447,323 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
+													path.MatchRelative().AtParent().AtName("typesafe"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"fireworks": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 500),
+													},
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
+												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `Fireworks AI-specific configuration for a model. Requests are sent to the Fireworks` + "\n" +
+												`inference API at ` + "`" + `https://api.fireworks.ai/inference/v1` + "`" + ` by default, and the target ` + "`" + `name` + "`" + `` + "\n" +
+												`is the Fireworks model ID, passed through as-is (for example,` + "\n" +
+												`` + "`" + `accounts/fireworks/models/llama-v3p1-70b-instruct` + "`" + `). Use the ` + "`" + `openai` + "`" + ` format for the` + "\n" +
+												`Chat Completions, Completions, Responses, Embeddings, Rerank, and Decisions APIs, and the` + "\n" +
+												`` + "`" + `anthropic` + "`" + ` format for the Messages API. To keep traffic in the US-only region, set` + "\n" +
+												`` + "`" + `upstream_url` + "`" + ` to ` + "`" + `https://us.api.fireworks.ai/inference/v1` + "`" + `. Upstream errors, including` + "\n" +
+												`` + "`" + `max_tokens` + "`" + ` truncation behavior, are returned as produced by Fireworks.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("baseten"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -4656,6 +7841,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4677,6 +7863,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -4719,6 +7906,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The custom API endpoint for the Gemini model. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"location_id": schema.StringAttribute{
@@ -4727,6 +7915,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"project_id": schema.StringAttribute{
@@ -4735,6 +7924,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 													},
@@ -4872,6 +8062,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -4889,13 +8085,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -4973,6 +8172,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4994,6 +8194,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -5158,6 +8359,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -5187,13 +8394,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -5271,6 +8481,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -5292,6 +8503,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -5464,6 +8676,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -5481,13 +8699,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -5565,6 +8786,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -5586,6 +8808,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -5758,15 +8981,27 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
-											Description: `Llama2-specific configuration for a model.`,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Llama2-specific configuration for a model.` + "\n" +
+												`` + "\n" +
+												`Deprecated: the ` + "`" + `llama2` + "`" + ` provider is deprecated and will be removed in 3.0. Migrate by the` + "\n" +
+												`` + "`" + `format` + "`" + ` value: ` + "`" + `ollama` + "`" + ` maps to the ` + "`" + `ollama` + "`" + ` provider, ` + "`" + `openai` + "`" + ` maps to the ` + "`" + `openai` + "`" + ` provider` + "\n" +
+												`with ` + "`" + `upstream_url` + "`" + ` set, or to the ` + "`" + `vllm` + "`" + ` provider; ` + "`" + `raw` + "`" + ` has no replacement provider.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
@@ -5778,13 +9013,322 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
+													path.MatchRelative().AtParent().AtName("typesafe"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"meta": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 500),
+													},
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
+												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `Meta-specific configuration for a model served by Meta's hosted Model API. Requests are` + "\n" +
+												`sent to ` + "`" + `https://api.meta.ai/v1` + "`" + ` by default, and the target ` + "`" + `name` + "`" + ` is the Meta model ID` + "\n" +
+												`(for example, ` + "`" + `muse-spark-1.3` + "`" + `). Model IDs are passed through as-is, including` + "\n" +
+												`` + "`" + `-contributor` + "`" + ` variants, which permit Meta to train on submitted prompts; choose them` + "\n" +
+												`deliberately. Use the ` + "`" + `openai` + "`" + ` format for the Chat Completions and Responses APIs and the` + "\n" +
+												`` + "`" + `anthropic` + "`" + ` format for the Messages API. Self-hosted open-weight models (such as Muse Glimmer)` + "\n" +
+												`should use the ` + "`" + `ollama` + "`" + ` provider, or the ` + "`" + `openai` + "`" + ` provider with ` + "`" + `upstream_url` + "`" + ` set on the` + "\n" +
+												`target (or the ` + "`" + `vllm` + "`" + ` provider); the ` + "`" + `llama2` + "`" + ` provider is deprecated.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("baseten"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -5862,6 +9406,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -5883,6 +9428,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -6055,6 +9601,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6072,13 +9624,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6156,6 +9711,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -6177,6 +9733,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -6341,6 +9898,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6358,13 +9921,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6442,6 +10008,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -6463,6 +10030,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -6627,6 +10195,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6644,13 +10218,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -6662,14 +10239,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aws": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"assume_role_arn":   types.StringType,
-														"region":            types.StringType,
-														"role_session_name": types.StringType,
-														"sts_endpoint_url":  types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"assume_role_arn": schema.StringAttribute{
 															Optional:    true,
@@ -6756,6 +10326,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -6777,6 +10348,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -6921,13 +10493,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"container_hostname": types.StringType,
-														"model":              types.StringType,
-														"variant":            types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"container_hostname": schema.StringAttribute{
 															Optional:    true,
@@ -6964,6 +10530,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -6981,13 +10553,318 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
+													path.MatchRelative().AtParent().AtName("typesafe"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"togetherai": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 500),
+													},
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
+												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `Together AI-specific configuration for a model. Together AI is fully OpenAI-compatible:` + "\n" +
+												`requests are sent to ` + "`" + `https://api.together.xyz/v1` + "`" + ` by default using the ` + "`" + `openai` + "`" + ` format,` + "\n" +
+												`and the target ` + "`" + `name` + "`" + ` is the Together model ID, passed through as-is (for example,` + "\n" +
+												`` + "`" + `meta-llama/Llama-3.3-70B-Instruct-Turbo` + "`" + `). Override the base URL with ` + "`" + `upstream_url` + "`" + `.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("baseten"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -7012,6 +10889,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.AtLeast(0),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the default Typesafe endpoint. The gateway appends the forwarded request path to this base URL. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7031,14 +10914,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -7115,6 +11001,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -7136,6 +11023,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -7300,6 +11188,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7317,14 +11211,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -7401,6 +11298,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -7422,6 +11320,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -7586,11 +11485,18 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -7606,14 +11512,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -7690,6 +11599,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -7711,6 +11621,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -7875,6 +11786,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -7892,14 +11809,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -7918,6 +11838,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `The name of the model defined in the upstream provider that will be executed. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"provider": schema.StringAttribute{
@@ -7926,6 +11847,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `Reference to a model provider instance by name. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"semantic_description": schema.StringAttribute{
@@ -8056,11 +11978,14 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 					"capabilities": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("*")})),
 						ElementType: types.StringType,
-						Description: `List of AI capabilities enabled for this model. Not Null`,
-						Validators: []validator.List{
-							speakeasy_listvalidators.NotNull(),
-						},
+						MarkdownDescription: `The capabilities this model supports. Set to a specific capability to` + "\n" +
+							`restrict the model to that capability only, or to ` + "`" + `*` + "`" + ` to allow all` + "\n" +
+							`capabilities that the targets support at the gateway's` + "\n" +
+							`min_runtime_version. A capability that needs a newer` + "\n" +
+							`min_runtime_version is left out of ` + "`" + `*` + "`" + `.` + "\n" +
+							`Default: ["*"]`,
 					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -8155,6 +12080,610 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										},
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("intelligent"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("lowest_usage"),
+												path.MatchRelative().AtParent().AtName("priority"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+												path.MatchRelative().AtParent().AtName("semantic"),
+											}...),
+										},
+									},
+									"intelligent": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"classifier": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"custom": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"auth": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"basic": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"headers": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"name": schema.StringAttribute{
+																							Computed: true,
+																							Optional: true,
+																							MarkdownDescription: `The name of the header used for authentication.` + "\n" +
+																								`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																								`Not Null`,
+																							Validators: []validator.String{
+																								speakeasy_stringvalidators.NotNull(),
+																								stringvalidator.UTF8LengthAtLeast(1),
+																							},
+																						},
+																						"value": schema.StringAttribute{
+																							Optional: true,
+																							PlanModifiers: []planmodifier.String{
+																								speakeasy_stringplanmodifier.UseConfigValue(),
+																							},
+																							MarkdownDescription: `The value of the header, for example ` + "`" + `Bearer key...` + "`" + `.` + "\n" +
+																								`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																						},
+																					},
+																				},
+																				Description: `The header sent with each request to the classifier service.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtMost(1),
+																				},
+																			},
+																		},
+																		MarkdownDescription: `Sends one header, such as an API key, with each request to the classifier service.` + "\n" +
+																			`` + "\n" +
+																			`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+																	},
+																},
+																MarkdownDescription: `The credentials sent to the classifier service with each request.` + "\n" +
+																	`` + "\n" +
+																	`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+															},
+															"context_window": schema.Int64Attribute{
+																Computed: true,
+																Optional: true,
+																MarkdownDescription: `The number of tokens the classifier model can read, from the model provider's documentation.` + "\n" +
+																	`The request text sent to the classifier is cut to fit.` + "\n" +
+																	`Not Null`,
+																Validators: []validator.Int64{
+																	speakeasy_int64validators.NotNull(),
+																	int64validator.Between(4096, 1048576),
+																},
+															},
+															"format": schema.StringAttribute{
+																Computed: true,
+																Optional: true,
+																Default:  stringdefault.StaticString(`/v1/systemone`),
+																MarkdownDescription: `The endpoint path appended to ` + "`" + `url` + "`" + `: the path of the System One decisions API. Some hosts serve` + "\n" +
+																	`it at another path.` + "\n" +
+																	`Default: "/v1/systemone"`,
+																Validators: []validator.String{
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+															"name": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The name of the classifier model, sent in each request. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+															"timeout": schema.Int64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     int64default.StaticInt64(5000),
+																Description: `The time in milliseconds to wait for the classifier's answer. Default: 5000`,
+																Validators: []validator.Int64{
+																	int64validator.Between(100, 60000),
+																},
+															},
+															"url": schema.StringAttribute{
+																Computed: true,
+																Optional: true,
+																MarkdownDescription: `The classifier service's base URL. The ` + "`" + `format` + "`" + ` path is appended to it. It has no query string,` + "\n" +
+																	`fragment or user info.` + "\n" +
+																	`Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^https?://[^?#@]*$`), "must match pattern "+regexp.MustCompile(`^https?://[^?#@]*$`).String()),
+																},
+															},
+														},
+														MarkdownDescription: `A classifier service configured by hand, by its address, model name and credentials.` + "\n" +
+															`` + "\n" +
+															`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+													},
+												},
+												MarkdownDescription: `The classifier model the intelligent balancer asks what kind of work a conversation is, before it` + "\n" +
+													`selects a target. If the classifier does not answer in time or its answer cannot be used, the` + "\n" +
+													`balancer selects a target for general work.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.` + "\n" +
+													`Not Null`,
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(60000),
+												Description: `Default: 60000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"cost_quality_tradeoff": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     stringdefault.StaticString(`balanced`),
+												Description: `How the balancer weighs cost versus quality when selecting a target. ` + "`" + `cost` + "`" + ` favors the cheapest available target, ` + "`" + `quality` + "`" + ` favors the highest-quality target, and ` + "`" + `balanced` + "`" + ` weighs both. possible known values include one of ["balanced", "cost", "quality"]; Default: "balanced"`,
+											},
+											"fail_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(10000),
+												Description: `The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches ` + "`" + `max_fails` + "`" + `. Default: 10000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"failover_criteria": schema.ListAttribute{
+												Computed: true,
+												Optional: true,
+												Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+													types.StringValue("error"),
+													types.StringValue("timeout"),
+												})),
+												ElementType: types.StringType,
+												Description: `Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]`,
+											},
+											"max_fails": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by ` + "`" + `fail_timeout` + "`" + ` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by ` + "`" + `failover_criteria` + "`" + `. Note the cases of ` + "`" + `error` + "`" + `, ` + "`" + `timeout` + "`" + ` and ` + "`" + `invalid_header` + "`" + ` are always considered unsuccessful attempts, while the cases of ` + "`" + `http_403` + "`" + ` and ` + "`" + `http_404` + "`" + ` are never considered unsuccessful attempts. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 32767),
+												},
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(60000),
+												Description: `Default: 60000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"retries": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(5),
+												Description: `The number of retries to execute upon failure to proxy. Default: 5`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 32767),
+												},
+											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
+											"slots": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(10000),
+												Description: `The number of slots in the load balancer algorithm. Default: 10000`,
+												Validators: []validator.Int64{
+													int64validator.Between(10, 65536),
+												},
+											},
+											"strategy": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`weighted`),
+												MarkdownDescription: `Selects the algorithm the balancer uses to choose a target. ` + "`" + `weighted` + "`" + ` scores each target on cost` + "\n" +
+													`and quality. ` + "`" + `margin` + "`" + ` selects the cheapest target whose expected quality is within a margin of the` + "\n" +
+													`best target's. For internal testing only: during the tech preview only Kong can set it, behind a` + "\n" +
+													`feature flag. At GA, Kong sets the default to the algorithm it recommends, and the field stays` + "\n" +
+													`accepted so saved configurations keep working.` + "\n" +
+													`possible known values include one of ["weighted", "margin"]; Default: "weighted"`,
+											},
+											"version": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     stringdefault.StaticString(`v1`),
+												Description: `The version of the intelligent balancing algorithm. Default: "v1"; must be "v1"`,
+												Validators: []validator.String{
+													stringvalidator.OneOf("v1"),
+												},
+											},
+											"write_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(60000),
+												Description: `Default: 60000`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+										},
+										MarkdownDescription: `On the first request of a conversation, asks a classifier model what kind of work it is, then` + "\n" +
+											`selects a target by the cost and quality tradeoff. Later requests in the conversation go to the` + "\n" +
+											`same target through session affinity, which is always on for this algorithm: ` + "`" + `ttl` + "`" + ` and ` + "`" + `storage` + "`" + `` + "\n" +
+											`can be set, and ` + "`" + `session_affinity.enabled: false` + "`" + ` is rejected.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -8222,6 +12751,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -8244,6 +13133,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
 												path.MatchRelative().AtParent().AtName("priority"),
@@ -8316,6 +13206,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -8338,6 +13588,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
 												path.MatchRelative().AtParent().AtName("priority"),
@@ -8404,6 +13655,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -8432,6 +14043,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("priority"),
@@ -8498,6 +14110,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -8520,6 +14492,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -8586,6 +14559,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													int64validator.Between(0, 32767),
 												},
 											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
+											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,
@@ -8608,6 +14941,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -8657,6 +14991,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The Azure OpenAI deployment ID for the embeddings model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
+																			stringvalidator.UTF8LengthAtLeast(1),
 																		},
 																	},
 																	"type": schema.StringAttribute{
@@ -8749,6 +15084,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The custom API endpoint for the Gemini model. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"location_id": schema.StringAttribute{
@@ -8757,6 +15093,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"project_id": schema.StringAttribute{
@@ -8765,6 +15102,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																		},
@@ -8899,6 +15237,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `The name of the embeddings model. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 													"provider": schema.StringAttribute{
@@ -8907,6 +15246,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `Reference to a model provider instance by name. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 												},
@@ -8960,6 +15300,366 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Validators: []validator.Int64{
 													int64validator.Between(0, 32767),
 												},
+											},
+											"session_affinity": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether session affinity is enabled. Default: true`,
+													},
+													"storage": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"local": schema.SingleNestedAttribute{
+																Optional: true,
+																MarkdownDescription: `Stores session affinity state in the memory of each data plane node. A request that` + "\n" +
+																	`reaches a different node does not find the earlier target, so the balancer algorithm` + "\n" +
+																	`picks the target.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("redis"),
+																	}...),
+																},
+															},
+															"redis": schema.SingleNestedAttribute{
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"cloud_authentication": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"aws": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"access_key_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"assume_role_arn": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"cache_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"is_serverless": schema.BoolAttribute{
+																						Computed:    true,
+																						Optional:    true,
+																						Default:     booldefault.StaticBool(true),
+																						Description: `This flag specifies whether the cluster is serverless. Default: true`,
+																					},
+																					"region": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"role_session_name": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"secret_access_key": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("azure"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"azure": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"client_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"client_secret": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Client Secret.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																					"tenant_id": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("gcp"),
+																					}...),
+																				},
+																			},
+																			"gcp": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"service_account_json": schema.StringAttribute{
+																						Optional: true,
+																						MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																							`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																					},
+																				},
+																				Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("aws"),
+																						path.MatchRelative().AtParent().AtName("azure"),
+																					}...),
+																				},
+																			},
+																		},
+																		Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+																	},
+																	"cluster": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"max_redirections": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(5),
+																				Description: `Maximum retry attempts for redirection. Default: 5`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"ip": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																		},
+																		Description: `Cluster configuration for the Redis connection.`,
+																	},
+																	"connect_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"connection_is_proxied": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+																	},
+																	"database": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(0),
+																		Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"host": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`127.0.0.1`),
+																		MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "127.0.0.1"`,
+																	},
+																	"keepalive": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"backlog": schema.Int64Attribute{
+																				Optional:    true,
+																				Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(0, 2147483646),
+																				},
+																			},
+																			"pool_size": schema.Int64Attribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Default:     int64default.StaticInt64(256),
+																				Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+																				Validators: []validator.Int64{
+																					int64validator.Between(1, 2147483646),
+																				},
+																			},
+																		},
+																		Description: `Keepalive configuration for the Redis connection.`,
+																	},
+																	"password": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"port": schema.StringAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Default:  stringdefault.StaticString(`6379`),
+																		MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+																			`Default: "6379"`,
+																	},
+																	"read_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"send_timeout": schema.Int64Attribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     int64default.StaticInt64(2000),
+																		Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+																		Validators: []validator.Int64{
+																			int64validator.Between(0, 2147483646),
+																		},
+																	},
+																	"sentinel": schema.SingleNestedAttribute{
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"master": schema.StringAttribute{
+																				Optional:    true,
+																				Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+																			},
+																			"nodes": schema.ListNestedAttribute{
+																				Optional: true,
+																				NestedObject: schema.NestedAttributeObject{
+																					Validators: []validator.Object{
+																						speakeasy_objectvalidators.NotNull(),
+																					},
+																					Attributes: map[string]schema.Attribute{
+																						"host": schema.StringAttribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     stringdefault.StaticString(`127.0.0.1`),
+																							Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																						},
+																						"port": schema.Int64Attribute{
+																							Computed:    true,
+																							Optional:    true,
+																							Default:     int64default.StaticInt64(6379),
+																							Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																							Validators: []validator.Int64{
+																								int64validator.Between(0, 65535),
+																							},
+																						},
+																					},
+																				},
+																				Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+																				Validators: []validator.List{
+																					listvalidator.SizeAtLeast(1),
+																				},
+																			},
+																			"password": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																			"role": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+																			},
+																			"username": schema.StringAttribute{
+																				Optional: true,
+																				MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+																					`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																			},
+																		},
+																		Description: `Configuration for Redis Sentinel.`,
+																	},
+																	"server_name": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																	"ssl": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+																	},
+																	"ssl_verify": schema.BoolAttribute{
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(true),
+																		Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+																	},
+																	"username": schema.StringAttribute{
+																		Optional: true,
+																		MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+																	},
+																},
+																MarkdownDescription: `Stores session affinity state in Redis, so that all data plane nodes share it.` + "\n" +
+																	`Set the inline connection details or reference a Datastore with purpose ` + "`" + `session-affinity` + "`" + `.` + "\n" +
+																	`The Datastore overrides the inline details and must have type ` + "`" + `redis-ee` + "`" + `.`,
+																Validators: []validator.Object{
+																	objectvalidator.ConflictsWith(path.Expressions{
+																		path.MatchRelative().AtParent().AtName("local"),
+																	}...),
+																},
+															},
+														},
+														Description: `Where session affinity state is stored.`,
+													},
+													"ttl": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(21600),
+														Description: `The time in seconds that a conversation's preferred target is kept. Default: 21600`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												MarkdownDescription: `Sends later requests in a conversation to the target that served the earlier turn, if that` + "\n" +
+													`target can still take the request. This improves reuse of the provider's prompt cache.` + "\n" +
+													`Requests are matched by conversation content and provider response IDs, not by a session` + "\n" +
+													`header. Requests with the same conversation content can go to the same target. If the` + "\n" +
+													`preferred target is not available, the balancer algorithm picks the target.`,
 											},
 											"slots": schema.Int64Attribute{
 												Computed:    true,
@@ -9020,16 +15720,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"ssl": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"cert":     types.StringType,
-																	"cert_key": types.StringType,
-																	"enabled":  types.BoolType,
-																	"required": types.BoolType,
-																	"verify":   types.BoolType,
-																	"version":  types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"cert": schema.StringAttribute{
 																		Optional:    true,
@@ -9444,6 +16135,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("intelligent"),
 												path.MatchRelative().AtParent().AtName("least_connections"),
 												path.MatchRelative().AtParent().AtName("lowest_latency"),
 												path.MatchRelative().AtParent().AtName("lowest_usage"),
@@ -9469,12 +16161,15 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     int64default.StaticInt64(8388608),
-								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The maximum size, in bytes, of a request body that the gateway reads and sends to the model.` + "\n" +
+									`A request with a larger body fails. Set to 0 for no limit.` + "\n" +
+									`If you do not set a value, the gateway uses the request size limit that the model's providers publish,` + "\n" +
+									`with defaults to 8 MB.` + "\n" +
+									`If the targets use more than one provider, the gateway uses the highest of these limits.`,
 								Validators: []validator.Int64{
-									int64validator.Between(0, 2147483646),
+									int64validator.AtLeast(0),
 								},
 							},
 							"model": schema.SingleNestedAttribute{
@@ -9490,6 +16185,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -9730,9 +16426,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
 									},
 								},
+								"purpose": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Default:  stringdefault.StaticString(`semantic-balancer`),
+									MarkdownDescription: `The model feature that uses the datastore. ` + "`" + `semantic-balancer` + "`" + ` supplies the connection of the` + "\n" +
+										`model vector store.` + "\n" +
+										`possible known values include one of ["semantic-balancer", "session-affinity"]; Default: "semantic-balancer"`,
+								},
 							},
 						},
-						Description: `Names of the Datastores this model references.`,
+						Description: `The Datastores this model references, with the feature that uses each one.`,
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -9760,15 +16464,13 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								"type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]`,
+									Description: `The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to ` + "`" + `*` + "`" + ` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of ` + "`" + `*` + "`" + `. The ` + "`" + `*` + "`" + ` format never includes passthrough. possible known values include one of ["*", "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]`,
 								},
 							},
 						},
-						Description: `List of request/response formats supported by this model. Not Null`,
+						Description: `List of request/response formats supported by this model.`,
 						Validators: []validator.List{
-							speakeasy_listvalidators.NotNull(),
 							listvalidator.SizeAtLeast(1),
-							listvalidator.SizeAtMost(1),
 						},
 					},
 					"id": schema.StringAttribute{
@@ -9794,7 +16496,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -9900,6 +16604,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -9921,6 +16626,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -10085,6 +16791,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -10107,14 +16819,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -10198,6 +16913,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -10219,6 +16935,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -10398,6 +17115,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -10414,14 +17137,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -10499,6 +17225,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -10520,6 +17247,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -10684,6 +17412,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -10706,14 +17440,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -10795,6 +17532,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -10816,6 +17554,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -10855,9 +17594,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Whether to normalize embedding vectors in the response. Default: false`,
 												},
 												"endpoint_type": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
-													Default:  stringdefault.StaticString(`runtime`),
 													MarkdownDescription: `The AWS Bedrock inference endpoint that requests to this target are sent to.` + "\n" +
 														`` + "`" + `runtime` + "`" + ` sends requests to the Bedrock Runtime endpoint` + "\n" +
 														`(` + "`" + `bedrock-runtime.{region}.amazonaws.com` + "`" + `). ` + "`" + `mantle` + "`" + ` sends requests to the` + "\n" +
@@ -10869,7 +17606,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														`does not support the Bedrock Converse or InvokeModel APIs.` + "\n" +
 														`` + "\n" +
 														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
-														`possible known values include one of ["runtime", "mantle"]; Default: "runtime"`,
+														`possible known values include one of ["runtime", "mantle"]`,
 												},
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -11012,6 +17749,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -11039,14 +17782,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -11124,6 +17870,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -11145,6 +17892,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -11309,6 +18057,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -11325,14 +18079,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -11418,6 +18175,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -11439,6 +18197,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -11609,6 +18368,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -11631,14 +18396,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -11716,6 +18484,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -11737,6 +18506,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -11907,6 +18677,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -11923,14 +18699,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -12008,6 +18787,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12029,6 +18809,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -12193,6 +18974,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -12203,6 +18990,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The Databricks workspace instance ID. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -12217,14 +19005,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -12302,6 +19093,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12323,6 +19115,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -12487,6 +19280,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -12503,14 +19302,323 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("cohere"),
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
+													path.MatchRelative().AtParent().AtName("typesafe"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"fireworks": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 500),
+													},
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
+												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `Fireworks AI-specific configuration for a model. Requests are sent to the Fireworks` + "\n" +
+												`inference API at ` + "`" + `https://api.fireworks.ai/inference/v1` + "`" + ` by default, and the target ` + "`" + `name` + "`" + `` + "\n" +
+												`is the Fireworks model ID, passed through as-is (for example,` + "\n" +
+												`` + "`" + `accounts/fireworks/models/llama-v3p1-70b-instruct` + "`" + `). Use the ` + "`" + `openai` + "`" + ` format for the` + "\n" +
+												`Chat Completions, Completions, Responses, Embeddings, Rerank, and Decisions APIs, and the` + "\n" +
+												`` + "`" + `anthropic` + "`" + ` format for the Messages API. To keep traffic in the US-only region, set` + "\n" +
+												`` + "`" + `upstream_url` + "`" + ` to ` + "`" + `https://us.api.fireworks.ai/inference/v1` + "`" + `. Upstream errors, including` + "\n" +
+												`` + "`" + `max_tokens` + "`" + ` truncation behavior, are returned as produced by Fireworks.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("baseten"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -12588,6 +19696,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12609,6 +19718,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -12651,6 +19761,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The custom API endpoint for the Gemini model. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"location_id": schema.StringAttribute{
@@ -12659,6 +19770,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"project_id": schema.StringAttribute{
@@ -12667,6 +19779,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 													},
@@ -12804,6 +19917,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -12821,13 +19940,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -12905,6 +20027,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12926,6 +20049,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -13090,6 +20214,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -13119,13 +20249,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -13203,6 +20336,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -13224,6 +20358,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -13396,6 +20531,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -13413,13 +20554,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -13497,6 +20641,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -13518,6 +20663,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -13690,15 +20836,27 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
-											Description: `Llama2-specific configuration for a model.`,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Llama2-specific configuration for a model.` + "\n" +
+												`` + "\n" +
+												`Deprecated: the ` + "`" + `llama2` + "`" + ` provider is deprecated and will be removed in 3.0. Migrate by the` + "\n" +
+												`` + "`" + `format` + "`" + ` value: ` + "`" + `ollama` + "`" + ` maps to the ` + "`" + `ollama` + "`" + ` provider, ` + "`" + `openai` + "`" + ` maps to the ` + "`" + `openai` + "`" + ` provider` + "\n" +
+												`with ` + "`" + `upstream_url` + "`" + ` set, or to the ` + "`" + `vllm` + "`" + ` provider; ` + "`" + `raw` + "`" + ` has no replacement provider.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
@@ -13710,13 +20868,322 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
+													path.MatchRelative().AtParent().AtName("typesafe"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"meta": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 500),
+													},
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
+												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `Meta-specific configuration for a model served by Meta's hosted Model API. Requests are` + "\n" +
+												`sent to ` + "`" + `https://api.meta.ai/v1` + "`" + ` by default, and the target ` + "`" + `name` + "`" + ` is the Meta model ID` + "\n" +
+												`(for example, ` + "`" + `muse-spark-1.3` + "`" + `). Model IDs are passed through as-is, including` + "\n" +
+												`` + "`" + `-contributor` + "`" + ` variants, which permit Meta to train on submitted prompts; choose them` + "\n" +
+												`deliberately. Use the ` + "`" + `openai` + "`" + ` format for the Chat Completions and Responses APIs and the` + "\n" +
+												`` + "`" + `anthropic` + "`" + ` format for the Messages API. Self-hosted open-weight models (such as Muse Glimmer)` + "\n" +
+												`should use the ` + "`" + `ollama` + "`" + ` provider, or the ` + "`" + `openai` + "`" + ` provider with ` + "`" + `upstream_url` + "`" + ` set on the` + "\n" +
+												`target (or the ` + "`" + `vllm` + "`" + ` provider); the ` + "`" + `llama2` + "`" + ` provider is deprecated.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("baseten"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -13794,6 +21261,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -13815,6 +21283,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -13987,6 +21456,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -14004,13 +21479,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -14088,6 +21566,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -14109,6 +21588,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -14273,6 +21753,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -14290,13 +21776,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -14374,6 +21863,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -14395,6 +21885,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -14559,6 +22050,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -14576,13 +22073,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -14594,14 +22094,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aws": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"assume_role_arn":   types.StringType,
-														"region":            types.StringType,
-														"role_session_name": types.StringType,
-														"sts_endpoint_url":  types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"assume_role_arn": schema.StringAttribute{
 															Optional:    true,
@@ -14688,6 +22181,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -14709,6 +22203,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -14853,13 +22348,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"container_hostname": types.StringType,
-														"model":              types.StringType,
-														"variant":            types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"container_hostname": schema.StringAttribute{
 															Optional:    true,
@@ -14896,6 +22385,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -14913,13 +22408,318 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
+													path.MatchRelative().AtParent().AtName("typesafe"),
+													path.MatchRelative().AtParent().AtName("vercel"),
+													path.MatchRelative().AtParent().AtName("vllm"),
+													path.MatchRelative().AtParent().AtName("xai"),
+												}...),
+											},
+										},
+										"togetherai": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M cache-write prompt tokens for this TTL. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.`,
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to input pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to output pricing above the threshold. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input and output pricing by the corresponding factor.`,
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The number of dimensions for embedding outputs.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"input_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"max_tokens": schema.Int64Attribute{
+													Optional:    true,
+													Description: `The maximum number of tokens to generate in the response.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 2147483646),
+													},
+												},
+												"output_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Multiplier applied to the whole request for this service tier. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
+												},
+												"temperature": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
+												},
+												"top_k": schema.Int64Attribute{
+													Optional:    true,
+													Description: `Limits the number of highest-probability tokens considered during generation.`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 500),
+													},
+												},
+												"top_p": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
+												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
+												"upstream_url": schema.StringAttribute{
+													Optional:    true,
+													Description: `The upstream URL for the model endpoint.`,
+												},
+											},
+											MarkdownDescription: `Together AI-specific configuration for a model. Together AI is fully OpenAI-compatible:` + "\n" +
+												`requests are sent to ` + "`" + `https://api.together.xyz/v1` + "`" + ` by default using the ` + "`" + `openai` + "`" + ` format,` + "\n" +
+												`and the target ` + "`" + `name` + "`" + ` is the Together model ID, passed through as-is (for example,` + "\n" +
+												`` + "`" + `meta-llama/Llama-3.3-70B-Instruct-Turbo` + "`" + `). Override the base URL with ` + "`" + `upstream_url` + "`" + `.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("anthropic"),
+													path.MatchRelative().AtParent().AtName("azure"),
+													path.MatchRelative().AtParent().AtName("baseten"),
+													path.MatchRelative().AtParent().AtName("bedrock"),
+													path.MatchRelative().AtParent().AtName("cerebras"),
+													path.MatchRelative().AtParent().AtName("cohere"),
+													path.MatchRelative().AtParent().AtName("dashscope"),
+													path.MatchRelative().AtParent().AtName("databricks"),
+													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
+													path.MatchRelative().AtParent().AtName("gemini"),
+													path.MatchRelative().AtParent().AtName("huggingface"),
+													path.MatchRelative().AtParent().AtName("kimi"),
+													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
+													path.MatchRelative().AtParent().AtName("mistral"),
+													path.MatchRelative().AtParent().AtName("ollama"),
+													path.MatchRelative().AtParent().AtName("openai"),
+													path.MatchRelative().AtParent().AtName("sagemaker"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -14944,6 +22744,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.AtLeast(0),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the default Typesafe endpoint. The gateway appends the forwarded request path to this base URL. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -14963,14 +22769,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -15047,6 +22856,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -15068,6 +22878,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -15232,6 +23043,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -15249,14 +23066,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vllm"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -15333,6 +23153,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -15354,6 +23175,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -15518,11 +23340,18 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -15538,14 +23367,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("xai"),
@@ -15622,6 +23454,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -15643,6 +23476,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -15807,6 +23641,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														float64validator.Between(0, 1),
 													},
 												},
+												"upstream_base_url": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with ` + "`" + `upstream_url` + "`" + `, which replaces the full URL. Providers without a default upstream URL ignore it.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
 													Description: `The upstream URL for the model endpoint.`,
@@ -15824,14 +23664,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													path.MatchRelative().AtParent().AtName("dashscope"),
 													path.MatchRelative().AtParent().AtName("databricks"),
 													path.MatchRelative().AtParent().AtName("deepseek"),
+													path.MatchRelative().AtParent().AtName("fireworks"),
 													path.MatchRelative().AtParent().AtName("gemini"),
 													path.MatchRelative().AtParent().AtName("huggingface"),
 													path.MatchRelative().AtParent().AtName("kimi"),
 													path.MatchRelative().AtParent().AtName("llama2"),
+													path.MatchRelative().AtParent().AtName("meta"),
 													path.MatchRelative().AtParent().AtName("mistral"),
 													path.MatchRelative().AtParent().AtName("ollama"),
 													path.MatchRelative().AtParent().AtName("openai"),
 													path.MatchRelative().AtParent().AtName("sagemaker"),
+													path.MatchRelative().AtParent().AtName("togetherai"),
 													path.MatchRelative().AtParent().AtName("typesafe"),
 													path.MatchRelative().AtParent().AtName("vercel"),
 													path.MatchRelative().AtParent().AtName("vllm"),
@@ -15850,6 +23693,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `The name of the model defined in the upstream provider that will be executed. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"provider": schema.StringAttribute{
@@ -15858,6 +23702,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `Reference to a model provider instance by name. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"semantic_description": schema.StringAttribute{

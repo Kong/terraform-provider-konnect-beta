@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -99,11 +98,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
@@ -121,6 +130,85 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying consumer groups access to` + "\n" +
+											`prompts. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check` + "\n" +
+											`above. Applies to every prompt exposed by this MCP Server unless a specific prompt` + "\n" +
+											`overrides it via that prompt's own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted` + "\n" +
+											`from ` + "`" + `prompts/list` + "`" + ` and rejected on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only` + "\n" +
+											`by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying consumer groups access` + "\n" +
+											`to resources and resource templates. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -131,11 +219,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 											},
 										},
 										MarkdownDescription: `Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
@@ -218,11 +320,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
@@ -241,6 +353,86 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying callers access to prompts,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every` + "\n" +
+											`prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's` + "\n" +
+											`own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted from ` + "`" + `prompts/list` + "`" + ` and rejected` + "\n" +
+											`on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying callers access to` + "\n" +
+											`resources and resource templates, evaluated against the value of the configured` + "\n" +
+											`` + "`" + `access_token_claim_field` + "`" + `. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -251,11 +443,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 											},
 										},
 										MarkdownDescription: `Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
@@ -334,6 +540,65 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									listvalidator.SizeAtLeast(1),
 								},
 							},
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
 							"ca_certificates": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -371,6 +636,57 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+									"prompts_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `prompts/list` + "`" + ` results. ` + "`" + `cache_scope: public` + "`" + ` is rejected when` + "\n" +
+											`` + "`" + `default_prompt_acls` + "`" + ` or a prompt's own ` + "`" + `access.acls` + "`" + ` filters the list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"resources_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` results.` + "\n" +
+											`` + "`" + `cache_scope: public` + "`" + ` is rejected when ` + "`" + `default_resource_acls` + "`" + ` or a resource's own` + "\n" +
+											`` + "`" + `access.acls` + "`" + ` filters either list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
 									},
 									"tools_list": schema.SingleNestedAttribute{
 										Computed: true,
@@ -446,6 +762,22 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Validators: []validator.Int64{
 									int64validator.Between(0, 2147483646),
 								},
+							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -539,7 +871,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -552,107 +888,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -1013,6 +1252,47 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								Description: `Server-side configuration for the MCP Server.`,
 							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -1068,13 +1348,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -1158,7 +1436,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -1239,88 +1519,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"cache": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"redis": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`cloud_authentication`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`aws`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`access_key_id`:     types.StringType,
-															`assume_role_arn`:   types.StringType,
-															`cache_name`:        types.StringType,
-															`is_serverless`:     types.BoolType,
-															`region`:            types.StringType,
-															`role_session_name`: types.StringType,
-															`secret_access_key`: types.StringType,
-														},
-													},
-													`azure`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`client_id`:     types.StringType,
-															`client_secret`: types.StringType,
-															`tenant_id`:     types.StringType,
-														},
-													},
-													`gcp`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`service_account_json`: types.StringType,
-														},
-													},
-												},
-											},
-											`cluster`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`max_redirections`: types.Int64Type,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`ip`:   types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-												},
-											},
-											`connect_timeout`:       types.Int64Type,
-											`connection_is_proxied`: types.BoolType,
-											`database`:              types.Int64Type,
-											`host`:                  types.StringType,
-											`keepalive`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`backlog`:   types.Int64Type,
-													`pool_size`: types.Int64Type,
-												},
-											},
-											`password`:     types.StringType,
-											`port`:         types.StringType,
-											`read_timeout`: types.Int64Type,
-											`send_timeout`: types.Int64Type,
-											`sentinel`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`master`: types.StringType,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`host`: types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-													`password`: types.StringType,
-													`role`:     types.StringType,
-													`username`: types.StringType,
-												},
-											},
-											`server_name`: types.StringType,
-											`ssl`:         types.BoolType,
-											`ssl_verify`:  types.BoolType,
-											`username`:    types.StringType,
-										},
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"redis": schema.SingleNestedAttribute{
 										Computed: true,
@@ -1707,6 +1906,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -1739,6 +1939,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 											},
 											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
 												"version": schema.StringAttribute{
 													Computed: true,
 													PlanModifiers: []planmodifier.String{
@@ -1753,7 +1957,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
 									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
-									`the Datastore. Key material is never returned.`,
+									`the Datastore.`,
 							},
 							"subject_token_type": schema.StringAttribute{
 								Computed: true,
@@ -1797,11 +2001,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 												},
 											},
 											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
@@ -1898,6 +2116,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Description: `The name of the parameter. Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 											"required": schema.BoolAttribute{
@@ -1982,6 +2201,65 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
 							"ca_certificates": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -2036,6 +2314,22 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -2131,6 +2425,47 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
 									`incoming requests.`,
 							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -2186,13 +2521,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -2276,7 +2609,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -2298,88 +2633,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"cache": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"redis": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`cloud_authentication`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`aws`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`access_key_id`:     types.StringType,
-															`assume_role_arn`:   types.StringType,
-															`cache_name`:        types.StringType,
-															`is_serverless`:     types.BoolType,
-															`region`:            types.StringType,
-															`role_session_name`: types.StringType,
-															`secret_access_key`: types.StringType,
-														},
-													},
-													`azure`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`client_id`:     types.StringType,
-															`client_secret`: types.StringType,
-															`tenant_id`:     types.StringType,
-														},
-													},
-													`gcp`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`service_account_json`: types.StringType,
-														},
-													},
-												},
-											},
-											`cluster`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`max_redirections`: types.Int64Type,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`ip`:   types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-												},
-											},
-											`connect_timeout`:       types.Int64Type,
-											`connection_is_proxied`: types.BoolType,
-											`database`:              types.Int64Type,
-											`host`:                  types.StringType,
-											`keepalive`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`backlog`:   types.Int64Type,
-													`pool_size`: types.Int64Type,
-												},
-											},
-											`password`:     types.StringType,
-											`port`:         types.StringType,
-											`read_timeout`: types.Int64Type,
-											`send_timeout`: types.Int64Type,
-											`sentinel`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`master`: types.StringType,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`host`: types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-													`password`: types.StringType,
-													`role`:     types.StringType,
-													`username`: types.StringType,
-												},
-											},
-											`server_name`: types.StringType,
-											`ssl`:         types.BoolType,
-											`ssl_verify`:  types.BoolType,
-											`username`:    types.StringType,
-										},
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"redis": schema.SingleNestedAttribute{
 										Computed: true,
@@ -2766,6 +3020,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -2798,6 +3053,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 											},
 											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
 												"version": schema.StringAttribute{
 													Computed: true,
 													PlanModifiers: []planmodifier.String{
@@ -2812,7 +3071,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
 									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
-									`the Datastore. Key material is never returned.`,
+									`the Datastore.`,
 							},
 							"subject_token_type": schema.StringAttribute{
 								Computed: true,
@@ -2856,11 +3115,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 												},
 											},
 											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
@@ -2957,6 +3230,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Description: `The name of the parameter. Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 											"required": schema.BoolAttribute{
@@ -3083,11 +3357,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
@@ -3105,6 +3389,85 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying consumer groups access to` + "\n" +
+											`prompts. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check` + "\n" +
+											`above. Applies to every prompt exposed by this MCP Server unless a specific prompt` + "\n" +
+											`overrides it via that prompt's own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted` + "\n" +
+											`from ` + "`" + `prompts/list` + "`" + ` and rejected on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only` + "\n" +
+											`by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying consumer groups access` + "\n" +
+											`to resources and resource templates. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -3115,11 +3478,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 											},
 										},
 										MarkdownDescription: `Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
@@ -3202,11 +3579,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
@@ -3225,6 +3612,86 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying callers access to prompts,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every` + "\n" +
+											`prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's` + "\n" +
+											`own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted from ` + "`" + `prompts/list` + "`" + ` and rejected` + "\n" +
+											`on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying callers access to` + "\n" +
+											`resources and resource templates, evaluated against the value of the configured` + "\n" +
+											`` + "`" + `access_token_claim_field` + "`" + `. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -3235,11 +3702,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 											},
 										},
 										MarkdownDescription: `Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
@@ -3343,6 +3824,57 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+									"prompts_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `prompts/list` + "`" + ` results. ` + "`" + `cache_scope: public` + "`" + ` is rejected when` + "\n" +
+											`` + "`" + `default_prompt_acls` + "`" + ` or a prompt's own ` + "`" + `access.acls` + "`" + ` filters the list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"resources_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` results.` + "\n" +
+											`` + "`" + `cache_scope: public` + "`" + ` is rejected when ` + "`" + `default_resource_acls` + "`" + ` or a resource's own` + "\n" +
+											`` + "`" + `access.acls` + "`" + ` filters either list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
 									},
 									"tools_list": schema.SingleNestedAttribute{
 										Computed: true,
@@ -3493,7 +4025,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -3506,107 +4042,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -4048,7 +4487,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -4084,88 +4525,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"cache": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"redis": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`cloud_authentication`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`aws`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`access_key_id`:     types.StringType,
-															`assume_role_arn`:   types.StringType,
-															`cache_name`:        types.StringType,
-															`is_serverless`:     types.BoolType,
-															`region`:            types.StringType,
-															`role_session_name`: types.StringType,
-															`secret_access_key`: types.StringType,
-														},
-													},
-													`azure`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`client_id`:     types.StringType,
-															`client_secret`: types.StringType,
-															`tenant_id`:     types.StringType,
-														},
-													},
-													`gcp`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`service_account_json`: types.StringType,
-														},
-													},
-												},
-											},
-											`cluster`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`max_redirections`: types.Int64Type,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`ip`:   types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-												},
-											},
-											`connect_timeout`:       types.Int64Type,
-											`connection_is_proxied`: types.BoolType,
-											`database`:              types.Int64Type,
-											`host`:                  types.StringType,
-											`keepalive`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`backlog`:   types.Int64Type,
-													`pool_size`: types.Int64Type,
-												},
-											},
-											`password`:     types.StringType,
-											`port`:         types.StringType,
-											`read_timeout`: types.Int64Type,
-											`send_timeout`: types.Int64Type,
-											`sentinel`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`master`: types.StringType,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`host`: types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-													`password`: types.StringType,
-													`role`:     types.StringType,
-													`username`: types.StringType,
-												},
-											},
-											`server_name`: types.StringType,
-											`ssl`:         types.BoolType,
-											`ssl_verify`:  types.BoolType,
-											`username`:    types.StringType,
-										},
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"redis": schema.SingleNestedAttribute{
 										Computed: true,
@@ -4552,6 +4912,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -4584,6 +4945,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 											},
 											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
 												"version": schema.StringAttribute{
 													Computed: true,
 													PlanModifiers: []planmodifier.String{
@@ -4598,7 +4963,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
 									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
-									`the Datastore. Key material is never returned.`,
+									`the Datastore.`,
 							},
 							"subject_token_type": schema.StringAttribute{
 								Computed: true,
@@ -4664,11 +5029,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
@@ -4686,6 +5061,85 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying consumer groups access to` + "\n" +
+											`prompts. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check` + "\n" +
+											`above. Applies to every prompt exposed by this MCP Server unless a specific prompt` + "\n" +
+											`overrides it via that prompt's own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted` + "\n" +
+											`from ` + "`" + `prompts/list` + "`" + ` and rejected on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only` + "\n" +
+											`by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying consumer groups access` + "\n" +
+											`to resources and resource templates. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -4696,11 +5150,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 											},
 										},
 										MarkdownDescription: `Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
@@ -4783,11 +5251,21 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
@@ -4806,6 +5284,86 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying callers access to prompts,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every` + "\n" +
+											`prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's` + "\n" +
+											`own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted from ` + "`" + `prompts/list` + "`" + ` and rejected` + "\n" +
+											`on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying callers access to` + "\n" +
+											`resources and resource templates, evaluated against the value of the configured` + "\n" +
+											`` + "`" + `access_token_claim_field` + "`" + `. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -4816,11 +5374,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 											},
 										},
 										MarkdownDescription: `Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
@@ -4886,6 +5458,65 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
 							"ca_certificates": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -4944,7 +5575,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									int64validator.Between(0, 2147483646),
 								},
 							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
+							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -5105,107 +5753,14 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"forward_client_headers": types.BoolType,
-									"session": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`client`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											`managed`: types.BoolType,
-											`redis`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											`session_ttl`: types.Int64Type,
-											`strategy`:    types.StringType,
-										},
-									},
-									"timeout": types.Int64Type,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"forward_client_headers": schema.BoolAttribute{
 										Computed:    true,
@@ -5214,107 +5769,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -5675,6 +6133,47 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								Description: `Server-side configuration for the MCP Server.`,
 							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -5730,13 +6229,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -5820,7 +6317,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -5837,6 +6336,79 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of policy references.`,
+					},
+					"prompts": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this prompt (` + "`" + `prompts/get` + "`" + `),` + "\n" +
+												`and whether it is listed to them (` + "`" + `prompts/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_prompt_acls` + "`" + ` for this prompt.`,
+										},
+									},
+									Description: `Access-control rules for a prompt. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"name": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP prompt name. Matches the prompt advertised by the remote MCP Server under the same` + "\n" +
+										`name. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `Per-prompt access-control overrides for prompts advertised by the remote MCP Server.` + "\n" +
+							`Each entry is matched to a remote prompt by ` + "`" + `name` + "`" + `; only its access-control rules are` + "\n" +
+							`applied. Prompts without an entry are governed by ` + "`" + `access.default_prompt_acls` + "`" + `. Each` + "\n" +
+							`` + "`" + `name` + "`" + ` must be unique within this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
 					},
 					"rate_limiting": schema.SingleNestedAttribute{
 						Optional: true,
@@ -5897,92 +6469,86 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							`` + "\n" +
 							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 					},
+					"resources": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this resource` + "\n" +
+												`(` + "`" + `resources/read` + "`" + `, ` + "`" + `resources/subscribe` + "`" + `), and whether it is listed to them` + "\n" +
+												`(` + "`" + `resources/list` + "`" + `, ` + "`" + `resources/templates/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_resource_acls` + "`" + ` for this resource.`,
+										},
+									},
+									Description: `Access-control rules for a resource or resource template. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"uri": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP resource URI. Matches the resource advertised by the remote MCP Server under the` + "\n" +
+										`same ` + "`" + `uri` + "`" + `, or the resource template advertised under the same ` + "`" + `uriTemplate` + "`" + `. A URI` + "\n" +
+										`template (RFC 6570) also matches every concrete resource URI it expands to, so one entry` + "\n" +
+										`can govern a whole template. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 2048),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `Per-resource access-control overrides for resources and resource templates advertised` + "\n" +
+							`by the remote MCP Server. Each entry is matched to a remote resource by ` + "`" + `uri` + "`" + `; only its` + "\n" +
+							`access-control rules are applied. Resources without an entry are governed by` + "\n" +
+							`` + "`" + `access.default_resource_acls` + "`" + `. Each ` + "`" + `uri` + "`" + ` must be unique within this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+					},
 					"token_vault": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"cache": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"redis": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`cloud_authentication`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`aws`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`access_key_id`:     types.StringType,
-															`assume_role_arn`:   types.StringType,
-															`cache_name`:        types.StringType,
-															`is_serverless`:     types.BoolType,
-															`region`:            types.StringType,
-															`role_session_name`: types.StringType,
-															`secret_access_key`: types.StringType,
-														},
-													},
-													`azure`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`client_id`:     types.StringType,
-															`client_secret`: types.StringType,
-															`tenant_id`:     types.StringType,
-														},
-													},
-													`gcp`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`service_account_json`: types.StringType,
-														},
-													},
-												},
-											},
-											`cluster`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`max_redirections`: types.Int64Type,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`ip`:   types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-												},
-											},
-											`connect_timeout`:       types.Int64Type,
-											`connection_is_proxied`: types.BoolType,
-											`database`:              types.Int64Type,
-											`host`:                  types.StringType,
-											`keepalive`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`backlog`:   types.Int64Type,
-													`pool_size`: types.Int64Type,
-												},
-											},
-											`password`:     types.StringType,
-											`port`:         types.StringType,
-											`read_timeout`: types.Int64Type,
-											`send_timeout`: types.Int64Type,
-											`sentinel`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`master`: types.StringType,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`host`: types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-													`password`: types.StringType,
-													`role`:     types.StringType,
-													`username`: types.StringType,
-												},
-											},
-											`server_name`: types.StringType,
-											`ssl`:         types.BoolType,
-											`ssl_verify`:  types.BoolType,
-											`username`:    types.StringType,
-										},
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"redis": schema.SingleNestedAttribute{
 										Computed: true,
@@ -6369,6 +6935,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -6401,6 +6968,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 											},
 											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
 												"version": schema.StringAttribute{
 													Computed: true,
 													PlanModifiers: []planmodifier.String{
@@ -6415,7 +6986,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
 									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
-									`the Datastore. Key material is never returned.`,
+									`the Datastore.`,
 							},
 							"subject_token_type": schema.StringAttribute{
 								Computed: true,
@@ -6459,11 +7030,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 												},
 											},
 											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
@@ -6481,6 +7066,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `Tool identifier used to match remote MCP Server tools for ACL enforcement. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 							},
@@ -6519,6 +7105,65 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
 							"ca_certificates": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -6576,6 +7221,22 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Validators: []validator.Int64{
 									int64validator.Between(0, 2147483646),
 								},
+							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -6669,7 +7330,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -6691,107 +7356,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default: false`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -7172,6 +7740,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 													"client_secret": schema.StringAttribute{
@@ -7198,6 +7767,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 												},
@@ -7250,6 +7820,47 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									},
 								},
 								Description: `Server-side configuration specific to ` + "`" + `upstream-server` + "`" + ` mode.`,
+							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"tools_cache_ttl_seconds": schema.Int64Attribute{
 								Computed: true,
@@ -7317,13 +7928,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -7407,7 +8016,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -7425,92 +8036,153 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						Description: `List of policy references.`,
 					},
+					"prompts": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this prompt (` + "`" + `prompts/get` + "`" + `),` + "\n" +
+												`and whether it is listed to them (` + "`" + `prompts/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_prompt_acls` + "`" + ` for this prompt.`,
+										},
+									},
+									Description: `Access-control rules for a prompt. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"name": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP prompt name. Matches the prompt advertised by the remote MCP Server under the same` + "\n" +
+										`name. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `List of prompts exposed by this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+					},
+					"resources": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this resource` + "\n" +
+												`(` + "`" + `resources/read` + "`" + `, ` + "`" + `resources/subscribe` + "`" + `), and whether it is listed to them` + "\n" +
+												`(` + "`" + `resources/list` + "`" + `, ` + "`" + `resources/templates/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_resource_acls` + "`" + ` for this resource.`,
+										},
+									},
+									Description: `Access-control rules for a resource or resource template. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"uri": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP resource URI. Matches the resource advertised by the remote MCP Server under the` + "\n" +
+										`same ` + "`" + `uri` + "`" + `, or the resource template advertised under the same ` + "`" + `uriTemplate` + "`" + `. A URI` + "\n" +
+										`template (RFC 6570) also matches every concrete resource URI it expands to, so one entry` + "\n" +
+										`can govern a whole template. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 2048),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `List of resources exposed by this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+					},
 					"token_vault": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"cache": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"redis": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`cloud_authentication`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`aws`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`access_key_id`:     types.StringType,
-															`assume_role_arn`:   types.StringType,
-															`cache_name`:        types.StringType,
-															`is_serverless`:     types.BoolType,
-															`region`:            types.StringType,
-															`role_session_name`: types.StringType,
-															`secret_access_key`: types.StringType,
-														},
-													},
-													`azure`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`client_id`:     types.StringType,
-															`client_secret`: types.StringType,
-															`tenant_id`:     types.StringType,
-														},
-													},
-													`gcp`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`service_account_json`: types.StringType,
-														},
-													},
-												},
-											},
-											`cluster`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`max_redirections`: types.Int64Type,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`ip`:   types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-												},
-											},
-											`connect_timeout`:       types.Int64Type,
-											`connection_is_proxied`: types.BoolType,
-											`database`:              types.Int64Type,
-											`host`:                  types.StringType,
-											`keepalive`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`backlog`:   types.Int64Type,
-													`pool_size`: types.Int64Type,
-												},
-											},
-											`password`:     types.StringType,
-											`port`:         types.StringType,
-											`read_timeout`: types.Int64Type,
-											`send_timeout`: types.Int64Type,
-											`sentinel`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`master`: types.StringType,
-													`nodes`: types.ListType{
-														ElemType: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`host`: types.StringType,
-																`port`: types.Int64Type,
-															},
-														},
-													},
-													`password`: types.StringType,
-													`role`:     types.StringType,
-													`username`: types.StringType,
-												},
-											},
-											`server_name`: types.StringType,
-											`ssl`:         types.BoolType,
-											`ssl_verify`:  types.BoolType,
-											`username`:    types.StringType,
-										},
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"redis": schema.SingleNestedAttribute{
 										Computed: true,
@@ -7897,6 +8569,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -7929,6 +8602,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 											},
 											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
 												"version": schema.StringAttribute{
 													Computed: true,
 													PlanModifiers: []planmodifier.String{
@@ -7943,7 +8620,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
 									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
-									`the Datastore. Key material is never returned.`,
+									`the Datastore.`,
 							},
 							"subject_token_type": schema.StringAttribute{
 								Computed: true,
@@ -7987,11 +8664,25 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 												},
 											},
 											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +

@@ -6,15 +6,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -60,6 +59,7 @@ type PortalResourceModel struct {
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
 	SiprEnabled                                types.Bool              `tfsdk:"sipr_enabled"`
+	ThemeName                                  types.String            `tfsdk:"theme_name"`
 	UpdatedAt                                  types.String            `tfsdk:"updated_at"`
 }
 
@@ -88,9 +88,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							"ai_search": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"enabled": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
@@ -118,18 +115,27 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Default: false`,
 									},
 								},
-								Description: `AI Features config. Not Null`,
-								Validators: []validator.Object{
-									speakeasy_objectvalidators.NotNull(),
-								},
+								Description: `AI Features config`,
 							},
 							"portal_agent": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"enabled": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
+									"audience": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`all`),
+										Description: `The audience allowed to interact with the Portal Agent. ` + "`" + `all` + "`" + ` makes the Portal Agent available to every developer, including unauthenticated ones. ` + "`" + `authenticated` + "`" + ` restricts access to signed-in developers only. possible known values include one of ["all", "authenticated"]; Default: "all"`,
+									},
+									"display_name": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`AI`),
+										Description: `The display name for the Portal Agent, shown to developers in the portal. Default: "AI"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthBetween(1, 30),
+										},
+									},
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
@@ -280,6 +286,13 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
 				Description: `Whether ip allow list is enabled for the portal. Default: false`,
+			},
+			"theme_name": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when ` + "`" + `create_default_content` + "`" + ` is true. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

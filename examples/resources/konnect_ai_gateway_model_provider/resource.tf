@@ -863,6 +863,102 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       subject_token_type = "api_key"
     }
   }
+  fireworks = {
+    config = {
+      auth = {
+        headers = [
+          {
+            name  = "...my_name..."
+            value = "...my_value..."
+          }
+        ]
+        params = [
+          {
+            location = "query"
+            name     = "...my_name..."
+            value    = "...my_value..."
+          }
+        ]
+      }
+    }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
+    display_name = "Azure AI SE"
+    labels = {
+      key = "value"
+    }
+    managed_by = {
+      key = "value"
+    }
+    name = "azure-ai-se"
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            azure = {
+              client_id     = "...my_client_id..."
+              client_secret = "...my_client_secret..."
+              tenant_id     = "...my_tenant_id..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 1211673096
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "slave"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "header"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "body"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "access_token"
+    }
+  }
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   gemini = {
     config = {
@@ -1246,6 +1342,100 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
         }
         outbound = {
           location = "query"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "api_key"
+    }
+  }
+  meta = {
+    config = {
+      auth = {
+        headers = [
+          {
+            name  = "...my_name..."
+            value = "...my_value..."
+          }
+        ]
+        params = [
+          {
+            location = "query"
+            name     = "...my_name..."
+            value    = "...my_value..."
+          }
+        ]
+      }
+    }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
+    display_name = "Azure AI SE"
+    labels = {
+      key = "value"
+    }
+    managed_by = {
+      key = "value"
+    }
+    name = "azure-ai-se"
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            gcp = {
+              service_account_json = "...my_service_account_json..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 552848536
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "any"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "body"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "body"
           name     = "...my_name..."
           prefix   = "...my_prefix..."
         }
@@ -1646,6 +1836,106 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
       }
       provider           = "...my_provider..."
       subject_token_type = "access_token"
+    }
+  }
+  togetherai = {
+    config = {
+      auth = {
+        headers = [
+          {
+            name  = "...my_name..."
+            value = "...my_value..."
+          }
+        ]
+        params = [
+          {
+            location = "body"
+            name     = "...my_name..."
+            value    = "...my_value..."
+          }
+        ]
+      }
+    }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
+    display_name = "Azure AI SE"
+    labels = {
+      key = "value"
+    }
+    managed_by = {
+      key = "value"
+    }
+    name = "azure-ai-se"
+    token_vault = {
+      cache = {
+        redis = {
+          cloud_authentication = {
+            aws = {
+              access_key_id     = "...my_access_key_id..."
+              assume_role_arn   = "...my_assume_role_arn..."
+              cache_name        = "...my_cache_name..."
+              is_serverless     = true
+              region            = "...my_region..."
+              role_session_name = "...my_role_session_name..."
+              secret_access_key = "...my_secret_access_key..."
+            }
+          }
+          cluster = {
+            max_redirections = 5
+            nodes = [
+              {
+                ip   = "127.0.0.1"
+                port = 6379
+              }
+            ]
+          }
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive = {
+            backlog   = 1133811132
+            pool_size = 256
+          }
+          password     = "...my_password..."
+          port         = 6379
+          read_timeout = 2000
+          send_timeout = 2000
+          sentinel = {
+            master = "...my_master..."
+            nodes = [
+              {
+                host = "127.0.0.1"
+                port = 6379
+              }
+            ]
+            password = "...my_password..."
+            role     = "any"
+            username = "...my_username..."
+          }
+          server_name = "...my_server_name..."
+          ssl         = true
+          ssl_verify  = true
+          username    = "...my_username..."
+        }
+      }
+      credential = {
+        inbound = {
+          location = "header"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+        outbound = {
+          location = "header"
+          name     = "...my_name..."
+          prefix   = "...my_prefix..."
+        }
+      }
+      provider           = "...my_provider..."
+      subject_token_type = "api_key"
     }
   }
   typesafe = {

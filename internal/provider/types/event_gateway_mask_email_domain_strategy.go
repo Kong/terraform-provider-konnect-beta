@@ -3,7 +3,7 @@
 package types
 
 type EventGatewayMaskEmailDomainStrategy struct {
-	KeepAll   *BackendClusterAuthenticationAnonymous `queryParam:"inline" tfsdk:"keep_all"`
-	KeepChars *EventGatewayMaskStrategyKeepChars     `queryParam:"inline" tfsdk:"keep_chars"`
-	Replace   *EventGatewayMaskStrategyReplace       `queryParam:"inline" tfsdk:"replace"`
+	KeepAll   *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `queryParam:"inline" tfsdk:"keep_all"`
+	KeepChars *EventGatewayMaskStrategyKeepChars                                     `queryParam:"inline" tfsdk:"keep_chars"`
+	Replace   *EventGatewayMaskStrategyReplace                                       `queryParam:"inline" tfsdk:"replace"`
 }

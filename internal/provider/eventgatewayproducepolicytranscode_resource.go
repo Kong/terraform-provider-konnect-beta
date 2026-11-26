@@ -87,6 +87,9 @@ func (r *EventGatewayProducePolicyTranscodeResource) Schema(ctx context.Context,
 									`* ` + "`" + `reject` + "`" + ` - rejects the record batch.` + "\n" +
 									`* ` + "`" + `passthrough` + "`" + ` - passes the record silently to the backend cluster even though policy execution failed.` + "\n" +
 									`* ` + "`" + `mark` + "`" + ` - passes the record to the backend cluster but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The header is stored with the record in the backend cluster, so every consumer of the topic sees it, including systems that never pass through the Event Gateway.` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets, and a producer with access to the topic can trigger policy failures on purpose to expose it.` + "\n" +
+									`If you don't want to share this information, remove the header with a Modify Headers produce policy, or use a different failure mode.` + "\n" +
 									`` + "\n" +
 									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
 									`possible known values include one of ["reject", "passthrough", "mark"]`,
@@ -238,7 +241,10 @@ func (r *EventGatewayProducePolicyTranscodeResource) Schema(ctx context.Context,
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the policy.`,
 			},
 			"labels": schema.MapAttribute{
@@ -339,11 +345,11 @@ func (r *EventGatewayProducePolicyTranscodeResource) Create(ctx context.Context,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayProducePolicyTranscodeTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayProducePolicyTranscodeTFOnly(ctx, res.EventGatewayProducePolicyTranscodeTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -403,11 +409,11 @@ func (r *EventGatewayProducePolicyTranscodeResource) Read(ctx context.Context, r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayProducePolicyTranscodeTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayProducePolicyTranscodeTFOnly(ctx, res.EventGatewayProducePolicyTranscodeTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -453,11 +459,11 @@ func (r *EventGatewayProducePolicyTranscodeResource) Update(ctx context.Context,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayProducePolicyTranscodeTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayProducePolicyTranscodeTFOnly(ctx, res.EventGatewayProducePolicyTranscodeTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return

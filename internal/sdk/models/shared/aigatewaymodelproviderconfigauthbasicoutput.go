@@ -6,25 +6,25 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type AIGatewayModelProviderConfigAuthBasicHeaders struct {
+type AIGatewayModelProviderConfigAuthBasicHeadersOutput struct {
 	// The name of the header used for authentication.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
 	Name string `json:"name"`
 }
 
-func (a AIGatewayModelProviderConfigAuthBasicHeaders) MarshalJSON() ([]byte, error) {
+func (a AIGatewayModelProviderConfigAuthBasicHeadersOutput) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AIGatewayModelProviderConfigAuthBasicHeaders) UnmarshalJSON(data []byte) error {
+func (a *AIGatewayModelProviderConfigAuthBasicHeadersOutput) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayModelProviderConfigAuthBasicHeaders) GetName() string {
+func (a *AIGatewayModelProviderConfigAuthBasicHeadersOutput) GetName() string {
 	if a == nil {
 		return ""
 	}
@@ -90,9 +90,9 @@ func (a *AIGatewayModelProviderConfigAuthBasicParams) GetLocation() AIGatewayMod
 // AIGatewayModelProviderConfigAuthBasicOutput - Basic auth config for an upstream model provider.
 type AIGatewayModelProviderConfigAuthBasicOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_   string                                         `const:"basic" json:"type"`
-	Headers []AIGatewayModelProviderConfigAuthBasicHeaders `json:"headers,omitempty"`
-	Params  []AIGatewayModelProviderConfigAuthBasicParams  `json:"params,omitempty"`
+	type_   string                                               `const:"basic" json:"type"`
+	Headers []AIGatewayModelProviderConfigAuthBasicHeadersOutput `json:"headers,omitempty"`
+	Params  []AIGatewayModelProviderConfigAuthBasicParams        `json:"params,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthBasicOutput) MarshalJSON() ([]byte, error) {
@@ -110,7 +110,7 @@ func (a *AIGatewayModelProviderConfigAuthBasicOutput) GetType() string {
 	return "basic"
 }
 
-func (a *AIGatewayModelProviderConfigAuthBasicOutput) GetHeaders() []AIGatewayModelProviderConfigAuthBasicHeaders {
+func (a *AIGatewayModelProviderConfigAuthBasicOutput) GetHeaders() []AIGatewayModelProviderConfigAuthBasicHeadersOutput {
 	if a == nil {
 		return nil
 	}
@@ -124,7 +124,7 @@ func (a *AIGatewayModelProviderConfigAuthBasicOutput) GetParams() []AIGatewayMod
 	return a.Params
 }
 
-type Headers struct {
+type AIGatewayModelProviderConfigAuthBasicHeaders struct {
 	// The name of the header used for authentication.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
@@ -135,29 +135,29 @@ type Headers struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (h Headers) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(h, "", false)
+func (a AIGatewayModelProviderConfigAuthBasicHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (h *Headers) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+func (a *AIGatewayModelProviderConfigAuthBasicHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (h *Headers) GetName() string {
-	if h == nil {
+func (a *AIGatewayModelProviderConfigAuthBasicHeaders) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return h.Name
+	return a.Name
 }
 
-func (h *Headers) GetValue() *string {
-	if h == nil {
+func (a *AIGatewayModelProviderConfigAuthBasicHeaders) GetValue() *string {
+	if a == nil {
 		return nil
 	}
-	return h.Value
+	return a.Value
 }
 
 type Params struct {
@@ -206,9 +206,9 @@ func (p *Params) GetLocation() AIGatewayModelProviderConfigAuthBasicLocation {
 // AIGatewayModelProviderConfigAuthBasic - Basic auth config for an upstream model provider.
 type AIGatewayModelProviderConfigAuthBasic struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_   string    `const:"basic" json:"type"`
-	Headers []Headers `json:"headers,omitempty"`
-	Params  []Params  `json:"params,omitempty"`
+	type_   string                                         `const:"basic" json:"type"`
+	Headers []AIGatewayModelProviderConfigAuthBasicHeaders `json:"headers,omitempty"`
+	Params  []Params                                       `json:"params,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthBasic) MarshalJSON() ([]byte, error) {
@@ -226,7 +226,7 @@ func (a *AIGatewayModelProviderConfigAuthBasic) GetType() string {
 	return "basic"
 }
 
-func (a *AIGatewayModelProviderConfigAuthBasic) GetHeaders() []Headers {
+func (a *AIGatewayModelProviderConfigAuthBasic) GetHeaders() []AIGatewayModelProviderConfigAuthBasicHeaders {
 	if a == nil {
 		return nil
 	}

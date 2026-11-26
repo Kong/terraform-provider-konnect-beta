@@ -45,10 +45,10 @@ func (r *MeshAccessRoleResourceModel) RefreshFromSharedAccessRoleItem(ctx contex
 				var rules tfTypes.AccessRoleItemRules
 
 				if rulesItem.Access != nil {
-					rules.Access = []tfTypes.MeshItemMode{}
+					rules.Access = []tfTypes.Port{}
 
 					for _, accessItem := range rulesItem.Access {
-						var access tfTypes.MeshItemMode
+						var access tfTypes.Port
 
 						if accessItem.Str != nil {
 							access.Str = types.StringPointerValue(accessItem.Str)

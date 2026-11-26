@@ -7,7 +7,8 @@ import (
 )
 
 type AIGatewayTargetTypesafeConfig struct {
-	InputCost   types.Float64 `tfsdk:"input_cost"`
-	OutputCost  types.Float64 `tfsdk:"output_cost"`
-	UpstreamURL types.String  `tfsdk:"upstream_url"`
+	InputCost       types.Float64 `tfsdk:"input_cost"`
+	OutputCost      types.Float64 `tfsdk:"output_cost"`
+	UpstreamBaseURL types.String  `tfsdk:"upstream_base_url"`
+	UpstreamURL     types.String  `tfsdk:"upstream_url"`
 }

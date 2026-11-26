@@ -129,6 +129,13 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 						},
 						ElementType: types.StringType,
 					},
+					"validation_warning": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `A non-null warning value means the domain owner has an actionable item to address. The issue does not affect the domain's current use. The value is a human-readable guidance string; exact wording is application-controlled. Null when no action is needed.`,
+					},
 					"verification_status": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{

@@ -100,6 +100,14 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							"portal_agent": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
+									"audience": schema.StringAttribute{
+										Computed:    true,
+										Description: `The audience allowed to interact with the Portal Agent. ` + "`" + `all` + "`" + ` makes the Portal Agent available to every developer, including unauthenticated ones. ` + "`" + `authenticated` + "`" + ` restricts access to signed-in developers only.`,
+									},
+									"display_name": schema.StringAttribute{
+										Computed:    true,
+										Description: `The display name for the Portal Agent, shown to developers in the portal`,
+									},
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
 										Description: `Whether the Portal Agent is enabled or not`,

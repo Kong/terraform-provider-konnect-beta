@@ -4,6 +4,7 @@ package types
 
 type AIGatewayModelBalancerConfig struct {
 	ConsistentHashing *AIGatewayModelBalancerConsistentHashingConfig `queryParam:"inline" tfsdk:"consistent_hashing"`
+	Intelligent       *AIGatewayModelBalancerIntelligentConfig       `queryParam:"inline" tfsdk:"intelligent"`
 	LeastConnections  *AIGatewayModelBalancerLeastConnectionsConfig  `queryParam:"inline" tfsdk:"least_connections"`
 	LowestLatency     *AIGatewayModelBalancerLowestLatencyConfig     `queryParam:"inline" tfsdk:"lowest_latency"`
 	LowestUsage       *AIGatewayModelBalancerLowestUsageConfig       `queryParam:"inline" tfsdk:"lowest_usage"`

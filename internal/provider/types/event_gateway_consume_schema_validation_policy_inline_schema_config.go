@@ -10,7 +10,6 @@ type EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig struct {
 	FailureMode           types.String                        `tfsdk:"failure_mode"`
 	Key                   *SchemaValidationInlineSchemaConfig `tfsdk:"key"`
 	KeyValidationAction   types.String                        `tfsdk:"key_validation_action"`
-	SchemaRegistry        *SchemaRegistryReference            `tfsdk:"schema_registry"`
 	ValidateKey           types.Bool                          `tfsdk:"validate_key"`
 	ValidateValue         types.Bool                          `tfsdk:"validate_value"`
 	Value                 *SchemaValidationInlineSchemaConfig `tfsdk:"value"`

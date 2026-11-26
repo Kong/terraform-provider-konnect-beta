@@ -7,6 +7,131 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/types"
 )
 
+// DefaultPromptAcls - Default per-prompt access control rules for allowing or denying consumer groups access to
+// prompts. Evaluated only for callers that already passed the server-level `acls` check
+// above. Applies to every prompt exposed by this MCP Server unless a specific prompt
+// overrides it via that prompt's own `access.acls`. Prompts a caller is denied are omitted
+// from `prompts/list` and rejected on `prompts/get`. When unset, prompts are governed only
+// by the server-level `acls`.
+//
+// **Requires a minimum runtime version of `2.5`**.
+type DefaultPromptAcls struct {
+	// List of consumer groups that are permitted access.
+	Allow []string `json:"allow,omitempty"`
+	// List of consumer groups that are denied access.
+	Deny []string `json:"deny,omitempty"`
+	// Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	AllowWhen []string `json:"allow_when,omitempty"`
+	// Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	DenyWhen []string `json:"deny_when,omitempty"`
+}
+
+func (d DefaultPromptAcls) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DefaultPromptAcls) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DefaultPromptAcls) GetAllow() []string {
+	if d == nil {
+		return nil
+	}
+	return d.Allow
+}
+
+func (d *DefaultPromptAcls) GetDeny() []string {
+	if d == nil {
+		return nil
+	}
+	return d.Deny
+}
+
+func (d *DefaultPromptAcls) GetAllowWhen() []string {
+	if d == nil {
+		return nil
+	}
+	return d.AllowWhen
+}
+
+func (d *DefaultPromptAcls) GetDenyWhen() []string {
+	if d == nil {
+		return nil
+	}
+	return d.DenyWhen
+}
+
+// DefaultResourceAcls - Default per-resource access control rules for allowing or denying consumer groups access
+// to resources and resource templates. Evaluated only for callers that already passed the
+// server-level `acls` check above. Applies to every resource exposed by this MCP Server
+// unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+// caller is denied are omitted from `resources/list` and `resources/templates/list` and
+// rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+// only by the server-level `acls`.
+//
+// **Requires a minimum runtime version of `2.5`**.
+type DefaultResourceAcls struct {
+	// List of consumer groups that are permitted access.
+	Allow []string `json:"allow,omitempty"`
+	// List of consumer groups that are denied access.
+	Deny []string `json:"deny,omitempty"`
+	// Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	AllowWhen []string `json:"allow_when,omitempty"`
+	// Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	DenyWhen []string `json:"deny_when,omitempty"`
+}
+
+func (d DefaultResourceAcls) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DefaultResourceAcls) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DefaultResourceAcls) GetAllow() []string {
+	if d == nil {
+		return nil
+	}
+	return d.Allow
+}
+
+func (d *DefaultResourceAcls) GetDeny() []string {
+	if d == nil {
+		return nil
+	}
+	return d.Deny
+}
+
+func (d *DefaultResourceAcls) GetAllowWhen() []string {
+	if d == nil {
+		return nil
+	}
+	return d.AllowWhen
+}
+
+func (d *DefaultResourceAcls) GetDenyWhen() []string {
+	if d == nil {
+		return nil
+	}
+	return d.DenyWhen
+}
+
 // AIGatewayMCPServerListenerConsumer - Auth strategy and OAuth 2.0 Protected Resource Metadata configuration
 // for granting access to an MCP server.
 type AIGatewayMCPServerListenerConsumer struct {
@@ -18,13 +143,32 @@ type AIGatewayMCPServerListenerConsumer struct {
 	// operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
 	// `default_tool_acls` or per-tool `access.acls` check is evaluated.
 	//
-	Acls *AIGatewayMCPACLs `json:"acls,omitempty"`
+	Acls *AIGatewayMCPServerACLs `json:"acls,omitempty"`
 	// Default per-tool access control rules for allowing or denying consumer groups access to
 	// tools. Evaluated only for callers that already passed the server-level `acls` check above.
 	// Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
 	// that tool's own `access.acls`.
 	//
 	DefaultToolAcls *AIGatewayMCPACLs `json:"default_tool_acls,omitempty"`
+	// Default per-prompt access control rules for allowing or denying consumer groups access to
+	// prompts. Evaluated only for callers that already passed the server-level `acls` check
+	// above. Applies to every prompt exposed by this MCP Server unless a specific prompt
+	// overrides it via that prompt's own `access.acls`. Prompts a caller is denied are omitted
+	// from `prompts/list` and rejected on `prompts/get`. When unset, prompts are governed only
+	// by the server-level `acls`.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	DefaultPromptAcls *DefaultPromptAcls `json:"default_prompt_acls,omitempty"`
+	// Default per-resource access control rules for allowing or denying consumer groups access
+	// to resources and resource templates. Evaluated only for callers that already passed the
+	// server-level `acls` check above. Applies to every resource exposed by this MCP Server
+	// unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+	// caller is denied are omitted from `resources/list` and `resources/templates/list` and
+	// rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+	// only by the server-level `acls`.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	DefaultResourceAcls *DefaultResourceAcls `json:"default_resource_acls,omitempty"`
 	// List of identity providers for granting access to the MCP server.
 	// At most 1 identity provider of each identity provider type can be referenced.
 	//
@@ -56,7 +200,7 @@ func (a *AIGatewayMCPServerListenerConsumer) GetACLAttributeType() *string {
 	return types.Pointer("consumer")
 }
 
-func (a *AIGatewayMCPServerListenerConsumer) GetAcls() *AIGatewayMCPACLs {
+func (a *AIGatewayMCPServerListenerConsumer) GetAcls() *AIGatewayMCPServerACLs {
 	if a == nil {
 		return nil
 	}
@@ -68,6 +212,20 @@ func (a *AIGatewayMCPServerListenerConsumer) GetDefaultToolAcls() *AIGatewayMCPA
 		return nil
 	}
 	return a.DefaultToolAcls
+}
+
+func (a *AIGatewayMCPServerListenerConsumer) GetDefaultPromptAcls() *DefaultPromptAcls {
+	if a == nil {
+		return nil
+	}
+	return a.DefaultPromptAcls
+}
+
+func (a *AIGatewayMCPServerListenerConsumer) GetDefaultResourceAcls() *DefaultResourceAcls {
+	if a == nil {
+		return nil
+	}
+	return a.DefaultResourceAcls
 }
 
 func (a *AIGatewayMCPServerListenerConsumer) GetIdentityProviders() []string {

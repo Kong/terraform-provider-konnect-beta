@@ -7,13 +7,17 @@ import (
 )
 
 type AIGatewayMCPServerWithUpstreamConfig struct {
+	Balancer           *CreateAIGatewayAgentRequestBalancer         `tfsdk:"balancer"`
 	CaCertificates     []types.String                               `tfsdk:"ca_certificates"`
 	Certificates       []types.String                               `tfsdk:"certificates"`
 	Logging            *AIGatewayMCPServerConversionListenerLogging `tfsdk:"logging"`
 	MaxRequestBodySize types.Int64                                  `tfsdk:"max_request_body_size"`
+	Path               types.String                                 `tfsdk:"path"`
+	Protocol           types.String                                 `tfsdk:"protocol"`
 	Proxy              *AIGatewayProxyConfig                        `tfsdk:"proxy"`
 	Route              *AIGatewayRouteConfig                        `tfsdk:"route"`
 	Server             *AIGatewayMCPServerServerConfigBase          `tfsdk:"server"`
+	Targets            []AIGatewayUpstreamTarget                    `tfsdk:"targets"`
 	Upstream           *AIGatewayUpstreamConfig                     `tfsdk:"upstream"`
 	URL                types.String                                 `tfsdk:"url"`
 }

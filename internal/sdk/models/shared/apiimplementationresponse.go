@@ -23,6 +23,9 @@ type APIImplementationResponseControlPlaneReference struct {
 	// Returns `404` if the UUID is unknown or not associated with the API.
 	//
 	EnvironmentID *string `json:"environment_id,omitempty"`
+	// The environment this record is scoped to.
+	//
+	Environment *APIEnvironmentRef `json:"environment,omitempty"`
 	// A Control plane that implements an API
 	ControlPlane *APIImplementationControlPlane `json:"control_plane,omitempty"`
 }
@@ -66,6 +69,13 @@ func (a *APIImplementationResponseControlPlaneReference) GetEnvironmentID() *str
 	return a.EnvironmentID
 }
 
+func (a *APIImplementationResponseControlPlaneReference) GetEnvironment() *APIEnvironmentRef {
+	if a == nil {
+		return nil
+	}
+	return a.Environment
+}
+
 func (a *APIImplementationResponseControlPlaneReference) GetControlPlane() *APIImplementationControlPlane {
 	if a == nil {
 		return nil
@@ -87,6 +97,9 @@ type APIImplementationResponseServiceReference struct {
 	// Returns `404` if the UUID is unknown or not associated with the API.
 	//
 	EnvironmentID *string `json:"environment_id,omitempty"`
+	// The environment this record is scoped to.
+	//
+	Environment *APIEnvironmentRef `json:"environment,omitempty"`
 	// A Gateway service that implements an API
 	Service *APIImplementationService `json:"service,omitempty"`
 }
@@ -128,6 +141,13 @@ func (a *APIImplementationResponseServiceReference) GetEnvironmentID() *string {
 		return nil
 	}
 	return a.EnvironmentID
+}
+
+func (a *APIImplementationResponseServiceReference) GetEnvironment() *APIEnvironmentRef {
+	if a == nil {
+		return nil
+	}
+	return a.Environment
 }
 
 func (a *APIImplementationResponseServiceReference) GetService() *APIImplementationService {

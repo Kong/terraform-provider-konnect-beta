@@ -14,8 +14,22 @@ type AIGatewayMCPServerPassthroughListener struct {
 	// Per-tool access-control overrides for tools advertised by the remote MCP Server. Each
 	// entry is matched to a remote tool by `name`; only its access-control rules are applied.
 	//
-	Tools  []AIGatewayMCPPassthroughTool     `json:"tools,omitempty"`
-	Access *AIGatewayMCPServerListenerAccess `json:"access,omitempty"`
+	Tools []AIGatewayMCPPassthroughTool `json:"tools,omitempty"`
+	// Per-prompt access-control overrides for prompts advertised by the remote MCP Server.
+	// Each entry is matched to a remote prompt by `name`; only its access-control rules are
+	// applied. Prompts without an entry are governed by `access.default_prompt_acls`. Each
+	// `name` must be unique within this MCP Server.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	Prompts []AIGatewayMCPPrompt `json:"prompts,omitempty"`
+	// Per-resource access-control overrides for resources and resource templates advertised
+	// by the remote MCP Server. Each entry is matched to a remote resource by `uri`; only its
+	// access-control rules are applied. Resources without an entry are governed by
+	// `access.default_resource_acls`. Each `uri` must be unique within this MCP Server.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	Resources []AIGatewayMCPResource            `json:"resources,omitempty"`
+	Access    *AIGatewayMCPServerListenerAccess `json:"access,omitempty"`
 	// Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
 	// Each AI Gateway node counts and enforces the limits independently.
 	//
@@ -38,7 +52,9 @@ type AIGatewayMCPServerPassthroughListener struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -87,6 +103,20 @@ func (a *AIGatewayMCPServerPassthroughListener) GetTools() []AIGatewayMCPPassthr
 		return nil
 	}
 	return a.Tools
+}
+
+func (a *AIGatewayMCPServerPassthroughListener) GetPrompts() []AIGatewayMCPPrompt {
+	if a == nil {
+		return nil
+	}
+	return a.Prompts
+}
+
+func (a *AIGatewayMCPServerPassthroughListener) GetResources() []AIGatewayMCPResource {
+	if a == nil {
+		return nil
+	}
+	return a.Resources
 }
 
 func (a *AIGatewayMCPServerPassthroughListener) GetAccess() *AIGatewayMCPServerListenerAccess {

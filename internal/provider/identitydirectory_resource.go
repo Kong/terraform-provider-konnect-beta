@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -79,6 +80,11 @@ func (r *IdentityDirectoryResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: `List of control plane IDs authorized to make authentication requests to this directory.` + "\n" +
 					`Maximum of 32 control planes can be specified. Use allow_all_control_planes for unrestricted access.` + "\n" +
 					`Default: []`,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(0),
+					listvalidator.SizeAtMost(32),
+					listvalidator.UniqueValues(),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -128,7 +134,9 @@ func (r *IdentityDirectoryResource) Schema(ctx context.Context, req resource.Sch
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
 			},
 			"name": schema.StringAttribute{
 				Required: true,

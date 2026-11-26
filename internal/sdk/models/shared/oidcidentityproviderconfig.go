@@ -6,24 +6,20 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// OIDCIdentityProviderConfig - The identity provider that contains configuration data for the OIDC authentication integration.
+// OIDCIdentityProviderConfig - The configuration data for creating an OIDC authentication integration.
 type OIDCIdentityProviderConfig struct {
 	// The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
 	IssuerURL string `json:"issuer_url"`
 	// The client ID assigned to your application by the identity provider.
 	ClientID string `json:"client_id"`
 	// The Client Secret assigned to your application by the identity provider.
-	ClientSecret *string `json:"client_secret,omitempty"`
-	// The scopes requested by your application when authenticating with the identity provider.
+	ClientSecret string `json:"client_secret"`
+	// The scopes requested by your application when authenticating with the identity provider. Must include `openid`.
 	Scopes []string `json:"scopes,omitempty"`
 	// Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for
 	// authentication.
 	//
 	ClaimMappings *OIDCIdentityProviderClaimMappings `json:"claim_mappings,omitempty"`
-	// Indicates whether back-channel logout is enabled. When enabled, the identity provider can notify
-	// the portal to end a user's session when they log out of the identity provider.
-	//
-	BackChannelLogoutEnabled *bool `default:"false" json:"back_channel_logout_enabled"`
 }
 
 func (o OIDCIdentityProviderConfig) MarshalJSON() ([]byte, error) {
@@ -51,9 +47,9 @@ func (o *OIDCIdentityProviderConfig) GetClientID() string {
 	return o.ClientID
 }
 
-func (o *OIDCIdentityProviderConfig) GetClientSecret() *string {
+func (o *OIDCIdentityProviderConfig) GetClientSecret() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClientSecret
 }
@@ -70,11 +66,4 @@ func (o *OIDCIdentityProviderConfig) GetClaimMappings() *OIDCIdentityProviderCla
 		return nil
 	}
 	return o.ClaimMappings
-}
-
-func (o *OIDCIdentityProviderConfig) GetBackChannelLogoutEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.BackChannelLogoutEnabled
 }

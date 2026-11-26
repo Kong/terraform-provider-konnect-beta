@@ -36,8 +36,13 @@ type AIGatewayModelAPIConfigOutput struct {
 	// Configuration for AI Gateway logging.
 	Logging           *AIGatewayLoggingConfig `json:"logging,omitempty"`
 	ResponseStreaming *ResponseStreaming      `default:"allow" json:"response_streaming"`
-	// Maximum size of request body to parse. Set to 0 for unlimited.
-	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
+	// The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+	// A request with a larger body fails. Set to 0 for no limit.
+	// If you do not set a value, the gateway uses the request size limit that the model's providers publish,
+	// with defaults to 8 MB.
+	// If the targets use more than one provider, the gateway uses the highest of these limits.
+	//
+	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	// Configuration for a model's load balancer when multiple target models are configured.
 	Balancer *AIGatewayModelBalancerConfigOutput `json:"balancer,omitempty"`
 	// HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
@@ -97,37 +102,44 @@ func (a *AIGatewayModelAPIConfigOutput) GetBalancerConsistentHashing() *AIGatewa
 	return nil
 }
 
-func (a *AIGatewayModelAPIConfigOutput) GetBalancerLeastConnections() *AIGatewayModelBalancerLeastConnectionsConfig {
+func (a *AIGatewayModelAPIConfigOutput) GetBalancerIntelligent() *AIGatewayModelBalancerIntelligentConfigOutput {
 	if v := a.GetBalancer(); v != nil {
-		return v.AIGatewayModelBalancerLeastConnectionsConfig
+		return v.AIGatewayModelBalancerIntelligentConfigOutput
 	}
 	return nil
 }
 
-func (a *AIGatewayModelAPIConfigOutput) GetBalancerLowestLatency() *AIGatewayModelBalancerLowestLatencyConfig {
+func (a *AIGatewayModelAPIConfigOutput) GetBalancerLeastConnections() *AIGatewayModelBalancerLeastConnectionsConfigOutput {
 	if v := a.GetBalancer(); v != nil {
-		return v.AIGatewayModelBalancerLowestLatencyConfig
+		return v.AIGatewayModelBalancerLeastConnectionsConfigOutput
 	}
 	return nil
 }
 
-func (a *AIGatewayModelAPIConfigOutput) GetBalancerLowestUsage() *AIGatewayModelBalancerLowestUsageConfig {
+func (a *AIGatewayModelAPIConfigOutput) GetBalancerLowestLatency() *AIGatewayModelBalancerLowestLatencyConfigOutput {
 	if v := a.GetBalancer(); v != nil {
-		return v.AIGatewayModelBalancerLowestUsageConfig
+		return v.AIGatewayModelBalancerLowestLatencyConfigOutput
 	}
 	return nil
 }
 
-func (a *AIGatewayModelAPIConfigOutput) GetBalancerPriority() *AIGatewayModelBalancerPriorityConfig {
+func (a *AIGatewayModelAPIConfigOutput) GetBalancerLowestUsage() *AIGatewayModelBalancerLowestUsageConfigOutput {
 	if v := a.GetBalancer(); v != nil {
-		return v.AIGatewayModelBalancerPriorityConfig
+		return v.AIGatewayModelBalancerLowestUsageConfigOutput
 	}
 	return nil
 }
 
-func (a *AIGatewayModelAPIConfigOutput) GetBalancerRoundRobin() *AIGatewayModelBalancerRoundRobinConfig {
+func (a *AIGatewayModelAPIConfigOutput) GetBalancerPriority() *AIGatewayModelBalancerPriorityConfigOutput {
 	if v := a.GetBalancer(); v != nil {
-		return v.AIGatewayModelBalancerRoundRobinConfig
+		return v.AIGatewayModelBalancerPriorityConfigOutput
+	}
+	return nil
+}
+
+func (a *AIGatewayModelAPIConfigOutput) GetBalancerRoundRobin() *AIGatewayModelBalancerRoundRobinConfigOutput {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayModelBalancerRoundRobinConfigOutput
 	}
 	return nil
 }
@@ -153,8 +165,13 @@ type AIGatewayModelAPIConfig struct {
 	// Configuration for AI Gateway logging.
 	Logging           *AIGatewayLoggingConfig `json:"logging,omitempty"`
 	ResponseStreaming *ResponseStreaming      `default:"allow" json:"response_streaming"`
-	// Maximum size of request body to parse. Set to 0 for unlimited.
-	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
+	// The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+	// A request with a larger body fails. Set to 0 for no limit.
+	// If you do not set a value, the gateway uses the request size limit that the model's providers publish,
+	// with defaults to 8 MB.
+	// If the targets use more than one provider, the gateway uses the highest of these limits.
+	//
+	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	// Configuration for a model's load balancer when multiple target models are configured.
 	Balancer *AIGatewayModelBalancerConfig `json:"balancer,omitempty"`
 	// HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
@@ -210,6 +227,13 @@ func (a *AIGatewayModelAPIConfig) GetBalancer() *AIGatewayModelBalancerConfig {
 func (a *AIGatewayModelAPIConfig) GetBalancerConsistentHashing() *AIGatewayModelBalancerConsistentHashingConfig {
 	if v := a.GetBalancer(); v != nil {
 		return v.AIGatewayModelBalancerConsistentHashingConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayModelAPIConfig) GetBalancerIntelligent() *AIGatewayModelBalancerIntelligentConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayModelBalancerIntelligentConfig
 	}
 	return nil
 }

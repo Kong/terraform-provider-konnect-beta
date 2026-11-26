@@ -43,24 +43,73 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     ]
     config = {
       balancer = {
-        lowest_latency = {
+        priority = {
           connect_timeout = 60000
           fail_timeout    = 10000
           failover_criteria = [
-            "http_408"
+            "http_503"
           ]
-          latency_strategy = "tpot"
-          max_fails        = 0
-          read_timeout     = 60000
-          retries          = 5
-          slots            = 10000
-          write_timeout    = 60000
+          max_fails    = 0
+          read_timeout = 60000
+          retries      = 5
+          session_affinity = {
+            enabled = true
+            storage = {
+              redis = {
+                cloud_authentication = {
+                  gcp = {
+                    service_account_json = "...my_service_account_json..."
+                  }
+                }
+                cluster = {
+                  max_redirections = 5
+                  nodes = [
+                    {
+                      ip   = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                }
+                connect_timeout       = 2000
+                connection_is_proxied = false
+                database              = 0
+                host                  = "127.0.0.1"
+                keepalive = {
+                  backlog   = 989403147
+                  pool_size = 256
+                }
+                password     = "...my_password..."
+                port         = 6379
+                read_timeout = 2000
+                send_timeout = 2000
+                sentinel = {
+                  master = "...my_master..."
+                  nodes = [
+                    {
+                      host = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                  password = "...my_password..."
+                  role     = "slave"
+                  username = "...my_username..."
+                }
+                server_name = "...my_server_name..."
+                ssl         = true
+                ssl_verify  = true
+                username    = "...my_username..."
+              }
+            }
+            ttl = 21600
+          }
+          slots         = 10000
+          write_timeout = 60000
         }
       }
       logging = {
         payloads = false
       }
-      max_request_body_size = 8388608
+      max_request_body_size = 3
       proxy = {
         auth = {
           password = "...my_password..."
@@ -115,7 +164,8 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     }
     datastores = [
       {
-        name = "shared-redis"
+        name    = "shared-redis"
+        purpose = "semantic-balancer"
       }
     ]
     display_name = "My GPT 5 model"
@@ -139,55 +189,55 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          databricks = {
-            cache_read_cost = 9.25
+          ollama = {
+            cache_read_cost = 6.36
             cache_read_cost_list = [
               {
-                cost  = 7.56
-                modal = "text"
+                cost  = 3.01
+                modal = "video"
               }
             ]
-            cache_write_cost = 8.79
+            cache_write_cost = 7.25
             cache_write_cost_list = [
               {
-                cost = 8.23
+                cost = 0.01
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 6.86
-                output_factor = 3.98
+                input_factor  = 3.5
+                output_factor = 1.2
               }
             ]
-            embeddings_dimensions = 2017878719
-            input_cost            = 3.88
+            embeddings_dimensions = 1163998112
+            input_cost            = 3.53
             input_cost_list = [
               {
-                cost  = 9.74
+                cost  = 2.6
                 modal = "video"
               }
             ]
-            max_tokens  = 184807158
-            output_cost = 3.66
+            max_tokens  = 2030002915
+            output_cost = 7.78
             output_cost_list = [
               {
-                cost  = 5.89
-                modal = "audio"
+                cost  = 4.83
+                modal = "image"
               }
             ]
             service_tier_factor = [
               {
-                factor = 4.06
+                factor = 0.08
                 tier   = "...my_tier..."
               }
             ]
-            temperature           = 4.92
-            top_k                 = 299
-            top_p                 = 0.68
-            upstream_url          = "https://determined-skyscraper.name"
-            workspace_instance_id = "...my_workspace_instance_id..."
+            temperature       = 3.02
+            top_k             = 164
+            top_p             = 0.35
+            upstream_base_url = "https://waterlogged-luck.com"
+            upstream_url      = "https://brave-calculus.biz"
           }
         }
         name                 = "gpt-5-model"
@@ -222,58 +272,79 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       ]
     }
     capabilities = [
-      "audio/transcription"
+      "audio/speech"
     ]
     config = {
       balancer = {
-        semantic = {
+        priority = {
           connect_timeout = 60000
-          embeddings = {
-            allow_auth_override = false
-            config = {
-              ollama = {
-                upstream_url = "...my_upstream_url..."
-              }
-            }
-            name     = "...my_name..."
-            provider = "azure-ai-se"
-          }
-          fail_timeout = 10000
+          fail_timeout    = 10000
           failover_criteria = [
-            "http_429"
+            "http_408"
           ]
           max_fails    = 0
           read_timeout = 60000
           retries      = 5
-          slots        = 10000
-          vectordb = {
-            pgvector = {
-              database        = "kong-pgvector"
-              dimensions      = 6
-              distance_metric = "euclidean"
-              host            = "127.0.0.1"
-              password        = "...my_password..."
-              port            = 5432
-              ssl = {
-                cert     = "...my_cert..."
-                cert_key = "...my_cert_key..."
-                enabled  = true
-                required = true
-                verify   = true
-                version  = "tlsv1_2"
+          session_affinity = {
+            enabled = true
+            storage = {
+              redis = {
+                cloud_authentication = {
+                  azure = {
+                    client_id     = "...my_client_id..."
+                    client_secret = "...my_client_secret..."
+                    tenant_id     = "...my_tenant_id..."
+                  }
+                }
+                cluster = {
+                  max_redirections = 5
+                  nodes = [
+                    {
+                      ip   = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                }
+                connect_timeout       = 2000
+                connection_is_proxied = false
+                database              = 0
+                host                  = "127.0.0.1"
+                keepalive = {
+                  backlog   = 1242809940
+                  pool_size = 256
+                }
+                password     = "...my_password..."
+                port         = 6379
+                read_timeout = 2000
+                send_timeout = 2000
+                sentinel = {
+                  master = "...my_master..."
+                  nodes = [
+                    {
+                      host = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                  password = "...my_password..."
+                  role     = "master"
+                  username = "...my_username..."
+                }
+                server_name = "...my_server_name..."
+                ssl         = true
+                ssl_verify  = true
+                username    = "...my_username..."
               }
-              threshold = 3.66
-              timeout   = 5000
-              user      = "postgres"
             }
+            ttl = 21600
           }
+          slots         = 10000
           write_timeout = 60000
         }
       }
       logging = {
         payloads = false
       }
-      max_request_body_size = 8388608
+      max_request_body_size = 4
       model = {
         name_header = true
       }
@@ -331,7 +402,8 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     }
     datastores = [
       {
-        name = "shared-redis"
+        name    = "shared-redis"
+        purpose = "semantic-balancer"
       }
     ]
     display_name = "My GPT 5 model"
@@ -355,54 +427,11 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          xai = {
-            cache_read_cost = 2.26
-            cache_read_cost_list = [
-              {
-                cost  = 1.04
-                modal = "image"
-              }
-            ]
-            cache_write_cost = 0.32
-            cache_write_cost_list = [
-              {
-                cost = 3.9
-                ttl  = "...my_ttl..."
-              }
-            ]
-            context_window_factor = [
-              {
-                above         = "...my_above..."
-                input_factor  = 2.92
-                output_factor = 4.58
-              }
-            ]
-            embeddings_dimensions = 748376912
-            input_cost            = 3.63
-            input_cost_list = [
-              {
-                cost  = 6.31
-                modal = "audio"
-              }
-            ]
-            max_tokens  = 1493087753
-            output_cost = 1.58
-            output_cost_list = [
-              {
-                cost  = 3.36
-                modal = "audio"
-              }
-            ]
-            service_tier_factor = [
-              {
-                factor = 2.95
-                tier   = "...my_tier..."
-              }
-            ]
-            temperature  = 0.46
-            top_k        = 328
-            top_p        = 0.12
-            upstream_url = "https://carefree-hundred.org"
+          typesafe = {
+            input_cost        = 4.69
+            output_cost       = 7.9
+            upstream_base_url = "https://noteworthy-almighty.info"
+            upstream_url      = "https://equatorial-pants.com/"
           }
         }
         name                 = "gpt-5-model"
@@ -442,12 +471,17 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
 Optional:
 
 - `access` (Attributes) Access control configuration for a model. (see [below for nested schema](#nestedatt--api--access))
-- `capabilities` (List of String) List of AI capabilities enabled for this API model. Not Null
+- `capabilities` (List of String) The capabilities this model supports. Set to a specific capability to
+restrict the model to that capability only, or to `*` to allow all
+capabilities that the targets support at the gateway's
+min_runtime_version. A capability that needs a newer
+min_runtime_version is left out of `*`.
+Default: ["*"]
 - `config` (Attributes) Routing, logging, and load balancing configuration for the model. Not Null (see [below for nested schema](#nestedatt--api--config))
-- `datastores` (Attributes List) Names of the Datastores this model references. (see [below for nested schema](#nestedatt--api--datastores))
+- `datastores` (Attributes List) The Datastores this model references, with the feature that uses each one. (see [below for nested schema](#nestedatt--api--datastores))
 - `display_name` (String) The display name for this model instance. Not Null
 - `enabled` (Boolean) Whether the model is enabled. Default: true
-- `formats` (Attributes List) List of request/response formats supported by this model. Not Null (see [below for nested schema](#nestedatt--api--formats))
+- `formats` (Attributes List) List of request/response formats supported by this model. (see [below for nested schema](#nestedatt--api--formats))
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
 Public labels are intended to store **PUBLIC** metadata. 
@@ -455,7 +489,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `targets` (Attributes List) One or more backend models that this model entry routes to. Not Null (see [below for nested schema](#nestedatt--api--targets))
@@ -498,7 +534,11 @@ Optional:
 
 - `balancer` (Attributes) Configuration for a model's load balancer when multiple target models are configured. (see [below for nested schema](#nestedatt--api--config--balancer))
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--api--config--logging))
-- `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `max_request_body_size` (Number) The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+A request with a larger body fails. Set to 0 for no limit.
+If you do not set a value, the gateway uses the request size limit that the model's providers publish,
+with defaults to 8 MB.
+If the targets use more than one provider, the gateway uses the highest of these limits.
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--api--config--proxy))
 - `response_streaming` (String) possible known values include one of ["allow", "always", "deny"]; Default: "allow"
 - `route` (Attributes) Configuration for an AI Gateway route. Not Null (see [below for nested schema](#nestedatt--api--config--route))
@@ -509,6 +549,12 @@ Optional:
 Optional:
 
 - `consistent_hashing` (Attributes) (see [below for nested schema](#nestedatt--api--config--balancer--consistent_hashing))
+- `intelligent` (Attributes) On the first request of a conversation, asks a classifier model what kind of work it is, then
+selects a target by the cost and quality tradeoff. Later requests in the conversation go to the
+same target through session affinity, which is always on for this algorithm: `ttl` and `storage`
+can be set, and `session_affinity.enabled: false` is rejected.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent))
 - `least_connections` (Attributes) (see [below for nested schema](#nestedatt--api--config--balancer--least_connections))
 - `lowest_latency` (Attributes) (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency))
 - `lowest_usage` (Attributes) (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage))
@@ -532,6 +578,260 @@ Optional:
 - `write_timeout` (Number) Default: 60000
 
 
+<a id="nestedatt--api--config--balancer--intelligent"></a>
+### Nested Schema for `api.config.balancer.intelligent`
+
+Optional:
+
+- `classifier` (Attributes) The classifier model the intelligent balancer asks what kind of work a conversation is, before it
+selects a target. If the classifier does not answer in time or its answer cannot be used, the
+balancer selects a target for general work.
+
+**Requires a minimum runtime version of `2.5`**.
+Not Null (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--classifier))
+- `connect_timeout` (Number) Default: 60000
+- `cost_quality_tradeoff` (String) How the balancer weighs cost versus quality when selecting a target. `cost` favors the cheapest available target, `quality` favors the highest-quality target, and `balanced` weighs both. possible known values include one of ["balanced", "cost", "quality"]; Default: "balanced"
+- `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
+- `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
+- `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
+- `read_timeout` (Number) Default: 60000
+- `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity))
+- `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
+- `strategy` (String) Selects the algorithm the balancer uses to choose a target. `weighted` scores each target on cost
+and quality. `margin` selects the cheapest target whose expected quality is within a margin of the
+best target's. For internal testing only: during the tech preview only Kong can set it, behind a
+feature flag. At GA, Kong sets the default to the algorithm it recommends, and the field stays
+accepted so saved configurations keep working.
+possible known values include one of ["weighted", "margin"]; Default: "weighted"
+- `version` (String) The version of the intelligent balancing algorithm. Default: "v1"; must be "v1"
+- `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--api--config--balancer--intelligent--classifier"></a>
+### Nested Schema for `api.config.balancer.intelligent.classifier`
+
+Optional:
+
+- `custom` (Attributes) A classifier service configured by hand, by its address, model name and credentials.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--classifier--custom))
+
+<a id="nestedatt--api--config--balancer--intelligent--classifier--custom"></a>
+### Nested Schema for `api.config.balancer.intelligent.classifier.custom`
+
+Optional:
+
+- `auth` (Attributes) The credentials sent to the classifier service with each request.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--classifier--custom--auth))
+- `context_window` (Number) The number of tokens the classifier model can read, from the model provider's documentation.
+The request text sent to the classifier is cut to fit.
+Not Null
+- `format` (String) The endpoint path appended to `url`: the path of the System One decisions API. Some hosts serve
+it at another path.
+Default: "/v1/systemone"
+- `name` (String) The name of the classifier model, sent in each request. Not Null
+- `timeout` (Number) The time in milliseconds to wait for the classifier's answer. Default: 5000
+- `url` (String) The classifier service's base URL. The `format` path is appended to it. It has no query string,
+fragment or user info.
+Not Null
+
+<a id="nestedatt--api--config--balancer--intelligent--classifier--custom--auth"></a>
+### Nested Schema for `api.config.balancer.intelligent.classifier.custom.auth`
+
+Optional:
+
+- `basic` (Attributes) Sends one header, such as an API key, with each request to the classifier service.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--classifier--custom--auth--basic))
+
+<a id="nestedatt--api--config--balancer--intelligent--classifier--custom--auth--basic"></a>
+### Nested Schema for `api.config.balancer.intelligent.classifier.custom.auth.basic`
+
+Optional:
+
+- `headers` (Attributes List) The header sent with each request to the classifier service. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--classifier--custom--auth--basic--headers))
+
+<a id="nestedatt--api--config--balancer--intelligent--classifier--custom--auth--basic--headers"></a>
+### Nested Schema for `api.config.balancer.intelligent.classifier.custom.auth.basic.headers`
+
+Optional:
+
+- `name` (String) The name of the header used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Not Null
+- `value` (String) The value of the header, for example `Bearer key...`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+
+
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis))
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--local"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.local`
+
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--intelligent--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `api.config.balancer.intelligent.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
+
+
 <a id="nestedatt--api--config--balancer--least_connections"></a>
 ### Nested Schema for `api.config.balancer.least_connections`
 
@@ -543,8 +843,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis))
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--local"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.local`
+
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--least_connections--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `api.config.balancer.least_connections.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--api--config--balancer--lowest_latency"></a>
@@ -559,8 +1023,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis))
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--local"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.local`
+
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `api.config.balancer.lowest_latency.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--api--config--balancer--lowest_usage"></a>
@@ -574,9 +1202,173 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `tokens_count_strategy` (String) Methodology to use for token usage calculation. possible known values include one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]; Default: "total-tokens"
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis))
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--local"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.local`
+
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `api.config.balancer.lowest_usage.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--api--config--balancer--priority"></a>
@@ -590,8 +1382,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis))
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--local"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.local`
+
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--priority--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--priority--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `api.config.balancer.priority.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--api--config--balancer--round_robin"></a>
@@ -605,8 +1561,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis))
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--local"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.local`
+
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--round_robin--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `api.config.balancer.round_robin.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--api--config--balancer--semantic"></a>
@@ -621,6 +1741,11 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `vectordb` (Attributes) Configuration for the vector database used by the model. Not Null (see [below for nested schema](#nestedatt--api--config--balancer--semantic--vectordb))
 - `write_timeout` (Number) Default: 60000
@@ -730,6 +1855,165 @@ Optional:
 Optional:
 
 - `upstream_url` (String) The URL of the embeddings model.
+
+
+
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis))
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--local"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.local`
+
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--api--config--balancer--semantic--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `api.config.balancer.semantic.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
 
 
 
@@ -1003,6 +2287,9 @@ When no selector location is configured, the format default selector is used.
 Optional:
 
 - `name` (String) An immutable user-defined identifier for this resource. Not Null
+- `purpose` (String) The model feature that uses the datastore. `semantic-balancer` supplies the connection of the
+model vector store.
+possible known values include one of ["semantic-balancer", "session-affinity"]; Default: "semantic-balancer"
 
 
 <a id="nestedatt--api--formats"></a>
@@ -1010,7 +2297,7 @@ Optional:
 
 Optional:
 
-- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
+- `type` (String) The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to `*` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of `*`. The `*` format never includes passthrough. possible known values include one of ["*", "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
 
 
 <a id="nestedatt--api--targets"></a>
@@ -1046,14 +2333,44 @@ example, `https://model-{model_id}.api.baseten.co/environments/{environment}/syn
 - `dashscope` (Attributes) Alibaba DashScope-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--dashscope))
 - `databricks` (Attributes) Databricks-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--databricks))
 - `deepseek` (Attributes) Deepseek-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--deepseek))
+- `fireworks` (Attributes) Fireworks AI-specific configuration for a model. Requests are sent to the Fireworks
+inference API at `https://api.fireworks.ai/inference/v1` by default, and the target `name`
+is the Fireworks model ID, passed through as-is (for example,
+`accounts/fireworks/models/llama-v3p1-70b-instruct`). Use the `openai` format for the
+Chat Completions, Completions, Responses, Embeddings, Rerank, and Decisions APIs, and the
+`anthropic` format for the Messages API. To keep traffic in the US-only region, set
+`upstream_url` to `https://us.api.fireworks.ai/inference/v1`. Upstream errors, including
+`max_tokens` truncation behavior, are returned as produced by Fireworks.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--api--targets--config--fireworks))
 - `gemini` (Attributes) Google Gemini-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--gemini))
 - `huggingface` (Attributes) Hugging Face-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--huggingface))
 - `kimi` (Attributes) Kimi (Moonshot AI)-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--kimi))
-- `llama2` (Attributes) Llama2-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--llama2))
+- `llama2` (Attributes, Deprecated) Llama2-specific configuration for a model.
+
+Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate by the
+`format` value: `ollama` maps to the `ollama` provider, `openai` maps to the `openai` provider
+with `upstream_url` set, or to the `vllm` provider; `raw` has no replacement provider. (see [below for nested schema](#nestedatt--api--targets--config--llama2))
+- `meta` (Attributes) Meta-specific configuration for a model served by Meta's hosted Model API. Requests are
+sent to `https://api.meta.ai/v1` by default, and the target `name` is the Meta model ID
+(for example, `muse-spark-1.3`). Model IDs are passed through as-is, including
+`-contributor` variants, which permit Meta to train on submitted prompts; choose them
+deliberately. Use the `openai` format for the Chat Completions and Responses APIs and the
+`anthropic` format for the Messages API. Self-hosted open-weight models (such as Muse Glimmer)
+should use the `ollama` provider, or the `openai` provider with `upstream_url` set on the
+target (or the `vllm` provider); the `llama2` provider is deprecated.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--api--targets--config--meta))
 - `mistral` (Attributes) Mistral-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--mistral))
 - `ollama` (Attributes) Ollama-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--ollama))
 - `openai` (Attributes) Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--openai))
 - `sagemaker` (Attributes) AWS SageMaker-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker))
+- `togetherai` (Attributes) Together AI-specific configuration for a model. Together AI is fully OpenAI-compatible:
+requests are sent to `https://api.together.xyz/v1` by default using the `openai` format,
+and the target `name` is the Together model ID, passed through as-is (for example,
+`meta-llama/Llama-3.3-70B-Instruct-Turbo`). Override the base URL with `upstream_url`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--api--targets--config--togetherai))
 - `typesafe` (Attributes) Typesafe-specific configuration for a model.
 
 **Requires a minimum runtime version of `2.2`**. (see [below for nested schema](#nestedatt--api--targets--config--typesafe))
@@ -1087,6 +2404,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
 
@@ -1180,6 +2500,9 @@ possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--azure--cache_read_cost_list"></a>
@@ -1264,6 +2587,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--baseten--cache_read_cost_list"></a>
@@ -1348,7 +2674,7 @@ includes a format with `type` set to `bedrock`, because the Mantle endpoint
 does not support the Bedrock Converse or InvokeModel APIs.
 
 **Requires a minimum runtime version of `2.3`**.
-possible known values include one of ["runtime", "mantle"]; Default: "runtime"
+possible known values include one of ["runtime", "mantle"]
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
 
@@ -1365,6 +2691,9 @@ Setting this option overrides the AWS_REGION environment variable.
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
 - `vpc_endpoint` (String) Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
@@ -1454,6 +2783,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--cerebras--cache_read_cost_list"></a>
@@ -1542,6 +2874,9 @@ possible known values include one of ["v1", "v2"]; Default: "v2"
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
 
@@ -1628,6 +2963,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--dashscope--cache_read_cost_list"></a>
@@ -1712,6 +3050,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
 
@@ -1797,6 +3138,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--deepseek--cache_read_cost_list"></a>
@@ -1855,6 +3199,93 @@ Optional:
 
 
 
+<a id="nestedatt--api--targets--config--fireworks"></a>
+### Nested Schema for `api.targets.config.fireworks`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--fireworks--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--fireworks--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--fireworks--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--fireworks--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--fireworks--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--fireworks--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--fireworks--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.fireworks.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--fireworks--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.fireworks.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--fireworks--context_window_factor"></a>
+### Nested Schema for `api.targets.config.fireworks.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--fireworks--input_cost_list"></a>
+### Nested Schema for `api.targets.config.fireworks.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--fireworks--output_cost_list"></a>
+### Nested Schema for `api.targets.config.fireworks.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--fireworks--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.fireworks.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--api--targets--config--gemini"></a>
 ### Nested Schema for `api.targets.config.gemini`
 
@@ -1882,6 +3313,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--gemini--cache_read_cost_list"></a>
@@ -1976,6 +3410,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
@@ -2065,6 +3502,9 @@ Default: true
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--kimi--cache_read_cost_list"></a>
@@ -2150,6 +3590,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 <a id="nestedatt--api--targets--config--llama2--cache_read_cost_list"></a>
@@ -2208,6 +3651,93 @@ Optional:
 
 
 
+<a id="nestedatt--api--targets--config--meta"></a>
+### Nested Schema for `api.targets.config.meta`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--meta--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--meta--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--meta--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--meta--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--meta--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--meta--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--meta--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.meta.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--meta--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.meta.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--meta--context_window_factor"></a>
+### Nested Schema for `api.targets.config.meta.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--meta--input_cost_list"></a>
+### Nested Schema for `api.targets.config.meta.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--meta--output_cost_list"></a>
+### Nested Schema for `api.targets.config.meta.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--meta--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.meta.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--api--targets--config--mistral"></a>
 ### Nested Schema for `api.targets.config.mistral`
 
@@ -2235,6 +3765,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--mistral--cache_read_cost_list"></a>
@@ -2319,6 +3852,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--ollama--cache_read_cost_list"></a>
@@ -2403,6 +3939,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--openai--cache_read_cost_list"></a>
@@ -2489,6 +4028,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--sagemaker--aws"></a>
@@ -2568,6 +4110,93 @@ Optional:
 
 
 
+<a id="nestedatt--api--targets--config--togetherai"></a>
+### Nested Schema for `api.targets.config.togetherai`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--togetherai--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--togetherai--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--togetherai--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--togetherai--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--togetherai--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--togetherai--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--togetherai--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.togetherai.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--togetherai--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.togetherai.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--togetherai--context_window_factor"></a>
+### Nested Schema for `api.targets.config.togetherai.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--togetherai--input_cost_list"></a>
+### Nested Schema for `api.targets.config.togetherai.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--togetherai--output_cost_list"></a>
+### Nested Schema for `api.targets.config.togetherai.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--togetherai--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.togetherai.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--api--targets--config--typesafe"></a>
 ### Nested Schema for `api.targets.config.typesafe`
 
@@ -2575,6 +4204,9 @@ Optional:
 
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `upstream_base_url` (String) Base URL used instead of the default Typesafe endpoint. The gateway appends the forwarded request path to this base URL. Mutually exclusive with `upstream_url`.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -2604,6 +4236,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--vercel--cache_read_cost_list"></a>
@@ -2688,6 +4323,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 <a id="nestedatt--api--targets--config--vllm--cache_read_cost_list"></a>
@@ -2772,6 +4410,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--api--targets--config--xai--cache_read_cost_list"></a>
@@ -2839,12 +4480,17 @@ Optional:
 Optional:
 
 - `access` (Attributes) Access control configuration for a model. (see [below for nested schema](#nestedatt--model--access))
-- `capabilities` (List of String) List of AI capabilities enabled for this model. Not Null
+- `capabilities` (List of String) The capabilities this model supports. Set to a specific capability to
+restrict the model to that capability only, or to `*` to allow all
+capabilities that the targets support at the gateway's
+min_runtime_version. A capability that needs a newer
+min_runtime_version is left out of `*`.
+Default: ["*"]
 - `config` (Attributes) Routing, logging, and load balancing configuration for the model. Not Null (see [below for nested schema](#nestedatt--model--config))
-- `datastores` (Attributes List) Names of the Datastores this model references. (see [below for nested schema](#nestedatt--model--datastores))
+- `datastores` (Attributes List) The Datastores this model references, with the feature that uses each one. (see [below for nested schema](#nestedatt--model--datastores))
 - `display_name` (String) The display name for this model instance. Not Null
 - `enabled` (Boolean) Whether the model is enabled. Default: true
-- `formats` (Attributes List) List of request/response formats supported by this model. Not Null (see [below for nested schema](#nestedatt--model--formats))
+- `formats` (Attributes List) List of request/response formats supported by this model. (see [below for nested schema](#nestedatt--model--formats))
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
 Public labels are intended to store **PUBLIC** metadata. 
@@ -2852,7 +4498,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `targets` (Attributes List) One or more backend models that this model entry routes to. Not Null (see [below for nested schema](#nestedatt--model--targets))
@@ -2895,7 +4543,11 @@ Optional:
 
 - `balancer` (Attributes) Configuration for a model's load balancer when multiple target models are configured. (see [below for nested schema](#nestedatt--model--config--balancer))
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--model--config--logging))
-- `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `max_request_body_size` (Number) The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+A request with a larger body fails. Set to 0 for no limit.
+If you do not set a value, the gateway uses the request size limit that the model's providers publish,
+with defaults to 8 MB.
+If the targets use more than one provider, the gateway uses the highest of these limits.
 - `model` (Attributes) (see [below for nested schema](#nestedatt--model--config--model))
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--model--config--proxy))
 - `response_streaming` (String) possible known values include one of ["allow", "always", "deny"]; Default: "allow"
@@ -2907,6 +4559,12 @@ Optional:
 Optional:
 
 - `consistent_hashing` (Attributes) (see [below for nested schema](#nestedatt--model--config--balancer--consistent_hashing))
+- `intelligent` (Attributes) On the first request of a conversation, asks a classifier model what kind of work it is, then
+selects a target by the cost and quality tradeoff. Later requests in the conversation go to the
+same target through session affinity, which is always on for this algorithm: `ttl` and `storage`
+can be set, and `session_affinity.enabled: false` is rejected.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent))
 - `least_connections` (Attributes) (see [below for nested schema](#nestedatt--model--config--balancer--least_connections))
 - `lowest_latency` (Attributes) (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency))
 - `lowest_usage` (Attributes) (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage))
@@ -2930,6 +4588,260 @@ Optional:
 - `write_timeout` (Number) Default: 60000
 
 
+<a id="nestedatt--model--config--balancer--intelligent"></a>
+### Nested Schema for `model.config.balancer.intelligent`
+
+Optional:
+
+- `classifier` (Attributes) The classifier model the intelligent balancer asks what kind of work a conversation is, before it
+selects a target. If the classifier does not answer in time or its answer cannot be used, the
+balancer selects a target for general work.
+
+**Requires a minimum runtime version of `2.5`**.
+Not Null (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--classifier))
+- `connect_timeout` (Number) Default: 60000
+- `cost_quality_tradeoff` (String) How the balancer weighs cost versus quality when selecting a target. `cost` favors the cheapest available target, `quality` favors the highest-quality target, and `balanced` weighs both. possible known values include one of ["balanced", "cost", "quality"]; Default: "balanced"
+- `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
+- `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
+- `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
+- `read_timeout` (Number) Default: 60000
+- `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity))
+- `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
+- `strategy` (String) Selects the algorithm the balancer uses to choose a target. `weighted` scores each target on cost
+and quality. `margin` selects the cheapest target whose expected quality is within a margin of the
+best target's. For internal testing only: during the tech preview only Kong can set it, behind a
+feature flag. At GA, Kong sets the default to the algorithm it recommends, and the field stays
+accepted so saved configurations keep working.
+possible known values include one of ["weighted", "margin"]; Default: "weighted"
+- `version` (String) The version of the intelligent balancing algorithm. Default: "v1"; must be "v1"
+- `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--model--config--balancer--intelligent--classifier"></a>
+### Nested Schema for `model.config.balancer.intelligent.classifier`
+
+Optional:
+
+- `custom` (Attributes) A classifier service configured by hand, by its address, model name and credentials.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--classifier--custom))
+
+<a id="nestedatt--model--config--balancer--intelligent--classifier--custom"></a>
+### Nested Schema for `model.config.balancer.intelligent.classifier.custom`
+
+Optional:
+
+- `auth` (Attributes) The credentials sent to the classifier service with each request.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--classifier--custom--auth))
+- `context_window` (Number) The number of tokens the classifier model can read, from the model provider's documentation.
+The request text sent to the classifier is cut to fit.
+Not Null
+- `format` (String) The endpoint path appended to `url`: the path of the System One decisions API. Some hosts serve
+it at another path.
+Default: "/v1/systemone"
+- `name` (String) The name of the classifier model, sent in each request. Not Null
+- `timeout` (Number) The time in milliseconds to wait for the classifier's answer. Default: 5000
+- `url` (String) The classifier service's base URL. The `format` path is appended to it. It has no query string,
+fragment or user info.
+Not Null
+
+<a id="nestedatt--model--config--balancer--intelligent--classifier--custom--auth"></a>
+### Nested Schema for `model.config.balancer.intelligent.classifier.custom.auth`
+
+Optional:
+
+- `basic` (Attributes) Sends one header, such as an API key, with each request to the classifier service.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--classifier--custom--auth--basic))
+
+<a id="nestedatt--model--config--balancer--intelligent--classifier--custom--auth--basic"></a>
+### Nested Schema for `model.config.balancer.intelligent.classifier.custom.auth.basic`
+
+Optional:
+
+- `headers` (Attributes List) The header sent with each request to the classifier service. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--classifier--custom--auth--basic--headers))
+
+<a id="nestedatt--model--config--balancer--intelligent--classifier--custom--auth--basic--headers"></a>
+### Nested Schema for `model.config.balancer.intelligent.classifier.custom.auth.basic.headers`
+
+Optional:
+
+- `name` (String) The name of the header used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Not Null
+- `value` (String) The value of the header, for example `Bearer key...`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+
+
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis))
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--local"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.local`
+
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--intelligent--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `model.config.balancer.intelligent.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
+
+
 <a id="nestedatt--model--config--balancer--least_connections"></a>
 ### Nested Schema for `model.config.balancer.least_connections`
 
@@ -2941,8 +4853,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis))
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--local"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.local`
+
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--least_connections--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `model.config.balancer.least_connections.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--model--config--balancer--lowest_latency"></a>
@@ -2957,8 +5033,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis))
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--local"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.local`
+
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--lowest_latency--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `model.config.balancer.lowest_latency.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--model--config--balancer--lowest_usage"></a>
@@ -2972,9 +5212,173 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `tokens_count_strategy` (String) Methodology to use for token usage calculation. possible known values include one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]; Default: "total-tokens"
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis))
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--local"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.local`
+
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--lowest_usage--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `model.config.balancer.lowest_usage.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--model--config--balancer--priority"></a>
@@ -2988,8 +5392,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis))
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--local"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.local`
+
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--priority--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--priority--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `model.config.balancer.priority.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--model--config--balancer--round_robin"></a>
@@ -3003,8 +5571,172 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `write_timeout` (Number) Default: 60000
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis))
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--local"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.local`
+
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--round_robin--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `model.config.balancer.round_robin.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+
+
 
 
 <a id="nestedatt--model--config--balancer--semantic"></a>
@@ -3019,6 +5751,11 @@ Optional:
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `session_affinity` (Attributes) Sends later requests in a conversation to the target that served the earlier turn, if that
+target can still take the request. This improves reuse of the provider's prompt cache.
+Requests are matched by conversation content and provider response IDs, not by a session
+header. Requests with the same conversation content can go to the same target. If the
+preferred target is not available, the balancer algorithm picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity))
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
 - `vectordb` (Attributes) Configuration for the vector database used by the model. Not Null (see [below for nested schema](#nestedatt--model--config--balancer--semantic--vectordb))
 - `write_timeout` (Number) Default: 60000
@@ -3128,6 +5865,165 @@ Optional:
 Optional:
 
 - `upstream_url` (String) The URL of the embeddings model.
+
+
+
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity`
+
+Optional:
+
+- `enabled` (Boolean) Whether session affinity is enabled. Default: true
+- `storage` (Attributes) Where session affinity state is stored. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage))
+- `ttl` (Number) The time in seconds that a conversation's preferred target is kept. Default: 21600
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage`
+
+Optional:
+
+- `local` (Attributes) Stores session affinity state in the memory of each data plane node. A request that
+reaches a different node does not find the earlier target, so the balancer algorithm
+picks the target. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--local))
+- `redis` (Attributes) Stores session affinity state in Redis, so that all data plane nodes share it.
+Set the inline connection details or reference a Datastore with purpose `session-affinity`.
+The Datastore overrides the inline details and must have type `redis-ee`. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis))
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--local"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.local`
+
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Auth related config for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication))
+- `cluster` (Attributes) Cluster configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cluster))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "127.0.0.1"
+- `keepalive` (Attributes) Keepalive configuration for the Redis connection. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--keepalive))
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Default: "6379"
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel` (Attributes) Configuration for Redis Sentinel. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--sentinel))
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication`
+
+Optional:
+
+- `aws` (Attributes) AWS specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--aws))
+- `azure` (Attributes) Azure specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--azure))
+- `gcp` (Attributes) GCP specific configs for connecting to a Cloud Provider's redis instance. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--gcp))
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--aws"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication.aws`
+
+Optional:
+
+- `access_key_id` (String) AWS Access Key ID to be used for authentication.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `cache_name` (String) The name of the AWS Elasticache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `is_serverless` (Boolean) This flag specifies whether the cluster is serverless. Default: true
+- `region` (String) The region of the AWS ElastiCache cluster.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `secret_access_key` (String) AWS Secret Access Key.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--azure"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication.azure`
+
+Optional:
+
+- `client_id` (String) Azure Client ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `client_secret` (String) Azure Client Secret.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `tenant_id` (String) Azure Tenant ID.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cloud_authentication--gcp"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.cloud_authentication.gcp`
+
+Optional:
+
+- `service_account_json` (String) GCP Service Account JSON.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cluster"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.cluster`
+
+Optional:
+
+- `max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cluster--nodes))
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--cluster--nodes"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.cluster.nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--keepalive"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.keepalive`
+
+Optional:
+
+- `backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
+- `pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--sentinel"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.sentinel`
+
+Optional:
+
+- `master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--sentinel--nodes))
+- `password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
+- `username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+<a id="nestedatt--model--config--balancer--semantic--session_affinity--storage--redis--sentinel--nodes"></a>
+### Nested Schema for `model.config.balancer.semantic.session_affinity.storage.redis.sentinel.nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
 
 
 
@@ -3409,6 +6305,9 @@ When no selector location is configured, the format default selector is used.
 Optional:
 
 - `name` (String) An immutable user-defined identifier for this resource. Not Null
+- `purpose` (String) The model feature that uses the datastore. `semantic-balancer` supplies the connection of the
+model vector store.
+possible known values include one of ["semantic-balancer", "session-affinity"]; Default: "semantic-balancer"
 
 
 <a id="nestedatt--model--formats"></a>
@@ -3416,7 +6315,7 @@ Optional:
 
 Optional:
 
-- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
+- `type` (String) The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to `*` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of `*`. The `*` format never includes passthrough. possible known values include one of ["*", "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
 
 
 <a id="nestedatt--model--targets"></a>
@@ -3452,14 +6351,44 @@ example, `https://model-{model_id}.api.baseten.co/environments/{environment}/syn
 - `dashscope` (Attributes) Alibaba DashScope-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--dashscope))
 - `databricks` (Attributes) Databricks-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--databricks))
 - `deepseek` (Attributes) Deepseek-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--deepseek))
+- `fireworks` (Attributes) Fireworks AI-specific configuration for a model. Requests are sent to the Fireworks
+inference API at `https://api.fireworks.ai/inference/v1` by default, and the target `name`
+is the Fireworks model ID, passed through as-is (for example,
+`accounts/fireworks/models/llama-v3p1-70b-instruct`). Use the `openai` format for the
+Chat Completions, Completions, Responses, Embeddings, Rerank, and Decisions APIs, and the
+`anthropic` format for the Messages API. To keep traffic in the US-only region, set
+`upstream_url` to `https://us.api.fireworks.ai/inference/v1`. Upstream errors, including
+`max_tokens` truncation behavior, are returned as produced by Fireworks.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--model--targets--config--fireworks))
 - `gemini` (Attributes) Google Gemini-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--gemini))
 - `huggingface` (Attributes) Hugging Face-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--huggingface))
 - `kimi` (Attributes) Kimi (Moonshot AI)-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--kimi))
-- `llama2` (Attributes) Llama2-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--llama2))
+- `llama2` (Attributes, Deprecated) Llama2-specific configuration for a model.
+
+Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate by the
+`format` value: `ollama` maps to the `ollama` provider, `openai` maps to the `openai` provider
+with `upstream_url` set, or to the `vllm` provider; `raw` has no replacement provider. (see [below for nested schema](#nestedatt--model--targets--config--llama2))
+- `meta` (Attributes) Meta-specific configuration for a model served by Meta's hosted Model API. Requests are
+sent to `https://api.meta.ai/v1` by default, and the target `name` is the Meta model ID
+(for example, `muse-spark-1.3`). Model IDs are passed through as-is, including
+`-contributor` variants, which permit Meta to train on submitted prompts; choose them
+deliberately. Use the `openai` format for the Chat Completions and Responses APIs and the
+`anthropic` format for the Messages API. Self-hosted open-weight models (such as Muse Glimmer)
+should use the `ollama` provider, or the `openai` provider with `upstream_url` set on the
+target (or the `vllm` provider); the `llama2` provider is deprecated.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--model--targets--config--meta))
 - `mistral` (Attributes) Mistral-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--mistral))
 - `ollama` (Attributes) Ollama-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--ollama))
 - `openai` (Attributes) Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--openai))
 - `sagemaker` (Attributes) AWS SageMaker-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker))
+- `togetherai` (Attributes) Together AI-specific configuration for a model. Together AI is fully OpenAI-compatible:
+requests are sent to `https://api.together.xyz/v1` by default using the `openai` format,
+and the target `name` is the Together model ID, passed through as-is (for example,
+`meta-llama/Llama-3.3-70B-Instruct-Turbo`). Override the base URL with `upstream_url`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--model--targets--config--togetherai))
 - `typesafe` (Attributes) Typesafe-specific configuration for a model.
 
 **Requires a minimum runtime version of `2.2`**. (see [below for nested schema](#nestedatt--model--targets--config--typesafe))
@@ -3493,6 +6422,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
 
@@ -3586,6 +6518,9 @@ possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--azure--cache_read_cost_list"></a>
@@ -3670,6 +6605,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--baseten--cache_read_cost_list"></a>
@@ -3754,7 +6692,7 @@ includes a format with `type` set to `bedrock`, because the Mantle endpoint
 does not support the Bedrock Converse or InvokeModel APIs.
 
 **Requires a minimum runtime version of `2.3`**.
-possible known values include one of ["runtime", "mantle"]; Default: "runtime"
+possible known values include one of ["runtime", "mantle"]
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
 
@@ -3771,6 +6709,9 @@ Setting this option overrides the AWS_REGION environment variable.
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
 - `vpc_endpoint` (String) Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
@@ -3860,6 +6801,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--cerebras--cache_read_cost_list"></a>
@@ -3948,6 +6892,9 @@ possible known values include one of ["v1", "v2"]; Default: "v2"
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
 
@@ -4034,6 +6981,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--dashscope--cache_read_cost_list"></a>
@@ -4118,6 +7068,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
 
@@ -4203,6 +7156,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--deepseek--cache_read_cost_list"></a>
@@ -4261,6 +7217,93 @@ Optional:
 
 
 
+<a id="nestedatt--model--targets--config--fireworks"></a>
+### Nested Schema for `model.targets.config.fireworks`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--fireworks--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--fireworks--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--fireworks--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--fireworks--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--fireworks--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--fireworks--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--fireworks--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.fireworks.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--fireworks--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.fireworks.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--fireworks--context_window_factor"></a>
+### Nested Schema for `model.targets.config.fireworks.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--fireworks--input_cost_list"></a>
+### Nested Schema for `model.targets.config.fireworks.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--fireworks--output_cost_list"></a>
+### Nested Schema for `model.targets.config.fireworks.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--fireworks--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.fireworks.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--model--targets--config--gemini"></a>
 ### Nested Schema for `model.targets.config.gemini`
 
@@ -4288,6 +7331,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--gemini--cache_read_cost_list"></a>
@@ -4382,6 +7428,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
@@ -4471,6 +7520,9 @@ Default: true
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--kimi--cache_read_cost_list"></a>
@@ -4556,6 +7608,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 <a id="nestedatt--model--targets--config--llama2--cache_read_cost_list"></a>
@@ -4614,6 +7669,93 @@ Optional:
 
 
 
+<a id="nestedatt--model--targets--config--meta"></a>
+### Nested Schema for `model.targets.config.meta`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--meta--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--meta--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--meta--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--meta--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--meta--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--meta--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--meta--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.meta.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--meta--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.meta.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--meta--context_window_factor"></a>
+### Nested Schema for `model.targets.config.meta.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--meta--input_cost_list"></a>
+### Nested Schema for `model.targets.config.meta.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--meta--output_cost_list"></a>
+### Nested Schema for `model.targets.config.meta.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--meta--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.meta.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--model--targets--config--mistral"></a>
 ### Nested Schema for `model.targets.config.mistral`
 
@@ -4641,6 +7783,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--mistral--cache_read_cost_list"></a>
@@ -4725,6 +7870,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--ollama--cache_read_cost_list"></a>
@@ -4809,6 +7957,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--openai--cache_read_cost_list"></a>
@@ -4895,6 +8046,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--sagemaker--aws"></a>
@@ -4974,6 +8128,93 @@ Optional:
 
 
 
+<a id="nestedatt--model--targets--config--togetherai"></a>
+### Nested Schema for `model.targets.config.togetherai`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--togetherai--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--togetherai--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--togetherai--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--togetherai--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--togetherai--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--togetherai--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--togetherai--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.togetherai.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--togetherai--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.togetherai.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--togetherai--context_window_factor"></a>
+### Nested Schema for `model.targets.config.togetherai.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--togetherai--input_cost_list"></a>
+### Nested Schema for `model.targets.config.togetherai.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--togetherai--output_cost_list"></a>
+### Nested Schema for `model.targets.config.togetherai.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--togetherai--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.togetherai.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--model--targets--config--typesafe"></a>
 ### Nested Schema for `model.targets.config.typesafe`
 
@@ -4981,6 +8222,9 @@ Optional:
 
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `upstream_base_url` (String) Base URL used instead of the default Typesafe endpoint. The gateway appends the forwarded request path to this base URL. Mutually exclusive with `upstream_url`.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 
@@ -5010,6 +8254,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--vercel--cache_read_cost_list"></a>
@@ -5094,6 +8341,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
 
 <a id="nestedatt--model--targets--config--vllm--cache_read_cost_list"></a>
@@ -5178,6 +8428,9 @@ Optional:
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_base_url` (String) Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+
+**Requires a minimum runtime version of `2.4`**.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 
 <a id="nestedatt--model--targets--config--xai--cache_read_cost_list"></a>

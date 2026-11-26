@@ -10,6 +10,10 @@ import (
 type PortalAgent struct {
 	// Whether the Portal Agent is enabled or not
 	Enabled *bool `default:"false" json:"enabled"`
+	// The display name for the Portal Agent, shown to developers in the portal
+	DisplayName *string `default:"AI" json:"display_name"`
+	// The audience allowed to interact with the Portal Agent. `all` makes the Portal Agent available to every developer, including unauthenticated ones. `authenticated` restricts access to signed-in developers only.
+	Audience *PortalAgentAudience `default:"all" json:"audience"`
 }
 
 func (p PortalAgent) MarshalJSON() ([]byte, error) {
@@ -28,6 +32,20 @@ func (p *PortalAgent) GetEnabled() *bool {
 		return nil
 	}
 	return p.Enabled
+}
+
+func (p *PortalAgent) GetDisplayName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.DisplayName
+}
+
+func (p *PortalAgent) GetAudience() *PortalAgentAudience {
+	if p == nil {
+		return nil
+	}
+	return p.Audience
 }
 
 // AiSearch - AI Search config
@@ -90,11 +108,11 @@ func (m *McpServer) GetWriteOperationsEnabled() *bool {
 // AISettingsFeatures - AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false.
 type AISettingsFeatures struct {
 	// Portal Agent config
-	PortalAgent *PortalAgent `json:"portal_agent"`
+	PortalAgent *PortalAgent `json:"portal_agent,omitempty"`
 	// AI Search config
-	AiSearch *AiSearch `json:"ai_search"`
+	AiSearch *AiSearch `json:"ai_search,omitempty"`
 	// AI Features config
-	McpServer McpServer `json:"mcp_server"`
+	McpServer *McpServer `json:"mcp_server,omitempty"`
 }
 
 func (a *AISettingsFeatures) GetPortalAgent() *PortalAgent {
@@ -111,9 +129,9 @@ func (a *AISettingsFeatures) GetAiSearch() *AiSearch {
 	return a.AiSearch
 }
 
-func (a *AISettingsFeatures) GetMcpServer() McpServer {
+func (a *AISettingsFeatures) GetMcpServer() *McpServer {
 	if a == nil {
-		return McpServer{}
+		return nil
 	}
 	return a.McpServer
 }

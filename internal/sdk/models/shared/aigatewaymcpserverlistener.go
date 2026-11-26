@@ -61,6 +61,135 @@ func (e *AIGatewayMCPServerListenerAllowedVersions) IsExact() bool {
 	return false
 }
 
+// AIGatewayMCPServerListenerCacheScope - Whether the result may be cached across authorization contexts. `public` is rejected when
+// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+// `access.acls`.
+type AIGatewayMCPServerListenerCacheScope string
+
+const (
+	AIGatewayMCPServerListenerCacheScopePublic  AIGatewayMCPServerListenerCacheScope = "public"
+	AIGatewayMCPServerListenerCacheScopePrivate AIGatewayMCPServerListenerCacheScope = "private"
+)
+
+func (e AIGatewayMCPServerListenerCacheScope) ToPointer() *AIGatewayMCPServerListenerCacheScope {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayMCPServerListenerCacheScope) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayMCPServerListenerPromptsList - Cache hint emitted on `prompts/list` results. `cache_scope: public` is rejected when
+// `default_prompt_acls` or a prompt's own `access.acls` filters the list per subject.
+//
+// **Requires a minimum runtime version of `2.5`**.
+type AIGatewayMCPServerListenerPromptsList struct {
+	// How long a client may treat the result as fresh, in milliseconds.
+	TTLMs *int64 `json:"ttl_ms,omitempty"`
+	// Whether the result may be cached across authorization contexts. `public` is rejected when
+	// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+	// `access.acls`.
+	//
+	CacheScope *AIGatewayMCPServerListenerCacheScope `default:"private" json:"cache_scope"`
+}
+
+func (a AIGatewayMCPServerListenerPromptsList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerListenerPromptsList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerListenerPromptsList) GetTTLMs() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.TTLMs
+}
+
+func (a *AIGatewayMCPServerListenerPromptsList) GetCacheScope() *AIGatewayMCPServerListenerCacheScope {
+	if a == nil {
+		return nil
+	}
+	return a.CacheScope
+}
+
+// AIGatewayMCPServerListenerConfigCacheScope - Whether the result may be cached across authorization contexts. `public` is rejected when
+// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+// `access.acls`.
+type AIGatewayMCPServerListenerConfigCacheScope string
+
+const (
+	AIGatewayMCPServerListenerConfigCacheScopePublic  AIGatewayMCPServerListenerConfigCacheScope = "public"
+	AIGatewayMCPServerListenerConfigCacheScopePrivate AIGatewayMCPServerListenerConfigCacheScope = "private"
+)
+
+func (e AIGatewayMCPServerListenerConfigCacheScope) ToPointer() *AIGatewayMCPServerListenerConfigCacheScope {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayMCPServerListenerConfigCacheScope) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayMCPServerListenerResourcesList - Cache hint emitted on `resources/list` and `resources/templates/list` results.
+// `cache_scope: public` is rejected when `default_resource_acls` or a resource's own
+// `access.acls` filters either list per subject.
+//
+// **Requires a minimum runtime version of `2.5`**.
+type AIGatewayMCPServerListenerResourcesList struct {
+	// How long a client may treat the result as fresh, in milliseconds.
+	TTLMs *int64 `json:"ttl_ms,omitempty"`
+	// Whether the result may be cached across authorization contexts. `public` is rejected when
+	// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+	// `access.acls`.
+	//
+	CacheScope *AIGatewayMCPServerListenerConfigCacheScope `default:"private" json:"cache_scope"`
+}
+
+func (a AIGatewayMCPServerListenerResourcesList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerListenerResourcesList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerListenerResourcesList) GetTTLMs() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.TTLMs
+}
+
+func (a *AIGatewayMCPServerListenerResourcesList) GetCacheScope() *AIGatewayMCPServerListenerConfigCacheScope {
+	if a == nil {
+		return nil
+	}
+	return a.CacheScope
+}
+
 // AIGatewayMCPServerListenerCache - Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol
 // revision that defines them receive them.
 //
@@ -68,6 +197,17 @@ func (e *AIGatewayMCPServerListenerAllowedVersions) IsExact() bool {
 type AIGatewayMCPServerListenerCache struct {
 	// A cache hint Kong emits on a cacheable operation it serves.
 	ToolsList *AIGatewayMCPServerCacheHint `json:"tools_list,omitempty"`
+	// Cache hint emitted on `prompts/list` results. `cache_scope: public` is rejected when
+	// `default_prompt_acls` or a prompt's own `access.acls` filters the list per subject.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	PromptsList *AIGatewayMCPServerListenerPromptsList `json:"prompts_list,omitempty"`
+	// Cache hint emitted on `resources/list` and `resources/templates/list` results.
+	// `cache_scope: public` is rejected when `default_resource_acls` or a resource's own
+	// `access.acls` filters either list per subject.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	ResourcesList *AIGatewayMCPServerListenerResourcesList `json:"resources_list,omitempty"`
 	// A cache hint Kong emits on a cacheable operation it serves.
 	Discover *AIGatewayMCPServerCacheHint `json:"discover,omitempty"`
 }
@@ -90,6 +230,20 @@ func (a *AIGatewayMCPServerListenerCache) GetToolsList() *AIGatewayMCPServerCach
 	return a.ToolsList
 }
 
+func (a *AIGatewayMCPServerListenerCache) GetPromptsList() *AIGatewayMCPServerListenerPromptsList {
+	if a == nil {
+		return nil
+	}
+	return a.PromptsList
+}
+
+func (a *AIGatewayMCPServerListenerCache) GetResourcesList() *AIGatewayMCPServerListenerResourcesList {
+	if a == nil {
+		return nil
+	}
+	return a.ResourcesList
+}
+
 func (a *AIGatewayMCPServerListenerCache) GetDiscover() *AIGatewayMCPServerCacheHint {
 	if a == nil {
 		return nil
@@ -103,7 +257,7 @@ type AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig struct {
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
 	//
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerListenerLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -135,9 +289,9 @@ func (a *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig) Unmarsh
 	return nil
 }
 
-func (a *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }
@@ -206,7 +360,9 @@ type AIGatewayMCPServerListener struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials

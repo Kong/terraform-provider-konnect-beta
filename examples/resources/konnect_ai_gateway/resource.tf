@@ -6,6 +6,9 @@ resource "konnect_ai_gateway" "my_aigateway" {
   labels = {
     key = "value"
   }
+  managed_by = {
+    key = "value"
+  }
   min_runtime_version = "2.0"
   name                = "my-ai-gateway"
   proxy_urls = [

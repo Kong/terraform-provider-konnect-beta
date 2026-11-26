@@ -67,20 +67,20 @@ func (r *MeshRateLimitResourceModel) RefreshFromSharedMeshRateLimitItem(ctx cont
 								from.Default.Local.HTTP.OnRateLimit.Headers = nil
 							} else {
 								from.Default.Local.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
-								from.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
+								from.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 								for _, addItem := range fromItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
-									var add tfTypes.MeshGlobalRateLimitItemAdd
+									var add tfTypes.KongPrincipalIdentityOIDCClaim
 
 									add.Name = types.StringValue(addItem.Name)
 									add.Value = types.StringValue(addItem.Value)
 
 									from.Default.Local.HTTP.OnRateLimit.Headers.Add = append(from.Default.Local.HTTP.OnRateLimit.Headers.Add, add)
 								}
-								from.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
+								from.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 								for _, setItem := range fromItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
-									var set tfTypes.MeshGlobalRateLimitItemAdd
+									var set tfTypes.KongPrincipalIdentityOIDCClaim
 
 									set.Name = types.StringValue(setItem.Name)
 									set.Value = types.StringValue(setItem.Value)
@@ -164,20 +164,20 @@ func (r *MeshRateLimitResourceModel) RefreshFromSharedMeshRateLimitItem(ctx cont
 								rules.Default.Local.HTTP.OnRateLimit.Headers = nil
 							} else {
 								rules.Default.Local.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
-								rules.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
+								rules.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 								for _, addItem1 := range rulesItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
-									var add1 tfTypes.MeshGlobalRateLimitItemAdd
+									var add1 tfTypes.KongPrincipalIdentityOIDCClaim
 
 									add1.Name = types.StringValue(addItem1.Name)
 									add1.Value = types.StringValue(addItem1.Value)
 
 									rules.Default.Local.HTTP.OnRateLimit.Headers.Add = append(rules.Default.Local.HTTP.OnRateLimit.Headers.Add, add1)
 								}
-								rules.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
+								rules.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 								for _, setItem1 := range rulesItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
-									var set1 tfTypes.MeshGlobalRateLimitItemAdd
+									var set1 tfTypes.KongPrincipalIdentityOIDCClaim
 
 									set1.Name = types.StringValue(setItem1.Name)
 									set1.Value = types.StringValue(setItem1.Value)
@@ -287,20 +287,20 @@ func (r *MeshRateLimitResourceModel) RefreshFromSharedMeshRateLimitItem(ctx cont
 								to.Default.Local.HTTP.OnRateLimit.Headers = nil
 							} else {
 								to.Default.Local.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
-								to.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
+								to.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 								for _, addItem2 := range toItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
-									var add2 tfTypes.MeshGlobalRateLimitItemAdd
+									var add2 tfTypes.KongPrincipalIdentityOIDCClaim
 
 									add2.Name = types.StringValue(addItem2.Name)
 									add2.Value = types.StringValue(addItem2.Value)
 
 									to.Default.Local.HTTP.OnRateLimit.Headers.Add = append(to.Default.Local.HTTP.OnRateLimit.Headers.Add, add2)
 								}
-								to.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
+								to.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 								for _, setItem2 := range toItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
-									var set2 tfTypes.MeshGlobalRateLimitItemAdd
+									var set2 tfTypes.KongPrincipalIdentityOIDCClaim
 
 									set2.Name = types.StringValue(setItem2.Name)
 									set2.Value = types.StringValue(setItem2.Value)

@@ -9,8 +9,11 @@ resource "konnect_ai_gateway_policy" "my_aigatewaypolicy" {
   ]
   display_name = "My Cool AI PII Sanitizer Policy"
   enabled      = true
-  gateway_id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-  global       = false
+  expressions = {
+    key = jsonencode("value")
+  }
+  gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+  global     = false
   labels = {
     key = "value"
   }

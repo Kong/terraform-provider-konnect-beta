@@ -18,6 +18,10 @@ type AIGatewayTargetTypesafeConfig struct {
 	OutputCost *float64 `json:"output_cost,omitempty"`
 	// The upstream URL for the model endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+	// Base URL used instead of the default Typesafe endpoint. The gateway appends the forwarded request path to this base URL. Mutually exclusive with `upstream_url`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	UpstreamBaseURL *string `json:"upstream_base_url,omitempty"`
 }
 
 func (a AIGatewayTargetTypesafeConfig) MarshalJSON() ([]byte, error) {
@@ -54,4 +58,11 @@ func (a *AIGatewayTargetTypesafeConfig) GetUpstreamURL() *string {
 		return nil
 	}
 	return a.UpstreamURL
+}
+
+func (a *AIGatewayTargetTypesafeConfig) GetUpstreamBaseURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamBaseURL
 }

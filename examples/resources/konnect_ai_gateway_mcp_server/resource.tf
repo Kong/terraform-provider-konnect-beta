@@ -8,18 +8,58 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
         auth_strategies = [
           "okta-ai-se"
         ]
+        default_prompt_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
+        default_resource_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
         default_tool_acls = {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
@@ -43,6 +83,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       allowed_versions = [
         "2025-06-18"
       ]
+      balancer = {
+        least_connections = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -50,6 +95,14 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         discover = {
           cache_scope = "private"
           ttl_ms      = 5
+        }
+        prompts_list = {
+          cache_scope = "private"
+          ttl_ms      = 0
+        }
+        resources_list = {
+          cache_scope = "private"
+          ttl_ms      = 0
         }
         tools_list = {
           cache_scope = "private"
@@ -64,6 +117,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "https"
       route = {
         headers = {
           key = jsonencode("value")
@@ -150,6 +205,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       upstream = {
         auth = {
           aws = {
@@ -267,7 +329,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }
@@ -305,6 +373,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   conversion_only = {
     config = {
+      balancer = {
+        least_connections = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -316,6 +389,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "https"
       route = {
         headers = {
           key = jsonencode("value")
@@ -342,6 +417,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           "..."
         ]
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       upstream = {
         auth = {
           aws = {
@@ -443,7 +525,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }
@@ -488,18 +576,58 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
         auth_strategies = [
           "okta-ai-se"
         ]
+        default_prompt_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
+        default_resource_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
         default_tool_acls = {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
@@ -527,6 +655,14 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         discover = {
           cache_scope = "private"
           ttl_ms      = 8
+        }
+        prompts_list = {
+          cache_scope = "private"
+          ttl_ms      = 10
+        }
+        resources_list = {
+          cache_scope = "private"
+          ttl_ms      = 10
         }
         tools_list = {
           cache_scope = "private"
@@ -720,18 +856,58 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
         auth_strategies = [
           "okta-ai-se"
         ]
+        default_prompt_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
+        default_resource_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
         default_tool_acls = {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
@@ -752,6 +928,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
+      balancer = {
+        lowest_latency = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -763,6 +944,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "https"
       proxy = {
         auth = {
           password = "...my_password..."
@@ -865,6 +1048,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       upstream = {
         auth = {
           aws = {
@@ -897,6 +1087,27 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
+    prompts = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        name = "summarize_booking"
+      }
+    ]
     rate_limiting = {
       limits = [
         {
@@ -907,6 +1118,27 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       ]
     }
+    resources = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        uri = "kongair://bookings/{booking_id}"
+      }
+    ]
     token_vault = {
       cache = {
         redis = {
@@ -976,7 +1208,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }
@@ -987,6 +1225,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   upstream_server = {
     config = {
+      balancer = {
+        lowest_latency = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -998,6 +1241,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "http"
       route = {
         headers = {
           key = jsonencode("value")
@@ -1091,6 +1336,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         upstream_protocol_version = "2025-06-18"
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       tools_cache_ttl_seconds = 7
       upstream = {
         auth = {
@@ -1123,6 +1375,48 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     name = "kongair-flights"
     policies = [
       "..."
+    ]
+    prompts = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        name = "summarize_booking"
+      }
+    ]
+    resources = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        uri = "kongair://bookings/{booking_id}"
+      }
     ]
     token_vault = {
       cache = {
@@ -1193,7 +1487,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }

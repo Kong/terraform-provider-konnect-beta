@@ -122,10 +122,10 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						filters.RequestHeaderModifier = nil
 					} else {
 						filters.RequestHeaderModifier = &tfTypes.RequestHeaderModifier{}
-						filters.RequestHeaderModifier.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
+						filters.RequestHeaderModifier.Add = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 						for _, addItem := range filtersItem.RequestHeaderModifier.Add {
-							var add tfTypes.MeshGlobalRateLimitItemAdd
+							var add tfTypes.KongPrincipalIdentityOIDCClaim
 
 							add.Name = types.StringValue(addItem.Name)
 							add.Value = types.StringValue(addItem.Value)
@@ -136,10 +136,10 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						for _, v := range filtersItem.RequestHeaderModifier.Remove {
 							filters.RequestHeaderModifier.Remove = append(filters.RequestHeaderModifier.Remove, types.StringValue(v))
 						}
-						filters.RequestHeaderModifier.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
+						filters.RequestHeaderModifier.Set = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 						for _, setItem := range filtersItem.RequestHeaderModifier.Set {
-							var set tfTypes.MeshGlobalRateLimitItemAdd
+							var set tfTypes.KongPrincipalIdentityOIDCClaim
 
 							set.Name = types.StringValue(setItem.Name)
 							set.Value = types.StringValue(setItem.Value)
@@ -176,7 +176,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						}
 						filters.RequestMirror.BackendRef.Weight = types.Int64PointerValue(filtersItem.RequestMirror.BackendRef.Weight)
 						if filtersItem.RequestMirror.Percentage != nil {
-							filters.RequestMirror.Percentage = &tfTypes.MeshItemMode{}
+							filters.RequestMirror.Percentage = &tfTypes.Port{}
 							if filtersItem.RequestMirror.Percentage.Integer != nil {
 								filters.RequestMirror.Percentage.Integer = types.Int64PointerValue(filtersItem.RequestMirror.Percentage.Integer)
 							}
@@ -214,10 +214,10 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						filters.ResponseHeaderModifier = nil
 					} else {
 						filters.ResponseHeaderModifier = &tfTypes.RequestHeaderModifier{}
-						filters.ResponseHeaderModifier.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
+						filters.ResponseHeaderModifier.Add = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 						for _, addItem1 := range filtersItem.ResponseHeaderModifier.Add {
-							var add1 tfTypes.MeshGlobalRateLimitItemAdd
+							var add1 tfTypes.KongPrincipalIdentityOIDCClaim
 
 							add1.Name = types.StringValue(addItem1.Name)
 							add1.Value = types.StringValue(addItem1.Value)
@@ -228,10 +228,10 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						for _, v := range filtersItem.ResponseHeaderModifier.Remove {
 							filters.ResponseHeaderModifier.Remove = append(filters.ResponseHeaderModifier.Remove, types.StringValue(v))
 						}
-						filters.ResponseHeaderModifier.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
+						filters.ResponseHeaderModifier.Set = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 						for _, setItem1 := range filtersItem.ResponseHeaderModifier.Set {
-							var set1 tfTypes.MeshGlobalRateLimitItemAdd
+							var set1 tfTypes.KongPrincipalIdentityOIDCClaim
 
 							set1.Name = types.StringValue(setItem1.Name)
 							set1.Value = types.StringValue(setItem1.Value)

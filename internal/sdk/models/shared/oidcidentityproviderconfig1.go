@@ -21,10 +21,8 @@ type OIDCIdentityProviderConfig1 struct {
 	// authentication. Only the provided mappings are updated and provided values cannot be empty.
 	//
 	ClaimMappings *UpdateOIDCIdentityProviderClaimMappings `json:"claim_mappings,omitempty"`
-	// Indicates whether back-channel logout is enabled. When enabled, the identity provider can notify
-	// the portal to end a user's session when they log out of the identity provider.
-	//
-	BackChannelLogoutEnabled *bool `default:"false" json:"back_channel_logout_enabled"`
+	// The back-channel logout settings to update. Only the provided properties are updated.
+	BackchannelLogout *UpdateOIDCIdentityProviderBackChannelLogout `json:"backchannel_logout,omitempty"`
 }
 
 func (o OIDCIdentityProviderConfig1) MarshalJSON() ([]byte, error) {
@@ -73,11 +71,11 @@ func (o *OIDCIdentityProviderConfig1) GetClaimMappings() *UpdateOIDCIdentityProv
 	return o.ClaimMappings
 }
 
-func (o *OIDCIdentityProviderConfig1) GetBackChannelLogoutEnabled() *bool {
+func (o *OIDCIdentityProviderConfig1) GetBackchannelLogout() *UpdateOIDCIdentityProviderBackChannelLogout {
 	if o == nil {
 		return nil
 	}
-	return o.BackChannelLogoutEnabled
+	return o.BackchannelLogout
 }
 
 // #region class-body-oidcidentityproviderconfig1

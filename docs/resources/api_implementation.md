@@ -69,6 +69,7 @@ Requires replacement if changed.
 Read-Only:
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `environment` (Attributes) The environment this record is scoped to. (see [below for nested schema](#nestedatt--control_plane_reference--environment))
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -82,6 +83,15 @@ Optional:
 Read-Only:
 
 - `access_control_enforcement_enabled` (Boolean) Indicates if the access control enforcement plugin is installed globally in the target control plane
+
+
+<a id="nestedatt--control_plane_reference--environment"></a>
+### Nested Schema for `control_plane_reference.environment`
+
+Read-Only:
+
+- `id` (String) The UUID of the environment.
+- `name` (String) The name of the environment.
 
 
 
@@ -100,6 +110,7 @@ Requires replacement if changed.
 Read-Only:
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `environment` (Attributes) The environment this record is scoped to. (see [below for nested schema](#nestedatt--service_reference--environment))
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -110,6 +121,15 @@ Optional:
 
 - `control_plane_id` (String) Not Null; Requires replacement if changed.
 - `id` (String) Not Null; Requires replacement if changed.
+
+
+<a id="nestedatt--service_reference--environment"></a>
+### Nested Schema for `service_reference.environment`
+
+Read-Only:
+
+- `id` (String) The UUID of the environment.
+- `name` (String) The name of the environment.
 
 ## Import
 

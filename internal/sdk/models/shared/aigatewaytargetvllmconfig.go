@@ -46,6 +46,10 @@ type AIGatewayTargetVllmConfig struct {
 	TopP *float64 `json:"top_p,omitempty"`
 	// The upstream URL for the model endpoint.
 	UpstreamURL string `json:"upstream_url"`
+	// Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	UpstreamBaseURL *string `json:"upstream_base_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"vllm" json:"type"`
 }
@@ -171,6 +175,13 @@ func (a *AIGatewayTargetVllmConfig) GetUpstreamURL() string {
 		return ""
 	}
 	return a.UpstreamURL
+}
+
+func (a *AIGatewayTargetVllmConfig) GetUpstreamBaseURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamBaseURL
 }
 
 func (a *AIGatewayTargetVllmConfig) GetType() string {

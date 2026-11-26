@@ -27,6 +27,7 @@ type AIGatewayTargetBedrockConfig struct {
 	Temperature              types.Float64                  `tfsdk:"temperature"`
 	TopK                     types.Int64                    `tfsdk:"top_k"`
 	TopP                     types.Float64                  `tfsdk:"top_p"`
+	UpstreamBaseURL          types.String                   `tfsdk:"upstream_base_url"`
 	UpstreamURL              types.String                   `tfsdk:"upstream_url"`
 	VideoOutputS3URI         types.String                   `tfsdk:"video_output_s3_uri"`
 	VpcEndpoint              types.String                   `tfsdk:"vpc_endpoint"`

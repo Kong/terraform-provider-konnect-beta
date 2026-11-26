@@ -88,6 +88,8 @@ type CreatePortal struct {
 	NotificationsDeveloperPiiVisibilityEnabled *bool `default:"false" json:"notifications_developer_pii_visibility_enabled"`
 	// Use to create the portal page default content upon creation of this portal
 	CreateDefaultContent *bool `default:"false" json:"create_default_content"`
+	// Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when `create_default_content` is true.
+	ThemeName *string `json:"theme_name,omitempty"`
 }
 
 func (c CreatePortal) MarshalJSON() ([]byte, error) {
@@ -204,4 +206,11 @@ func (c *CreatePortal) GetCreateDefaultContent() *bool {
 		return nil
 	}
 	return c.CreateDefaultContent
+}
+
+func (c *CreatePortal) GetThemeName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ThemeName
 }

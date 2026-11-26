@@ -18,6 +18,8 @@ type PortalCustomDomainSSL struct {
 	// True when the provided certificate chain is served as-is without validation against a public trust store.
 	//
 	SkipCaCheck *bool `json:"skip_ca_check,omitempty"`
+	// A non-null warning value means the domain owner has an actionable item to address. The issue does not affect the domain's current use. The value is a human-readable guidance string; exact wording is application-controlled. Null when no action is needed.
+	ValidationWarning *string `json:"validation_warning"`
 }
 
 func (p PortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
@@ -71,4 +73,11 @@ func (p *PortalCustomDomainSSL) GetSkipCaCheck() *bool {
 		return nil
 	}
 	return p.SkipCaCheck
+}
+
+func (p *PortalCustomDomainSSL) GetValidationWarning() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ValidationWarning
 }

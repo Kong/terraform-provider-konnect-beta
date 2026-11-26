@@ -83,9 +83,13 @@ Optional:
 
 - `failure_mode` (String) Describes how to handle a failure in a policy applied to consumed records.
 * `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.
+The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.
 * `skip` - the record is not delivered to the client.
 * `passthrough` - passes the record to the client even though policy execution failed.
 * `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.
+If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.
 
 **Requires a minimum runtime version of `1.2`**.
 possible known values include one of ["error", "skip", "passthrough", "mark"]
@@ -127,9 +131,13 @@ Optional:
 
 - `failure_mode` (String) Describes how to handle a failure in a policy applied to consumed records.
 * `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.
+The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.
 * `skip` - the record is not delivered to the client.
 * `passthrough` - passes the record to the client even though policy execution failed.
 * `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.
+If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.
 
 **Requires a minimum runtime version of `1.2`**.
 possible known values include one of ["error", "skip", "passthrough", "mark"]
@@ -143,7 +151,6 @@ Defines a behavior when record key is not valid.
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
 possible known values include one of ["mark", "skip"]
-- `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--inline_schema--schema_registry))
 - `validate_key` (Boolean) If true, validate the record key.
 
 **Requires a minimum runtime version of `1.2`**.
@@ -190,14 +197,6 @@ Required:
 
 
 
-<a id="nestedatt--config--inline_schema--schema_registry"></a>
-### Nested Schema for `config.inline_schema.schema_registry`
-
-Required:
-
-- `id` (String) The unique identifier of the schema registry.
-
-
 <a id="nestedatt--config--inline_schema--value"></a>
 ### Nested Schema for `config.inline_schema.value`
 
@@ -235,9 +234,13 @@ Optional:
 
 - `failure_mode` (String) Describes how to handle a failure in a policy applied to consumed records.
 * `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.
+The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.
 * `skip` - the record is not delivered to the client.
 * `passthrough` - passes the record to the client even though policy execution failed.
 * `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.
+If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.
 
 **Requires a minimum runtime version of `1.2`**.
 possible known values include one of ["error", "skip", "passthrough", "mark"]

@@ -88,7 +88,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(ctx 
 					to.Default.Grpc.ServiceName = types.StringPointerValue(toItem.Default.Grpc.ServiceName)
 				}
 				if toItem.Default.HealthyPanicThreshold != nil {
-					to.Default.HealthyPanicThreshold = &tfTypes.MeshItemMode{}
+					to.Default.HealthyPanicThreshold = &tfTypes.Port{}
 					if toItem.Default.HealthyPanicThreshold.Integer != nil {
 						to.Default.HealthyPanicThreshold.Integer = types.Int64PointerValue(toItem.Default.HealthyPanicThreshold.Integer)
 					}
@@ -111,20 +111,20 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(ctx 
 						to.Default.HTTP.RequestHeadersToAdd = nil
 					} else {
 						to.Default.HTTP.RequestHeadersToAdd = &tfTypes.MeshGlobalRateLimitItemHeaders{}
-						to.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
+						to.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 						for _, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
-							var add tfTypes.MeshGlobalRateLimitItemAdd
+							var add tfTypes.KongPrincipalIdentityOIDCClaim
 
 							add.Name = types.StringValue(addItem.Name)
 							add.Value = types.StringValue(addItem.Value)
 
 							to.Default.HTTP.RequestHeadersToAdd.Add = append(to.Default.HTTP.RequestHeadersToAdd.Add, add)
 						}
-						to.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
+						to.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.KongPrincipalIdentityOIDCClaim{}
 
 						for _, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
-							var set tfTypes.MeshGlobalRateLimitItemAdd
+							var set tfTypes.KongPrincipalIdentityOIDCClaim
 
 							set.Name = types.StringValue(setItem.Name)
 							set.Value = types.StringValue(setItem.Value)

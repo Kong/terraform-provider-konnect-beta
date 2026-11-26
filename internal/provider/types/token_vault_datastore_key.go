@@ -7,5 +7,6 @@ import (
 )
 
 type TokenVaultDatastoreKey struct {
+	Key     types.String `tfsdk:"key"`
 	Version types.String `tfsdk:"version"`
 }

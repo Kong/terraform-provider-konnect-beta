@@ -78,17 +78,6 @@ type AIGatewayUpstreamConfigOutput struct {
 	Auth *AIGatewayUpstreamConfigAuthOutput `json:"auth,omitempty"`
 }
 
-func (a AIGatewayUpstreamConfigOutput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayUpstreamConfigOutput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (a *AIGatewayUpstreamConfigOutput) GetAuth() *AIGatewayUpstreamConfigAuthOutput {
 	if a == nil {
 		return nil

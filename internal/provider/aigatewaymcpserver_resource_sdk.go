@@ -28,31 +28,121 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.ConversionListener.Access.Consumer.Acls = nil
 					} else {
-						r.ConversionListener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.ConversionListener.Access.Consumer.Acls.Allow = append(r.ConversionListener.Access.Consumer.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen != nil {
+							r.ConversionListener.Access.Consumer.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen {
+								r.ConversionListener.Access.Consumer.Acls.AllowWhen = append(r.ConversionListener.Access.Consumer.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.Acls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.Consumer.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny {
 							r.ConversionListener.Access.Consumer.Acls.Deny = append(r.ConversionListener.Access.Consumer.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen != nil {
+							r.ConversionListener.Access.Consumer.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen {
+								r.ConversionListener.Access.Consumer.Acls.DenyWhen = append(r.ConversionListener.Access.Consumer.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.Acls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.Consumer.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies))
 					for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies {
 						r.ConversionListener.Access.Consumer.AuthStrategies = append(r.ConversionListener.Access.Consumer.AuthStrategies, types.StringValue(v))
 					}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls == nil {
+						r.ConversionListener.Access.Consumer.DefaultPromptAcls = nil
+					} else {
+						r.ConversionListener.Access.Consumer.DefaultPromptAcls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Allow {
+							r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow = append(r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen {
+								r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen = append(r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen = nil
+						}
+						r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Deny {
+							r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny = append(r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen {
+								r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen = append(r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen = nil
+						}
+					}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls == nil {
+						r.ConversionListener.Access.Consumer.DefaultResourceAcls = nil
+					} else {
+						r.ConversionListener.Access.Consumer.DefaultResourceAcls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Allow {
+							r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow = append(r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen {
+								r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen = append(r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen = nil
+						}
+						r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Deny {
+							r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny = append(r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen {
+								r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen = append(r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen = nil
+						}
+					}
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.ConversionListener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.ConversionListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen {
+								r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny {
 							r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen {
+								r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
@@ -82,31 +172,121 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.ConversionListener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.ConversionListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.ConversionListener.Access.OauthAccessToken.Acls.Allow = append(r.ConversionListener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen {
+								r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen = append(r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.OauthAccessToken.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny {
 							r.ConversionListener.Access.OauthAccessToken.Acls.Deny = append(r.ConversionListener.Access.OauthAccessToken.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen {
+								r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen = append(r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.OauthAccessToken.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies))
 					for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies {
 						r.ConversionListener.Access.OauthAccessToken.AuthStrategies = append(r.ConversionListener.Access.OauthAccessToken.AuthStrategies, types.StringValue(v))
 					}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls == nil {
+						r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls = nil
+					} else {
+						r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Allow {
+							r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow = append(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = nil
+						}
+						r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Deny {
+							r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny = append(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = nil
+						}
+					}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls == nil {
+						r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls = nil
+					} else {
+						r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Allow {
+							r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow = append(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = nil
+						}
+						r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Deny {
+							r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny = append(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = nil
+						}
+					}
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny {
 							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
@@ -144,6 +324,22 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			} else {
 				r.ConversionListener.Config.AllowedVersions = nil
 			}
+			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Balancer != nil {
+				r.ConversionListener.Config.Balancer = &tfTypes.CreateAIGatewayAgentRequestBalancer{}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Balancer.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+					r.ConversionListener.Config.Balancer.ConsistentHashing = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{}
+					r.ConversionListener.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Balancer.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig.HashOnHeader)
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Balancer.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+					r.ConversionListener.Config.Balancer.LeastConnections = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Balancer.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+					r.ConversionListener.Config.Balancer.LowestLatency = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Balancer.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+					r.ConversionListener.Config.Balancer.RoundRobin = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+			}
 			r.ConversionListener.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.CaCertificates))
 			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.CaCertificates {
 				r.ConversionListener.Config.CaCertificates = append(r.ConversionListener.Config.CaCertificates, types.StringValue(v))
@@ -162,6 +358,28 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.ConversionListener.Config.Cache.Discover.CacheScope = types.StringNull()
 					}
 					r.ConversionListener.Config.Cache.Discover.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.Discover.TTLMs)
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.PromptsList == nil {
+					r.ConversionListener.Config.Cache.PromptsList = nil
+				} else {
+					r.ConversionListener.Config.Cache.PromptsList = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.PromptsList.CacheScope != nil {
+						r.ConversionListener.Config.Cache.PromptsList.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.PromptsList.CacheScope))
+					} else {
+						r.ConversionListener.Config.Cache.PromptsList.CacheScope = types.StringNull()
+					}
+					r.ConversionListener.Config.Cache.PromptsList.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.PromptsList.TTLMs)
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ResourcesList == nil {
+					r.ConversionListener.Config.Cache.ResourcesList = nil
+				} else {
+					r.ConversionListener.Config.Cache.ResourcesList = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ResourcesList.CacheScope != nil {
+						r.ConversionListener.Config.Cache.ResourcesList.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ResourcesList.CacheScope))
+					} else {
+						r.ConversionListener.Config.Cache.ResourcesList.CacheScope = types.StringNull()
+					}
+					r.ConversionListener.Config.Cache.ResourcesList.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ResourcesList.TTLMs)
 				}
 				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ToolsList == nil {
 					r.ConversionListener.Config.Cache.ToolsList = nil
@@ -187,43 +405,45 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionListener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Logging.Payloads)
 			}
 			r.ConversionListener.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.MaxRequestBodySize)
-			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Route == nil {
-				r.ConversionListener.Config.Route = nil
+			r.ConversionListener.Config.Path = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Path)
+			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Protocol != nil {
+				r.ConversionListener.Config.Protocol = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.Config.Protocol))
 			} else {
-				r.ConversionListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers) > 0 {
-					r.ConversionListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers))
-					for key, value := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers {
-						result, _ := json.Marshal(value)
-						r.ConversionListener.Config.Route.Headers[key] = jsontypes.NewNormalizedValue(string(result))
-					}
+				r.ConversionListener.Config.Protocol = types.StringNull()
+			}
+			r.ConversionListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers) > 0 {
+				r.ConversionListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers))
+				for key, value := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers {
+					result, _ := json.Marshal(value)
+					r.ConversionListener.Config.Route.Headers[key] = jsontypes.NewNormalizedValue(string(result))
 				}
-				r.ConversionListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts {
-					r.ConversionListener.Config.Route.Hosts = append(r.ConversionListener.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.ConversionListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods {
-					r.ConversionListener.Config.Route.Methods = append(r.ConversionListener.Config.Route.Methods, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths {
-					r.ConversionListener.Config.Route.Paths = append(r.ConversionListener.Config.Route.Paths, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.PreserveHost)
-				r.ConversionListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols {
-					r.ConversionListener.Config.Route.Protocols = append(r.ConversionListener.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RegexPriority)
-				r.ConversionListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RequestBuffering)
-				r.ConversionListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.ResponseBuffering)
-				r.ConversionListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.StripPath)
-				r.ConversionListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags {
-					r.ConversionListener.Config.Route.Tags = append(r.ConversionListener.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.ConversionListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts {
+				r.ConversionListener.Config.Route.Hosts = append(r.ConversionListener.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.ConversionListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods {
+				r.ConversionListener.Config.Route.Methods = append(r.ConversionListener.Config.Route.Methods, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths {
+				r.ConversionListener.Config.Route.Paths = append(r.ConversionListener.Config.Route.Paths, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.PreserveHost)
+			r.ConversionListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols {
+				r.ConversionListener.Config.Route.Protocols = append(r.ConversionListener.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RegexPriority)
+			r.ConversionListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RequestBuffering)
+			r.ConversionListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.ResponseBuffering)
+			r.ConversionListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.StripPath)
+			r.ConversionListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags {
+				r.ConversionListener.Config.Route.Tags = append(r.ConversionListener.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server == nil {
 				r.ConversionListener.Config.Server = nil
@@ -312,10 +532,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes tfTypes.ClusterNodes
+									var nodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes.IP = types.StringPointerValue(nodesItem.IP)
 									nodes.Port = types.Int64PointerValue(nodesItem.Port)
@@ -347,10 +567,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem1 := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes1 tfTypes.SentinelNodes
+									var nodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes1.Host = types.StringPointerValue(nodesItem1.Host)
 									nodes1.Port = types.Int64PointerValue(nodesItem1.Port)
@@ -382,6 +602,21 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				}
 				r.ConversionListener.Config.Server.Timeout = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Timeout)
 			}
+			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Targets != nil {
+				r.ConversionListener.Config.Targets = []tfTypes.AIGatewayUpstreamTarget{}
+
+				for _, targetsItem := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Targets {
+					var targets tfTypes.AIGatewayUpstreamTarget
+
+					targets.Address = types.StringValue(targetsItem.Address)
+					targets.Failover = types.BoolPointerValue(targetsItem.Failover)
+					targets.Weight = types.Int64PointerValue(targetsItem.Weight)
+
+					r.ConversionListener.Config.Targets = append(r.ConversionListener.Config.Targets, targets)
+				}
+			} else {
+				r.ConversionListener.Config.Targets = nil
+			}
 			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Upstream == nil {
 				r.ConversionListener.Config.Upstream = nil
 			} else {
@@ -411,7 +646,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.ConversionListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.URL)
+			r.ConversionListener.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.URL)
 			r.ConversionListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerConversionListenerResponse.CreatedAt))
 			r.CreatedAt = r.ConversionListener.CreatedAt
 			if resp.AIGatewayMCPServerConversionListenerResponse.Datastores != nil {
@@ -540,10 +775,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.TokenVault.Cache.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem2 := range resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes2 tfTypes.ClusterNodes
+									var nodes2 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
 									nodes2.Port = types.Int64PointerValue(nodesItem2.Port)
@@ -575,10 +810,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.TokenVault.Cache.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem3 := range resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes3 tfTypes.SentinelNodes
+									var nodes3 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
 									nodes3.Port = types.Int64PointerValue(nodesItem3.Port)
@@ -635,7 +870,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage == nil {
 					r.ConversionListener.TokenVault.Storage = nil
 				} else {
-					r.ConversionListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.ConversionListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.ConversionListener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.CurrentVersion)
 					r.ConversionListener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.Directory)
 					r.ConversionListener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -643,6 +878,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					for _, keysItem := range resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.Keys {
 						var keys tfTypes.TokenVaultDatastoreKey
 
+						keys.Key = types.StringPointerValue(keysItem.Key)
 						keys.Version = types.StringValue(keysItem.Version)
 
 						r.ConversionListener.TokenVault.Storage.Keys = append(r.ConversionListener.TokenVault.Storage.Keys, keys)
@@ -666,14 +902,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem.Access.Acls == nil {
 						tools.Access.Acls = nil
 					} else {
-						tools.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+						tools.Access.Acls = &tfTypes.AIGatewayACLS{}
 						tools.Access.Acls.Allow = make([]types.String, 0, len(toolsItem.Access.Acls.Allow))
 						for _, v := range toolsItem.Access.Acls.Allow {
 							tools.Access.Acls.Allow = append(tools.Access.Acls.Allow, types.StringValue(v))
 						}
+						if toolsItem.Access.Acls.AllowWhen != nil {
+							tools.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem.Access.Acls.AllowWhen))
+							for _, v := range toolsItem.Access.Acls.AllowWhen {
+								tools.Access.Acls.AllowWhen = append(tools.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							tools.Access.Acls.AllowWhen = nil
+						}
 						tools.Access.Acls.Deny = make([]types.String, 0, len(toolsItem.Access.Acls.Deny))
 						for _, v := range toolsItem.Access.Acls.Deny {
 							tools.Access.Acls.Deny = append(tools.Access.Acls.Deny, types.StringValue(v))
+						}
+						if toolsItem.Access.Acls.DenyWhen != nil {
+							tools.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem.Access.Acls.DenyWhen))
+							for _, v := range toolsItem.Access.Acls.DenyWhen {
+								tools.Access.Acls.DenyWhen = append(tools.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							tools.Access.Acls.DenyWhen = nil
 						}
 					}
 				}
@@ -754,6 +1006,22 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				configPriorData1 = conversionOnlyPriorData.Config
 			}
 			r.ConversionOnly.Config = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig{}
+			if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Balancer != nil {
+				r.ConversionOnly.Config.Balancer = &tfTypes.CreateAIGatewayAgentRequestBalancer{}
+				if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Balancer.AIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+					r.ConversionOnly.Config.Balancer.ConsistentHashing = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{}
+					r.ConversionOnly.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Balancer.AIGatewayUpstreamBalancerConsistentHashingConfig.HashOnHeader)
+				}
+				if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Balancer.AIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+					r.ConversionOnly.Config.Balancer.LeastConnections = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Balancer.AIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+					r.ConversionOnly.Config.Balancer.LowestLatency = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Balancer.AIGatewayUpstreamBalancerRoundRobinConfig != nil {
+					r.ConversionOnly.Config.Balancer.RoundRobin = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+			}
 			r.ConversionOnly.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionOnlyResponse.Config.CaCertificates))
 			for _, v := range resp.AIGatewayMCPServerConversionOnlyResponse.Config.CaCertificates {
 				r.ConversionOnly.Config.CaCertificates = append(r.ConversionOnly.Config.CaCertificates, types.StringValue(v))
@@ -770,6 +1038,12 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionOnly.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Logging.Payloads)
 			}
 			r.ConversionOnly.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.MaxRequestBodySize)
+			r.ConversionOnly.Config.Path = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Path)
+			if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Protocol != nil {
+				r.ConversionOnly.Config.Protocol = types.StringValue(string(*resp.AIGatewayMCPServerConversionOnlyResponse.Config.Protocol))
+			} else {
+				r.ConversionOnly.Config.Protocol = types.StringNull()
+			}
 			if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Route == nil {
 				r.ConversionOnly.Config.Route = nil
 			} else {
@@ -808,6 +1082,21 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.ConversionOnly.Config.Route.Tags = append(r.ConversionOnly.Config.Route.Tags, types.StringValue(v))
 				}
 			}
+			if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Targets != nil {
+				r.ConversionOnly.Config.Targets = []tfTypes.AIGatewayUpstreamTarget{}
+
+				for _, targetsItem1 := range resp.AIGatewayMCPServerConversionOnlyResponse.Config.Targets {
+					var targets1 tfTypes.AIGatewayUpstreamTarget
+
+					targets1.Address = types.StringValue(targetsItem1.Address)
+					targets1.Failover = types.BoolPointerValue(targetsItem1.Failover)
+					targets1.Weight = types.Int64PointerValue(targetsItem1.Weight)
+
+					r.ConversionOnly.Config.Targets = append(r.ConversionOnly.Config.Targets, targets1)
+				}
+			} else {
+				r.ConversionOnly.Config.Targets = nil
+			}
 			if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Upstream == nil {
 				r.ConversionOnly.Config.Upstream = nil
 			} else {
@@ -837,7 +1126,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.ConversionOnly.Config.URL = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.URL)
+			r.ConversionOnly.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.URL)
 			r.ConversionOnly.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerConversionOnlyResponse.CreatedAt))
 			r.CreatedAt = r.ConversionOnly.CreatedAt
 			if resp.AIGatewayMCPServerConversionOnlyResponse.Datastores != nil {
@@ -949,10 +1238,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionOnly.TokenVault.Cache.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem4 := range resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes4 tfTypes.ClusterNodes
+									var nodes4 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes4.IP = types.StringPointerValue(nodesItem4.IP)
 									nodes4.Port = types.Int64PointerValue(nodesItem4.Port)
@@ -984,10 +1273,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionOnly.TokenVault.Cache.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem5 := range resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes5 tfTypes.SentinelNodes
+									var nodes5 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes5.Host = types.StringPointerValue(nodesItem5.Host)
 									nodes5.Port = types.Int64PointerValue(nodesItem5.Port)
@@ -1044,7 +1333,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage == nil {
 					r.ConversionOnly.TokenVault.Storage = nil
 				} else {
-					r.ConversionOnly.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.ConversionOnly.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.ConversionOnly.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.CurrentVersion)
 					r.ConversionOnly.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.Directory)
 					r.ConversionOnly.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1052,6 +1341,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					for _, keysItem1 := range resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.Keys {
 						var keys1 tfTypes.TokenVaultDatastoreKey
 
+						keys1.Key = types.StringPointerValue(keysItem1.Key)
 						keys1.Version = types.StringValue(keysItem1.Version)
 
 						r.ConversionOnly.TokenVault.Storage.Keys = append(r.ConversionOnly.TokenVault.Storage.Keys, keys1)
@@ -1075,14 +1365,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem1.Access.Acls == nil {
 						tools1.Access.Acls = nil
 					} else {
-						tools1.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+						tools1.Access.Acls = &tfTypes.AIGatewayACLS{}
 						tools1.Access.Acls.Allow = make([]types.String, 0, len(toolsItem1.Access.Acls.Allow))
 						for _, v := range toolsItem1.Access.Acls.Allow {
 							tools1.Access.Acls.Allow = append(tools1.Access.Acls.Allow, types.StringValue(v))
 						}
+						if toolsItem1.Access.Acls.AllowWhen != nil {
+							tools1.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem1.Access.Acls.AllowWhen))
+							for _, v := range toolsItem1.Access.Acls.AllowWhen {
+								tools1.Access.Acls.AllowWhen = append(tools1.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							tools1.Access.Acls.AllowWhen = nil
+						}
 						tools1.Access.Acls.Deny = make([]types.String, 0, len(toolsItem1.Access.Acls.Deny))
 						for _, v := range toolsItem1.Access.Acls.Deny {
 							tools1.Access.Acls.Deny = append(tools1.Access.Acls.Deny, types.StringValue(v))
+						}
+						if toolsItem1.Access.Acls.DenyWhen != nil {
+							tools1.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem1.Access.Acls.DenyWhen))
+							for _, v := range toolsItem1.Access.Acls.DenyWhen {
+								tools1.Access.Acls.DenyWhen = append(tools1.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							tools1.Access.Acls.DenyWhen = nil
 						}
 					}
 				}
@@ -1165,31 +1471,121 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.Listener.Access.Consumer.Acls = nil
 					} else {
-						r.Listener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.Listener.Access.Consumer.Acls.Allow = append(r.Listener.Access.Consumer.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen != nil {
+							r.Listener.Access.Consumer.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen {
+								r.Listener.Access.Consumer.Acls.AllowWhen = append(r.Listener.Access.Consumer.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.Acls.AllowWhen = nil
+						}
 						r.Listener.Access.Consumer.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny {
 							r.Listener.Access.Consumer.Acls.Deny = append(r.Listener.Access.Consumer.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen != nil {
+							r.Listener.Access.Consumer.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen {
+								r.Listener.Access.Consumer.Acls.DenyWhen = append(r.Listener.Access.Consumer.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.Acls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.Consumer.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies))
 					for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies {
 						r.Listener.Access.Consumer.AuthStrategies = append(r.Listener.Access.Consumer.AuthStrategies, types.StringValue(v))
 					}
+					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls == nil {
+						r.Listener.Access.Consumer.DefaultPromptAcls = nil
+					} else {
+						r.Listener.Access.Consumer.DefaultPromptAcls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.Consumer.DefaultPromptAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Allow {
+							r.Listener.Access.Consumer.DefaultPromptAcls.Allow = append(r.Listener.Access.Consumer.DefaultPromptAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen != nil {
+							r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen {
+								r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen = append(r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen = nil
+						}
+						r.Listener.Access.Consumer.DefaultPromptAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Deny {
+							r.Listener.Access.Consumer.DefaultPromptAcls.Deny = append(r.Listener.Access.Consumer.DefaultPromptAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen != nil {
+							r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen {
+								r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen = append(r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen = nil
+						}
+					}
+					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls == nil {
+						r.Listener.Access.Consumer.DefaultResourceAcls = nil
+					} else {
+						r.Listener.Access.Consumer.DefaultResourceAcls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.Consumer.DefaultResourceAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Allow {
+							r.Listener.Access.Consumer.DefaultResourceAcls.Allow = append(r.Listener.Access.Consumer.DefaultResourceAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen != nil {
+							r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen {
+								r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen = append(r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen = nil
+						}
+						r.Listener.Access.Consumer.DefaultResourceAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Deny {
+							r.Listener.Access.Consumer.DefaultResourceAcls.Deny = append(r.Listener.Access.Consumer.DefaultResourceAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen != nil {
+							r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen {
+								r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen = append(r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen = nil
+						}
+					}
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.Listener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.Listener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.Listener.Access.Consumer.DefaultToolAcls.Allow = append(r.Listener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen != nil {
+							r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen {
+								r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen = append(r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen = nil
+						}
 						r.Listener.Access.Consumer.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny {
 							r.Listener.Access.Consumer.DefaultToolAcls.Deny = append(r.Listener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen != nil {
+							r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen {
+								r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen = append(r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
@@ -1219,31 +1615,121 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.Listener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.Listener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.Listener.Access.OauthAccessToken.Acls.Allow = append(r.Listener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen != nil {
+							r.Listener.Access.OauthAccessToken.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen {
+								r.Listener.Access.OauthAccessToken.Acls.AllowWhen = append(r.Listener.Access.OauthAccessToken.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.Acls.AllowWhen = nil
+						}
 						r.Listener.Access.OauthAccessToken.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny {
 							r.Listener.Access.OauthAccessToken.Acls.Deny = append(r.Listener.Access.OauthAccessToken.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen != nil {
+							r.Listener.Access.OauthAccessToken.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen {
+								r.Listener.Access.OauthAccessToken.Acls.DenyWhen = append(r.Listener.Access.OauthAccessToken.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.Acls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.OauthAccessToken.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies))
 					for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies {
 						r.Listener.Access.OauthAccessToken.AuthStrategies = append(r.Listener.Access.OauthAccessToken.AuthStrategies, types.StringValue(v))
 					}
+					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls == nil {
+						r.Listener.Access.OauthAccessToken.DefaultPromptAcls = nil
+					} else {
+						r.Listener.Access.OauthAccessToken.DefaultPromptAcls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Allow {
+							r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow = append(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen {
+								r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = append(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = nil
+						}
+						r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Deny {
+							r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny = append(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen {
+								r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = append(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = nil
+						}
+					}
+					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls == nil {
+						r.Listener.Access.OauthAccessToken.DefaultResourceAcls = nil
+					} else {
+						r.Listener.Access.OauthAccessToken.DefaultResourceAcls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Allow {
+							r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow = append(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen {
+								r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = append(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = nil
+						}
+						r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Deny {
+							r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny = append(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen {
+								r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = append(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = nil
+						}
+					}
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.Listener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen {
+								r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = nil
+						}
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny {
 							r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen {
+								r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
@@ -1296,6 +1782,28 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 					r.Listener.Config.Cache.Discover.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Cache.Discover.TTLMs)
 				}
+				if resp.AIGatewayMCPServerListenerResponse.Config.Cache.PromptsList == nil {
+					r.Listener.Config.Cache.PromptsList = nil
+				} else {
+					r.Listener.Config.Cache.PromptsList = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerListenerResponse.Config.Cache.PromptsList.CacheScope != nil {
+						r.Listener.Config.Cache.PromptsList.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.Config.Cache.PromptsList.CacheScope))
+					} else {
+						r.Listener.Config.Cache.PromptsList.CacheScope = types.StringNull()
+					}
+					r.Listener.Config.Cache.PromptsList.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Cache.PromptsList.TTLMs)
+				}
+				if resp.AIGatewayMCPServerListenerResponse.Config.Cache.ResourcesList == nil {
+					r.Listener.Config.Cache.ResourcesList = nil
+				} else {
+					r.Listener.Config.Cache.ResourcesList = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerListenerResponse.Config.Cache.ResourcesList.CacheScope != nil {
+						r.Listener.Config.Cache.ResourcesList.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.Config.Cache.ResourcesList.CacheScope))
+					} else {
+						r.Listener.Config.Cache.ResourcesList.CacheScope = types.StringNull()
+					}
+					r.Listener.Config.Cache.ResourcesList.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Cache.ResourcesList.TTLMs)
+				}
 				if resp.AIGatewayMCPServerListenerResponse.Config.Cache.ToolsList == nil {
 					r.Listener.Config.Cache.ToolsList = nil
 				} else {
@@ -1316,43 +1824,39 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.Listener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Logging.Payloads)
 			}
 			r.Listener.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.MaxRequestBodySize)
-			if resp.AIGatewayMCPServerListenerResponse.Config.Route == nil {
-				r.Listener.Config.Route = nil
-			} else {
-				r.Listener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers) > 0 {
-					r.Listener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers))
-					for key8, value8 := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers {
-						result4, _ := json.Marshal(value8)
-						r.Listener.Config.Route.Headers[key8] = jsontypes.NewNormalizedValue(string(result4))
-					}
+			r.Listener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers) > 0 {
+				r.Listener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers))
+				for key8, value8 := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers {
+					result4, _ := json.Marshal(value8)
+					r.Listener.Config.Route.Headers[key8] = jsontypes.NewNormalizedValue(string(result4))
 				}
-				r.Listener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts {
-					r.Listener.Config.Route.Hosts = append(r.Listener.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.Listener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.Listener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods {
-					r.Listener.Config.Route.Methods = append(r.Listener.Config.Route.Methods, types.StringValue(v))
-				}
-				r.Listener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths {
-					r.Listener.Config.Route.Paths = append(r.Listener.Config.Route.Paths, types.StringValue(v))
-				}
-				r.Listener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.PreserveHost)
-				r.Listener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols {
-					r.Listener.Config.Route.Protocols = append(r.Listener.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.Listener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RegexPriority)
-				r.Listener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RequestBuffering)
-				r.Listener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.ResponseBuffering)
-				r.Listener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.StripPath)
-				r.Listener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags {
-					r.Listener.Config.Route.Tags = append(r.Listener.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.Listener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts {
+				r.Listener.Config.Route.Hosts = append(r.Listener.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.Listener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.Listener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods {
+				r.Listener.Config.Route.Methods = append(r.Listener.Config.Route.Methods, types.StringValue(v))
+			}
+			r.Listener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths {
+				r.Listener.Config.Route.Paths = append(r.Listener.Config.Route.Paths, types.StringValue(v))
+			}
+			r.Listener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.PreserveHost)
+			r.Listener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols {
+				r.Listener.Config.Route.Protocols = append(r.Listener.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.Listener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RegexPriority)
+			r.Listener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RequestBuffering)
+			r.Listener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.ResponseBuffering)
+			r.Listener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.StripPath)
+			r.Listener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags {
+				r.Listener.Config.Route.Tags = append(r.Listener.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerListenerResponse.Config.Server == nil {
 				r.Listener.Config.Server = nil
@@ -1441,10 +1945,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.Listener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.Listener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem6 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes6 tfTypes.ClusterNodes
+									var nodes6 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes6.IP = types.StringPointerValue(nodesItem6.IP)
 									nodes6.Port = types.Int64PointerValue(nodesItem6.Port)
@@ -1476,10 +1980,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.Listener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem7 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes7 tfTypes.SentinelNodes
+									var nodes7 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes7.Host = types.StringPointerValue(nodesItem7.Host)
 									nodes7.Port = types.Int64PointerValue(nodesItem7.Port)
@@ -1626,10 +2130,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.TokenVault.Cache.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Listener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.Listener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem8 := range resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes8 tfTypes.ClusterNodes
+									var nodes8 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes8.IP = types.StringPointerValue(nodesItem8.IP)
 									nodes8.Port = types.Int64PointerValue(nodesItem8.Port)
@@ -1661,10 +2165,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.TokenVault.Cache.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.Listener.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem9 := range resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes9 tfTypes.SentinelNodes
+									var nodes9 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes9.Host = types.StringPointerValue(nodesItem9.Host)
 									nodes9.Port = types.Int64PointerValue(nodesItem9.Port)
@@ -1721,7 +2225,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage == nil {
 					r.Listener.TokenVault.Storage = nil
 				} else {
-					r.Listener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Listener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Listener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.CurrentVersion)
 					r.Listener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.Directory)
 					r.Listener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1729,6 +2233,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					for _, keysItem2 := range resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.Keys {
 						var keys2 tfTypes.TokenVaultDatastoreKey
 
+						keys2.Key = types.StringPointerValue(keysItem2.Key)
 						keys2.Version = types.StringValue(keysItem2.Version)
 
 						r.Listener.TokenVault.Storage.Keys = append(r.Listener.TokenVault.Storage.Keys, keys2)
@@ -1753,31 +2258,121 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.PassthroughListener.Access.Consumer.Acls = nil
 					} else {
-						r.PassthroughListener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.PassthroughListener.Access.Consumer.Acls.Allow = append(r.PassthroughListener.Access.Consumer.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen != nil {
+							r.PassthroughListener.Access.Consumer.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen {
+								r.PassthroughListener.Access.Consumer.Acls.AllowWhen = append(r.PassthroughListener.Access.Consumer.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.Acls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.Consumer.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny {
 							r.PassthroughListener.Access.Consumer.Acls.Deny = append(r.PassthroughListener.Access.Consumer.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen != nil {
+							r.PassthroughListener.Access.Consumer.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen {
+								r.PassthroughListener.Access.Consumer.Acls.DenyWhen = append(r.PassthroughListener.Access.Consumer.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.Acls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.Consumer.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies))
 					for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies {
 						r.PassthroughListener.Access.Consumer.AuthStrategies = append(r.PassthroughListener.Access.Consumer.AuthStrategies, types.StringValue(v))
 					}
+					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls == nil {
+						r.PassthroughListener.Access.Consumer.DefaultPromptAcls = nil
+					} else {
+						r.PassthroughListener.Access.Consumer.DefaultPromptAcls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Allow {
+							r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow = append(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.AllowWhen {
+								r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen = append(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen = nil
+						}
+						r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.Deny {
+							r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny = append(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultPromptAcls.DenyWhen {
+								r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen = append(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen = nil
+						}
+					}
+					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls == nil {
+						r.PassthroughListener.Access.Consumer.DefaultResourceAcls = nil
+					} else {
+						r.PassthroughListener.Access.Consumer.DefaultResourceAcls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Allow {
+							r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow = append(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.AllowWhen {
+								r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen = append(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen = nil
+						}
+						r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.Deny {
+							r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny = append(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultResourceAcls.DenyWhen {
+								r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen = append(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen = nil
+						}
+					}
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.PassthroughListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen {
+								r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny {
 							r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen {
+								r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
@@ -1807,31 +2402,121 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.PassthroughListener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.PassthroughListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.PassthroughListener.Access.OauthAccessToken.Acls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen {
+								r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen = append(r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.OauthAccessToken.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny {
 							r.PassthroughListener.Access.OauthAccessToken.Acls.Deny = append(r.PassthroughListener.Access.OauthAccessToken.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen {
+								r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen = append(r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.OauthAccessToken.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies))
 					for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies {
 						r.PassthroughListener.Access.OauthAccessToken.AuthStrategies = append(r.PassthroughListener.Access.OauthAccessToken.AuthStrategies, types.StringValue(v))
 					}
+					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls == nil {
+						r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls = nil
+					} else {
+						r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Allow {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.AllowWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen = nil
+						}
+						r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.Deny {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny = append(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultPromptAcls.DenyWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen = nil
+						}
+					}
+					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls == nil {
+						r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls = nil
+					} else {
+						r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Allow))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Allow {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.AllowWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen = nil
+						}
+						r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Deny))
+						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.Deny {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny = append(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultResourceAcls.DenyWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen = nil
+						}
+					}
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny {
 							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
@@ -1861,6 +2546,22 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				configPriorData3 = passthroughListenerPriorData.Config
 			}
 			r.PassthroughListener.Config = &tfTypes.AIGatewayMCPServerWithUpstreamConfig{}
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Balancer != nil {
+				r.PassthroughListener.Config.Balancer = &tfTypes.CreateAIGatewayAgentRequestBalancer{}
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Balancer.BalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+					r.PassthroughListener.Config.Balancer.ConsistentHashing = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{}
+					r.PassthroughListener.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Balancer.BalancerAIGatewayUpstreamBalancerConsistentHashingConfig.HashOnHeader)
+				}
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Balancer.BalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+					r.PassthroughListener.Config.Balancer.LeastConnections = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Balancer.BalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+					r.PassthroughListener.Config.Balancer.LowestLatency = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Balancer.BalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+					r.PassthroughListener.Config.Balancer.RoundRobin = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+			}
 			r.PassthroughListener.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.CaCertificates))
 			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.CaCertificates {
 				r.PassthroughListener.Config.CaCertificates = append(r.PassthroughListener.Config.CaCertificates, types.StringValue(v))
@@ -1877,6 +2578,12 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.PassthroughListener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Logging.Payloads)
 			}
 			r.PassthroughListener.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.MaxRequestBodySize)
+			r.PassthroughListener.Config.Path = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Path)
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Protocol != nil {
+				r.PassthroughListener.Config.Protocol = types.StringValue(string(*resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Protocol))
+			} else {
+				r.PassthroughListener.Config.Protocol = types.StringNull()
+			}
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Proxy == nil {
 				r.PassthroughListener.Config.Proxy = nil
 			} else {
@@ -1919,43 +2626,39 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.PassthroughListener.Config.Proxy.ProxyScheme = types.StringNull()
 				}
 			}
-			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route == nil {
-				r.PassthroughListener.Config.Route = nil
-			} else {
-				r.PassthroughListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers) > 0 {
-					r.PassthroughListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers))
-					for key11, value11 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers {
-						result5, _ := json.Marshal(value11)
-						r.PassthroughListener.Config.Route.Headers[key11] = jsontypes.NewNormalizedValue(string(result5))
-					}
+			r.PassthroughListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers) > 0 {
+				r.PassthroughListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers))
+				for key11, value11 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers {
+					result5, _ := json.Marshal(value11)
+					r.PassthroughListener.Config.Route.Headers[key11] = jsontypes.NewNormalizedValue(string(result5))
 				}
-				r.PassthroughListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts {
-					r.PassthroughListener.Config.Route.Hosts = append(r.PassthroughListener.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.PassthroughListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods {
-					r.PassthroughListener.Config.Route.Methods = append(r.PassthroughListener.Config.Route.Methods, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths {
-					r.PassthroughListener.Config.Route.Paths = append(r.PassthroughListener.Config.Route.Paths, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.PreserveHost)
-				r.PassthroughListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols {
-					r.PassthroughListener.Config.Route.Protocols = append(r.PassthroughListener.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RegexPriority)
-				r.PassthroughListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RequestBuffering)
-				r.PassthroughListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.ResponseBuffering)
-				r.PassthroughListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.StripPath)
-				r.PassthroughListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags {
-					r.PassthroughListener.Config.Route.Tags = append(r.PassthroughListener.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.PassthroughListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts {
+				r.PassthroughListener.Config.Route.Hosts = append(r.PassthroughListener.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.PassthroughListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods {
+				r.PassthroughListener.Config.Route.Methods = append(r.PassthroughListener.Config.Route.Methods, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths {
+				r.PassthroughListener.Config.Route.Paths = append(r.PassthroughListener.Config.Route.Paths, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.PreserveHost)
+			r.PassthroughListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols {
+				r.PassthroughListener.Config.Route.Protocols = append(r.PassthroughListener.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RegexPriority)
+			r.PassthroughListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RequestBuffering)
+			r.PassthroughListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.ResponseBuffering)
+			r.PassthroughListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.StripPath)
+			r.PassthroughListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags {
+				r.PassthroughListener.Config.Route.Tags = append(r.PassthroughListener.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server == nil {
 				r.PassthroughListener.Config.Server = nil
@@ -2044,10 +2747,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem10 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes10 tfTypes.ClusterNodes
+									var nodes10 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes10.IP = types.StringPointerValue(nodesItem10.IP)
 									nodes10.Port = types.Int64PointerValue(nodesItem10.Port)
@@ -2079,10 +2782,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem11 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes11 tfTypes.SentinelNodes
+									var nodes11 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes11.Host = types.StringPointerValue(nodesItem11.Host)
 									nodes11.Port = types.Int64PointerValue(nodesItem11.Port)
@@ -2114,6 +2817,21 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				}
 				r.PassthroughListener.Config.Server.Timeout = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Timeout)
 			}
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Targets != nil {
+				r.PassthroughListener.Config.Targets = []tfTypes.AIGatewayUpstreamTarget{}
+
+				for _, targetsItem2 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Targets {
+					var targets2 tfTypes.AIGatewayUpstreamTarget
+
+					targets2.Address = types.StringValue(targetsItem2.Address)
+					targets2.Failover = types.BoolPointerValue(targetsItem2.Failover)
+					targets2.Weight = types.Int64PointerValue(targetsItem2.Weight)
+
+					r.PassthroughListener.Config.Targets = append(r.PassthroughListener.Config.Targets, targets2)
+				}
+			} else {
+				r.PassthroughListener.Config.Targets = nil
+			}
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Upstream == nil {
 				r.PassthroughListener.Config.Upstream = nil
 			} else {
@@ -2143,7 +2861,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.PassthroughListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.URL)
+			r.PassthroughListener.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.URL)
 			r.PassthroughListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerPassthroughListenerResponse.CreatedAt))
 			r.CreatedAt = r.PassthroughListener.CreatedAt
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Datastores != nil {
@@ -2183,6 +2901,49 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Policies {
 				r.PassthroughListener.Policies = append(r.PassthroughListener.Policies, types.StringValue(v))
 			}
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.Prompts != nil {
+				r.PassthroughListener.Prompts = []tfTypes.AIGatewayMCPPrompt{}
+
+				for _, promptsItem := range resp.AIGatewayMCPServerPassthroughListenerResponse.Prompts {
+					var prompts tfTypes.AIGatewayMCPPrompt
+
+					prompts.Access = &tfTypes.AIGatewayMCPToolAccess{}
+					if promptsItem.Access.Acls == nil {
+						prompts.Access.Acls = nil
+					} else {
+						prompts.Access.Acls = &tfTypes.AIGatewayACLS{}
+						prompts.Access.Acls.Allow = make([]types.String, 0, len(promptsItem.Access.Acls.Allow))
+						for _, v := range promptsItem.Access.Acls.Allow {
+							prompts.Access.Acls.Allow = append(prompts.Access.Acls.Allow, types.StringValue(v))
+						}
+						if promptsItem.Access.Acls.AllowWhen != nil {
+							prompts.Access.Acls.AllowWhen = make([]types.String, 0, len(promptsItem.Access.Acls.AllowWhen))
+							for _, v := range promptsItem.Access.Acls.AllowWhen {
+								prompts.Access.Acls.AllowWhen = append(prompts.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							prompts.Access.Acls.AllowWhen = nil
+						}
+						prompts.Access.Acls.Deny = make([]types.String, 0, len(promptsItem.Access.Acls.Deny))
+						for _, v := range promptsItem.Access.Acls.Deny {
+							prompts.Access.Acls.Deny = append(prompts.Access.Acls.Deny, types.StringValue(v))
+						}
+						if promptsItem.Access.Acls.DenyWhen != nil {
+							prompts.Access.Acls.DenyWhen = make([]types.String, 0, len(promptsItem.Access.Acls.DenyWhen))
+							for _, v := range promptsItem.Access.Acls.DenyWhen {
+								prompts.Access.Acls.DenyWhen = append(prompts.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							prompts.Access.Acls.DenyWhen = nil
+						}
+					}
+					prompts.Name = types.StringValue(promptsItem.Name)
+
+					r.PassthroughListener.Prompts = append(r.PassthroughListener.Prompts, prompts)
+				}
+			} else {
+				r.PassthroughListener.Prompts = nil
+			}
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.RateLimiting == nil {
 				r.PassthroughListener.RateLimiting = nil
 			} else {
@@ -2199,6 +2960,49 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 
 					r.PassthroughListener.RateLimiting.Limits = append(r.PassthroughListener.RateLimiting.Limits, limits1)
 				}
+			}
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.Resources != nil {
+				r.PassthroughListener.Resources = []tfTypes.AIGatewayMCPResource{}
+
+				for _, resourcesItem := range resp.AIGatewayMCPServerPassthroughListenerResponse.Resources {
+					var resources tfTypes.AIGatewayMCPResource
+
+					resources.Access = &tfTypes.AIGatewayMCPToolAccess{}
+					if resourcesItem.Access.Acls == nil {
+						resources.Access.Acls = nil
+					} else {
+						resources.Access.Acls = &tfTypes.AIGatewayACLS{}
+						resources.Access.Acls.Allow = make([]types.String, 0, len(resourcesItem.Access.Acls.Allow))
+						for _, v := range resourcesItem.Access.Acls.Allow {
+							resources.Access.Acls.Allow = append(resources.Access.Acls.Allow, types.StringValue(v))
+						}
+						if resourcesItem.Access.Acls.AllowWhen != nil {
+							resources.Access.Acls.AllowWhen = make([]types.String, 0, len(resourcesItem.Access.Acls.AllowWhen))
+							for _, v := range resourcesItem.Access.Acls.AllowWhen {
+								resources.Access.Acls.AllowWhen = append(resources.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							resources.Access.Acls.AllowWhen = nil
+						}
+						resources.Access.Acls.Deny = make([]types.String, 0, len(resourcesItem.Access.Acls.Deny))
+						for _, v := range resourcesItem.Access.Acls.Deny {
+							resources.Access.Acls.Deny = append(resources.Access.Acls.Deny, types.StringValue(v))
+						}
+						if resourcesItem.Access.Acls.DenyWhen != nil {
+							resources.Access.Acls.DenyWhen = make([]types.String, 0, len(resourcesItem.Access.Acls.DenyWhen))
+							for _, v := range resourcesItem.Access.Acls.DenyWhen {
+								resources.Access.Acls.DenyWhen = append(resources.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							resources.Access.Acls.DenyWhen = nil
+						}
+					}
+					resources.URI = types.StringValue(resourcesItem.URI)
+
+					r.PassthroughListener.Resources = append(r.PassthroughListener.Resources, resources)
+				}
+			} else {
+				r.PassthroughListener.Resources = nil
 			}
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault == nil {
 				r.PassthroughListener.TokenVault = nil
@@ -2272,10 +3076,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.TokenVault.Cache.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem12 := range resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes12 tfTypes.ClusterNodes
+									var nodes12 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes12.IP = types.StringPointerValue(nodesItem12.IP)
 									nodes12.Port = types.Int64PointerValue(nodesItem12.Port)
@@ -2307,10 +3111,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.TokenVault.Cache.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem13 := range resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes13 tfTypes.SentinelNodes
+									var nodes13 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes13.Host = types.StringPointerValue(nodesItem13.Host)
 									nodes13.Port = types.Int64PointerValue(nodesItem13.Port)
@@ -2367,7 +3171,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage == nil {
 					r.PassthroughListener.TokenVault.Storage = nil
 				} else {
-					r.PassthroughListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.PassthroughListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.PassthroughListener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.CurrentVersion)
 					r.PassthroughListener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.Directory)
 					r.PassthroughListener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -2375,6 +3179,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					for _, keysItem3 := range resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.Keys {
 						var keys3 tfTypes.TokenVaultDatastoreKey
 
+						keys3.Key = types.StringPointerValue(keysItem3.Key)
 						keys3.Version = types.StringValue(keysItem3.Version)
 
 						r.PassthroughListener.TokenVault.Storage.Keys = append(r.PassthroughListener.TokenVault.Storage.Keys, keys3)
@@ -2386,23 +3191,39 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.PassthroughListener.TokenVault.SubjectTokenType = types.StringNull()
 				}
 			}
-			r.PassthroughListener.Tools = []tfTypes.AIGatewayMCPPassthroughTool{}
+			r.PassthroughListener.Tools = []tfTypes.AIGatewayMCPPrompt{}
 
 			for _, toolsItem2 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Tools {
-				var tools2 tfTypes.AIGatewayMCPPassthroughTool
+				var tools2 tfTypes.AIGatewayMCPPrompt
 
 				tools2.Access = &tfTypes.AIGatewayMCPToolAccess{}
 				if toolsItem2.Access.Acls == nil {
 					tools2.Access.Acls = nil
 				} else {
-					tools2.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+					tools2.Access.Acls = &tfTypes.AIGatewayACLS{}
 					tools2.Access.Acls.Allow = make([]types.String, 0, len(toolsItem2.Access.Acls.Allow))
 					for _, v := range toolsItem2.Access.Acls.Allow {
 						tools2.Access.Acls.Allow = append(tools2.Access.Acls.Allow, types.StringValue(v))
 					}
+					if toolsItem2.Access.Acls.AllowWhen != nil {
+						tools2.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem2.Access.Acls.AllowWhen))
+						for _, v := range toolsItem2.Access.Acls.AllowWhen {
+							tools2.Access.Acls.AllowWhen = append(tools2.Access.Acls.AllowWhen, types.StringValue(v))
+						}
+					} else {
+						tools2.Access.Acls.AllowWhen = nil
+					}
 					tools2.Access.Acls.Deny = make([]types.String, 0, len(toolsItem2.Access.Acls.Deny))
 					for _, v := range toolsItem2.Access.Acls.Deny {
 						tools2.Access.Acls.Deny = append(tools2.Access.Acls.Deny, types.StringValue(v))
+					}
+					if toolsItem2.Access.Acls.DenyWhen != nil {
+						tools2.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem2.Access.Acls.DenyWhen))
+						for _, v := range toolsItem2.Access.Acls.DenyWhen {
+							tools2.Access.Acls.DenyWhen = append(tools2.Access.Acls.DenyWhen, types.StringValue(v))
+						}
+					} else {
+						tools2.Access.Acls.DenyWhen = nil
 					}
 				}
 				tools2.Name = types.StringValue(toolsItem2.Name)
@@ -2420,6 +3241,22 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				configPriorData4 = upstreamServerPriorData.Config
 			}
 			r.UpstreamServer.Config = &tfTypes.AIGatewayMCPServerUpstreamServerConfig{}
+			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Balancer != nil {
+				r.UpstreamServer.Config.Balancer = &tfTypes.CreateAIGatewayAgentRequestBalancer{}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Balancer.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+					r.UpstreamServer.Config.Balancer.ConsistentHashing = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{}
+					r.UpstreamServer.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Balancer.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig.HashOnHeader)
+				}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Balancer.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+					r.UpstreamServer.Config.Balancer.LeastConnections = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Balancer.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+					r.UpstreamServer.Config.Balancer.LowestLatency = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Balancer.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+					r.UpstreamServer.Config.Balancer.RoundRobin = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+				}
+			}
 			r.UpstreamServer.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.CaCertificates))
 			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.CaCertificates {
 				r.UpstreamServer.Config.CaCertificates = append(r.UpstreamServer.Config.CaCertificates, types.StringValue(v))
@@ -2436,43 +3273,45 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.UpstreamServer.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Logging.Payloads)
 			}
 			r.UpstreamServer.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.MaxRequestBodySize)
-			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route == nil {
-				r.UpstreamServer.Config.Route = nil
+			r.UpstreamServer.Config.Path = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Path)
+			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Protocol != nil {
+				r.UpstreamServer.Config.Protocol = types.StringValue(string(*resp.AIGatewayMCPServerUpstreamServerResponse.Config.Protocol))
 			} else {
-				r.UpstreamServer.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers) > 0 {
-					r.UpstreamServer.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers))
-					for key14, value14 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers {
-						result6, _ := json.Marshal(value14)
-						r.UpstreamServer.Config.Route.Headers[key14] = jsontypes.NewNormalizedValue(string(result6))
-					}
+				r.UpstreamServer.Config.Protocol = types.StringNull()
+			}
+			r.UpstreamServer.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers) > 0 {
+				r.UpstreamServer.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers))
+				for key14, value14 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers {
+					result6, _ := json.Marshal(value14)
+					r.UpstreamServer.Config.Route.Headers[key14] = jsontypes.NewNormalizedValue(string(result6))
 				}
-				r.UpstreamServer.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts {
-					r.UpstreamServer.Config.Route.Hosts = append(r.UpstreamServer.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.UpstreamServer.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods {
-					r.UpstreamServer.Config.Route.Methods = append(r.UpstreamServer.Config.Route.Methods, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths {
-					r.UpstreamServer.Config.Route.Paths = append(r.UpstreamServer.Config.Route.Paths, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.PreserveHost)
-				r.UpstreamServer.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols {
-					r.UpstreamServer.Config.Route.Protocols = append(r.UpstreamServer.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RegexPriority)
-				r.UpstreamServer.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RequestBuffering)
-				r.UpstreamServer.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.ResponseBuffering)
-				r.UpstreamServer.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.StripPath)
-				r.UpstreamServer.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags {
-					r.UpstreamServer.Config.Route.Tags = append(r.UpstreamServer.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.UpstreamServer.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts {
+				r.UpstreamServer.Config.Route.Hosts = append(r.UpstreamServer.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.UpstreamServer.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods {
+				r.UpstreamServer.Config.Route.Methods = append(r.UpstreamServer.Config.Route.Methods, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths {
+				r.UpstreamServer.Config.Route.Paths = append(r.UpstreamServer.Config.Route.Paths, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.PreserveHost)
+			r.UpstreamServer.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols {
+				r.UpstreamServer.Config.Route.Protocols = append(r.UpstreamServer.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RegexPriority)
+			r.UpstreamServer.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RequestBuffering)
+			r.UpstreamServer.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.ResponseBuffering)
+			r.UpstreamServer.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.StripPath)
+			r.UpstreamServer.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags {
+				r.UpstreamServer.Config.Route.Tags = append(r.UpstreamServer.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server == nil {
 				r.UpstreamServer.Config.Server = nil
@@ -2562,10 +3401,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.UpstreamServer.Config.Server.Session.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem14 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes14 tfTypes.ClusterNodes
+									var nodes14 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes14.IP = types.StringPointerValue(nodesItem14.IP)
 									nodes14.Port = types.Int64PointerValue(nodesItem14.Port)
@@ -2597,10 +3436,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.UpstreamServer.Config.Server.Session.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem15 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes15 tfTypes.SentinelNodes
+									var nodes15 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes15.Host = types.StringPointerValue(nodesItem15.Host)
 									nodes15.Port = types.Int64PointerValue(nodesItem15.Port)
@@ -2662,6 +3501,21 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.UpstreamServer.Config.Server.UpstreamProtocolVersion = types.StringNull()
 				}
 			}
+			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Targets != nil {
+				r.UpstreamServer.Config.Targets = []tfTypes.AIGatewayUpstreamTarget{}
+
+				for _, targetsItem3 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Targets {
+					var targets3 tfTypes.AIGatewayUpstreamTarget
+
+					targets3.Address = types.StringValue(targetsItem3.Address)
+					targets3.Failover = types.BoolPointerValue(targetsItem3.Failover)
+					targets3.Weight = types.Int64PointerValue(targetsItem3.Weight)
+
+					r.UpstreamServer.Config.Targets = append(r.UpstreamServer.Config.Targets, targets3)
+				}
+			} else {
+				r.UpstreamServer.Config.Targets = nil
+			}
 			r.UpstreamServer.Config.ToolsCacheTTLSeconds = types.Int64Value(resp.AIGatewayMCPServerUpstreamServerResponse.Config.ToolsCacheTTLSeconds)
 			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Upstream == nil {
 				r.UpstreamServer.Config.Upstream = nil
@@ -2692,7 +3546,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.UpstreamServer.Config.URL = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.URL)
+			r.UpstreamServer.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.URL)
 			r.UpstreamServer.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerUpstreamServerResponse.CreatedAt))
 			r.CreatedAt = r.UpstreamServer.CreatedAt
 			if resp.AIGatewayMCPServerUpstreamServerResponse.Datastores != nil {
@@ -2731,6 +3585,92 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			r.UpstreamServer.Policies = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Policies))
 			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Policies {
 				r.UpstreamServer.Policies = append(r.UpstreamServer.Policies, types.StringValue(v))
+			}
+			if resp.AIGatewayMCPServerUpstreamServerResponse.Prompts != nil {
+				r.UpstreamServer.Prompts = []tfTypes.AIGatewayMCPPrompt{}
+
+				for _, promptsItem1 := range resp.AIGatewayMCPServerUpstreamServerResponse.Prompts {
+					var prompts1 tfTypes.AIGatewayMCPPrompt
+
+					prompts1.Access = &tfTypes.AIGatewayMCPToolAccess{}
+					if promptsItem1.Access.Acls == nil {
+						prompts1.Access.Acls = nil
+					} else {
+						prompts1.Access.Acls = &tfTypes.AIGatewayACLS{}
+						prompts1.Access.Acls.Allow = make([]types.String, 0, len(promptsItem1.Access.Acls.Allow))
+						for _, v := range promptsItem1.Access.Acls.Allow {
+							prompts1.Access.Acls.Allow = append(prompts1.Access.Acls.Allow, types.StringValue(v))
+						}
+						if promptsItem1.Access.Acls.AllowWhen != nil {
+							prompts1.Access.Acls.AllowWhen = make([]types.String, 0, len(promptsItem1.Access.Acls.AllowWhen))
+							for _, v := range promptsItem1.Access.Acls.AllowWhen {
+								prompts1.Access.Acls.AllowWhen = append(prompts1.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							prompts1.Access.Acls.AllowWhen = nil
+						}
+						prompts1.Access.Acls.Deny = make([]types.String, 0, len(promptsItem1.Access.Acls.Deny))
+						for _, v := range promptsItem1.Access.Acls.Deny {
+							prompts1.Access.Acls.Deny = append(prompts1.Access.Acls.Deny, types.StringValue(v))
+						}
+						if promptsItem1.Access.Acls.DenyWhen != nil {
+							prompts1.Access.Acls.DenyWhen = make([]types.String, 0, len(promptsItem1.Access.Acls.DenyWhen))
+							for _, v := range promptsItem1.Access.Acls.DenyWhen {
+								prompts1.Access.Acls.DenyWhen = append(prompts1.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							prompts1.Access.Acls.DenyWhen = nil
+						}
+					}
+					prompts1.Name = types.StringValue(promptsItem1.Name)
+
+					r.UpstreamServer.Prompts = append(r.UpstreamServer.Prompts, prompts1)
+				}
+			} else {
+				r.UpstreamServer.Prompts = nil
+			}
+			if resp.AIGatewayMCPServerUpstreamServerResponse.Resources != nil {
+				r.UpstreamServer.Resources = []tfTypes.AIGatewayMCPResource{}
+
+				for _, resourcesItem1 := range resp.AIGatewayMCPServerUpstreamServerResponse.Resources {
+					var resources1 tfTypes.AIGatewayMCPResource
+
+					resources1.Access = &tfTypes.AIGatewayMCPToolAccess{}
+					if resourcesItem1.Access.Acls == nil {
+						resources1.Access.Acls = nil
+					} else {
+						resources1.Access.Acls = &tfTypes.AIGatewayACLS{}
+						resources1.Access.Acls.Allow = make([]types.String, 0, len(resourcesItem1.Access.Acls.Allow))
+						for _, v := range resourcesItem1.Access.Acls.Allow {
+							resources1.Access.Acls.Allow = append(resources1.Access.Acls.Allow, types.StringValue(v))
+						}
+						if resourcesItem1.Access.Acls.AllowWhen != nil {
+							resources1.Access.Acls.AllowWhen = make([]types.String, 0, len(resourcesItem1.Access.Acls.AllowWhen))
+							for _, v := range resourcesItem1.Access.Acls.AllowWhen {
+								resources1.Access.Acls.AllowWhen = append(resources1.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							resources1.Access.Acls.AllowWhen = nil
+						}
+						resources1.Access.Acls.Deny = make([]types.String, 0, len(resourcesItem1.Access.Acls.Deny))
+						for _, v := range resourcesItem1.Access.Acls.Deny {
+							resources1.Access.Acls.Deny = append(resources1.Access.Acls.Deny, types.StringValue(v))
+						}
+						if resourcesItem1.Access.Acls.DenyWhen != nil {
+							resources1.Access.Acls.DenyWhen = make([]types.String, 0, len(resourcesItem1.Access.Acls.DenyWhen))
+							for _, v := range resourcesItem1.Access.Acls.DenyWhen {
+								resources1.Access.Acls.DenyWhen = append(resources1.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							resources1.Access.Acls.DenyWhen = nil
+						}
+					}
+					resources1.URI = types.StringValue(resourcesItem1.URI)
+
+					r.UpstreamServer.Resources = append(r.UpstreamServer.Resources, resources1)
+				}
+			} else {
+				r.UpstreamServer.Resources = nil
 			}
 			if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault == nil {
 				r.UpstreamServer.TokenVault = nil
@@ -2804,10 +3744,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.UpstreamServer.TokenVault.Cache.Redis.Cluster = &tfTypes.AIGatewayRedisCloudConfigurationCluster{}
 							r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem16 := range resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes16 tfTypes.ClusterNodes
+									var nodes16 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes16.IP = types.StringPointerValue(nodesItem16.IP)
 									nodes16.Port = types.Int64PointerValue(nodesItem16.Port)
@@ -2839,10 +3779,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.UpstreamServer.TokenVault.Cache.Redis.Sentinel = &tfTypes.AIGatewayRedisCloudConfigurationSentinel{}
 							r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem17 := range resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes17 tfTypes.SentinelNodes
+									var nodes17 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes17.Host = types.StringPointerValue(nodesItem17.Host)
 									nodes17.Port = types.Int64PointerValue(nodesItem17.Port)
@@ -2899,7 +3839,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage == nil {
 					r.UpstreamServer.TokenVault.Storage = nil
 				} else {
-					r.UpstreamServer.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.UpstreamServer.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.UpstreamServer.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.CurrentVersion)
 					r.UpstreamServer.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.Directory)
 					r.UpstreamServer.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -2907,6 +3847,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					for _, keysItem4 := range resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.Keys {
 						var keys4 tfTypes.TokenVaultDatastoreKey
 
+						keys4.Key = types.StringPointerValue(keysItem4.Key)
 						keys4.Version = types.StringValue(keysItem4.Version)
 
 						r.UpstreamServer.TokenVault.Storage.Keys = append(r.UpstreamServer.TokenVault.Storage.Keys, keys4)
@@ -2930,14 +3871,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem3.Access.Acls == nil {
 						tools3.Access.Acls = nil
 					} else {
-						tools3.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+						tools3.Access.Acls = &tfTypes.AIGatewayACLS{}
 						tools3.Access.Acls.Allow = make([]types.String, 0, len(toolsItem3.Access.Acls.Allow))
 						for _, v := range toolsItem3.Access.Acls.Allow {
 							tools3.Access.Acls.Allow = append(tools3.Access.Acls.Allow, types.StringValue(v))
 						}
+						if toolsItem3.Access.Acls.AllowWhen != nil {
+							tools3.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem3.Access.Acls.AllowWhen))
+							for _, v := range toolsItem3.Access.Acls.AllowWhen {
+								tools3.Access.Acls.AllowWhen = append(tools3.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							tools3.Access.Acls.AllowWhen = nil
+						}
 						tools3.Access.Acls.Deny = make([]types.String, 0, len(toolsItem3.Access.Acls.Deny))
 						for _, v := range toolsItem3.Access.Acls.Deny {
 							tools3.Access.Acls.Deny = append(tools3.Access.Acls.Deny, types.StringValue(v))
+						}
+						if toolsItem3.Access.Acls.DenyWhen != nil {
+							tools3.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem3.Access.Acls.DenyWhen))
+							for _, v := range toolsItem3.Access.Acls.DenyWhen {
+								tools3.Access.Acls.DenyWhen = append(tools3.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							tools3.Access.Acls.DenyWhen = nil
 						}
 					}
 				}
@@ -3166,12 +4123,97 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		} else {
 			maxRequestBodySize = nil
 		}
-		var url string
-		url = r.ConversionOnly.Config.URL.ValueString()
+		url := new(string)
+		if !r.ConversionOnly.Config.URL.IsUnknown() && !r.ConversionOnly.Config.URL.IsNull() {
+			*url = r.ConversionOnly.Config.URL.ValueString()
+		} else {
+			url = nil
+		}
+		var targets []shared.AIGatewayUpstreamTarget
+		if r.ConversionOnly.Config.Targets != nil {
+			targets = make([]shared.AIGatewayUpstreamTarget, 0, len(r.ConversionOnly.Config.Targets))
+			for targetsIndex := range r.ConversionOnly.Config.Targets {
+				var address string
+				address = r.ConversionOnly.Config.Targets[targetsIndex].Address.ValueString()
 
-		var upstream *shared.AIGatewayUpstreamConfig
+				failover := new(bool)
+				if !r.ConversionOnly.Config.Targets[targetsIndex].Failover.IsUnknown() && !r.ConversionOnly.Config.Targets[targetsIndex].Failover.IsNull() {
+					*failover = r.ConversionOnly.Config.Targets[targetsIndex].Failover.ValueBool()
+				} else {
+					failover = nil
+				}
+				weight := new(int64)
+				if !r.ConversionOnly.Config.Targets[targetsIndex].Weight.IsUnknown() && !r.ConversionOnly.Config.Targets[targetsIndex].Weight.IsNull() {
+					*weight = r.ConversionOnly.Config.Targets[targetsIndex].Weight.ValueInt64()
+				} else {
+					weight = nil
+				}
+				targets = append(targets, shared.AIGatewayUpstreamTarget{
+					Address:  address,
+					Failover: failover,
+					Weight:   weight,
+				})
+			}
+		}
+		var balancer *shared.Balancer
+		if r.ConversionOnly.Config.Balancer != nil {
+			var aiGatewayUpstreamBalancerConsistentHashingConfig *shared.AIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.ConversionOnly.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader string
+				hashOnHeader = r.ConversionOnly.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				aiGatewayUpstreamBalancerConsistentHashingConfig = &shared.AIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader,
+				}
+			}
+			if aiGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerConsistentHashingConfig: aiGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var aiGatewayUpstreamBalancerLeastConnectionsConfig *shared.AIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.ConversionOnly.Config.Balancer.LeastConnections != nil {
+				aiGatewayUpstreamBalancerLeastConnectionsConfig = &shared.AIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if aiGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerLeastConnectionsConfig: aiGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var aiGatewayUpstreamBalancerLowestLatencyConfig *shared.AIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.ConversionOnly.Config.Balancer.LowestLatency != nil {
+				aiGatewayUpstreamBalancerLowestLatencyConfig = &shared.AIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if aiGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerLowestLatencyConfig: aiGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var aiGatewayUpstreamBalancerRoundRobinConfig *shared.AIGatewayUpstreamBalancerRoundRobinConfig
+			if r.ConversionOnly.Config.Balancer.RoundRobin != nil {
+				aiGatewayUpstreamBalancerRoundRobinConfig = &shared.AIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if aiGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerRoundRobinConfig: aiGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol := new(shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol)
+		if !r.ConversionOnly.Config.Protocol.IsUnknown() && !r.ConversionOnly.Config.Protocol.IsNull() {
+			*protocol = shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol(r.ConversionOnly.Config.Protocol.ValueString())
+		} else {
+			protocol = nil
+		}
+		path := new(string)
+		if !r.ConversionOnly.Config.Path.IsUnknown() && !r.ConversionOnly.Config.Path.IsNull() {
+			*path = r.ConversionOnly.Config.Path.ValueString()
+		} else {
+			path = nil
+		}
+		var upstream *shared.AIGatewayMCPServerUpstreamConfig
 		if r.ConversionOnly.Config.Upstream != nil {
-			var auth *shared.AIGatewayUpstreamConfigAuth
+			var auth *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.ConversionOnly.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionOnly.Config.Upstream.Auth.Aws != nil {
@@ -3228,12 +4270,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAWS != nil {
-					auth = &shared.AIGatewayUpstreamConfigAuth{
+					auth = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
 					}
 				}
 			}
-			upstream = &shared.AIGatewayUpstreamConfig{
+			upstream = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth,
 			}
 		}
@@ -3250,6 +4292,10 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 			URL:                url,
+			Targets:            targets,
+			Balancer:           balancer,
+			Protocol:           protocol,
+			Path:               path,
 			Upstream:           upstream,
 			Certificates:       certificates,
 			CaCertificates:     caCertificates,
@@ -3268,9 +4314,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny {
 						deny = append(deny, r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny[denyIndex].ValueString())
 					}
+					var allowWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen != nil {
+						allowWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen {
+							allowWhen = append(allowWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+						}
+					}
+					var denyWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen != nil {
+						denyWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen {
+							denyWhen = append(denyWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+						}
+					}
 					acls = &shared.AIGatewayMCPACLs{
-						Allow: allow,
-						Deny:  deny,
+						Allow:     allow,
+						Deny:      deny,
+						AllowWhen: allowWhen,
+						DenyWhen:  denyWhen,
 					}
 				}
 				access = &shared.AIGatewayMCPToolAccess{
@@ -3334,11 +4396,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				host = nil
 			}
 			method := shared.Method(r.ConversionOnly.Tools[toolsIndex].Method.ValueString())
-			path := new(string)
+			path1 := new(string)
 			if !r.ConversionOnly.Tools[toolsIndex].Path.IsUnknown() && !r.ConversionOnly.Tools[toolsIndex].Path.IsNull() {
-				*path = r.ConversionOnly.Tools[toolsIndex].Path.ValueString()
+				*path1 = r.ConversionOnly.Tools[toolsIndex].Path.ValueString()
 			} else {
-				path = nil
+				path1 = nil
 			}
 			var query interface{}
 			if !r.ConversionOnly.Tools[toolsIndex].Query.IsUnknown() && !r.ConversionOnly.Tools[toolsIndex].Query.IsNull() {
@@ -3398,7 +4460,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Headers:     headers1,
 				Host:        host,
 				Method:      method,
-				Path:        path,
+				Path:        path1,
 				Query:       query,
 				RequestBody: requestBody,
 				Responses:   responses,
@@ -3864,84 +4926,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerConversionListener *shared.AIGatewayMCPServerConversionListener
 	if r.ConversionListener != nil {
-		var route1 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.ConversionListener.Config.Route != nil {
-			headers2 := make(map[string]interface{})
-			for headersKey1 := range r.ConversionListener.Config.Route.Headers {
-				var headersInst1 interface{}
-				_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-				headers2[headersKey1] = headersInst1
-			}
-			hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
-			for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
-				hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
-			}
-			httpsRedirectStatusCode1 := new(int64)
-			if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode1 = nil
-			}
-			methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
-			for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
-				methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
-			}
-			paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
-			for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
-				paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
-			}
-			preserveHost1 := new(bool)
-			if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost1 = nil
-			}
-			protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
-			for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
-				protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
-			}
-			regexPriority1 := new(int64)
-			if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority1 = nil
-			}
-			requestBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering1 = nil
-			}
-			responseBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering1 = nil
-			}
-			stripPath1 := new(bool)
-			if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
-				*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath1 = nil
-			}
-			tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
-			for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
-				tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
-			}
-			route1 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers2,
-				Hosts:                   hosts1,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
-				Methods:                 methods1,
-				Paths:                   paths1,
-				PreserveHost:            preserveHost1,
-				Protocols:               protocols1,
-				RegexPriority:           regexPriority1,
-				RequestBuffering:        requestBuffering1,
-				ResponseBuffering:       responseBuffering1,
-				StripPath:               stripPath1,
-				Tags:                    tags1,
-			}
+		headers2 := make(map[string]interface{})
+		for headersKey1 := range r.ConversionListener.Config.Route.Headers {
+			var headersInst1 interface{}
+			_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
+			headers2[headersKey1] = headersInst1
+		}
+		hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
+		for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
+			hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
+		}
+		httpsRedirectStatusCode1 := new(int64)
+		if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode1 = nil
+		}
+		methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
+		for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
+			methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
+		}
+		paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
+		for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
+			paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
+		}
+		preserveHost1 := new(bool)
+		if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost1 = nil
+		}
+		protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
+		for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
+			protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
+		}
+		regexPriority1 := new(int64)
+		if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority1 = nil
+		}
+		requestBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering1 = nil
+		}
+		responseBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering1 = nil
+		}
+		stripPath1 := new(bool)
+		if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
+			*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath1 = nil
+		}
+		tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
+		for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
+			tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
+		}
+		route1 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers2,
+			Hosts:                   hosts1,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
+			Methods:                 methods1,
+			Paths:                   paths1,
+			PreserveHost:            preserveHost1,
+			Protocols:               protocols1,
+			RegexPriority:           regexPriority1,
+			RequestBuffering:        requestBuffering1,
+			ResponseBuffering:       responseBuffering1,
+			StripPath:               stripPath1,
+			Tags:                    tags1,
 		}
 		var logging1 *shared.AIGatewayMCPServerConversionListenerLogging
 		if r.ConversionListener.Config.Logging != nil {
@@ -4316,9 +5375,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					sessionTTL = nil
 				}
-				strategy := new(shared.Strategy)
+				strategy := new(shared.AIGatewayMCPServerServerConfigBaseStrategy)
 				if !r.ConversionListener.Config.Server.Session.Strategy.IsUnknown() && !r.ConversionListener.Config.Server.Session.Strategy.IsNull() {
-					*strategy = shared.Strategy(r.ConversionListener.Config.Server.Session.Strategy.ValueString())
+					*strategy = shared.AIGatewayMCPServerServerConfigBaseStrategy(r.ConversionListener.Config.Server.Session.Strategy.ValueString())
 				} else {
 					strategy = nil
 				}
@@ -4342,12 +5401,197 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Timeout:              timeout,
 			}
 		}
-		var url1 string
-		url1 = r.ConversionListener.Config.URL.ValueString()
+		url1 := new(string)
+		if !r.ConversionListener.Config.URL.IsUnknown() && !r.ConversionListener.Config.URL.IsNull() {
+			*url1 = r.ConversionListener.Config.URL.ValueString()
+		} else {
+			url1 = nil
+		}
+		var targets1 []shared.AIGatewayUpstreamTarget
+		if r.ConversionListener.Config.Targets != nil {
+			targets1 = make([]shared.AIGatewayUpstreamTarget, 0, len(r.ConversionListener.Config.Targets))
+			for targetsIndex1 := range r.ConversionListener.Config.Targets {
+				var address1 string
+				address1 = r.ConversionListener.Config.Targets[targetsIndex1].Address.ValueString()
 
-		var upstream1 *shared.AIGatewayUpstreamConfig
+				failover1 := new(bool)
+				if !r.ConversionListener.Config.Targets[targetsIndex1].Failover.IsUnknown() && !r.ConversionListener.Config.Targets[targetsIndex1].Failover.IsNull() {
+					*failover1 = r.ConversionListener.Config.Targets[targetsIndex1].Failover.ValueBool()
+				} else {
+					failover1 = nil
+				}
+				weight1 := new(int64)
+				if !r.ConversionListener.Config.Targets[targetsIndex1].Weight.IsUnknown() && !r.ConversionListener.Config.Targets[targetsIndex1].Weight.IsNull() {
+					*weight1 = r.ConversionListener.Config.Targets[targetsIndex1].Weight.ValueInt64()
+				} else {
+					weight1 = nil
+				}
+				targets1 = append(targets1, shared.AIGatewayUpstreamTarget{
+					Address:  address1,
+					Failover: failover1,
+					Weight:   weight1,
+				})
+			}
+		}
+		var balancer1 *shared.AIGatewayMCPServerConversionListenerBalancer
+		if r.ConversionListener.Config.Balancer != nil {
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.ConversionListener.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader1 string
+				hashOnHeader1 = r.ConversionListener.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader1,
+				}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.ConversionListener.Config.Balancer.LeastConnections != nil {
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.ConversionListener.Config.Balancer.LowestLatency != nil {
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+			if r.ConversionListener.Config.Balancer.RoundRobin != nil {
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol1 := new(shared.AIGatewayMCPServerConversionListenerProtocol)
+		if !r.ConversionListener.Config.Protocol.IsUnknown() && !r.ConversionListener.Config.Protocol.IsNull() {
+			*protocol1 = shared.AIGatewayMCPServerConversionListenerProtocol(r.ConversionListener.Config.Protocol.ValueString())
+		} else {
+			protocol1 = nil
+		}
+		path2 := new(string)
+		if !r.ConversionListener.Config.Path.IsUnknown() && !r.ConversionListener.Config.Path.IsNull() {
+			*path2 = r.ConversionListener.Config.Path.ValueString()
+		} else {
+			path2 = nil
+		}
+		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
+		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
+			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
+		}
+		caCertificates1 := make([]string, 0, len(r.ConversionListener.Config.CaCertificates))
+		for caCertificatesIndex1 := range r.ConversionListener.Config.CaCertificates {
+			caCertificates1 = append(caCertificates1, r.ConversionListener.Config.CaCertificates[caCertificatesIndex1].ValueString())
+		}
+		var allowedVersions []shared.AllowedVersions
+		if r.ConversionListener.Config.AllowedVersions != nil {
+			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
+			for _, allowedVersionsItem := range r.ConversionListener.Config.AllowedVersions {
+				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
+			}
+		}
+		var cache1 *shared.AIGatewayMCPServerConversionListenerCache
+		if r.ConversionListener.Config.Cache != nil {
+			var toolsList *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.ToolsList != nil {
+				ttlMs := new(int64)
+				if !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsNull() {
+					*ttlMs = r.ConversionListener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs = nil
+				}
+				cacheScope := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsNull() {
+					*cacheScope = shared.CacheScope(r.ConversionListener.Config.Cache.ToolsList.CacheScope.ValueString())
+				} else {
+					cacheScope = nil
+				}
+				toolsList = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs,
+					CacheScope: cacheScope,
+				}
+			}
+			var promptsList *shared.PromptsList
+			if r.ConversionListener.Config.Cache.PromptsList != nil {
+				ttlMs1 := new(int64)
+				if !r.ConversionListener.Config.Cache.PromptsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.PromptsList.TTLMs.IsNull() {
+					*ttlMs1 = r.ConversionListener.Config.Cache.PromptsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs1 = nil
+				}
+				cacheScope1 := new(shared.AIGatewayMCPServerConversionListenerCacheScope)
+				if !r.ConversionListener.Config.Cache.PromptsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.PromptsList.CacheScope.IsNull() {
+					*cacheScope1 = shared.AIGatewayMCPServerConversionListenerCacheScope(r.ConversionListener.Config.Cache.PromptsList.CacheScope.ValueString())
+				} else {
+					cacheScope1 = nil
+				}
+				promptsList = &shared.PromptsList{
+					TTLMs:      ttlMs1,
+					CacheScope: cacheScope1,
+				}
+			}
+			var resourcesList *shared.ResourcesList
+			if r.ConversionListener.Config.Cache.ResourcesList != nil {
+				ttlMs2 := new(int64)
+				if !r.ConversionListener.Config.Cache.ResourcesList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ResourcesList.TTLMs.IsNull() {
+					*ttlMs2 = r.ConversionListener.Config.Cache.ResourcesList.TTLMs.ValueInt64()
+				} else {
+					ttlMs2 = nil
+				}
+				cacheScope2 := new(shared.AIGatewayMCPServerConversionListenerConfigCacheScope)
+				if !r.ConversionListener.Config.Cache.ResourcesList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ResourcesList.CacheScope.IsNull() {
+					*cacheScope2 = shared.AIGatewayMCPServerConversionListenerConfigCacheScope(r.ConversionListener.Config.Cache.ResourcesList.CacheScope.ValueString())
+				} else {
+					cacheScope2 = nil
+				}
+				resourcesList = &shared.ResourcesList{
+					TTLMs:      ttlMs2,
+					CacheScope: cacheScope2,
+				}
+			}
+			var discover *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.Discover != nil {
+				ttlMs3 := new(int64)
+				if !r.ConversionListener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.TTLMs.IsNull() {
+					*ttlMs3 = r.ConversionListener.Config.Cache.Discover.TTLMs.ValueInt64()
+				} else {
+					ttlMs3 = nil
+				}
+				cacheScope3 := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.CacheScope.IsNull() {
+					*cacheScope3 = shared.CacheScope(r.ConversionListener.Config.Cache.Discover.CacheScope.ValueString())
+				} else {
+					cacheScope3 = nil
+				}
+				discover = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs3,
+					CacheScope: cacheScope3,
+				}
+			}
+			cache1 = &shared.AIGatewayMCPServerConversionListenerCache{
+				ToolsList:     toolsList,
+				PromptsList:   promptsList,
+				ResourcesList: resourcesList,
+				Discover:      discover,
+			}
+		}
+		var upstream1 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.ConversionListener.Config.Upstream != nil {
-			var auth1 *shared.AIGatewayUpstreamConfigAuth
+			var auth1 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.ConversionListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
@@ -4404,73 +5648,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws1 != nil {
-					auth1 = &shared.AIGatewayUpstreamConfigAuth{
+					auth1 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
 					}
 				}
 			}
-			upstream1 = &shared.AIGatewayUpstreamConfig{
+			upstream1 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth1,
-			}
-		}
-		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
-		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
-			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
-		}
-		caCertificates1 := make([]string, 0, len(r.ConversionListener.Config.CaCertificates))
-		for caCertificatesIndex1 := range r.ConversionListener.Config.CaCertificates {
-			caCertificates1 = append(caCertificates1, r.ConversionListener.Config.CaCertificates[caCertificatesIndex1].ValueString())
-		}
-		var allowedVersions []shared.AllowedVersions
-		if r.ConversionListener.Config.AllowedVersions != nil {
-			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
-			for _, allowedVersionsItem := range r.ConversionListener.Config.AllowedVersions {
-				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
-			}
-		}
-		var cache1 *shared.AIGatewayMCPServerConversionListenerCache
-		if r.ConversionListener.Config.Cache != nil {
-			var toolsList *shared.AIGatewayMCPServerCacheHint
-			if r.ConversionListener.Config.Cache.ToolsList != nil {
-				ttlMs := new(int64)
-				if !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsNull() {
-					*ttlMs = r.ConversionListener.Config.Cache.ToolsList.TTLMs.ValueInt64()
-				} else {
-					ttlMs = nil
-				}
-				cacheScope := new(shared.CacheScope)
-				if !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsNull() {
-					*cacheScope = shared.CacheScope(r.ConversionListener.Config.Cache.ToolsList.CacheScope.ValueString())
-				} else {
-					cacheScope = nil
-				}
-				toolsList = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs,
-					CacheScope: cacheScope,
-				}
-			}
-			var discover *shared.AIGatewayMCPServerCacheHint
-			if r.ConversionListener.Config.Cache.Discover != nil {
-				ttlMs1 := new(int64)
-				if !r.ConversionListener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.TTLMs.IsNull() {
-					*ttlMs1 = r.ConversionListener.Config.Cache.Discover.TTLMs.ValueInt64()
-				} else {
-					ttlMs1 = nil
-				}
-				cacheScope1 := new(shared.CacheScope)
-				if !r.ConversionListener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.CacheScope.IsNull() {
-					*cacheScope1 = shared.CacheScope(r.ConversionListener.Config.Cache.Discover.CacheScope.ValueString())
-				} else {
-					cacheScope1 = nil
-				}
-				discover = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs1,
-					CacheScope: cacheScope1,
-				}
-			}
-			cache1 = &shared.AIGatewayMCPServerConversionListenerCache{
-				ToolsList: toolsList,
-				Discover:  discover,
 			}
 		}
 		config1 := shared.AIGatewayMCPServerKongListenerConfig{
@@ -4479,11 +5663,15 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
-			Upstream:           upstream1,
+			Targets:            targets1,
+			Balancer:           balancer1,
+			Protocol:           protocol1,
+			Path:               path2,
 			Certificates:       certificates1,
 			CaCertificates:     caCertificates1,
 			AllowedVersions:    allowedVersions,
 			Cache:              cache1,
+			Upstream:           upstream1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -4499,9 +5687,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny {
 						deny1 = append(deny1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny[denyIndex1].ValueString())
 					}
+					var allowWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen {
+							allowWhen1 = append(allowWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen[allowWhenIndex1].ValueString())
+						}
+					}
+					var denyWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen {
+							denyWhen1 = append(denyWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen[denyWhenIndex1].ValueString())
+						}
+					}
 					acls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow1,
-						Deny:  deny1,
+						Allow:     allow1,
+						Deny:      deny1,
+						AllowWhen: allowWhen1,
+						DenyWhen:  denyWhen1,
 					}
 				}
 				access1 = &shared.AIGatewayMCPToolAccess{
@@ -4565,11 +5769,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				host5 = nil
 			}
 			method1 := shared.Method(r.ConversionListener.Tools[toolsIndex1].Method.ValueString())
-			path1 := new(string)
+			path3 := new(string)
 			if !r.ConversionListener.Tools[toolsIndex1].Path.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Path.IsNull() {
-				*path1 = r.ConversionListener.Tools[toolsIndex1].Path.ValueString()
+				*path3 = r.ConversionListener.Tools[toolsIndex1].Path.ValueString()
 			} else {
-				path1 = nil
+				path3 = nil
 			}
 			var query1 interface{}
 			if !r.ConversionListener.Tools[toolsIndex1].Query.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Query.IsNull() {
@@ -4629,7 +5833,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Headers:     headers3,
 				Host:        host5,
 				Method:      method1,
-				Path:        path1,
+				Path:        path3,
 				Query:       query1,
 				RequestBody: requestBody1,
 				Responses:   responses1,
@@ -4641,7 +5845,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.ConversionListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer *shared.AIGatewayMCPServerListenerConsumer
 			if r.ConversionListener.Access.Consumer != nil {
-				var acls2 *shared.AIGatewayMCPACLs
+				var acls2 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.Consumer.Acls != nil {
 					allow2 := make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.Allow))
 					for allowIndex2 := range r.ConversionListener.Access.Consumer.Acls.Allow {
@@ -4651,9 +5855,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex2 := range r.ConversionListener.Access.Consumer.Acls.Deny {
 						deny2 = append(deny2, r.ConversionListener.Access.Consumer.Acls.Deny[denyIndex2].ValueString())
 					}
-					acls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow2,
-						Deny:  deny2,
+					var allowWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen2 = append(allowWhen2, r.ConversionListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex2].ValueString())
+						}
+					}
+					var denyWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen2 = append(denyWhen2, r.ConversionListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex2].ValueString())
+						}
+					}
+					acls2 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow2,
+						Deny:      deny2,
+						AllowWhen: allowWhen2,
+						DenyWhen:  denyWhen2,
 					}
 				}
 				var defaultToolAcls *shared.AIGatewayMCPACLs
@@ -4666,9 +5886,87 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny {
 						deny3 = append(deny3, r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex3].ValueString())
 					}
+					var allowWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen3 = append(allowWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex3].ValueString())
+						}
+					}
+					var denyWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen3 = append(denyWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex3].ValueString())
+						}
+					}
 					defaultToolAcls = &shared.AIGatewayMCPACLs{
-						Allow: allow3,
-						Deny:  deny3,
+						Allow:     allow3,
+						Deny:      deny3,
+						AllowWhen: allowWhen3,
+						DenyWhen:  denyWhen3,
+					}
+				}
+				var defaultPromptAcls *shared.DefaultPromptAcls
+				if r.ConversionListener.Access.Consumer.DefaultPromptAcls != nil {
+					allow4 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow))
+					for allowIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow {
+						allow4 = append(allow4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow[allowIndex4].ValueString())
+					}
+					deny4 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny))
+					for denyIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny {
+						deny4 = append(deny4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny[denyIndex4].ValueString())
+					}
+					var allowWhen4 []string
+					if r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen4 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen {
+							allowWhen4 = append(allowWhen4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen[allowWhenIndex4].ValueString())
+						}
+					}
+					var denyWhen4 []string
+					if r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen4 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen {
+							denyWhen4 = append(denyWhen4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen[denyWhenIndex4].ValueString())
+						}
+					}
+					defaultPromptAcls = &shared.DefaultPromptAcls{
+						Allow:     allow4,
+						Deny:      deny4,
+						AllowWhen: allowWhen4,
+						DenyWhen:  denyWhen4,
+					}
+				}
+				var defaultResourceAcls *shared.DefaultResourceAcls
+				if r.ConversionListener.Access.Consumer.DefaultResourceAcls != nil {
+					allow5 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow))
+					for allowIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow {
+						allow5 = append(allow5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow[allowIndex5].ValueString())
+					}
+					deny5 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny))
+					for denyIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny {
+						deny5 = append(deny5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny[denyIndex5].ValueString())
+					}
+					var allowWhen5 []string
+					if r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen5 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen {
+							allowWhen5 = append(allowWhen5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen[allowWhenIndex5].ValueString())
+						}
+					}
+					var denyWhen5 []string
+					if r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen5 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen {
+							denyWhen5 = append(denyWhen5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen[denyWhenIndex5].ValueString())
+						}
+					}
+					defaultResourceAcls = &shared.DefaultResourceAcls{
+						Allow:     allow5,
+						Deny:      deny5,
+						AllowWhen: allowWhen5,
+						DenyWhen:  denyWhen5,
 					}
 				}
 				identityProviders := make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
@@ -4716,11 +6014,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerListenerConsumer = &shared.AIGatewayMCPServerListenerConsumer{
-					Acls:              acls2,
-					DefaultToolAcls:   defaultToolAcls,
-					IdentityProviders: identityProviders,
-					AuthStrategies:    authStrategies,
-					Metadata:          metadata,
+					Acls:                acls2,
+					DefaultToolAcls:     defaultToolAcls,
+					DefaultPromptAcls:   defaultPromptAcls,
+					DefaultResourceAcls: defaultResourceAcls,
+					IdentityProviders:   identityProviders,
+					AuthStrategies:      authStrategies,
+					Metadata:            metadata,
 				}
 			}
 			if aiGatewayMCPServerListenerConsumer != nil {
@@ -4733,34 +6033,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				var accessTokenClaimField string
 				accessTokenClaimField = r.ConversionListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls3 *shared.AIGatewayMCPACLs
+				var acls3 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.OauthAccessToken.Acls != nil {
-					allow4 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Allow))
-					for allowIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Allow {
-						allow4 = append(allow4, r.ConversionListener.Access.OauthAccessToken.Acls.Allow[allowIndex4].ValueString())
+					allow6 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Allow))
+					for allowIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.Allow {
+						allow6 = append(allow6, r.ConversionListener.Access.OauthAccessToken.Acls.Allow[allowIndex6].ValueString())
 					}
-					deny4 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Deny))
-					for denyIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Deny {
-						deny4 = append(deny4, r.ConversionListener.Access.OauthAccessToken.Acls.Deny[denyIndex4].ValueString())
+					deny6 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Deny))
+					for denyIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.Deny {
+						deny6 = append(deny6, r.ConversionListener.Access.OauthAccessToken.Acls.Deny[denyIndex6].ValueString())
 					}
-					acls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow4,
-						Deny:  deny4,
+					var allowWhen6 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen6 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen6 = append(allowWhen6, r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex6].ValueString())
+						}
+					}
+					var denyWhen6 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen6 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen6 = append(denyWhen6, r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex6].ValueString())
+						}
+					}
+					acls3 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow6,
+						Deny:      deny6,
+						AllowWhen: allowWhen6,
+						DenyWhen:  denyWhen6,
 					}
 				}
 				var defaultToolAcls1 *shared.AIGatewayMCPACLs
 				if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls != nil {
-					allow5 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
-					for allowIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
-						allow5 = append(allow5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex5].ValueString())
+					allow7 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
+					for allowIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
+						allow7 = append(allow7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex7].ValueString())
 					}
-					deny5 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
-					for denyIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
-						deny5 = append(deny5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex5].ValueString())
+					deny7 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
+					for denyIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
+						deny7 = append(deny7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex7].ValueString())
+					}
+					var allowWhen7 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen7 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen7 = append(allowWhen7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex7].ValueString())
+						}
+					}
+					var denyWhen7 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen7 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen7 = append(denyWhen7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex7].ValueString())
+						}
 					}
 					defaultToolAcls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow5,
-						Deny:  deny5,
+						Allow:     allow7,
+						Deny:      deny7,
+						AllowWhen: allowWhen7,
+						DenyWhen:  denyWhen7,
+					}
+				}
+				var defaultPromptAcls1 *shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls
+				if r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls != nil {
+					allow8 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow))
+					for allowIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow {
+						allow8 = append(allow8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow[allowIndex8].ValueString())
+					}
+					deny8 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny))
+					for denyIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny {
+						deny8 = append(deny8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny[denyIndex8].ValueString())
+					}
+					var allowWhen8 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen8 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen {
+							allowWhen8 = append(allowWhen8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen[allowWhenIndex8].ValueString())
+						}
+					}
+					var denyWhen8 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen8 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen {
+							denyWhen8 = append(denyWhen8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen[denyWhenIndex8].ValueString())
+						}
+					}
+					defaultPromptAcls1 = &shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls{
+						Allow:     allow8,
+						Deny:      deny8,
+						AllowWhen: allowWhen8,
+						DenyWhen:  denyWhen8,
+					}
+				}
+				var defaultResourceAcls1 *shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls
+				if r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls != nil {
+					allow9 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow))
+					for allowIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow {
+						allow9 = append(allow9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow[allowIndex9].ValueString())
+					}
+					deny9 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny))
+					for denyIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny {
+						deny9 = append(deny9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny[denyIndex9].ValueString())
+					}
+					var allowWhen9 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen9 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen {
+							allowWhen9 = append(allowWhen9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen[allowWhenIndex9].ValueString())
+						}
+					}
+					var denyWhen9 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen9 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen {
+							denyWhen9 = append(denyWhen9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen[denyWhenIndex9].ValueString())
+						}
+					}
+					defaultResourceAcls1 = &shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls{
+						Allow:     allow9,
+						Deny:      deny9,
+						AllowWhen: allowWhen9,
+						DenyWhen:  denyWhen9,
 					}
 				}
 				identityProviders1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
@@ -4811,6 +6205,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					AccessTokenClaimField: accessTokenClaimField,
 					Acls:                  acls3,
 					DefaultToolAcls:       defaultToolAcls1,
+					DefaultPromptAcls:     defaultPromptAcls1,
+					DefaultResourceAcls:   defaultResourceAcls1,
 					IdentityProviders:     identityProviders1,
 					AuthStrategies:        authStrategies1,
 					Metadata:              metadata1,
@@ -5313,84 +6709,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerListener *shared.AIGatewayMCPServerListener
 	if r.Listener != nil {
-		var route2 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.Listener.Config.Route != nil {
-			headers4 := make(map[string]interface{})
-			for headersKey2 := range r.Listener.Config.Route.Headers {
-				var headersInst2 interface{}
-				_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
-				headers4[headersKey2] = headersInst2
-			}
-			hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
-			for hostsIndex2 := range r.Listener.Config.Route.Hosts {
-				hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
-			}
-			httpsRedirectStatusCode2 := new(int64)
-			if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode2 = nil
-			}
-			methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
-			for methodsIndex2 := range r.Listener.Config.Route.Methods {
-				methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
-			}
-			paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
-			for pathsIndex2 := range r.Listener.Config.Route.Paths {
-				paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
-			}
-			preserveHost2 := new(bool)
-			if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost2 = nil
-			}
-			protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
-			for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
-				protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
-			}
-			regexPriority2 := new(int64)
-			if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority2 = nil
-			}
-			requestBuffering2 := new(bool)
-			if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering2 = nil
-			}
-			responseBuffering2 := new(bool)
-			if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering2 = nil
-			}
-			stripPath2 := new(bool)
-			if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
-				*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath2 = nil
-			}
-			tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
-			for tagsIndex2 := range r.Listener.Config.Route.Tags {
-				tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
-			}
-			route2 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers4,
-				Hosts:                   hosts2,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
-				Methods:                 methods2,
-				Paths:                   paths2,
-				PreserveHost:            preserveHost2,
-				Protocols:               protocols2,
-				RegexPriority:           regexPriority2,
-				RequestBuffering:        requestBuffering2,
-				ResponseBuffering:       responseBuffering2,
-				StripPath:               stripPath2,
-				Tags:                    tags2,
-			}
+		headers4 := make(map[string]interface{})
+		for headersKey2 := range r.Listener.Config.Route.Headers {
+			var headersInst2 interface{}
+			_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+			headers4[headersKey2] = headersInst2
+		}
+		hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
+		for hostsIndex2 := range r.Listener.Config.Route.Hosts {
+			hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
+		}
+		httpsRedirectStatusCode2 := new(int64)
+		if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode2 = nil
+		}
+		methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
+		for methodsIndex2 := range r.Listener.Config.Route.Methods {
+			methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
+		}
+		paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
+		for pathsIndex2 := range r.Listener.Config.Route.Paths {
+			paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
+		}
+		preserveHost2 := new(bool)
+		if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost2 = nil
+		}
+		protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
+		for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
+			protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
+		}
+		regexPriority2 := new(int64)
+		if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority2 = nil
+		}
+		requestBuffering2 := new(bool)
+		if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering2 = nil
+		}
+		responseBuffering2 := new(bool)
+		if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering2 = nil
+		}
+		stripPath2 := new(bool)
+		if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
+			*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath2 = nil
+		}
+		tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
+		for tagsIndex2 := range r.Listener.Config.Route.Tags {
+			tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
+		}
+		route2 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers4,
+			Hosts:                   hosts2,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
+			Methods:                 methods2,
+			Paths:                   paths2,
+			PreserveHost:            preserveHost2,
+			Protocols:               protocols2,
+			RegexPriority:           regexPriority2,
+			RequestBuffering:        requestBuffering2,
+			ResponseBuffering:       responseBuffering2,
+			StripPath:               stripPath2,
+			Tags:                    tags2,
 		}
 		var logging2 *shared.AIGatewayMCPServerListenerLogging
 		if r.Listener.Config.Logging != nil {
@@ -5765,9 +7158,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					sessionTtl1 = nil
 				}
-				strategy1 := new(shared.Strategy)
+				strategy1 := new(shared.AIGatewayMCPServerServerConfigBaseStrategy)
 				if !r.Listener.Config.Server.Session.Strategy.IsUnknown() && !r.Listener.Config.Server.Session.Strategy.IsNull() {
-					*strategy1 = shared.Strategy(r.Listener.Config.Server.Session.Strategy.ValueString())
+					*strategy1 = shared.AIGatewayMCPServerServerConfigBaseStrategy(r.Listener.Config.Server.Session.Strategy.ValueString())
 				} else {
 					strategy1 = nil
 				}
@@ -5802,45 +7195,85 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.Listener.Config.Cache != nil {
 			var toolsList1 *shared.AIGatewayMCPServerCacheHint
 			if r.Listener.Config.Cache.ToolsList != nil {
-				ttlMs2 := new(int64)
+				ttlMs4 := new(int64)
 				if !r.Listener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.ToolsList.TTLMs.IsNull() {
-					*ttlMs2 = r.Listener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+					*ttlMs4 = r.Listener.Config.Cache.ToolsList.TTLMs.ValueInt64()
 				} else {
-					ttlMs2 = nil
+					ttlMs4 = nil
 				}
-				cacheScope2 := new(shared.CacheScope)
+				cacheScope4 := new(shared.CacheScope)
 				if !r.Listener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.ToolsList.CacheScope.IsNull() {
-					*cacheScope2 = shared.CacheScope(r.Listener.Config.Cache.ToolsList.CacheScope.ValueString())
+					*cacheScope4 = shared.CacheScope(r.Listener.Config.Cache.ToolsList.CacheScope.ValueString())
 				} else {
-					cacheScope2 = nil
+					cacheScope4 = nil
 				}
 				toolsList1 = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs2,
-					CacheScope: cacheScope2,
+					TTLMs:      ttlMs4,
+					CacheScope: cacheScope4,
+				}
+			}
+			var promptsList1 *shared.AIGatewayMCPServerListenerPromptsList
+			if r.Listener.Config.Cache.PromptsList != nil {
+				ttlMs5 := new(int64)
+				if !r.Listener.Config.Cache.PromptsList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.PromptsList.TTLMs.IsNull() {
+					*ttlMs5 = r.Listener.Config.Cache.PromptsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs5 = nil
+				}
+				cacheScope5 := new(shared.AIGatewayMCPServerListenerCacheScope)
+				if !r.Listener.Config.Cache.PromptsList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.PromptsList.CacheScope.IsNull() {
+					*cacheScope5 = shared.AIGatewayMCPServerListenerCacheScope(r.Listener.Config.Cache.PromptsList.CacheScope.ValueString())
+				} else {
+					cacheScope5 = nil
+				}
+				promptsList1 = &shared.AIGatewayMCPServerListenerPromptsList{
+					TTLMs:      ttlMs5,
+					CacheScope: cacheScope5,
+				}
+			}
+			var resourcesList1 *shared.AIGatewayMCPServerListenerResourcesList
+			if r.Listener.Config.Cache.ResourcesList != nil {
+				ttlMs6 := new(int64)
+				if !r.Listener.Config.Cache.ResourcesList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.ResourcesList.TTLMs.IsNull() {
+					*ttlMs6 = r.Listener.Config.Cache.ResourcesList.TTLMs.ValueInt64()
+				} else {
+					ttlMs6 = nil
+				}
+				cacheScope6 := new(shared.AIGatewayMCPServerListenerConfigCacheScope)
+				if !r.Listener.Config.Cache.ResourcesList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.ResourcesList.CacheScope.IsNull() {
+					*cacheScope6 = shared.AIGatewayMCPServerListenerConfigCacheScope(r.Listener.Config.Cache.ResourcesList.CacheScope.ValueString())
+				} else {
+					cacheScope6 = nil
+				}
+				resourcesList1 = &shared.AIGatewayMCPServerListenerResourcesList{
+					TTLMs:      ttlMs6,
+					CacheScope: cacheScope6,
 				}
 			}
 			var discover1 *shared.AIGatewayMCPServerCacheHint
 			if r.Listener.Config.Cache.Discover != nil {
-				ttlMs3 := new(int64)
+				ttlMs7 := new(int64)
 				if !r.Listener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.Listener.Config.Cache.Discover.TTLMs.IsNull() {
-					*ttlMs3 = r.Listener.Config.Cache.Discover.TTLMs.ValueInt64()
+					*ttlMs7 = r.Listener.Config.Cache.Discover.TTLMs.ValueInt64()
 				} else {
-					ttlMs3 = nil
+					ttlMs7 = nil
 				}
-				cacheScope3 := new(shared.CacheScope)
+				cacheScope7 := new(shared.CacheScope)
 				if !r.Listener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.Listener.Config.Cache.Discover.CacheScope.IsNull() {
-					*cacheScope3 = shared.CacheScope(r.Listener.Config.Cache.Discover.CacheScope.ValueString())
+					*cacheScope7 = shared.CacheScope(r.Listener.Config.Cache.Discover.CacheScope.ValueString())
 				} else {
-					cacheScope3 = nil
+					cacheScope7 = nil
 				}
 				discover1 = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs3,
-					CacheScope: cacheScope3,
+					TTLMs:      ttlMs7,
+					CacheScope: cacheScope7,
 				}
 			}
 			cache3 = &shared.AIGatewayMCPServerListenerCache{
-				ToolsList: toolsList1,
-				Discover:  discover1,
+				ToolsList:     toolsList1,
+				PromptsList:   promptsList1,
+				ResourcesList: resourcesList1,
+				Discover:      discover1,
 			}
 		}
 		config2 := shared.AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig{
@@ -5859,34 +7292,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.Listener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer1 *shared.AIGatewayMCPServerListenerConsumer
 			if r.Listener.Access.Consumer != nil {
-				var acls4 *shared.AIGatewayMCPACLs
+				var acls4 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.Consumer.Acls != nil {
-					allow6 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
-					for allowIndex6 := range r.Listener.Access.Consumer.Acls.Allow {
-						allow6 = append(allow6, r.Listener.Access.Consumer.Acls.Allow[allowIndex6].ValueString())
+					allow10 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
+					for allowIndex10 := range r.Listener.Access.Consumer.Acls.Allow {
+						allow10 = append(allow10, r.Listener.Access.Consumer.Acls.Allow[allowIndex10].ValueString())
 					}
-					deny6 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Deny))
-					for denyIndex6 := range r.Listener.Access.Consumer.Acls.Deny {
-						deny6 = append(deny6, r.Listener.Access.Consumer.Acls.Deny[denyIndex6].ValueString())
+					deny10 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Deny))
+					for denyIndex10 := range r.Listener.Access.Consumer.Acls.Deny {
+						deny10 = append(deny10, r.Listener.Access.Consumer.Acls.Deny[denyIndex10].ValueString())
 					}
-					acls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow6,
-						Deny:  deny6,
+					var allowWhen10 []string
+					if r.Listener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen10 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex10 := range r.Listener.Access.Consumer.Acls.AllowWhen {
+							allowWhen10 = append(allowWhen10, r.Listener.Access.Consumer.Acls.AllowWhen[allowWhenIndex10].ValueString())
+						}
+					}
+					var denyWhen10 []string
+					if r.Listener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen10 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex10 := range r.Listener.Access.Consumer.Acls.DenyWhen {
+							denyWhen10 = append(denyWhen10, r.Listener.Access.Consumer.Acls.DenyWhen[denyWhenIndex10].ValueString())
+						}
+					}
+					acls4 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow10,
+						Deny:      deny10,
+						AllowWhen: allowWhen10,
+						DenyWhen:  denyWhen10,
 					}
 				}
 				var defaultToolAcls2 *shared.AIGatewayMCPACLs
 				if r.Listener.Access.Consumer.DefaultToolAcls != nil {
-					allow7 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Allow))
-					for allowIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.Allow {
-						allow7 = append(allow7, r.Listener.Access.Consumer.DefaultToolAcls.Allow[allowIndex7].ValueString())
+					allow11 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Allow))
+					for allowIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.Allow {
+						allow11 = append(allow11, r.Listener.Access.Consumer.DefaultToolAcls.Allow[allowIndex11].ValueString())
 					}
-					deny7 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Deny))
-					for denyIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.Deny {
-						deny7 = append(deny7, r.Listener.Access.Consumer.DefaultToolAcls.Deny[denyIndex7].ValueString())
+					deny11 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Deny))
+					for denyIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.Deny {
+						deny11 = append(deny11, r.Listener.Access.Consumer.DefaultToolAcls.Deny[denyIndex11].ValueString())
+					}
+					var allowWhen11 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen11 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen11 = append(allowWhen11, r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex11].ValueString())
+						}
+					}
+					var denyWhen11 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen11 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen11 = append(denyWhen11, r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex11].ValueString())
+						}
 					}
 					defaultToolAcls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow7,
-						Deny:  deny7,
+						Allow:     allow11,
+						Deny:      deny11,
+						AllowWhen: allowWhen11,
+						DenyWhen:  denyWhen11,
+					}
+				}
+				var defaultPromptAcls2 *shared.DefaultPromptAcls
+				if r.Listener.Access.Consumer.DefaultPromptAcls != nil {
+					allow12 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.Allow))
+					for allowIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.Allow {
+						allow12 = append(allow12, r.Listener.Access.Consumer.DefaultPromptAcls.Allow[allowIndex12].ValueString())
+					}
+					deny12 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.Deny))
+					for denyIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.Deny {
+						deny12 = append(deny12, r.Listener.Access.Consumer.DefaultPromptAcls.Deny[denyIndex12].ValueString())
+					}
+					var allowWhen12 []string
+					if r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen12 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen {
+							allowWhen12 = append(allowWhen12, r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen[allowWhenIndex12].ValueString())
+						}
+					}
+					var denyWhen12 []string
+					if r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen12 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen {
+							denyWhen12 = append(denyWhen12, r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen[denyWhenIndex12].ValueString())
+						}
+					}
+					defaultPromptAcls2 = &shared.DefaultPromptAcls{
+						Allow:     allow12,
+						Deny:      deny12,
+						AllowWhen: allowWhen12,
+						DenyWhen:  denyWhen12,
+					}
+				}
+				var defaultResourceAcls2 *shared.DefaultResourceAcls
+				if r.Listener.Access.Consumer.DefaultResourceAcls != nil {
+					allow13 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.Allow))
+					for allowIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.Allow {
+						allow13 = append(allow13, r.Listener.Access.Consumer.DefaultResourceAcls.Allow[allowIndex13].ValueString())
+					}
+					deny13 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.Deny))
+					for denyIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.Deny {
+						deny13 = append(deny13, r.Listener.Access.Consumer.DefaultResourceAcls.Deny[denyIndex13].ValueString())
+					}
+					var allowWhen13 []string
+					if r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen13 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen {
+							allowWhen13 = append(allowWhen13, r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen[allowWhenIndex13].ValueString())
+						}
+					}
+					var denyWhen13 []string
+					if r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen13 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen {
+							denyWhen13 = append(denyWhen13, r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen[denyWhenIndex13].ValueString())
+						}
+					}
+					defaultResourceAcls2 = &shared.DefaultResourceAcls{
+						Allow:     allow13,
+						Deny:      deny13,
+						AllowWhen: allowWhen13,
+						DenyWhen:  denyWhen13,
 					}
 				}
 				identityProviders2 := make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
@@ -5934,11 +7461,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerListenerConsumer1 = &shared.AIGatewayMCPServerListenerConsumer{
-					Acls:              acls4,
-					DefaultToolAcls:   defaultToolAcls2,
-					IdentityProviders: identityProviders2,
-					AuthStrategies:    authStrategies2,
-					Metadata:          metadata2,
+					Acls:                acls4,
+					DefaultToolAcls:     defaultToolAcls2,
+					DefaultPromptAcls:   defaultPromptAcls2,
+					DefaultResourceAcls: defaultResourceAcls2,
+					IdentityProviders:   identityProviders2,
+					AuthStrategies:      authStrategies2,
+					Metadata:            metadata2,
 				}
 			}
 			if aiGatewayMCPServerListenerConsumer1 != nil {
@@ -5951,34 +7480,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				var accessTokenClaimField1 string
 				accessTokenClaimField1 = r.Listener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls5 *shared.AIGatewayMCPACLs
+				var acls5 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.OauthAccessToken.Acls != nil {
-					allow8 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Allow))
-					for allowIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Allow {
-						allow8 = append(allow8, r.Listener.Access.OauthAccessToken.Acls.Allow[allowIndex8].ValueString())
+					allow14 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Allow))
+					for allowIndex14 := range r.Listener.Access.OauthAccessToken.Acls.Allow {
+						allow14 = append(allow14, r.Listener.Access.OauthAccessToken.Acls.Allow[allowIndex14].ValueString())
 					}
-					deny8 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Deny))
-					for denyIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Deny {
-						deny8 = append(deny8, r.Listener.Access.OauthAccessToken.Acls.Deny[denyIndex8].ValueString())
+					deny14 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Deny))
+					for denyIndex14 := range r.Listener.Access.OauthAccessToken.Acls.Deny {
+						deny14 = append(deny14, r.Listener.Access.OauthAccessToken.Acls.Deny[denyIndex14].ValueString())
 					}
-					acls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow8,
-						Deny:  deny8,
+					var allowWhen14 []string
+					if r.Listener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen14 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex14 := range r.Listener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen14 = append(allowWhen14, r.Listener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex14].ValueString())
+						}
+					}
+					var denyWhen14 []string
+					if r.Listener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen14 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex14 := range r.Listener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen14 = append(denyWhen14, r.Listener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex14].ValueString())
+						}
+					}
+					acls5 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow14,
+						Deny:      deny14,
+						AllowWhen: allowWhen14,
+						DenyWhen:  denyWhen14,
 					}
 				}
 				var defaultToolAcls3 *shared.AIGatewayMCPACLs
 				if r.Listener.Access.OauthAccessToken.DefaultToolAcls != nil {
-					allow9 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow))
-					for allowIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow {
-						allow9 = append(allow9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex9].ValueString())
+					allow15 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow))
+					for allowIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow {
+						allow15 = append(allow15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex15].ValueString())
 					}
-					deny9 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny))
-					for denyIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny {
-						deny9 = append(deny9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex9].ValueString())
+					deny15 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny))
+					for denyIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny {
+						deny15 = append(deny15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex15].ValueString())
+					}
+					var allowWhen15 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen15 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen15 = append(allowWhen15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex15].ValueString())
+						}
+					}
+					var denyWhen15 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen15 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen15 = append(denyWhen15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex15].ValueString())
+						}
 					}
 					defaultToolAcls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow9,
-						Deny:  deny9,
+						Allow:     allow15,
+						Deny:      deny15,
+						AllowWhen: allowWhen15,
+						DenyWhen:  denyWhen15,
+					}
+				}
+				var defaultPromptAcls3 *shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls
+				if r.Listener.Access.OauthAccessToken.DefaultPromptAcls != nil {
+					allow16 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow))
+					for allowIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow {
+						allow16 = append(allow16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow[allowIndex16].ValueString())
+					}
+					deny16 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny))
+					for denyIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny {
+						deny16 = append(deny16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny[denyIndex16].ValueString())
+					}
+					var allowWhen16 []string
+					if r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen16 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen {
+							allowWhen16 = append(allowWhen16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen[allowWhenIndex16].ValueString())
+						}
+					}
+					var denyWhen16 []string
+					if r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen16 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen {
+							denyWhen16 = append(denyWhen16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen[denyWhenIndex16].ValueString())
+						}
+					}
+					defaultPromptAcls3 = &shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls{
+						Allow:     allow16,
+						Deny:      deny16,
+						AllowWhen: allowWhen16,
+						DenyWhen:  denyWhen16,
+					}
+				}
+				var defaultResourceAcls3 *shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls
+				if r.Listener.Access.OauthAccessToken.DefaultResourceAcls != nil {
+					allow17 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow))
+					for allowIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow {
+						allow17 = append(allow17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow[allowIndex17].ValueString())
+					}
+					deny17 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny))
+					for denyIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny {
+						deny17 = append(deny17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny[denyIndex17].ValueString())
+					}
+					var allowWhen17 []string
+					if r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen17 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen {
+							allowWhen17 = append(allowWhen17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen[allowWhenIndex17].ValueString())
+						}
+					}
+					var denyWhen17 []string
+					if r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen17 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen {
+							denyWhen17 = append(denyWhen17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen[denyWhenIndex17].ValueString())
+						}
+					}
+					defaultResourceAcls3 = &shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls{
+						Allow:     allow17,
+						Deny:      deny17,
+						AllowWhen: allowWhen17,
+						DenyWhen:  denyWhen17,
 					}
 				}
 				identityProviders3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
@@ -6029,6 +7652,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					AccessTokenClaimField: accessTokenClaimField1,
 					Acls:                  acls5,
 					DefaultToolAcls:       defaultToolAcls3,
+					DefaultPromptAcls:     defaultPromptAcls3,
+					DefaultResourceAcls:   defaultResourceAcls3,
 					IdentityProviders:     identityProviders3,
 					AuthStrategies:        authStrategies3,
 					Metadata:              metadata3,
@@ -6499,84 +8124,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerPassthroughListener *shared.AIGatewayMCPServerPassthroughListener
 	if r.PassthroughListener != nil {
-		var route3 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.PassthroughListener.Config.Route != nil {
-			headers5 := make(map[string]interface{})
-			for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
-				var headersInst3 interface{}
-				_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
-				headers5[headersKey3] = headersInst3
-			}
-			hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
-			for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
-				hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
-			}
-			httpsRedirectStatusCode3 := new(int64)
-			if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode3 = nil
-			}
-			methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
-			for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
-				methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
-			}
-			paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
-			for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
-				paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
-			}
-			preserveHost3 := new(bool)
-			if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost3 = nil
-			}
-			protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
-			for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
-				protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
-			}
-			regexPriority3 := new(int64)
-			if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority3 = nil
-			}
-			requestBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering3 = nil
-			}
-			responseBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering3 = nil
-			}
-			stripPath3 := new(bool)
-			if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
-				*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath3 = nil
-			}
-			tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
-			for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
-				tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
-			}
-			route3 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers5,
-				Hosts:                   hosts3,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
-				Methods:                 methods3,
-				Paths:                   paths3,
-				PreserveHost:            preserveHost3,
-				Protocols:               protocols3,
-				RegexPriority:           regexPriority3,
-				RequestBuffering:        requestBuffering3,
-				ResponseBuffering:       responseBuffering3,
-				StripPath:               stripPath3,
-				Tags:                    tags3,
-			}
+		headers5 := make(map[string]interface{})
+		for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
+			var headersInst3 interface{}
+			_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
+			headers5[headersKey3] = headersInst3
+		}
+		hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
+		for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
+			hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
+		}
+		httpsRedirectStatusCode3 := new(int64)
+		if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode3 = nil
+		}
+		methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
+		for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
+			methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
+		}
+		paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
+		for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
+			paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
+		}
+		preserveHost3 := new(bool)
+		if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost3 = nil
+		}
+		protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
+		for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
+			protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
+		}
+		regexPriority3 := new(int64)
+		if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority3 = nil
+		}
+		requestBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering3 = nil
+		}
+		responseBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering3 = nil
+		}
+		stripPath3 := new(bool)
+		if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
+			*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath3 = nil
+		}
+		tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
+		for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
+			tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
+		}
+		route3 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers5,
+			Hosts:                   hosts3,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
+			Methods:                 methods3,
+			Paths:                   paths3,
+			PreserveHost:            preserveHost3,
+			Protocols:               protocols3,
+			RegexPriority:           regexPriority3,
+			RequestBuffering:        requestBuffering3,
+			ResponseBuffering:       responseBuffering3,
+			StripPath:               stripPath3,
+			Tags:                    tags3,
 		}
 		var logging3 *shared.AIGatewayMCPServerWithUpstreamConfigLogging
 		if r.PassthroughListener.Config.Logging != nil {
@@ -6977,12 +8599,105 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Timeout:              timeout2,
 			}
 		}
-		var url2 string
-		url2 = r.PassthroughListener.Config.URL.ValueString()
+		url2 := new(string)
+		if !r.PassthroughListener.Config.URL.IsUnknown() && !r.PassthroughListener.Config.URL.IsNull() {
+			*url2 = r.PassthroughListener.Config.URL.ValueString()
+		} else {
+			url2 = nil
+		}
+		var targets2 []shared.AIGatewayUpstreamTarget
+		if r.PassthroughListener.Config.Targets != nil {
+			targets2 = make([]shared.AIGatewayUpstreamTarget, 0, len(r.PassthroughListener.Config.Targets))
+			for targetsIndex2 := range r.PassthroughListener.Config.Targets {
+				var address2 string
+				address2 = r.PassthroughListener.Config.Targets[targetsIndex2].Address.ValueString()
 
-		var upstream2 *shared.AIGatewayUpstreamConfig
+				failover2 := new(bool)
+				if !r.PassthroughListener.Config.Targets[targetsIndex2].Failover.IsUnknown() && !r.PassthroughListener.Config.Targets[targetsIndex2].Failover.IsNull() {
+					*failover2 = r.PassthroughListener.Config.Targets[targetsIndex2].Failover.ValueBool()
+				} else {
+					failover2 = nil
+				}
+				weight2 := new(int64)
+				if !r.PassthroughListener.Config.Targets[targetsIndex2].Weight.IsUnknown() && !r.PassthroughListener.Config.Targets[targetsIndex2].Weight.IsNull() {
+					*weight2 = r.PassthroughListener.Config.Targets[targetsIndex2].Weight.ValueInt64()
+				} else {
+					weight2 = nil
+				}
+				targets2 = append(targets2, shared.AIGatewayUpstreamTarget{
+					Address:  address2,
+					Failover: failover2,
+					Weight:   weight2,
+				})
+			}
+		}
+		var balancer2 *shared.AIGatewayMCPServerWithUpstreamConfigBalancer
+		if r.PassthroughListener.Config.Balancer != nil {
+			var balancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.BalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.PassthroughListener.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader2 string
+				hashOnHeader2 = r.PassthroughListener.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				balancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.BalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader2,
+				}
+			}
+			if balancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerConsistentHashingConfig: balancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var balancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.BalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.PassthroughListener.Config.Balancer.LeastConnections != nil {
+				balancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.BalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if balancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: balancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var balancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.BalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.PassthroughListener.Config.Balancer.LowestLatency != nil {
+				balancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.BalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if balancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerLowestLatencyConfig: balancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var balancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.BalancerAIGatewayUpstreamBalancerRoundRobinConfig
+			if r.PassthroughListener.Config.Balancer.RoundRobin != nil {
+				balancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.BalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if balancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerRoundRobinConfig: balancerAIGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol2 := new(shared.AIGatewayMCPServerWithUpstreamConfigProtocol)
+		if !r.PassthroughListener.Config.Protocol.IsUnknown() && !r.PassthroughListener.Config.Protocol.IsNull() {
+			*protocol2 = shared.AIGatewayMCPServerWithUpstreamConfigProtocol(r.PassthroughListener.Config.Protocol.ValueString())
+		} else {
+			protocol2 = nil
+		}
+		path4 := new(string)
+		if !r.PassthroughListener.Config.Path.IsUnknown() && !r.PassthroughListener.Config.Path.IsNull() {
+			*path4 = r.PassthroughListener.Config.Path.ValueString()
+		} else {
+			path4 = nil
+		}
+		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
+		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
+			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
+		}
+		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
+		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
+			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
+		}
+		var upstream2 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.PassthroughListener.Config.Upstream != nil {
-			var auth2 *shared.AIGatewayUpstreamConfigAuth
+			var auth2 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.PassthroughListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
 				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
@@ -7039,22 +8754,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws2 != nil {
-					auth2 = &shared.AIGatewayUpstreamConfigAuth{
+					auth2 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws2,
 					}
 				}
 			}
-			upstream2 = &shared.AIGatewayUpstreamConfig{
+			upstream2 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth2,
 			}
-		}
-		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
-		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
-			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
-		}
-		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
-		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
-			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
 		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
@@ -7141,26 +8848,46 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize3,
 			Server:             server2,
 			URL:                url2,
-			Upstream:           upstream2,
+			Targets:            targets2,
+			Balancer:           balancer2,
+			Protocol:           protocol2,
+			Path:               path4,
 			Certificates:       certificates2,
 			CaCertificates:     caCertificates2,
+			Upstream:           upstream2,
 			Proxy:              proxy,
 		}
 		tools2 := make([]shared.AIGatewayMCPPassthroughTool, 0, len(r.PassthroughListener.Tools))
 		for toolsIndex2 := range r.PassthroughListener.Tools {
 			var acls6 *shared.AIGatewayMCPACLs
 			if r.PassthroughListener.Tools[toolsIndex2].Access.Acls != nil {
-				allow10 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow))
-				for allowIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow {
-					allow10 = append(allow10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex10].ValueString())
+				allow18 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow))
+				for allowIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow {
+					allow18 = append(allow18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex18].ValueString())
 				}
-				deny10 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny))
-				for denyIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny {
-					deny10 = append(deny10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex10].ValueString())
+				deny18 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny))
+				for denyIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny {
+					deny18 = append(deny18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex18].ValueString())
+				}
+				var allowWhen18 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen != nil {
+					allowWhen18 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen))
+					for allowWhenIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen {
+						allowWhen18 = append(allowWhen18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen[allowWhenIndex18].ValueString())
+					}
+				}
+				var denyWhen18 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen != nil {
+					denyWhen18 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen))
+					for denyWhenIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen {
+						denyWhen18 = append(denyWhen18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen[denyWhenIndex18].ValueString())
+					}
 				}
 				acls6 = &shared.AIGatewayMCPACLs{
-					Allow: allow10,
-					Deny:  deny10,
+					Allow:     allow18,
+					Deny:      deny18,
+					AllowWhen: allowWhen18,
+					DenyWhen:  denyWhen18,
 				}
 			}
 			access4 := shared.AIGatewayMCPToolAccess{
@@ -7174,38 +8901,226 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Name:   name16,
 			})
 		}
-		var access5 *shared.AIGatewayMCPServerListenerAccess
+		var prompts []shared.AIGatewayMCPPrompt
+		if r.PassthroughListener.Prompts != nil {
+			prompts = make([]shared.AIGatewayMCPPrompt, 0, len(r.PassthroughListener.Prompts))
+			for promptsIndex := range r.PassthroughListener.Prompts {
+				var acls7 *shared.AIGatewayMCPACLs
+				if r.PassthroughListener.Prompts[promptsIndex].Access.Acls != nil {
+					allow19 := make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Allow))
+					for allowIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Allow {
+						allow19 = append(allow19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Allow[allowIndex19].ValueString())
+					}
+					deny19 := make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Deny))
+					for denyIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Deny {
+						deny19 = append(deny19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Deny[denyIndex19].ValueString())
+					}
+					var allowWhen19 []string
+					if r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen != nil {
+						allowWhen19 = make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen {
+							allowWhen19 = append(allowWhen19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen[allowWhenIndex19].ValueString())
+						}
+					}
+					var denyWhen19 []string
+					if r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen != nil {
+						denyWhen19 = make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen {
+							denyWhen19 = append(denyWhen19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen[denyWhenIndex19].ValueString())
+						}
+					}
+					acls7 = &shared.AIGatewayMCPACLs{
+						Allow:     allow19,
+						Deny:      deny19,
+						AllowWhen: allowWhen19,
+						DenyWhen:  denyWhen19,
+					}
+				}
+				access5 := shared.AIGatewayMCPPromptAccess{
+					Acls: acls7,
+				}
+				var name17 string
+				name17 = r.PassthroughListener.Prompts[promptsIndex].Name.ValueString()
+
+				prompts = append(prompts, shared.AIGatewayMCPPrompt{
+					Access: access5,
+					Name:   name17,
+				})
+			}
+		}
+		var resources []shared.AIGatewayMCPResource
+		if r.PassthroughListener.Resources != nil {
+			resources = make([]shared.AIGatewayMCPResource, 0, len(r.PassthroughListener.Resources))
+			for resourcesIndex := range r.PassthroughListener.Resources {
+				var acls8 *shared.AIGatewayMCPACLs
+				if r.PassthroughListener.Resources[resourcesIndex].Access.Acls != nil {
+					allow20 := make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Allow))
+					for allowIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Allow {
+						allow20 = append(allow20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Allow[allowIndex20].ValueString())
+					}
+					deny20 := make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Deny))
+					for denyIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Deny {
+						deny20 = append(deny20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Deny[denyIndex20].ValueString())
+					}
+					var allowWhen20 []string
+					if r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen != nil {
+						allowWhen20 = make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen {
+							allowWhen20 = append(allowWhen20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen[allowWhenIndex20].ValueString())
+						}
+					}
+					var denyWhen20 []string
+					if r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen != nil {
+						denyWhen20 = make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen {
+							denyWhen20 = append(denyWhen20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen[denyWhenIndex20].ValueString())
+						}
+					}
+					acls8 = &shared.AIGatewayMCPACLs{
+						Allow:     allow20,
+						Deny:      deny20,
+						AllowWhen: allowWhen20,
+						DenyWhen:  denyWhen20,
+					}
+				}
+				access6 := shared.AIGatewayMCPResourceAccess{
+					Acls: acls8,
+				}
+				var uri string
+				uri = r.PassthroughListener.Resources[resourcesIndex].URI.ValueString()
+
+				resources = append(resources, shared.AIGatewayMCPResource{
+					Access: access6,
+					URI:    uri,
+				})
+			}
+		}
+		var access7 *shared.AIGatewayMCPServerListenerAccess
 		if r.PassthroughListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer2 *shared.AIGatewayMCPServerListenerConsumer
 			if r.PassthroughListener.Access.Consumer != nil {
-				var acls7 *shared.AIGatewayMCPACLs
+				var acls9 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.Consumer.Acls != nil {
-					allow11 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
-					for allowIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Allow {
-						allow11 = append(allow11, r.PassthroughListener.Access.Consumer.Acls.Allow[allowIndex11].ValueString())
+					allow21 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
+					for allowIndex21 := range r.PassthroughListener.Access.Consumer.Acls.Allow {
+						allow21 = append(allow21, r.PassthroughListener.Access.Consumer.Acls.Allow[allowIndex21].ValueString())
 					}
-					deny11 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Deny))
-					for denyIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Deny {
-						deny11 = append(deny11, r.PassthroughListener.Access.Consumer.Acls.Deny[denyIndex11].ValueString())
+					deny21 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Deny))
+					for denyIndex21 := range r.PassthroughListener.Access.Consumer.Acls.Deny {
+						deny21 = append(deny21, r.PassthroughListener.Access.Consumer.Acls.Deny[denyIndex21].ValueString())
 					}
-					acls7 = &shared.AIGatewayMCPACLs{
-						Allow: allow11,
-						Deny:  deny11,
+					var allowWhen21 []string
+					if r.PassthroughListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen21 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex21 := range r.PassthroughListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen21 = append(allowWhen21, r.PassthroughListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex21].ValueString())
+						}
+					}
+					var denyWhen21 []string
+					if r.PassthroughListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen21 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex21 := range r.PassthroughListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen21 = append(denyWhen21, r.PassthroughListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex21].ValueString())
+						}
+					}
+					acls9 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow21,
+						Deny:      deny21,
+						AllowWhen: allowWhen21,
+						DenyWhen:  denyWhen21,
 					}
 				}
 				var defaultToolAcls4 *shared.AIGatewayMCPACLs
 				if r.PassthroughListener.Access.Consumer.DefaultToolAcls != nil {
-					allow12 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow))
-					for allowIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow {
-						allow12 = append(allow12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow[allowIndex12].ValueString())
+					allow22 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow))
+					for allowIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow {
+						allow22 = append(allow22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow[allowIndex22].ValueString())
 					}
-					deny12 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny))
-					for denyIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny {
-						deny12 = append(deny12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex12].ValueString())
+					deny22 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny))
+					for denyIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny {
+						deny22 = append(deny22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex22].ValueString())
+					}
+					var allowWhen22 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen22 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen22 = append(allowWhen22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex22].ValueString())
+						}
+					}
+					var denyWhen22 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen22 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen22 = append(denyWhen22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex22].ValueString())
+						}
 					}
 					defaultToolAcls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow12,
-						Deny:  deny12,
+						Allow:     allow22,
+						Deny:      deny22,
+						AllowWhen: allowWhen22,
+						DenyWhen:  denyWhen22,
+					}
+				}
+				var defaultPromptAcls4 *shared.DefaultPromptAcls
+				if r.PassthroughListener.Access.Consumer.DefaultPromptAcls != nil {
+					allow23 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow))
+					for allowIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow {
+						allow23 = append(allow23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow[allowIndex23].ValueString())
+					}
+					deny23 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny))
+					for denyIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny {
+						deny23 = append(deny23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny[denyIndex23].ValueString())
+					}
+					var allowWhen23 []string
+					if r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen23 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen {
+							allowWhen23 = append(allowWhen23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen[allowWhenIndex23].ValueString())
+						}
+					}
+					var denyWhen23 []string
+					if r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen23 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen {
+							denyWhen23 = append(denyWhen23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen[denyWhenIndex23].ValueString())
+						}
+					}
+					defaultPromptAcls4 = &shared.DefaultPromptAcls{
+						Allow:     allow23,
+						Deny:      deny23,
+						AllowWhen: allowWhen23,
+						DenyWhen:  denyWhen23,
+					}
+				}
+				var defaultResourceAcls4 *shared.DefaultResourceAcls
+				if r.PassthroughListener.Access.Consumer.DefaultResourceAcls != nil {
+					allow24 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow))
+					for allowIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow {
+						allow24 = append(allow24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow[allowIndex24].ValueString())
+					}
+					deny24 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny))
+					for denyIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny {
+						deny24 = append(deny24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny[denyIndex24].ValueString())
+					}
+					var allowWhen24 []string
+					if r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen24 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen {
+							allowWhen24 = append(allowWhen24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen[allowWhenIndex24].ValueString())
+						}
+					}
+					var denyWhen24 []string
+					if r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen24 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen {
+							denyWhen24 = append(denyWhen24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen[denyWhenIndex24].ValueString())
+						}
+					}
+					defaultResourceAcls4 = &shared.DefaultResourceAcls{
+						Allow:     allow24,
+						Deny:      deny24,
+						AllowWhen: allowWhen24,
+						DenyWhen:  denyWhen24,
 					}
 				}
 				identityProviders4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
@@ -7253,15 +9168,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerListenerConsumer2 = &shared.AIGatewayMCPServerListenerConsumer{
-					Acls:              acls7,
-					DefaultToolAcls:   defaultToolAcls4,
-					IdentityProviders: identityProviders4,
-					AuthStrategies:    authStrategies4,
-					Metadata:          metadata4,
+					Acls:                acls9,
+					DefaultToolAcls:     defaultToolAcls4,
+					DefaultPromptAcls:   defaultPromptAcls4,
+					DefaultResourceAcls: defaultResourceAcls4,
+					IdentityProviders:   identityProviders4,
+					AuthStrategies:      authStrategies4,
+					Metadata:            metadata4,
 				}
 			}
 			if aiGatewayMCPServerListenerConsumer2 != nil {
-				access5 = &shared.AIGatewayMCPServerListenerAccess{
+				access7 = &shared.AIGatewayMCPServerListenerAccess{
 					AIGatewayMCPServerListenerConsumer: aiGatewayMCPServerListenerConsumer2,
 				}
 			}
@@ -7270,34 +9187,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				var accessTokenClaimField2 string
 				accessTokenClaimField2 = r.PassthroughListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls8 *shared.AIGatewayMCPACLs
+				var acls10 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.OauthAccessToken.Acls != nil {
-					allow13 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow))
-					for allowIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Allow {
-						allow13 = append(allow13, r.PassthroughListener.Access.OauthAccessToken.Acls.Allow[allowIndex13].ValueString())
+					allow25 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow))
+					for allowIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Allow {
+						allow25 = append(allow25, r.PassthroughListener.Access.OauthAccessToken.Acls.Allow[allowIndex25].ValueString())
 					}
-					deny13 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Deny))
-					for denyIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Deny {
-						deny13 = append(deny13, r.PassthroughListener.Access.OauthAccessToken.Acls.Deny[denyIndex13].ValueString())
+					deny25 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Deny))
+					for denyIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Deny {
+						deny25 = append(deny25, r.PassthroughListener.Access.OauthAccessToken.Acls.Deny[denyIndex25].ValueString())
 					}
-					acls8 = &shared.AIGatewayMCPACLs{
-						Allow: allow13,
-						Deny:  deny13,
+					var allowWhen25 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen25 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen25 = append(allowWhen25, r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex25].ValueString())
+						}
+					}
+					var denyWhen25 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen25 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen25 = append(denyWhen25, r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex25].ValueString())
+						}
+					}
+					acls10 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow25,
+						Deny:      deny25,
+						AllowWhen: allowWhen25,
+						DenyWhen:  denyWhen25,
 					}
 				}
 				var defaultToolAcls5 *shared.AIGatewayMCPACLs
 				if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls != nil {
-					allow14 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
-					for allowIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
-						allow14 = append(allow14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex14].ValueString())
+					allow26 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
+					for allowIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
+						allow26 = append(allow26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex26].ValueString())
 					}
-					deny14 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
-					for denyIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
-						deny14 = append(deny14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex14].ValueString())
+					deny26 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
+					for denyIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
+						deny26 = append(deny26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex26].ValueString())
+					}
+					var allowWhen26 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen26 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen26 = append(allowWhen26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex26].ValueString())
+						}
+					}
+					var denyWhen26 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen26 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen26 = append(denyWhen26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex26].ValueString())
+						}
 					}
 					defaultToolAcls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow14,
-						Deny:  deny14,
+						Allow:     allow26,
+						Deny:      deny26,
+						AllowWhen: allowWhen26,
+						DenyWhen:  denyWhen26,
+					}
+				}
+				var defaultPromptAcls5 *shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls
+				if r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls != nil {
+					allow27 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow))
+					for allowIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow {
+						allow27 = append(allow27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow[allowIndex27].ValueString())
+					}
+					deny27 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny))
+					for denyIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny {
+						deny27 = append(deny27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny[denyIndex27].ValueString())
+					}
+					var allowWhen27 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen27 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen {
+							allowWhen27 = append(allowWhen27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen[allowWhenIndex27].ValueString())
+						}
+					}
+					var denyWhen27 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen27 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen {
+							denyWhen27 = append(denyWhen27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen[denyWhenIndex27].ValueString())
+						}
+					}
+					defaultPromptAcls5 = &shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls{
+						Allow:     allow27,
+						Deny:      deny27,
+						AllowWhen: allowWhen27,
+						DenyWhen:  denyWhen27,
+					}
+				}
+				var defaultResourceAcls5 *shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls
+				if r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls != nil {
+					allow28 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow))
+					for allowIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow {
+						allow28 = append(allow28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow[allowIndex28].ValueString())
+					}
+					deny28 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny))
+					for denyIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny {
+						deny28 = append(deny28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny[denyIndex28].ValueString())
+					}
+					var allowWhen28 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen28 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen {
+							allowWhen28 = append(allowWhen28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen[allowWhenIndex28].ValueString())
+						}
+					}
+					var denyWhen28 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen28 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen {
+							denyWhen28 = append(denyWhen28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen[denyWhenIndex28].ValueString())
+						}
+					}
+					defaultResourceAcls5 = &shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls{
+						Allow:     allow28,
+						Deny:      deny28,
+						AllowWhen: allowWhen28,
+						DenyWhen:  denyWhen28,
 					}
 				}
 				identityProviders5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
@@ -7346,15 +9357,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				}
 				aiGatewayMCPServerListenerOauth2 = &shared.AIGatewayMCPServerListenerOauth{
 					AccessTokenClaimField: accessTokenClaimField2,
-					Acls:                  acls8,
+					Acls:                  acls10,
 					DefaultToolAcls:       defaultToolAcls5,
+					DefaultPromptAcls:     defaultPromptAcls5,
+					DefaultResourceAcls:   defaultResourceAcls5,
 					IdentityProviders:     identityProviders5,
 					AuthStrategies:        authStrategies5,
 					Metadata:              metadata5,
 				}
 			}
 			if aiGatewayMCPServerListenerOauth2 != nil {
-				access5 = &shared.AIGatewayMCPServerListenerAccess{
+				access7 = &shared.AIGatewayMCPServerListenerAccess{
 					AIGatewayMCPServerListenerOauth: aiGatewayMCPServerListenerOauth2,
 				}
 			}
@@ -7393,8 +9406,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		var displayName3 string
 		displayName3 = r.PassthroughListener.DisplayName.ValueString()
 
-		var name17 string
-		name17 = r.PassthroughListener.Name.ValueString()
+		var name18 string
+		name18 = r.PassthroughListener.Name.ValueString()
 
 		enabled3 := new(bool)
 		if !r.PassthroughListener.Enabled.IsUnknown() && !r.PassthroughListener.Enabled.IsNull() {
@@ -7424,11 +9437,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.PassthroughListener.Datastores != nil {
 			datastores3 = make([]shared.AIGatewayDatastoreRef, 0, len(r.PassthroughListener.Datastores))
 			for datastoresIndex3 := range r.PassthroughListener.Datastores {
-				var name18 string
-				name18 = r.PassthroughListener.Datastores[datastoresIndex3].Name.ValueString()
+				var name19 string
+				name19 = r.PassthroughListener.Datastores[datastoresIndex3].Name.ValueString()
 
 				datastores3 = append(datastores3, shared.AIGatewayDatastoreRef{
-					Name: name18,
+					Name: name19,
 				})
 			}
 		}
@@ -7453,11 +9466,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						location6 = nil
 					}
-					name19 := new(string)
+					name20 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsNull() {
-						*name19 = r.PassthroughListener.TokenVault.Credential.Inbound.Name.ValueString()
+						*name20 = r.PassthroughListener.TokenVault.Credential.Inbound.Name.ValueString()
 					} else {
-						name19 = nil
+						name20 = nil
 					}
 					prefix6 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsNull() {
@@ -7467,7 +9480,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 					inbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location6,
-						Name:     name19,
+						Name:     name20,
 						Prefix:   prefix6,
 					}
 				}
@@ -7479,11 +9492,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						location7 = nil
 					}
-					name20 := new(string)
+					name21 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsNull() {
-						*name20 = r.PassthroughListener.TokenVault.Credential.Outbound.Name.ValueString()
+						*name21 = r.PassthroughListener.TokenVault.Credential.Outbound.Name.ValueString()
 					} else {
-						name20 = nil
+						name21 = nil
 					}
 					prefix7 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsNull() {
@@ -7493,7 +9506,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 					outbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location7,
-						Name:     name20,
+						Name:     name21,
 						Prefix:   prefix7,
 					}
 				}
@@ -7831,10 +9844,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		aiGatewayMCPServerPassthroughListener = &shared.AIGatewayMCPServerPassthroughListener{
 			Config:       config3,
 			Tools:        tools2,
-			Access:       access5,
+			Prompts:      prompts,
+			Resources:    resources,
+			Access:       access7,
 			RateLimiting: rateLimiting1,
 			DisplayName:  displayName3,
-			Name:         name17,
+			Name:         name18,
 			Enabled:      enabled3,
 			Policies:     policies3,
 			Labels:       labels3,
@@ -7850,84 +9865,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerUpstreamServer *shared.AIGatewayMCPServerUpstreamServer
 	if r.UpstreamServer != nil {
-		var route4 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.UpstreamServer.Config.Route != nil {
-			headers6 := make(map[string]interface{})
-			for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
-				var headersInst4 interface{}
-				_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
-				headers6[headersKey4] = headersInst4
-			}
-			hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
-			for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
-				hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
-			}
-			httpsRedirectStatusCode4 := new(int64)
-			if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode4 = nil
-			}
-			methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
-			for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
-				methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
-			}
-			paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
-			for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
-				paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
-			}
-			preserveHost4 := new(bool)
-			if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
-				*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost4 = nil
-			}
-			protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
-			for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
-				protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
-			}
-			regexPriority4 := new(int64)
-			if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
-				*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority4 = nil
-			}
-			requestBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering4 = nil
-			}
-			responseBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering4 = nil
-			}
-			stripPath4 := new(bool)
-			if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
-				*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath4 = nil
-			}
-			tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
-			for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
-				tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
-			}
-			route4 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers6,
-				Hosts:                   hosts4,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
-				Methods:                 methods4,
-				Paths:                   paths4,
-				PreserveHost:            preserveHost4,
-				Protocols:               protocols4,
-				RegexPriority:           regexPriority4,
-				RequestBuffering:        requestBuffering4,
-				ResponseBuffering:       responseBuffering4,
-				StripPath:               stripPath4,
-				Tags:                    tags4,
-			}
+		headers6 := make(map[string]interface{})
+		for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
+			var headersInst4 interface{}
+			_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
+			headers6[headersKey4] = headersInst4
+		}
+		hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
+		for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
+			hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
+		}
+		httpsRedirectStatusCode4 := new(int64)
+		if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode4 = nil
+		}
+		methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
+		for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
+			methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
+		}
+		paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
+		for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
+			paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
+		}
+		preserveHost4 := new(bool)
+		if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
+			*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost4 = nil
+		}
+		protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
+		for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
+			protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
+		}
+		regexPriority4 := new(int64)
+		if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
+			*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority4 = nil
+		}
+		requestBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering4 = nil
+		}
+		responseBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering4 = nil
+		}
+		stripPath4 := new(bool)
+		if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
+			*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath4 = nil
+		}
+		tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
+		for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
+			tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
+		}
+		route4 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers6,
+			Hosts:                   hosts4,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
+			Methods:                 methods4,
+			Paths:                   paths4,
+			PreserveHost:            preserveHost4,
+			Protocols:               protocols4,
+			RegexPriority:           regexPriority4,
+			RequestBuffering:        requestBuffering4,
+			ResponseBuffering:       responseBuffering4,
+			StripPath:               stripPath4,
+			Tags:                    tags4,
 		}
 		var logging4 *shared.AIGatewayMCPServerUpstreamServerConfigLogging
 		if r.UpstreamServer.Config.Logging != nil {
@@ -8423,12 +10435,105 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				UpstreamProtocolVersion:   upstreamProtocolVersion,
 			}
 		}
-		var url3 string
-		url3 = r.UpstreamServer.Config.URL.ValueString()
+		url3 := new(string)
+		if !r.UpstreamServer.Config.URL.IsUnknown() && !r.UpstreamServer.Config.URL.IsNull() {
+			*url3 = r.UpstreamServer.Config.URL.ValueString()
+		} else {
+			url3 = nil
+		}
+		var targets3 []shared.AIGatewayUpstreamTarget
+		if r.UpstreamServer.Config.Targets != nil {
+			targets3 = make([]shared.AIGatewayUpstreamTarget, 0, len(r.UpstreamServer.Config.Targets))
+			for targetsIndex3 := range r.UpstreamServer.Config.Targets {
+				var address3 string
+				address3 = r.UpstreamServer.Config.Targets[targetsIndex3].Address.ValueString()
 
-		var upstream3 *shared.AIGatewayUpstreamConfig
+				failover3 := new(bool)
+				if !r.UpstreamServer.Config.Targets[targetsIndex3].Failover.IsUnknown() && !r.UpstreamServer.Config.Targets[targetsIndex3].Failover.IsNull() {
+					*failover3 = r.UpstreamServer.Config.Targets[targetsIndex3].Failover.ValueBool()
+				} else {
+					failover3 = nil
+				}
+				weight3 := new(int64)
+				if !r.UpstreamServer.Config.Targets[targetsIndex3].Weight.IsUnknown() && !r.UpstreamServer.Config.Targets[targetsIndex3].Weight.IsNull() {
+					*weight3 = r.UpstreamServer.Config.Targets[targetsIndex3].Weight.ValueInt64()
+				} else {
+					weight3 = nil
+				}
+				targets3 = append(targets3, shared.AIGatewayUpstreamTarget{
+					Address:  address3,
+					Failover: failover3,
+					Weight:   weight3,
+				})
+			}
+		}
+		var balancer3 *shared.AIGatewayMCPServerUpstreamServerConfigBalancer
+		if r.UpstreamServer.Config.Balancer != nil {
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.UpstreamServer.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader3 string
+				hashOnHeader3 = r.UpstreamServer.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader3,
+				}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.UpstreamServer.Config.Balancer.LeastConnections != nil {
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.UpstreamServer.Config.Balancer.LowestLatency != nil {
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+			if r.UpstreamServer.Config.Balancer.RoundRobin != nil {
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol3 := new(shared.AIGatewayMCPServerUpstreamServerConfigProtocol)
+		if !r.UpstreamServer.Config.Protocol.IsUnknown() && !r.UpstreamServer.Config.Protocol.IsNull() {
+			*protocol3 = shared.AIGatewayMCPServerUpstreamServerConfigProtocol(r.UpstreamServer.Config.Protocol.ValueString())
+		} else {
+			protocol3 = nil
+		}
+		path5 := new(string)
+		if !r.UpstreamServer.Config.Path.IsUnknown() && !r.UpstreamServer.Config.Path.IsNull() {
+			*path5 = r.UpstreamServer.Config.Path.ValueString()
+		} else {
+			path5 = nil
+		}
+		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
+		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
+			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
+		}
+		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
+		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
+			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
+		}
+		var upstream3 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.UpstreamServer.Config.Upstream != nil {
-			var auth4 *shared.AIGatewayUpstreamConfigAuth
+			var auth4 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.UpstreamServer.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
 				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
@@ -8485,22 +10590,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws3 != nil {
-					auth4 = &shared.AIGatewayUpstreamConfigAuth{
+					auth4 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws3,
 					}
 				}
 			}
-			upstream3 = &shared.AIGatewayUpstreamConfig{
+			upstream3 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth4,
 			}
-		}
-		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
-		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
-			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
-		}
-		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
-		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
-			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
 		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
@@ -8511,32 +10608,52 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize:   maxRequestBodySize4,
 			Server:               server3,
 			URL:                  url3,
-			Upstream:             upstream3,
+			Targets:              targets3,
+			Balancer:             balancer3,
+			Protocol:             protocol3,
+			Path:                 path5,
 			Certificates:         certificates3,
 			CaCertificates:       caCertificates3,
+			Upstream:             upstream3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools3 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
 		for toolsIndex3 := range r.UpstreamServer.Tools {
-			var access6 *shared.AIGatewayMCPToolAccess
+			var access8 *shared.AIGatewayMCPToolAccess
 			if r.UpstreamServer.Tools[toolsIndex3].Access != nil {
-				var acls9 *shared.AIGatewayMCPACLs
+				var acls11 *shared.AIGatewayMCPACLs
 				if r.UpstreamServer.Tools[toolsIndex3].Access.Acls != nil {
-					allow15 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow))
-					for allowIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow {
-						allow15 = append(allow15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow[allowIndex15].ValueString())
+					allow29 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow))
+					for allowIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow {
+						allow29 = append(allow29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow[allowIndex29].ValueString())
 					}
-					deny15 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny))
-					for denyIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny {
-						deny15 = append(deny15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny[denyIndex15].ValueString())
+					deny29 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny))
+					for denyIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny {
+						deny29 = append(deny29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny[denyIndex29].ValueString())
 					}
-					acls9 = &shared.AIGatewayMCPACLs{
-						Allow: allow15,
-						Deny:  deny15,
+					var allowWhen29 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen != nil {
+						allowWhen29 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen))
+						for allowWhenIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen {
+							allowWhen29 = append(allowWhen29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen[allowWhenIndex29].ValueString())
+						}
+					}
+					var denyWhen29 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen != nil {
+						denyWhen29 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen))
+						for denyWhenIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen {
+							denyWhen29 = append(denyWhen29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen[denyWhenIndex29].ValueString())
+						}
+					}
+					acls11 = &shared.AIGatewayMCPACLs{
+						Allow:     allow29,
+						Deny:      deny29,
+						AllowWhen: allowWhen29,
+						DenyWhen:  denyWhen29,
 					}
 				}
-				access6 = &shared.AIGatewayMCPToolAccess{
-					Acls: acls9,
+				access8 = &shared.AIGatewayMCPToolAccess{
+					Acls: acls11,
 				}
 			}
 			var annotations2 *shared.AIGatewayMCPToolAnnotations
@@ -8585,8 +10702,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				description4 = nil
 			}
-			var name21 string
-			name21 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
+			var name22 string
+			name22 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
 
 			var inputSchema interface{}
 			if !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsNull() {
@@ -8597,19 +10714,113 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex3].OutputSchema.ValueString()), &outputSchema)
 			}
 			tools3 = append(tools3, shared.AIGatewayMCPUpstreamTool{
-				Access:       access6,
+				Access:       access8,
 				Annotations:  annotations2,
 				Description:  description4,
-				Name:         name21,
+				Name:         name22,
 				InputSchema:  inputSchema,
 				OutputSchema: outputSchema,
 			})
 		}
+		var prompts1 []shared.AIGatewayMCPPrompt
+		if r.UpstreamServer.Prompts != nil {
+			prompts1 = make([]shared.AIGatewayMCPPrompt, 0, len(r.UpstreamServer.Prompts))
+			for promptsIndex1 := range r.UpstreamServer.Prompts {
+				var acls12 *shared.AIGatewayMCPACLs
+				if r.UpstreamServer.Prompts[promptsIndex1].Access.Acls != nil {
+					allow30 := make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Allow))
+					for allowIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Allow {
+						allow30 = append(allow30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Allow[allowIndex30].ValueString())
+					}
+					deny30 := make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Deny))
+					for denyIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Deny {
+						deny30 = append(deny30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Deny[denyIndex30].ValueString())
+					}
+					var allowWhen30 []string
+					if r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen30 = make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen {
+							allowWhen30 = append(allowWhen30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen[allowWhenIndex30].ValueString())
+						}
+					}
+					var denyWhen30 []string
+					if r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen30 = make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen {
+							denyWhen30 = append(denyWhen30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen[denyWhenIndex30].ValueString())
+						}
+					}
+					acls12 = &shared.AIGatewayMCPACLs{
+						Allow:     allow30,
+						Deny:      deny30,
+						AllowWhen: allowWhen30,
+						DenyWhen:  denyWhen30,
+					}
+				}
+				access9 := shared.AIGatewayMCPPromptAccess{
+					Acls: acls12,
+				}
+				var name23 string
+				name23 = r.UpstreamServer.Prompts[promptsIndex1].Name.ValueString()
+
+				prompts1 = append(prompts1, shared.AIGatewayMCPPrompt{
+					Access: access9,
+					Name:   name23,
+				})
+			}
+		}
+		var resources1 []shared.AIGatewayMCPResource
+		if r.UpstreamServer.Resources != nil {
+			resources1 = make([]shared.AIGatewayMCPResource, 0, len(r.UpstreamServer.Resources))
+			for resourcesIndex1 := range r.UpstreamServer.Resources {
+				var acls13 *shared.AIGatewayMCPACLs
+				if r.UpstreamServer.Resources[resourcesIndex1].Access.Acls != nil {
+					allow31 := make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Allow))
+					for allowIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Allow {
+						allow31 = append(allow31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Allow[allowIndex31].ValueString())
+					}
+					deny31 := make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Deny))
+					for denyIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Deny {
+						deny31 = append(deny31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Deny[denyIndex31].ValueString())
+					}
+					var allowWhen31 []string
+					if r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen31 = make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen {
+							allowWhen31 = append(allowWhen31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen[allowWhenIndex31].ValueString())
+						}
+					}
+					var denyWhen31 []string
+					if r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen31 = make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen {
+							denyWhen31 = append(denyWhen31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen[denyWhenIndex31].ValueString())
+						}
+					}
+					acls13 = &shared.AIGatewayMCPACLs{
+						Allow:     allow31,
+						Deny:      deny31,
+						AllowWhen: allowWhen31,
+						DenyWhen:  denyWhen31,
+					}
+				}
+				access10 := shared.AIGatewayMCPResourceAccess{
+					Acls: acls13,
+				}
+				var uri1 string
+				uri1 = r.UpstreamServer.Resources[resourcesIndex1].URI.ValueString()
+
+				resources1 = append(resources1, shared.AIGatewayMCPResource{
+					Access: access10,
+					URI:    uri1,
+				})
+			}
+		}
 		var displayName4 string
 		displayName4 = r.UpstreamServer.DisplayName.ValueString()
 
-		var name22 string
-		name22 = r.UpstreamServer.Name.ValueString()
+		var name24 string
+		name24 = r.UpstreamServer.Name.ValueString()
 
 		enabled4 := new(bool)
 		if !r.UpstreamServer.Enabled.IsUnknown() && !r.UpstreamServer.Enabled.IsNull() {
@@ -8639,11 +10850,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.UpstreamServer.Datastores != nil {
 			datastores4 = make([]shared.AIGatewayDatastoreRef, 0, len(r.UpstreamServer.Datastores))
 			for datastoresIndex4 := range r.UpstreamServer.Datastores {
-				var name23 string
-				name23 = r.UpstreamServer.Datastores[datastoresIndex4].Name.ValueString()
+				var name25 string
+				name25 = r.UpstreamServer.Datastores[datastoresIndex4].Name.ValueString()
 
 				datastores4 = append(datastores4, shared.AIGatewayDatastoreRef{
-					Name: name23,
+					Name: name25,
 				})
 			}
 		}
@@ -8668,11 +10879,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						location8 = nil
 					}
-					name24 := new(string)
+					name26 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsNull() {
-						*name24 = r.UpstreamServer.TokenVault.Credential.Inbound.Name.ValueString()
+						*name26 = r.UpstreamServer.TokenVault.Credential.Inbound.Name.ValueString()
 					} else {
-						name24 = nil
+						name26 = nil
 					}
 					prefix8 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsNull() {
@@ -8682,7 +10893,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 					inbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location8,
-						Name:     name24,
+						Name:     name26,
 						Prefix:   prefix8,
 					}
 				}
@@ -8694,11 +10905,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						location9 = nil
 					}
-					name25 := new(string)
+					name27 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsNull() {
-						*name25 = r.UpstreamServer.TokenVault.Credential.Outbound.Name.ValueString()
+						*name27 = r.UpstreamServer.TokenVault.Credential.Outbound.Name.ValueString()
 					} else {
-						name25 = nil
+						name27 = nil
 					}
 					prefix9 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsNull() {
@@ -8708,7 +10919,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 					outbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location9,
-						Name:     name25,
+						Name:     name27,
 						Prefix:   prefix9,
 					}
 				}
@@ -9046,8 +11257,10 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		aiGatewayMCPServerUpstreamServer = &shared.AIGatewayMCPServerUpstreamServer{
 			Config:      config4,
 			Tools:       tools3,
+			Prompts:     prompts1,
+			Resources:   resources1,
 			DisplayName: displayName4,
-			Name:        name22,
+			Name:        name24,
 			Enabled:     enabled4,
 			Policies:    policies4,
 			Labels:      labels4,
@@ -9175,12 +11388,97 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		} else {
 			maxRequestBodySize = nil
 		}
-		var url string
-		url = r.ConversionOnly.Config.URL.ValueString()
+		url := new(string)
+		if !r.ConversionOnly.Config.URL.IsUnknown() && !r.ConversionOnly.Config.URL.IsNull() {
+			*url = r.ConversionOnly.Config.URL.ValueString()
+		} else {
+			url = nil
+		}
+		var targets []shared.AIGatewayUpstreamTarget
+		if r.ConversionOnly.Config.Targets != nil {
+			targets = make([]shared.AIGatewayUpstreamTarget, 0, len(r.ConversionOnly.Config.Targets))
+			for targetsIndex := range r.ConversionOnly.Config.Targets {
+				var address string
+				address = r.ConversionOnly.Config.Targets[targetsIndex].Address.ValueString()
 
-		var upstream *shared.AIGatewayUpstreamConfig
+				failover := new(bool)
+				if !r.ConversionOnly.Config.Targets[targetsIndex].Failover.IsUnknown() && !r.ConversionOnly.Config.Targets[targetsIndex].Failover.IsNull() {
+					*failover = r.ConversionOnly.Config.Targets[targetsIndex].Failover.ValueBool()
+				} else {
+					failover = nil
+				}
+				weight := new(int64)
+				if !r.ConversionOnly.Config.Targets[targetsIndex].Weight.IsUnknown() && !r.ConversionOnly.Config.Targets[targetsIndex].Weight.IsNull() {
+					*weight = r.ConversionOnly.Config.Targets[targetsIndex].Weight.ValueInt64()
+				} else {
+					weight = nil
+				}
+				targets = append(targets, shared.AIGatewayUpstreamTarget{
+					Address:  address,
+					Failover: failover,
+					Weight:   weight,
+				})
+			}
+		}
+		var balancer *shared.Balancer
+		if r.ConversionOnly.Config.Balancer != nil {
+			var aiGatewayUpstreamBalancerConsistentHashingConfig *shared.AIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.ConversionOnly.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader string
+				hashOnHeader = r.ConversionOnly.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				aiGatewayUpstreamBalancerConsistentHashingConfig = &shared.AIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader,
+				}
+			}
+			if aiGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerConsistentHashingConfig: aiGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var aiGatewayUpstreamBalancerLeastConnectionsConfig *shared.AIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.ConversionOnly.Config.Balancer.LeastConnections != nil {
+				aiGatewayUpstreamBalancerLeastConnectionsConfig = &shared.AIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if aiGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerLeastConnectionsConfig: aiGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var aiGatewayUpstreamBalancerLowestLatencyConfig *shared.AIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.ConversionOnly.Config.Balancer.LowestLatency != nil {
+				aiGatewayUpstreamBalancerLowestLatencyConfig = &shared.AIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if aiGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerLowestLatencyConfig: aiGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var aiGatewayUpstreamBalancerRoundRobinConfig *shared.AIGatewayUpstreamBalancerRoundRobinConfig
+			if r.ConversionOnly.Config.Balancer.RoundRobin != nil {
+				aiGatewayUpstreamBalancerRoundRobinConfig = &shared.AIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if aiGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer = &shared.Balancer{
+					AIGatewayUpstreamBalancerRoundRobinConfig: aiGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol := new(shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol)
+		if !r.ConversionOnly.Config.Protocol.IsUnknown() && !r.ConversionOnly.Config.Protocol.IsNull() {
+			*protocol = shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol(r.ConversionOnly.Config.Protocol.ValueString())
+		} else {
+			protocol = nil
+		}
+		path := new(string)
+		if !r.ConversionOnly.Config.Path.IsUnknown() && !r.ConversionOnly.Config.Path.IsNull() {
+			*path = r.ConversionOnly.Config.Path.ValueString()
+		} else {
+			path = nil
+		}
+		var upstream *shared.AIGatewayMCPServerUpstreamConfig
 		if r.ConversionOnly.Config.Upstream != nil {
-			var auth *shared.AIGatewayUpstreamConfigAuth
+			var auth *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.ConversionOnly.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionOnly.Config.Upstream.Auth.Aws != nil {
@@ -9237,12 +11535,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAWS != nil {
-					auth = &shared.AIGatewayUpstreamConfigAuth{
+					auth = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
 					}
 				}
 			}
-			upstream = &shared.AIGatewayUpstreamConfig{
+			upstream = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth,
 			}
 		}
@@ -9259,6 +11557,10 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 			URL:                url,
+			Targets:            targets,
+			Balancer:           balancer,
+			Protocol:           protocol,
+			Path:               path,
 			Upstream:           upstream,
 			Certificates:       certificates,
 			CaCertificates:     caCertificates,
@@ -9277,9 +11579,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny {
 						deny = append(deny, r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny[denyIndex].ValueString())
 					}
+					var allowWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen != nil {
+						allowWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen {
+							allowWhen = append(allowWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+						}
+					}
+					var denyWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen != nil {
+						denyWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen {
+							denyWhen = append(denyWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+						}
+					}
 					acls = &shared.AIGatewayMCPACLs{
-						Allow: allow,
-						Deny:  deny,
+						Allow:     allow,
+						Deny:      deny,
+						AllowWhen: allowWhen,
+						DenyWhen:  denyWhen,
 					}
 				}
 				access = &shared.AIGatewayMCPToolAccess{
@@ -9343,11 +11661,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				host = nil
 			}
 			method := shared.Method(r.ConversionOnly.Tools[toolsIndex].Method.ValueString())
-			path := new(string)
+			path1 := new(string)
 			if !r.ConversionOnly.Tools[toolsIndex].Path.IsUnknown() && !r.ConversionOnly.Tools[toolsIndex].Path.IsNull() {
-				*path = r.ConversionOnly.Tools[toolsIndex].Path.ValueString()
+				*path1 = r.ConversionOnly.Tools[toolsIndex].Path.ValueString()
 			} else {
-				path = nil
+				path1 = nil
 			}
 			var query interface{}
 			if !r.ConversionOnly.Tools[toolsIndex].Query.IsUnknown() && !r.ConversionOnly.Tools[toolsIndex].Query.IsNull() {
@@ -9407,7 +11725,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Headers:     headers1,
 				Host:        host,
 				Method:      method,
-				Path:        path,
+				Path:        path1,
 				Query:       query,
 				RequestBody: requestBody,
 				Responses:   responses,
@@ -9873,84 +12191,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerConversionListener *shared.AIGatewayMCPServerConversionListener
 	if r.ConversionListener != nil {
-		var route1 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.ConversionListener.Config.Route != nil {
-			headers2 := make(map[string]interface{})
-			for headersKey1 := range r.ConversionListener.Config.Route.Headers {
-				var headersInst1 interface{}
-				_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-				headers2[headersKey1] = headersInst1
-			}
-			hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
-			for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
-				hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
-			}
-			httpsRedirectStatusCode1 := new(int64)
-			if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode1 = nil
-			}
-			methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
-			for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
-				methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
-			}
-			paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
-			for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
-				paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
-			}
-			preserveHost1 := new(bool)
-			if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost1 = nil
-			}
-			protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
-			for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
-				protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
-			}
-			regexPriority1 := new(int64)
-			if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority1 = nil
-			}
-			requestBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering1 = nil
-			}
-			responseBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering1 = nil
-			}
-			stripPath1 := new(bool)
-			if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
-				*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath1 = nil
-			}
-			tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
-			for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
-				tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
-			}
-			route1 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers2,
-				Hosts:                   hosts1,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
-				Methods:                 methods1,
-				Paths:                   paths1,
-				PreserveHost:            preserveHost1,
-				Protocols:               protocols1,
-				RegexPriority:           regexPriority1,
-				RequestBuffering:        requestBuffering1,
-				ResponseBuffering:       responseBuffering1,
-				StripPath:               stripPath1,
-				Tags:                    tags1,
-			}
+		headers2 := make(map[string]interface{})
+		for headersKey1 := range r.ConversionListener.Config.Route.Headers {
+			var headersInst1 interface{}
+			_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
+			headers2[headersKey1] = headersInst1
+		}
+		hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
+		for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
+			hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
+		}
+		httpsRedirectStatusCode1 := new(int64)
+		if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode1 = nil
+		}
+		methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
+		for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
+			methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
+		}
+		paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
+		for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
+			paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
+		}
+		preserveHost1 := new(bool)
+		if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost1 = nil
+		}
+		protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
+		for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
+			protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
+		}
+		regexPriority1 := new(int64)
+		if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority1 = nil
+		}
+		requestBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering1 = nil
+		}
+		responseBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering1 = nil
+		}
+		stripPath1 := new(bool)
+		if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
+			*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath1 = nil
+		}
+		tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
+		for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
+			tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
+		}
+		route1 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers2,
+			Hosts:                   hosts1,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
+			Methods:                 methods1,
+			Paths:                   paths1,
+			PreserveHost:            preserveHost1,
+			Protocols:               protocols1,
+			RegexPriority:           regexPriority1,
+			RequestBuffering:        requestBuffering1,
+			ResponseBuffering:       responseBuffering1,
+			StripPath:               stripPath1,
+			Tags:                    tags1,
 		}
 		var logging1 *shared.AIGatewayMCPServerConversionListenerLogging
 		if r.ConversionListener.Config.Logging != nil {
@@ -10325,9 +12640,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					sessionTTL = nil
 				}
-				strategy := new(shared.Strategy)
+				strategy := new(shared.AIGatewayMCPServerServerConfigBaseStrategy)
 				if !r.ConversionListener.Config.Server.Session.Strategy.IsUnknown() && !r.ConversionListener.Config.Server.Session.Strategy.IsNull() {
-					*strategy = shared.Strategy(r.ConversionListener.Config.Server.Session.Strategy.ValueString())
+					*strategy = shared.AIGatewayMCPServerServerConfigBaseStrategy(r.ConversionListener.Config.Server.Session.Strategy.ValueString())
 				} else {
 					strategy = nil
 				}
@@ -10351,12 +12666,197 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Timeout:              timeout,
 			}
 		}
-		var url1 string
-		url1 = r.ConversionListener.Config.URL.ValueString()
+		url1 := new(string)
+		if !r.ConversionListener.Config.URL.IsUnknown() && !r.ConversionListener.Config.URL.IsNull() {
+			*url1 = r.ConversionListener.Config.URL.ValueString()
+		} else {
+			url1 = nil
+		}
+		var targets1 []shared.AIGatewayUpstreamTarget
+		if r.ConversionListener.Config.Targets != nil {
+			targets1 = make([]shared.AIGatewayUpstreamTarget, 0, len(r.ConversionListener.Config.Targets))
+			for targetsIndex1 := range r.ConversionListener.Config.Targets {
+				var address1 string
+				address1 = r.ConversionListener.Config.Targets[targetsIndex1].Address.ValueString()
 
-		var upstream1 *shared.AIGatewayUpstreamConfig
+				failover1 := new(bool)
+				if !r.ConversionListener.Config.Targets[targetsIndex1].Failover.IsUnknown() && !r.ConversionListener.Config.Targets[targetsIndex1].Failover.IsNull() {
+					*failover1 = r.ConversionListener.Config.Targets[targetsIndex1].Failover.ValueBool()
+				} else {
+					failover1 = nil
+				}
+				weight1 := new(int64)
+				if !r.ConversionListener.Config.Targets[targetsIndex1].Weight.IsUnknown() && !r.ConversionListener.Config.Targets[targetsIndex1].Weight.IsNull() {
+					*weight1 = r.ConversionListener.Config.Targets[targetsIndex1].Weight.ValueInt64()
+				} else {
+					weight1 = nil
+				}
+				targets1 = append(targets1, shared.AIGatewayUpstreamTarget{
+					Address:  address1,
+					Failover: failover1,
+					Weight:   weight1,
+				})
+			}
+		}
+		var balancer1 *shared.AIGatewayMCPServerConversionListenerBalancer
+		if r.ConversionListener.Config.Balancer != nil {
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.ConversionListener.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader1 string
+				hashOnHeader1 = r.ConversionListener.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader1,
+				}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.ConversionListener.Config.Balancer.LeastConnections != nil {
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.ConversionListener.Config.Balancer.LowestLatency != nil {
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+			if r.ConversionListener.Config.Balancer.RoundRobin != nil {
+				aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer1 = &shared.AIGatewayMCPServerConversionListenerBalancer{
+					AIGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig: aiGatewayMCPServerConversionListenerBalancerAIGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol1 := new(shared.AIGatewayMCPServerConversionListenerProtocol)
+		if !r.ConversionListener.Config.Protocol.IsUnknown() && !r.ConversionListener.Config.Protocol.IsNull() {
+			*protocol1 = shared.AIGatewayMCPServerConversionListenerProtocol(r.ConversionListener.Config.Protocol.ValueString())
+		} else {
+			protocol1 = nil
+		}
+		path2 := new(string)
+		if !r.ConversionListener.Config.Path.IsUnknown() && !r.ConversionListener.Config.Path.IsNull() {
+			*path2 = r.ConversionListener.Config.Path.ValueString()
+		} else {
+			path2 = nil
+		}
+		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
+		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
+			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
+		}
+		caCertificates1 := make([]string, 0, len(r.ConversionListener.Config.CaCertificates))
+		for caCertificatesIndex1 := range r.ConversionListener.Config.CaCertificates {
+			caCertificates1 = append(caCertificates1, r.ConversionListener.Config.CaCertificates[caCertificatesIndex1].ValueString())
+		}
+		var allowedVersions []shared.AllowedVersions
+		if r.ConversionListener.Config.AllowedVersions != nil {
+			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
+			for _, allowedVersionsItem := range r.ConversionListener.Config.AllowedVersions {
+				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
+			}
+		}
+		var cache1 *shared.AIGatewayMCPServerConversionListenerCache
+		if r.ConversionListener.Config.Cache != nil {
+			var toolsList *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.ToolsList != nil {
+				ttlMs := new(int64)
+				if !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsNull() {
+					*ttlMs = r.ConversionListener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs = nil
+				}
+				cacheScope := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsNull() {
+					*cacheScope = shared.CacheScope(r.ConversionListener.Config.Cache.ToolsList.CacheScope.ValueString())
+				} else {
+					cacheScope = nil
+				}
+				toolsList = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs,
+					CacheScope: cacheScope,
+				}
+			}
+			var promptsList *shared.PromptsList
+			if r.ConversionListener.Config.Cache.PromptsList != nil {
+				ttlMs1 := new(int64)
+				if !r.ConversionListener.Config.Cache.PromptsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.PromptsList.TTLMs.IsNull() {
+					*ttlMs1 = r.ConversionListener.Config.Cache.PromptsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs1 = nil
+				}
+				cacheScope1 := new(shared.AIGatewayMCPServerConversionListenerCacheScope)
+				if !r.ConversionListener.Config.Cache.PromptsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.PromptsList.CacheScope.IsNull() {
+					*cacheScope1 = shared.AIGatewayMCPServerConversionListenerCacheScope(r.ConversionListener.Config.Cache.PromptsList.CacheScope.ValueString())
+				} else {
+					cacheScope1 = nil
+				}
+				promptsList = &shared.PromptsList{
+					TTLMs:      ttlMs1,
+					CacheScope: cacheScope1,
+				}
+			}
+			var resourcesList *shared.ResourcesList
+			if r.ConversionListener.Config.Cache.ResourcesList != nil {
+				ttlMs2 := new(int64)
+				if !r.ConversionListener.Config.Cache.ResourcesList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ResourcesList.TTLMs.IsNull() {
+					*ttlMs2 = r.ConversionListener.Config.Cache.ResourcesList.TTLMs.ValueInt64()
+				} else {
+					ttlMs2 = nil
+				}
+				cacheScope2 := new(shared.AIGatewayMCPServerConversionListenerConfigCacheScope)
+				if !r.ConversionListener.Config.Cache.ResourcesList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ResourcesList.CacheScope.IsNull() {
+					*cacheScope2 = shared.AIGatewayMCPServerConversionListenerConfigCacheScope(r.ConversionListener.Config.Cache.ResourcesList.CacheScope.ValueString())
+				} else {
+					cacheScope2 = nil
+				}
+				resourcesList = &shared.ResourcesList{
+					TTLMs:      ttlMs2,
+					CacheScope: cacheScope2,
+				}
+			}
+			var discover *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.Discover != nil {
+				ttlMs3 := new(int64)
+				if !r.ConversionListener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.TTLMs.IsNull() {
+					*ttlMs3 = r.ConversionListener.Config.Cache.Discover.TTLMs.ValueInt64()
+				} else {
+					ttlMs3 = nil
+				}
+				cacheScope3 := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.CacheScope.IsNull() {
+					*cacheScope3 = shared.CacheScope(r.ConversionListener.Config.Cache.Discover.CacheScope.ValueString())
+				} else {
+					cacheScope3 = nil
+				}
+				discover = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs3,
+					CacheScope: cacheScope3,
+				}
+			}
+			cache1 = &shared.AIGatewayMCPServerConversionListenerCache{
+				ToolsList:     toolsList,
+				PromptsList:   promptsList,
+				ResourcesList: resourcesList,
+				Discover:      discover,
+			}
+		}
+		var upstream1 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.ConversionListener.Config.Upstream != nil {
-			var auth1 *shared.AIGatewayUpstreamConfigAuth
+			var auth1 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.ConversionListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
@@ -10413,73 +12913,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws1 != nil {
-					auth1 = &shared.AIGatewayUpstreamConfigAuth{
+					auth1 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
 					}
 				}
 			}
-			upstream1 = &shared.AIGatewayUpstreamConfig{
+			upstream1 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth1,
-			}
-		}
-		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
-		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
-			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
-		}
-		caCertificates1 := make([]string, 0, len(r.ConversionListener.Config.CaCertificates))
-		for caCertificatesIndex1 := range r.ConversionListener.Config.CaCertificates {
-			caCertificates1 = append(caCertificates1, r.ConversionListener.Config.CaCertificates[caCertificatesIndex1].ValueString())
-		}
-		var allowedVersions []shared.AllowedVersions
-		if r.ConversionListener.Config.AllowedVersions != nil {
-			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
-			for _, allowedVersionsItem := range r.ConversionListener.Config.AllowedVersions {
-				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
-			}
-		}
-		var cache1 *shared.AIGatewayMCPServerConversionListenerCache
-		if r.ConversionListener.Config.Cache != nil {
-			var toolsList *shared.AIGatewayMCPServerCacheHint
-			if r.ConversionListener.Config.Cache.ToolsList != nil {
-				ttlMs := new(int64)
-				if !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsNull() {
-					*ttlMs = r.ConversionListener.Config.Cache.ToolsList.TTLMs.ValueInt64()
-				} else {
-					ttlMs = nil
-				}
-				cacheScope := new(shared.CacheScope)
-				if !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsNull() {
-					*cacheScope = shared.CacheScope(r.ConversionListener.Config.Cache.ToolsList.CacheScope.ValueString())
-				} else {
-					cacheScope = nil
-				}
-				toolsList = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs,
-					CacheScope: cacheScope,
-				}
-			}
-			var discover *shared.AIGatewayMCPServerCacheHint
-			if r.ConversionListener.Config.Cache.Discover != nil {
-				ttlMs1 := new(int64)
-				if !r.ConversionListener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.TTLMs.IsNull() {
-					*ttlMs1 = r.ConversionListener.Config.Cache.Discover.TTLMs.ValueInt64()
-				} else {
-					ttlMs1 = nil
-				}
-				cacheScope1 := new(shared.CacheScope)
-				if !r.ConversionListener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.CacheScope.IsNull() {
-					*cacheScope1 = shared.CacheScope(r.ConversionListener.Config.Cache.Discover.CacheScope.ValueString())
-				} else {
-					cacheScope1 = nil
-				}
-				discover = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs1,
-					CacheScope: cacheScope1,
-				}
-			}
-			cache1 = &shared.AIGatewayMCPServerConversionListenerCache{
-				ToolsList: toolsList,
-				Discover:  discover,
 			}
 		}
 		config1 := shared.AIGatewayMCPServerKongListenerConfig{
@@ -10488,11 +12928,15 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
-			Upstream:           upstream1,
+			Targets:            targets1,
+			Balancer:           balancer1,
+			Protocol:           protocol1,
+			Path:               path2,
 			Certificates:       certificates1,
 			CaCertificates:     caCertificates1,
 			AllowedVersions:    allowedVersions,
 			Cache:              cache1,
+			Upstream:           upstream1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -10508,9 +12952,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny {
 						deny1 = append(deny1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny[denyIndex1].ValueString())
 					}
+					var allowWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen {
+							allowWhen1 = append(allowWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen[allowWhenIndex1].ValueString())
+						}
+					}
+					var denyWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen {
+							denyWhen1 = append(denyWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen[denyWhenIndex1].ValueString())
+						}
+					}
 					acls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow1,
-						Deny:  deny1,
+						Allow:     allow1,
+						Deny:      deny1,
+						AllowWhen: allowWhen1,
+						DenyWhen:  denyWhen1,
 					}
 				}
 				access1 = &shared.AIGatewayMCPToolAccess{
@@ -10574,11 +13034,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				host5 = nil
 			}
 			method1 := shared.Method(r.ConversionListener.Tools[toolsIndex1].Method.ValueString())
-			path1 := new(string)
+			path3 := new(string)
 			if !r.ConversionListener.Tools[toolsIndex1].Path.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Path.IsNull() {
-				*path1 = r.ConversionListener.Tools[toolsIndex1].Path.ValueString()
+				*path3 = r.ConversionListener.Tools[toolsIndex1].Path.ValueString()
 			} else {
-				path1 = nil
+				path3 = nil
 			}
 			var query1 interface{}
 			if !r.ConversionListener.Tools[toolsIndex1].Query.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Query.IsNull() {
@@ -10638,7 +13098,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Headers:     headers3,
 				Host:        host5,
 				Method:      method1,
-				Path:        path1,
+				Path:        path3,
 				Query:       query1,
 				RequestBody: requestBody1,
 				Responses:   responses1,
@@ -10650,7 +13110,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.ConversionListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer *shared.AIGatewayMCPServerListenerConsumer
 			if r.ConversionListener.Access.Consumer != nil {
-				var acls2 *shared.AIGatewayMCPACLs
+				var acls2 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.Consumer.Acls != nil {
 					allow2 := make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.Allow))
 					for allowIndex2 := range r.ConversionListener.Access.Consumer.Acls.Allow {
@@ -10660,9 +13120,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex2 := range r.ConversionListener.Access.Consumer.Acls.Deny {
 						deny2 = append(deny2, r.ConversionListener.Access.Consumer.Acls.Deny[denyIndex2].ValueString())
 					}
-					acls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow2,
-						Deny:  deny2,
+					var allowWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen2 = append(allowWhen2, r.ConversionListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex2].ValueString())
+						}
+					}
+					var denyWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen2 = append(denyWhen2, r.ConversionListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex2].ValueString())
+						}
+					}
+					acls2 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow2,
+						Deny:      deny2,
+						AllowWhen: allowWhen2,
+						DenyWhen:  denyWhen2,
 					}
 				}
 				var defaultToolAcls *shared.AIGatewayMCPACLs
@@ -10675,9 +13151,87 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny {
 						deny3 = append(deny3, r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex3].ValueString())
 					}
+					var allowWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen3 = append(allowWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex3].ValueString())
+						}
+					}
+					var denyWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen3 = append(denyWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex3].ValueString())
+						}
+					}
 					defaultToolAcls = &shared.AIGatewayMCPACLs{
-						Allow: allow3,
-						Deny:  deny3,
+						Allow:     allow3,
+						Deny:      deny3,
+						AllowWhen: allowWhen3,
+						DenyWhen:  denyWhen3,
+					}
+				}
+				var defaultPromptAcls *shared.DefaultPromptAcls
+				if r.ConversionListener.Access.Consumer.DefaultPromptAcls != nil {
+					allow4 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow))
+					for allowIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow {
+						allow4 = append(allow4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.Allow[allowIndex4].ValueString())
+					}
+					deny4 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny))
+					for denyIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny {
+						deny4 = append(deny4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.Deny[denyIndex4].ValueString())
+					}
+					var allowWhen4 []string
+					if r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen4 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen {
+							allowWhen4 = append(allowWhen4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.AllowWhen[allowWhenIndex4].ValueString())
+						}
+					}
+					var denyWhen4 []string
+					if r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen4 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex4 := range r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen {
+							denyWhen4 = append(denyWhen4, r.ConversionListener.Access.Consumer.DefaultPromptAcls.DenyWhen[denyWhenIndex4].ValueString())
+						}
+					}
+					defaultPromptAcls = &shared.DefaultPromptAcls{
+						Allow:     allow4,
+						Deny:      deny4,
+						AllowWhen: allowWhen4,
+						DenyWhen:  denyWhen4,
+					}
+				}
+				var defaultResourceAcls *shared.DefaultResourceAcls
+				if r.ConversionListener.Access.Consumer.DefaultResourceAcls != nil {
+					allow5 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow))
+					for allowIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow {
+						allow5 = append(allow5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.Allow[allowIndex5].ValueString())
+					}
+					deny5 := make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny))
+					for denyIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny {
+						deny5 = append(deny5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.Deny[denyIndex5].ValueString())
+					}
+					var allowWhen5 []string
+					if r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen5 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen {
+							allowWhen5 = append(allowWhen5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.AllowWhen[allowWhenIndex5].ValueString())
+						}
+					}
+					var denyWhen5 []string
+					if r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen5 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex5 := range r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen {
+							denyWhen5 = append(denyWhen5, r.ConversionListener.Access.Consumer.DefaultResourceAcls.DenyWhen[denyWhenIndex5].ValueString())
+						}
+					}
+					defaultResourceAcls = &shared.DefaultResourceAcls{
+						Allow:     allow5,
+						Deny:      deny5,
+						AllowWhen: allowWhen5,
+						DenyWhen:  denyWhen5,
 					}
 				}
 				identityProviders := make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
@@ -10725,11 +13279,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerListenerConsumer = &shared.AIGatewayMCPServerListenerConsumer{
-					Acls:              acls2,
-					DefaultToolAcls:   defaultToolAcls,
-					IdentityProviders: identityProviders,
-					AuthStrategies:    authStrategies,
-					Metadata:          metadata,
+					Acls:                acls2,
+					DefaultToolAcls:     defaultToolAcls,
+					DefaultPromptAcls:   defaultPromptAcls,
+					DefaultResourceAcls: defaultResourceAcls,
+					IdentityProviders:   identityProviders,
+					AuthStrategies:      authStrategies,
+					Metadata:            metadata,
 				}
 			}
 			if aiGatewayMCPServerListenerConsumer != nil {
@@ -10742,34 +13298,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				var accessTokenClaimField string
 				accessTokenClaimField = r.ConversionListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls3 *shared.AIGatewayMCPACLs
+				var acls3 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.OauthAccessToken.Acls != nil {
-					allow4 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Allow))
-					for allowIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Allow {
-						allow4 = append(allow4, r.ConversionListener.Access.OauthAccessToken.Acls.Allow[allowIndex4].ValueString())
+					allow6 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Allow))
+					for allowIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.Allow {
+						allow6 = append(allow6, r.ConversionListener.Access.OauthAccessToken.Acls.Allow[allowIndex6].ValueString())
 					}
-					deny4 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Deny))
-					for denyIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Deny {
-						deny4 = append(deny4, r.ConversionListener.Access.OauthAccessToken.Acls.Deny[denyIndex4].ValueString())
+					deny6 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Deny))
+					for denyIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.Deny {
+						deny6 = append(deny6, r.ConversionListener.Access.OauthAccessToken.Acls.Deny[denyIndex6].ValueString())
 					}
-					acls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow4,
-						Deny:  deny4,
+					var allowWhen6 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen6 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen6 = append(allowWhen6, r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex6].ValueString())
+						}
+					}
+					var denyWhen6 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen6 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex6 := range r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen6 = append(denyWhen6, r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex6].ValueString())
+						}
+					}
+					acls3 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow6,
+						Deny:      deny6,
+						AllowWhen: allowWhen6,
+						DenyWhen:  denyWhen6,
 					}
 				}
 				var defaultToolAcls1 *shared.AIGatewayMCPACLs
 				if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls != nil {
-					allow5 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
-					for allowIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
-						allow5 = append(allow5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex5].ValueString())
+					allow7 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
+					for allowIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
+						allow7 = append(allow7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex7].ValueString())
 					}
-					deny5 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
-					for denyIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
-						deny5 = append(deny5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex5].ValueString())
+					deny7 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
+					for denyIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
+						deny7 = append(deny7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex7].ValueString())
+					}
+					var allowWhen7 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen7 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen7 = append(allowWhen7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex7].ValueString())
+						}
+					}
+					var denyWhen7 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen7 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex7 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen7 = append(denyWhen7, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex7].ValueString())
+						}
 					}
 					defaultToolAcls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow5,
-						Deny:  deny5,
+						Allow:     allow7,
+						Deny:      deny7,
+						AllowWhen: allowWhen7,
+						DenyWhen:  denyWhen7,
+					}
+				}
+				var defaultPromptAcls1 *shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls
+				if r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls != nil {
+					allow8 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow))
+					for allowIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow {
+						allow8 = append(allow8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Allow[allowIndex8].ValueString())
+					}
+					deny8 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny))
+					for denyIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny {
+						deny8 = append(deny8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.Deny[denyIndex8].ValueString())
+					}
+					var allowWhen8 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen8 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen {
+							allowWhen8 = append(allowWhen8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen[allowWhenIndex8].ValueString())
+						}
+					}
+					var denyWhen8 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen8 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex8 := range r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen {
+							denyWhen8 = append(denyWhen8, r.ConversionListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen[denyWhenIndex8].ValueString())
+						}
+					}
+					defaultPromptAcls1 = &shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls{
+						Allow:     allow8,
+						Deny:      deny8,
+						AllowWhen: allowWhen8,
+						DenyWhen:  denyWhen8,
+					}
+				}
+				var defaultResourceAcls1 *shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls
+				if r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls != nil {
+					allow9 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow))
+					for allowIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow {
+						allow9 = append(allow9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Allow[allowIndex9].ValueString())
+					}
+					deny9 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny))
+					for denyIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny {
+						deny9 = append(deny9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.Deny[denyIndex9].ValueString())
+					}
+					var allowWhen9 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen9 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen {
+							allowWhen9 = append(allowWhen9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen[allowWhenIndex9].ValueString())
+						}
+					}
+					var denyWhen9 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen9 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex9 := range r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen {
+							denyWhen9 = append(denyWhen9, r.ConversionListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen[denyWhenIndex9].ValueString())
+						}
+					}
+					defaultResourceAcls1 = &shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls{
+						Allow:     allow9,
+						Deny:      deny9,
+						AllowWhen: allowWhen9,
+						DenyWhen:  denyWhen9,
 					}
 				}
 				identityProviders1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
@@ -10820,6 +13470,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					AccessTokenClaimField: accessTokenClaimField,
 					Acls:                  acls3,
 					DefaultToolAcls:       defaultToolAcls1,
+					DefaultPromptAcls:     defaultPromptAcls1,
+					DefaultResourceAcls:   defaultResourceAcls1,
 					IdentityProviders:     identityProviders1,
 					AuthStrategies:        authStrategies1,
 					Metadata:              metadata1,
@@ -11322,84 +13974,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerListener *shared.AIGatewayMCPServerListener
 	if r.Listener != nil {
-		var route2 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.Listener.Config.Route != nil {
-			headers4 := make(map[string]interface{})
-			for headersKey2 := range r.Listener.Config.Route.Headers {
-				var headersInst2 interface{}
-				_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
-				headers4[headersKey2] = headersInst2
-			}
-			hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
-			for hostsIndex2 := range r.Listener.Config.Route.Hosts {
-				hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
-			}
-			httpsRedirectStatusCode2 := new(int64)
-			if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode2 = nil
-			}
-			methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
-			for methodsIndex2 := range r.Listener.Config.Route.Methods {
-				methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
-			}
-			paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
-			for pathsIndex2 := range r.Listener.Config.Route.Paths {
-				paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
-			}
-			preserveHost2 := new(bool)
-			if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost2 = nil
-			}
-			protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
-			for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
-				protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
-			}
-			regexPriority2 := new(int64)
-			if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority2 = nil
-			}
-			requestBuffering2 := new(bool)
-			if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering2 = nil
-			}
-			responseBuffering2 := new(bool)
-			if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering2 = nil
-			}
-			stripPath2 := new(bool)
-			if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
-				*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath2 = nil
-			}
-			tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
-			for tagsIndex2 := range r.Listener.Config.Route.Tags {
-				tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
-			}
-			route2 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers4,
-				Hosts:                   hosts2,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
-				Methods:                 methods2,
-				Paths:                   paths2,
-				PreserveHost:            preserveHost2,
-				Protocols:               protocols2,
-				RegexPriority:           regexPriority2,
-				RequestBuffering:        requestBuffering2,
-				ResponseBuffering:       responseBuffering2,
-				StripPath:               stripPath2,
-				Tags:                    tags2,
-			}
+		headers4 := make(map[string]interface{})
+		for headersKey2 := range r.Listener.Config.Route.Headers {
+			var headersInst2 interface{}
+			_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+			headers4[headersKey2] = headersInst2
+		}
+		hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
+		for hostsIndex2 := range r.Listener.Config.Route.Hosts {
+			hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
+		}
+		httpsRedirectStatusCode2 := new(int64)
+		if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode2 = nil
+		}
+		methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
+		for methodsIndex2 := range r.Listener.Config.Route.Methods {
+			methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
+		}
+		paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
+		for pathsIndex2 := range r.Listener.Config.Route.Paths {
+			paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
+		}
+		preserveHost2 := new(bool)
+		if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost2 = nil
+		}
+		protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
+		for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
+			protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
+		}
+		regexPriority2 := new(int64)
+		if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority2 = nil
+		}
+		requestBuffering2 := new(bool)
+		if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering2 = nil
+		}
+		responseBuffering2 := new(bool)
+		if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering2 = nil
+		}
+		stripPath2 := new(bool)
+		if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
+			*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath2 = nil
+		}
+		tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
+		for tagsIndex2 := range r.Listener.Config.Route.Tags {
+			tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
+		}
+		route2 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers4,
+			Hosts:                   hosts2,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
+			Methods:                 methods2,
+			Paths:                   paths2,
+			PreserveHost:            preserveHost2,
+			Protocols:               protocols2,
+			RegexPriority:           regexPriority2,
+			RequestBuffering:        requestBuffering2,
+			ResponseBuffering:       responseBuffering2,
+			StripPath:               stripPath2,
+			Tags:                    tags2,
 		}
 		var logging2 *shared.AIGatewayMCPServerListenerLogging
 		if r.Listener.Config.Logging != nil {
@@ -11774,9 +14423,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					sessionTtl1 = nil
 				}
-				strategy1 := new(shared.Strategy)
+				strategy1 := new(shared.AIGatewayMCPServerServerConfigBaseStrategy)
 				if !r.Listener.Config.Server.Session.Strategy.IsUnknown() && !r.Listener.Config.Server.Session.Strategy.IsNull() {
-					*strategy1 = shared.Strategy(r.Listener.Config.Server.Session.Strategy.ValueString())
+					*strategy1 = shared.AIGatewayMCPServerServerConfigBaseStrategy(r.Listener.Config.Server.Session.Strategy.ValueString())
 				} else {
 					strategy1 = nil
 				}
@@ -11811,45 +14460,85 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.Listener.Config.Cache != nil {
 			var toolsList1 *shared.AIGatewayMCPServerCacheHint
 			if r.Listener.Config.Cache.ToolsList != nil {
-				ttlMs2 := new(int64)
+				ttlMs4 := new(int64)
 				if !r.Listener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.ToolsList.TTLMs.IsNull() {
-					*ttlMs2 = r.Listener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+					*ttlMs4 = r.Listener.Config.Cache.ToolsList.TTLMs.ValueInt64()
 				} else {
-					ttlMs2 = nil
+					ttlMs4 = nil
 				}
-				cacheScope2 := new(shared.CacheScope)
+				cacheScope4 := new(shared.CacheScope)
 				if !r.Listener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.ToolsList.CacheScope.IsNull() {
-					*cacheScope2 = shared.CacheScope(r.Listener.Config.Cache.ToolsList.CacheScope.ValueString())
+					*cacheScope4 = shared.CacheScope(r.Listener.Config.Cache.ToolsList.CacheScope.ValueString())
 				} else {
-					cacheScope2 = nil
+					cacheScope4 = nil
 				}
 				toolsList1 = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs2,
-					CacheScope: cacheScope2,
+					TTLMs:      ttlMs4,
+					CacheScope: cacheScope4,
+				}
+			}
+			var promptsList1 *shared.AIGatewayMCPServerListenerPromptsList
+			if r.Listener.Config.Cache.PromptsList != nil {
+				ttlMs5 := new(int64)
+				if !r.Listener.Config.Cache.PromptsList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.PromptsList.TTLMs.IsNull() {
+					*ttlMs5 = r.Listener.Config.Cache.PromptsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs5 = nil
+				}
+				cacheScope5 := new(shared.AIGatewayMCPServerListenerCacheScope)
+				if !r.Listener.Config.Cache.PromptsList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.PromptsList.CacheScope.IsNull() {
+					*cacheScope5 = shared.AIGatewayMCPServerListenerCacheScope(r.Listener.Config.Cache.PromptsList.CacheScope.ValueString())
+				} else {
+					cacheScope5 = nil
+				}
+				promptsList1 = &shared.AIGatewayMCPServerListenerPromptsList{
+					TTLMs:      ttlMs5,
+					CacheScope: cacheScope5,
+				}
+			}
+			var resourcesList1 *shared.AIGatewayMCPServerListenerResourcesList
+			if r.Listener.Config.Cache.ResourcesList != nil {
+				ttlMs6 := new(int64)
+				if !r.Listener.Config.Cache.ResourcesList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.ResourcesList.TTLMs.IsNull() {
+					*ttlMs6 = r.Listener.Config.Cache.ResourcesList.TTLMs.ValueInt64()
+				} else {
+					ttlMs6 = nil
+				}
+				cacheScope6 := new(shared.AIGatewayMCPServerListenerConfigCacheScope)
+				if !r.Listener.Config.Cache.ResourcesList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.ResourcesList.CacheScope.IsNull() {
+					*cacheScope6 = shared.AIGatewayMCPServerListenerConfigCacheScope(r.Listener.Config.Cache.ResourcesList.CacheScope.ValueString())
+				} else {
+					cacheScope6 = nil
+				}
+				resourcesList1 = &shared.AIGatewayMCPServerListenerResourcesList{
+					TTLMs:      ttlMs6,
+					CacheScope: cacheScope6,
 				}
 			}
 			var discover1 *shared.AIGatewayMCPServerCacheHint
 			if r.Listener.Config.Cache.Discover != nil {
-				ttlMs3 := new(int64)
+				ttlMs7 := new(int64)
 				if !r.Listener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.Listener.Config.Cache.Discover.TTLMs.IsNull() {
-					*ttlMs3 = r.Listener.Config.Cache.Discover.TTLMs.ValueInt64()
+					*ttlMs7 = r.Listener.Config.Cache.Discover.TTLMs.ValueInt64()
 				} else {
-					ttlMs3 = nil
+					ttlMs7 = nil
 				}
-				cacheScope3 := new(shared.CacheScope)
+				cacheScope7 := new(shared.CacheScope)
 				if !r.Listener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.Listener.Config.Cache.Discover.CacheScope.IsNull() {
-					*cacheScope3 = shared.CacheScope(r.Listener.Config.Cache.Discover.CacheScope.ValueString())
+					*cacheScope7 = shared.CacheScope(r.Listener.Config.Cache.Discover.CacheScope.ValueString())
 				} else {
-					cacheScope3 = nil
+					cacheScope7 = nil
 				}
 				discover1 = &shared.AIGatewayMCPServerCacheHint{
-					TTLMs:      ttlMs3,
-					CacheScope: cacheScope3,
+					TTLMs:      ttlMs7,
+					CacheScope: cacheScope7,
 				}
 			}
 			cache3 = &shared.AIGatewayMCPServerListenerCache{
-				ToolsList: toolsList1,
-				Discover:  discover1,
+				ToolsList:     toolsList1,
+				PromptsList:   promptsList1,
+				ResourcesList: resourcesList1,
+				Discover:      discover1,
 			}
 		}
 		config2 := shared.AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig{
@@ -11868,34 +14557,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.Listener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer1 *shared.AIGatewayMCPServerListenerConsumer
 			if r.Listener.Access.Consumer != nil {
-				var acls4 *shared.AIGatewayMCPACLs
+				var acls4 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.Consumer.Acls != nil {
-					allow6 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
-					for allowIndex6 := range r.Listener.Access.Consumer.Acls.Allow {
-						allow6 = append(allow6, r.Listener.Access.Consumer.Acls.Allow[allowIndex6].ValueString())
+					allow10 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
+					for allowIndex10 := range r.Listener.Access.Consumer.Acls.Allow {
+						allow10 = append(allow10, r.Listener.Access.Consumer.Acls.Allow[allowIndex10].ValueString())
 					}
-					deny6 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Deny))
-					for denyIndex6 := range r.Listener.Access.Consumer.Acls.Deny {
-						deny6 = append(deny6, r.Listener.Access.Consumer.Acls.Deny[denyIndex6].ValueString())
+					deny10 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Deny))
+					for denyIndex10 := range r.Listener.Access.Consumer.Acls.Deny {
+						deny10 = append(deny10, r.Listener.Access.Consumer.Acls.Deny[denyIndex10].ValueString())
 					}
-					acls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow6,
-						Deny:  deny6,
+					var allowWhen10 []string
+					if r.Listener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen10 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex10 := range r.Listener.Access.Consumer.Acls.AllowWhen {
+							allowWhen10 = append(allowWhen10, r.Listener.Access.Consumer.Acls.AllowWhen[allowWhenIndex10].ValueString())
+						}
+					}
+					var denyWhen10 []string
+					if r.Listener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen10 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex10 := range r.Listener.Access.Consumer.Acls.DenyWhen {
+							denyWhen10 = append(denyWhen10, r.Listener.Access.Consumer.Acls.DenyWhen[denyWhenIndex10].ValueString())
+						}
+					}
+					acls4 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow10,
+						Deny:      deny10,
+						AllowWhen: allowWhen10,
+						DenyWhen:  denyWhen10,
 					}
 				}
 				var defaultToolAcls2 *shared.AIGatewayMCPACLs
 				if r.Listener.Access.Consumer.DefaultToolAcls != nil {
-					allow7 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Allow))
-					for allowIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.Allow {
-						allow7 = append(allow7, r.Listener.Access.Consumer.DefaultToolAcls.Allow[allowIndex7].ValueString())
+					allow11 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Allow))
+					for allowIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.Allow {
+						allow11 = append(allow11, r.Listener.Access.Consumer.DefaultToolAcls.Allow[allowIndex11].ValueString())
 					}
-					deny7 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Deny))
-					for denyIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.Deny {
-						deny7 = append(deny7, r.Listener.Access.Consumer.DefaultToolAcls.Deny[denyIndex7].ValueString())
+					deny11 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.Deny))
+					for denyIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.Deny {
+						deny11 = append(deny11, r.Listener.Access.Consumer.DefaultToolAcls.Deny[denyIndex11].ValueString())
+					}
+					var allowWhen11 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen11 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen11 = append(allowWhen11, r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex11].ValueString())
+						}
+					}
+					var denyWhen11 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen11 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex11 := range r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen11 = append(denyWhen11, r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex11].ValueString())
+						}
 					}
 					defaultToolAcls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow7,
-						Deny:  deny7,
+						Allow:     allow11,
+						Deny:      deny11,
+						AllowWhen: allowWhen11,
+						DenyWhen:  denyWhen11,
+					}
+				}
+				var defaultPromptAcls2 *shared.DefaultPromptAcls
+				if r.Listener.Access.Consumer.DefaultPromptAcls != nil {
+					allow12 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.Allow))
+					for allowIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.Allow {
+						allow12 = append(allow12, r.Listener.Access.Consumer.DefaultPromptAcls.Allow[allowIndex12].ValueString())
+					}
+					deny12 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.Deny))
+					for denyIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.Deny {
+						deny12 = append(deny12, r.Listener.Access.Consumer.DefaultPromptAcls.Deny[denyIndex12].ValueString())
+					}
+					var allowWhen12 []string
+					if r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen12 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen {
+							allowWhen12 = append(allowWhen12, r.Listener.Access.Consumer.DefaultPromptAcls.AllowWhen[allowWhenIndex12].ValueString())
+						}
+					}
+					var denyWhen12 []string
+					if r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen12 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex12 := range r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen {
+							denyWhen12 = append(denyWhen12, r.Listener.Access.Consumer.DefaultPromptAcls.DenyWhen[denyWhenIndex12].ValueString())
+						}
+					}
+					defaultPromptAcls2 = &shared.DefaultPromptAcls{
+						Allow:     allow12,
+						Deny:      deny12,
+						AllowWhen: allowWhen12,
+						DenyWhen:  denyWhen12,
+					}
+				}
+				var defaultResourceAcls2 *shared.DefaultResourceAcls
+				if r.Listener.Access.Consumer.DefaultResourceAcls != nil {
+					allow13 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.Allow))
+					for allowIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.Allow {
+						allow13 = append(allow13, r.Listener.Access.Consumer.DefaultResourceAcls.Allow[allowIndex13].ValueString())
+					}
+					deny13 := make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.Deny))
+					for denyIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.Deny {
+						deny13 = append(deny13, r.Listener.Access.Consumer.DefaultResourceAcls.Deny[denyIndex13].ValueString())
+					}
+					var allowWhen13 []string
+					if r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen13 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen {
+							allowWhen13 = append(allowWhen13, r.Listener.Access.Consumer.DefaultResourceAcls.AllowWhen[allowWhenIndex13].ValueString())
+						}
+					}
+					var denyWhen13 []string
+					if r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen13 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex13 := range r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen {
+							denyWhen13 = append(denyWhen13, r.Listener.Access.Consumer.DefaultResourceAcls.DenyWhen[denyWhenIndex13].ValueString())
+						}
+					}
+					defaultResourceAcls2 = &shared.DefaultResourceAcls{
+						Allow:     allow13,
+						Deny:      deny13,
+						AllowWhen: allowWhen13,
+						DenyWhen:  denyWhen13,
 					}
 				}
 				identityProviders2 := make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
@@ -11943,11 +14726,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerListenerConsumer1 = &shared.AIGatewayMCPServerListenerConsumer{
-					Acls:              acls4,
-					DefaultToolAcls:   defaultToolAcls2,
-					IdentityProviders: identityProviders2,
-					AuthStrategies:    authStrategies2,
-					Metadata:          metadata2,
+					Acls:                acls4,
+					DefaultToolAcls:     defaultToolAcls2,
+					DefaultPromptAcls:   defaultPromptAcls2,
+					DefaultResourceAcls: defaultResourceAcls2,
+					IdentityProviders:   identityProviders2,
+					AuthStrategies:      authStrategies2,
+					Metadata:            metadata2,
 				}
 			}
 			if aiGatewayMCPServerListenerConsumer1 != nil {
@@ -11960,34 +14745,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				var accessTokenClaimField1 string
 				accessTokenClaimField1 = r.Listener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls5 *shared.AIGatewayMCPACLs
+				var acls5 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.OauthAccessToken.Acls != nil {
-					allow8 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Allow))
-					for allowIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Allow {
-						allow8 = append(allow8, r.Listener.Access.OauthAccessToken.Acls.Allow[allowIndex8].ValueString())
+					allow14 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Allow))
+					for allowIndex14 := range r.Listener.Access.OauthAccessToken.Acls.Allow {
+						allow14 = append(allow14, r.Listener.Access.OauthAccessToken.Acls.Allow[allowIndex14].ValueString())
 					}
-					deny8 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Deny))
-					for denyIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Deny {
-						deny8 = append(deny8, r.Listener.Access.OauthAccessToken.Acls.Deny[denyIndex8].ValueString())
+					deny14 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Deny))
+					for denyIndex14 := range r.Listener.Access.OauthAccessToken.Acls.Deny {
+						deny14 = append(deny14, r.Listener.Access.OauthAccessToken.Acls.Deny[denyIndex14].ValueString())
 					}
-					acls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow8,
-						Deny:  deny8,
+					var allowWhen14 []string
+					if r.Listener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen14 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex14 := range r.Listener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen14 = append(allowWhen14, r.Listener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex14].ValueString())
+						}
+					}
+					var denyWhen14 []string
+					if r.Listener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen14 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex14 := range r.Listener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen14 = append(denyWhen14, r.Listener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex14].ValueString())
+						}
+					}
+					acls5 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow14,
+						Deny:      deny14,
+						AllowWhen: allowWhen14,
+						DenyWhen:  denyWhen14,
 					}
 				}
 				var defaultToolAcls3 *shared.AIGatewayMCPACLs
 				if r.Listener.Access.OauthAccessToken.DefaultToolAcls != nil {
-					allow9 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow))
-					for allowIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow {
-						allow9 = append(allow9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex9].ValueString())
+					allow15 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow))
+					for allowIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow {
+						allow15 = append(allow15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex15].ValueString())
 					}
-					deny9 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny))
-					for denyIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny {
-						deny9 = append(deny9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex9].ValueString())
+					deny15 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny))
+					for denyIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny {
+						deny15 = append(deny15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex15].ValueString())
+					}
+					var allowWhen15 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen15 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen15 = append(allowWhen15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex15].ValueString())
+						}
+					}
+					var denyWhen15 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen15 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex15 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen15 = append(denyWhen15, r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex15].ValueString())
+						}
 					}
 					defaultToolAcls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow9,
-						Deny:  deny9,
+						Allow:     allow15,
+						Deny:      deny15,
+						AllowWhen: allowWhen15,
+						DenyWhen:  denyWhen15,
+					}
+				}
+				var defaultPromptAcls3 *shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls
+				if r.Listener.Access.OauthAccessToken.DefaultPromptAcls != nil {
+					allow16 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow))
+					for allowIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow {
+						allow16 = append(allow16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Allow[allowIndex16].ValueString())
+					}
+					deny16 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny))
+					for denyIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny {
+						deny16 = append(deny16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.Deny[denyIndex16].ValueString())
+					}
+					var allowWhen16 []string
+					if r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen16 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen {
+							allowWhen16 = append(allowWhen16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen[allowWhenIndex16].ValueString())
+						}
+					}
+					var denyWhen16 []string
+					if r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen16 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex16 := range r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen {
+							denyWhen16 = append(denyWhen16, r.Listener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen[denyWhenIndex16].ValueString())
+						}
+					}
+					defaultPromptAcls3 = &shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls{
+						Allow:     allow16,
+						Deny:      deny16,
+						AllowWhen: allowWhen16,
+						DenyWhen:  denyWhen16,
+					}
+				}
+				var defaultResourceAcls3 *shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls
+				if r.Listener.Access.OauthAccessToken.DefaultResourceAcls != nil {
+					allow17 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow))
+					for allowIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow {
+						allow17 = append(allow17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Allow[allowIndex17].ValueString())
+					}
+					deny17 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny))
+					for denyIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny {
+						deny17 = append(deny17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.Deny[denyIndex17].ValueString())
+					}
+					var allowWhen17 []string
+					if r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen17 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen {
+							allowWhen17 = append(allowWhen17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen[allowWhenIndex17].ValueString())
+						}
+					}
+					var denyWhen17 []string
+					if r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen17 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex17 := range r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen {
+							denyWhen17 = append(denyWhen17, r.Listener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen[denyWhenIndex17].ValueString())
+						}
+					}
+					defaultResourceAcls3 = &shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls{
+						Allow:     allow17,
+						Deny:      deny17,
+						AllowWhen: allowWhen17,
+						DenyWhen:  denyWhen17,
 					}
 				}
 				identityProviders3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
@@ -12038,6 +14917,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					AccessTokenClaimField: accessTokenClaimField1,
 					Acls:                  acls5,
 					DefaultToolAcls:       defaultToolAcls3,
+					DefaultPromptAcls:     defaultPromptAcls3,
+					DefaultResourceAcls:   defaultResourceAcls3,
 					IdentityProviders:     identityProviders3,
 					AuthStrategies:        authStrategies3,
 					Metadata:              metadata3,
@@ -12508,84 +15389,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerPassthroughListener *shared.AIGatewayMCPServerPassthroughListener
 	if r.PassthroughListener != nil {
-		var route3 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.PassthroughListener.Config.Route != nil {
-			headers5 := make(map[string]interface{})
-			for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
-				var headersInst3 interface{}
-				_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
-				headers5[headersKey3] = headersInst3
-			}
-			hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
-			for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
-				hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
-			}
-			httpsRedirectStatusCode3 := new(int64)
-			if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode3 = nil
-			}
-			methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
-			for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
-				methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
-			}
-			paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
-			for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
-				paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
-			}
-			preserveHost3 := new(bool)
-			if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost3 = nil
-			}
-			protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
-			for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
-				protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
-			}
-			regexPriority3 := new(int64)
-			if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority3 = nil
-			}
-			requestBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering3 = nil
-			}
-			responseBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering3 = nil
-			}
-			stripPath3 := new(bool)
-			if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
-				*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath3 = nil
-			}
-			tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
-			for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
-				tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
-			}
-			route3 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers5,
-				Hosts:                   hosts3,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
-				Methods:                 methods3,
-				Paths:                   paths3,
-				PreserveHost:            preserveHost3,
-				Protocols:               protocols3,
-				RegexPriority:           regexPriority3,
-				RequestBuffering:        requestBuffering3,
-				ResponseBuffering:       responseBuffering3,
-				StripPath:               stripPath3,
-				Tags:                    tags3,
-			}
+		headers5 := make(map[string]interface{})
+		for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
+			var headersInst3 interface{}
+			_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
+			headers5[headersKey3] = headersInst3
+		}
+		hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
+		for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
+			hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
+		}
+		httpsRedirectStatusCode3 := new(int64)
+		if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode3 = nil
+		}
+		methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
+		for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
+			methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
+		}
+		paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
+		for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
+			paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
+		}
+		preserveHost3 := new(bool)
+		if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost3 = nil
+		}
+		protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
+		for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
+			protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
+		}
+		regexPriority3 := new(int64)
+		if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority3 = nil
+		}
+		requestBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering3 = nil
+		}
+		responseBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering3 = nil
+		}
+		stripPath3 := new(bool)
+		if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
+			*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath3 = nil
+		}
+		tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
+		for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
+			tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
+		}
+		route3 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers5,
+			Hosts:                   hosts3,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
+			Methods:                 methods3,
+			Paths:                   paths3,
+			PreserveHost:            preserveHost3,
+			Protocols:               protocols3,
+			RegexPriority:           regexPriority3,
+			RequestBuffering:        requestBuffering3,
+			ResponseBuffering:       responseBuffering3,
+			StripPath:               stripPath3,
+			Tags:                    tags3,
 		}
 		var logging3 *shared.AIGatewayMCPServerWithUpstreamConfigLogging
 		if r.PassthroughListener.Config.Logging != nil {
@@ -12986,12 +15864,105 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Timeout:              timeout2,
 			}
 		}
-		var url2 string
-		url2 = r.PassthroughListener.Config.URL.ValueString()
+		url2 := new(string)
+		if !r.PassthroughListener.Config.URL.IsUnknown() && !r.PassthroughListener.Config.URL.IsNull() {
+			*url2 = r.PassthroughListener.Config.URL.ValueString()
+		} else {
+			url2 = nil
+		}
+		var targets2 []shared.AIGatewayUpstreamTarget
+		if r.PassthroughListener.Config.Targets != nil {
+			targets2 = make([]shared.AIGatewayUpstreamTarget, 0, len(r.PassthroughListener.Config.Targets))
+			for targetsIndex2 := range r.PassthroughListener.Config.Targets {
+				var address2 string
+				address2 = r.PassthroughListener.Config.Targets[targetsIndex2].Address.ValueString()
 
-		var upstream2 *shared.AIGatewayUpstreamConfig
+				failover2 := new(bool)
+				if !r.PassthroughListener.Config.Targets[targetsIndex2].Failover.IsUnknown() && !r.PassthroughListener.Config.Targets[targetsIndex2].Failover.IsNull() {
+					*failover2 = r.PassthroughListener.Config.Targets[targetsIndex2].Failover.ValueBool()
+				} else {
+					failover2 = nil
+				}
+				weight2 := new(int64)
+				if !r.PassthroughListener.Config.Targets[targetsIndex2].Weight.IsUnknown() && !r.PassthroughListener.Config.Targets[targetsIndex2].Weight.IsNull() {
+					*weight2 = r.PassthroughListener.Config.Targets[targetsIndex2].Weight.ValueInt64()
+				} else {
+					weight2 = nil
+				}
+				targets2 = append(targets2, shared.AIGatewayUpstreamTarget{
+					Address:  address2,
+					Failover: failover2,
+					Weight:   weight2,
+				})
+			}
+		}
+		var balancer2 *shared.AIGatewayMCPServerWithUpstreamConfigBalancer
+		if r.PassthroughListener.Config.Balancer != nil {
+			var balancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.BalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.PassthroughListener.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader2 string
+				hashOnHeader2 = r.PassthroughListener.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				balancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.BalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader2,
+				}
+			}
+			if balancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerConsistentHashingConfig: balancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var balancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.BalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.PassthroughListener.Config.Balancer.LeastConnections != nil {
+				balancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.BalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if balancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: balancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var balancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.BalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.PassthroughListener.Config.Balancer.LowestLatency != nil {
+				balancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.BalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if balancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerLowestLatencyConfig: balancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var balancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.BalancerAIGatewayUpstreamBalancerRoundRobinConfig
+			if r.PassthroughListener.Config.Balancer.RoundRobin != nil {
+				balancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.BalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if balancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer2 = &shared.AIGatewayMCPServerWithUpstreamConfigBalancer{
+					BalancerAIGatewayUpstreamBalancerRoundRobinConfig: balancerAIGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol2 := new(shared.AIGatewayMCPServerWithUpstreamConfigProtocol)
+		if !r.PassthroughListener.Config.Protocol.IsUnknown() && !r.PassthroughListener.Config.Protocol.IsNull() {
+			*protocol2 = shared.AIGatewayMCPServerWithUpstreamConfigProtocol(r.PassthroughListener.Config.Protocol.ValueString())
+		} else {
+			protocol2 = nil
+		}
+		path4 := new(string)
+		if !r.PassthroughListener.Config.Path.IsUnknown() && !r.PassthroughListener.Config.Path.IsNull() {
+			*path4 = r.PassthroughListener.Config.Path.ValueString()
+		} else {
+			path4 = nil
+		}
+		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
+		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
+			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
+		}
+		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
+		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
+			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
+		}
+		var upstream2 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.PassthroughListener.Config.Upstream != nil {
-			var auth2 *shared.AIGatewayUpstreamConfigAuth
+			var auth2 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.PassthroughListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
 				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
@@ -13048,22 +16019,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws2 != nil {
-					auth2 = &shared.AIGatewayUpstreamConfigAuth{
+					auth2 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws2,
 					}
 				}
 			}
-			upstream2 = &shared.AIGatewayUpstreamConfig{
+			upstream2 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth2,
 			}
-		}
-		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
-		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
-			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
-		}
-		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
-		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
-			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
 		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
@@ -13150,26 +16113,46 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize3,
 			Server:             server2,
 			URL:                url2,
-			Upstream:           upstream2,
+			Targets:            targets2,
+			Balancer:           balancer2,
+			Protocol:           protocol2,
+			Path:               path4,
 			Certificates:       certificates2,
 			CaCertificates:     caCertificates2,
+			Upstream:           upstream2,
 			Proxy:              proxy,
 		}
 		tools2 := make([]shared.AIGatewayMCPPassthroughTool, 0, len(r.PassthroughListener.Tools))
 		for toolsIndex2 := range r.PassthroughListener.Tools {
 			var acls6 *shared.AIGatewayMCPACLs
 			if r.PassthroughListener.Tools[toolsIndex2].Access.Acls != nil {
-				allow10 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow))
-				for allowIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow {
-					allow10 = append(allow10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex10].ValueString())
+				allow18 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow))
+				for allowIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow {
+					allow18 = append(allow18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Allow[allowIndex18].ValueString())
 				}
-				deny10 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny))
-				for denyIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny {
-					deny10 = append(deny10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex10].ValueString())
+				deny18 := make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny))
+				for denyIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny {
+					deny18 = append(deny18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex18].ValueString())
+				}
+				var allowWhen18 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen != nil {
+					allowWhen18 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen))
+					for allowWhenIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen {
+						allowWhen18 = append(allowWhen18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen[allowWhenIndex18].ValueString())
+					}
+				}
+				var denyWhen18 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen != nil {
+					denyWhen18 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen))
+					for denyWhenIndex18 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen {
+						denyWhen18 = append(denyWhen18, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen[denyWhenIndex18].ValueString())
+					}
 				}
 				acls6 = &shared.AIGatewayMCPACLs{
-					Allow: allow10,
-					Deny:  deny10,
+					Allow:     allow18,
+					Deny:      deny18,
+					AllowWhen: allowWhen18,
+					DenyWhen:  denyWhen18,
 				}
 			}
 			access4 := shared.AIGatewayMCPToolAccess{
@@ -13183,38 +16166,226 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Name:   name16,
 			})
 		}
-		var access5 *shared.AIGatewayMCPServerListenerAccess
+		var prompts []shared.AIGatewayMCPPrompt
+		if r.PassthroughListener.Prompts != nil {
+			prompts = make([]shared.AIGatewayMCPPrompt, 0, len(r.PassthroughListener.Prompts))
+			for promptsIndex := range r.PassthroughListener.Prompts {
+				var acls7 *shared.AIGatewayMCPACLs
+				if r.PassthroughListener.Prompts[promptsIndex].Access.Acls != nil {
+					allow19 := make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Allow))
+					for allowIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Allow {
+						allow19 = append(allow19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Allow[allowIndex19].ValueString())
+					}
+					deny19 := make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Deny))
+					for denyIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Deny {
+						deny19 = append(deny19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.Deny[denyIndex19].ValueString())
+					}
+					var allowWhen19 []string
+					if r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen != nil {
+						allowWhen19 = make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen {
+							allowWhen19 = append(allowWhen19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.AllowWhen[allowWhenIndex19].ValueString())
+						}
+					}
+					var denyWhen19 []string
+					if r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen != nil {
+						denyWhen19 = make([]string, 0, len(r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex19 := range r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen {
+							denyWhen19 = append(denyWhen19, r.PassthroughListener.Prompts[promptsIndex].Access.Acls.DenyWhen[denyWhenIndex19].ValueString())
+						}
+					}
+					acls7 = &shared.AIGatewayMCPACLs{
+						Allow:     allow19,
+						Deny:      deny19,
+						AllowWhen: allowWhen19,
+						DenyWhen:  denyWhen19,
+					}
+				}
+				access5 := shared.AIGatewayMCPPromptAccess{
+					Acls: acls7,
+				}
+				var name17 string
+				name17 = r.PassthroughListener.Prompts[promptsIndex].Name.ValueString()
+
+				prompts = append(prompts, shared.AIGatewayMCPPrompt{
+					Access: access5,
+					Name:   name17,
+				})
+			}
+		}
+		var resources []shared.AIGatewayMCPResource
+		if r.PassthroughListener.Resources != nil {
+			resources = make([]shared.AIGatewayMCPResource, 0, len(r.PassthroughListener.Resources))
+			for resourcesIndex := range r.PassthroughListener.Resources {
+				var acls8 *shared.AIGatewayMCPACLs
+				if r.PassthroughListener.Resources[resourcesIndex].Access.Acls != nil {
+					allow20 := make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Allow))
+					for allowIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Allow {
+						allow20 = append(allow20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Allow[allowIndex20].ValueString())
+					}
+					deny20 := make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Deny))
+					for denyIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Deny {
+						deny20 = append(deny20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.Deny[denyIndex20].ValueString())
+					}
+					var allowWhen20 []string
+					if r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen != nil {
+						allowWhen20 = make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen {
+							allowWhen20 = append(allowWhen20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.AllowWhen[allowWhenIndex20].ValueString())
+						}
+					}
+					var denyWhen20 []string
+					if r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen != nil {
+						denyWhen20 = make([]string, 0, len(r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex20 := range r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen {
+							denyWhen20 = append(denyWhen20, r.PassthroughListener.Resources[resourcesIndex].Access.Acls.DenyWhen[denyWhenIndex20].ValueString())
+						}
+					}
+					acls8 = &shared.AIGatewayMCPACLs{
+						Allow:     allow20,
+						Deny:      deny20,
+						AllowWhen: allowWhen20,
+						DenyWhen:  denyWhen20,
+					}
+				}
+				access6 := shared.AIGatewayMCPResourceAccess{
+					Acls: acls8,
+				}
+				var uri string
+				uri = r.PassthroughListener.Resources[resourcesIndex].URI.ValueString()
+
+				resources = append(resources, shared.AIGatewayMCPResource{
+					Access: access6,
+					URI:    uri,
+				})
+			}
+		}
+		var access7 *shared.AIGatewayMCPServerListenerAccess
 		if r.PassthroughListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer2 *shared.AIGatewayMCPServerListenerConsumer
 			if r.PassthroughListener.Access.Consumer != nil {
-				var acls7 *shared.AIGatewayMCPACLs
+				var acls9 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.Consumer.Acls != nil {
-					allow11 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
-					for allowIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Allow {
-						allow11 = append(allow11, r.PassthroughListener.Access.Consumer.Acls.Allow[allowIndex11].ValueString())
+					allow21 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
+					for allowIndex21 := range r.PassthroughListener.Access.Consumer.Acls.Allow {
+						allow21 = append(allow21, r.PassthroughListener.Access.Consumer.Acls.Allow[allowIndex21].ValueString())
 					}
-					deny11 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Deny))
-					for denyIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Deny {
-						deny11 = append(deny11, r.PassthroughListener.Access.Consumer.Acls.Deny[denyIndex11].ValueString())
+					deny21 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Deny))
+					for denyIndex21 := range r.PassthroughListener.Access.Consumer.Acls.Deny {
+						deny21 = append(deny21, r.PassthroughListener.Access.Consumer.Acls.Deny[denyIndex21].ValueString())
 					}
-					acls7 = &shared.AIGatewayMCPACLs{
-						Allow: allow11,
-						Deny:  deny11,
+					var allowWhen21 []string
+					if r.PassthroughListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen21 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex21 := range r.PassthroughListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen21 = append(allowWhen21, r.PassthroughListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex21].ValueString())
+						}
+					}
+					var denyWhen21 []string
+					if r.PassthroughListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen21 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex21 := range r.PassthroughListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen21 = append(denyWhen21, r.PassthroughListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex21].ValueString())
+						}
+					}
+					acls9 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow21,
+						Deny:      deny21,
+						AllowWhen: allowWhen21,
+						DenyWhen:  denyWhen21,
 					}
 				}
 				var defaultToolAcls4 *shared.AIGatewayMCPACLs
 				if r.PassthroughListener.Access.Consumer.DefaultToolAcls != nil {
-					allow12 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow))
-					for allowIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow {
-						allow12 = append(allow12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow[allowIndex12].ValueString())
+					allow22 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow))
+					for allowIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow {
+						allow22 = append(allow22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow[allowIndex22].ValueString())
 					}
-					deny12 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny))
-					for denyIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny {
-						deny12 = append(deny12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex12].ValueString())
+					deny22 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny))
+					for denyIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny {
+						deny22 = append(deny22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex22].ValueString())
+					}
+					var allowWhen22 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen22 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen22 = append(allowWhen22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex22].ValueString())
+						}
+					}
+					var denyWhen22 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen22 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex22 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen22 = append(denyWhen22, r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex22].ValueString())
+						}
 					}
 					defaultToolAcls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow12,
-						Deny:  deny12,
+						Allow:     allow22,
+						Deny:      deny22,
+						AllowWhen: allowWhen22,
+						DenyWhen:  denyWhen22,
+					}
+				}
+				var defaultPromptAcls4 *shared.DefaultPromptAcls
+				if r.PassthroughListener.Access.Consumer.DefaultPromptAcls != nil {
+					allow23 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow))
+					for allowIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow {
+						allow23 = append(allow23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Allow[allowIndex23].ValueString())
+					}
+					deny23 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny))
+					for denyIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny {
+						deny23 = append(deny23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.Deny[denyIndex23].ValueString())
+					}
+					var allowWhen23 []string
+					if r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen23 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen {
+							allowWhen23 = append(allowWhen23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.AllowWhen[allowWhenIndex23].ValueString())
+						}
+					}
+					var denyWhen23 []string
+					if r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen23 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex23 := range r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen {
+							denyWhen23 = append(denyWhen23, r.PassthroughListener.Access.Consumer.DefaultPromptAcls.DenyWhen[denyWhenIndex23].ValueString())
+						}
+					}
+					defaultPromptAcls4 = &shared.DefaultPromptAcls{
+						Allow:     allow23,
+						Deny:      deny23,
+						AllowWhen: allowWhen23,
+						DenyWhen:  denyWhen23,
+					}
+				}
+				var defaultResourceAcls4 *shared.DefaultResourceAcls
+				if r.PassthroughListener.Access.Consumer.DefaultResourceAcls != nil {
+					allow24 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow))
+					for allowIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow {
+						allow24 = append(allow24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Allow[allowIndex24].ValueString())
+					}
+					deny24 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny))
+					for denyIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny {
+						deny24 = append(deny24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.Deny[denyIndex24].ValueString())
+					}
+					var allowWhen24 []string
+					if r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen24 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen {
+							allowWhen24 = append(allowWhen24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.AllowWhen[allowWhenIndex24].ValueString())
+						}
+					}
+					var denyWhen24 []string
+					if r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen24 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex24 := range r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen {
+							denyWhen24 = append(denyWhen24, r.PassthroughListener.Access.Consumer.DefaultResourceAcls.DenyWhen[denyWhenIndex24].ValueString())
+						}
+					}
+					defaultResourceAcls4 = &shared.DefaultResourceAcls{
+						Allow:     allow24,
+						Deny:      deny24,
+						AllowWhen: allowWhen24,
+						DenyWhen:  denyWhen24,
 					}
 				}
 				identityProviders4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
@@ -13262,15 +16433,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				aiGatewayMCPServerListenerConsumer2 = &shared.AIGatewayMCPServerListenerConsumer{
-					Acls:              acls7,
-					DefaultToolAcls:   defaultToolAcls4,
-					IdentityProviders: identityProviders4,
-					AuthStrategies:    authStrategies4,
-					Metadata:          metadata4,
+					Acls:                acls9,
+					DefaultToolAcls:     defaultToolAcls4,
+					DefaultPromptAcls:   defaultPromptAcls4,
+					DefaultResourceAcls: defaultResourceAcls4,
+					IdentityProviders:   identityProviders4,
+					AuthStrategies:      authStrategies4,
+					Metadata:            metadata4,
 				}
 			}
 			if aiGatewayMCPServerListenerConsumer2 != nil {
-				access5 = &shared.AIGatewayMCPServerListenerAccess{
+				access7 = &shared.AIGatewayMCPServerListenerAccess{
 					AIGatewayMCPServerListenerConsumer: aiGatewayMCPServerListenerConsumer2,
 				}
 			}
@@ -13279,34 +16452,128 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				var accessTokenClaimField2 string
 				accessTokenClaimField2 = r.PassthroughListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls8 *shared.AIGatewayMCPACLs
+				var acls10 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.OauthAccessToken.Acls != nil {
-					allow13 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow))
-					for allowIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Allow {
-						allow13 = append(allow13, r.PassthroughListener.Access.OauthAccessToken.Acls.Allow[allowIndex13].ValueString())
+					allow25 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow))
+					for allowIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Allow {
+						allow25 = append(allow25, r.PassthroughListener.Access.OauthAccessToken.Acls.Allow[allowIndex25].ValueString())
 					}
-					deny13 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Deny))
-					for denyIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Deny {
-						deny13 = append(deny13, r.PassthroughListener.Access.OauthAccessToken.Acls.Deny[denyIndex13].ValueString())
+					deny25 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Deny))
+					for denyIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Deny {
+						deny25 = append(deny25, r.PassthroughListener.Access.OauthAccessToken.Acls.Deny[denyIndex25].ValueString())
 					}
-					acls8 = &shared.AIGatewayMCPACLs{
-						Allow: allow13,
-						Deny:  deny13,
+					var allowWhen25 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen25 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen25 = append(allowWhen25, r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex25].ValueString())
+						}
+					}
+					var denyWhen25 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen25 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex25 := range r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen25 = append(denyWhen25, r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex25].ValueString())
+						}
+					}
+					acls10 = &shared.AIGatewayMCPServerACLs{
+						Allow:     allow25,
+						Deny:      deny25,
+						AllowWhen: allowWhen25,
+						DenyWhen:  denyWhen25,
 					}
 				}
 				var defaultToolAcls5 *shared.AIGatewayMCPACLs
 				if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls != nil {
-					allow14 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
-					for allowIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
-						allow14 = append(allow14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex14].ValueString())
+					allow26 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow))
+					for allowIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow {
+						allow26 = append(allow26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow[allowIndex26].ValueString())
 					}
-					deny14 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
-					for denyIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
-						deny14 = append(deny14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex14].ValueString())
+					deny26 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny))
+					for denyIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
+						deny26 = append(deny26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex26].ValueString())
+					}
+					var allowWhen26 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen26 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen26 = append(allowWhen26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex26].ValueString())
+						}
+					}
+					var denyWhen26 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen26 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex26 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen26 = append(denyWhen26, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex26].ValueString())
+						}
 					}
 					defaultToolAcls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow14,
-						Deny:  deny14,
+						Allow:     allow26,
+						Deny:      deny26,
+						AllowWhen: allowWhen26,
+						DenyWhen:  denyWhen26,
+					}
+				}
+				var defaultPromptAcls5 *shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls
+				if r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls != nil {
+					allow27 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow))
+					for allowIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow {
+						allow27 = append(allow27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Allow[allowIndex27].ValueString())
+					}
+					deny27 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny))
+					for denyIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny {
+						deny27 = append(deny27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.Deny[denyIndex27].ValueString())
+					}
+					var allowWhen27 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen != nil {
+						allowWhen27 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen))
+						for allowWhenIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen {
+							allowWhen27 = append(allowWhen27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.AllowWhen[allowWhenIndex27].ValueString())
+						}
+					}
+					var denyWhen27 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen != nil {
+						denyWhen27 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen))
+						for denyWhenIndex27 := range r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen {
+							denyWhen27 = append(denyWhen27, r.PassthroughListener.Access.OauthAccessToken.DefaultPromptAcls.DenyWhen[denyWhenIndex27].ValueString())
+						}
+					}
+					defaultPromptAcls5 = &shared.AIGatewayMCPServerListenerOauthDefaultPromptAcls{
+						Allow:     allow27,
+						Deny:      deny27,
+						AllowWhen: allowWhen27,
+						DenyWhen:  denyWhen27,
+					}
+				}
+				var defaultResourceAcls5 *shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls
+				if r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls != nil {
+					allow28 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow))
+					for allowIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow {
+						allow28 = append(allow28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Allow[allowIndex28].ValueString())
+					}
+					deny28 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny))
+					for denyIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny {
+						deny28 = append(deny28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.Deny[denyIndex28].ValueString())
+					}
+					var allowWhen28 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen != nil {
+						allowWhen28 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen))
+						for allowWhenIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen {
+							allowWhen28 = append(allowWhen28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.AllowWhen[allowWhenIndex28].ValueString())
+						}
+					}
+					var denyWhen28 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen != nil {
+						denyWhen28 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen))
+						for denyWhenIndex28 := range r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen {
+							denyWhen28 = append(denyWhen28, r.PassthroughListener.Access.OauthAccessToken.DefaultResourceAcls.DenyWhen[denyWhenIndex28].ValueString())
+						}
+					}
+					defaultResourceAcls5 = &shared.AIGatewayMCPServerListenerOauthDefaultResourceAcls{
+						Allow:     allow28,
+						Deny:      deny28,
+						AllowWhen: allowWhen28,
+						DenyWhen:  denyWhen28,
 					}
 				}
 				identityProviders5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
@@ -13355,15 +16622,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				}
 				aiGatewayMCPServerListenerOauth2 = &shared.AIGatewayMCPServerListenerOauth{
 					AccessTokenClaimField: accessTokenClaimField2,
-					Acls:                  acls8,
+					Acls:                  acls10,
 					DefaultToolAcls:       defaultToolAcls5,
+					DefaultPromptAcls:     defaultPromptAcls5,
+					DefaultResourceAcls:   defaultResourceAcls5,
 					IdentityProviders:     identityProviders5,
 					AuthStrategies:        authStrategies5,
 					Metadata:              metadata5,
 				}
 			}
 			if aiGatewayMCPServerListenerOauth2 != nil {
-				access5 = &shared.AIGatewayMCPServerListenerAccess{
+				access7 = &shared.AIGatewayMCPServerListenerAccess{
 					AIGatewayMCPServerListenerOauth: aiGatewayMCPServerListenerOauth2,
 				}
 			}
@@ -13402,8 +16671,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		var displayName3 string
 		displayName3 = r.PassthroughListener.DisplayName.ValueString()
 
-		var name17 string
-		name17 = r.PassthroughListener.Name.ValueString()
+		var name18 string
+		name18 = r.PassthroughListener.Name.ValueString()
 
 		enabled3 := new(bool)
 		if !r.PassthroughListener.Enabled.IsUnknown() && !r.PassthroughListener.Enabled.IsNull() {
@@ -13433,11 +16702,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.PassthroughListener.Datastores != nil {
 			datastores3 = make([]shared.AIGatewayDatastoreRef, 0, len(r.PassthroughListener.Datastores))
 			for datastoresIndex3 := range r.PassthroughListener.Datastores {
-				var name18 string
-				name18 = r.PassthroughListener.Datastores[datastoresIndex3].Name.ValueString()
+				var name19 string
+				name19 = r.PassthroughListener.Datastores[datastoresIndex3].Name.ValueString()
 
 				datastores3 = append(datastores3, shared.AIGatewayDatastoreRef{
-					Name: name18,
+					Name: name19,
 				})
 			}
 		}
@@ -13462,11 +16731,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						location6 = nil
 					}
-					name19 := new(string)
+					name20 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsNull() {
-						*name19 = r.PassthroughListener.TokenVault.Credential.Inbound.Name.ValueString()
+						*name20 = r.PassthroughListener.TokenVault.Credential.Inbound.Name.ValueString()
 					} else {
-						name19 = nil
+						name20 = nil
 					}
 					prefix6 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsNull() {
@@ -13476,7 +16745,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 					inbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location6,
-						Name:     name19,
+						Name:     name20,
 						Prefix:   prefix6,
 					}
 				}
@@ -13488,11 +16757,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						location7 = nil
 					}
-					name20 := new(string)
+					name21 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsNull() {
-						*name20 = r.PassthroughListener.TokenVault.Credential.Outbound.Name.ValueString()
+						*name21 = r.PassthroughListener.TokenVault.Credential.Outbound.Name.ValueString()
 					} else {
-						name20 = nil
+						name21 = nil
 					}
 					prefix7 := new(string)
 					if !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsNull() {
@@ -13502,7 +16771,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 					outbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location7,
-						Name:     name20,
+						Name:     name21,
 						Prefix:   prefix7,
 					}
 				}
@@ -13840,10 +17109,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		aiGatewayMCPServerPassthroughListener = &shared.AIGatewayMCPServerPassthroughListener{
 			Config:       config3,
 			Tools:        tools2,
-			Access:       access5,
+			Prompts:      prompts,
+			Resources:    resources,
+			Access:       access7,
 			RateLimiting: rateLimiting1,
 			DisplayName:  displayName3,
-			Name:         name17,
+			Name:         name18,
 			Enabled:      enabled3,
 			Policies:     policies3,
 			Labels:       labels3,
@@ -13859,84 +17130,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerUpstreamServer *shared.AIGatewayMCPServerUpstreamServer
 	if r.UpstreamServer != nil {
-		var route4 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.UpstreamServer.Config.Route != nil {
-			headers6 := make(map[string]interface{})
-			for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
-				var headersInst4 interface{}
-				_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
-				headers6[headersKey4] = headersInst4
-			}
-			hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
-			for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
-				hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
-			}
-			httpsRedirectStatusCode4 := new(int64)
-			if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode4 = nil
-			}
-			methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
-			for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
-				methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
-			}
-			paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
-			for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
-				paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
-			}
-			preserveHost4 := new(bool)
-			if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
-				*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost4 = nil
-			}
-			protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
-			for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
-				protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
-			}
-			regexPriority4 := new(int64)
-			if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
-				*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority4 = nil
-			}
-			requestBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering4 = nil
-			}
-			responseBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering4 = nil
-			}
-			stripPath4 := new(bool)
-			if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
-				*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath4 = nil
-			}
-			tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
-			for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
-				tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
-			}
-			route4 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers6,
-				Hosts:                   hosts4,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
-				Methods:                 methods4,
-				Paths:                   paths4,
-				PreserveHost:            preserveHost4,
-				Protocols:               protocols4,
-				RegexPriority:           regexPriority4,
-				RequestBuffering:        requestBuffering4,
-				ResponseBuffering:       responseBuffering4,
-				StripPath:               stripPath4,
-				Tags:                    tags4,
-			}
+		headers6 := make(map[string]interface{})
+		for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
+			var headersInst4 interface{}
+			_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
+			headers6[headersKey4] = headersInst4
+		}
+		hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
+		for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
+			hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
+		}
+		httpsRedirectStatusCode4 := new(int64)
+		if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode4 = nil
+		}
+		methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
+		for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
+			methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
+		}
+		paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
+		for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
+			paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
+		}
+		preserveHost4 := new(bool)
+		if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
+			*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost4 = nil
+		}
+		protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
+		for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
+			protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
+		}
+		regexPriority4 := new(int64)
+		if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
+			*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority4 = nil
+		}
+		requestBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering4 = nil
+		}
+		responseBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering4 = nil
+		}
+		stripPath4 := new(bool)
+		if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
+			*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath4 = nil
+		}
+		tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
+		for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
+			tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
+		}
+		route4 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers6,
+			Hosts:                   hosts4,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
+			Methods:                 methods4,
+			Paths:                   paths4,
+			PreserveHost:            preserveHost4,
+			Protocols:               protocols4,
+			RegexPriority:           regexPriority4,
+			RequestBuffering:        requestBuffering4,
+			ResponseBuffering:       responseBuffering4,
+			StripPath:               stripPath4,
+			Tags:                    tags4,
 		}
 		var logging4 *shared.AIGatewayMCPServerUpstreamServerConfigLogging
 		if r.UpstreamServer.Config.Logging != nil {
@@ -14432,12 +17700,105 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				UpstreamProtocolVersion:   upstreamProtocolVersion,
 			}
 		}
-		var url3 string
-		url3 = r.UpstreamServer.Config.URL.ValueString()
+		url3 := new(string)
+		if !r.UpstreamServer.Config.URL.IsUnknown() && !r.UpstreamServer.Config.URL.IsNull() {
+			*url3 = r.UpstreamServer.Config.URL.ValueString()
+		} else {
+			url3 = nil
+		}
+		var targets3 []shared.AIGatewayUpstreamTarget
+		if r.UpstreamServer.Config.Targets != nil {
+			targets3 = make([]shared.AIGatewayUpstreamTarget, 0, len(r.UpstreamServer.Config.Targets))
+			for targetsIndex3 := range r.UpstreamServer.Config.Targets {
+				var address3 string
+				address3 = r.UpstreamServer.Config.Targets[targetsIndex3].Address.ValueString()
 
-		var upstream3 *shared.AIGatewayUpstreamConfig
+				failover3 := new(bool)
+				if !r.UpstreamServer.Config.Targets[targetsIndex3].Failover.IsUnknown() && !r.UpstreamServer.Config.Targets[targetsIndex3].Failover.IsNull() {
+					*failover3 = r.UpstreamServer.Config.Targets[targetsIndex3].Failover.ValueBool()
+				} else {
+					failover3 = nil
+				}
+				weight3 := new(int64)
+				if !r.UpstreamServer.Config.Targets[targetsIndex3].Weight.IsUnknown() && !r.UpstreamServer.Config.Targets[targetsIndex3].Weight.IsNull() {
+					*weight3 = r.UpstreamServer.Config.Targets[targetsIndex3].Weight.ValueInt64()
+				} else {
+					weight3 = nil
+				}
+				targets3 = append(targets3, shared.AIGatewayUpstreamTarget{
+					Address:  address3,
+					Failover: failover3,
+					Weight:   weight3,
+				})
+			}
+		}
+		var balancer3 *shared.AIGatewayMCPServerUpstreamServerConfigBalancer
+		if r.UpstreamServer.Config.Balancer != nil {
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+			if r.UpstreamServer.Config.Balancer.ConsistentHashing != nil {
+				var hashOnHeader3 string
+				hashOnHeader3 = r.UpstreamServer.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+					HashOnHeader: hashOnHeader3,
+				}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+				}
+			}
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+			if r.UpstreamServer.Config.Balancer.LeastConnections != nil {
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+				}
+			}
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+			if r.UpstreamServer.Config.Balancer.LowestLatency != nil {
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+				}
+			}
+			var aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+			if r.UpstreamServer.Config.Balancer.RoundRobin != nil {
+				aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+			}
+			if aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+				balancer3 = &shared.AIGatewayMCPServerUpstreamServerConfigBalancer{
+					AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig: aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig,
+				}
+			}
+		}
+		protocol3 := new(shared.AIGatewayMCPServerUpstreamServerConfigProtocol)
+		if !r.UpstreamServer.Config.Protocol.IsUnknown() && !r.UpstreamServer.Config.Protocol.IsNull() {
+			*protocol3 = shared.AIGatewayMCPServerUpstreamServerConfigProtocol(r.UpstreamServer.Config.Protocol.ValueString())
+		} else {
+			protocol3 = nil
+		}
+		path5 := new(string)
+		if !r.UpstreamServer.Config.Path.IsUnknown() && !r.UpstreamServer.Config.Path.IsNull() {
+			*path5 = r.UpstreamServer.Config.Path.ValueString()
+		} else {
+			path5 = nil
+		}
+		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
+		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
+			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
+		}
+		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
+		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
+			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
+		}
+		var upstream3 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.UpstreamServer.Config.Upstream != nil {
-			var auth4 *shared.AIGatewayUpstreamConfigAuth
+			var auth4 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.UpstreamServer.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
 				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
@@ -14494,22 +17855,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws3 != nil {
-					auth4 = &shared.AIGatewayUpstreamConfigAuth{
+					auth4 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws3,
 					}
 				}
 			}
-			upstream3 = &shared.AIGatewayUpstreamConfig{
+			upstream3 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth4,
 			}
-		}
-		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
-		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
-			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
-		}
-		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
-		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
-			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
 		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
@@ -14520,32 +17873,52 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize:   maxRequestBodySize4,
 			Server:               server3,
 			URL:                  url3,
-			Upstream:             upstream3,
+			Targets:              targets3,
+			Balancer:             balancer3,
+			Protocol:             protocol3,
+			Path:                 path5,
 			Certificates:         certificates3,
 			CaCertificates:       caCertificates3,
+			Upstream:             upstream3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools3 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
 		for toolsIndex3 := range r.UpstreamServer.Tools {
-			var access6 *shared.AIGatewayMCPToolAccess
+			var access8 *shared.AIGatewayMCPToolAccess
 			if r.UpstreamServer.Tools[toolsIndex3].Access != nil {
-				var acls9 *shared.AIGatewayMCPACLs
+				var acls11 *shared.AIGatewayMCPACLs
 				if r.UpstreamServer.Tools[toolsIndex3].Access.Acls != nil {
-					allow15 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow))
-					for allowIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow {
-						allow15 = append(allow15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow[allowIndex15].ValueString())
+					allow29 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow))
+					for allowIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow {
+						allow29 = append(allow29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Allow[allowIndex29].ValueString())
 					}
-					deny15 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny))
-					for denyIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny {
-						deny15 = append(deny15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny[denyIndex15].ValueString())
+					deny29 := make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny))
+					for denyIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny {
+						deny29 = append(deny29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny[denyIndex29].ValueString())
 					}
-					acls9 = &shared.AIGatewayMCPACLs{
-						Allow: allow15,
-						Deny:  deny15,
+					var allowWhen29 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen != nil {
+						allowWhen29 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen))
+						for allowWhenIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen {
+							allowWhen29 = append(allowWhen29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen[allowWhenIndex29].ValueString())
+						}
+					}
+					var denyWhen29 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen != nil {
+						denyWhen29 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen))
+						for denyWhenIndex29 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen {
+							denyWhen29 = append(denyWhen29, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen[denyWhenIndex29].ValueString())
+						}
+					}
+					acls11 = &shared.AIGatewayMCPACLs{
+						Allow:     allow29,
+						Deny:      deny29,
+						AllowWhen: allowWhen29,
+						DenyWhen:  denyWhen29,
 					}
 				}
-				access6 = &shared.AIGatewayMCPToolAccess{
-					Acls: acls9,
+				access8 = &shared.AIGatewayMCPToolAccess{
+					Acls: acls11,
 				}
 			}
 			var annotations2 *shared.AIGatewayMCPToolAnnotations
@@ -14594,8 +17967,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				description4 = nil
 			}
-			var name21 string
-			name21 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
+			var name22 string
+			name22 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
 
 			var inputSchema interface{}
 			if !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsNull() {
@@ -14606,19 +17979,113 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				_ = json.Unmarshal([]byte(r.UpstreamServer.Tools[toolsIndex3].OutputSchema.ValueString()), &outputSchema)
 			}
 			tools3 = append(tools3, shared.AIGatewayMCPUpstreamTool{
-				Access:       access6,
+				Access:       access8,
 				Annotations:  annotations2,
 				Description:  description4,
-				Name:         name21,
+				Name:         name22,
 				InputSchema:  inputSchema,
 				OutputSchema: outputSchema,
 			})
 		}
+		var prompts1 []shared.AIGatewayMCPPrompt
+		if r.UpstreamServer.Prompts != nil {
+			prompts1 = make([]shared.AIGatewayMCPPrompt, 0, len(r.UpstreamServer.Prompts))
+			for promptsIndex1 := range r.UpstreamServer.Prompts {
+				var acls12 *shared.AIGatewayMCPACLs
+				if r.UpstreamServer.Prompts[promptsIndex1].Access.Acls != nil {
+					allow30 := make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Allow))
+					for allowIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Allow {
+						allow30 = append(allow30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Allow[allowIndex30].ValueString())
+					}
+					deny30 := make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Deny))
+					for denyIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Deny {
+						deny30 = append(deny30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.Deny[denyIndex30].ValueString())
+					}
+					var allowWhen30 []string
+					if r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen30 = make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen {
+							allowWhen30 = append(allowWhen30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.AllowWhen[allowWhenIndex30].ValueString())
+						}
+					}
+					var denyWhen30 []string
+					if r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen30 = make([]string, 0, len(r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex30 := range r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen {
+							denyWhen30 = append(denyWhen30, r.UpstreamServer.Prompts[promptsIndex1].Access.Acls.DenyWhen[denyWhenIndex30].ValueString())
+						}
+					}
+					acls12 = &shared.AIGatewayMCPACLs{
+						Allow:     allow30,
+						Deny:      deny30,
+						AllowWhen: allowWhen30,
+						DenyWhen:  denyWhen30,
+					}
+				}
+				access9 := shared.AIGatewayMCPPromptAccess{
+					Acls: acls12,
+				}
+				var name23 string
+				name23 = r.UpstreamServer.Prompts[promptsIndex1].Name.ValueString()
+
+				prompts1 = append(prompts1, shared.AIGatewayMCPPrompt{
+					Access: access9,
+					Name:   name23,
+				})
+			}
+		}
+		var resources1 []shared.AIGatewayMCPResource
+		if r.UpstreamServer.Resources != nil {
+			resources1 = make([]shared.AIGatewayMCPResource, 0, len(r.UpstreamServer.Resources))
+			for resourcesIndex1 := range r.UpstreamServer.Resources {
+				var acls13 *shared.AIGatewayMCPACLs
+				if r.UpstreamServer.Resources[resourcesIndex1].Access.Acls != nil {
+					allow31 := make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Allow))
+					for allowIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Allow {
+						allow31 = append(allow31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Allow[allowIndex31].ValueString())
+					}
+					deny31 := make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Deny))
+					for denyIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Deny {
+						deny31 = append(deny31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.Deny[denyIndex31].ValueString())
+					}
+					var allowWhen31 []string
+					if r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen31 = make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen {
+							allowWhen31 = append(allowWhen31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.AllowWhen[allowWhenIndex31].ValueString())
+						}
+					}
+					var denyWhen31 []string
+					if r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen31 = make([]string, 0, len(r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex31 := range r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen {
+							denyWhen31 = append(denyWhen31, r.UpstreamServer.Resources[resourcesIndex1].Access.Acls.DenyWhen[denyWhenIndex31].ValueString())
+						}
+					}
+					acls13 = &shared.AIGatewayMCPACLs{
+						Allow:     allow31,
+						Deny:      deny31,
+						AllowWhen: allowWhen31,
+						DenyWhen:  denyWhen31,
+					}
+				}
+				access10 := shared.AIGatewayMCPResourceAccess{
+					Acls: acls13,
+				}
+				var uri1 string
+				uri1 = r.UpstreamServer.Resources[resourcesIndex1].URI.ValueString()
+
+				resources1 = append(resources1, shared.AIGatewayMCPResource{
+					Access: access10,
+					URI:    uri1,
+				})
+			}
+		}
 		var displayName4 string
 		displayName4 = r.UpstreamServer.DisplayName.ValueString()
 
-		var name22 string
-		name22 = r.UpstreamServer.Name.ValueString()
+		var name24 string
+		name24 = r.UpstreamServer.Name.ValueString()
 
 		enabled4 := new(bool)
 		if !r.UpstreamServer.Enabled.IsUnknown() && !r.UpstreamServer.Enabled.IsNull() {
@@ -14648,11 +18115,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.UpstreamServer.Datastores != nil {
 			datastores4 = make([]shared.AIGatewayDatastoreRef, 0, len(r.UpstreamServer.Datastores))
 			for datastoresIndex4 := range r.UpstreamServer.Datastores {
-				var name23 string
-				name23 = r.UpstreamServer.Datastores[datastoresIndex4].Name.ValueString()
+				var name25 string
+				name25 = r.UpstreamServer.Datastores[datastoresIndex4].Name.ValueString()
 
 				datastores4 = append(datastores4, shared.AIGatewayDatastoreRef{
-					Name: name23,
+					Name: name25,
 				})
 			}
 		}
@@ -14677,11 +18144,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						location8 = nil
 					}
-					name24 := new(string)
+					name26 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsNull() {
-						*name24 = r.UpstreamServer.TokenVault.Credential.Inbound.Name.ValueString()
+						*name26 = r.UpstreamServer.TokenVault.Credential.Inbound.Name.ValueString()
 					} else {
-						name24 = nil
+						name26 = nil
 					}
 					prefix8 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsNull() {
@@ -14691,7 +18158,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 					inbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location8,
-						Name:     name24,
+						Name:     name26,
 						Prefix:   prefix8,
 					}
 				}
@@ -14703,11 +18170,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						location9 = nil
 					}
-					name25 := new(string)
+					name27 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsNull() {
-						*name25 = r.UpstreamServer.TokenVault.Credential.Outbound.Name.ValueString()
+						*name27 = r.UpstreamServer.TokenVault.Credential.Outbound.Name.ValueString()
 					} else {
-						name25 = nil
+						name27 = nil
 					}
 					prefix9 := new(string)
 					if !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsNull() {
@@ -14717,7 +18184,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 					outbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
 						Location: location9,
-						Name:     name25,
+						Name:     name27,
 						Prefix:   prefix9,
 					}
 				}
@@ -15055,8 +18522,10 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		aiGatewayMCPServerUpstreamServer = &shared.AIGatewayMCPServerUpstreamServer{
 			Config:      config4,
 			Tools:       tools3,
+			Prompts:     prompts1,
+			Resources:   resources1,
 			DisplayName: displayName4,
-			Name:        name22,
+			Name:        name24,
 			Enabled:     enabled4,
 			Policies:    policies4,
 			Labels:      labels4,

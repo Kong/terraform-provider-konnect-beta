@@ -51,6 +51,7 @@ type AIGatewayResourceModel struct {
 	ID                 types.String                `tfsdk:"id"`
 	KonnectManaged     types.Bool                  `tfsdk:"konnect_managed"`
 	Labels             map[string]types.String     `tfsdk:"labels"`
+	ManagedBy          map[string]types.String     `tfsdk:"managed_by"`
 	MinRuntimeVersion  types.String                `tfsdk:"min_runtime_version"`
 	Name               types.String                `tfsdk:"name"`
 	ProxyUrls          []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
@@ -151,12 +152,24 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
+			"managed_by": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+					`` + "\n" +
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
+			},
 			"min_runtime_version": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 				MarkdownDescription: `The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.` + "\n" +
 					`` + "\n" +
 					`Data planes older than this version still connect for topology visibility.` + "\n" +
+					`` + "\n" +
+					`Can only be set when deployment_type is ` + "`" + `hybrid` + "`" + `. For ` + "`" + `managed` + "`" + ` and ` + "`" + `serverless` + "`" + ` deployments, Konnect manages this value and it is read-only.` + "\n" +
 					`` + "\n" +
 					`When not specified, the latest generally available runtime version is used.` + "\n" +
 					`` + "\n" +
@@ -187,6 +200,7 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 							Description: `Hostname of the proxy URL. Not Null`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
+								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
 						"port": schema.Int64Attribute{
@@ -203,6 +217,7 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 							Description: `Protocol of the proxy URL. Not Null`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
+								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
 					},
@@ -210,10 +225,13 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
 			},
 			"runtime_auto_upgrade": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases. Default: true`,
+				Computed: true,
+				Optional: true,
+				Default:  booldefault.StaticBool(true),
+				MarkdownDescription: `Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases.` + "\n" +
+					`` + "\n" +
+					`Can only be set when deployment_type is ` + "`" + `hybrid` + "`" + `. For ` + "`" + `managed` + "`" + ` and ` + "`" + `serverless` + "`" + ` deployments, Konnect manages runtime upgrades and this value is read-only.` + "\n" +
+					`Default: true`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

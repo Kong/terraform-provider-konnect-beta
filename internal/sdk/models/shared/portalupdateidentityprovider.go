@@ -2,116 +2,15 @@
 
 package shared
 
-import (
-	"errors"
-	"fmt"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
-type ConfigType string
-
-const (
-	ConfigTypeOIDCIdentityProviderConfig1 ConfigType = "OIDCIdentityProviderConfig1"
-	ConfigTypeSAMLIdentityProviderConfig1 ConfigType = "SAMLIdentityProviderConfig1"
-)
-
-type Config struct {
-	OIDCIdentityProviderConfig1 *OIDCIdentityProviderConfig1 `queryParam:"inline" union:"member"`
-	SAMLIdentityProviderConfig1 *SAMLIdentityProviderConfig1 `queryParam:"inline" union:"member"`
-
-	Type ConfigType
-}
-
-func CreateConfigOIDCIdentityProviderConfig1(oidcIdentityProviderConfig1 OIDCIdentityProviderConfig1) Config {
-	typ := ConfigTypeOIDCIdentityProviderConfig1
-
-	return Config{
-		OIDCIdentityProviderConfig1: &oidcIdentityProviderConfig1,
-		Type:                        typ,
-	}
-}
-
-func CreateConfigSAMLIdentityProviderConfig1(samlIdentityProviderConfig1 SAMLIdentityProviderConfig1) Config {
-	typ := ConfigTypeSAMLIdentityProviderConfig1
-
-	return Config{
-		SAMLIdentityProviderConfig1: &samlIdentityProviderConfig1,
-		Type:                        typ,
-	}
-}
-
-func (u *Config) UnmarshalJSON(data []byte) (err error) {
-	previous := *u
-	*u = Config{}
-	defer func() {
-		if err != nil {
-			*u = previous
-		}
-	}()
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var oidcIdentityProviderConfig1 OIDCIdentityProviderConfig1 = OIDCIdentityProviderConfig1{}
-	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfig1, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfigTypeOIDCIdentityProviderConfig1,
-			Value: &oidcIdentityProviderConfig1,
-		})
-	}
-
-	var samlIdentityProviderConfig1 SAMLIdentityProviderConfig1 = SAMLIdentityProviderConfig1{}
-	if err := utils.UnmarshalJSON(data, &samlIdentityProviderConfig1, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfigTypeSAMLIdentityProviderConfig1,
-			Value: &samlIdentityProviderConfig1,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Config", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Config", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(ConfigType)
-	switch best.Type {
-	case ConfigTypeOIDCIdentityProviderConfig1:
-		u.OIDCIdentityProviderConfig1 = best.Value.(*OIDCIdentityProviderConfig1)
-		return nil
-	case ConfigTypeSAMLIdentityProviderConfig1:
-		u.SAMLIdentityProviderConfig1 = best.Value.(*SAMLIdentityProviderConfig1)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Config", string(data))
-}
-
-func (u Config) MarshalJSON() ([]byte, error) {
-	if u.OIDCIdentityProviderConfig1 != nil {
-		return utils.MarshalJSON(u.OIDCIdentityProviderConfig1, "", true)
-	}
-
-	if u.SAMLIdentityProviderConfig1 != nil {
-		return utils.MarshalJSON(u.SAMLIdentityProviderConfig1, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type Config: all fields are null")
-}
-
 // PortalUpdateIdentityProvider - The identity provider that contains configuration data for updating an authentication integration.
 type PortalUpdateIdentityProvider struct {
 	// Indicates whether the identity provider is enabled.
 	// Only one identity provider can be active at a time, such as SAML or OIDC.
 	// When omitted, the current value is left unchanged.
 	//
-	Enabled *bool   `json:"enabled,omitempty"`
-	Config  *Config `json:"config,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// The configuration data to update for the authentication integration.
+	Config *PortalUpdateIdentityProviderConfig `json:"config,omitempty"`
 }
 
 func (p *PortalUpdateIdentityProvider) GetEnabled() *bool {
@@ -121,7 +20,7 @@ func (p *PortalUpdateIdentityProvider) GetEnabled() *bool {
 	return p.Enabled
 }
 
-func (p *PortalUpdateIdentityProvider) GetConfig() *Config {
+func (p *PortalUpdateIdentityProvider) GetConfig() *PortalUpdateIdentityProviderConfig {
 	if p == nil {
 		return nil
 	}

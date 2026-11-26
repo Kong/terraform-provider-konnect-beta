@@ -57,6 +57,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
     try_it_ui_audience       = "all"
   }
   theme = {
+    border_radius = "sharp"
     colors = {
       primary = "#000000"
     }

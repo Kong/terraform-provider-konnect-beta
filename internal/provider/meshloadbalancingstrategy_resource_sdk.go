@@ -127,7 +127,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					} else {
 						to.Default.LoadBalancer.LeastRequest = &tfTypes.LeastRequest{}
 						if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias != nil {
-							to.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.MeshItemMode{}
+							to.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.Port{}
 							if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer != nil {
 								to.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer = types.Int64PointerValue(toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer)
 							}
@@ -188,7 +188,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.Random == nil {
 						to.Default.LoadBalancer.Random = nil
 					} else {
-						to.Default.LoadBalancer.Random = &tfTypes.BackendClusterAuthenticationAnonymous{}
+						to.Default.LoadBalancer.Random = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
 					}
 					if toItem.Default.LoadBalancer.RingHash == nil {
 						to.Default.LoadBalancer.RingHash = nil
@@ -247,7 +247,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.RoundRobin == nil {
 						to.Default.LoadBalancer.RoundRobin = nil
 					} else {
-						to.Default.LoadBalancer.RoundRobin = &tfTypes.BackendClusterAuthenticationAnonymous{}
+						to.Default.LoadBalancer.RoundRobin = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
 					}
 					to.Default.LoadBalancer.Type = types.StringValue(string(toItem.Default.LoadBalancer.Type))
 				}
@@ -287,7 +287,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 						} else {
 							to.Default.LocalityAwareness.CrossZone.FailoverThreshold = &tfTypes.FailoverThreshold{}
 							if to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage == nil {
-								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage = &tfTypes.MeshItemMode{}
+								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage = &tfTypes.Port{}
 							}
 							if toItem.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer != nil {
 								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer = types.Int64PointerValue(toItem.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer)

@@ -86,7 +86,8 @@ Required:
 
 Optional:
 
-- `authentication` (Attributes) The authentication configuration for the schema registry. (see [below for nested schema](#nestedatt--confluent--config--authentication))
+- `authentication` (Attributes) The authentication configuration for the schema registry.
+The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope. (see [below for nested schema](#nestedatt--confluent--config--authentication))
 - `timeout_seconds` (Number) Total time in seconds from establishing connection to receive a response from schema registry. Default: 10
 
 <a id="nestedatt--confluent--config--authentication"></a>
@@ -101,7 +102,7 @@ Optional:
 
 Required:
 
-- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `password` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 - `username` (String) A literal value or a reference to an existing secret as a template string expression.

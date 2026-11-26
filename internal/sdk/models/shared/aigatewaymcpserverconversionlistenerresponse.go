@@ -3,6 +3,9 @@
 package shared
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"time"
 )
@@ -38,6 +41,257 @@ func (a *AIGatewayMCPServerConversionListenerResponseLogging) GetAudits() *bool 
 	return a.Audits
 }
 
+type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"round-robin" json:"algorithm"`
+}
+
+func (a AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig) GetAlgorithm() string {
+	return "round-robin"
+}
+
+type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"lowest-latency" json:"algorithm"`
+}
+
+func (a AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) GetAlgorithm() string {
+	return "lowest-latency"
+}
+
+type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"least-connections" json:"algorithm"`
+}
+
+func (a AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) GetAlgorithm() string {
+	return "least-connections"
+}
+
+type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"consistent-hashing" json:"algorithm"`
+	// The request header whose value selects the target. Requests without the header all hash to the same target.
+	HashOnHeader string `json:"hash_on_header"`
+}
+
+func (a AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) GetAlgorithm() string {
+	return "consistent-hashing"
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) GetHashOnHeader() string {
+	if a == nil {
+		return ""
+	}
+	return a.HashOnHeader
+}
+
+type AIGatewayMCPServerConversionListenerResponseBalancerType string
+
+const (
+	AIGatewayMCPServerConversionListenerResponseBalancerTypeConsistentHashing AIGatewayMCPServerConversionListenerResponseBalancerType = "consistent-hashing"
+	AIGatewayMCPServerConversionListenerResponseBalancerTypeLeastConnections  AIGatewayMCPServerConversionListenerResponseBalancerType = "least-connections"
+	AIGatewayMCPServerConversionListenerResponseBalancerTypeLowestLatency     AIGatewayMCPServerConversionListenerResponseBalancerType = "lowest-latency"
+	AIGatewayMCPServerConversionListenerResponseBalancerTypeRoundRobin        AIGatewayMCPServerConversionListenerResponseBalancerType = "round-robin"
+)
+
+// AIGatewayMCPServerConversionListenerResponseBalancer - Load balancing configuration for `targets`. Only valid with `targets`.
+//
+// **Requires a minimum runtime version of `2.4`**.
+type AIGatewayMCPServerConversionListenerResponseBalancer struct {
+	AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig `queryParam:"inline" union:"member"`
+	AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig  *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig  `queryParam:"inline" union:"member"`
+	AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig     *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig     `queryParam:"inline" union:"member"`
+	AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig        *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig        `queryParam:"inline" union:"member"`
+
+	Type AIGatewayMCPServerConversionListenerResponseBalancerType
+}
+
+func CreateAIGatewayMCPServerConversionListenerResponseBalancerConsistentHashing(consistentHashing AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) AIGatewayMCPServerConversionListenerResponseBalancer {
+	typ := AIGatewayMCPServerConversionListenerResponseBalancerTypeConsistentHashing
+
+	return AIGatewayMCPServerConversionListenerResponseBalancer{
+		AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: &consistentHashing,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayMCPServerConversionListenerResponseBalancerLeastConnections(leastConnections AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) AIGatewayMCPServerConversionListenerResponseBalancer {
+	typ := AIGatewayMCPServerConversionListenerResponseBalancerTypeLeastConnections
+
+	return AIGatewayMCPServerConversionListenerResponseBalancer{
+		AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: &leastConnections,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayMCPServerConversionListenerResponseBalancerLowestLatency(lowestLatency AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) AIGatewayMCPServerConversionListenerResponseBalancer {
+	typ := AIGatewayMCPServerConversionListenerResponseBalancerTypeLowestLatency
+
+	return AIGatewayMCPServerConversionListenerResponseBalancer{
+		AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: &lowestLatency,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayMCPServerConversionListenerResponseBalancerRoundRobin(roundRobin AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig) AIGatewayMCPServerConversionListenerResponseBalancer {
+	typ := AIGatewayMCPServerConversionListenerResponseBalancerTypeRoundRobin
+
+	return AIGatewayMCPServerConversionListenerResponseBalancer{
+		AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig: &roundRobin,
+		Type: typ,
+	}
+}
+
+func (u *AIGatewayMCPServerConversionListenerResponseBalancer) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayMCPServerConversionListenerResponseBalancer{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
+
+	type discriminator struct {
+		Algorithm string `json:"algorithm"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Algorithm {
+	case "consistent-hashing":
+		aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig := new(AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == consistent-hashing) type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig within AIGatewayMCPServerConversionListenerResponseBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+		u.Type = AIGatewayMCPServerConversionListenerResponseBalancerTypeConsistentHashing
+		return nil
+	case "least-connections":
+		aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig := new(AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == least-connections) type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig within AIGatewayMCPServerConversionListenerResponseBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+		u.Type = AIGatewayMCPServerConversionListenerResponseBalancerTypeLeastConnections
+		return nil
+	case "lowest-latency":
+		aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig := new(AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == lowest-latency) type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig within AIGatewayMCPServerConversionListenerResponseBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+		u.Type = AIGatewayMCPServerConversionListenerResponseBalancerTypeLowestLatency
+		return nil
+	case "round-robin":
+		aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig := new(AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == round-robin) type AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig within AIGatewayMCPServerConversionListenerResponseBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig = aiGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+		u.Type = AIGatewayMCPServerConversionListenerResponseBalancerTypeRoundRobin
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayMCPServerConversionListenerResponseBalancer", string(data))
+}
+
+func (u AIGatewayMCPServerConversionListenerResponseBalancer) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig, "", true)
+	}
+
+	if u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig, "", true)
+	}
+
+	if u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig, "", true)
+	}
+
+	if u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AIGatewayMCPServerConversionListenerResponseBalancer: all fields are null")
+}
+
+// AIGatewayMCPServerConversionListenerResponseProtocol - The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+//
+// **Requires a minimum runtime version of `2.4`**.
+type AIGatewayMCPServerConversionListenerResponseProtocol string
+
+const (
+	AIGatewayMCPServerConversionListenerResponseProtocolHTTP  AIGatewayMCPServerConversionListenerResponseProtocol = "http"
+	AIGatewayMCPServerConversionListenerResponseProtocolHTTPS AIGatewayMCPServerConversionListenerResponseProtocol = "https"
+)
+
+func (e AIGatewayMCPServerConversionListenerResponseProtocol) ToPointer() *AIGatewayMCPServerConversionListenerResponseProtocol {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayMCPServerConversionListenerResponseProtocol) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "http", "https":
+			return true
+		}
+	}
+	return false
+}
+
 type AIGatewayMCPServerConversionListenerResponseAllowedVersions string
 
 const (
@@ -62,6 +316,135 @@ func (e *AIGatewayMCPServerConversionListenerResponseAllowedVersions) IsExact() 
 	return false
 }
 
+// AIGatewayMCPServerConversionListenerResponseCacheScope - Whether the result may be cached across authorization contexts. `public` is rejected when
+// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+// `access.acls`.
+type AIGatewayMCPServerConversionListenerResponseCacheScope string
+
+const (
+	AIGatewayMCPServerConversionListenerResponseCacheScopePublic  AIGatewayMCPServerConversionListenerResponseCacheScope = "public"
+	AIGatewayMCPServerConversionListenerResponseCacheScopePrivate AIGatewayMCPServerConversionListenerResponseCacheScope = "private"
+)
+
+func (e AIGatewayMCPServerConversionListenerResponseCacheScope) ToPointer() *AIGatewayMCPServerConversionListenerResponseCacheScope {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayMCPServerConversionListenerResponseCacheScope) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayMCPServerConversionListenerResponsePromptsList - Cache hint emitted on `prompts/list` results. `cache_scope: public` is rejected when
+// `default_prompt_acls` or a prompt's own `access.acls` filters the list per subject.
+//
+// **Requires a minimum runtime version of `2.5`**.
+type AIGatewayMCPServerConversionListenerResponsePromptsList struct {
+	// How long a client may treat the result as fresh, in milliseconds.
+	TTLMs *int64 `json:"ttl_ms,omitempty"`
+	// Whether the result may be cached across authorization contexts. `public` is rejected when
+	// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+	// `access.acls`.
+	//
+	CacheScope *AIGatewayMCPServerConversionListenerResponseCacheScope `default:"private" json:"cache_scope"`
+}
+
+func (a AIGatewayMCPServerConversionListenerResponsePromptsList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponsePromptsList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponsePromptsList) GetTTLMs() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.TTLMs
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponsePromptsList) GetCacheScope() *AIGatewayMCPServerConversionListenerResponseCacheScope {
+	if a == nil {
+		return nil
+	}
+	return a.CacheScope
+}
+
+// AIGatewayMCPServerConversionListenerResponseConfigCacheScope - Whether the result may be cached across authorization contexts. `public` is rejected when
+// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+// `access.acls`.
+type AIGatewayMCPServerConversionListenerResponseConfigCacheScope string
+
+const (
+	AIGatewayMCPServerConversionListenerResponseConfigCacheScopePublic  AIGatewayMCPServerConversionListenerResponseConfigCacheScope = "public"
+	AIGatewayMCPServerConversionListenerResponseConfigCacheScopePrivate AIGatewayMCPServerConversionListenerResponseConfigCacheScope = "private"
+)
+
+func (e AIGatewayMCPServerConversionListenerResponseConfigCacheScope) ToPointer() *AIGatewayMCPServerConversionListenerResponseConfigCacheScope {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayMCPServerConversionListenerResponseConfigCacheScope) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayMCPServerConversionListenerResponseResourcesList - Cache hint emitted on `resources/list` and `resources/templates/list` results.
+// `cache_scope: public` is rejected when `default_resource_acls` or a resource's own
+// `access.acls` filters either list per subject.
+//
+// **Requires a minimum runtime version of `2.5`**.
+type AIGatewayMCPServerConversionListenerResponseResourcesList struct {
+	// How long a client may treat the result as fresh, in milliseconds.
+	TTLMs *int64 `json:"ttl_ms,omitempty"`
+	// Whether the result may be cached across authorization contexts. `public` is rejected when
+	// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+	// `access.acls`.
+	//
+	CacheScope *AIGatewayMCPServerConversionListenerResponseConfigCacheScope `default:"private" json:"cache_scope"`
+}
+
+func (a AIGatewayMCPServerConversionListenerResponseResourcesList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseResourcesList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseResourcesList) GetTTLMs() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.TTLMs
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseResourcesList) GetCacheScope() *AIGatewayMCPServerConversionListenerResponseConfigCacheScope {
+	if a == nil {
+		return nil
+	}
+	return a.CacheScope
+}
+
 // AIGatewayMCPServerConversionListenerResponseCache - Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol
 // revision that defines them receive them.
 //
@@ -69,6 +452,17 @@ func (e *AIGatewayMCPServerConversionListenerResponseAllowedVersions) IsExact() 
 type AIGatewayMCPServerConversionListenerResponseCache struct {
 	// A cache hint Kong emits on a cacheable operation it serves.
 	ToolsList *AIGatewayMCPServerCacheHint `json:"tools_list,omitempty"`
+	// Cache hint emitted on `prompts/list` results. `cache_scope: public` is rejected when
+	// `default_prompt_acls` or a prompt's own `access.acls` filters the list per subject.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	PromptsList *AIGatewayMCPServerConversionListenerResponsePromptsList `json:"prompts_list,omitempty"`
+	// Cache hint emitted on `resources/list` and `resources/templates/list` results.
+	// `cache_scope: public` is rejected when `default_resource_acls` or a resource's own
+	// `access.acls` filters either list per subject.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	ResourcesList *AIGatewayMCPServerConversionListenerResponseResourcesList `json:"resources_list,omitempty"`
 	// A cache hint Kong emits on a cacheable operation it serves.
 	Discover *AIGatewayMCPServerCacheHint `json:"discover,omitempty"`
 }
@@ -91,6 +485,20 @@ func (a *AIGatewayMCPServerConversionListenerResponseCache) GetToolsList() *AIGa
 	return a.ToolsList
 }
 
+func (a *AIGatewayMCPServerConversionListenerResponseCache) GetPromptsList() *AIGatewayMCPServerConversionListenerResponsePromptsList {
+	if a == nil {
+		return nil
+	}
+	return a.PromptsList
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseCache) GetResourcesList() *AIGatewayMCPServerConversionListenerResponseResourcesList {
+	if a == nil {
+		return nil
+	}
+	return a.ResourcesList
+}
+
 func (a *AIGatewayMCPServerConversionListenerResponseCache) GetDiscover() *AIGatewayMCPServerCacheHint {
 	if a == nil {
 		return nil
@@ -104,7 +512,7 @@ type AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerC
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
 	//
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerConversionListenerResponseLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -114,9 +522,24 @@ type AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerC
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
-	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
+	URL *string `json:"url,omitempty"`
+	// List of targets the upstream load balances requests across.
+	// Replaces `url`: set exactly one of `url` or `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Targets []AIGatewayUpstreamTarget `json:"targets,omitempty"`
+	// Load balancing configuration for `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Balancer *AIGatewayMCPServerConversionListenerResponseBalancer `json:"balancer,omitempty"`
+	// The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Protocol *AIGatewayMCPServerConversionListenerResponseProtocol `json:"protocol,omitempty"`
+	// The path prefix of requests sent to the `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Path *string `json:"path,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -150,6 +573,8 @@ type AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerC
 	//
 	// **Requires a minimum runtime version of `2.1`**.
 	Cache *AIGatewayMCPServerConversionListenerResponseCache `json:"cache,omitempty"`
+	// Configuration applied when proxying to the upstream service, including authentication.
+	Upstream *AIGatewayMCPServerUpstreamConfigOutput `json:"upstream,omitempty"`
 }
 
 func (a AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) MarshalJSON() ([]byte, error) {
@@ -163,9 +588,9 @@ func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListe
 	return nil
 }
 
-func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }
@@ -191,18 +616,67 @@ func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListe
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetURL() string {
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetUpstream() *AIGatewayUpstreamConfigOutput {
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetTargets() []AIGatewayUpstreamTarget {
 	if a == nil {
 		return nil
 	}
-	return a.Upstream
+	return a.Targets
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetBalancer() *AIGatewayMCPServerConversionListenerResponseBalancer {
+	if a == nil {
+		return nil
+	}
+	return a.Balancer
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetBalancerConsistentHashing() *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetBalancerLeastConnections() *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetBalancerLowestLatency() *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetBalancerRoundRobin() *AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerConversionListenerResponseBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetProtocol() *AIGatewayMCPServerConversionListenerResponseProtocol {
+	if a == nil {
+		return nil
+	}
+	return a.Protocol
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetPath() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Path
 }
 
 func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetCertificates() []string {
@@ -231,6 +705,13 @@ func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListe
 		return nil
 	}
 	return a.Cache
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetUpstream() *AIGatewayMCPServerUpstreamConfigOutput {
+	if a == nil {
+		return nil
+	}
+	return a.Upstream
 }
 
 type AIGatewayMCPServerConversionListenerResponse struct {
@@ -266,7 +747,9 @@ type AIGatewayMCPServerConversionListenerResponse struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials

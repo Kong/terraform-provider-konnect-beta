@@ -52,7 +52,9 @@ type AIGatewayModelProviderAIGatewayModelProviderTypesafe struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -161,6 +163,165 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetCreatedAt() ti
 }
 
 func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
+// AIGatewayModelProviderTogetheraiConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderTogetheraiConfigOutput struct {
+	// Basic auth config for an upstream model provider.
+	//
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderTogetheraiConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderTogetheraiConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderTogetheraiConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderTogetherai - Configuration for an upstream model provider.
+type AIGatewayModelProviderAIGatewayModelProviderTogetherai struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"togetherai" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderTogetheraiConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderTogetherai) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetType() string {
+	return "togetherai"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetConfig() AIGatewayModelProviderTogetheraiConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderTogetheraiConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTogetherai) GetUpdatedAt() time.Time {
 	if a == nil {
 		return time.Time{}
 	}
@@ -303,7 +464,9 @@ type AIGatewayModelProviderAIGatewayModelProviderSagemaker struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -459,7 +622,9 @@ type AIGatewayModelProviderAIGatewayModelProviderXai struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -616,7 +781,9 @@ type AIGatewayModelProviderAIGatewayModelProviderVllm struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -773,7 +940,9 @@ type AIGatewayModelProviderAIGatewayModelProviderVercel struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -930,7 +1099,9 @@ type AIGatewayModelProviderAIGatewayModelProviderOpenai struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -1087,7 +1258,9 @@ type AIGatewayModelProviderAIGatewayModelProviderOllama struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -1244,7 +1417,9 @@ type AIGatewayModelProviderAIGatewayModelProviderMistral struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -1359,6 +1534,165 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderMistral) GetUpdatedAt() tim
 	return a.UpdatedAt
 }
 
+// AIGatewayModelProviderMetaConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderMetaConfigOutput struct {
+	// Basic auth config for an upstream model provider.
+	//
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderMetaConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderMetaConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderMetaConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderMeta - Configuration for an upstream model provider.
+type AIGatewayModelProviderAIGatewayModelProviderMeta struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"meta" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderMetaConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderMeta) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetType() string {
+	return "meta"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetConfig() AIGatewayModelProviderMetaConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderMetaConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderMeta) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
 // AIGatewayModelProviderLlama2ConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderLlama2ConfigOutput struct {
 	// Basic auth config for an upstream model provider.
@@ -1387,7 +1721,14 @@ func (a *AIGatewayModelProviderLlama2ConfigOutput) GetAuth() AIGatewayModelProvi
 // #region class-body-aigatewaymodelproviderllama2configoutput
 // #endregion class-body-aigatewaymodelproviderllama2configoutput
 
-// AIGatewayModelProviderAIGatewayModelProviderLlama2 - Configuration for an upstream model provider.
+// AIGatewayModelProviderAIGatewayModelProviderLlama2 - Configuration for an upstream `llama2` model provider.
+//
+// Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate each
+// target by its `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the
+// `openai` provider with `upstream_url` set on the target, or to the `vllm` provider; `raw`
+// has no replacement provider.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type AIGatewayModelProviderAIGatewayModelProviderLlama2 struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"llama2" json:"type"`
@@ -1404,7 +1745,9 @@ type AIGatewayModelProviderAIGatewayModelProviderLlama2 struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -1564,7 +1907,9 @@ type AIGatewayModelProviderAIGatewayModelProviderKimi struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -1721,7 +2066,9 @@ type AIGatewayModelProviderAIGatewayModelProviderHuggingface struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -1969,7 +2316,9 @@ type AIGatewayModelProviderAIGatewayModelProviderGemini struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -2083,6 +2432,165 @@ func (a *AIGatewayModelProviderAIGatewayModelProviderGemini) GetUpdatedAt() time
 	return a.UpdatedAt
 }
 
+// AIGatewayModelProviderFireworksConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderFireworksConfigOutput struct {
+	// Basic auth config for an upstream model provider.
+	//
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderFireworksConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderFireworksConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderFireworksConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderFireworks - Configuration for an upstream model provider.
+type AIGatewayModelProviderAIGatewayModelProviderFireworks struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"fireworks" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderFireworksConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderFireworks) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetType() string {
+	return "fireworks"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetConfig() AIGatewayModelProviderFireworksConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderFireworksConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderFireworks) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
 // AIGatewayModelProviderDeepseekConfigOutput - Configuration for the model provider.
 type AIGatewayModelProviderDeepseekConfigOutput struct {
 	// Basic auth config for an upstream model provider.
@@ -2125,7 +2633,9 @@ type AIGatewayModelProviderAIGatewayModelProviderDeepseek struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -2282,7 +2792,9 @@ type AIGatewayModelProviderAIGatewayModelProviderDatabricks struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -2439,7 +2951,9 @@ type AIGatewayModelProviderAIGatewayModelProviderDashscope struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -2596,7 +3110,9 @@ type AIGatewayModelProviderAIGatewayModelProviderCohere struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -2753,7 +3269,9 @@ type AIGatewayModelProviderAIGatewayModelProviderCerebras struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -3001,7 +3519,9 @@ type AIGatewayModelProviderAIGatewayModelProviderBedrock struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -3157,7 +3677,9 @@ type AIGatewayModelProviderAIGatewayModelProviderBaseten struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -3495,7 +4017,9 @@ type AIGatewayModelProviderAIGatewayModelProviderAzure struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -3651,7 +4175,9 @@ type AIGatewayModelProviderAIGatewayModelProviderAnthropic struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
@@ -3778,10 +4304,12 @@ const (
 	AIGatewayModelProviderTypeDashscope   AIGatewayModelProviderType = "dashscope"
 	AIGatewayModelProviderTypeDatabricks  AIGatewayModelProviderType = "databricks"
 	AIGatewayModelProviderTypeDeepseek    AIGatewayModelProviderType = "deepseek"
+	AIGatewayModelProviderTypeFireworks   AIGatewayModelProviderType = "fireworks"
 	AIGatewayModelProviderTypeGemini      AIGatewayModelProviderType = "gemini"
 	AIGatewayModelProviderTypeHuggingface AIGatewayModelProviderType = "huggingface"
 	AIGatewayModelProviderTypeKimi        AIGatewayModelProviderType = "kimi"
 	AIGatewayModelProviderTypeLlama2      AIGatewayModelProviderType = "llama2"
+	AIGatewayModelProviderTypeMeta        AIGatewayModelProviderType = "meta"
 	AIGatewayModelProviderTypeMistral     AIGatewayModelProviderType = "mistral"
 	AIGatewayModelProviderTypeOllama      AIGatewayModelProviderType = "ollama"
 	AIGatewayModelProviderTypeOpenai      AIGatewayModelProviderType = "openai"
@@ -3789,6 +4317,7 @@ const (
 	AIGatewayModelProviderTypeVllm        AIGatewayModelProviderType = "vllm"
 	AIGatewayModelProviderTypeXai         AIGatewayModelProviderType = "xai"
 	AIGatewayModelProviderTypeSagemaker   AIGatewayModelProviderType = "sagemaker"
+	AIGatewayModelProviderTypeTogetherai  AIGatewayModelProviderType = "togetherai"
 	AIGatewayModelProviderTypeTypesafe    AIGatewayModelProviderType = "typesafe"
 )
 
@@ -3803,10 +4332,12 @@ type AIGatewayModelProvider struct {
 	AIGatewayModelProviderAIGatewayModelProviderDashscope   *AIGatewayModelProviderAIGatewayModelProviderDashscope   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderDatabricks  *AIGatewayModelProviderAIGatewayModelProviderDatabricks  `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderDeepseek    *AIGatewayModelProviderAIGatewayModelProviderDeepseek    `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderFireworks   *AIGatewayModelProviderAIGatewayModelProviderFireworks   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderGemini      *AIGatewayModelProviderAIGatewayModelProviderGemini      `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderHuggingface *AIGatewayModelProviderAIGatewayModelProviderHuggingface `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderKimi        *AIGatewayModelProviderAIGatewayModelProviderKimi        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderLlama2      *AIGatewayModelProviderAIGatewayModelProviderLlama2      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderMeta        *AIGatewayModelProviderAIGatewayModelProviderMeta        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderMistral     *AIGatewayModelProviderAIGatewayModelProviderMistral     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderOllama      *AIGatewayModelProviderAIGatewayModelProviderOllama      `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderOpenai      *AIGatewayModelProviderAIGatewayModelProviderOpenai      `queryParam:"inline" union:"member"`
@@ -3814,6 +4345,7 @@ type AIGatewayModelProvider struct {
 	AIGatewayModelProviderAIGatewayModelProviderVllm        *AIGatewayModelProviderAIGatewayModelProviderVllm        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderXai         *AIGatewayModelProviderAIGatewayModelProviderXai         `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderSagemaker   *AIGatewayModelProviderAIGatewayModelProviderSagemaker   `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderTogetherai  *AIGatewayModelProviderAIGatewayModelProviderTogetherai  `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderTypesafe    *AIGatewayModelProviderAIGatewayModelProviderTypesafe    `queryParam:"inline" union:"member"`
 
 	Type AIGatewayModelProviderType
@@ -3900,6 +4432,15 @@ func CreateAIGatewayModelProviderDeepseek(deepseek AIGatewayModelProviderAIGatew
 	}
 }
 
+func CreateAIGatewayModelProviderFireworks(fireworks AIGatewayModelProviderAIGatewayModelProviderFireworks) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeFireworks
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderFireworks: &fireworks,
+		Type: typ,
+	}
+}
+
 func CreateAIGatewayModelProviderGemini(gemini AIGatewayModelProviderAIGatewayModelProviderGemini) AIGatewayModelProvider {
 	typ := AIGatewayModelProviderTypeGemini
 
@@ -3932,6 +4473,15 @@ func CreateAIGatewayModelProviderLlama2(llama2 AIGatewayModelProviderAIGatewayMo
 
 	return AIGatewayModelProvider{
 		AIGatewayModelProviderAIGatewayModelProviderLlama2: &llama2,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderMeta(meta AIGatewayModelProviderAIGatewayModelProviderMeta) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeMeta
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderMeta: &meta,
 		Type: typ,
 	}
 }
@@ -3995,6 +4545,15 @@ func CreateAIGatewayModelProviderSagemaker(sagemaker AIGatewayModelProviderAIGat
 
 	return AIGatewayModelProvider{
 		AIGatewayModelProviderAIGatewayModelProviderSagemaker: &sagemaker,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderTogetherai(togetherai AIGatewayModelProviderAIGatewayModelProviderTogetherai) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeTogetherai
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderTogetherai: &togetherai,
 		Type: typ,
 	}
 }
@@ -4108,6 +4667,15 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) (err error) {
 		u.AIGatewayModelProviderAIGatewayModelProviderDeepseek = aiGatewayModelProviderAIGatewayModelProviderDeepseek
 		u.Type = AIGatewayModelProviderTypeDeepseek
 		return nil
+	case "fireworks":
+		aiGatewayModelProviderAIGatewayModelProviderFireworks := new(AIGatewayModelProviderAIGatewayModelProviderFireworks)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderFireworks, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == fireworks) type AIGatewayModelProviderAIGatewayModelProviderFireworks within AIGatewayModelProvider: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderAIGatewayModelProviderFireworks = aiGatewayModelProviderAIGatewayModelProviderFireworks
+		u.Type = AIGatewayModelProviderTypeFireworks
+		return nil
 	case "gemini":
 		aiGatewayModelProviderAIGatewayModelProviderGemini := new(AIGatewayModelProviderAIGatewayModelProviderGemini)
 		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderGemini, "", true, nil); err != nil {
@@ -4143,6 +4711,15 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) (err error) {
 
 		u.AIGatewayModelProviderAIGatewayModelProviderLlama2 = aiGatewayModelProviderAIGatewayModelProviderLlama2
 		u.Type = AIGatewayModelProviderTypeLlama2
+		return nil
+	case "meta":
+		aiGatewayModelProviderAIGatewayModelProviderMeta := new(AIGatewayModelProviderAIGatewayModelProviderMeta)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderMeta, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == meta) type AIGatewayModelProviderAIGatewayModelProviderMeta within AIGatewayModelProvider: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderAIGatewayModelProviderMeta = aiGatewayModelProviderAIGatewayModelProviderMeta
+		u.Type = AIGatewayModelProviderTypeMeta
 		return nil
 	case "mistral":
 		aiGatewayModelProviderAIGatewayModelProviderMistral := new(AIGatewayModelProviderAIGatewayModelProviderMistral)
@@ -4207,6 +4784,15 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) (err error) {
 		u.AIGatewayModelProviderAIGatewayModelProviderSagemaker = aiGatewayModelProviderAIGatewayModelProviderSagemaker
 		u.Type = AIGatewayModelProviderTypeSagemaker
 		return nil
+	case "togetherai":
+		aiGatewayModelProviderAIGatewayModelProviderTogetherai := new(AIGatewayModelProviderAIGatewayModelProviderTogetherai)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderTogetherai, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == togetherai) type AIGatewayModelProviderAIGatewayModelProviderTogetherai within AIGatewayModelProvider: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderAIGatewayModelProviderTogetherai = aiGatewayModelProviderAIGatewayModelProviderTogetherai
+		u.Type = AIGatewayModelProviderTypeTogetherai
+		return nil
 	case "typesafe":
 		aiGatewayModelProviderAIGatewayModelProviderTypesafe := new(AIGatewayModelProviderAIGatewayModelProviderTypesafe)
 		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderTypesafe, "", true, nil); err != nil {
@@ -4258,6 +4844,10 @@ func (u AIGatewayModelProvider) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderDeepseek, "", true)
 	}
 
+	if u.AIGatewayModelProviderAIGatewayModelProviderFireworks != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderFireworks, "", true)
+	}
+
 	if u.AIGatewayModelProviderAIGatewayModelProviderGemini != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderGemini, "", true)
 	}
@@ -4272,6 +4862,10 @@ func (u AIGatewayModelProvider) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderLlama2 != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderLlama2, "", true)
+	}
+
+	if u.AIGatewayModelProviderAIGatewayModelProviderMeta != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderMeta, "", true)
 	}
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderMistral != nil {
@@ -4300,6 +4894,10 @@ func (u AIGatewayModelProvider) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderSagemaker != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderSagemaker, "", true)
+	}
+
+	if u.AIGatewayModelProviderAIGatewayModelProviderTogetherai != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderTogetherai, "", true)
 	}
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderTypesafe != nil {

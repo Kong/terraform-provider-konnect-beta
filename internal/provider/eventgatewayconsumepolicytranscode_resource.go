@@ -85,9 +85,13 @@ func (r *EventGatewayConsumePolicyTranscodeResource) Schema(ctx context.Context,
 								Required: true,
 								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
 									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.` + "\n" +
+									`The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.` + "\n" +
 									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
 									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
 									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.` + "\n" +
+									`If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.` + "\n" +
 									`` + "\n" +
 									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
 									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
@@ -221,9 +225,13 @@ func (r *EventGatewayConsumePolicyTranscodeResource) Schema(ctx context.Context,
 								Required: true,
 								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
 									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.` + "\n" +
+									`The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.` + "\n" +
 									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
 									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
 									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.` + "\n" +
+									`If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.` + "\n" +
 									`` + "\n" +
 									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
 									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
@@ -379,7 +387,10 @@ func (r *EventGatewayConsumePolicyTranscodeResource) Schema(ctx context.Context,
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the policy.`,
 			},
 			"labels": schema.MapAttribute{
@@ -480,11 +491,11 @@ func (r *EventGatewayConsumePolicyTranscodeResource) Create(ctx context.Context,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicyTranscodeTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicyTranscodeTFOnly(ctx, res.EventGatewayConsumePolicyTranscodeTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -544,11 +555,11 @@ func (r *EventGatewayConsumePolicyTranscodeResource) Read(ctx context.Context, r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicyTranscodeTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicyTranscodeTFOnly(ctx, res.EventGatewayConsumePolicyTranscodeTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -594,11 +605,11 @@ func (r *EventGatewayConsumePolicyTranscodeResource) Update(ctx context.Context,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicyTranscodeTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicyTranscodeTFOnly(ctx, res.EventGatewayConsumePolicyTranscodeTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return

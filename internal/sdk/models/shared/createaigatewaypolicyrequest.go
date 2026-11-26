@@ -28,6 +28,10 @@ type CreateAIGatewayPolicyRequest struct {
 	//
 	// **Requires a minimum runtime version of `2.1`**.
 	Condition *string `json:"condition,omitempty"`
+	// Policy config expressions
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Expressions map[string]any `json:"expressions,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -37,7 +41,9 @@ type CreateAIGatewayPolicyRequest struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// Names of the Datastores this policy references.
@@ -102,6 +108,13 @@ func (c *CreateAIGatewayPolicyRequest) GetCondition() *string {
 		return nil
 	}
 	return c.Condition
+}
+
+func (c *CreateAIGatewayPolicyRequest) GetExpressions() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.Expressions
 }
 
 func (c *CreateAIGatewayPolicyRequest) GetLabels() map[string]string {

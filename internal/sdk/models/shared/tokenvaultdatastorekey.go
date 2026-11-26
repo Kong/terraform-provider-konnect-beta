@@ -9,6 +9,9 @@ import (
 type TokenVaultDatastoreKey struct {
 	// The identifier of this key version.
 	Version string `json:"version"`
+	// A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
+	//
+	Key *string `json:"key,omitempty"`
 }
 
 func (t TokenVaultDatastoreKey) MarshalJSON() ([]byte, error) {
@@ -27,4 +30,11 @@ func (t *TokenVaultDatastoreKey) GetVersion() string {
 		return ""
 	}
 	return t.Version
+}
+
+func (t *TokenVaultDatastoreKey) GetKey() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Key
 }

@@ -3,7 +3,7 @@
 package types
 
 type Sampling struct {
-	Client  *MeshItemMode `tfsdk:"client"`
-	Overall *MeshItemMode `tfsdk:"overall"`
-	Random  *MeshItemMode `tfsdk:"random"`
+	Client  *Port `tfsdk:"client"`
+	Overall *Port `tfsdk:"overall"`
+	Random  *Port `tfsdk:"random"`
 }

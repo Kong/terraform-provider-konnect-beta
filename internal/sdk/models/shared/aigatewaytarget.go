@@ -114,6 +114,10 @@ func (a *AIGatewayTarget) GetConfigDeepseek() *AIGatewayTargetDeepseekConfig {
 	return a.GetConfig().AIGatewayTargetDeepseekConfig
 }
 
+func (a *AIGatewayTarget) GetConfigFireworks() *AIGatewayTargetFireworksConfig {
+	return a.GetConfig().AIGatewayTargetFireworksConfig
+}
+
 func (a *AIGatewayTarget) GetConfigGemini() *AIGatewayTargetGeminiConfig {
 	return a.GetConfig().AIGatewayTargetGeminiConfig
 }
@@ -128,6 +132,10 @@ func (a *AIGatewayTarget) GetConfigKimi() *AIGatewayTargetKimiConfig {
 
 func (a *AIGatewayTarget) GetConfigLlama2() *AIGatewayTargetLlama2Config {
 	return a.GetConfig().AIGatewayTargetLlama2Config
+}
+
+func (a *AIGatewayTarget) GetConfigMeta() *AIGatewayTargetMetaConfig {
+	return a.GetConfig().AIGatewayTargetMetaConfig
 }
 
 func (a *AIGatewayTarget) GetConfigMistral() *AIGatewayTargetMistralConfig {
@@ -156,6 +164,10 @@ func (a *AIGatewayTarget) GetConfigXai() *AIGatewayTargetXaiConfig {
 
 func (a *AIGatewayTarget) GetConfigSagemaker() *AIGatewayTargetSagemakerConfig {
 	return a.GetConfig().AIGatewayTargetSagemakerConfig
+}
+
+func (a *AIGatewayTarget) GetConfigTogetherai() *AIGatewayTargetTogetheraiConfig {
+	return a.GetConfig().AIGatewayTargetTogetheraiConfig
 }
 
 func (a *AIGatewayTarget) GetConfigTypesafe() *AIGatewayTargetTypesafeConfig {

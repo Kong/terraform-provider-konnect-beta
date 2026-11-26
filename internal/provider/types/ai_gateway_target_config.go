@@ -12,14 +12,17 @@ type AIGatewayTargetConfig struct {
 	Dashscope   *AIGatewayTargetDashscopeConfig   `queryParam:"inline" tfsdk:"dashscope"`
 	Databricks  *AIGatewayTargetDatabricksConfig  `queryParam:"inline" tfsdk:"databricks"`
 	Deepseek    *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"deepseek"`
+	Fireworks   *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"fireworks"`
 	Gemini      *AIGatewayTargetGeminiConfig      `queryParam:"inline" tfsdk:"gemini"`
 	Huggingface *AIGatewayTargetHuggingfaceConfig `queryParam:"inline" tfsdk:"huggingface"`
 	Kimi        *AIGatewayTargetDashscopeConfig   `queryParam:"inline" tfsdk:"kimi"`
 	Llama2      *AIGatewayTargetLlama2Config      `queryParam:"inline" tfsdk:"llama2"`
+	Meta        *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"meta"`
 	Mistral     *AIGatewayTargetMistralConfig     `queryParam:"inline" tfsdk:"mistral"`
 	Ollama      *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"ollama"`
 	Openai      *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"openai"`
 	Sagemaker   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" tfsdk:"sagemaker"`
+	Togetherai  *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"togetherai"`
 	Typesafe    *AIGatewayTargetTypesafeConfig    `queryParam:"inline" tfsdk:"typesafe"`
 	Vercel      *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"vercel"`
 	Vllm        *AIGatewayTargetVllmConfig        `queryParam:"inline" tfsdk:"vllm"`

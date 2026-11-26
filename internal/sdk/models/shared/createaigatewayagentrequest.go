@@ -3,6 +3,9 @@
 package shared
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -23,6 +26,257 @@ func (e *CreateAIGatewayAgentRequestType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "a2a", "http":
+			return true
+		}
+	}
+	return false
+}
+
+type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"round-robin" json:"algorithm"`
+}
+
+func (c CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig) GetAlgorithm() string {
+	return "round-robin"
+}
+
+type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"lowest-latency" json:"algorithm"`
+}
+
+func (c CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) GetAlgorithm() string {
+	return "lowest-latency"
+}
+
+type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"least-connections" json:"algorithm"`
+}
+
+func (c CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) GetAlgorithm() string {
+	return "least-connections"
+}
+
+type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"consistent-hashing" json:"algorithm"`
+	// The request header whose value selects the target. Requests without the header all hash to the same target.
+	HashOnHeader string `json:"hash_on_header"`
+}
+
+func (c CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) GetAlgorithm() string {
+	return "consistent-hashing"
+}
+
+func (c *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) GetHashOnHeader() string {
+	if c == nil {
+		return ""
+	}
+	return c.HashOnHeader
+}
+
+type CreateAIGatewayAgentRequestBalancerType string
+
+const (
+	CreateAIGatewayAgentRequestBalancerTypeConsistentHashing CreateAIGatewayAgentRequestBalancerType = "consistent-hashing"
+	CreateAIGatewayAgentRequestBalancerTypeLeastConnections  CreateAIGatewayAgentRequestBalancerType = "least-connections"
+	CreateAIGatewayAgentRequestBalancerTypeLowestLatency     CreateAIGatewayAgentRequestBalancerType = "lowest-latency"
+	CreateAIGatewayAgentRequestBalancerTypeRoundRobin        CreateAIGatewayAgentRequestBalancerType = "round-robin"
+)
+
+// CreateAIGatewayAgentRequestBalancer - Load balancing configuration for `targets`. Only valid with `targets`.
+//
+// **Requires a minimum runtime version of `2.4`**.
+type CreateAIGatewayAgentRequestBalancer struct {
+	CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig `queryParam:"inline" union:"member"`
+	CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig  *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig  `queryParam:"inline" union:"member"`
+	CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig     *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig     `queryParam:"inline" union:"member"`
+	CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig        *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig        `queryParam:"inline" union:"member"`
+
+	Type CreateAIGatewayAgentRequestBalancerType
+}
+
+func CreateCreateAIGatewayAgentRequestBalancerConsistentHashing(consistentHashing CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) CreateAIGatewayAgentRequestBalancer {
+	typ := CreateAIGatewayAgentRequestBalancerTypeConsistentHashing
+
+	return CreateAIGatewayAgentRequestBalancer{
+		CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: &consistentHashing,
+		Type: typ,
+	}
+}
+
+func CreateCreateAIGatewayAgentRequestBalancerLeastConnections(leastConnections CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) CreateAIGatewayAgentRequestBalancer {
+	typ := CreateAIGatewayAgentRequestBalancerTypeLeastConnections
+
+	return CreateAIGatewayAgentRequestBalancer{
+		CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: &leastConnections,
+		Type: typ,
+	}
+}
+
+func CreateCreateAIGatewayAgentRequestBalancerLowestLatency(lowestLatency CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) CreateAIGatewayAgentRequestBalancer {
+	typ := CreateAIGatewayAgentRequestBalancerTypeLowestLatency
+
+	return CreateAIGatewayAgentRequestBalancer{
+		CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: &lowestLatency,
+		Type: typ,
+	}
+}
+
+func CreateCreateAIGatewayAgentRequestBalancerRoundRobin(roundRobin CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig) CreateAIGatewayAgentRequestBalancer {
+	typ := CreateAIGatewayAgentRequestBalancerTypeRoundRobin
+
+	return CreateAIGatewayAgentRequestBalancer{
+		CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig: &roundRobin,
+		Type: typ,
+	}
+}
+
+func (u *CreateAIGatewayAgentRequestBalancer) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CreateAIGatewayAgentRequestBalancer{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
+
+	type discriminator struct {
+		Algorithm string `json:"algorithm"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Algorithm {
+	case "consistent-hashing":
+		createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig := new(CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig)
+		if err := utils.UnmarshalJSON(data, &createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == consistent-hashing) type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig within CreateAIGatewayAgentRequestBalancer: %w", string(data), err)
+		}
+
+		u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+		u.Type = CreateAIGatewayAgentRequestBalancerTypeConsistentHashing
+		return nil
+	case "least-connections":
+		createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig := new(CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig)
+		if err := utils.UnmarshalJSON(data, &createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == least-connections) type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig within CreateAIGatewayAgentRequestBalancer: %w", string(data), err)
+		}
+
+		u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+		u.Type = CreateAIGatewayAgentRequestBalancerTypeLeastConnections
+		return nil
+	case "lowest-latency":
+		createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig := new(CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig)
+		if err := utils.UnmarshalJSON(data, &createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == lowest-latency) type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig within CreateAIGatewayAgentRequestBalancer: %w", string(data), err)
+		}
+
+		u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+		u.Type = CreateAIGatewayAgentRequestBalancerTypeLowestLatency
+		return nil
+	case "round-robin":
+		createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig := new(CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig)
+		if err := utils.UnmarshalJSON(data, &createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == round-robin) type CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig within CreateAIGatewayAgentRequestBalancer: %w", string(data), err)
+		}
+
+		u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig = createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+		u.Type = CreateAIGatewayAgentRequestBalancerTypeRoundRobin
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateAIGatewayAgentRequestBalancer", string(data))
+}
+
+func (u CreateAIGatewayAgentRequestBalancer) MarshalJSON() ([]byte, error) {
+	if u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+		return utils.MarshalJSON(u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig, "", true)
+	}
+
+	if u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+		return utils.MarshalJSON(u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig, "", true)
+	}
+
+	if u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+		return utils.MarshalJSON(u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig, "", true)
+	}
+
+	if u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+		return utils.MarshalJSON(u.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type CreateAIGatewayAgentRequestBalancer: all fields are null")
+}
+
+// CreateAIGatewayAgentRequestProtocol - The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+//
+// **Requires a minimum runtime version of `2.4`**.
+type CreateAIGatewayAgentRequestProtocol string
+
+const (
+	CreateAIGatewayAgentRequestProtocolHTTP  CreateAIGatewayAgentRequestProtocol = "http"
+	CreateAIGatewayAgentRequestProtocolHTTPS CreateAIGatewayAgentRequestProtocol = "https"
+)
+
+func (e CreateAIGatewayAgentRequestProtocol) ToPointer() *CreateAIGatewayAgentRequestProtocol {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateAIGatewayAgentRequestProtocol) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "http", "https":
 			return true
 		}
 	}
@@ -66,7 +320,24 @@ type CreateAIGatewayAgentRequestConfig struct {
 	// Helper field to set protocol, host, port and path of the upstream A2A Agent using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
+	// List of targets the upstream load balances requests across.
+	// Replaces `url`: set exactly one of `url` or `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Targets []AIGatewayUpstreamTarget `json:"targets,omitempty"`
+	// Load balancing configuration for `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Balancer *CreateAIGatewayAgentRequestBalancer `json:"balancer,omitempty"`
+	// The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Protocol *CreateAIGatewayAgentRequestProtocol `json:"protocol,omitempty"`
+	// The path prefix of requests sent to the `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Path *string `json:"path,omitempty"`
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
 	// Configuration for an AI Gateway route.
@@ -112,11 +383,67 @@ func (c *CreateAIGatewayAgentRequestConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateAIGatewayAgentRequestConfig) GetURL() string {
+func (c *CreateAIGatewayAgentRequestConfig) GetURL() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.URL
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetTargets() []AIGatewayUpstreamTarget {
+	if c == nil {
+		return nil
+	}
+	return c.Targets
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetBalancer() *CreateAIGatewayAgentRequestBalancer {
+	if c == nil {
+		return nil
+	}
+	return c.Balancer
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetBalancerConsistentHashing() *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig {
+	if v := c.GetBalancer(); v != nil {
+		return v.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetBalancerLeastConnections() *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig {
+	if v := c.GetBalancer(); v != nil {
+		return v.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetBalancerLowestLatency() *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig {
+	if v := c.GetBalancer(); v != nil {
+		return v.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetBalancerRoundRobin() *CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig {
+	if v := c.GetBalancer(); v != nil {
+		return v.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+	}
+	return nil
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetProtocol() *CreateAIGatewayAgentRequestProtocol {
+	if c == nil {
+		return nil
+	}
+	return c.Protocol
+}
+
+func (c *CreateAIGatewayAgentRequestConfig) GetPath() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Path
 }
 
 func (c *CreateAIGatewayAgentRequestConfig) GetUpstream() *AIGatewayUpstreamConfig {
@@ -192,7 +519,9 @@ type CreateAIGatewayAgentRequest struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }

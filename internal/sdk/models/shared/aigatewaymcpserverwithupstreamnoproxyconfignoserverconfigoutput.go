@@ -3,6 +3,9 @@
 package shared
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -37,6 +40,257 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigLogging) GetAu
 	return a.Audits
 }
 
+type AIGatewayUpstreamBalancerRoundRobinConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"round-robin" json:"algorithm"`
+}
+
+func (a AIGatewayUpstreamBalancerRoundRobinConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayUpstreamBalancerRoundRobinConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayUpstreamBalancerRoundRobinConfig) GetAlgorithm() string {
+	return "round-robin"
+}
+
+type AIGatewayUpstreamBalancerLowestLatencyConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"lowest-latency" json:"algorithm"`
+}
+
+func (a AIGatewayUpstreamBalancerLowestLatencyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayUpstreamBalancerLowestLatencyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayUpstreamBalancerLowestLatencyConfig) GetAlgorithm() string {
+	return "lowest-latency"
+}
+
+type AIGatewayUpstreamBalancerLeastConnectionsConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"least-connections" json:"algorithm"`
+}
+
+func (a AIGatewayUpstreamBalancerLeastConnectionsConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayUpstreamBalancerLeastConnectionsConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayUpstreamBalancerLeastConnectionsConfig) GetAlgorithm() string {
+	return "least-connections"
+}
+
+type AIGatewayUpstreamBalancerConsistentHashingConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"consistent-hashing" json:"algorithm"`
+	// The request header whose value selects the target. Requests without the header all hash to the same target.
+	HashOnHeader string `json:"hash_on_header"`
+}
+
+func (a AIGatewayUpstreamBalancerConsistentHashingConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayUpstreamBalancerConsistentHashingConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayUpstreamBalancerConsistentHashingConfig) GetAlgorithm() string {
+	return "consistent-hashing"
+}
+
+func (a *AIGatewayUpstreamBalancerConsistentHashingConfig) GetHashOnHeader() string {
+	if a == nil {
+		return ""
+	}
+	return a.HashOnHeader
+}
+
+type BalancerType string
+
+const (
+	BalancerTypeConsistentHashing BalancerType = "consistent-hashing"
+	BalancerTypeLeastConnections  BalancerType = "least-connections"
+	BalancerTypeLowestLatency     BalancerType = "lowest-latency"
+	BalancerTypeRoundRobin        BalancerType = "round-robin"
+)
+
+// Balancer - Load balancing configuration for `targets`. Only valid with `targets`.
+//
+// **Requires a minimum runtime version of `2.4`**.
+type Balancer struct {
+	AIGatewayUpstreamBalancerConsistentHashingConfig *AIGatewayUpstreamBalancerConsistentHashingConfig `queryParam:"inline" union:"member"`
+	AIGatewayUpstreamBalancerLeastConnectionsConfig  *AIGatewayUpstreamBalancerLeastConnectionsConfig  `queryParam:"inline" union:"member"`
+	AIGatewayUpstreamBalancerLowestLatencyConfig     *AIGatewayUpstreamBalancerLowestLatencyConfig     `queryParam:"inline" union:"member"`
+	AIGatewayUpstreamBalancerRoundRobinConfig        *AIGatewayUpstreamBalancerRoundRobinConfig        `queryParam:"inline" union:"member"`
+
+	Type BalancerType
+}
+
+func CreateBalancerConsistentHashing(consistentHashing AIGatewayUpstreamBalancerConsistentHashingConfig) Balancer {
+	typ := BalancerTypeConsistentHashing
+
+	return Balancer{
+		AIGatewayUpstreamBalancerConsistentHashingConfig: &consistentHashing,
+		Type: typ,
+	}
+}
+
+func CreateBalancerLeastConnections(leastConnections AIGatewayUpstreamBalancerLeastConnectionsConfig) Balancer {
+	typ := BalancerTypeLeastConnections
+
+	return Balancer{
+		AIGatewayUpstreamBalancerLeastConnectionsConfig: &leastConnections,
+		Type: typ,
+	}
+}
+
+func CreateBalancerLowestLatency(lowestLatency AIGatewayUpstreamBalancerLowestLatencyConfig) Balancer {
+	typ := BalancerTypeLowestLatency
+
+	return Balancer{
+		AIGatewayUpstreamBalancerLowestLatencyConfig: &lowestLatency,
+		Type: typ,
+	}
+}
+
+func CreateBalancerRoundRobin(roundRobin AIGatewayUpstreamBalancerRoundRobinConfig) Balancer {
+	typ := BalancerTypeRoundRobin
+
+	return Balancer{
+		AIGatewayUpstreamBalancerRoundRobinConfig: &roundRobin,
+		Type: typ,
+	}
+}
+
+func (u *Balancer) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Balancer{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
+
+	type discriminator struct {
+		Algorithm string `json:"algorithm"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Algorithm {
+	case "consistent-hashing":
+		aiGatewayUpstreamBalancerConsistentHashingConfig := new(AIGatewayUpstreamBalancerConsistentHashingConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayUpstreamBalancerConsistentHashingConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == consistent-hashing) type AIGatewayUpstreamBalancerConsistentHashingConfig within Balancer: %w", string(data), err)
+		}
+
+		u.AIGatewayUpstreamBalancerConsistentHashingConfig = aiGatewayUpstreamBalancerConsistentHashingConfig
+		u.Type = BalancerTypeConsistentHashing
+		return nil
+	case "least-connections":
+		aiGatewayUpstreamBalancerLeastConnectionsConfig := new(AIGatewayUpstreamBalancerLeastConnectionsConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayUpstreamBalancerLeastConnectionsConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == least-connections) type AIGatewayUpstreamBalancerLeastConnectionsConfig within Balancer: %w", string(data), err)
+		}
+
+		u.AIGatewayUpstreamBalancerLeastConnectionsConfig = aiGatewayUpstreamBalancerLeastConnectionsConfig
+		u.Type = BalancerTypeLeastConnections
+		return nil
+	case "lowest-latency":
+		aiGatewayUpstreamBalancerLowestLatencyConfig := new(AIGatewayUpstreamBalancerLowestLatencyConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayUpstreamBalancerLowestLatencyConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == lowest-latency) type AIGatewayUpstreamBalancerLowestLatencyConfig within Balancer: %w", string(data), err)
+		}
+
+		u.AIGatewayUpstreamBalancerLowestLatencyConfig = aiGatewayUpstreamBalancerLowestLatencyConfig
+		u.Type = BalancerTypeLowestLatency
+		return nil
+	case "round-robin":
+		aiGatewayUpstreamBalancerRoundRobinConfig := new(AIGatewayUpstreamBalancerRoundRobinConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayUpstreamBalancerRoundRobinConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == round-robin) type AIGatewayUpstreamBalancerRoundRobinConfig within Balancer: %w", string(data), err)
+		}
+
+		u.AIGatewayUpstreamBalancerRoundRobinConfig = aiGatewayUpstreamBalancerRoundRobinConfig
+		u.Type = BalancerTypeRoundRobin
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Balancer", string(data))
+}
+
+func (u Balancer) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayUpstreamBalancerConsistentHashingConfig, "", true)
+	}
+
+	if u.AIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayUpstreamBalancerLeastConnectionsConfig, "", true)
+	}
+
+	if u.AIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayUpstreamBalancerLowestLatencyConfig, "", true)
+	}
+
+	if u.AIGatewayUpstreamBalancerRoundRobinConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayUpstreamBalancerRoundRobinConfig, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Balancer: all fields are null")
+}
+
+// AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol - The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+//
+// **Requires a minimum runtime version of `2.4`**.
+type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol string
+
+const (
+	AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocolHTTP  AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol = "http"
+	AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocolHTTPS AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol = "https"
+)
+
+func (e AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol) ToPointer() *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "http", "https":
+			return true
+		}
+	}
+	return false
+}
+
 // AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput - Routing, logging, and request body size limits for the MCP Server.
 type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
 	// Route configuration for an MCP Server that terminates its own listener. At least one
@@ -51,9 +305,26 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
+	// List of targets the upstream load balances requests across.
+	// Replaces `url`: set exactly one of `url` or `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Targets []AIGatewayUpstreamTarget `json:"targets,omitempty"`
+	// Load balancing configuration for `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Balancer *Balancer `json:"balancer,omitempty"`
+	// The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Protocol *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol `json:"protocol,omitempty"`
+	// The path prefix of requests sent to the `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Path *string `json:"path,omitempty"`
 	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
+	Upstream *AIGatewayMCPServerUpstreamConfigOutput `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -109,14 +380,70 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetMax
 	return a.MaxRequestBodySize
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetURL() string {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetUpstream() *AIGatewayUpstreamConfigOutput {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetTargets() []AIGatewayUpstreamTarget {
+	if a == nil {
+		return nil
+	}
+	return a.Targets
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetBalancer() *Balancer {
+	if a == nil {
+		return nil
+	}
+	return a.Balancer
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetBalancerConsistentHashing() *AIGatewayUpstreamBalancerConsistentHashingConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerConsistentHashingConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetBalancerLeastConnections() *AIGatewayUpstreamBalancerLeastConnectionsConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerLeastConnectionsConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetBalancerLowestLatency() *AIGatewayUpstreamBalancerLowestLatencyConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerLowestLatencyConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetBalancerRoundRobin() *AIGatewayUpstreamBalancerRoundRobinConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerRoundRobinConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetProtocol() *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol {
+	if a == nil {
+		return nil
+	}
+	return a.Protocol
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetPath() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Path
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetUpstream() *AIGatewayMCPServerUpstreamConfigOutput {
 	if a == nil {
 		return nil
 	}
@@ -151,9 +478,26 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
+	// List of targets the upstream load balances requests across.
+	// Replaces `url`: set exactly one of `url` or `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Targets []AIGatewayUpstreamTarget `json:"targets,omitempty"`
+	// Load balancing configuration for `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Balancer *Balancer `json:"balancer,omitempty"`
+	// The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Protocol *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol `json:"protocol,omitempty"`
+	// The path prefix of requests sent to the `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Path *string `json:"path,omitempty"`
 	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
+	Upstream *AIGatewayMCPServerUpstreamConfig `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -209,14 +553,70 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetMaxReques
 	return a.MaxRequestBodySize
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetURL() string {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetUpstream() *AIGatewayUpstreamConfig {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetTargets() []AIGatewayUpstreamTarget {
+	if a == nil {
+		return nil
+	}
+	return a.Targets
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetBalancer() *Balancer {
+	if a == nil {
+		return nil
+	}
+	return a.Balancer
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetBalancerConsistentHashing() *AIGatewayUpstreamBalancerConsistentHashingConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerConsistentHashingConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetBalancerLeastConnections() *AIGatewayUpstreamBalancerLeastConnectionsConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerLeastConnectionsConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetBalancerLowestLatency() *AIGatewayUpstreamBalancerLowestLatencyConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerLowestLatencyConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetBalancerRoundRobin() *AIGatewayUpstreamBalancerRoundRobinConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayUpstreamBalancerRoundRobinConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetProtocol() *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigProtocol {
+	if a == nil {
+		return nil
+	}
+	return a.Protocol
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetPath() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Path
+}
+
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetUpstream() *AIGatewayMCPServerUpstreamConfig {
 	if a == nil {
 		return nil
 	}

@@ -18,8 +18,10 @@ type AIGatewayMCPServerPassthroughListener struct {
 	ManagedBy    map[string]types.String               `tfsdk:"managed_by"`
 	Name         types.String                          `tfsdk:"name"`
 	Policies     []types.String                        `tfsdk:"policies"`
+	Prompts      []AIGatewayMCPPrompt                  `tfsdk:"prompts"`
 	RateLimiting *AIGatewayMCPServerRateLimiting       `tfsdk:"rate_limiting"`
+	Resources    []AIGatewayMCPResource                `tfsdk:"resources"`
 	TokenVault   *AIGatewayTokenVault                  `tfsdk:"token_vault"`
-	Tools        []AIGatewayMCPPassthroughTool         `tfsdk:"tools"`
+	Tools        []AIGatewayMCPPrompt                  `tfsdk:"tools"`
 	UpdatedAt    types.String                          `tfsdk:"updated_at"`
 }

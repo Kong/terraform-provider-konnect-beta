@@ -30,6 +30,7 @@ func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ct
 		for _, v := range resp.Ssl.ValidationErrors {
 			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
 		}
+		r.Ssl.ValidationWarning = types.StringPointerValue(resp.Ssl.ValidationWarning)
 		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
 		if sslPriorData != nil {
 			r.Ssl.CustomCertificate = sslPriorData.CustomCertificate

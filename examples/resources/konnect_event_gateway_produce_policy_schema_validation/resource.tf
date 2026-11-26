@@ -10,11 +10,8 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
         }
       }
       key_validation_action = "mark"
-      schema_registry = {
-        id = "588c80ab-6c75-4adb-8bab-6d8b7e5f5ae2"
-      }
-      validate_key   = true
-      validate_value = true
+      validate_key          = true
+      validate_value        = true
       value = {
         avro = {
           schema = "...my_schema..."

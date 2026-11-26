@@ -34,7 +34,14 @@ func (a *AIGatewayModelProviderLlama2Config) GetAuth() AIGatewayModelProviderCon
 // #region class-body-aigatewaymodelproviderllama2config
 // #endregion class-body-aigatewaymodelproviderllama2config
 
-// AIGatewayModelProviderLlama2 - Configuration for an upstream model provider.
+// AIGatewayModelProviderLlama2 - Configuration for an upstream `llama2` model provider.
+//
+// Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate each
+// target by its `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the
+// `openai` provider with `upstream_url` set on the target, or to the `vllm` provider; `raw`
+// has no replacement provider.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type AIGatewayModelProviderLlama2 struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"llama2" json:"type"`
@@ -51,7 +58,9 @@ type AIGatewayModelProviderLlama2 struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// The Token Vault Datastore holding this entity's credential storage: the directory credentials

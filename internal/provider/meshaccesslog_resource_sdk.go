@@ -532,7 +532,7 @@ func (r *MeshAccessLogResourceModel) ToOperationsPutMeshAccessLogRequest(ctx con
 func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.Context) (*shared.MeshAccessLogItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	typeVar := shared.MeshAccessLogItemType(r.Type.ValueString())
+	typeVar := shared.Type(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
 		*mesh = r.Mesh.ValueString()
@@ -579,7 +579,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 					} else {
 						plain = nil
 					}
-					typeVar1 := shared.MeshAccessLogItemSpecFromDefaultType(r.Spec.From[fromIndex].Default.Backends[backendsIndex].File.Format.Type.ValueString())
+					typeVar1 := shared.MeshAccessLogItemSpecFromType(r.Spec.From[fromIndex].Default.Backends[backendsIndex].File.Format.Type.ValueString())
 					format = &shared.MeshAccessLogItemSpecFromFormat{
 						JSON:            jsonVar,
 						OmitEmptyValues: omitEmptyValues,
@@ -674,7 +674,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 					} else {
 						plain1 = nil
 					}
-					typeVar2 := shared.MeshAccessLogItemSpecFromType(r.Spec.From[fromIndex].Default.Backends[backendsIndex].TCP.Format.Type.ValueString())
+					typeVar2 := shared.MeshAccessLogItemSpecFromDefaultType(r.Spec.From[fromIndex].Default.Backends[backendsIndex].TCP.Format.Type.ValueString())
 					format1 = &shared.MeshAccessLogItemFormat{
 						JSON:            jsonVar1,
 						OmitEmptyValues: omitEmptyValues1,
@@ -687,7 +687,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 					Format:  format1,
 				}
 			}
-			type1 := shared.MeshAccessLogItemSpecType(r.Spec.From[fromIndex].Default.Backends[backendsIndex].Type.ValueString())
+			type1 := shared.MeshAccessLogItemType(r.Spec.From[fromIndex].Default.Backends[backendsIndex].Type.ValueString())
 			backends = append(backends, shared.MeshAccessLogItemSpecFromBackends{
 				File:          file,
 				OpenTelemetry: openTelemetry,
@@ -897,7 +897,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 					Format:  format3,
 				}
 			}
-			type2 := shared.MeshAccessLogItemSpecRulesType(r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex1].Type.ValueString())
+			type2 := shared.MeshAccessLogItemSpecType(r.Spec.Rules[rulesIndex].Default.Backends[backendsIndex1].Type.ValueString())
 			backends1 = append(backends1, shared.MeshAccessLogItemBackends{
 				File:          file1,
 				OpenTelemetry: openTelemetry1,
@@ -912,7 +912,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 		for matchesIndex := range r.Spec.Rules[rulesIndex].Matches {
 			var sni *shared.Sni
 			if r.Spec.Rules[rulesIndex].Matches[matchesIndex].Sni != nil {
-				typeVar5 := shared.MeshAccessLogItemSpecRulesMatchesType(r.Spec.Rules[rulesIndex].Matches[matchesIndex].Sni.Type.ValueString())
+				typeVar5 := shared.MeshAccessLogItemSpecRulesType(r.Spec.Rules[rulesIndex].Matches[matchesIndex].Sni.Type.ValueString())
 				var value6 string
 				value6 = r.Spec.Rules[rulesIndex].Matches[matchesIndex].Sni.Value.ValueString()
 
@@ -923,7 +923,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 			}
 			var spiffeID *shared.MeshAccessLogItemSpiffeID
 			if r.Spec.Rules[rulesIndex].Matches[matchesIndex].SpiffeID != nil {
-				typeVar6 := shared.MeshAccessLogItemSpecRulesMatchesSpiffeIDType(r.Spec.Rules[rulesIndex].Matches[matchesIndex].SpiffeID.Type.ValueString())
+				typeVar6 := shared.MeshAccessLogItemSpecRulesMatchesType(r.Spec.Rules[rulesIndex].Matches[matchesIndex].SpiffeID.Type.ValueString())
 				var value7 string
 				value7 = r.Spec.Rules[rulesIndex].Matches[matchesIndex].SpiffeID.Value.ValueString()
 

@@ -23,18 +23,58 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
         auth_strategies = [
           "okta-ai-se"
         ]
+        default_prompt_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
+        default_resource_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
         default_tool_acls = {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
@@ -58,6 +98,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       allowed_versions = [
         "2025-06-18"
       ]
+      balancer = {
+        least_connections = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -65,6 +110,14 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         discover = {
           cache_scope = "private"
           ttl_ms      = 5
+        }
+        prompts_list = {
+          cache_scope = "private"
+          ttl_ms      = 0
+        }
+        resources_list = {
+          cache_scope = "private"
+          ttl_ms      = 0
         }
         tools_list = {
           cache_scope = "private"
@@ -79,6 +132,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "https"
       route = {
         headers = {
           key = jsonencode("value")
@@ -165,6 +220,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       upstream = {
         auth = {
           aws = {
@@ -282,7 +344,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }
@@ -320,6 +388,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   conversion_only = {
     config = {
+      balancer = {
+        least_connections = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -331,6 +404,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "https"
       route = {
         headers = {
           key = jsonencode("value")
@@ -357,6 +432,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           "..."
         ]
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       upstream = {
         auth = {
           aws = {
@@ -458,7 +540,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }
@@ -503,18 +591,58 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
         auth_strategies = [
           "okta-ai-se"
         ]
+        default_prompt_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
+        default_resource_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
         default_tool_acls = {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
@@ -542,6 +670,14 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         discover = {
           cache_scope = "private"
           ttl_ms      = 8
+        }
+        prompts_list = {
+          cache_scope = "private"
+          ttl_ms      = 10
+        }
+        resources_list = {
+          cache_scope = "private"
+          ttl_ms      = 10
         }
         tools_list = {
           cache_scope = "private"
@@ -735,18 +871,58 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
         auth_strategies = [
           "okta-ai-se"
         ]
+        default_prompt_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
+        default_resource_acls = {
+          allow = [
+            "..."
+          ]
+          allow_when = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+          deny_when = [
+            "..."
+          ]
+        }
         default_tool_acls = {
           allow = [
             "..."
           ]
+          allow_when = [
+            "..."
+          ]
           deny = [
+            "..."
+          ]
+          deny_when = [
             "..."
           ]
         }
@@ -767,6 +943,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
+      balancer = {
+        lowest_latency = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -778,6 +959,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "https"
       proxy = {
         auth = {
           password = "...my_password..."
@@ -880,6 +1063,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         timeout = 10000
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       upstream = {
         auth = {
           aws = {
@@ -912,6 +1102,27 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     policies = [
       "..."
     ]
+    prompts = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        name = "summarize_booking"
+      }
+    ]
     rate_limiting = {
       limits = [
         {
@@ -922,6 +1133,27 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
       ]
     }
+    resources = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        uri = "kongair://bookings/{booking_id}"
+      }
+    ]
     token_vault = {
       cache = {
         redis = {
@@ -991,7 +1223,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }
@@ -1002,6 +1240,11 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
   }
   upstream_server = {
     config = {
+      balancer = {
+        lowest_latency = {
+          # ...
+        }
+      }
       ca_certificates = [
         "my-ca-certificate"
       ]
@@ -1013,6 +1256,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         payloads = false
       }
       max_request_body_size = 8388608
+      path                  = "/mcp"
+      protocol              = "http"
       route = {
         headers = {
           key = jsonencode("value")
@@ -1106,6 +1351,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
         }
         upstream_protocol_version = "2025-06-18"
       }
+      targets = [
+        {
+          address  = "booking-agent-1.internal.kongair.com:443"
+          failover = false
+          weight   = 100
+        }
+      ]
       tools_cache_ttl_seconds = 7
       upstream = {
         auth = {
@@ -1138,6 +1390,48 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     name = "kongair-flights"
     policies = [
       "..."
+    ]
+    prompts = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        name = "summarize_booking"
+      }
+    ]
+    resources = [
+      {
+        access = {
+          acls = {
+            allow = [
+              "..."
+            ]
+            allow_when = [
+              "..."
+            ]
+            deny = [
+              "..."
+            ]
+            deny_when = [
+              "..."
+            ]
+          }
+        }
+        uri = "kongair://bookings/{booking_id}"
+      }
     ]
     token_vault = {
       cache = {
@@ -1208,7 +1502,13 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             allow = [
               "..."
             ]
+            allow_when = [
+              "..."
+            ]
             deny = [
+              "..."
+            ]
+            deny_when = [
               "..."
             ]
           }
@@ -1276,7 +1576,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `rate_limiting` (Attributes) Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
@@ -1324,6 +1626,23 @@ operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any 
 `default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
+- `default_prompt_acls` (Attributes) Default per-prompt access control rules for allowing or denying consumer groups access to
+prompts. Evaluated only for callers that already passed the server-level `acls` check
+above. Applies to every prompt exposed by this MCP Server unless a specific prompt
+overrides it via that prompt's own `access.acls`. Prompts a caller is denied are omitted
+from `prompts/list` and rejected on `prompts/get`. When unset, prompts are governed only
+by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--default_prompt_acls))
+- `default_resource_acls` (Attributes) Default per-resource access control rules for allowing or denying consumer groups access
+to resources and resource templates. Evaluated only for callers that already passed the
+server-level `acls` check above. Applies to every resource exposed by this MCP Server
+unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+caller is denied are omitted from `resources/list` and `resources/templates/list` and
+rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--conversion_listener--access--consumer--default_resource_acls))
 - `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying consumer groups access to
 tools. Evaluated only for callers that already passed the server-level `acls` check above.
 Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
@@ -1340,7 +1659,39 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+
+<a id="nestedatt--conversion_listener--access--consumer--default_prompt_acls"></a>
+### Nested Schema for `conversion_listener.access.consumer.default_prompt_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+<a id="nestedatt--conversion_listener--access--consumer--default_resource_acls"></a>
+### Nested Schema for `conversion_listener.access.consumer.default_resource_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--conversion_listener--access--consumer--default_tool_acls"></a>
@@ -1349,7 +1700,13 @@ Optional:
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--conversion_listener--access--consumer--metadata"></a>
@@ -1380,6 +1737,24 @@ must pass this check before any MCP protocol operation (`initialize`, `tools/lis
 `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
+- `default_prompt_acls` (Attributes) Default per-prompt access control rules for allowing or denying callers access to prompts,
+evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+for callers that already passed the server-level `acls` check above. Applies to every
+prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's
+own `access.acls`. Prompts a caller is denied are omitted from `prompts/list` and rejected
+on `prompts/get`. When unset, prompts are governed only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--default_prompt_acls))
+- `default_resource_acls` (Attributes) Default per-resource access control rules for allowing or denying callers access to
+resources and resource templates, evaluated against the value of the configured
+`access_token_claim_field`. Evaluated only for callers that already passed the
+server-level `acls` check above. Applies to every resource exposed by this MCP Server
+unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+caller is denied are omitted from `resources/list` and `resources/templates/list` and
+rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--conversion_listener--access--oauth_access_token--default_resource_acls))
 - `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying callers access to tools,
 evaluated against the value of the configured `access_token_claim_field`. Evaluated only
 for callers that already passed the server-level `acls` check above. Applies to every tool
@@ -1397,7 +1772,39 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+
+<a id="nestedatt--conversion_listener--access--oauth_access_token--default_prompt_acls"></a>
+### Nested Schema for `conversion_listener.access.oauth_access_token.default_prompt_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+<a id="nestedatt--conversion_listener--access--oauth_access_token--default_resource_acls"></a>
+### Nested Schema for `conversion_listener.access.oauth_access_token.default_resource_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--conversion_listener--access--oauth_access_token--default_tool_acls"></a>
@@ -1406,7 +1813,13 @@ Optional:
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--conversion_listener--access--oauth_access_token--metadata"></a>
@@ -1434,6 +1847,9 @@ list and a request declaring anything else is rejected. Listing only per-request
 revisions refuses handshake clients.
 
 **Requires a minimum runtime version of `2.1`**.
+- `balancer` (Attributes) Load balancing configuration for `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--conversion_listener--config--balancer))
 - `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
 name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
 
@@ -1457,14 +1873,56 @@ certificate may be configured.
 If unset, no client certificate is presented to the upstream.
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--conversion_listener--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `path` (String) The path prefix of requests sent to the `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**.
+- `protocol` (String) The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+
+**Requires a minimum runtime version of `2.4`**.
+possible known values include one of ["http", "https"]
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--conversion_listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--conversion_listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--config--server))
+- `targets` (Attributes List) List of targets the upstream load balances requests across.
+Replaces `url`: set exactly one of `url` or `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--conversion_listener--config--targets))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
+
+<a id="nestedatt--conversion_listener--config--balancer"></a>
+### Nested Schema for `conversion_listener.config.balancer`
+
+Optional:
+
+- `consistent_hashing` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--config--balancer--consistent_hashing))
+- `least_connections` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--config--balancer--least_connections))
+- `lowest_latency` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--config--balancer--lowest_latency))
+- `round_robin` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--config--balancer--round_robin))
+
+<a id="nestedatt--conversion_listener--config--balancer--consistent_hashing"></a>
+### Nested Schema for `conversion_listener.config.balancer.consistent_hashing`
+
+Optional:
+
+- `hash_on_header` (String) The request header whose value selects the target. Requests without the header all hash to the same target. Not Null
+
+
+<a id="nestedatt--conversion_listener--config--balancer--least_connections"></a>
+### Nested Schema for `conversion_listener.config.balancer.least_connections`
+
+
+<a id="nestedatt--conversion_listener--config--balancer--lowest_latency"></a>
+### Nested Schema for `conversion_listener.config.balancer.lowest_latency`
+
+
+<a id="nestedatt--conversion_listener--config--balancer--round_robin"></a>
+### Nested Schema for `conversion_listener.config.balancer.round_robin`
+
+
 
 <a id="nestedatt--conversion_listener--config--cache"></a>
 ### Nested Schema for `conversion_listener.config.cache`
@@ -1472,10 +1930,43 @@ Not Null
 Optional:
 
 - `discover` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--discover))
+- `prompts_list` (Attributes) Cache hint emitted on `prompts/list` results. `cache_scope: public` is rejected when
+`default_prompt_acls` or a prompt's own `access.acls` filters the list per subject.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--prompts_list))
+- `resources_list` (Attributes) Cache hint emitted on `resources/list` and `resources/templates/list` results.
+`cache_scope: public` is rejected when `default_resource_acls` or a resource's own
+`access.acls` filters either list per subject.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--resources_list))
 - `tools_list` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--tools_list))
 
 <a id="nestedatt--conversion_listener--config--cache--discover"></a>
 ### Nested Schema for `conversion_listener.config.cache.discover`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
+<a id="nestedatt--conversion_listener--config--cache--prompts_list"></a>
+### Nested Schema for `conversion_listener.config.cache.prompts_list`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
+<a id="nestedatt--conversion_listener--config--cache--resources_list"></a>
+### Nested Schema for `conversion_listener.config.cache.resources_list`
 
 Optional:
 
@@ -1691,6 +2182,16 @@ Optional:
 
 
 
+<a id="nestedatt--conversion_listener--config--targets"></a>
+### Nested Schema for `conversion_listener.config.targets`
+
+Optional:
+
+- `address` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null
+- `failover` (Boolean) Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the `consistent-hashing` algorithm, and at least one target must not be a failover target. Default: false
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100
+
+
 <a id="nestedatt--conversion_listener--config--upstream"></a>
 ### Nested Schema for `conversion_listener.config.upstream`
 
@@ -1783,7 +2284,7 @@ Read-Only:
 
 - `storage` (Attributes) Read-only. The directory and encryption key versions this entity's credentials are stored
 with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-the Datastore. Key material is never returned. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--storage))
+the Datastore. (see [below for nested schema](#nestedatt--conversion_listener--token_vault--storage))
 
 <a id="nestedatt--conversion_listener--token_vault--cache"></a>
 ### Nested Schema for `conversion_listener.token_vault.cache`
@@ -1974,6 +2475,7 @@ Read-Only:
 
 Read-Only:
 
+- `key` (String) A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
 - `version` (String) The identifier of this key version.
 
 
@@ -2017,7 +2519,13 @@ When configured, these will override the default access control rules defined on
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 
@@ -2068,7 +2576,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
@@ -2093,6 +2603,9 @@ Read-Only:
 
 Optional:
 
+- `balancer` (Attributes) Load balancing configuration for `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--conversion_only--config--balancer))
 - `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
 name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
 
@@ -2112,13 +2625,54 @@ certificate may be configured.
 If unset, no client certificate is presented to the upstream.
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--conversion_only--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `path` (String) The path prefix of requests sent to the `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**.
+- `protocol` (String) The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+
+**Requires a minimum runtime version of `2.4`**.
+possible known values include one of ["http", "https"]
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--conversion_only--config--route))
+- `targets` (Attributes List) List of targets the upstream load balances requests across.
+Replaces `url`: set exactly one of `url` or `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--conversion_only--config--targets))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_only--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
+
+<a id="nestedatt--conversion_only--config--balancer"></a>
+### Nested Schema for `conversion_only.config.balancer`
+
+Optional:
+
+- `consistent_hashing` (Attributes) (see [below for nested schema](#nestedatt--conversion_only--config--balancer--consistent_hashing))
+- `least_connections` (Attributes) (see [below for nested schema](#nestedatt--conversion_only--config--balancer--least_connections))
+- `lowest_latency` (Attributes) (see [below for nested schema](#nestedatt--conversion_only--config--balancer--lowest_latency))
+- `round_robin` (Attributes) (see [below for nested schema](#nestedatt--conversion_only--config--balancer--round_robin))
+
+<a id="nestedatt--conversion_only--config--balancer--consistent_hashing"></a>
+### Nested Schema for `conversion_only.config.balancer.consistent_hashing`
+
+Optional:
+
+- `hash_on_header` (String) The request header whose value selects the target. Requests without the header all hash to the same target. Not Null
+
+
+<a id="nestedatt--conversion_only--config--balancer--least_connections"></a>
+### Nested Schema for `conversion_only.config.balancer.least_connections`
+
+
+<a id="nestedatt--conversion_only--config--balancer--lowest_latency"></a>
+### Nested Schema for `conversion_only.config.balancer.lowest_latency`
+
+
+<a id="nestedatt--conversion_only--config--balancer--round_robin"></a>
+### Nested Schema for `conversion_only.config.balancer.round_robin`
+
+
 
 <a id="nestedatt--conversion_only--config--logging"></a>
 ### Nested Schema for `conversion_only.config.logging`
@@ -2146,6 +2700,16 @@ Optional:
 - `response_buffering` (Boolean) Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding. Default: true
 - `strip_path` (Boolean) When matching a route via one of the `paths`, strip the matching prefix from the upstream request URL. Default: true
 - `tags` (List of String) An optional set of strings associated with the route for grouping and filtering.
+
+
+<a id="nestedatt--conversion_only--config--targets"></a>
+### Nested Schema for `conversion_only.config.targets`
+
+Optional:
+
+- `address` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null
+- `failover` (Boolean) Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the `consistent-hashing` algorithm, and at least one target must not be a failover target. Default: false
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100
 
 
 <a id="nestedatt--conversion_only--config--upstream"></a>
@@ -2219,7 +2783,7 @@ Read-Only:
 
 - `storage` (Attributes) Read-only. The directory and encryption key versions this entity's credentials are stored
 with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-the Datastore. Key material is never returned. (see [below for nested schema](#nestedatt--conversion_only--token_vault--storage))
+the Datastore. (see [below for nested schema](#nestedatt--conversion_only--token_vault--storage))
 
 <a id="nestedatt--conversion_only--token_vault--cache"></a>
 ### Nested Schema for `conversion_only.token_vault.cache`
@@ -2410,6 +2974,7 @@ Read-Only:
 
 Read-Only:
 
+- `key` (String) A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
 - `version` (String) The identifier of this key version.
 
 
@@ -2453,7 +3018,13 @@ When configured, these will override the default access control rules defined on
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 
@@ -2505,7 +3076,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `sources` (List of String) The explicit list of source MCP Servers whose tools this listener exposes.
@@ -2550,6 +3123,23 @@ operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any 
 `default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--listener--access--consumer--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
+- `default_prompt_acls` (Attributes) Default per-prompt access control rules for allowing or denying consumer groups access to
+prompts. Evaluated only for callers that already passed the server-level `acls` check
+above. Applies to every prompt exposed by this MCP Server unless a specific prompt
+overrides it via that prompt's own `access.acls`. Prompts a caller is denied are omitted
+from `prompts/list` and rejected on `prompts/get`. When unset, prompts are governed only
+by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--listener--access--consumer--default_prompt_acls))
+- `default_resource_acls` (Attributes) Default per-resource access control rules for allowing or denying consumer groups access
+to resources and resource templates. Evaluated only for callers that already passed the
+server-level `acls` check above. Applies to every resource exposed by this MCP Server
+unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+caller is denied are omitted from `resources/list` and `resources/templates/list` and
+rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--listener--access--consumer--default_resource_acls))
 - `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying consumer groups access to
 tools. Evaluated only for callers that already passed the server-level `acls` check above.
 Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
@@ -2566,7 +3156,39 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+
+<a id="nestedatt--listener--access--consumer--default_prompt_acls"></a>
+### Nested Schema for `listener.access.consumer.default_prompt_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+<a id="nestedatt--listener--access--consumer--default_resource_acls"></a>
+### Nested Schema for `listener.access.consumer.default_resource_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--listener--access--consumer--default_tool_acls"></a>
@@ -2575,7 +3197,13 @@ Optional:
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--listener--access--consumer--metadata"></a>
@@ -2606,6 +3234,24 @@ must pass this check before any MCP protocol operation (`initialize`, `tools/lis
 `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
+- `default_prompt_acls` (Attributes) Default per-prompt access control rules for allowing or denying callers access to prompts,
+evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+for callers that already passed the server-level `acls` check above. Applies to every
+prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's
+own `access.acls`. Prompts a caller is denied are omitted from `prompts/list` and rejected
+on `prompts/get`. When unset, prompts are governed only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--default_prompt_acls))
+- `default_resource_acls` (Attributes) Default per-resource access control rules for allowing or denying callers access to
+resources and resource templates, evaluated against the value of the configured
+`access_token_claim_field`. Evaluated only for callers that already passed the
+server-level `acls` check above. Applies to every resource exposed by this MCP Server
+unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+caller is denied are omitted from `resources/list` and `resources/templates/list` and
+rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--listener--access--oauth_access_token--default_resource_acls))
 - `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying callers access to tools,
 evaluated against the value of the configured `access_token_claim_field`. Evaluated only
 for callers that already passed the server-level `acls` check above. Applies to every tool
@@ -2623,7 +3269,39 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+
+<a id="nestedatt--listener--access--oauth_access_token--default_prompt_acls"></a>
+### Nested Schema for `listener.access.oauth_access_token.default_prompt_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+<a id="nestedatt--listener--access--oauth_access_token--default_resource_acls"></a>
+### Nested Schema for `listener.access.oauth_access_token.default_resource_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--listener--access--oauth_access_token--default_tool_acls"></a>
@@ -2632,7 +3310,13 @@ Optional:
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--listener--access--oauth_access_token--metadata"></a>
@@ -2668,7 +3352,8 @@ revision that defines them receive them.
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--listener--config--server))
 
 <a id="nestedatt--listener--config--cache"></a>
@@ -2677,10 +3362,43 @@ incoming requests. (see [below for nested schema](#nestedatt--listener--config--
 Optional:
 
 - `discover` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--listener--config--cache--discover))
+- `prompts_list` (Attributes) Cache hint emitted on `prompts/list` results. `cache_scope: public` is rejected when
+`default_prompt_acls` or a prompt's own `access.acls` filters the list per subject.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--listener--config--cache--prompts_list))
+- `resources_list` (Attributes) Cache hint emitted on `resources/list` and `resources/templates/list` results.
+`cache_scope: public` is rejected when `default_resource_acls` or a resource's own
+`access.acls` filters either list per subject.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--listener--config--cache--resources_list))
 - `tools_list` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--listener--config--cache--tools_list))
 
 <a id="nestedatt--listener--config--cache--discover"></a>
 ### Nested Schema for `listener.config.cache.discover`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
+<a id="nestedatt--listener--config--cache--prompts_list"></a>
+### Nested Schema for `listener.config.cache.prompts_list`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
+<a id="nestedatt--listener--config--cache--resources_list"></a>
+### Nested Schema for `listener.config.cache.resources_list`
 
 Optional:
 
@@ -2931,7 +3649,7 @@ Read-Only:
 
 - `storage` (Attributes) Read-only. The directory and encryption key versions this entity's credentials are stored
 with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-the Datastore. Key material is never returned. (see [below for nested schema](#nestedatt--listener--token_vault--storage))
+the Datastore. (see [below for nested schema](#nestedatt--listener--token_vault--storage))
 
 <a id="nestedatt--listener--token_vault--cache"></a>
 ### Nested Schema for `listener.token_vault.cache`
@@ -3122,6 +3840,7 @@ Read-Only:
 
 Read-Only:
 
+- `key` (String) A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
 - `version` (String) The identifier of this key version.
 
 
@@ -3150,13 +3869,27 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
+- `prompts` (Attributes List) Per-prompt access-control overrides for prompts advertised by the remote MCP Server.
+Each entry is matched to a remote prompt by `name`; only its access-control rules are
+applied. Prompts without an entry are governed by `access.default_prompt_acls`. Each
+`name` must be unique within this MCP Server.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--passthrough_listener--prompts))
 - `rate_limiting` (Attributes) Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
 Each AI Gateway node counts and enforces the limits independently.
 
 **Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--passthrough_listener--rate_limiting))
+- `resources` (Attributes List) Per-resource access-control overrides for resources and resource templates advertised
+by the remote MCP Server. Each entry is matched to a remote resource by `uri`; only its
+access-control rules are applied. Resources without an entry are governed by
+`access.default_resource_acls`. Each `uri` must be unique within this MCP Server.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--passthrough_listener--resources))
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
 `token-vault` Datastore this entity references, and are returned read-only in `storage`.
@@ -3196,6 +3929,23 @@ operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any 
 `default_tool_acls` or per-tool `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
+- `default_prompt_acls` (Attributes) Default per-prompt access control rules for allowing or denying consumer groups access to
+prompts. Evaluated only for callers that already passed the server-level `acls` check
+above. Applies to every prompt exposed by this MCP Server unless a specific prompt
+overrides it via that prompt's own `access.acls`. Prompts a caller is denied are omitted
+from `prompts/list` and rejected on `prompts/get`. When unset, prompts are governed only
+by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--default_prompt_acls))
+- `default_resource_acls` (Attributes) Default per-resource access control rules for allowing or denying consumer groups access
+to resources and resource templates. Evaluated only for callers that already passed the
+server-level `acls` check above. Applies to every resource exposed by this MCP Server
+unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+caller is denied are omitted from `resources/list` and `resources/templates/list` and
+rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--passthrough_listener--access--consumer--default_resource_acls))
 - `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying consumer groups access to
 tools. Evaluated only for callers that already passed the server-level `acls` check above.
 Applies to every tool exposed by this MCP Server unless a specific tool overrides it via
@@ -3212,7 +3962,39 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+
+<a id="nestedatt--passthrough_listener--access--consumer--default_prompt_acls"></a>
+### Nested Schema for `passthrough_listener.access.consumer.default_prompt_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+<a id="nestedatt--passthrough_listener--access--consumer--default_resource_acls"></a>
+### Nested Schema for `passthrough_listener.access.consumer.default_resource_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--passthrough_listener--access--consumer--default_tool_acls"></a>
@@ -3221,7 +4003,13 @@ Optional:
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--passthrough_listener--access--consumer--metadata"></a>
@@ -3252,6 +4040,24 @@ must pass this check before any MCP protocol operation (`initialize`, `tools/lis
 `access.acls` check is evaluated. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the MCP server.
 At most 1 auth strategy of each auth strategy type can be referenced.
+- `default_prompt_acls` (Attributes) Default per-prompt access control rules for allowing or denying callers access to prompts,
+evaluated against the value of the configured `access_token_claim_field`. Evaluated only
+for callers that already passed the server-level `acls` check above. Applies to every
+prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's
+own `access.acls`. Prompts a caller is denied are omitted from `prompts/list` and rejected
+on `prompts/get`. When unset, prompts are governed only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--default_prompt_acls))
+- `default_resource_acls` (Attributes) Default per-resource access control rules for allowing or denying callers access to
+resources and resource templates, evaluated against the value of the configured
+`access_token_claim_field`. Evaluated only for callers that already passed the
+server-level `acls` check above. Applies to every resource exposed by this MCP Server
+unless a specific resource overrides it via that resource's own `access.acls`. Resources a
+caller is denied are omitted from `resources/list` and `resources/templates/list` and
+rejected on `resources/read` and `resources/subscribe`. When unset, resources are governed
+only by the server-level `acls`.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--passthrough_listener--access--oauth_access_token--default_resource_acls))
 - `default_tool_acls` (Attributes) Default per-tool access control rules for allowing or denying callers access to tools,
 evaluated against the value of the configured `access_token_claim_field`. Evaluated only
 for callers that already passed the server-level `acls` check above. Applies to every tool
@@ -3269,7 +4075,39 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+
+<a id="nestedatt--passthrough_listener--access--oauth_access_token--default_prompt_acls"></a>
+### Nested Schema for `passthrough_listener.access.oauth_access_token.default_prompt_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+<a id="nestedatt--passthrough_listener--access--oauth_access_token--default_resource_acls"></a>
+### Nested Schema for `passthrough_listener.access.oauth_access_token.default_resource_acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--passthrough_listener--access--oauth_access_token--default_tool_acls"></a>
@@ -3278,7 +4116,13 @@ Optional:
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--passthrough_listener--access--oauth_access_token--metadata"></a>
@@ -3300,6 +4144,9 @@ Optional:
 
 Optional:
 
+- `balancer` (Attributes) Load balancing configuration for `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--passthrough_listener--config--balancer))
 - `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
 name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
 
@@ -3319,15 +4166,57 @@ certificate may be configured.
 If unset, no client certificate is presented to the upstream.
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--passthrough_listener--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `path` (String) The path prefix of requests sent to the `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**.
+- `protocol` (String) The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+
+**Requires a minimum runtime version of `2.4`**.
+possible known values include one of ["http", "https"]
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--passthrough_listener--config--proxy))
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
+- `targets` (Attributes List) List of targets the upstream load balances requests across.
+Replaces `url`: set exactly one of `url` or `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--passthrough_listener--config--targets))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
+
+<a id="nestedatt--passthrough_listener--config--balancer"></a>
+### Nested Schema for `passthrough_listener.config.balancer`
+
+Optional:
+
+- `consistent_hashing` (Attributes) (see [below for nested schema](#nestedatt--passthrough_listener--config--balancer--consistent_hashing))
+- `least_connections` (Attributes) (see [below for nested schema](#nestedatt--passthrough_listener--config--balancer--least_connections))
+- `lowest_latency` (Attributes) (see [below for nested schema](#nestedatt--passthrough_listener--config--balancer--lowest_latency))
+- `round_robin` (Attributes) (see [below for nested schema](#nestedatt--passthrough_listener--config--balancer--round_robin))
+
+<a id="nestedatt--passthrough_listener--config--balancer--consistent_hashing"></a>
+### Nested Schema for `passthrough_listener.config.balancer.consistent_hashing`
+
+Optional:
+
+- `hash_on_header` (String) The request header whose value selects the target. Requests without the header all hash to the same target. Not Null
+
+
+<a id="nestedatt--passthrough_listener--config--balancer--least_connections"></a>
+### Nested Schema for `passthrough_listener.config.balancer.least_connections`
+
+
+<a id="nestedatt--passthrough_listener--config--balancer--lowest_latency"></a>
+### Nested Schema for `passthrough_listener.config.balancer.lowest_latency`
+
+
+<a id="nestedatt--passthrough_listener--config--balancer--round_robin"></a>
+### Nested Schema for `passthrough_listener.config.balancer.round_robin`
+
+
 
 <a id="nestedatt--passthrough_listener--config--logging"></a>
 ### Nested Schema for `passthrough_listener.config.logging`
@@ -3562,6 +4451,16 @@ Optional:
 
 
 
+<a id="nestedatt--passthrough_listener--config--targets"></a>
+### Nested Schema for `passthrough_listener.config.targets`
+
+Optional:
+
+- `address` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null
+- `failover` (Boolean) Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the `consistent-hashing` algorithm, and at least one target must not be a failover target. Default: false
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100
+
+
 <a id="nestedatt--passthrough_listener--config--upstream"></a>
 ### Nested Schema for `passthrough_listener.config.upstream`
 
@@ -3607,6 +4506,42 @@ Optional:
 - `name` (String) An immutable user-defined identifier for this resource. Not Null
 
 
+<a id="nestedatt--passthrough_listener--prompts"></a>
+### Nested Schema for `passthrough_listener.prompts`
+
+Optional:
+
+- `access` (Attributes) Access-control rules for a prompt. Not Null (see [below for nested schema](#nestedatt--passthrough_listener--prompts--access))
+- `name` (String) The MCP prompt name. Matches the prompt advertised by the remote MCP Server under the same
+name. Unique within an MCP Server.
+Not Null
+
+<a id="nestedatt--passthrough_listener--prompts--access"></a>
+### Nested Schema for `passthrough_listener.prompts.access`
+
+Optional:
+
+- `acls` (Attributes) Access control rules for allowing or denying callers access to this prompt (`prompts/get`),
+and whether it is listed to them (`prompts/list`). When configured, these override the
+MCP Server's `default_prompt_acls` for this prompt. (see [below for nested schema](#nestedatt--passthrough_listener--prompts--access--acls))
+
+<a id="nestedatt--passthrough_listener--prompts--access--acls"></a>
+### Nested Schema for `passthrough_listener.prompts.access.acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+
+
 <a id="nestedatt--passthrough_listener--rate_limiting"></a>
 ### Nested Schema for `passthrough_listener.rate_limiting`
 
@@ -3625,6 +4560,45 @@ Optional:
 - `method` (String) The MCP method this limit applies to.
 - `tool` (String) The name of the tool this limit applies to.
 - `window_size` (Number) The window size in seconds, one of a second, a minute, an hour, or a day. possible known values include one of [1, 60, 3600, 86400]; Not Null
+
+
+
+<a id="nestedatt--passthrough_listener--resources"></a>
+### Nested Schema for `passthrough_listener.resources`
+
+Optional:
+
+- `access` (Attributes) Access-control rules for a resource or resource template. Not Null (see [below for nested schema](#nestedatt--passthrough_listener--resources--access))
+- `uri` (String) The MCP resource URI. Matches the resource advertised by the remote MCP Server under the
+same `uri`, or the resource template advertised under the same `uriTemplate`. A URI
+template (RFC 6570) also matches every concrete resource URI it expands to, so one entry
+can govern a whole template. Unique within an MCP Server.
+Not Null
+
+<a id="nestedatt--passthrough_listener--resources--access"></a>
+### Nested Schema for `passthrough_listener.resources.access`
+
+Optional:
+
+- `acls` (Attributes) Access control rules for allowing or denying callers access to this resource
+(`resources/read`, `resources/subscribe`), and whether it is listed to them
+(`resources/list`, `resources/templates/list`). When configured, these override the
+MCP Server's `default_resource_acls` for this resource. (see [below for nested schema](#nestedatt--passthrough_listener--resources--access--acls))
+
+<a id="nestedatt--passthrough_listener--resources--access--acls"></a>
+### Nested Schema for `passthrough_listener.resources.access.acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
 
 
 
@@ -3654,7 +4628,7 @@ Read-Only:
 
 - `storage` (Attributes) Read-only. The directory and encryption key versions this entity's credentials are stored
 with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-the Datastore. Key material is never returned. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--storage))
+the Datastore. (see [below for nested schema](#nestedatt--passthrough_listener--token_vault--storage))
 
 <a id="nestedatt--passthrough_listener--token_vault--cache"></a>
 ### Nested Schema for `passthrough_listener.token_vault.cache`
@@ -3845,6 +4819,7 @@ Read-Only:
 
 Read-Only:
 
+- `key` (String) A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
 - `version` (String) The identifier of this key version.
 
 
@@ -3872,7 +4847,13 @@ When configured, these will override the default access control rules defined on
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 
@@ -3899,9 +4880,17 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
+- `prompts` (Attributes List) List of prompts exposed by this MCP Server.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--upstream_server--prompts))
+- `resources` (Attributes List) List of resources exposed by this MCP Server.
+
+**Requires a minimum runtime version of `2.5`**. (see [below for nested schema](#nestedatt--upstream_server--resources))
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
 `token-vault` Datastore this entity references, and are returned read-only in `storage`.
@@ -3924,6 +4913,9 @@ Read-Only:
 
 Optional:
 
+- `balancer` (Attributes) Load balancing configuration for `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--upstream_server--config--balancer))
 - `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
 name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
 
@@ -3943,17 +4935,59 @@ certificate may be configured.
 If unset, no client certificate is presented to the upstream.
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--upstream_server--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `path` (String) The path prefix of requests sent to the `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**.
+- `protocol` (String) The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+
+**Requires a minimum runtime version of `2.4`**.
+possible known values include one of ["http", "https"]
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--upstream_server--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--upstream_server--config--route))
 - `server` (Attributes) Server-side configuration specific to `upstream-server` mode. (see [below for nested schema](#nestedatt--upstream_server--config--server))
+- `targets` (Attributes List) List of targets the upstream load balances requests across.
+Replaces `url`: set exactly one of `url` or `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--upstream_server--config--targets))
 - `tools_cache_ttl_seconds` (Number) The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 every client call.
 Not Null
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--upstream_server--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
+
+<a id="nestedatt--upstream_server--config--balancer"></a>
+### Nested Schema for `upstream_server.config.balancer`
+
+Optional:
+
+- `consistent_hashing` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--config--balancer--consistent_hashing))
+- `least_connections` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--config--balancer--least_connections))
+- `lowest_latency` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--config--balancer--lowest_latency))
+- `round_robin` (Attributes) (see [below for nested schema](#nestedatt--upstream_server--config--balancer--round_robin))
+
+<a id="nestedatt--upstream_server--config--balancer--consistent_hashing"></a>
+### Nested Schema for `upstream_server.config.balancer.consistent_hashing`
+
+Optional:
+
+- `hash_on_header` (String) The request header whose value selects the target. Requests without the header all hash to the same target. Not Null
+
+
+<a id="nestedatt--upstream_server--config--balancer--least_connections"></a>
+### Nested Schema for `upstream_server.config.balancer.least_connections`
+
+
+<a id="nestedatt--upstream_server--config--balancer--lowest_latency"></a>
+### Nested Schema for `upstream_server.config.balancer.lowest_latency`
+
+
+<a id="nestedatt--upstream_server--config--balancer--round_robin"></a>
+### Nested Schema for `upstream_server.config.balancer.round_robin`
+
+
 
 <a id="nestedatt--upstream_server--config--logging"></a>
 ### Nested Schema for `upstream_server.config.logging`
@@ -4205,6 +5239,16 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 
 
+<a id="nestedatt--upstream_server--config--targets"></a>
+### Nested Schema for `upstream_server.config.targets`
+
+Optional:
+
+- `address` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null
+- `failover` (Boolean) Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the `consistent-hashing` algorithm, and at least one target must not be a failover target. Default: false
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100
+
+
 <a id="nestedatt--upstream_server--config--upstream"></a>
 ### Nested Schema for `upstream_server.config.upstream`
 
@@ -4250,6 +5294,81 @@ Optional:
 - `name` (String) An immutable user-defined identifier for this resource. Not Null
 
 
+<a id="nestedatt--upstream_server--prompts"></a>
+### Nested Schema for `upstream_server.prompts`
+
+Optional:
+
+- `access` (Attributes) Access-control rules for a prompt. Not Null (see [below for nested schema](#nestedatt--upstream_server--prompts--access))
+- `name` (String) The MCP prompt name. Matches the prompt advertised by the remote MCP Server under the same
+name. Unique within an MCP Server.
+Not Null
+
+<a id="nestedatt--upstream_server--prompts--access"></a>
+### Nested Schema for `upstream_server.prompts.access`
+
+Optional:
+
+- `acls` (Attributes) Access control rules for allowing or denying callers access to this prompt (`prompts/get`),
+and whether it is listed to them (`prompts/list`). When configured, these override the
+MCP Server's `default_prompt_acls` for this prompt. (see [below for nested schema](#nestedatt--upstream_server--prompts--access--acls))
+
+<a id="nestedatt--upstream_server--prompts--access--acls"></a>
+### Nested Schema for `upstream_server.prompts.access.acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+
+
+<a id="nestedatt--upstream_server--resources"></a>
+### Nested Schema for `upstream_server.resources`
+
+Optional:
+
+- `access` (Attributes) Access-control rules for a resource or resource template. Not Null (see [below for nested schema](#nestedatt--upstream_server--resources--access))
+- `uri` (String) The MCP resource URI. Matches the resource advertised by the remote MCP Server under the
+same `uri`, or the resource template advertised under the same `uriTemplate`. A URI
+template (RFC 6570) also matches every concrete resource URI it expands to, so one entry
+can govern a whole template. Unique within an MCP Server.
+Not Null
+
+<a id="nestedatt--upstream_server--resources--access"></a>
+### Nested Schema for `upstream_server.resources.access`
+
+Optional:
+
+- `acls` (Attributes) Access control rules for allowing or denying callers access to this resource
+(`resources/read`, `resources/subscribe`), and whether it is listed to them
+(`resources/list`, `resources/templates/list`). When configured, these override the
+MCP Server's `default_resource_acls` for this resource. (see [below for nested schema](#nestedatt--upstream_server--resources--access--acls))
+
+<a id="nestedatt--upstream_server--resources--access--acls"></a>
+### Nested Schema for `upstream_server.resources.access.acls`
+
+Optional:
+
+- `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+- `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
+
+
+
+
 <a id="nestedatt--upstream_server--token_vault"></a>
 ### Nested Schema for `upstream_server.token_vault`
 
@@ -4276,7 +5395,7 @@ Read-Only:
 
 - `storage` (Attributes) Read-only. The directory and encryption key versions this entity's credentials are stored
 with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-the Datastore. Key material is never returned. (see [below for nested schema](#nestedatt--upstream_server--token_vault--storage))
+the Datastore. (see [below for nested schema](#nestedatt--upstream_server--token_vault--storage))
 
 <a id="nestedatt--upstream_server--token_vault--cache"></a>
 ### Nested Schema for `upstream_server.token_vault.cache`
@@ -4467,6 +5586,7 @@ Read-Only:
 
 Read-Only:
 
+- `key` (String) A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
 - `version` (String) The identifier of this key version.
 
 
@@ -4502,7 +5622,13 @@ When configured, these will override the default access control rules defined on
 Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 

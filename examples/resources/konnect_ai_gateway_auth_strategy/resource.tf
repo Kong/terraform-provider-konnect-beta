@@ -3,7 +3,6 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   key_auth = {
     config = {
-      anonymous        = "...my_anonymous..."
       hide_credentials = true
       identity_realms = [
         {
@@ -39,9 +38,6 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       key = "value"
     }
     name = "okta-ai-se"
-    token_vault = {
-      enable_credential_manager = false
-    }
   }
   openid_connect = {
     config = {
@@ -210,6 +206,11 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       credential_claim = [
         "..."
       ]
+      credential_claims = [
+        [
+          # ...
+        ]
+      ]
       disable_session = [
         "bearer"
       ]
@@ -267,10 +268,10 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
         "..."
       ]
       hide_credentials          = true
-      http_proxy                = "...my_http_proxy..."
+      http_proxy                = "https://nifty-offset.org"
       http_proxy_authorization  = "...my_http_proxy_authorization..."
       http_version              = 9.47
-      https_proxy               = "...my_https_proxy..."
+      https_proxy               = "https://only-cook.com"
       https_proxy_authorization = "...my_https_proxy_authorization..."
       id_token_param_name       = "...my_id_token_param_name..."
       id_token_param_type = [
@@ -282,7 +283,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       introspect_jwt_tokens              = false
       introspection_accept               = "application/json"
       introspection_check_active         = true
-      introspection_endpoint             = "...my_introspection_endpoint..."
+      introspection_endpoint             = "https://unselfish-consistency.org"
       introspection_endpoint_auth_method = "client_secret_jwt"
       introspection_headers_client = [
         "..."
@@ -311,7 +312,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       issuers_allowed = [
         "..."
       ]
-      jwks_endpoint      = "...my_jwks_endpoint..."
+      jwks_endpoint      = "https://mammoth-hovel.com"
       jwt_session_claim  = "sid"
       jwt_session_cookie = "...my_jwt_session_cookie..."
       keepalive          = true
@@ -340,7 +341,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       logout_revoke_refresh_token = true
       logout_uri_suffix           = "...my_logout_uri_suffix..."
       max_age                     = 8.25
-      mtls_introspection_endpoint = "...my_mtls_introspection_endpoint..."
+      mtls_introspection_endpoint = "https://crushing-fit.name"
       mtls_revocation_endpoint    = "...my_mtls_revocation_endpoint..."
       mtls_token_endpoint         = "...my_mtls_token_endpoint..."
       no_proxy                    = "...my_no_proxy..."
@@ -349,9 +350,15 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       ]
       preserve_query_args = false
       principals = {
-        directory             = "default"
-        enabled               = false
-        error_on_miss         = true
+        directory     = "default"
+        enabled       = false
+        error_on_miss = true
+        jit = {
+          all_claims = false
+          claims = [
+            "..."
+          ]
+        }
         match_consumer        = true
         match_consumer_groups = true
         principal_by          = "...my_principal_by..."
@@ -359,9 +366,19 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
           "..."
         ]
       }
-      proof_of_possession_auth_methods_validation       = true
-      proof_of_possession_dpop                          = "off"
-      proof_of_possession_mtls                          = "off"
+      proof_of_possession_auth_methods_validation = true
+      proof_of_possession_dpop                    = "off"
+      proof_of_possession_mtls                    = "off"
+      protected_resource_metadata = {
+        authorization_servers = [
+          "..."
+        ]
+        metadata_endpoint = "...my_metadata_endpoint..."
+        resource          = "...my_resource..."
+        scopes_supported = [
+          "..."
+        ]
+      }
       pushed_authorization_request_endpoint             = "...my_pushed_authorization_request_endpoint..."
       pushed_authorization_request_endpoint_auth_method = "self_signed_tls_client_auth"
       redirect_uri = [
@@ -498,12 +515,35 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
           enabled = true
           ttl     = 7
         }
+        grant_type          = "token_exchange"
+        map_identities_from = "exchanged_tokens"
+        provider            = "standard"
         request = {
+          actor_token = {
+            header_name  = "...my_header_name..."
+            source       = "none"
+            static_token = "...my_static_token..."
+            type         = "urn:ietf:params:oauth:token-type:access_token"
+          }
           audience = [
             "..."
           ]
-          empty_audience = false
-          empty_scopes   = false
+          empty_audience  = false
+          empty_headers   = false
+          empty_post_args = false
+          empty_scopes    = false
+          headers_names = [
+            "..."
+          ]
+          headers_values = [
+            "..."
+          ]
+          post_args_names = [
+            "..."
+          ]
+          post_args_values = [
+            "..."
+          ]
           scopes = [
             "..."
           ]
@@ -524,7 +564,10 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
                 "..."
               ]
             }
-            issuer = "...my_issuer..."
+            deny_on_mismatch = false
+            issuer           = "...my_issuer..."
+            jwks_uri         = "...my_jwks_uri..."
+            verify_signature = false
           }
         ]
       }

@@ -72,6 +72,10 @@ func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderReq
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderDeepseek
 }
 
+func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestFireworks() *shared.AIGatewayModelProviderFireworks {
+	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderFireworks
+}
+
 func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestGemini() *shared.AIGatewayModelProviderGemini {
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderGemini
 }
@@ -86,6 +90,10 @@ func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderReq
 
 func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestLlama2() *shared.AIGatewayModelProviderLlama2 {
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderLlama2
+}
+
+func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestMeta() *shared.AIGatewayModelProviderMeta {
+	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderMeta
 }
 
 func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestMistral() *shared.AIGatewayModelProviderMistral {
@@ -114,6 +122,10 @@ func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderReq
 
 func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestSagemaker() *shared.AIGatewayModelProviderSagemaker {
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderSagemaker
+}
+
+func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestTogetherai() *shared.AIGatewayModelProviderTogetherai {
+	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderTogetherai
 }
 
 func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestTypesafe() *shared.AIGatewayModelProviderTypesafe {
@@ -232,6 +244,13 @@ func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDeepseek
 	return nil
 }
 
+func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderFireworks() *shared.AIGatewayModelProviderAIGatewayModelProviderFireworks {
+	if v := u.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderFireworks
+	}
+	return nil
+}
+
 func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderGemini() *shared.AIGatewayModelProviderAIGatewayModelProviderGemini {
 	if v := u.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderGemini
@@ -256,6 +275,13 @@ func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderKimi() *
 func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderLlama2() *shared.AIGatewayModelProviderAIGatewayModelProviderLlama2 {
 	if v := u.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderLlama2
+	}
+	return nil
+}
+
+func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderMeta() *shared.AIGatewayModelProviderAIGatewayModelProviderMeta {
+	if v := u.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderMeta
 	}
 	return nil
 }
@@ -305,6 +331,13 @@ func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *s
 func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker() *shared.AIGatewayModelProviderAIGatewayModelProviderSagemaker {
 	if v := u.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderSagemaker
+	}
+	return nil
+}
+
+func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderTogetherai() *shared.AIGatewayModelProviderAIGatewayModelProviderTogetherai {
+	if v := u.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderTogetherai
 	}
 	return nil
 }

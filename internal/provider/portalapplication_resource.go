@@ -217,7 +217,7 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Description: `A description of the application. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(255),
+					stringvalidator.UTF8LengthBetween(1, 255),
 				},
 			},
 			"environment_id": schema.StringAttribute{
@@ -277,7 +277,7 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Description: `The name of the application. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(255),
+					stringvalidator.UTF8LengthBetween(1, 255),
 				},
 			},
 			"owner": schema.SingleNestedAttribute{

@@ -3,7 +3,7 @@
 package types
 
 type EventGatewayParsedRecordTranscodeSchemaRefDestination struct {
-	ConfluentFormat *BackendClusterAuthenticationAnonymous                             `queryParam:"inline" tfsdk:"confluent_format"`
-	None            *BackendClusterAuthenticationAnonymous                             `queryParam:"inline" tfsdk:"none"`
-	RecordHeader    *EventGatewayParsedRecordTranscodeSchemaRefDestinationRecordHeader `queryParam:"inline" tfsdk:"record_header"`
+	ConfluentFormat *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `queryParam:"inline" tfsdk:"confluent_format"`
+	None            *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `queryParam:"inline" tfsdk:"none"`
+	RecordHeader    *EventGatewayParsedRecordTranscodeSchemaRefDestinationRecordHeader     `queryParam:"inline" tfsdk:"record_header"`
 }

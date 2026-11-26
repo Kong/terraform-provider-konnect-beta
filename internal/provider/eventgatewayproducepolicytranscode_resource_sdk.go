@@ -12,12 +12,12 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *EventGatewayProducePolicyTranscodeResourceModel) RefreshFromSharedEventGatewayPolicy(ctx context.Context, resp *shared.EventGatewayPolicy) diag.Diagnostics {
+func (r *EventGatewayProducePolicyTranscodeResourceModel) RefreshFromSharedEventGatewayProducePolicyTranscodeTFOnly(ctx context.Context, resp *shared.EventGatewayProducePolicyTranscodeTFOnly) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		if resp.Config != nil {
+		if r.Config == nil {
 			r.Config = &tfTypes.EventGatewayParsedRecordTranscodeProduceConfig{}
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))

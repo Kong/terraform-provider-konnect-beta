@@ -5,5 +5,5 @@ package types
 type AISettingsFeatures struct {
 	AiSearch    *Autogenerate `tfsdk:"ai_search"`
 	McpServer   *McpServer    `tfsdk:"mcp_server"`
-	PortalAgent *Autogenerate `tfsdk:"portal_agent"`
+	PortalAgent *PortalAgent  `tfsdk:"portal_agent"`
 }

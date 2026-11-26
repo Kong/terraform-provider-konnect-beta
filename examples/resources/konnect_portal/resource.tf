@@ -11,7 +11,9 @@ resource "konnect_portal" "my_portal" {
         write_operations_enabled = false
       }
       portal_agent = {
-        enabled = false
+        audience     = "all"
+        display_name = "AI"
+        enabled      = false
       }
     }
   }
@@ -32,4 +34,5 @@ resource "konnect_portal" "my_portal" {
   notifications_developer_pii_visibility_enabled = false
   rbac_enabled                                   = false
   sipr_enabled                                   = true
+  theme_name                                     = "...my_theme_name..."
 }

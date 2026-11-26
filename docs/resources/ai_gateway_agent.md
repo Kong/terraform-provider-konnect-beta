@@ -38,6 +38,11 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
     ]
   }
   config = {
+    balancer = {
+      lowest_latency = {
+        # ...
+      }
+    }
     ca_certificates = [
       "my-ca-certificate"
     ]
@@ -49,6 +54,8 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       payloads         = false
     }
     max_request_body_size = 8388608
+    path                  = "/a2a"
+    protocol              = "http"
     proxy = {
       auth = {
         password = "...my_password..."
@@ -91,6 +98,13 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
         "..."
       ]
     }
+    targets = [
+      {
+        address  = "booking-agent-1.internal.kongair.com:443"
+        failover = false
+        weight   = 100
+      }
+    ]
     upstream = {
       auth = {
         aws = {
@@ -145,7 +159,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `policies` (List of String) List of policy references.
 
 ### Read-Only
@@ -157,13 +173,11 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
-
-- `url` (String) Helper field to set protocol, host, port and path of the upstream A2A Agent using a URL.
-This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-
 Optional:
 
+- `balancer` (Attributes) Load balancing configuration for `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--config--balancer))
 - `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream agent endpoint,
 referenced by name. Each entry must be the `name` of an existing AI CA Certificate on the
 same AI Gateway.
@@ -184,9 +198,53 @@ one certificate may be configured.
 If unset, no client certificate is presented to the upstream.
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `path` (String) The path prefix of requests sent to the `targets`. Only valid with `targets`.
+
+**Requires a minimum runtime version of `2.4`**.
+- `protocol` (String) The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+
+**Requires a minimum runtime version of `2.4`**.
+possible known values include one of ["http", "https"]
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--config--proxy))
 - `route` (Attributes) Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--config--route))
+- `targets` (Attributes List) List of targets the upstream load balances requests across.
+Replaces `url`: set exactly one of `url` or `targets`.
+
+**Requires a minimum runtime version of `2.4`**. (see [below for nested schema](#nestedatt--config--targets))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--config--upstream))
+- `url` (String) Helper field to set protocol, host, port and path of the upstream A2A Agent using a URL.
+This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
+
+<a id="nestedatt--config--balancer"></a>
+### Nested Schema for `config.balancer`
+
+Optional:
+
+- `consistent_hashing` (Attributes) (see [below for nested schema](#nestedatt--config--balancer--consistent_hashing))
+- `least_connections` (Attributes) (see [below for nested schema](#nestedatt--config--balancer--least_connections))
+- `lowest_latency` (Attributes) (see [below for nested schema](#nestedatt--config--balancer--lowest_latency))
+- `round_robin` (Attributes) (see [below for nested schema](#nestedatt--config--balancer--round_robin))
+
+<a id="nestedatt--config--balancer--consistent_hashing"></a>
+### Nested Schema for `config.balancer.consistent_hashing`
+
+Required:
+
+- `hash_on_header` (String) The request header whose value selects the target. Requests without the header all hash to the same target.
+
+
+<a id="nestedatt--config--balancer--least_connections"></a>
+### Nested Schema for `config.balancer.least_connections`
+
+
+<a id="nestedatt--config--balancer--lowest_latency"></a>
+### Nested Schema for `config.balancer.lowest_latency`
+
+
+<a id="nestedatt--config--balancer--round_robin"></a>
+### Nested Schema for `config.balancer.round_robin`
+
+
 
 <a id="nestedatt--config--logging"></a>
 ### Nested Schema for `config.logging`
@@ -255,6 +313,16 @@ Optional:
 - `response_buffering` (Boolean) Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding. Default: true
 - `strip_path` (Boolean) When matching a route via one of the `paths`, strip the matching prefix from the upstream request URL. Default: true
 - `tags` (List of String) An optional set of strings associated with the route for grouping and filtering.
+
+
+<a id="nestedatt--config--targets"></a>
+### Nested Schema for `config.targets`
+
+Optional:
+
+- `address` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null
+- `failover` (Boolean) Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the `consistent-hashing` algorithm, and at least one target must not be a failover target. Default: false
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100
 
 
 <a id="nestedatt--config--upstream"></a>

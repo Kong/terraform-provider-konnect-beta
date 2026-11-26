@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,6 +21,7 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -47,6 +49,7 @@ type AIGatewayPolicyResourceModel struct {
 	Datastores  []tfTypes.AIGatewayDatastoreRef `tfsdk:"datastores"`
 	DisplayName types.String                    `tfsdk:"display_name"`
 	Enabled     types.Bool                      `tfsdk:"enabled"`
+	Expressions map[string]jsontypes.Normalized `tfsdk:"expressions"`
 	GatewayID   types.String                    `tfsdk:"gateway_id"`
 	Global      types.Bool                      `tfsdk:"global"`
 	ID          types.String                    `tfsdk:"id"`
@@ -123,6 +126,16 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				Default:     booldefault.StaticBool(true),
 				Description: `Whether the policy is enabled. Default: true`,
 			},
+			"expressions": schema.MapAttribute{
+				Optional:    true,
+				ElementType: jsontypes.NormalizedType{},
+				MarkdownDescription: `Policy config expressions` + "\n" +
+					`` + "\n" +
+					`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+				Validators: []validator.Map{
+					mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+				},
+			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The unique ID of the AI Gateway.`,
@@ -156,7 +169,9 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -171,6 +186,9 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: `The type of the Policy. This is equivalent to the Kong 3 plugin name.` + "\n" +
 					`Some examples are: 'ai-sanitizer', 'ai-prompt-guard', and 'rate-limiting'.` + "\n" +
 					`Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

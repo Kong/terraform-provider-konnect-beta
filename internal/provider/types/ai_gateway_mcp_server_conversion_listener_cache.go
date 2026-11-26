@@ -3,6 +3,8 @@
 package types
 
 type AIGatewayMCPServerConversionListenerCache struct {
-	Discover  *AIGatewayMCPServerCacheHint `tfsdk:"discover"`
-	ToolsList *AIGatewayMCPServerCacheHint `tfsdk:"tools_list"`
+	Discover      *AIGatewayMCPServerCacheHint `tfsdk:"discover"`
+	PromptsList   *AIGatewayMCPServerCacheHint `tfsdk:"prompts_list"`
+	ResourcesList *AIGatewayMCPServerCacheHint `tfsdk:"resources_list"`
+	ToolsList     *AIGatewayMCPServerCacheHint `tfsdk:"tools_list"`
 }

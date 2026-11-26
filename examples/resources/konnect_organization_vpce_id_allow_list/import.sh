@@ -1,0 +1,1 @@
+terraform import konnect_organization_vpce_id_allow_list.my_konnect_organization_vpce_id_allow_list "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
