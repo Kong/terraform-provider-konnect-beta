@@ -21,6 +21,18 @@
   * `konnect_event_gateway_produce_policy_transcode`
 * Add support for `konnect_ai_gateway_custom_policy` resource, using which you can manage custom policies in an AI Gateway
 * Add support for `konnect_portal_team_developer` resource, using which you can add a developer to a portal team
+* Add support for Token Vault, using which `konnect_ai_gateway_auth_strategy`, `konnect_ai_gateway_mcp_server` and `konnect_ai_gateway_model_provider` resources can resolve upstream credentials dynamically from a Datastore and cache them in Redis, instead of storing credentials statically (requires runtime version 2.3)
+* Add support for new model providers in `konnect_ai_gateway_model_provider` resource
+* Add support for `condition` and `datastores` in `konnect_ai_gateway_policy` resource
+* Add support for CEL-based conditional access rules (`allow_when`, `deny_when`) in access control lists for `konnect_ai_gateway_agent` and `konnect_ai_gateway_model` resources
+* Add support for `min_runtime_version` and `runtime_auto_upgrade` in `konnect_ai_gateway` resource, to control the minimum AI Gateway data plane runtime version and whether it's automatically raised as the data plane fleet upgrades
+* Add support for filtering and grouping dashboard charts by AI Gateway 2.0 entities in `konnect_dashboard` resource
+* Add support for `spec_format` in `konnect_api_version` resource
+* Add support for the Try It UI and spec renderer customization in `konnect_api_publication` and `konnect_portal_customization` resources
+* Add support for inline Avro/JSON schemas and a unified `failure_mode` in `konnect_event_gateway_consume_policy_schema_validation` and `konnect_event_gateway_produce_policy_schema_validation` resources
+* Add support for `environment_id` and `group_id` in `konnect_portal_application` resource, to bind an application to an environment or join an existing application group
+* Add support for `back_channel_logout_enabled` in `konnect_portal_identity_provider` resource
+* Add `type`, `insecure_inline` and `secret_ref` to data sources in `konnect_mesh_external_service` (`spec.tls.verification.ca_cert`, `client_cert`, `client_key`) and `konnect_mesh_opa` (`agent_config`, `append_policies[].rego`)
 
 ## 0.22.0
 > Released on 2026/08/31
